@@ -1,0 +1,75 @@
+{
+  "name": "blog.maximeheckel.com",
+  "private": true,
+  "description": "blog.maximeheckel.com - Blog",
+  "version": "0.1.0",
+  "author": "Maxime Heckel <hello@maximeheckel.com>",
+  "dependencies": {
+    "@emotion/core": "^10.0.6",
+    "@emotion/styled": "^10.0.6",
+    "@mdx-js/mdx": "^1.1.6",
+    "@mdx-js/react": "^1.1.6",
+    "emotion-theming": "^10.0.6",
+    "gatsby": "^2.13.57",
+    "gatsby-image": "^2.2.8",
+    "gatsby-plugin-google-analytics": "^2.0.9",
+    "gatsby-plugin-manifest": "^2.2.5",
+    "gatsby-plugin-offline": "^2.2.5",
+    "gatsby-plugin-sitemap": "^2.0.4",
+    "gatsby-plugin-tslint": "^0.0.2",
+    "gatsby-plugin-typescript": "^2.0.3",
+    "gatsby-source-filesystem": "^2.1.9",
+    "gatsby-theme-maximeheckel": "^0.1.9",
+    "prop-types": "^15.7.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-helmet": "^5.2.1",
+    "react-typography": "^0.16.18",
+    "typography": "^0.16.18"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^8.0.7",
+    "@types/jest": "^23.0.0",
+    "@types/react": "^16.8.2",
+    "@types/react-dom": "^16.8.0",
+    "@types/react-helmet": "^5.0.8",
+    "babel-jest": "^23.1.0",
+    "babel-preset-gatsby": "^0.1.7",
+    "cypress": "^3.1.5",
+    "identity-obj-proxy": "^3.0.0",
+    "is-ci-cli": "^1.1.1",
+    "jest": "^23.0.1",
+    "jest-dom": "^3.0.2",
+    "jest-emotion": "^10.0.7",
+    "prettier": "^1.18.2",
+    "react-test-renderer": "^16.8.1",
+    "start-server-and-test": "^1.7.11",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-loader": "^3.5.4",
+    "tslint-plugin-prettier": "^2.0.1",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.2.4"
+  },
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write \"src/**/*.{js|ts|tsx}\"",
+    "start": "yarn develop",
+    "serve": "gatsby serve",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
+    "lint": "tslint --project ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+  },
+  "bugs": {
+    "url": "https://github.com/gatsbyjs/gatsby/issues"
+  }
+}
