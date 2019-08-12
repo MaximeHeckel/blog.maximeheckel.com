@@ -46,13 +46,13 @@ In order to achieve this, we’ll need to create an `ArticleContext`. This will 
 
 Let’s start this example by implementing a `Title` sub-component:
 
-Article.js
+####Article.js
 
 The example above shows how we can leverage Consumers and Providers to obtain the same sub-component pattern as we had in [the first example of my previous article](https://gist.github.com/MaximeHeckel/592ba8c77332e09566d9e01ee79e2db0). If you compare this code in the link with the code above, you can see that the latter feels way simpler. Indeed, thanks to the new Context API, there is no need to build and use the `findByType` util. Additionally, we don’t rely on the `displayName` or `name` property of the sub-component to know how to render them.
 
 In the code below, we can see that the resulting `Article` component is much easier to use. Instead of passing children to the `Title` sub-component, we just need to pass them in the value prop of `Article`, which will make them available to every Consumer of the Article context (i.e. to every sub-component defined as a Consumer of this context).
 
-App.js
+####App.js
 
 Moreover, if we want to wrap `Article.Title` in another div or component, we can now do that as well. Given that the implementation of the `findByType` util in my first post was relying on the direct children of `Article` , sub-components were restricted to be direct children and nothing else, which is not the case with this new way of doing sub-components.
 
@@ -60,7 +60,7 @@ Note: You can see above that my `value` object passed to the provider is set to 
 
 Additionally, we can make the piece of code above look even better. By simply exporting the `Title` functional component in `Article.js` we can give up the `<Article.Title/>` notation and simply use instead `<Title/>`.
 
-App.js
+####App.js
 
 This is purely aesthetic though, and I personally prefer the first implementation. It gives more context about where a given sub-component comes from and with which parent component it can be used, and also avoids duplicated name issues.
 

@@ -25,17 +25,14 @@ I was building a simple theme with a series of colors using [emotion](https://gi
 Here’s the component that we’ll use as an example:
 
 ![The code of the Title styled-component](img/1__X2puVe2__sbvrCl__3__vgLQQ.png)
-The code of the Title styled-component
 
 The aim here was the following: to make sure that anyone who uses the `Title` component could change its color via a prop **but only let them pick the blue colors provided by the theme**. Code-wise this is what we want to have:
 
 ![Title component good and bad usage](img/1__gwnpwQwE04tCKaloATI8bQ.png)
-Title component good and bad usage
 
 This is one case when I discovered that Flow can surprisingly help to solve this kind of problem. The theme used for this example looks like the following:
 
 ![Abstract of the Theme used for this example](img/1__T5kY1BfhLc2jEOKHcPaXZw.png)
-Abstract of the Theme used for this example
 
 When it comes to color usage, we don’t want to leave the possibility for other developers to use a color outside of the theme. This is why creating a `Theme` type and the different color types like `Blues` and `Reds` (as well as the other properties of your theme) from the start is a good idea so you immediately document the do’s and don’t’s of your theme at the static typing checking level. In the rest of this post we’ll essentially focus on how to leverage these types like `Blues` to validate props of `Title`.
 
@@ -46,7 +43,6 @@ In the example above, we can see how enums can be useful: **colors is a map of s
 Typing the styled component is the first step**.** I didn’t know how to this at first so I had to do a bit of research on this one and ended up finding this [comment](https://github.com/styled-components/styled-components/issues/570#issuecomment-332087358) on a Github issue which was very helpful. Following the example given in this issue, I wrote this **typed implementation** of `Title`:
 
 ![First typed implementation of the Title component](img/1__Mj__0HUJ3pkKUbpMvklYefA.png)
-First typed implementation of the Title component
 
 It’s typed a bit fast but, it’s still better than having no type. Now we can use `Title` with a color prop as we wanted, but sadly here we can pass any string, i.e. any colors which doesn’t quite help us given what we want to build.
 
@@ -60,12 +56,10 @@ Example of valid but wrong usages of the typed Title component
 This is where `enums` comes into the picture. Indeed, by specifying the subset of the colors of the theme we want for `Title` we can narrow down which props can be passed to the component.
 
 ![Updated TitleProps type](img/1__ZnJ2bSnZAMi2Vtm4VpS9bg.png)
-Updated TitleProps type
 
 This would mean that Flow would fail if we use `Title` with `red1` as color:
 
 ![Flow error showing that using “red1" as color for the Title component is not valid](img/1__AQQKOj__R0oTr8nLF__wIwHQ.png)
-Flow error showing that using “red1" as color for the Title component is not valid
 
 #### The \$Keys utility type
 
@@ -74,7 +68,6 @@ However, whenever the theme gets updated with some extra blue colors, the type w
 We can type our component even better using the `$Keys` utility type. Here’s how to use it:
 
 ![Final implementation of the Title component using the $Keys utility function](img/1__ZPbrMItWpjd6GoVppg39rQ.png)
-Final implementation of the Title component using the \$Keys utility function
 
 Here’s how`$Keys` works in our case: it extracted the type `‘blue1' | ‘blue2'` from our `Blues` type by getting its keys. Thus, every time we update our color palette and the respective color types, our `Title` component will be properly typed. We can thus see that typing this way is more elegant than manually adding items to an enum.
 

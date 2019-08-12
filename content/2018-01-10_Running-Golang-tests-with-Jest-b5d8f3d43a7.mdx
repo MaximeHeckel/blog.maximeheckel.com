@@ -20,7 +20,6 @@ The story behind jest runners inspired me and several days later, I wrote [**jes
 In a nutshell, Jest is composed of multiple packages that are each one responsible for a specific step in your test run lifecycle. Runners are the packages that focus on “running” tests. Jest provides an interface to plug your own runner on both the interface package, which is in charge of finding files, providing the UX and filtering, and the result reporting package, which basically manages the output of your tests.
 
 ![Diagram representing the lifecycle of a test run with Jest including multiple Jest runners.](img/1__tnK7Hzbq7cXG6r7TtIDIKA.jpeg)
-Diagram representing the lifecycle of a test run with Jest including multiple Jest runners.
 
 The ability to add custom runners is interesting in case you want to run other types of tests than the default ones supported by Jest. In the case of jest-runner-go, the runner will simply run `go test` against all Go tests files found by the Jest interface and parse the output in a way the Jest result reporting package can understand it and present the results in a more human readable way.
 
@@ -30,13 +29,15 @@ Using Jest to test both the Golang backend and the React frontend of an app has 
 
 To integrate jest-runner-go in your project, first run `yarn add jest jest-runner-go` then simply add the following to whichever Jest config you’re using, either `jest.config.js` or a specific config that will be passed with the `--config` flag when running Jest, or even the `package.json` of the project:
 
-"moduleFileExtensions": \[  
- "go"  
-\],  
-"runner": "jest-runner-go",  
-"testMatch": \[  
- "\*\*/?(\*\_)test.go"  
+```json
+"moduleFileExtensions": \[
+ "go"
+\],
+"runner": "jest-runner-go",
+"testMatch": \[
+ "\*\*/?(\*\_)test.go"
 \]
+```
 
 Then running `jest` or `jest --config my-go-test-config` will find all the files matching `_test.go`, execute `go test` against each of these files and finally parse the output produced by `go test` so Jest will get the required data to output.
 
@@ -70,21 +71,27 @@ If you want to get the latest version of Gojest you can either download the bina
 
 For macOS
 
-docker pull maximeheckel/gojest:latest &&  
-id=$(docker create maximeheckel/gojest:latest) &&  
+```shell
+docker pull maximeheckel/gojest:latest &&
+id=$(docker create maximeheckel/gojest:latest) &&
 docker cp $id:/gojest-macos /usr/local/bin/gojest && (docker rm \$id >/dev/null)
+```
 
 For Linux
 
-docker pull maximeheckel/gojest:latest &&  
-id=$(docker create maximeheckel/gojest:latest) &&  
+```shell
+docker pull maximeheckel/gojest:latest &&
+id=$(docker create maximeheckel/gojest:latest) &&
 docker cp $id:/gojest-linux /usr/local/bin/gojest && (docker rm \$id >/dev/null)
+```
 
 For Windows
 
-docker pull maximeheckel/gojest:latest &&  
-id=$(docker create maximeheckel/gojest:latest) &&  
+```shell
+docker pull maximeheckel/gojest:latest &&
+id=$(docker create maximeheckel/gojest:latest) &&
 docker cp $id:/gojest-win.exe gojest.exe && (docker rm \$id >/dev/null)
+```
 
 Here’s an example of using Gojest to run unit tests in a Go project:
 

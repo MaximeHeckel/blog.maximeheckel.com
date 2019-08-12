@@ -35,7 +35,6 @@ yarn add -D cypress cypress-axe axe-core start-server-and-test
 Now that we have all the tools installed in our project, we’ll have to write some scripts in our `package.json` to help us run the tests:
 
 ![package.json excerpt with our test script](img/1__le95a2bCe0AhSBC8TLDKwA.png)
-package.json excerpt with our test script
 
 The code snippet above contains the scripts required to run the tests. We need a `start` script that can start our app; in my case, it’s `react-scripts start` since I’ve based this demo on a create-react-app. If you already have a start command no need to change it.  
 The `test` script runs `start-server-and-test` which runs a series of steps. First, it will run the `start` script, then wait for the `[http://localhost:3000](http://localhost:3000)` to be available, and finally, once the app is fully started it will run the `cy:open` which will start the cypress UI and let us run tests.
@@ -45,12 +44,10 @@ The `test` script runs `start-server-and-test` which runs a series of steps. Fir
 Now that cypress and cypress-axe are setup, it’s time to write our first test. First, in `cypress/support/index.js`, let’s add the following code snippet:
 
 ![cypress/support/index.js excerpt with cypress-axe](img/1__kF__SCewfpEwLuzMYWVQwMg.png)
-cypress/support/index.js excerpt with cypress-axe
 
 Then, let’s head to the `cypress/integration` folder and create a `accessibility.spec.js`. This file will contain the following accessibility test:
 
 ![Our first accessibility test using cypress-axe](img/1__dRaecCV5yfL0dKElZ0ZNUw.png)
-Our first accessibility test using cypress-axe
 
 The test is contained within the `it` statement above, and as we can see it contains a few lines which execute the following steps:
 
@@ -69,44 +66,37 @@ To run the test we wrote above, let’s run `yarn test` . As explained in the f
 We should then see the Cypress GUI with a list of tests, one of them being the accessibility test we just wrote:
 
 ![Gif showcasing the test script described in the first part](img/1____lNKDG4Df1xEBhWQDlTnBg.gif)
-Gif showcasing the test script described in the first part
 
 We can then click on the `accessibility.spec.js` test which will start the test run and output results.
 
 If like me you ran this test against the create-react-app basic UI you should see a result similar to the following:
 
 ![Cypress output with one accessibility issues](img/1__wb7XX__RaUKDRawdVBCu9xQ.png)
-Cypress output with one accessibility issues
 
 Our test detected one accessibility violation. This output though doesn’t give many details sadly. To know exactly what the issue is, we’ll have to open the chrome console and click on the field labeled with `A11Y ERROR!bypass on 1 Node` to have more information:
 
 ![Accessibility violation failure summary for our first cypress test run](img/1__FpWJmUGcyX1t3g__OUSr__yw.png)
-Accessibility violation failure summary for our first cypress test run
 
 The output from the console gives us a failure summary with the following message: “Fix any of the following: No valid skip link found Page does not have a header Page does not have a landmark region”. By clicking on the help URL provided by the test output, we can get some documentation on the issue itself, and also a path to fixing it. In this case we simply need to add the following attribute to the main div wrapping our app: `role="main"`.
 
 After the change, running cypress again should result in a passing test:
 
 ![Successful cypress accessibility test run](img/1__zS7P6cLOuHEeeBQpJyYXUA.png)
-Successful cypress accessibility test run
 
 ### Other examples
 
 Adding extra rules to our accessibility test can potentially surface extra accessibility violation. Let’s add the rule `best-practice` and see what we get:
 
 ![The updated version of the options object passed to our accessibility test](img/1__C6V2FBSNrYEmiSrM7Xr3xg.png)
-The updated version of the options object passed to our accessibility test
 
 We should see two new moderate accessibility violations:
 
 ![Accessibility test run showcasing two moderate accessibility issues](img/1__HQn____ccDyHh7dQU4f65BIg.png)
-Accessibility test run showcasing two moderate accessibility issues
 
 As we can see with this example, the more rules add to our accessibility test, the more issues we’re surfacing thus the “accessibility test coverage” we get.  
 I tried quite a few combinations to see how much issues cypress could surface, and I was quite impressed by the result. For instance, we can try adding a button to the UI with some white label on a cyan background and enable the `wcag2aa` set of rules in our options. Doing this and running the test will surface color contrast issues as you can see in the screenshot below:
 
 ![Accessibility test run showcasing one contrast issues on the button with cyan background and white label](img/1____56yiC68TRURMinyTsquuQ.png)
-Accessibility test run showcasing one contrast issues on the button with cyan background and white label
 
 ### Conclusion
 

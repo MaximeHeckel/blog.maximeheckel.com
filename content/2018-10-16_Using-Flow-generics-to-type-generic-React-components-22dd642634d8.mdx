@@ -18,22 +18,18 @@ Building generic React components can be a great way to simplify the codebase of
 In the project I was working on, I had to handle multiple resources (named here `Resource1`, `Resource2`, `Resource3`, … for simplicity). Each resource had its own associated`List` component (`Resource1List`, `Resource2List`, …), each of which was pretty similar to the others in terms of implementation, as the resources themselves were quite the same outside of a few differences. Below, you can see the types of `Resource1` and `Resource2` :
 
 ![Example resource Flow types](img/1__lOa9krzkfhvYQ__cbUaT87w.png)
-Example resource Flow types
 
 So given these specs, I wanted to build a single `ResourceList` component to display items of a given resource. Its props would include an `onItemClick` callback function, which takes a variable of that resource type as an argument. Here’s the first type that I wrote for the props of the `ResourceList` component:
 
 ![The first iteration of the “Props” Flow type for ResourceList](img/1__2GcPxtTnZDK5c68WTIq16w.png)
-The first iteration of the “Props” Flow type for ResourceList
 
 Now that the component is typed, the next step consists of trying to use it with one of our Resources. Here’s how `ResourceList` can be used for `Resource1` for example:
 
 ![Resource1List React component using ResourceList](img/1__RQrQkC6frHaBR__9Pc5__oAQ.png)
-Resource1List React component using ResourceList
 
 This is the moment when I ran into the main problem. Given the way I typed this component, running Flow against the code in the example above outputs an error:
 
 ![Flow error output with the first iteration of the “Props” Flow type for ResourceList](img/1__K4q47RYFJGlAz0nkpY32hw.png)
-Flow error output with the first iteration of the “Props” Flow type for ResourceList
 
 In the Resource types we declared above ( `Resource1`, `Resource2` , …), you can see that the key of the “id” field of each Resource doesn’t match. Thus, whenever we will use this component and write an `onItemClick` function for a resource, Flow will give you an error telling us the properties of the other resources are missing.
 
@@ -49,12 +45,10 @@ To overcome this kind of situation, generics can be very practical. This is how 
 The resulting code looks like this:
 
 ![ResourceList “Props” Flow type using a generic BaseProps Flow type](img/1__eI8mDeb2DeBT3b6Qn17Egw.png)
-ResourceList “Props” Flow type using a generic BaseProps Flow type
 
 Running Flow with this type should output the following:
 
 ![Flow output with no errors thanks to the new ResourceList “Props” Flow type!](img/1__tQs3TltRtn__sntDOaUxdLg.png)
-Flow output with no errors thanks to the new ResourceList “Props” Flow type!
 
 We have now typed our generic list component properly thanks to Flow. We can see that using generics not only brings flexibility to our type, but also will help in the future when we want to scale up the usage of this component, so it can be used with even more resources.
 

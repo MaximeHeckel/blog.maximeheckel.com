@@ -20,9 +20,9 @@ module.exports = {
   url: 'https://blog.maximeheckel.com', // Site domain without trailing slash
   siteUrl: 'https://blog.maximeheckel.com/', // url + pathPrefix
   siteLanguage: 'en', // Language Tag on <html> element
-  // logo: 'src/static/logo/logo.png',
+  logo: 'src/static/logo/logo.png',
   // banner: 'src/static/logo/banner.png',
-  // favicon: 'src/static/logo/favicon.png', // Manifest favicon generation
+  favicon: 'static/favicon.png', // Manifest favicon generation
   shortName: 'MaximeHeckel', // Shortname for manifest, must be shorter than 12 characters
   author: 'Maxime Heckel', // Author for schemaORGJSONLD
   themeColor: '#000000',

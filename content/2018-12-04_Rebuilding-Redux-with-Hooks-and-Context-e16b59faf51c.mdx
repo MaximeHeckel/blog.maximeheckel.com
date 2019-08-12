@@ -10,7 +10,6 @@ type: 'blogPost'
 ---
 
 ![Redux logo](img/1__lBW3KS3I68NnxoB7__maVBA.png)
-Redux logo
 
 There’s been a lot of hype recently about [React Hooks](https://reactjs.org/docs/hooks-intro.html) and what they allow developers to achieve. Indeed, in the near future, **we will be able to rely on a single React pattern** to build pretty much anything we want. As of today, React consist of a lot of patterns, if not too many for some people: Stateful Classes, Functional components, Higher Order Components and render callbacks to mention just a few.  
 The React core team expressed several months ago their desire to slowly phase out React Classes. Hooks, along with Suspense, [which I talked about in a previous post](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41), are the main building blocks of this plan.
@@ -24,14 +23,12 @@ For this example, we will consider a simple application. It will display some me
 Let’s consider the following reducers:
 
 ![Example of a classic reducer used with Redux](img/1__1550lShIHtReOyXb44JATw.png)
-Example of a classic reducer used with Redux
 
 As we can see, this is the kind of reducers we’re used to seeing in any Redux based application. The objective is to have the same reducers working for our implementation of Redux.
 
 **First step: Defining our** `**Provider**`This will be the core of our reimplementation of Redux. The Redux Provider works quite like a basic React Context Provider, so we can base our work on the Context API. Our store Provider will wrap our app and let it access our store object at any level. Here’s how it looks like:
 
 ![Implementation of a store provider using the React Context API](img/1__YO__8eF9MDYc4GRLQCdhweA.png)
-Implementation of a store provider using the React Context API
 
 **Second step:** `**createStore **`We can see above the mention of the `createStore` function. If you’re familiar with Redux this should ring a bell. This function takes our reducer, and the initial state object of our app returns an object with 2 essential items that are injected into the app through our Provider:
 
@@ -41,12 +38,10 @@ Implementation of a store provider using the React Context API
 To reimplement this function in our example, let’s use the new React hooks. React has a very handy pre-built hook called `useReducer` which actually returns these 2 items stated above:
 
 ![“createStore” function implementation based on the useReducer hook](img/1__5ArAoBfXrh2Y3u8XNWT0ww.png)
-“createStore” function implementation based on the useReducer hook
 
 We now have all the elements for our implementation of Redux to work! Below you will see the code of our basic app that is using the examples above to dispatch actions and get some data from our store.
 
 ![Small application using our basic reimplementation of Redux using Context and Hooks](img/1__ZCfP2FRBjxGRgM79iDPbfA.png)
-Small application using our basic reimplementation of Redux using Context and Hooks
 
 However, we can see that although the constructs we came up with are quite similar to the ones of Redux, the way it’s used within an app is not quite the same. This is why I wanted to push the example a bit further and reimplement the `connect` Higher Order Component.
 
@@ -55,7 +50,6 @@ However, we can see that although the constructs we came up with are quite simil
 For this part, we want to achieve the following:
 
 ![Example of a component using the “connect” HoC](img/1__Hi1DXjobMxPrbLsROhGJXA.png)
-Example of a component using the “connect” HoC
 
 Given the code above, our connect HoC must take 2 optional arguments: a `mapStateToProps` function and a `mapDispatchToProps` function. It will then inject the following items as props for the wrapped component:
 
@@ -63,7 +57,6 @@ Given the code above, our connect HoC must take 2 optional arguments: a `mapStat
 - the objects returned by `mapStateToProps` and `mapDispatchToProps`
 
 ![Implementation of the “connect” HoC from Redux based on the useContext hook](img/1__m__Uw1uH8NSY__Kws2iSQd6w.png)
-Implementation of the “connect” HoC from Redux based on the useContext hook
 
 With this implementation of `connect`, we now have a more familiar way to access the state from our components.
 
@@ -79,16 +72,16 @@ Middlewares take a store object as an argument, which contains a `getState` func
 Note: This short summary and the code implementation below are based on my own research and on [this article](https://medium.com/@meagle/understanding-87566abcfb7a).
 
 ![Implementation of “createStore” based on the useReducer hook with support for middlewares](img/1__eVglHzeB0rd2hujUsFSTjA.png)
-Implementation of “createStore” based on the useReducer hook with support for middlewares
 
 We can now add a basic middleware to our `createStore` function. Here’s one that logs to the console any action that is dispatched:
 
 ![Example of a custom middleware used with our Redux reimplementation](img/1____g6iBLmjE8U2pt__mPgociw.png)
-Example of a custom middleware used with our Redux reimplementation
 
 ### Conclusion
 
 Thanks to the Context API and the recently announced Hooks, we saw that it is now easy to rebuild Redux. Is it usable? Yes, as we saw in this post, we covered the main components of Redux (Store, connect, middlewares, etc) and use them in a small app. Can this replace `react-redux`? Probably not. Redux still has a lot more than what we covered in this article, like the Redux Devtools or the entire ecosystem of libraries that can enhance your app on top of Redux. While writing this post I’ve personally tried to add the `redux-logger` middleware to our example, it “worked” but I couldn’t make it print the correct “next state”(maybe because the `useReducer` hook is async since it’s based on `setState` ):
+
+https://twitter.com/MaximeHeckel/status/1059632395316473857
 
 but as you can see in this tweet, maybe I was just a bit too ambitious.
 
@@ -99,14 +92,11 @@ but as you can see in this tweet, maybe I was just a bit too ambitious.
 **What to read next?**  
 If you want to read more about React or frontend development, you can check the following articles:
 
-[**Asynchronous rendering with React**  
-\_How the new React Suspense API might reshape the way we build components_medium.com](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41 'https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41')[](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41)
+[**Asynchronous rendering with React**](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41 'https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41')[](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41)
 
-[**Using Flow generics to type generic React components**  
-\_How Flow generics help typing complex multi-purpose components_medium.com](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8 'https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8')[](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8)
+[**Using Flow generics to type generic React components**](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8 'https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8')[](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8)
 
-[**React sub-components Part 2: Using the new Context API**  
-\_Further simplifying the sub-component pattern using contexts to make flexible, easily testable and reusable React…\_medium.com](https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4 'https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4')[](https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4)
+[**React sub-components Part 2: Using the new Context API**](https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4 'https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4')[](https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4)
 
 Have a wonderful day.  
 Maxime

@@ -55,20 +55,22 @@ const IndexPage = ({ data }) => {
       }}
     >
       <Seo title={data.site.siteMetadata.title} />
-      <br />
-      <h1>{data.site.siteMetadata.title}</h1>
-      <br />
-      {data.allMdx.edges.map(({ node }) => {
-        return (
-          <Link
-            key={node.frontmatter.slug}
-            style={{ textDecoration: `none` }}
-            to={`/posts/${node.frontmatter.slug}`}
-          >
-            <h2>{node.frontmatter.title}</h2>
-          </Link>
-        );
-      })}
+      <div style={{ paddingBottom: '10px' }}>
+        <br />
+        <h1>{data.site.siteMetadata.title}</h1>
+        <br />
+        {data.allMdx.edges.map(({ node }) => {
+          return (
+            <Link
+              key={node.frontmatter.slug}
+              style={{ textDecoration: `none` }}
+              to={`/posts/${node.frontmatter.slug}`}
+            >
+              <h2>{node.frontmatter.title}</h2>
+            </Link>
+          );
+        })}
+      </div>
     </MainWrapper>
   );
 };
