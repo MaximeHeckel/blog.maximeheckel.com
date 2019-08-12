@@ -1,0 +1,72 @@
+---
+title: Asynchronous rendering with React
+description: How the new React Suspense API might reshape the way we build components
+date: '2018-11-06T16:52:30.887Z'
+categories: []
+keywords: []
+slug: asynchronous-rendering-with-react-c323cda68f41
+cover:
+type: 'blogPost'
+---
+
+Since I’ve started playing with React a couple of years ago, I’ve always been a big fan of **functional components**. Their simplicity and conciseness make them easy to read and test. The problem though was that, until now, there was no way to do asynchronous calls which is the crucial part of most applications in the real world, so classes were always the way to go.  
+However, starting from **React 16.6.0** and the new Suspense API, this is not an issue anymore, functional components can now perform asynchronous calls and render data that comes from them. In this post, I’m going to show you **an up to date** **example** so you can easily test the Suspense API.
+
+_Note: Although it’s available through the last official version of React, using Suspense as I’ll show you in this post is not yet intended for production. This example solely exists as an experiment._
+
+### What is Suspense in a nutshell?
+
+`Suspense` basically suspends the rendering of a component while loading data from a cache. This means that our component will only show up once the whole tree is ready. If the data we’re trying to render is not in the cache, the cache throws a Promise. When the promise resolves, the rendering continues.   
+While all of this is happening, Suspense will render a **fallback component** which could be for example a loading indicator, a message, or anything we usually render in our applications to signal the user that something asynchronous is happening.
+
+### A new way to build components
+
+As of today, when we want to render a component that shows some data coming from an asynchronous call in React, we’re stuck with classes. We have to use the component lifecycle methods to ensure the call happens on mount, and use the local state to manage the loading state. We can see below a small example of a pattern that I’m sure pretty much every React developer had to follow:
+
+![Code Snippet 1: React component doing an asynchronous call before rendering the data implemented using a Class.](img/1__8__ggbIJQyr5IPU6J1cEY1g.png)
+Code Snippet 1: React component doing an asynchronous call before rendering the data implemented using a Class.
+
+How Suspense changes that? Well, quite a lot actually if you compare the code above with the following one:
+
+![Code Snippet 2: React component doing an asynchronous call before rendering the data implemented using React Suspense.](img/1__t4__eKz8cpZNsJNjCyl78hw.png)
+Code Snippet 2: React component doing an asynchronous call before rendering the data implemented using React Suspense.
+
+As we can see with this example: **no more class!** Suspense is managing for us the loading state through the `fallback` prop, which is rendered until `List` is ready to be rendered, that is when the dependent asynchronous call resolves and returns the data. However, this is only a partial example. As stated in the first part, the rendering of `List` in this example is suspended **while loading data from a cache,** which is what the `Fetcher` function is all about.
+
+### Using react-cache
+
+This is key for getting the example above to work. The caching part is needed for Suspense to read the data from the asynchronous call.  
+Before diving in the details, let’s look at how the `Fetcher` function is implemented for our example:
+
+![Code Snippet 3: Fetcher resource implementation using functions from react-cache](img/1__821iKOC9HBIQ0et__msvVag.png)
+Code Snippet 3: Fetcher resource implementation using functions from react-cache
+
+For this post I used [react-cache](https://www.npmjs.com/package/react-cache). It’s a package made by the React core team that **provides a basic cache** that is going **to store asynchronous data**, like the data that we’re getting once our fetch call resolves, and **allows us to access that data asynchronously**. In the code snippet above we basically use the `unstable_createResource` function where we pass our asynchronous call, which will initiate a cache and store the resulting data into it. Accessing that data from the cache is done through the `read` function as we can see in the _Code Snippet 2_. However, this way of doing caching is currently not meant to be used in production (the React team emphasized this quite a bit in the README of this repository).
+
+### Full Example
+
+Here’s the full example for this article:
+
+![Code Snippet 4: The full example of a functional React component using the Suspense API](img/1__3iP1UYj5__2pf__o9ZjqvUqQ.png)
+Code Snippet 4: The full example of a functional React component using the Suspense API
+
+I made this example available in a [Github repository](https://github.com/MaximeHeckel/react-suspense-example) based on `create-react-app` so you can also give it a try and experiment with Suspense very quickly!
+
+I really can’t wait for this pattern to be ready for production. Combining Suspense and the recently announced [React hooks](https://reactjs.org/docs/hooks-intro.html) is getting us closer to building React apps fully based on functional components. If you want to learn more about Suspense here’s a really complete summary in a tweet from a member of the React team:
+
+#### **If you liked this article don’t forget to hit the “clap” button and if you have any other questions I’m always reachable on** [**Twitter**](http://twitter.com/MaximeHeckel)**, or on my** [**website**](https://maximeheckel.com)**. You can also subscribe to my** [**Medium publication**](https://medium.com/maxime-heckel) **to not miss my next post.**
+
+**What to read next?**  
+If you want to read more about React or frontend development, you can check the following articles:
+
+[**React sub-components**  
+\_Making flexible, easily testable and reusable views in React without ending in “markup hell”\_medium.com](https://medium.com/maxime-heckel/react-sub-components-513f6679abed 'https://medium.com/maxime-heckel/react-sub-components-513f6679abed')[](https://medium.com/maxime-heckel/react-sub-components-513f6679abed)
+
+[**Using Flow generics to type generic React components**  
+\_How Flow generics help typing complex multi-purpose components_medium.com](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8 'https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8')[](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8)
+
+[**How to efficiently type your styled-components with Flow**  
+\_Adding Flow on top of styled components to avoid misusages before they hit production, and make developers’ and…\_medium.com](https://medium.com/maxime-heckel/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b 'https://medium.com/maxime-heckel/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b')[](https://medium.com/maxime-heckel/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b)
+
+Have a wonderful day.  
+Maxime
