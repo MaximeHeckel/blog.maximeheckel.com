@@ -4,11 +4,10 @@ description: From REST calls to powerful queries
 date: '2019-05-28T14:17:39.673Z'
 categories: []
 keywords: []
-slug: /@MaximeHeckel/building-a-graphql-wrapper-for-the-docker-api-2109f2b9c202
+slug: building-a-graphql-wrapper-for-the-docker-api-2109f2b9c202
+cover: './img/1__iLiODjb0hFjNooC364a__1w.jpeg'
+type: 'blogPost'
 ---
-
-![Photo by [Ishan @seefromthesky](https://unsplash.com/photos/qE1Y8GQKhEk?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/search/photos/sea?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)](img/1__iLiODjb0hFjNooC364a__1w.jpeg)
-Photo by [Ishan @seefromthesky](https://unsplash.com/photos/qE1Y8GQKhEk?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/search/photos/sea?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
 
 _Note: the content of this post and the code featured in it have been produced on my own personal time and does not reflect my current work being done at Docker._
 
@@ -21,10 +20,10 @@ I’ve never taken the time to get started seriously with GraphQL and I know the
 **What you will learn**  
 In this post you will learn to:
 
-*   Build a GraphQL server that wraps the Docker API
-*   Build and organize resolvers and schemas
-*   Running queries against our GraphQL server
-*   Generate typescript types from the GraphQL schemas
+- Build a GraphQL server that wraps the Docker API
+- Build and organize resolvers and schemas
+- Running queries against our GraphQL server
+- Generate typescript types from the GraphQL schemas
 
 If you want to follow along with this article with more details about the code I recommend checking out [the project on Github](https://github.com/MaximeHeckel/docker-graphql). It’s based on `apollo-server` , `typescript`, `graphql`, `lodash` and `superagent` .
 
@@ -42,20 +41,20 @@ Entrypoint of our GraphQL server
 
 As we can see above, we’re setting up a new Apollo GraphQL server with two main components:
 
-*   **the context,** which is an object we can define ourselves with fields that we will need in the future. Here we’re passing the UNIX socket address of the Docker daemon that we will use to contact the API when querying data.
-*   **the schema**, the central and main piece of any GraphQL project. It will hold all the relationships between the different types and the different operations available to query our data (you can read more about it [here](https://www.apollographql.com/docs/apollo-server/essentials/schema)). As it is the most important piece of our project, the next part will be dedicated to how to build our schema.
+- **the context,** which is an object we can define ourselves with fields that we will need in the future. Here we’re passing the UNIX socket address of the Docker daemon that we will use to contact the API when querying data.
+- **the schema**, the central and main piece of any GraphQL project. It will hold all the relationships between the different types and the different operations available to query our data (you can read more about it [here](https://www.apollographql.com/docs/apollo-server/essentials/schema)). As it is the most important piece of our project, the next part will be dedicated to how to build our schema.
 
 ### Building our schema
 
 The schema we will need for our Docker API GraphQL wrapper is composed of two main parts:
 
-*   **typeDefs** or type definitions. We will define how our Docker resources are architected and related to each other in our graph.
-*   **resolvers** which are functions where each one of them is associated with a single field and will be used to fetch data from the Docker API.
+- **typeDefs** or type definitions. We will define how our Docker resources are architected and related to each other in our graph.
+- **resolvers** which are functions where each one of them is associated with a single field and will be used to fetch data from the Docker API.
 
 To keep this article as accessible as possible and not too overwhelming, we will only focus on implementing typeDefs and resolvers for Docker **services** and **containers**. If you don’t know what a service or a container is, you can learn more about them at the following links:
 
-*   [What is a service](https://docs.docker.com/v17.12/docker-cloud/getting-started/your_first_service/)
-*   [Main Docker concepts](https://docs.docker.com/get-started/)
+- [What is a service](https://docs.docker.com/v17.12/docker-cloud/getting-started/your_first_service/)
+- [Main Docker concepts](https://docs.docker.com/get-started/)
 
 These two resources are closely related: A service is composed of multiple containers. However, if you want to know which containers are within a given service, you have to do at least two REST API calls: one to get the service and one to get a filtered list of containers that compose that service.   
 We will see that thanks to the GraphQL wrapper we can have the same information with one single query, and with exactly the data we want (i.e. no over fetching).
@@ -94,7 +93,7 @@ To get our Schemas we’ll need to use a function from `apollo-server` called `m
 ![The schema for our GraphQL server based on the typeDefs and resolvers we defined previously](img/1__L8aCUwWgGBdnXPnZGhDAZg.png)
 The schema for our GraphQL server based on the typeDefs and resolvers we defined previously
 
-We now have all the elements to start our GraphQL server. Considering we have Docker running, we can run the command: `ts-node ./src/index.ts` .  
+We now have all the elements to start our GraphQL server. Considering we have Docker running, we can run the command: `ts-node ./src/index.ts` .  
 By going to `[http://localhost:3000](http://localhost:3000)` we should see the GraphiQL IDE that will allow us to run queries against our GraphQL server.
 
 ### Running Queries
@@ -129,11 +128,11 @@ It would typically take two REST calls to get that kind of data on a client, tha
 You probably noticed that, since the beginning of this post, we’ve based our GraphQL server on Typescript. Although this is optional I wanted to showcase what can be achieved when building a GraphQL server with Typescript, and how we can leverage the schemas we’ve built to generate our Typescript types that can be used both on the server and on the client side.  
 To do so, we’ll need to install the following dependencies:
 
-*   @types/graphql
-*   graphql-code-generator
-*   graphql-codegen-typescript-common
-*   graphql-codegen-typescript-resolvers
-*   graphql-codegen-typescript-server
+- @types/graphql
+- graphql-code-generator
+- graphql-codegen-typescript-common
+- graphql-codegen-typescript-resolvers
+- graphql-codegen-typescript-server
 
 #### **Codegen.yml**
 
@@ -164,23 +163,23 @@ and run `yarn generate` which should generate all the types for our query resolv
 
 In this post we learned how to:
 
-*   set up a GraphQL server using `apollo-server` that wraps the Docker API.
-*   write type definitions for Docker resource based on the API spec.
-*   write resolvers
-*   build a schema based on the resolvers and the type definitions
-*   generate Typescript types based on the schema
+- set up a GraphQL server using `apollo-server` that wraps the Docker API.
+- write type definitions for Docker resource based on the API spec.
+- write resolvers
+- build a schema based on the resolvers and the type definitions
+- generate Typescript types based on the schema
 
 These were my first steps with GraphQL and I hope my work will inspire others to build great projects with what they learned through this post. The code featured in this article can be found [here](https://github.com/MaximeHeckel/docker-graphql). I plan on continuing to build this project in my spare time. I added contributing guidelines and a quick roadmap for anyone willing to participate in this project.  
 If, like me a few months ago, you’re getting started right now with GraphQL, or looking to learn more about it, here are the several links that I found more than useful:
 
 [**How to wrap a REST API with GraphQL - A 3-step tutorial | Prisma**  
-_Since then, many developers want to start using GraphQL but are stuck with their legacy REST APIs. In this article…_www.prisma.io](https://www.prisma.io/blog/how-to-wrap-a-rest-api-with-graphql-8bf3fb17547d "https://www.prisma.io/blog/how-to-wrap-a-rest-api-with-graphql-8bf3fb17547d")[](https://www.prisma.io/blog/how-to-wrap-a-rest-api-with-graphql-8bf3fb17547d)
+\_Since then, many developers want to start using GraphQL but are stuck with their legacy REST APIs. In this article…\_www.prisma.io](https://www.prisma.io/blog/how-to-wrap-a-rest-api-with-graphql-8bf3fb17547d 'https://www.prisma.io/blog/how-to-wrap-a-rest-api-with-graphql-8bf3fb17547d')[](https://www.prisma.io/blog/how-to-wrap-a-rest-api-with-graphql-8bf3fb17547d)
 
 [**Lessons Learned Migrating APIs to GraphQL 📝**  
-_This post shows best practices 💫 of migrating APIs to GraphQL_medium.com](https://medium.com/open-graphql/lessons-learned-migrating-apis-to-graphql-8a015d08b163 "https://medium.com/open-graphql/lessons-learned-migrating-apis-to-graphql-8a015d08b163")[](https://medium.com/open-graphql/lessons-learned-migrating-apis-to-graphql-8a015d08b163)
+\_This post shows best practices 💫 of migrating APIs to GraphQL_medium.com](https://medium.com/open-graphql/lessons-learned-migrating-apis-to-graphql-8a015d08b163 'https://medium.com/open-graphql/lessons-learned-migrating-apis-to-graphql-8a015d08b163')[](https://medium.com/open-graphql/lessons-learned-migrating-apis-to-graphql-8a015d08b163)
 
 [**Type-Safe GraphQL Servers 🔎**  
-_This post exhibits the motivations & steps for adding Type-Safety into GraphQL Servers_medium.com](https://medium.com/open-graphql/type-safe-graphql-servers-3922b8a70e52 "https://medium.com/open-graphql/type-safe-graphql-servers-3922b8a70e52")[](https://medium.com/open-graphql/type-safe-graphql-servers-3922b8a70e52)
+\_This post exhibits the motivations & steps for adding Type-Safety into GraphQL Servers_medium.com](https://medium.com/open-graphql/type-safe-graphql-servers-3922b8a70e52 'https://medium.com/open-graphql/type-safe-graphql-servers-3922b8a70e52')[](https://medium.com/open-graphql/type-safe-graphql-servers-3922b8a70e52)
 
 #### If you liked this article don’t forget to hit the “clap” button and if you have any other questions I’m always reachable on [Twitter](http://twitter.com/MaximeHeckel), or on my [website](https://maximeheckel.com). You can also subscribe to my [Medium publication](https://medium.com/maxime-heckel) to not miss my next post.
 

@@ -6,10 +6,10 @@ description: >-
 date: '2018-02-26T21:02:23.156Z'
 categories: []
 keywords: []
-slug: /@MaximeHeckel/react-sub-components-513f6679abed
+slug: react-sub-components-513f6679abed
+cover: './img/1__whvWjXy__9DHnu5o6gWbpzQ.jpeg'
+type: 'blogPost'
 ---
-
-![](img/1__whvWjXy__9DHnu5o6gWbpzQ.jpeg)
 
 [_Click here to share this article on LinkedIn »_](https://www.linkedin.com/cws/share?url=https%3A%2F%2Fitnext.io%2Freact-sub-components-513f6679abed)
 
@@ -38,8 +38,8 @@ This kind of pattern is really beneficial:
 In this section we’re going to build the Article component step by step, first by trying to implement the `Title` sub-component.  
 The first thing we need in order to build sub-components within a component is **a util to find children by “type” or “name”** so React will know how to render our Title sub-component. We’ll pass two parameters to this util:
 
-*   **children**: the list of children of `Article`
-*   **component**: the component we want to find within the list of children, in our example it will be `Title`.
+- **children**: the list of children of `Article`
+- **component**: the component we want to find within the list of children, in our example it will be `Title`.
 
 Here’s how the util findByType looks like:
 

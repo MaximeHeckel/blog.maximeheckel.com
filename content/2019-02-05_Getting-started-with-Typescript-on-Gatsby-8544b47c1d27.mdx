@@ -6,10 +6,10 @@ description: >-
 date: '2019-02-05T15:01:00.698Z'
 categories: []
 keywords: []
-slug: /@MaximeHeckel/getting-started-with-typescript-on-gatsby-8544b47c1d27
+slug: getting-started-with-typescript-on-gatsby-8544b47c1d27
+cover: './img/1__w6a1MKTNTtsrijt8HbHO__g.png'
+type: 'blogPost'
 ---
-
-![](img/1__w6a1MKTNTtsrijt8HbHO__g.png)
 
 After working on my personal portfolio with Gatsby, I took some time to transition my project to Typescript. It was the perfect opportunity to learn how to use it as I have never worked with it in the past.  
 Learning about how to write Typescript types and how to use it wasn’t much of a problem as I’m used to working with Flow. However, it was the whole set up of tslint, remembering to install type definitions and simply writing custom type definitions that were new to me and not as easy as I would have expected. This is why I thought this would deserve a little article containing an up to date guide explaining how to set up all these tools and get them to run properly on an existing project.
@@ -20,15 +20,15 @@ In this post, I will guide you through setting up an existing Gatsby project wit
 
 The first step towards having Typescript running on an existing codebase is to install several dependencies. As we are working with Gatsby we’re pretty lucky here: **there are Gatsby plugins that provide drop-in support for Typescript and tslint:** [**gatsby-plugin-typescript**](https://www.gatsbyjs.org/packages/gatsby-plugin-typescript/)**,** [**gatsby-plugin-tslint**](https://www.gatsbyjs.org/packages/gatsby-plugin-tslint/)**.** Additionally, we will need some extra dependencies such as:
 
-*   **types:** @types/react, @types/react-dom to support specific React and ReactDom types, or any type package from specific packages you might be using. I’m using react-helmet for example and luckily there was a @types/react-helmet package available for it.
-*   **tslint:** this will replace eslint.
-*   **tslint rules:** we’ll use **tslint:latest, tslint-config-prettier** and **tslint-react** here, but you can add any rules from any package available such as [tslint-config-airbnb](https://www.npmjs.com/package/tslint-config-airbnb). **The key package to install here is tslint-config-prettier**, it will ensure that no tslint rule will conflict with our Prettier config.
-*   **tslint-plugin-prettier:** this plugin needs to be present in your tslint config along with tslint-config-prettier. It will ensure that Prettier is run as a tslint rule.
-*   **typescript and tslint**\-**loader:** these are required for the gatsby-plugin-typescript to work.
+- **types:** @types/react, @types/react-dom to support specific React and ReactDom types, or any type package from specific packages you might be using. I’m using react-helmet for example and luckily there was a @types/react-helmet package available for it.
+- **tslint:** this will replace eslint.
+- **tslint rules:** we’ll use **tslint:latest, tslint-config-prettier** and **tslint-react** here, but you can add any rules from any package available such as [tslint-config-airbnb](https://www.npmjs.com/package/tslint-config-airbnb). **The key package to install here is tslint-config-prettier**, it will ensure that no tslint rule will conflict with our Prettier config.
+- **tslint-plugin-prettier:** this plugin needs to be present in your tslint config along with tslint-config-prettier. It will ensure that Prettier is run as a tslint rule.
+- **typescript and tslint**\-**loader:** these are required for the gatsby-plugin-typescript to work.
 
 Here’s a simple command you can use to install all of the dependencies mentioned above, feel free to add any type package or additional tslint rules that you might need:
 
-yarn add gatsby-plugin-typescript gatsby-plugin-tslint  && yarn add --dev typescript tslint tslint-loader @types/react @types/react-dom tslint-react tslint-config-prettier tslint-plugin-prettier
+yarn add gatsby-plugin-typescript gatsby-plugin-tslint && yarn add --dev typescript tslint tslint-loader @types/react @types/react-dom tslint-react tslint-config-prettier tslint-plugin-prettier
 
 ### Set up
 
@@ -98,10 +98,10 @@ Shout out to [Marino Guerieri (marinoguerieri.com)](https://medium.com/u/ef9cf00
 If you want to read more about React or frontend development, you can check the following articles:
 
 [**Rebuilding Redux with Hooks and Context**  
-_A simple global state management package based on React constructs_medium.com](https://medium.com/maxime-heckel/rebuilding-redux-with-hooks-and-context-e16b59faf51c "https://medium.com/maxime-heckel/rebuilding-redux-with-hooks-and-context-e16b59faf51c")[](https://medium.com/maxime-heckel/rebuilding-redux-with-hooks-and-context-e16b59faf51c)
+\_A simple global state management package based on React constructs_medium.com](https://medium.com/maxime-heckel/rebuilding-redux-with-hooks-and-context-e16b59faf51c 'https://medium.com/maxime-heckel/rebuilding-redux-with-hooks-and-context-e16b59faf51c')[](https://medium.com/maxime-heckel/rebuilding-redux-with-hooks-and-context-e16b59faf51c)
 
 [**Using Flow generics to type generic React components**  
-_How Flow generics help typing complex multi-purpose components_medium.com](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8 "https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8")[](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8)
+\_How Flow generics help typing complex multi-purpose components_medium.com](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8 'https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8')[](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8)
 
 Have a wonderful day.  
 Maxime

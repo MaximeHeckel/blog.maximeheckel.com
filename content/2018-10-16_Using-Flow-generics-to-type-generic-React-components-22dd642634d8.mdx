@@ -4,8 +4,9 @@ description: How Flow generics help typing complex multi-purpose components
 date: '2018-10-16T16:07:39.169Z'
 categories: []
 keywords: []
-slug: >-
-  /@MaximeHeckel/using-flow-generics-to-type-generic-react-components-22dd642634d8
+slug: using-flow-generics-to-type-generic-react-components-22dd642634d8
+cover:
+type: 'blogPost'
 ---
 
 _This post is part of an informal series of small articles focusing on Flow types usages that I’ve discovered and found useful over the past few months. The first article of this series can be found_ [_here_](https://medium.com/@MaximeHeckel/how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b)_._
@@ -40,10 +41,10 @@ In the Resource types we declared above ( `Resource1`, `Resource2` , …), you
 
 To overcome this kind of situation, generics can be very practical. This is how we can end up typing this component and fix this issue:
 
-*   we can provide a generic `BaseProps` type which takes a generic type `T`
-*   use `T` inside `BaseProps` for our`onItemClick` function which will take an item of type `T` as argument and thus be of type `T => void`
-*   declare `Resource1Props` , `Resource2Props` , etc, based on `BaseProps`
-*   write the type `Props` as an enum of `Resource1Props`, `Resource2Props`, etc.
+- we can provide a generic `BaseProps` type which takes a generic type `T`
+- use `T` inside `BaseProps` for our`onItemClick` function which will take an item of type `T` as argument and thus be of type `T => void`
+- declare `Resource1Props` , `Resource2Props` , etc, based on `BaseProps`
+- write the type `Props` as an enum of `Resource1Props`, `Resource2Props`, etc.
 
 The resulting code looks like this:
 

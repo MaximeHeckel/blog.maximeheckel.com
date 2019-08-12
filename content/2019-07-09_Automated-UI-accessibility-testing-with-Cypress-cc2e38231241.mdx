@@ -6,11 +6,10 @@ description: >-
 date: '2019-07-09T14:01:01.595Z'
 categories: []
 keywords: []
-slug: /@MaximeHeckel/automated-ui-accessibility-testing-with-cypress-cc2e38231241
+slug: automated-ui-accessibility-testing-with-cypress-cc2e38231241
+cover: './img/1__giARXrzkOlrUWO7Kbh__Wag.jpeg'
+type: 'blogPost'
 ---
-
-![Photo by [Philipp Deus](https://unsplash.com/@philipp_deus?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)](img/1__giARXrzkOlrUWO7Kbh__Wag.jpeg)
-Photo by [Philipp Deus](https://unsplash.com/@philipp_deus?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
 
 While writing tests (unit, integration or end to end) is core to my day to day workflow before pushing anything to production, I’ve often forgotten to bring my focus to whether or not what I was building was accessible to everyone. **Accessibility or a11y** (accessibility has 11 letters between the first and last letter) is nonetheless an essential part of every product development and should get as much if not even more attention than testing.   
 Skipping this was a mistake on my end, so I started looking to see if there were any ways I could integrate accessibility tests into my testing pipeline. The aim was similar to writing tests, although here there would be an additional acceptance item, which would be that a given feature or view would have to be compliant with a set of rules. That’s how I discovered [**cypress-axe**](https://www.npmjs.com/package/cypress-axe)**,** which integrated perfectly with [**cypress**](https://www.cypress.io/), the end to end testing framework I’m currently using.
@@ -24,10 +23,10 @@ _Note: The repository containing the code snippets featured in this article is a
 For the purpose of this post, we’ll consider a very simple React app to provide a frontend to run tests against. If you have any apps based on any other favorite framework or library that you wish to use while following this tutorial, you can use them; everything should work the same.  
 First, we’ll have to install a few dev dependencies:
 
-*   Cypress, the testing framework, if you’re not already using it
-*   `axe-core`, the accessibility engine for automated Web UI testing
-*   `cypress-axe`, the package which will let us use `axe-core` capabilities within cypress.
-*   `start-server-and-test`, a little helper that we’ll run to start our app, wait for it to be ready, then start cypress to run the test suits.
+- Cypress, the testing framework, if you’re not already using it
+- `axe-core`, the accessibility engine for automated Web UI testing
+- `cypress-axe`, the package which will let us use `axe-core` capabilities within cypress.
+- `start-server-and-test`, a little helper that we’ll run to start our app, wait for it to be ready, then start cypress to run the test suits.
 
 To get these you can run the following command at the root of your UI project:
 

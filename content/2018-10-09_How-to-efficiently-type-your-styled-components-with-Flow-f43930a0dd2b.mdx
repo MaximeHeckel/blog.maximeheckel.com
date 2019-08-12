@@ -6,8 +6,9 @@ description: >-
 date: '2018-10-09T15:57:18.982Z'
 categories: []
 keywords: []
-slug: >-
-  /@MaximeHeckel/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b
+slug: https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b
+cover:
+type: 'blogPost'
 ---
 
 _This post is part of an informal series of small articles focusing on Flow types usages that I’ve discovered and found useful over the past few months._
@@ -66,14 +67,14 @@ This would mean that Flow would fail if we use `Title` with `red1` as color:
 ![Flow error showing that using “red1" as color for the Title component is not valid](img/1__AQQKOj__R0oTr8nLF__wIwHQ.png)
 Flow error showing that using “red1" as color for the Title component is not valid
 
-#### The $Keys utility type
+#### The \$Keys utility type
 
 However, whenever the theme gets updated with some extra blue colors, the type will have to be manually updated and we’ll have to add every single color name we want to be usable with `Title` for Flow not to fail in the future when these will be passed as props. This is ok if we have a limited number of possibilities, but with scalability in mind, it’s not very practical.
 
 We can type our component even better using the `$Keys` utility type. Here’s how to use it:
 
 ![Final implementation of the Title component using the $Keys utility function](img/1__ZPbrMItWpjd6GoVppg39rQ.png)
-Final implementation of the Title component using the $Keys utility function
+Final implementation of the Title component using the \$Keys utility function
 
 Here’s how`$Keys` works in our case: it extracted the type `‘blue1' | ‘blue2'` from our `Blues` type by getting its keys. Thus, every time we update our color palette and the respective color types, our `Title` component will be properly typed. We can thus see that typing this way is more elegant than manually adding items to an enum.
 

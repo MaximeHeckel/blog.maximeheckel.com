@@ -6,7 +6,9 @@ description: >-
 date: '2018-06-19T17:33:16.682Z'
 categories: []
 keywords: []
-slug: /@MaximeHeckel/how-i-got-started-with-kubernetes-on-gke-5f829eca98bc
+slug: how-i-got-started-with-kubernetes-on-gke-5f829eca98bc
+cover:
+type: 'blogPost'
 ---
 
 _Disclaimer: I work at Docker but I wasn’t asked to write or publish this post. Here I’m simply sharing how I moved my own non-work related micro-services (i.e. portfolio, small projects) from a pure Docker based platform to Google Kubernetes Engine._
@@ -36,10 +38,10 @@ If we click on it, all of the following Kubernetes commands we execute will be r
 
 Next, we’ll deploy our first workloads on our GKE clusters. If you’re new to Kubernetes, this is the moment when things get a bit tricky but I’ll do my best to get you up to speed with the required vocabulary. Here are the different types of workloads that we’ll deploy on our cluster:
 
-*   **Pod**: A group of running containers. It’s the smallest and simplest Kubernetes object we’ll work with.
-*   **Deployment**: A Kubernetes object that manages replicas of Pods.
-*   **Service**: A Kubernetes object that describes ports, load balancers, and how to access applications.
-*   **Ingress**:  A Kubernetes object that  manages external access to the services in a cluster via HTTP.
+- **Pod**: A group of running containers. It’s the smallest and simplest Kubernetes object we’ll work with.
+- **Deployment**: A Kubernetes object that manages replicas of Pods.
+- **Service**: A Kubernetes object that describes ports, load balancers, and how to access applications.
+- **Ingress**: A Kubernetes object that manages external access to the services in a cluster via HTTP.
 
 If you still don’t feel confidant enough, I’d recommend checking this great tutorial to get you started with the basics: [https://kubernetes.io/docs/tutorials/kubernetes-basics/](https://kubernetes.io/docs/tutorials/kubernetes-basics/).
 
@@ -49,40 +51,42 @@ As an example, here’s a YAML file containing the definition of the first workl
 apiVersion: apps/v1beta1  
 kind: Deployment  
 metadata:  
-  name: website  
+ name: website  
 spec:  
-  selector:  
-    matchLabels:  
-      app: website  
-  replicas: 1 # For now we declare only one replica   
-  template: # We define pods within this field in our deployment   
-    metadata:  
-      labels:  
-        app: website  
-    spec:  
-      containers:  
-      - name: website  
-        image: nginx:latest  
-        imagePullPolicy: "Always"  
-        ports:  
-        - containerPort: 80 # The nginx container exposes port 80
+ selector:  
+ matchLabels:  
+ app: website  
+ replicas: 1 # For now we declare only one replica  
+ template: # We define pods within this field in our deployment  
+ metadata:  
+ labels:  
+ app: website  
+ spec:  
+ containers:
+
+- name: website  
+  image: nginx:latest  
+  imagePullPolicy: "Always"  
+  ports:
+- containerPort: 80 # The nginx container exposes port 80
 
 \---
 
 apiVersion: v1  
 kind: Service  
 metadata:  
-  name: website  
-  labels:  
-    run: website  
+ name: website  
+ labels:  
+ run: website  
 spec:  
-  type: NodePort   
-  ports:  
-  - port: 8000 # On which port you want to publish the website dep  
-    targetPort: 80 # The port exposed by your container  
-    protocol: TCP  
+ type: NodePort  
+ ports:
+
+- port: 8000 # On which port you want to publish the website dep  
+   targetPort: 80 # The port exposed by your container  
+   protocol: TCP  
   selector:  
-    app: website
+   app: website
 
 **Note**: I was very confused the first time I deployed this workload by the service “type” field, then I read this amazing article which made it all clear to me: [https://medium.com/@pczarkowski/kubernetes-services-exposed-86d45c994521](https://medium.com/@pczarkowski/kubernetes-services-exposed-86d45c994521)
 
@@ -103,11 +107,11 @@ For example, we can paste the following in a file called `ingress.yml`:
 apiVersion: extensions/v1beta1  
 kind: Ingress  
 metadata:  
-  name: main-ingress  
+ name: main-ingress  
 spec:  
-  backend:  
-    serviceName: website  
-    servicePort: 8000
+ backend:  
+ serviceName: website  
+ servicePort: 8000
 
 If we run `kubectl apply -f ingress.yml`, we create a rule to route all external HTTP traffic hitting our Ingress external IP to our website. If we wait a few minutes, we’ll see that running `kubectl get ingress` will output a list containing `main-ingress` with an external IP:
 
@@ -121,15 +125,16 @@ But wait there’s more: we can actually use this ingress to do load balancing, 
 apiVersion: extensions/v1beta1  
 kind: Ingress  
 metadata:  
-  name: main-ingress  
+ name: main-ingress  
 spec:  
-  rules:  
-    - host: myawesomedomain.com  
-      http:  
-        paths:  
-        - backend:  
-            serviceName: website  
-            servicePort: 8000
+ rules:
+
+- host: myawesomedomain.com  
+  http:  
+  paths:
+- backend:  
+  serviceName: website  
+  servicePort: 8000
 
 Now if we run `kubectl apply -f ingress.yml` after saving the content above in our `ingress.yml` file and point our domain name `myawesomedomain.com` to the external IP of our Ingress, you’ll be able to access your website service with this domain.
 
@@ -138,27 +143,28 @@ Ingresses come very handy when you have multiple services to host on the same cl
 apiVersion: extensions/v1beta1  
 kind: Ingress  
 metadata:  
-  name: main-ingress  
+ name: main-ingress  
 spec:  
-  rules:  
-    - host: myawesomedomain.com  
-      http:  
-        paths:  
-        - backend:  
-            serviceName: website  
-            servicePort: 8000  
-    - host: test.myawesomedomain.com  
-      http:  
-        paths:  
-        - backend:  
-            serviceName: testwebsite  
-            servicePort: 8000  
-    - host: hello.myawesomedomain.com  
-      http:  
-        paths:  
-        - backend:  
-            serviceName: hello  
-            servicePort: 9000
+ rules:
+
+- host: myawesomedomain.com  
+  http:  
+  paths:
+- backend:  
+  serviceName: website  
+  servicePort: 8000
+- host: test.myawesomedomain.com  
+  http:  
+  paths:
+- backend:  
+  serviceName: testwebsite  
+  servicePort: 8000
+- host: hello.myawesomedomain.com  
+  http:  
+  paths:
+- backend:  
+  serviceName: hello  
+  servicePort: 9000
 
 Thanks to our Ingress, we have now an easy way to route traffic to specific services by simply declaring rules in a YAML file and deploying it on our cluster.
 
@@ -170,37 +176,38 @@ I had to look a around for quite a bit and try several projects such as the now 
 
 As a first step we’ll need to deploy a [**NGINX-Ingress-Controller for GKE**](https://github.com/bonovoxly/gke-nginx-ingress-controller). This Ingress Controller will basically consume any Ingress workload and route its incoming traffic. After cloning the repository we’ll need to do the following:
 
-*   Edit `cluster-admin.yml` to add our email address in the \``<YOUR-GCLOUD-USER>` placeholder.
-*   Run `cd gke-nginx-ingress-controller && ./deploy.sh`
+- Edit `cluster-admin.yml` to add our email address in the \``<YOUR-GCLOUD-USER>` placeholder.
+- Run `cd gke-nginx-ingress-controller && ./deploy.sh`
 
 We now have a service of type Load Balancer, which is listenning for all the incoming traffic on port 80 (for HTTP traffic) and 443 (for HTTPS traffic) with an external IP address. It will use all of the Ingresses on our cluster to route traffic, including our `main-ingress`.
 
 Then, we’ll need to deploy [**kube-cert-manager**](https://github.com/bonovoxly/gke-kube-cert-manager)**.** Just like we did for the Ingress Controller, we’ll have to do some edits before deploying the project:
 
-*   Create the `kube-cert-manager-google` secret (for this I just followed the README in the repository)
-*   Edit `kube-cert-manager-deployment.yml` and fill the different fields such as your email and the DNS provider. The documentations about DNS provider is available [here](https://github.com/PalmStoneGames/kube-cert-manager/blob/master/docs/providers.md). In my case, my domain was managed by Dnsimple so I had to edit the deployment file like this:
+- Create the `kube-cert-manager-google` secret (for this I just followed the README in the repository)
+- Edit `kube-cert-manager-deployment.yml` and fill the different fields such as your email and the DNS provider. The documentations about DNS provider is available [here](https://github.com/PalmStoneGames/kube-cert-manager/blob/master/docs/providers.md). In my case, my domain was managed by Dnsimple so I had to edit the deployment file like this:
 
-      containers:  
-        - name: kube-cert-manager  
-          env:  
-          - name: DNSIMPLE\_BASE\_URL  
-            value: [https://api.dnsimple.com](https://api.dnsimple.com)  
-          - name: DNSIMPLE\_OAUTH\_TOKEN  
-            value: myrequestedoauthtoken
+  containers:
 
-Finally, running`cd gke-kube-cert-manager && ./deploy.sh` will setup and deploy cert-manager on your cluster.
+  - name: kube-cert-manager  
+    env:
+  - name: DNSIMPLE_BASE_URL  
+    value: [https://api.dnsimple.com](https://api.dnsimple.com)
+  - name: DNSIMPLE_OAUTH_TOKEN  
+    value: myrequestedoauthtoken
+
+Finally, running`cd gke-kube-cert-manager && ./deploy.sh` will setup and deploy cert-manager on your cluster.
 
 Now here’s the fun part: all this setup allows us to create a `Certificate` Kubernetes workload. Any certificate created on this cluster will be picked up and requested (and renewed) by the `kube-cert-manager` deployment. Let’s create one for `myawesomedomain.com` in a file called `certificates.yml`:
 
 apiVersion: "stable.k8s.psg.io/v1"  
 kind: "Certificate"  
 metadata:  
-  name: website  
-  namespace: default  
-  labels:  
-    stable.k8s.psg.io/kcm.class: "kube-cert-manager"  
+ name: website  
+ namespace: default  
+ labels:  
+ stable.k8s.psg.io/kcm.class: "kube-cert-manager"  
 spec:  
-  domain: "myawesomedomain.com"
+ domain: "myawesomedomain.com"
 
 Running `kubectl apply -f certificates.yml` will submit the request to Let’s Encrypt and create a TLS secret for our NGINX Ingress Controller to use. We can check the logs of the kube-cert-manager Pod with `kubectl logs -f nameofyourcertmanagerpodpod` during the request, and if everything goes well, we should see logs like this:
 
@@ -212,21 +219,23 @@ After a few minutes we should have, as shown in the logs above, a secret titled 
 apiVersion: extensions/v1beta1  
 kind: Ingress  
 metadata:  
-  name: main-ingress  
-  annotations:  
-    kubernetes.io/ingress.class: "nginx"  
+ name: main-ingress  
+ annotations:  
+ kubernetes.io/ingress.class: "nginx"  
 spec:  
-  rules:  
-    - host: myawesomedomain.com  
-      http:  
-        paths:  
-        - backend:  
-            serviceName: website  
-            servicePort: 8000  
-  tls:  
-  - secretName: myawesomedomain.com  
-    hosts:  
-      - myawesomedomain.com
+ rules:
+
+- host: myawesomedomain.com  
+  http:  
+  paths:
+- backend:  
+  serviceName: website  
+  servicePort: 8000  
+  tls:
+
+- secretName: myawesomedomain.com  
+  hosts:
+  - myawesomedomain.com
 
 Now, let’s run `kubectl apply -f ingress.yml` to update our `main-ingress` to support the secret we created earlier. Then, we just need to make sure `myawesomedomain.com` points to the external IP of our NGINX Ingress Controller, and after a while our website service will be accessible through HTTPS!
 
@@ -239,11 +248,11 @@ Maxime
 
 Resources I used while getting started with Kubernetes
 
-*   [https://cloud.google.com/sdk/docs/quickstart-macos](https://cloud.google.com/sdk/docs/quickstart-macos)
-*   [https://cloud.google.com/kubernetes-engine/docs/tutorials/http-balancer](https://cloud.google.com/kubernetes-engine/docs/tutorials/http-balancer)
-*   [https://kubernetes.io/docs/reference/glossary/?all=true](https://kubernetes.io/docs/reference/glossary/?all=true)
-*   [https://blog.billyc.io/2017/12/27/deploying-and-using-kube-cert-manager-with-an-nginx-ingress-controller-on-kubernetes/](https://blog.billyc.io/2017/12/27/deploying-and-using-kube-cert-manager-with-an-nginx-ingress-controller-on-kubernetes/)
-*   [https://blog.billyc.io/notes/googlecloud/](https://blog.billyc.io/notes/googlecloud/)
-*   [https://github.com/bonovoxly/gke-kube-cert-manager](https://github.com/bonovoxly/gke-kube-cert-manager)
-*   [https://github.com/PalmStoneGames/kube-cert-manager/blob/master/docs/providers.md](https://github.com/PalmStoneGames/kube-cert-manager/blob/master/docs/providers.md)
-*   [https://github.com/bonovoxly/gke-nginx-ingress-controller](https://github.com/bonovoxly/gke-nginx-ingress-controller)
+- [https://cloud.google.com/sdk/docs/quickstart-macos](https://cloud.google.com/sdk/docs/quickstart-macos)
+- [https://cloud.google.com/kubernetes-engine/docs/tutorials/http-balancer](https://cloud.google.com/kubernetes-engine/docs/tutorials/http-balancer)
+- [https://kubernetes.io/docs/reference/glossary/?all=true](https://kubernetes.io/docs/reference/glossary/?all=true)
+- [https://blog.billyc.io/2017/12/27/deploying-and-using-kube-cert-manager-with-an-nginx-ingress-controller-on-kubernetes/](https://blog.billyc.io/2017/12/27/deploying-and-using-kube-cert-manager-with-an-nginx-ingress-controller-on-kubernetes/)
+- [https://blog.billyc.io/notes/googlecloud/](https://blog.billyc.io/notes/googlecloud/)
+- [https://github.com/bonovoxly/gke-kube-cert-manager](https://github.com/bonovoxly/gke-kube-cert-manager)
+- [https://github.com/PalmStoneGames/kube-cert-manager/blob/master/docs/providers.md](https://github.com/PalmStoneGames/kube-cert-manager/blob/master/docs/providers.md)
+- [https://github.com/bonovoxly/gke-nginx-ingress-controller](https://github.com/bonovoxly/gke-nginx-ingress-controller)

@@ -4,7 +4,9 @@ description: A simple global state management package based on React constructs
 date: '2018-12-04T16:31:51.793Z'
 categories: []
 keywords: []
-slug: /@MaximeHeckel/rebuilding-redux-with-hooks-and-context-e16b59faf51c
+slug: rebuilding-redux-with-hooks-and-context-e16b59faf51c
+cover:
+type: 'blogPost'
 ---
 
 ![Redux logo](img/1__lBW3KS3I68NnxoB7__maVBA.png)
@@ -31,11 +33,10 @@ As we can see, this is the kind of reducers we’re used to seeing in any Redux 
 ![Implementation of a store provider using the React Context API](img/1__YO__8eF9MDYc4GRLQCdhweA.png)
 Implementation of a store provider using the React Context API
 
-**Second step:** `**createStore  
-**`We can see above the mention of the `createStore` function. If you’re familiar with Redux this should ring a bell. This function takes our reducer, and the initial state object of our app returns an object with 2 essential items that are injected into the app through our Provider:
+**Second step:** `**createStore **`We can see above the mention of the `createStore` function. If you’re familiar with Redux this should ring a bell. This function takes our reducer, and the initial state object of our app returns an object with 2 essential items that are injected into the app through our Provider:
 
-*   **dispatch**: the function that lets us dispatch Redux action
-*   **state**: the object containing the global state of our app.
+- **dispatch**: the function that lets us dispatch Redux action
+- **state**: the object containing the global state of our app.
 
 To reimplement this function in our example, let’s use the new React hooks. React has a very handy pre-built hook called `useReducer` which actually returns these 2 items stated above:
 
@@ -58,8 +59,8 @@ Example of a component using the “connect” HoC
 
 Given the code above, our connect HoC must take 2 optional arguments: a `mapStateToProps` function and a `mapDispatchToProps` function. It will then inject the following items as props for the wrapped component:
 
-*   the `dispatch` function
-*   the objects returned by `mapStateToProps` and `mapDispatchToProps`
+- the `dispatch` function
+- the objects returned by `mapStateToProps` and `mapDispatchToProps`
 
 ![Implementation of the “connect” HoC from Redux based on the useContext hook](img/1__m__Uw1uH8NSY__Kws2iSQd6w.png)
 Implementation of the “connect” HoC from Redux based on the useContext hook
@@ -99,13 +100,13 @@ but as you can see in this tweet, maybe I was just a bit too ambitious.
 If you want to read more about React or frontend development, you can check the following articles:
 
 [**Asynchronous rendering with React**  
-_How the new React Suspense API might reshape the way we build components_medium.com](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41 "https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41")[](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41)
+\_How the new React Suspense API might reshape the way we build components_medium.com](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41 'https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41')[](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41)
 
 [**Using Flow generics to type generic React components**  
-_How Flow generics help typing complex multi-purpose components_medium.com](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8 "https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8")[](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8)
+\_How Flow generics help typing complex multi-purpose components_medium.com](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8 'https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8')[](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8)
 
 [**React sub-components Part 2: Using the new Context API**  
-_Further simplifying the sub-component pattern using contexts to make flexible, easily testable and reusable React…_medium.com](https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4 "https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4")[](https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4)
+\_Further simplifying the sub-component pattern using contexts to make flexible, easily testable and reusable React…\_medium.com](https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4 'https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4')[](https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4)
 
 Have a wonderful day.  
 Maxime
