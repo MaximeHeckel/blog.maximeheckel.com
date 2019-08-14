@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 
 const ColoredBlockWrapper = styled('div')`
-  background-color: ${props => props.color};
+  background: ${props => props.color};
   color: #2b2d3e;
   position: relative;
   width: 100vw;
@@ -12,7 +12,7 @@ const ColoredBlockWrapper = styled('div')`
   left: calc(-50vw + 50%);
 
   div {
-    @media (max-width: 700px) {
+    @media (max-width: 800px) {
       padding-left: 30px;
       padding-right: 30px;
     }

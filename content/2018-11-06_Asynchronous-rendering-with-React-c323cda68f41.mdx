@@ -5,9 +5,11 @@ date: '2018-11-06T16:52:30.887Z'
 categories: []
 keywords: []
 slug: asynchronous-rendering-with-react-c323cda68f41
-cover:
+cover: './img/stephen-walker-onIXxjH56AA-unsplash.jpg'
 type: 'blogPost'
 ---
+
+import ColoredBlock from '../src/components/ColoredBlock';
 
 Since I’ve started playing with React a couple of years ago, I’ve always been a big fan of **functional components**. Their simplicity and conciseness make them easy to read and test. The problem though was that, until now, there was no way to do asynchronous calls which is the crucial part of most applications in the real world, so classes were always the way to go.  
 However, starting from **React 16.6.0** and the new Suspense API, this is not an issue anymore, functional components can now perform asynchronous calls and render data that comes from them. In this post, I’m going to show you **an up to date** **example** so you can easily test the Suspense API.
@@ -50,16 +52,18 @@ I made this example available in a [Github repository](https://github.com/Maxime
 
 I really can’t wait for this pattern to be ready for production. Combining Suspense and the recently announced [React hooks](https://reactjs.org/docs/hooks-intro.html) is getting us closer to building React apps fully based on functional components. If you want to learn more about Suspense here’s a really complete summary in a tweet from a member of the React team:
 
+<ColoredBlock color="#FEE7DA">
+
 #### **If you liked this article don’t forget to hit the “clap” button and if you have any other questions I’m always reachable on** [**Twitter**](http://twitter.com/MaximeHeckel)**, or on my** [**website**](https://maximeheckel.com)**. You can also subscribe to my** [**Medium publication**](https://medium.com/maxime-heckel) **to not miss my next post.**
 
 **What to read next?**  
 If you want to read more about React or frontend development, you can check the following articles:
 
-[**React sub-components**](https://medium.com/maxime-heckel/react-sub-components-513f6679abed 'https://medium.com/maxime-heckel/react-sub-components-513f6679abed')[](https://medium.com/maxime-heckel/react-sub-components-513f6679abed)
-
-[**Using Flow generics to type generic React components**](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8 'https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8')[](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8)
-
-[**How to efficiently type your styled-components with Flow**](https://medium.com/maxime-heckel/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b 'https://medium.com/maxime-heckel/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b')[](https://medium.com/maxime-heckel/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b)
+- [**React sub-components**](https://medium.com/maxime-heckel/react-sub-components-513f6679abed 'https://medium.com/maxime-heckel/react-sub-components-513f6679abed')[](https://medium.com/maxime-heckel/react-sub-components-513f6679abed)
+- [**Using Flow generics to type generic React components**](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8 'https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8')[](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8)
+- [**How to efficiently type your styled-components with Flow**](https://medium.com/maxime-heckel/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b 'https://medium.com/maxime-heckel/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b')[](https://medium.com/maxime-heckel/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b)
 
 Have a wonderful day.  
 Maxime
+
+</ColoredBlock>
