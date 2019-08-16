@@ -10,6 +10,7 @@ exports.createPages = ({ graphql, actions }) => {
                 node {
                   id
                   tableOfContents
+                  timeToRead
                   frontmatter {
                     slug
                     title
@@ -65,6 +66,7 @@ exports.createPages = ({ graphql, actions }) => {
             component: node.parent.absolutePath,
             context: {
               absPath: node.parent.absolutePath,
+              timeToRead: node.timeToRead,
               cover: node.frontmatter.cover,
               tableOfContents: node.tableOfContents,
             },

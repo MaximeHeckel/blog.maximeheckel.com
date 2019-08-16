@@ -17,7 +17,7 @@ const ColoredBlockWrapper = styled('div')`
       padding-right: 30px;
     }
     margin: 0 auto;
-    max-width: 735px;
+    max-width: 700px;
   }
 `;
 

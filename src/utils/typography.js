@@ -32,16 +32,20 @@ const typography = new Typography({
   overrideStyles: () => ({
     h1: {
       fontWeight: 500,
-      fontSize: '32px',
+      fontSize: '38px',
       lineHeight: 1.5,
     },
     h2: {
       fontWeight: 600,
-      fontSize: '23px',
-      lineHeight: 1.4,
+      fontSize: '25px',
+      lineHeight: 1.333,
     },
     h4: {
       lineHeight: 2,
+    },
+    p: {
+      fontSize: '16px',
+      lineHeight: 1.756,
     },
   }),
 });

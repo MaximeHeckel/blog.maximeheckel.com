@@ -17,7 +17,7 @@ My personal projects needed a new place to live, so I decided to take this as an
 
 **Note:** This post assumes you have basic knowledge about Docker and containers, as well as Docker for Mac or Docker for Windows installed on your machine with the Kubernetes option turned on.
 
-### I. Setting up gcloud and GKE 🛠
+### Setting up gcloud and GKE
 
 For this part, we’ll focus on installing both gcloud tools and setting up your first GKE cluster. You can go through [this guide](https://cloud.google.com/sdk/docs/quickstart-macos) for the setup of gcloud tools on your local CLI. After creating an account on GKE, the first step will be to create a cluster. To do so, we can simply go through the [GKE GUI](https://console.cloud.google.com/kubernetes), hit the “Create Cluster” button and go through the wizard. Now that we have a cluster, let’s get its credentials so we can set the Kubernetes context to this cluster in our local CLI. To do that we can run:
 
@@ -33,7 +33,7 @@ After this, in our Docker for Mac menu, we should be able to see the name of our
 
 If we click on it, all of the following Kubernetes commands we execute will be run against our GKE cluster. For example, if we try running `kubectl get pods`, we should see that we have no resources on this cluster (yet).
 
-### II. Deploying and exposing our first kubernetes workloads 🚀
+### Deploying and exposing our first kubernetes workloads
 
 Next, we’ll deploy our first workloads on our GKE clusters. If you’re new to Kubernetes, this is the moment when things get a bit tricky but I’ll do my best to get you up to speed with the required vocabulary. Here are the different types of workloads that we’ll deploy on our cluster:
 
@@ -99,7 +99,7 @@ By listing the services we should end up with an output similar to this:
 
 We can see that **the port** `8000` **of our service is mapped to the port** `**31508**` **of one of our node in our cluster**, however GKE nodes are not externally accessible by default, so our website service is not (yet) accessible from the Internet. This is where **Ingresses** comes into the picture.
 
-### **III. Setting up an Ingress 🚦**
+### Setting up an Ingress
 
 Here, we’ll create an Ingress to access our website service from the Internet. An Ingress workload basically contains a set of rules to route traffic to our service.  
 For example, we can paste the following in a file called `ingress.yml`:
@@ -173,7 +173,7 @@ spec:
 
 Thanks to our Ingress, we have now an easy way to route traffic to specific services by simply declaring rules in a YAML file and deploying it on our cluster.
 
-### IV. Getting Let’s Encrypt SSL certificates to work 🔏
+### Getting Let’s Encrypt SSL certificates to work
 
 Now that we have our Kubernetes services published, the next step is to have SSL Certificates working for our services. That is being able to reach `[https://myawesomedomain.com](https://myawesomedomain.com,)`[,](https://myawesomedomain.com,) `[https://test.myawesomedomain.com](https://test.myawesomedomain.com)`, etc. On my previous micro-services host, I was running a home made containerized version of HAProxy that would query my **Let’s Encrypt** certificates (they are free!) and renew them for me all by itself. Pretty handy since I didn’t want to bother manually renewing them every 90 days.
 
