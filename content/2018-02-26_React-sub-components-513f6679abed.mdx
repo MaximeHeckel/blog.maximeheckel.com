@@ -11,8 +11,6 @@ cover: './img/1__whvWjXy__9DHnu5o6gWbpzQ.jpeg'
 type: 'blogPost'
 ---
 
-[_Click here to share this article on LinkedIn »_](https://www.linkedin.com/cws/share?url=https%3A%2F%2Fitnext.io%2Freact-sub-components-513f6679abed)
-
 _This is the first article in a 3 part series about React Sub-components. Part 2 and Part 3 are available_ [_here_](https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4) _and_ [_here_](https://medium.com/maxime-heckel/react-sub-components-part-3-whitelisting-sub-components-with-flow-b04f9bcf80c2)_._
 
 Every React project I’ve worked on, whether it was personal or work related, got big enough at some point that their codebase became hard to understand. Every little change required more thinking but lead to a lot of inconsistencies and hacks. Among the many issues I had with such codebases, the lack of reusability of some views was the main one: it lead to a lot of copying/pasting code of complex components/views to ensure they look the same, and the resulting duplicated code didn’t make it easier to maintain nor to test.  
@@ -65,8 +63,3 @@ What happened? The culprit here was found when debugging the `findByType` util. 
 Reference: [https://github.com/facebook/react/issues/9803](https://github.com/facebook/react/issues/9803)
 
 As a workaround I added a static variable called displayName for each one of my sub-components to ensure that they have a name. Here’s how it should look like on our example:
-
-#### If you liked this article don’t forget to hit the “clap” button and if you have any other questions I’m always reachable on [Twitter](http://twitter.com/MaximeHeckel), or on my [website](https://maximeheckel.com). You can also subscribe to my [Medium publication](https://medium.com/maxime-heckel) to not miss my next post.
-
-Have a wonderful day  
-Maxime
