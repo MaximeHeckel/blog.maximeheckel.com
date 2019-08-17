@@ -21,7 +21,7 @@ My personal projects needed a new place to live, so I decided to take this as an
 
 For this part, we’ll focus on installing both gcloud tools and setting up your first GKE cluster. You can go through [this guide](https://cloud.google.com/sdk/docs/quickstart-macos) for the setup of gcloud tools on your local CLI. After creating an account on GKE, the first step will be to create a cluster. To do so, we can simply go through the [GKE GUI](https://console.cloud.google.com/kubernetes), hit the “Create Cluster” button and go through the wizard. Now that we have a cluster, let’s get its credentials so we can set the Kubernetes context to this cluster in our local CLI. To do that we can run:
 
-```
+```bash
 gcloud container clusters get-credentials CLUSTER --zone ZONE --project PROJECT
 ```
 

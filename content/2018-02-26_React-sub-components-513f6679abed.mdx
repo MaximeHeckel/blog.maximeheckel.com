@@ -22,8 +22,6 @@ Using a **sub-component** pattern can help to fix all these issues.
 
 For this article, we’ll consider the following view as our main example: a simple Article view to render a title, subtitle, content, metadata and comments of an article object. We’ve all dealt with such views, and they can be really problematic for the reasons stated in the intro.
 
-`gist:maximeheckel/292990ec336ff6a802dab7f872c0b698`
-
 By using sub-components we can render the same exact view, but with a much more readable code and a reusable component. This is what the result can look like:
 
 In this context, sub-components are defined as **components which have their own definition declared within another parent component, and can only be used in the context of that parent component**. In the example above, the Title component for instance only exists within the scope of the Article component. It can’t be rendered on its own.  
