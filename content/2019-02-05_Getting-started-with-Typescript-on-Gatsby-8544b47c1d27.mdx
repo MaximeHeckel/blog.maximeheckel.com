@@ -28,7 +28,9 @@ The first step towards having Typescript running on an existing codebase is to i
 
 Here’s a simple command you can use to install all of the dependencies mentioned above, feel free to add any type package or additional tslint rules that you might need:
 
+```shell
 yarn add gatsby-plugin-typescript gatsby-plugin-tslint && yarn add --dev typescript tslint tslint-loader @types/react @types/react-dom tslint-react tslint-config-prettier tslint-plugin-prettier
+```
 
 ### Set up
 
@@ -37,18 +39,64 @@ Now that we have everything installed, we can start setting up Typescript. It ca
 1.  **Typescript config:** this config will live in a file at the root of our Gatsby project and will be named **tsconfig.json**. Here we will set up our compiler options, and which folder to include or exclude in our project when it comes to compiling Typescript files. You can generate a sample config using the `./node_modules/typescript/bin/tsc --init` command.  
     Here’s the config I ended up using on my end, but feel free to tweak it so it fits the needs of your project:
 
-![tsconfig.json example](img/1____JhxVFv2AWd8OdaTCxsZPQ.png)
+```javascript
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "es5" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */,
+    "module": "commonjs" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
+    "lib": ["dom", "es2015", "es2017"], // "allowJs": true,                       /* Allow javascript files to be compiled. */ // "checkJs": true,                       /* Report errors in .js files. */
+    /* Specify library files to be included in the compilation. */
 
-2\. **Tslint config:** this config will contain our linting rules for our typescript codebase. At the root of our project, we can create a **tslint.json** file and add the following to it (or you can also initialize a config `./node_modules/.bin/tslint —-init`):
+    "jsx": "react" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
+    "sourceMap": true /* Generates corresponding '.map' file. */,
 
-![tslint.json example](img/1__u6Q9WFpAlPo6NCOUDvRbZw.png)
+    /* Strict Type-Checking Options */
+    "strict": true /* Enable all strict type-checking options. */,
+    "noImplicitAny": true /* Raise error on expressions and declarations with an implied 'any' type. */,
+
+    /* Additional Checks */
+    "noUnusedLocals": true /* Report errors on unused locals. */,
+    "noUnusedParameters": true /* Report errors on unused parameters. */,
+    // "noImplicitReturns": true,             /* Report error when not all code paths in function return a value. */
+    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
+
+    /* Module Resolution Options */
+    "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
+
+  },
+  "include": ["./src/**/*"]
+}
+```
+
+tsconfig.json example
+
+2. **Tslint config:** this config will contain our linting rules for our typescript codebase. At the root of our project, we can create a **tslint.json** file and add the following to it (or you can also initialize a config `./node_modules/.bin/tslint —-init`):
+
+```javascript
+{
+  "rulesDirectory": ["tslint-plugin-prettier"],
+  "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
+  "rules": {
+    "prettier": true,
+    "jsx-no-multiline-js": false,
+    "jsx-no-lambda": false,
+    "import-name": false,
+    "no-boolean-literal-compare": false,
+  }
+}
+
+```
+
+tslint.json example
 
 **Note:** It is very important to have `tslint-config-prettier` as the last tslint set of rules in the `extends` array to ensure the other rules will be overridden by the rules of this package.  
 Under **rules,** you can enable or disable any tslint rules you want. The documentation for the core rules of tslint is available [here](https://palantir.github.io/tslint/rules/).
 
 3. **gatsby-plugin-typescript and gatsby-plugin-tslint:** here we simply need to add gatsby-plugin-typescript and gatsby-plugin-tslint to the gatsby-config of our project. Other options can be added as well but they are not needed for the rest of this post.
 
-4\. Add the following scripts yo your **package.json**:
+4. Add the following scripts yo your **package.json**:
 
 "type-check": "tsc --noEmit",  
 "lint": "tslint --project ."
@@ -74,7 +122,14 @@ As an example, in the following steps, I will use the `gatsby-plugin-google-anal
 1\. create **gatsby-plugin-google-analytics.d.ts** in the **@types folder  
 **2\. add the following in this type file:
 
-![Example of a custom type definition for the gatsby-plugin-google-analytics](img/1__l8BS5C30zyYbva__1eX0VWw.png)
+```javascript
+declare module 'gatsby-plugin-google-analytics' {
+  let OutboundLink: (props: any) => JSX.Element;
+  export { OutboundLink };
+}
+```
+
+Example of a custom type definition for the gatsby-plugin-google-analytics
 
 Here we are naming the module the same exact way the package is named in our project. We then have to write the type of the `OutboundLink` component and export it the same way it is exported in the package.
 

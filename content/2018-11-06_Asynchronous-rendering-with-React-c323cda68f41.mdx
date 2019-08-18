@@ -23,11 +23,84 @@ While all of this is happening, Suspense will render a **fallback component** wh
 
 As of today, when we want to render a component that shows some data coming from an asynchronous call in React, we’re stuck with classes. We have to use the component lifecycle methods to ensure the call happens on mount, and use the local state to manage the loading state. We can see below a small example of a pattern that I’m sure pretty much every React developer had to follow:
 
-![Code Snippet 1: React component doing an asynchronous call before rendering the data implemented using a Class.](img/1__8__ggbIJQyr5IPU6J1cEY1g.png)
+```javascript
+import React, { Component, Fragment } from 'react';
+
+class ClassicAsync extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { loading: false, title: null };
+  }
+
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/todos/')
+      .then(response => response.json())
+      .then(json => this.setState({ loading: false, data: json }));
+  }
+
+  renderList = data => {
+    return (
+      <ul>
+        {data.map(item => (
+          <li style={{ listStyle: 'none' }} key={item.id}>
+            {item.title}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  render() {
+    const { loading, data } = this.state;
+
+    return (
+      <Fragment>
+        <h2 style={{ textAlign: 'center' }}>
+          {`React: ${React.version} Demo`}
+        </h2>
+        {loading ? 'Classic loading placeholder' : this.renderList(data)}
+      </Fragment>
+    );
+  }
+}
+
+export default ClassicAsync;
+```
+
+Code Snippet 1: React component doing an asynchronous call before rendering the data implemented using a Class.
 
 How Suspense changes that? Well, quite a lot actually if you compare the code above with the following one:
 
-![Code Snippet 2: React component doing an asynchronous call before rendering the data implemented using React Suspense.](img/1__t4__eKz8cpZNsJNjCyl78hw.png)
+```javascript
+import React, { Suspense, Fragment } from 'react';
+
+// Fetcher code goes here
+const getDate = () => Fetcher.read();
+
+const List = () => {
+  const data = getData();
+  return (
+    <ul>
+      {data.map(item => (
+        <li style={{ listStyle: 'none' }} key={item.id}>
+          {item.title}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+const App = () => (
+  <Fragment>
+    <h2>{`React: ${React.version} Demo`}</h2>
+    <Suspense fallback={<div>Loading...</div>}>
+      <List />
+    </Suspense>
+  </Fragment>
+);
+```
+
+Code Snippet 2: React component doing an asynchronous call before rendering the data implemented using React Suspense.
 
 As we can see with this example: **no more class!** Suspense is managing for us the loading state through the `fallback` prop, which is rendered until `List` is ready to be rendered, that is when the dependent asynchronous call resolves and returns the data. However, this is only a partial example. As stated in the first part, the rendering of `List` in this example is suspended **while loading data from a cache,** which is what the `Fetcher` function is all about.
 
@@ -36,7 +109,15 @@ As we can see with this example: **no more class!** Suspense is managing for us 
 This is key for getting the example above to work. The caching part is needed for Suspense to read the data from the asynchronous call.  
 Before diving in the details, let’s look at how the `Fetcher` function is implemented for our example:
 
-![Code Snippet 3: Fetcher resource implementation using functions from react-cache](img/1__821iKOC9HBIQ0et__msvVag.png)
+```javascript
+import { unstable_createResource } from 'react-cache';
+
+const Fetcher = unstable_createResource(() =>
+  fetcher('https://jsonplaceholder.typicode.com/todos').then(r => r.json())
+);
+```
+
+Code Snippet 3: Fetcher resource implementation using functions from react-cache
 
 For this post I used [react-cache](https://www.npmjs.com/package/react-cache). It’s a package made by the React core team that **provides a basic cache** that is going **to store asynchronous data**, like the data that we’re getting once our fetch call resolves, and **allows us to access that data asynchronously**. In the code snippet above we basically use the `unstable_createResource` function where we pass our asynchronous call, which will initiate a cache and store the resulting data into it. Accessing that data from the cache is done through the `read` function as we can see in the _Code Snippet 2_. However, this way of doing caching is currently not meant to be used in production (the React team emphasized this quite a bit in the README of this repository).
 
@@ -44,7 +125,40 @@ For this post I used [react-cache](https://www.npmjs.com/package/react-cache). I
 
 Here’s the full example for this article:
 
-![Code Snippet 4: The full example of a functional React component using the Suspense API](img/1__3iP1UYj5__2pf__o9ZjqvUqQ.png)
+```javascript
+import React, { Suspense, Fragment } from 'react';
+import { unstable_createResource } from 'react-cache';
+
+const Fetcher = unstable_createResource(() =>
+  fetcher('https://jsonplaceholder.typicode.com/todos').then(r => r.json())
+);
+
+const getDate = () => Fetcher.read();
+
+const List = () => {
+  const data = getData();
+  return (
+    <ul>
+      {data.map(item => (
+        <li style={{ listStyle: 'none' }} key={item.id}>
+          {item.title}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+const App = () => (
+  <Fragment>
+    <h2>{`React: ${React.version} Demo`}</h2>
+    <Suspense fallback={<div>Loading...</div>}>
+      <List />
+    </Suspense>
+  </Fragment>
+);
+```
+
+Code Snippet 4: The full example of a functional React component using the Suspense API
 
 I made this example available in a [Github repository](https://github.com/MaximeHeckel/react-suspense-example) based on `create-react-app` so you can also give it a try and experiment with Suspense very quickly!
 

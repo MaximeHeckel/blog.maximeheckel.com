@@ -20,7 +20,57 @@ Using a **sub-component** pattern can help to fix all these issues.
 
 For this article, we’ll consider the following view as our main example: a simple Article view to render a title, subtitle, content, metadata and comments of an article object. We’ve all dealt with such views, and they can be really problematic for the reasons stated in the intro.
 
+```javascript
+class MyArticleView extends React.Component {
+  ...
+  render() {
+    return (
+      <div className={css.mainContainer}>
+        <div className={css.wrapper}>
+          <div className={css.titleContainer}>
+            <div className={css.title}>
+              <span>{this.renderTitle()}</span>
+            </div>
+            <div className={css.subtitle}>
+              <div className={css.subtitleBox}> {this.renderSubtitle()}</div>
+            </div>
+          </div>
+          <ul className={css.articlemetadata}>
+            <li className={css.item}>{this.renderAuthor()}</li>
+            <li className={css.item}>{this.renderDate()}</li>
+          </ul>
+        </div>
+        <div className={css.contentArticle}>
+          <div className={css.contentTextStyle}>{this.renderMainContent()}</div>
+          <span className={css.inlineComments}>{this.renderComments()}</span>
+        </div>
+      </div>
+    );
+  }
+}
+```
+
 By using sub-components we can render the same exact view, but with a much more readable code and a reusable component. This is what the result can look like:
+
+```javascript
+class MyArticleView extends React.Component {
+  ...
+  render() {
+    return (
+      <Article>
+        <Article.Title>{this.renderTitle()}</Article.Title>
+        <Article.Subtitle>{this.renderSubtitle()}</Article.Subtitle>
+        <Article.Metadata>
+          {this.renderAuthor()}
+          {this.renderDate()}
+        </Article.Metadata>
+        <Article.Content>{this.renderContent()}</Article.Content>
+        <Article.Comments>{this.renderComments}</Article.Comments>
+      </Article>
+    );
+  }
+}
+```
 
 In this context, sub-components are defined as **components which have their own definition declared within another parent component, and can only be used in the context of that parent component**. In the example above, the Title component for instance only exists within the scope of the Article component. It can’t be rendered on its own.  
 I’m personally not sure about the name, but this is the best term I’ve found to refer to this pattern that I’ve learned to appreciate in my projects.  
@@ -41,18 +91,262 @@ The first thing we need in order to build sub-components within a component is *
 
 Here’s how the util findByType looks like:
 
+```javascript
+import React from 'react';
+const findByType = (children, component) => {
+  const result = [];
+  /* This is the array of result since Article can have multiple times the same sub-component */
+  const type = [component.displayName] || [component.name];
+  /* We can store the actual name of the component through the displayName or name property of our sub-component */
+  React.Children.forEach(children, child => {
+    const childType =
+      child && child.type && (child.type.displayName || child.type.name);
+    if (type.includes(childType)) {
+      result.push(child);
+    }
+  });
+  /* Then we go through each React children, if one of matches the name of the sub-component we’re looking for we put it in the result array */
+  return result[0];
+};
+export default findByType;
+```
+
 Now that we have our `findByType` util, we can start writing our `Article` component and the `Title` sub-component:
+
+```javascript
+import React, { Component } from 'react';
+import findByType from './findByType';
+import css from './somestyle.css';
+// We instantiate the Title sub-component
+const Title = () => null;
+class Article extends Component {
+  // This is the function that will take care of rendering our Title sub-component
+  renderTitle() {
+    const { children } = this.props;
+    // First we try to find the Title sub-component among the children of Article
+    const title = findByType(children, Title);
+    // If we don’t find any we return null
+    if (!title) {
+      return null;
+    }
+    // Else we return the children of the Title sub-component as wanted
+    return <div className={css.title}>{title.props.children}</div>;
+  }
+  render() {
+    return (
+      <div className={css.mainContainer}>
+        <div className={css.wrapper}>
+          <div className={css.titleContainer}>{this.renderTitle()}</div>
+        </div>
+      </div>
+    );
+  }
+}
+// Lastly we expose the Title sub-component through Article
+Article.Title = Title;
+export default Article;
+```
 
 We now have the ability to use the `Article` component and its `Title` sub-component as such:
 
+```javascript
+<Article>
+  <Article.Title>My Article Title</Article.Title>
+</Article>
+```
+
 In order to extend our set of sub-components, we simply need to instantiate each one of them, write their corresponding render function, and call it in the main render function.  
 Below you will find the fully implemented component with all its sub-components:
+
+```javascript
+// @flow
+import React, { Component } from 'react';
+import type { Node } from 'react';
+import findByType from './findByType';
+import css from './styles.css';
+
+const Title = () => null;
+const Subtitle = () => null;
+const Metadata = () => null;
+const Content = () => null;
+const Comments = () => null;
+
+type Props = {
+  children?: Node,
+  className?: string,
+};
+
+class Article extends Component<Props> {
+  static Title: Function;
+  static Subtitle: Function;
+  static Metadata: Function;
+  static Content: Function;
+  static Comments: Function;
+
+  renderTitle() {
+    const { children } = this.props;
+    const title = findByType(children, Title);
+    if (!title) {
+      return null;
+    }
+    return <div className={css.title}>{title.props.children}</div>;
+  }
+
+  renderSubtitle() {
+    const { children } = this.props;
+    const subtitle = findByType(children, Subtitle);
+    if (!subtitle) {
+      return null;
+    }
+    return (
+      <div className={css.subtitle}>
+        <div className={css.subtitleBox}>{subtitle}</div>
+      </div>
+    );
+  }
+
+  renderMetadata() {
+    const { children } = this.props;
+    const metadata = findByType(children, Metadata);
+
+    if (!metadata) {
+      return null;
+    }
+
+    return (
+      <ul className={css.articlemetadata}>
+        {metadata.props.children.map(child => {
+          return <li className={css.item}>{child}</li>;
+        })}
+      </ul>
+    );
+  }
+
+  renderContentAndComment() {
+    const { children } = this.props;
+    const content = findByType(children, Content);
+    const comments = findByType(children, Comment);
+
+    if (!content) {
+      return null;
+    }
+
+    return (
+      <div className={css.contentArticle}>
+        <div className={css.contentTextStyle}>{content.props.children}</div>
+        <span className={css.inlineComments}>
+          {comments && comments.props.children}
+        </span>
+      </div>
+    );
+  }
+
+  render() {
+    const { children, className, ...rest } = this.props;
+
+    return (
+      <div className={css.mainContainer}>
+        <div className={css.wrapper}>
+          <div className={css.titleContainer}>
+            {this.renderTitle()}
+            {this.renderSubtitle()}
+          </div>
+          {this.renderMetadata()}
+          {this.renderContentAndComment()}
+        </div>
+      </div>
+    );
+  }
+}
+
+Article.Title = Title;
+Article.Subtitle = Subtitle;
+Article.Metadata = Metadata;
+Article.Content = Content;
+Article.Comments = Comments;
+
+export default Article;
+```
 
 Note: the `renderMetadata` function is really interesting in this example, it shows how it is possible to use a single render function for two different sub-components.
 
 ### Using Jest and snapshot testing to test sub-components
 
 Snapshot testing our sub-components is probably the quickest and safest way to make sure that any combination of sub-components within the Article component will render properly. To do this we’re going to use both Jest and Enzyme. Here’s how you can write tests for our example:
+
+```javascript
+import React from 'react';
+import { mount } from 'enzyme';
+import Article from '../';
+
+// First we declare some mocks
+const Content = () => <div>[Mock] Content</div>;
+const Subtitle = () => <div>[Mock] Subtitle</div>;
+const Comments = () => <div>[Mock] Comments</div>;
+const Metadata = () => <div>[Mock] Metadata</div>;
+const Title = () => <div>[Mock] Title</div>;
+const Subtitles = () => <div>[Mock] Subtitles</div>;
+
+it('Renders with all the sub-components', () => {
+  // Then we try to render the Article component with the desired sub-components
+  const component = mount(
+    <Article>
+      <Article.Title>
+        <Title />
+      </Article.Title>
+      <Article.Subtitle>
+        <Subtitle />
+      </Article.Subtitle>
+      <Article.Metadata>
+        <Metadata />
+      </Article.Metadata>
+      <Article.Content>
+        <Content />
+      </Article.Content>
+      <Article.Comments>
+        <Comments />
+      </Article.Comments>
+    </Article>
+  );
+  // Finally we check it matches its snapshot stored in the project
+  expect(component).toMatchSnapshot();
+});
+
+it('Renders with only the Content and Comments', () => {
+  // We can iterate the same process again with a different combination of sub-components
+  const component = mount(
+    <Article>
+      <Article.Content>
+        <Content />
+      </Article.Content>
+      <Article.Comments>
+        <Comments />
+      </Article.Comments>
+    </Article>
+  );
+  expect(component).toMatchSnapshot();
+});
+
+it('Renders with a Title and without a subtitle', () => {
+  const component = mount(
+    <Article>
+      <Article.Title>
+        <Title />
+      </Article.Title>
+      <Article.Metadata>
+        <Metadata />
+      </Article.Metadata>
+      <Article.Content>
+        <Content />
+      </Article.Content>
+      <Article.Comments>
+        <Comments />
+      </Article.Comments>
+    </Article>
+  );
+  expect(component).toMatchSnapshot();
+});
+```
 
 ### One last note
 
@@ -63,3 +357,25 @@ What happened? The culprit here was found when debugging the `findByType` util. 
 Reference: [https://github.com/facebook/react/issues/9803](https://github.com/facebook/react/issues/9803)
 
 As a workaround I added a static variable called displayName for each one of my sub-components to ensure that they have a name. Here’s how it should look like on our example:
+
+```javascript
+
+...
+
+const Title = () => null;
+Title.displayName = 'Title';
+
+const Subtitle = () => null;
+Subtitle.displayName = 'Subtitle';
+
+const Metadata = () => null;
+Metadata.displayName = 'Metadata';
+
+const Content = () => null;
+Content.displayName = 'Content';
+
+const Comments = () => null;
+Comments.displayName = 'Comments';
+
+...
+```

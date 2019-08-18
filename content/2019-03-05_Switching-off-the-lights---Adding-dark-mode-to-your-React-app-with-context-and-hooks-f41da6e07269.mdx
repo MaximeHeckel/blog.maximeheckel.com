@@ -40,7 +40,27 @@ The objective here is to have a functional dark mode on a website with the follo
 
 The first thing we will need for our dark mode is a definition of what it stands for color-wise. Emotion themes are very well adapted to do this. Indeed we can define all our dark mode colors and light mode colors in distinct files for example and have these colors use the same keys to be accessed. Below we can see an example of a theme I’m using in one of my projects and its dark equivalent.
 
-![The theme definitions for our example.](img/1__pedwfY1EFTe__8BRrDEEmQg.png)
+```javascript
+const white '#FFFFFF';
+const black = "#161617";
+const gray = "#F8F8F9";
+
+const themeLight = {
+  background: gray,
+  body: black
+};
+
+const themeDark = {
+  background: black,
+  body: white
+};
+
+const theme = mode => (mode === 'dark' ? themeDark : themeLight);
+
+export default theme;
+```
+
+The theme definitions for our example
 
 You’ll notice in the code above that I gave very descriptive names to my variables such as **background** or **body**. I always try to make sure none of the variables names are based on the color so I can use the same name across the different themes I’m using.
 
@@ -62,15 +82,107 @@ This state will be the default state in a **ThemeContext**, because we want to h
 
 As it is stated in the tweet above, I really believe that hooks are more readable than render props:
 
-![Default state and ThemeContext.](img/1__kPzRwTj9UNAiOCPbf7mqXQ.png)
+```javascript
+const defaultContextData = {
+  dark: false,
+  toggle: () => {},
+};
+
+const ThemeContext = React.createContext(defaultContextData);
+const useTheme = () => React.useContext(ThemeContext);
+
+// ThemeProvider code goes here
+
+export { useTheme };
+```
+
+Default state and ThemeContext.
 
 In this ThemeProvider component, we’ll inject both the correct theme and the toggle function to the whole app. Additionally, it will contain the logic to load the proper theme when rendering the app. That logic will be contained within a **custom hook**: **useEffectDarkMode**.
 
-![Code for the useEffectDarkMode custom hook. It’s based on both useState and useEffect.](img/1__jOkaYp86B7BvfhC4__ABzBA.png)
+```javascript
+const useEffectDarkMode = () => {
+  const [themeState, setThemeState] = React.useState({
+    dark: false,
+    hasThemeMounted: false,
+  });
+
+  React.useEffect(() => {
+    const lsDark = localStorage.getItem('dark') === 'true';
+    setThemeState({ ...themeState, dark: lsDark, hasThemeMounted: true });
+  }, []);
+
+  return [themeState, setThemeState];
+};
+```
+
+Code for the useEffectDarkMode custom hook. It’s based on both useState and useEffect.
 
 In the code above, we take advantage of both the useState and useEffect hook. The useEffectDarkMode Hook will set a local state, which is our theme state when mounting the app. Notice that we pass an empty array `[]` as the second argument of the useEffect hook. Doing this makes sure that we only call this useEffect when the ThemeProvider component mounts (otherwise it would be called on every render of ThemeProvider).
 
-![Code for the ThemeProvider component that provides both theme and themeState to the whole application.](img/1__aPvGtya__DCLBJNTSGQ88Xg.png)
+```javascript
+import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
+import React, { Dispatch, ReactNode, SetStateAction } from 'react';
+import theme from './theme';
+
+const defaultContextData = {
+  dark: false,
+  toggle: () => {},
+};
+
+const ThemeContext = React.createContext(defaultContextData);
+const useTheme = () => React.useContext(ThemeContext);
+
+const useEffectDarkMode = () => {
+  const [themeState, setThemeState] = React.useState({
+    dark: false,
+    hasThemeLoaded: false,
+  });
+  React.useEffect(() => {
+    const lsDark = localStorage.getItem('dark') === 'true';
+    setThemeState({ ...themeState, dark: lsDark, hasThemeLoaded: true });
+  }, []);
+
+  return [themeState, setThemeState];
+};
+
+const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  const [themeState, setThemeState] = useDarkMode();
+
+  if (!themeState.hasThemeLoaded) {
+    /*
+      If the theme is not yet loaded we don't want to render
+      this is just a workaround to avoid having the app rendering
+      in light mode by default and then switch to dark mode while
+      getting the theme state from localStorage
+    */
+    return <div />;
+  }
+
+  const theme = themeState.dark ? theme('dark') : theme('light');
+
+  const toggle = () => {
+    // toogle function goes here
+  };
+
+  return (
+    <EmotionThemeProvider theme={theme}>
+      <ThemeContext.Provider
+        value={{
+          dark: themeState.dark,
+          toggle,
+        }}
+      >
+        {children}
+      </ThemeContext.Provider>
+    </EmotionThemeProvider>
+  );
+};
+
+export { ThemeProvider, useTheme };
+```
+
+Code for the ThemeProvider component that provides both theme and themeState to the whole application
 
 The code snippet above contains the (almost) full implementation of our **ThemeProvider:**
 
@@ -82,7 +194,15 @@ The only missing piece in our implementation is the toggle function. Based on ou
 - reverse the theme and update the themeState
 - update the **dark** key in the localStorage
 
-![Code for the toggle function. This function is injected in the ThemeContext and aims to toggle between light and dark mode.](img/1__TRCWtR56r9KMNg0UoSHaxA.png)
+```javascript
+const toggle = () => {
+  const dark = !themeState.dark;
+  localStorage.setItem('dark', JSON.stringify(dark));
+  setThemeState({ ...themeState, dark });
+};
+```
+
+Code for the toggle function. This function is injected in the ThemeContext and aims to toggle between light and dark mode.
 
 ### Adding the theme switcher
 
@@ -91,7 +211,39 @@ Since we’ve based our implementation on React Context, we can simply import th
 
 The next step is to provide a button on the UI to enable or disable the dark mode. Luckily, we have access to all the things we need to do so through the **useTheme hook,** which will give us access to what we’ve passed to our **ThemeContext.Provider** in part two of this post.
 
-![Sample app wrapped in the ThemeProvider using the useTheme hook.](img/1__a1JEpsJDg2dYK6AAuluAgg.png)
+```javascript
+import React from 'react';
+import styled from '@emotion/styled';
+import { useTheme } from './ThemeContext';
+
+const Wrapper = styled('div')`
+  background: ${props => props.theme.background};
+  width: 100vw;
+  height: 100vh;
+  h1 {
+    color: ${props => props.theme.body};
+  }
+`;
+
+const App = () => {
+  const themeState = useState();
+
+  return (
+    <Wrapper>
+      <h1>Dark Mode example</h1>
+      <div>
+        <button onClick={() => themeState.toggle()}>
+          {themeState.dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        </button>
+      </div>
+    </Wrapper>
+  );
+};
+
+export default App;
+```
+
+Sample app wrapped in the ThemeProvider using the useTheme hook.
 
 Considering we’re in the default state (light mode), clicking this button will call the toggle function provided through the **ThemeContext** which will set the local storage variable dark to true and the themeState dark variable to true. This will switch the theme that is passed in the Emotion Theme Provider from light to dark. As a result, all our styled components using that theme will end up using the dark theme, and thus our entire application is now in dark mode.   
 In the example above, the **Wrapper component** uses the colors of the theme for the fonts and the background, when switching from light to dark these CSS properties will change and hence the background will go from gray to black and the font from black to white.

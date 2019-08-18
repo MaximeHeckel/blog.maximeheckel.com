@@ -46,13 +46,82 @@ In order to achieve this, we’ll need to create an `ArticleContext`. This will 
 
 Let’s start this example by implementing a `Title` sub-component:
 
-####Article.js
+```javascript
+import React from 'react';
+
+// This creates the "Article Context" i.e. an object containing a Provider and a Consumer component
+const ArticleContext = React.createContext();
+
+// This is the Title sub-component, which is a consumer of the Article Context
+const Title = () => {
+  return (
+    <ArticleContext.Consumer>
+      {({ title, subtitle }) => (
+        <div style={{ textAlign: 'center' }}>
+          <h2>{title}</h2>
+          <div style={{ color: '#ccc' }}>
+            <h3>{subtitle}</h3>
+          </div>
+        </div>
+      )}
+    </ArticleContext.Consumer>
+  );
+};
+
+// This is our main Article components, which is a provider of the Article Context
+const Article = props => {
+  return (
+    <ArticleContext.Provider {...props}>
+      {props.children}
+    </ArticleContext.Provider>
+  );
+};
+
+Article.Title = Title;
+
+export default Article;
+```
+
+Article.js
 
 The example above shows how we can leverage Consumers and Providers to obtain the same sub-component pattern as we had in [the first example of my previous article](https://gist.github.com/MaximeHeckel/592ba8c77332e09566d9e01ee79e2db0). If you compare this code in the link with the code above, you can see that the latter feels way simpler. Indeed, thanks to the new Context API, there is no need to build and use the `findByType` util. Additionally, we don’t rely on the `displayName` or `name` property of the sub-component to know how to render them.
 
 In the code below, we can see that the resulting `Article` component is much easier to use. Instead of passing children to the `Title` sub-component, we just need to pass them in the value prop of `Article`, which will make them available to every Consumer of the Article context (i.e. to every sub-component defined as a Consumer of this context).
 
-####App.js
+```javascript
+import React, { Component } from 'react';
+import Article from './Article';
+
+class App extends Component {
+  constructor() {
+    this.state = {
+      value: {
+        title: <h1>React sub-components with</h1>,
+        subtitle: (
+          <div>Lets make simpler and more flexible React components</div>
+        ),
+      },
+    };
+  }
+
+  render() {
+    const { value } = this.state;
+    return (
+      <Article value={value}>
+        {/* no need to pass any children to the sub-component, you can pass
+          your render functions directly to the title and subtitle property in
+          the content object which is passed as value from our context provider
+          (i.e. Article)*/}
+        <Article.Title />
+      </Article>
+    );
+  }
+}
+
+export default App;
+```
+
+App.js
 
 Moreover, if we want to wrap `Article.Title` in another div or component, we can now do that as well. Given that the implementation of the `findByType` util in my first post was relying on the direct children of `Article` , sub-components were restricted to be direct children and nothing else, which is not the case with this new way of doing sub-components.
 
@@ -60,7 +129,35 @@ Note: You can see above that my `value` object passed to the provider is set to 
 
 Additionally, we can make the piece of code above look even better. By simply exporting the `Title` functional component in `Article.js` we can give up the `<Article.Title/>` notation and simply use instead `<Title/>`.
 
-####App.js
+```javascript
+import React, { Component } from 'react';
+import Article, { Title } from './Article';
+
+class App extends Component {
+  constructor() {
+    this.state = {
+      value: {
+        title: <h1>React sub-components with</h1>,
+        subtitle: (
+          <div>Lets make simpler and more flexible React components</div>
+        ),
+      },
+    };
+  }
+  render() {
+    const { value } = this.state;
+    return (
+      <Article value={value}>
+        <Title />
+      </Article>
+    );
+  }
+}
+
+export default App;
+```
+
+App.js
 
 This is purely aesthetic though, and I personally prefer the first implementation. It gives more context about where a given sub-component comes from and with which parent component it can be used, and also avoids duplicated name issues.
 
@@ -75,7 +172,114 @@ In the code snippets below, you will find:
 - The full `Article` component code and all its sub-components in `Article.js`
 - An example `App.js` where you can see how we use the full component and sub-components
 
+```javascript
+import React from 'react';
+
+// This creates the "Article Context" i.e. an object containing a Provider and a Consumer component
+const ArticleContext = React.createContext();
+
+// This is the Title sub-component, which is a consumer of the Article Context
+const Title = () => {
+  return (
+    <ArticleContext.Consumer>
+      {({ title, subtitle }) => (
+        <div style={{ textAlign: 'center' }}>
+          <h2>{title}</h2>
+          <div style={{ color: '#ccc' }}>
+            <h3>{subtitle}</h3>
+          </div>
+        </div>
+      )}
+    </ArticleContext.Consumer>
+  );
+};
+
+const Metadata = () => {
+  return (
+    <ArticleContext.Consumer>
+      {({ author, date }) => (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          {author}
+          {date}
+        </div>
+      )}
+    </ArticleContext.Consumer>
+  );
+};
+
+const Content = () => {
+  return (
+    <ArticleContext.Consumer>
+      {({ content }) => (
+        <div style={{ width: '500px', margin: '0 auto' }}>{content}</div>
+      )}
+    </ArticleContext.Consumer>
+  );
+};
+
+// This is our main Article components, which is a provider of the Article Context
+const Article = props => {
+  return (
+    <ArticleContext.Provider {...props}>
+      {props.children}
+    </ArticleContext.Provider>
+  );
+};
+
+Article.Title = Title;
+Article.Metadata = Metadata;
+Article.Content = Content;
+
+export default Article;
+```
+
 Article.js
+
+```javascript
+import React, { Component } from 'react';
+import Article from './Article';
+
+const text = `
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+`;
+
+class App extends Component {
+  constructor() {
+    this.state = {
+      value: {
+        title: <h1>React sub-components with</h1>,
+        subtitle: (
+          <div>Lets make simpler and more flexible React components</div>
+        ),
+        author: 'Maxime Heckel',
+        date: <i>April 2018</i>,
+        content: <p>{text}</p>,
+      },
+    };
+  }
+  render() {
+    const { value } = this.state;
+    return (
+      <Article value={value}>
+        <Article.Title />
+        {/* here we can see that wrapping the metadata sub-component is now possible thanks to contexts*/}
+        <div style={{ width: '500px', margin: '80px auto' }}>
+          <Article.Metadata />
+        </div>
+        <Article.Content />
+      </Article>
+    );
+  }
+}
+
+export default App;
+```
+
 App.js
 
 If you feel like playing with this pattern I’ve made the example of this article available on Github [here](https://github.com/MaximeHeckel/react-sub-components-context), you can set up the dockerized project using `docker-compose build && docker-compose up`, or just run `yarn && yarn start` if you want to run it directly on your machine.

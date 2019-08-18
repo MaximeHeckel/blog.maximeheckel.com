@@ -41,7 +41,33 @@ The first step consists of being able to communicate with the Docker engine’s 
 
 Considering we have a Docker engine running locally, we can access the API through the Docker daemon which uses the UNIX socket `unix:///var/run/docker.sock` . Knowing that, we can start building the first pieces of our server:
 
-![Entrypoint of our GraphQL server](img/1__KcnnVh7OmLgfiqrl____4zWA.png)
+```javascript
+// ./src/index.ts
+import schema from './schema';
+
+// This is how you need to handle unix socket addresses with superagent it's ugly I know but it works!
+const baseURL = 'http+unix://%2Fvar%2Frun%2Fdocker.sock';
+const config = {
+  port: 3000,
+  schema, // We'll come to that in the next part :)
+  context: ({ req }) => {
+    return {
+      baseURL,
+    };
+  },
+};
+
+const server = new ApolloServer({
+  schema,
+  context,
+});
+
+server.listen(port).then(({ url }) => {
+  console.log(`Server ready at ${url}`);
+});
+```
+
+Entrypoint of our GraphQL server
 
 As we can see above, we’re setting up a new Apollo GraphQL server with two main components:
 
@@ -67,11 +93,71 @@ We will see that thanks to the GraphQL wrapper we can have the same information 
 
 For services, most of the fields are mirroring what can be found in the [Docker API documentation](https://docs.docker.com/engine/api/v1.39/), however, you can see below that one extra field is present: containers. When we’ll add this field to a service query, we will get the containers within that service. We’ll define later a specific resolver for that field that will fetch the related containers of a given service.
 
-![Service type definitions](img/1__cRccrena__vcNnOQl__Yyapg.png)
+```javascript
+// ./src/schema/service/typeDefs.ts
+
+import { gql } from 'apollo-server';
+
+const typeDefs = gql`
+  extend type Query {
+    services: [Service!]!
+    service(id: ID!): Service!
+  }
+
+  type ServiceSpecType {
+    Name: String!
+    Mode: ServiceMode
+  }
+
+  type ServiceMode {
+    Replicated: ServiceReplicated
+  }
+
+  type ServiceReplicated {
+    Replicated: Int!
+  }
+
+  type Service {
+    ID: ID!
+    CreatedAt: String!
+    UpdatedAt: String!
+    Spec: ServiceSpecType!
+    containers: [Container!]!
+  }
+`;
+
+export default typeDefs;
+```
+
+Service type definitions
 
 We can keep adding as many “custom fields” as we want if we feel that there’s a relationship between resources that needs to be reflected by the type definition. Here we’ll just focus on `containers`, since our aim is to be able to run a single query to get services with their related containers.
 
-![Container type definitions](img/1__KqELA0c13tVMU1wzhSvubQ.png)
+```javascript
+// ./src/schemas/container/typeDefs.ts
+
+import { gql } from 'apollo-server';
+
+const typeDefs = gql`
+  extend type Query {
+    container(id: ID!): Container!
+  }
+
+  type Container {
+    Id: String!
+    Command: String!
+    Image: String!
+    MountLabel: String
+    Names: [String!]!
+    State: String!
+    Status: String!
+  }
+`;
+
+export default typeDefs;
+```
+
+Container type definitions
 
 Now that we have our typDefs we need to focus on the next part composing our schema:
 
@@ -80,17 +166,92 @@ Now that we have our typDefs we need to focus on the next part composing our sch
 Given that we’re focusing on services only, we’ll only write resolvers for service (other resources follow the same model and concepts).  
 The following code snippet is what can be called our “main resolver” and by that I mean that it’s the resolver that extends the main Query Resolver object. Below, we can see that we wrote two resolvers: one to fetch the **services**, i.e. the list of services, and another one **service**, to fetch a specific service by passing an ID. These two resolvers will call their corresponding REST endpoint in the Docker API if the field “services” or “service” are passed in a GraphQL query.
 
-![Query resolvers with the services and service fields](img/1__TtizM2oLCBQL__cXCvQw2fA.png)
+```javascript
+// ./src/schema/service/resolvers/index.ts
+
+import request from 'superagent';
+import Service from './Service';
+
+/* 
+Resolvers take 3 arguments:
+- parent: an object which is the result returned by the resolver on the parent field.
+- args: an object that contains the arguments passed to the field. In our example below, id is an argument for service.
+- context: the object that we passed to our GraphQL server. In our case context contains the baseURL field.
+*/
+
+const Query = {
+  services: async (_parent, _args, { baseURL, authorization }) => {
+    const { body } = await request.get(`${baseURL}/services`);
+    return body;
+  },
+  service: async (_parent, args, { baseURL, authorization }) => {
+    const { id } = args;
+    const { body } = await request.get(`${baseURL}/services/${id}`);
+    return body;
+  },
+};
+
+export default { Query, Service };
+```
+
+Query resolvers with the services and service fields
 
 We can see that we’re also importing a `Service` resolver in the code above. This file will contain the resolvers for the fields that are extending our `Service` type definition. In our case, we’ll write a function that resolves the `containers` field.
 
-![Service resolver with the containers field](img/1__Qgd74Lnm__MoD0phVg33smg.png)
+```javascript
+// ./src/schemas/service/resolvers/Service.ts
+import request from 'superagent';
+
+const Service = {
+  containers: async (parent, _args, { baseURL, authorization }) => {
+    const { ID } = parent;
+    const filters = {
+      label: [`com.docker.swarm.service.id=${ID}`],
+    };
+    const { body } = await request.get(
+      `${baseURL}/containers/json?filters=${encodeURI(JSON.stringify(filters))}`
+    );
+
+    return body;
+  },
+};
+
+export default Service;
+```
+
+Service resolver with the containers field
 
 #### **TypeDefs + Resolvers = Schemas**
 
 To get our Schemas we’ll need to use a function from `apollo-server` called `makeExecutableSchema` . This function will take our type definitions and resolvers and return our GraphQL schema:
 
-![The schema for our GraphQL server based on the typeDefs and resolvers we defined previously](img/1__L8aCUwWgGBdnXPnZGhDAZg.png)
+```javascript
+// ./src/schemas/index.ts
+
+import { makeExecutableSchema } from 'apollo-server';
+import merge from 'lodash/merge';
+import service from './service/resolvers';
+import serviceType from './service/typeDefs';
+import containerType from './container/typeDefs';
+
+const resolvers = merge(service, otherpotentialresolvers);
+// Type definitions, like Service can extend this Query type.
+const Query = gql`
+  type Query
+`;
+
+const global = [Query];
+const typeDefs = [...global, containerType, serviceType];
+
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
+
+export default schema;
+```
+
+The schema for our GraphQL server based on the typeDefs and resolvers we defined previously
 
 We now have all the elements to start our GraphQL server. Considering we have Docker running, we can run the command: `ts-node ./src/index.ts` .  
 By going to [http://localhost:3000](http://localhost:3000) we should see the GraphiQL IDE that will allow us to run queries against our GraphQL server.
@@ -100,21 +261,81 @@ By going to [http://localhost:3000](http://localhost:3000) we should see the Gra
 Let’s give a try to our server by running a GraphQL query against it. First, we’ll need to start a service on our local Docker engine to make sure we have some data. For that we can use the following command: `docker service create nginx` . This will create a small NGINX docker service.  
 When it is fully running, we can run the following query:
 
-![Sample GraphQL query that aims to fetch the list of services with their respective IDs and Names](img/1__qdEOTd7jm00SfmZMJHT__pA.png)
+```graphql
+query {
+  services {
+    ID
+    Spec {
+      Name
+    }
+  }
+}
+```
+
+Sample GraphQL query that aims to fetch the list of services with their respective IDs and Names
 
 This query will get us the `services` running on our Docker engine, with their IDs and Names. The server should output a response very similar to the following one:
 
-![The expected result from the sample GraphQL query above](img/1__Zx4iyXFHp4rGIFOhO2tXZg.png)
+```json
+{
+  "data": {
+    "services": [
+      {
+        "ID": "t5rwuns2x9sb6g16hlrvw03qa",
+        "Spec": {
+          "Name": "funny_rosalind"
+        }
+      }
+    ]
+  }
+}
+```
+
+The expected result from the sample GraphQL query above
 
 We just ran our first GraphQL query to fetch the list of Docker services 🎉! Here we can see that we ran a query to get only some parts of the data available through the Docker API. This is one huge advantage of GraphQL, you can query only the data you need, no over-fetching!
 
 Now let’s see how running a single query can get us both the list of services with their related containers. For that we’ll run the following query:
 
-![Sample GraphQL query that aims to fetch the list of services with their respective IDs and Names and related containers](img/1__s7EvK9HhIOasQAJw7s__TcA.png)
+```graphql
+query {
+  services {
+    ID
+    Spec {
+      Name
+    }
+    containers {
+      Names
+    }
+  }
+}
+```
+
+Sample GraphQL query that aims to fetch the list of services with their respective IDs and Names and related containers
 
 which should output the following result:
 
-![The expected result from the sample GraphQL query above](img/1__blhGWY4JA8__RdnyyE__3wzw.png)
+```json
+{
+  "data": {
+    "services": [
+      {
+        "ID": "t5rwuns2x9sb6g16hlrvw03qa",
+        "Spec": {
+          "Name": "funny_rosalind"
+        },
+        "containers": [
+          {
+            "Names": ["/funny_rosalind.1.izqtpqtp52oadkdxk4mjr5o54h1"]
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+The expected result from the sample GraphQL query above
 
 It would typically take two REST calls to get that kind of data on a client, thanks to GraphQL and the way we architected our type definitions, it now only requires a single query!
 
@@ -133,7 +354,24 @@ To do so, we’ll need to install the following dependencies:
 
 The first thing we have to do after installing the required dependencies is to create a `codegen.yml` file at the root of our project that will serve as a configuration file for `graphql-code-generator` and fill it as follows:
 
-![Sample codegen configuration file for graphql-code-generator](img/1__8jLAhz58UiNiqUjhpBAMww.png)
+```yaml
+# ./codegen.yml
+schema: src/schema/index.ts
+overwrite: true
+watch: false
+require:
+  - ts-node/register
+generates:
+  ./src/types/types.d.ts:
+    config:
+      contextType: ./context#MyContext # this references the context type MyContext that is present in src/types/context.d.ts, more about it below
+    plugins:
+      - typescript-common
+      - typescript-server
+      - typescript-resolvers
+```
+
+Sample codegen configuration file for graphql-code-generator
 
 Thanks to this configuration, `graphql-code-generator` will read our schemas located in `src/schema/index.ts` and output the generated types in `src/types/types.d.ts` .
 
@@ -141,13 +379,25 @@ Thanks to this configuration, `graphql-code-generator` will read our schemas loc
 
 In our server implementation, we rely on a context to pass the `baseURL` to our resolver. This will require some typing that we’ll have to do manually. For that, we’ll need to create a `types` directory under `./src` and within that directory a `context.d.ts` file that will contain the type of our context object, in our case just a `baseURL` field of type `String`:
 
-![Context object type declaration](img/1__Df__X__UaqFHzDChot01Dhlg.png)
+```typescript
+export type MyContext = {
+  baseURL: string;
+};
+```
+
+Context object type declaration
 
 #### **Generating types**
 
 At this point, we just have to add the following script to our `package.json`:
 
-![Generate type script in package.json](img/1__WqNuy66wRcDscc5S2DvFZA.png)
+```json
+"scripts": {
+    "generate-types": "gql-gen"
+}
+```
+
+Generate type script in package.json
 
 and run `yarn generate` which should generate all the types for our query resolver, service resolver, service, container and any Docker resource type we may have added to our GraphQL server. These types can then be added to the resolvers or to any client that would query this GraphQL server.
 
