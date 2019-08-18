@@ -5,7 +5,6 @@ module.exports = {
     ...config,
   },
   plugins: [
-    `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-theme-maximeheckel`,
       options: {},
@@ -28,6 +27,13 @@ module.exports = {
         theme_color: `#ffffff`,
         display: `minimal-ui`,
         icon: `static/favicon.png`, // This path is relative to the root of the site.
+      },
+    },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: 'UA-56475503-4',
+        head: true,
       },
     },
     'gatsby-plugin-sitemap',
