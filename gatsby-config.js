@@ -5,6 +5,7 @@ module.exports = {
     ...config,
   },
   plugins: [
+    `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-theme-maximeheckel`,
       options: {},
