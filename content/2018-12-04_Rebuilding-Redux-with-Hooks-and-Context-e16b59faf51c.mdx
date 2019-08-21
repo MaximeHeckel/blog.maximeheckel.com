@@ -247,7 +247,7 @@ Example of a custom middleware used with our Redux reimplementation
 
 Thanks to the Context API and the recently announced Hooks, we saw that it is now easy to rebuild Redux. Is it usable? Yes, as we saw in this post, we covered the main components of Redux (Store, connect, middlewares, etc) and use them in a small app. Can this replace `react-redux`? Probably not. Redux still has a lot more than what we covered in this article, like the Redux Devtools or the entire ecosystem of libraries that can enhance your app on top of Redux. While writing this post I’ve personally tried to add the `redux-logger` middleware to our example, it “worked” but I couldn’t make it print the correct “next state”(maybe because the `useReducer` hook is async since it’s based on `setState` ):
 
-https://twitter.com/MaximeHeckel/status/1059632395316473857
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">I&#39;m very close to have existing redux middlewares working with my implementation of Redux with React Hooks! (Here with Redux Logger, you can see the next state is not populated properly) <a href="https://t.co/HKHCPoMRUG">pic.twitter.com/HKHCPoMRUG</a></p>&mdash; Maxime Heckel (@MaximeHeckel) <a href="https://twitter.com/MaximeHeckel/status/1059632395316473857?ref_src=twsrc%5Etfw">November 6, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 but as you can see in this tweet, maybe I was just a bit too ambitious.
 
