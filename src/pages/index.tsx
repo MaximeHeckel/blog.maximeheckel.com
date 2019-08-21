@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { graphql, Link } from 'gatsby';
-import { OutboundLink } from 'gatsby-plugin-google-analytics';
 import { Button, MainWrapper, Seo } from 'gatsby-theme-maximeheckel';
 import React from 'react';
 import Typist from 'react-typist';
@@ -45,32 +44,7 @@ export const pageQuery = graphql`
 
 const IndexPage = ({ data }) => {
   return (
-    <MainWrapper
-      footer={true}
-      header={true}
-      headerProps={{
-        links: (
-          <React.Fragment>
-            {/* <OutboundLink
-              data-testid="home-link"
-              href="https://maximeheckel.com"
-              style={{ textDecoration: 'underline' }}
-            >
-              Home
-            </OutboundLink>
-            <OutboundLink
-              data-testid="twitter-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://twitter.com/MaximeHeckel"
-              style={{ textDecoration: 'underline' }}
-            >
-              Twitter
-            </OutboundLink> */}
-          </React.Fragment>
-        ),
-      }}
-    >
+    <MainWrapper footer={true} header={true}>
       <Seo title={data.site.siteMetadata.title} />
       <div style={{ paddingBottom: '10px' }}>
         <br />
