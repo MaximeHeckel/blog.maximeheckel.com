@@ -17,6 +17,7 @@ exports.createPages = ({ graphql, actions }) => {
                     description
                     date
                     type
+                    featured
                     cover {
                       childImageSharp {
                         fluid(

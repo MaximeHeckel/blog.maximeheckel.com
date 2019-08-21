@@ -40,6 +40,9 @@ const typography = new Typography({
       fontSize: '25px',
       lineHeight: 1.333,
     },
+    h3: {
+      lineHeight: 1.6,
+    },
     h4: {
       lineHeight: 2,
     },
