@@ -20,7 +20,7 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Maxime Heckel's blog`,
-        short_name: `maximehblog`,
+        short_name: `Maxime Heckel's blog`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#ffffff`,
@@ -36,6 +36,7 @@ module.exports = {
       },
     },
     'gatsby-plugin-sitemap',
+    'gatsby-plugin-offline',
     'gatsby-plugin-typescript',
     'gatsby-plugin-tslint',
   ],
