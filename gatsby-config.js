@@ -10,6 +10,29 @@ module.exports = {
       options: {},
     },
     {
+      resolve: 'gatsby-plugin-lunr',
+      options: {
+        languages: [{ name: 'en' }],
+        fields: [
+          { name: 'title', store: true, attributes: { boost: 20 } },
+          { name: 'description', store: true, attributes: { boost: 5 } },
+          { name: 'content' },
+          { name: 'slug', store: true },
+          { name: 'date', store: true },
+        ],
+        resolvers: {
+          Mdx: {
+            title: node => node.frontmatter.title,
+            description: node => node.frontmatter.description,
+            content: node => node.rawBody,
+            date: node => node.frontmatter.date,
+            slug: node => `/posts/${node.frontmatter.slug}`,
+          },
+        },
+        filename: 'search_index.json',
+      },
+    },
+    {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `posts`,
