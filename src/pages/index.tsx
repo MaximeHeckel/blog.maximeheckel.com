@@ -48,7 +48,8 @@ export const pageQuery = graphql`
 const SearchBox = props => {
   const { location } = props;
   const searchQuery = new URLSearchParams(location.search).get('search') || '';
-  const toggleLockScroll = () => document.body.classList.toggle('lock-scroll');
+  const toggleLockScroll = () =>
+    document.documentElement.classList.toggle('lock-scroll');
 
   const inputRef = React.useRef(null);
   const searchBoxRef = React.useRef();
@@ -56,16 +57,15 @@ const SearchBox = props => {
   const [results, setResults] = React.useState([]);
 
   React.useEffect(() => {
-    toggleLockScroll();
     Mousetrap.bind(['command+k', 'ctrl+k'], () => setShow(true));
     return () => {
-      toggleLockScroll();
       Mousetrap.unbind(['command+k', 'ctrl+k']);
     };
   }, []);
 
   React.useEffect(() => {
     if (show) {
+      toggleLockScroll();
       inputRef.current.focus();
     }
 
