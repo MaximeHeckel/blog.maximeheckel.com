@@ -82,17 +82,21 @@ const SearchBox = props => {
     }
   }, [location.search, show]);
 
-  if (!show) {
-    return null;
-  }
+  const onClose = () => {
+    toggleLockScroll();
+    return setShow(false);
+  };
 
   const clickAway = e => {
     if (searchBoxRef.current.contains(e.target)) {
       return null;
     }
-    toggleLockScroll();
-    return setShow(false);
+    return onClose();
   };
+
+  if (!show) {
+    return null;
+  }
 
   return ReactDOM.createPortal(
     <FocusTrap>
@@ -114,6 +118,7 @@ const SearchBox = props => {
             placeholder="Search..."
             id="search-input"
             name="search"
+            onKeyDown={e => (e.keyCode === 27 ? onClose() : null)}
             onChange={e =>
               navigate(`?search=${encodeURIComponent(e.target.value)}`)
             }
