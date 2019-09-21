@@ -24,7 +24,7 @@ I was building a simple theme with a series of colors using [emotion](https://gi
 
 Here’s the component that we’ll use as an example:
 
-```javascript
+```javascript title=The code of the Title styled-component
 import styled from 'react-emotion';
 
 const Title = styled('h1')(`
@@ -34,11 +34,9 @@ const Title = styled('h1')(`
 export default Title;
 ```
 
-The code of the Title styled-component
-
 The aim here was the following: to make sure that anyone who uses the `Title` component could change its color via a prop **but only let them pick the blue colors provided by the theme**. Code-wise this is what we want to have:
 
-```javascript
+```javascript title=Title component good and bad usage
 // Good
 <Title color="blue1">
     Styled Components are awesome!
@@ -50,11 +48,9 @@ The aim here was the following: to make sure that anyone who uses the `Title` co
 </Title>
 ```
 
-Title component good and bad usage
-
 This is one case when I discovered that Flow can surprisingly help to solve this kind of problem. The theme used for this example looks like the following:
 
-```javascript
+```javascript title=Theme used for this example
 // @flow
 type Blues = {
   blue1: '#099CEC',
@@ -101,8 +97,6 @@ const theme: Theme = {
 }
 ```
 
-Theme used for this example
-
 When it comes to color usage, we don’t want to leave the possibility for other developers to use a color outside of the theme. This is why creating a `Theme` type and the different color types like `Blues` and `Reds` (as well as the other properties of your theme) from the start is a good idea so you immediately document the do’s and don’t’s of your theme at the static typing checking level. In the rest of this post we’ll essentially focus on how to leverage these types like `Blues` to validate props of `Title`.
 
 In the example above, we can see how enums can be useful: **colors is a map of some string value (the name of the color) to one and only one of these 4 colors.**
@@ -111,7 +105,7 @@ In the example above, we can see how enums can be useful: **colors is a map of s
 
 Typing the styled component is the first step**.** I didn’t know how to this at first so I had to do a bit of research on this one and ended up finding this [comment](https://github.com/styled-components/styled-components/issues/570#issuecomment-332087358) on a Github issue which was very helpful. Following the example given in this issue, I wrote this **typed implementation** of `Title`:
 
-```javascript
+```javascript {5-7} title=First typed implementation of the Title component
 // @flow
 import type { ComponentType } from 'react';
 import styled from 'react-emotion';
@@ -127,31 +121,25 @@ const Title: ComponentType<TitleProps> = styled('h1')(`
 export default Title;
 ```
 
-First typed implementation of the Title component
-
 It’s typed a bit fast but, it’s still better than having no type. Now we can use `Title` with a color prop as we wanted, but sadly here we can pass any string, i.e. any colors which doesn’t quite help us given what we want to build.
 
 ### Enums
 
 The next step was to type the component better, meaning, to make type it in such a way that it would only accept a subset of colors. The `string` type is way too generic. All the following examples would pass Flow without any error:
 
-```javascript
+```javascript title=Example of valid but wrong usages of the typed Title component
 <Title color="hello"/> // No error despite hello not being a color
 
 <Title color="red1"/> // No error but we don't want Titles to be red
 ```
 
-Example of valid but wrong usages of the typed Title component
-
 This is where `enums` comes into the picture. Indeed, by specifying the subset of the colors of the theme we want for `Title` we can narrow down which props can be passed to the component.
 
-```javascript
+```javascript title=Updated TitleProps type
 type TitleProps = {
   color: 'blue1' | 'blue2',
 };
 ```
-
-Updated TitleProps type
 
 This would mean that Flow would fail if we use `Title` with `red1` as color:
 
@@ -163,7 +151,8 @@ However, whenever the theme gets updated with some extra blue colors, the type w
 
 We can type our component even better using the `$Keys` utility type. Here’s how to use it:
 
-```javascript
+```javascript {6} title=Final implementation of the Title component using the $Keys utility function
+// @flow
 import type { ComponentType } from 'react';
 import styled from 'react-emotion';
 import type { Blues } from './theme';
@@ -180,8 +169,6 @@ const Title: ComponentType<TitleProps> = styled('h1')(`
 
 export default Title;
 ```
-
-Final implementation of the Title component using the \$Keys utility function
 
 Here’s how`$Keys` works in our case: it extracted the type `‘blue1' | ‘blue2'` from our `Blues` type by getting its keys. Thus, every time we update our color palette and the respective color types, our `Title` component will be properly typed. We can thus see that typing this way is more elegant than manually adding items to an enum.
 

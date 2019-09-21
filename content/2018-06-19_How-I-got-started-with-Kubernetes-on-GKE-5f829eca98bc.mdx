@@ -21,7 +21,7 @@ My personal projects needed a new place to live, so I decided to take this as an
 
 For this part, we’ll focus on installing both gcloud tools and setting up your first GKE cluster. You can go through [this guide](https://cloud.google.com/sdk/docs/quickstart-macos) for the setup of gcloud tools on your local CLI. After creating an account on GKE, the first step will be to create a cluster. To do so, we can simply go through the [GKE GUI](https://console.cloud.google.com/kubernetes), hit the “Create Cluster” button and go through the wizard. Now that we have a cluster, let’s get its credentials so we can set the Kubernetes context to this cluster in our local CLI. To do that we can run:
 
-```bash
+```bash title=gcloud command to get the credentials of an existing cluster
 gcloud container clusters get-credentials CLUSTER --zone ZONE --project PROJECT
 ```
 
@@ -47,7 +47,7 @@ If you still don’t feel confidant enough, I’d recommend checking this great 
 Kubernetes workloads are usually described with YAML files, which can be organized pretty much however we want. We can even multiple types of Kubernetes workloads in a single YAML file.  
 As an example, here’s a YAML file containing the definition of the first workloads we’ll deploy on our Kubernetes cluster:
 
-```yaml
+```yaml title=Kubernetes deployment
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
@@ -63,12 +63,11 @@ spec:
  app: website
  spec:
  containers:
-
-- name: website
-  image: nginx:latest
-  imagePullPolicy: "Always"
-  ports:
-- containerPort: 80 # The nginx container exposes port 80
+  - name: website
+    image: nginx:latest
+    imagePullPolicy: "Always"
+    ports:
+  - containerPort: 80 # The nginx container exposes port 80
 
 ---
 
@@ -81,10 +80,9 @@ metadata:
 spec:
  type: NodePort
  ports:
-
-- port: 8000 # On which port you want to publish the website dep
-   targetPort: 80 # The port exposed by your container
-   protocol: TCP
+  - port: 8000 # On which port you want to publish the website dep
+    targetPort: 80 # The port exposed by your container
+    protocol: TCP
   selector:
    app: website
 ```
@@ -104,7 +102,7 @@ We can see that **the port** `8000` **of our service is mapped to the port** `**
 Here, we’ll create an Ingress to access our website service from the Internet. An Ingress workload basically contains a set of rules to route traffic to our service.  
 For example, we can paste the following in a file called `ingress.yml`:
 
-```yaml
+```yaml title=Ingress YAML definition
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -123,52 +121,50 @@ Accessing the external IP from your browser should show you the main NGINX page!
 
 But wait there’s more: we can actually use this ingress to do load balancing, by adding more specific rules. Let’s say we only want our domain `myawesomedomain.com` to access our website service, we can add a set of rules:
 
-```yaml
+```yaml title=Ingress YAMLK definition with loadbalancing in mind
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
- name: main-ingress
+  name: main-ingress
 spec:
- rules:
-
-- host: myawesomedomain.com
-  http:
-  paths:
-- backend:
-  serviceName: website
-  servicePort: 8000
+  rules:
+    - host: myawesomedomain.com
+      http:
+      paths:
+    - backend:
+      serviceName: website
+      servicePort: 8000
 ```
 
 Now if we run `kubectl apply -f ingress.yml` after saving the content above in our `ingress.yml` file and point our domain name `myawesomedomain.com` to the external IP of our Ingress, you’ll be able to access your website service with this domain.
 
 Ingresses come very handy when you have multiple services to host on the same cluster. The `ingress.yml` file I’m currently using on for my personal projects looks something like this:
 
-```yaml
+```yaml title=Ingress YAMLK definition with loadbalancing in mind
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
- name: main-ingress
+  name: main-ingress
 spec:
- rules:
-
-- host: myawesomedomain.com
-  http:
-  paths:
-- backend:
-  serviceName: website
-  servicePort: 8000
-- host: test.myawesomedomain.com
-  http:
-  paths:
-- backend:
-  serviceName: testwebsite
-  servicePort: 8000
-- host: hello.myawesomedomain.com
-  http:
-  paths:
-- backend:
-  serviceName: hello
-  servicePort: 9000
+  rules:
+    - host: myawesomedomain.com
+      http:
+      paths:
+    - backend:
+      serviceName: website
+      servicePort: 8000
+    - host: test.myawesomedomain.com
+      http:
+      paths:
+    - backend:
+      serviceName: testwebsite
+      servicePort: 8000
+    - host: hello.myawesomedomain.com
+      http:
+      paths:
+    - backend:
+      serviceName: hello
+      servicePort: 9000
 ```
 
 Thanks to our Ingress, we have now an easy way to route traffic to specific services by simply declaring rules in a YAML file and deploying it on our cluster.
@@ -191,29 +187,28 @@ Then, we’ll need to deploy [**kube-cert-manager**](https://github.com/bonovoxl
 - Create the `kube-cert-manager-google` secret (for this I just followed the README in the repository)
 - Edit `kube-cert-manager-deployment.yml` and fill the different fields such as your email and the DNS provider. The documentations about DNS provider is available [here](https://github.com/PalmStoneGames/kube-cert-manager/blob/master/docs/providers.md). In my case, my domain was managed by Dnsimple so I had to edit the deployment file like this:
 
-```yaml
+```yaml title=kube-cert-manager-deployment.yml with env variables setup
   containers:
-
   - name: kube-cert-manager
     env:
-  - name: DNSIMPLE_BASE_URL
-    value: [https://api.dnsimple.com](https://api.dnsimple.com)
-  - name: DNSIMPLE_OAUTH_TOKEN
-    value: myrequestedoauthtoken
+    - name: DNSIMPLE_BASE_URL
+      value: [https://api.dnsimple.com](https://api.dnsimple.com)
+    - name: DNSIMPLE_OAUTH_TOKEN
+      value: myrequestedoauthtoken
 ```
 
 Finally, running`cd gke-kube-cert-manager && ./deploy.sh` will setup and deploy cert-manager on your cluster.
 
 Now here’s the fun part: all this setup allows us to create a `Certificate` Kubernetes workload. Any certificate created on this cluster will be picked up and requested (and renewed) by the `kube-cert-manager` deployment. Let’s create one for `myawesomedomain.com` in a file called `certificates.yml`:
 
-```yaml
+```yaml title=Certificate YAML definition
 apiVersion: 'stable.k8s.psg.io/v1'
 kind: 'Certificate'
 metadata:
   name: website
   namespace: default
   labels:
-  stable.k8s.psg.io/kcm.class: 'kube-cert-manager'
+    stable.k8s.psg.io/kcm.class: 'kube-cert-manager'
 spec:
   domain: 'myawesomedomain.com'
 ```
@@ -224,27 +219,26 @@ Running `kubectl apply -f certificates.yml` will submit the request to Let’s E
 
 After a few minutes we should have, as shown in the logs above, a secret titled `myawesomedomain.com` on our cluster. Let’s run `kubectl get secrets` to ensure it’s there before continuing. Finally, we can now edit our `ingress.yml` file as such to include our certificate:
 
-```yaml
+```yaml title=Updated Ingress definition with certificate for a given domain passed as a secret
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
- name: main-ingress
- annotations:
- kubernetes.io/ingress.class: "nginx"
+  name: main-ingress
+  annotations:
+  kubernetes.io/ingress.class: 'nginx'
 spec:
- rules:
+  rules:
+    - host: myawesomedomain.com
+      http:
+      paths:
+    - backend:
+      serviceName: website
+      servicePort: 8000
+      tls:
 
-- host: myawesomedomain.com
-  http:
-  paths:
-- backend:
-  serviceName: website
-  servicePort: 8000
-  tls:
-
-- secretName: myawesomedomain.com
-  hosts:
-  - myawesomedomain.com
+    - secretName: myawesomedomain.com
+      hosts:
+        - myawesomedomain.com
 ```
 
 Now, let’s run `kubectl apply -f ingress.yml` to update our `main-ingress` to support the secret we created earlier. Then, we just need to make sure `myawesomedomain.com` points to the external IP of our NGINX Ingress Controller, and after a while our website service will be accessible through HTTPS!

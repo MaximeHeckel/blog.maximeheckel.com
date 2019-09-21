@@ -46,7 +46,7 @@ In order to achieve this, we’ll need to create an `ArticleContext`. This will 
 
 Let’s start this example by implementing a `Title` sub-component:
 
-```javascript
+```javascript title=Article.js
 import React from 'react';
 
 // This creates the "Article Context" i.e. an object containing a Provider and a Consumer component
@@ -82,13 +82,11 @@ Article.Title = Title;
 export default Article;
 ```
 
-Article.js
-
 The example above shows how we can leverage Consumers and Providers to obtain the same sub-component pattern as we had in [the first example of my previous article](https://gist.github.com/MaximeHeckel/592ba8c77332e09566d9e01ee79e2db0). If you compare this code in the link with the code above, you can see that the latter feels way simpler. Indeed, thanks to the new Context API, there is no need to build and use the `findByType` util. Additionally, we don’t rely on the `displayName` or `name` property of the sub-component to know how to render them.
 
 In the code below, we can see that the resulting `Article` component is much easier to use. Instead of passing children to the `Title` sub-component, we just need to pass them in the value prop of `Article`, which will make them available to every Consumer of the Article context (i.e. to every sub-component defined as a Consumer of this context).
 
-```javascript
+```javascript title=App.js
 import React, { Component } from 'react';
 import Article from './Article';
 
@@ -121,15 +119,13 @@ class App extends Component {
 export default App;
 ```
 
-App.js
-
 Moreover, if we want to wrap `Article.Title` in another div or component, we can now do that as well. Given that the implementation of the `findByType` util in my first post was relying on the direct children of `Article` , sub-components were restricted to be direct children and nothing else, which is not the case with this new way of doing sub-components.
 
 Note: You can see above that my `value` object passed to the provider is set to the parent’s state. This is to avoid creating a new object for `value` all the time which will trigger a re-render of Provider and all of the consumers. See [https://reactjs.org/docs/context.html#caveats](https://reactjs.org/docs/context.html#caveats)
 
 Additionally, we can make the piece of code above look even better. By simply exporting the `Title` functional component in `Article.js` we can give up the `<Article.Title/>` notation and simply use instead `<Title/>`.
 
-```javascript
+```javascript title=App.js
 import React, { Component } from 'react';
 import Article, { Title } from './Article';
 
@@ -157,8 +153,6 @@ class App extends Component {
 export default App;
 ```
 
-App.js
-
 This is purely aesthetic though, and I personally prefer the first implementation. It gives more context about where a given sub-component comes from and with which parent component it can be used, and also avoids duplicated name issues.
 
 ### Caveats
@@ -172,7 +166,7 @@ In the code snippets below, you will find:
 - The full `Article` component code and all its sub-components in `Article.js`
 - An example `App.js` where you can see how we use the full component and sub-components
 
-```javascript
+```javascript title=Article.js
 import React from 'react';
 
 // This creates the "Article Context" i.e. an object containing a Provider and a Consumer component
@@ -238,9 +232,7 @@ Article.Content = Content;
 export default Article;
 ```
 
-Article.js
-
-```javascript
+```javascript title=App.js
 import React, { Component } from 'react';
 import Article from './Article';
 
@@ -279,7 +271,5 @@ class App extends Component {
 
 export default App;
 ```
-
-App.js
 
 If you feel like playing with this pattern I’ve made the example of this article available on Github [here](https://github.com/MaximeHeckel/react-sub-components-context), you can set up the dockerized project using `docker-compose build && docker-compose up`, or just run `yarn && yarn start` if you want to run it directly on your machine.

@@ -20,7 +20,7 @@ Using a **sub-component** pattern can help to fix all these issues.
 
 For this article, we’ll consider the following view as our main example: a simple Article view to render a title, subtitle, content, metadata and comments of an article object. We’ve all dealt with such views, and they can be really problematic for the reasons stated in the intro.
 
-```javascript
+```javascript title=Example of Article view component
 class MyArticleView extends React.Component {
   ...
   render() {
@@ -52,7 +52,7 @@ class MyArticleView extends React.Component {
 
 By using sub-components we can render the same exact view, but with a much more readable code and a reusable component. This is what the result can look like:
 
-```javascript
+```javascript title=Article view component implemented with "sub-components"
 class MyArticleView extends React.Component {
   ...
   render() {
@@ -91,7 +91,7 @@ The first thing we need in order to build sub-components within a component is *
 
 Here’s how the util findByType looks like:
 
-```javascript
+```javascript title=fidByType function
 import React from 'react';
 const findByType = (children, component) => {
   const result = [];
@@ -113,7 +113,7 @@ export default findByType;
 
 Now that we have our `findByType` util, we can start writing our `Article` component and the `Title` sub-component:
 
-```javascript
+```javascript title=Article component with Title sub-component
 import React, { Component } from 'react';
 import findByType from './findByType';
 import css from './somestyle.css';
@@ -149,7 +149,7 @@ export default Article;
 
 We now have the ability to use the `Article` component and its `Title` sub-component as such:
 
-```javascript
+```javascript title=Usage of the Title sub-component
 <Article>
   <Article.Title>My Article Title</Article.Title>
 </Article>
@@ -158,7 +158,7 @@ We now have the ability to use the `Article` component and its `Title` sub-compo
 In order to extend our set of sub-components, we simply need to instantiate each one of them, write their corresponding render function, and call it in the main render function.  
 Below you will find the fully implemented component with all its sub-components:
 
-```javascript
+```javascript title=Full implementation of the Article component with all its sub-components
 // @flow
 import React, { Component } from 'react';
 import type { Node } from 'react';
@@ -274,7 +274,7 @@ Note: the `renderMetadata` function is really interesting in this example, it sh
 
 Snapshot testing our sub-components is probably the quickest and safest way to make sure that any combination of sub-components within the Article component will render properly. To do this we’re going to use both Jest and Enzyme. Here’s how you can write tests for our example:
 
-```javascript
+```javascript title=Example of snapshot testing sub-components
 import React from 'react';
 import { mount } from 'enzyme';
 import Article from '../';
@@ -358,7 +358,7 @@ Reference: [https://github.com/facebook/react/issues/9803](https://github.com/fa
 
 As a workaround I added a static variable called displayName for each one of my sub-components to ensure that they have a name. Here’s how it should look like on our example:
 
-```javascript
+```javascript title=Sub-components with declared "displayName"
 
 ...
 

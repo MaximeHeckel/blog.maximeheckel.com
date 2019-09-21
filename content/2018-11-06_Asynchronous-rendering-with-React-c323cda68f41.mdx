@@ -24,8 +24,7 @@ While all of this is happening, Suspense will render a **fallback component** wh
 
 As of today, when we want to render a component that shows some data coming from an asynchronous call in React, we’re stuck with classes. We have to use the component lifecycle methods to ensure the call happens on mount, and use the local state to manage the loading state. We can see below a small example of a pattern that I’m sure pretty much every React developer had to follow:
 
-```javascript
-// Code snippet 1: "React component doing an asynchronous call before rendering the data implemented using a Class."
+```javascript title=React component doing an asynchronous call before rendering the data implemented using a Class
 import React, { Component, Fragment } from 'react';
 
 class ClassicAsync extends Component {
@@ -71,8 +70,7 @@ export default ClassicAsync;
 
 How Suspense changes that? Well, quite a lot actually if you compare the code above with the following one:
 
-```javascript
-// Code Snippet 2: React component doing an asynchronous call before rendering the data implemented using React Suspense.
+```javascript {22-24} title=React component doing an asynchronous call before rendering the data implemented using React Suspense.
 import React, { Suspense, Fragment } from 'react';
 
 // Fetcher code goes here
@@ -108,8 +106,7 @@ As we can see with this example: **no more class!** Suspense is managing for us 
 This is key for getting the example above to work. The caching part is needed for Suspense to read the data from the asynchronous call.  
 Before diving in the details, let’s look at how the `Fetcher` function is implemented for our example:
 
-```javascript
-// Code Snippet 3: Fetcher resource implementation using functions from react-cache
+```javascript title=Fetcher resource implementation using functions from react-cache
 import { unstable_createResource } from 'react-cache';
 
 const Fetcher = unstable_createResource(() =>
@@ -123,8 +120,7 @@ For this post I used [react-cache](https://www.npmjs.com/package/react-cache). I
 
 Here’s the full example for this article:
 
-```javascript
-// Code Snippet 4: The full example of a functional React component using the Suspense API
+```javascript title=The full example of a functional React component using the Suspense API
 import React, { Suspense, Fragment } from 'react';
 import { unstable_createResource } from 'react-cache';
 

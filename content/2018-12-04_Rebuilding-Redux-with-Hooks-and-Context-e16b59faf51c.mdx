@@ -21,7 +21,7 @@ For this example, we will consider a simple application. It will display some me
 
 Let’s consider the following reducers:
 
-```javascript
+```javascript title=Example of a classic reducer used with Redux
 // reducers.js
 export const initialState = {
   data: null,
@@ -45,13 +45,11 @@ const reducer = (state, action) => {
 export default reducer;
 ```
 
-Example of a classic reducer used with Redux
-
 As we can see, this is the kind of reducers we’re used to seeing in any Redux based application. The objective is to have the same reducers working for our implementation of Redux.
 
 **First step: Defining our** `**Provider**`This will be the core of our reimplementation of Redux. The Redux Provider works quite like a basic React Context Provider, so we can base our work on the Context API. Our store Provider will wrap our app and let it access our store object at any level. Here’s how it looks like:
 
-```javascript
+```javascript {5,9} title=Implementation of a store provider using the React Context API
 // store.js
 import React, { createContext, useReducer, useContext } from 'react';
 import reducer, { initialState } from './reducer';
@@ -66,8 +64,6 @@ const Provider = ({ children }) => {
 export { Store, Provider };
 ```
 
-Implementation of a store provider using the React Context API
-
 **Second step:** `**createStore **`We can see above the mention of the `createStore` function. If you’re familiar with Redux this should ring a bell. This function takes our reducer, and the initial state object of our app returns an object with 2 essential items that are injected into the app through our Provider:
 
 - **dispatch**: the function that lets us dispatch Redux action
@@ -75,7 +71,7 @@ Implementation of a store provider using the React Context API
 
 To reimplement this function in our example, let’s use the new React hooks. React has a very handy pre-built hook called `useReducer` which actually returns these 2 items stated above:
 
-```javascript
+```javascript {3,4} title=createStore implementation
 // store.js
 const createStore = (reducer, initialState) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -85,7 +81,7 @@ const createStore = (reducer, initialState) => {
 
 We now have all the elements for our implementation of Redux to work! Below you will see the code of our basic app that is using the examples above to dispatch actions and get some data from our store.
 
-```javascript
+```javascript {5,11} title=Small application using our basic reimplementation of Redux using Context and Hooks
 import React, { useContext } from 'react';
 import { Store, Provider } from './store';
 
@@ -132,15 +128,13 @@ const App = () => {
 export default App;
 ```
 
-Small application using our basic reimplementation of Redux using Context and Hooks
-
 However, we can see that although the constructs we came up with are quite similar to the ones of Redux, the way it’s used within an app is not quite the same. This is why I wanted to push the example a bit further and reimplement the `connect` Higher Order Component.
 
 ### Rebuilding the Connect HoC
 
 For this part, we want to achieve the following:
 
-```javascript
+```javascript title=Example of a component using the connect HoC
 // App.js
 const mapStateToProps = (state, props) => ({
   message: `${state.data} ${props.extra}`,
@@ -157,14 +151,12 @@ const ConnectedData = connect(
 )(Data);
 ```
 
-Example of a component using the “connect” HoC
-
 Given the code above, our connect HoC must take 2 optional arguments: a `mapStateToProps` function and a `mapDispatchToProps` function. It will then inject the following items as props for the wrapped component:
 
 - the `dispatch` function
 - the objects returned by `mapStateToProps` and `mapDispatchToProps`
 
-```javascript
+```javascript {9-13} title=Implementation of the connect HoC from Redux based on the useContext hook
 // store.js
 const connect = (
   mapStateToProps = () => {},
@@ -183,8 +175,6 @@ const connect = (
 };
 ```
 
-Implementation of the “connect” HoC from Redux based on the useContext hook
-
 With this implementation of `connect`, we now have a more familiar way to access the state from our components.
 
 ### Going even further by adding middleware support
@@ -198,7 +188,7 @@ Middlewares take a store object as an argument, which contains a `getState` func
 
 Note: This short summary and the code implementation below are based on my own research and on [this article](https://medium.com/@meagle/understanding-87566abcfb7a).
 
-```javascript
+```javascript title=Implementation of middleware support for our createStore function
 // store.js
 const compose = (...funcs) => x =>
   funcs.reduceRight((composed, f) => f(composed), x);
@@ -221,11 +211,9 @@ const createStore = (reducer, initialState, middlewares) => {
 };
 ```
 
-Implementation of “createStore” based on the useReducer hook with support for middlewares
-
 We can now add a basic middleware to our `createStore` function. Here’s one that logs to the console any action that is dispatched:
 
-```javascript
+```javascript title=Example of a custom middleware used with our Redux reimplementation
 // store.js
 const customMiddleware = store => next => action => {
   console.log('Action Triggered');
@@ -240,8 +228,6 @@ const Provider = ({ children }) => {
   return <Store.Provider value={store}>{children}</Store.Provider>;
 };
 ```
-
-Example of a custom middleware used with our Redux reimplementation
 
 ### Conclusion
 

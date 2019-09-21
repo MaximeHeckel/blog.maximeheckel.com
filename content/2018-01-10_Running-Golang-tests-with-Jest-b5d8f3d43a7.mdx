@@ -29,7 +29,7 @@ Using Jest to test both the Golang backend and the React frontend of an app has 
 
 To integrate jest-runner-go in your project, first run `yarn add jest jest-runner-go` then simply add the following to whichever Jest config you’re using, either `jest.config.js` or a specific config that will be passed with the `--config` flag when running Jest, or even the `package.json` of the project:
 
-```json
+```json {4} title=Jest config file
 "moduleFileExtensions": \[
  "go"
 \],
@@ -43,7 +43,9 @@ Then running `jest` or `jest --config my-go-test-config` will find all the files
 
 As mentioned before, most of my use cases for jest-runner-go along with the classic jest-runner include whenever one of my projects uses both Go and React. It’s possible to run the tests of both sides of the project in a single test run by using the `--projects` flag and pass multiple Jest configs. In the example below, I added the previous config to a config file called `gojest.config.js` and then used the following command in a small project generated with `create-react-app` that also includes some Go code with unit tests:
 
-`jest --projects jest.config.js gojest.config.js`
+```bash title=Running Jest with multiple Jest configs
+jest --projects jest.config.js gojest.config.js
+```
 
 which gives us the following output:
 
@@ -70,7 +72,7 @@ If you want to get the latest version of Gojest you can either download the bina
 
 For macOS
 
-```shell
+```shell title=Install command for gojest on macOS
 docker pull maximeheckel/gojest:latest &&
 id=$(docker create maximeheckel/gojest:latest) &&
 docker cp $id:/gojest-macos /usr/local/bin/gojest && (docker rm \$id >/dev/null)
@@ -78,7 +80,7 @@ docker cp $id:/gojest-macos /usr/local/bin/gojest && (docker rm \$id >/dev/null)
 
 For Linux
 
-```shell
+```shell title=Install command for gojest on Linux
 docker pull maximeheckel/gojest:latest &&
 id=$(docker create maximeheckel/gojest:latest) &&
 docker cp $id:/gojest-linux /usr/local/bin/gojest && (docker rm \$id >/dev/null)
@@ -86,7 +88,7 @@ docker cp $id:/gojest-linux /usr/local/bin/gojest && (docker rm \$id >/dev/null)
 
 For Windows
 
-```shell
+```shell title=Install command for gojest on Windows
 docker pull maximeheckel/gojest:latest &&
 id=$(docker create maximeheckel/gojest:latest) &&
 docker cp $id:/gojest-win.exe gojest.exe && (docker rm \$id >/dev/null)

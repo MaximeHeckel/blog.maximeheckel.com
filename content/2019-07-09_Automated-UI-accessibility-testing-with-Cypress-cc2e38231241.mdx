@@ -35,7 +35,7 @@ yarn add -D cypress cypress-axe axe-core start-server-and-test
 
 Now that we have all the tools installed in our project, we’ll have to write some scripts in our `package.json` to help us run the tests:
 
-```json
+```json {4} title=package.json excerpt with our test scripts
 ...
 "scripts": {
   "start": "react-scripts start",
@@ -45,8 +45,6 @@ Now that we have all the tools installed in our project, we’ll have to write s
 ...
 ```
 
-package.json excerpt with our test scripts
-
 The code snippet above contains the scripts required to run the tests. We need a `start` script that can start our app; in my case, it’s `react-scripts start` since I’ve based this demo on a create-react-app. If you already have a start command no need to change it.  
 The `test` script runs `start-server-and-test` which runs a series of steps. First, it will run the `start` script, then wait for the `[http://localhost:3000](http://localhost:3000)` to be available, and finally, once the app is fully started it will run the `cy:open` which will start the cypress UI and let us run tests.
 
@@ -54,16 +52,14 @@ The `test` script runs `start-server-and-test` which runs a series of steps. Fir
 
 Now that cypress and cypress-axe are setup, it’s time to write our first test. First, in `cypress/support/index.js`, let’s add the following code snippet:
 
-```javascript
+```javascript title=cypress/support/index.js excerpt with cypress-axe
 // Import cypress-axe for accessibility automated tests
 import 'cypress-axe';
 ```
 
-cypress/support/index.js excerpt with cypress-axe
-
 Then, let’s head to the `cypress/integration` folder and create a `accessibility.spec.js`. This file will contain the following accessibility test:
 
-```javascript
+```javascript {9-13} title=Our first accessibility test using cypress-axe
 const A11Y_OPTIONS = {
   runOnly: {
     type: 'tag',
@@ -80,11 +76,9 @@ context('Accessibility (A11Y)', () => {
 });
 ```
 
-Our first accessibility test using cypress-axe
-
 The test is contained within the `it` statement above, and as we can see it contains a few lines which execute the following steps:
 
-1.  we visit our app on whatever URL it is running, in the case of the sample React app: `[http://localhost:3000](http://localhost:3000)`
+1.  we visit our app on whatever URL it is running, in the case of the sample React app: [http://localhost:3000](http://localhost:3000)
 2.  we run `injectAxe` which injects the `axe-core` runtime into the page we’re testing.
 3.  we run `checkA11y` with some options which will return any potential accessibility issues on the current page.
 
@@ -120,7 +114,7 @@ After the change, running cypress again should result in a passing test:
 
 Adding extra rules to our accessibility test can potentially surface extra accessibility violation. Let’s add the rule `best-practice` and see what we get:
 
-```javascript
+```javascript {4} title=The updated version of the options object passed to our accessibility test
 const A11Y_OPTIONS = {
   runOnly: {
     type: 'tag',
@@ -128,8 +122,6 @@ const A11Y_OPTIONS = {
   },
 };
 ```
-
-The updated version of the options object passed to our accessibility test
 
 We should see two new moderate accessibility violations:
 

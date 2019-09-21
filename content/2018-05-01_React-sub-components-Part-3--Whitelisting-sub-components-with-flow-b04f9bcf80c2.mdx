@@ -19,7 +19,7 @@ The sub-component pattern described in the previous post addressed a few issues 
 
 Originally, the `findByType` util was being used to render our sub-components and would skip any unknown sub-components. The code snippet below shows this regression. You can give it a try by pulling the example project [here](https://github.com/MaximeHeckel/react-sub-components-context/tree/flow) and following the instruction in the README to run it. You can try switching the imports of `<App/>` in `index.js` to see how both implementation defer.
 
-```javascript
+```javascript title=Incorrect usage of a subcomponent
 <Article>
   <Article.Title />
   {/* 
@@ -70,7 +70,7 @@ Finally, we need to associate that type to the `children` prop of `Article`. Our
 
 The code snippet bellow shows the resulting component:
 
-```javascript
+```javascript title=Article.js
 // @flow
 import * as React from 'react';
 
@@ -173,8 +173,6 @@ Article.Content = Content;
 
 export default Article;
 ```
-
-Article.js
 
 There are surely other solutions to address this issue, but this is the one I’m exploring as it uses dependencies and patterns that I’m already using in most of my projects.
 
