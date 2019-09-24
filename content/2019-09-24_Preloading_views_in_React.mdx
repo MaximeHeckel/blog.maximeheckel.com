@@ -11,7 +11,7 @@ featured: true
 
 Ever since I first got to use [React Loadable](https://github.com/jamiebuilds/react-loadable) and React Lazy and Suspense, I've been a big advocate of route base code splitting for big applications. They allow the client to only load the chunks of the apps they are actually accessing instead of having to download the whole app before rendering something on the screen.
 It works so well that this pattern is even featured on the official documentation of the [React Library](https://reactjs.org/docs/code-splitting.html#route-based-code-splitting).
-However, I'm always looking for tips and tricks on how I could make the end user experience even better and that's why recently I've been trying to address the problem of **how to preload chunks in a route base code splitted React app** to make navigation between chunks more seemless. I've seen this behavior on some Gatsby sites and I really liked how discrete and efficient it is. That's why I decided to write my own take on implementing preloading and to share it with you all!
+However, I'm always looking for tips and tricks on how I could make the end-user experience even better and that's why recently I've been trying to address the problem of **how to preload chunks in a route base code splitted React app** to make navigation between chunks more seamless. I've seen this behavior on some Gatsby sites and I really liked how discrete and efficient it is. That's why I decided to write my own take on implementing preloading and to share it with you all!
 
 *Note: I based this implementation on react-router-dom and react 16.8.0 or later. The code featured for this post is available [here](https://github.com/MaximeHeckel/react-lazy-preloading)*
 
