@@ -67,7 +67,7 @@ const ReactLazyPreload = importStatement => {
 };
 ```
 
-We can now redeclared our code splitted chunks as follows:
+We can now redeclare our code splitted chunks as follows:
 
 ```javascript title=Examples of usage of ReactLazyPreload
 const App = ReactLazyPreload(() =>
@@ -115,7 +115,7 @@ const findComponentForRoute = (path, routes) => {
 
 React Router comes with a pretty handy method called `matchPath` which for a given path will return `true` if the path passed in the second argument matches. The function in the code snippet above uses this method and when a match is found, returns the associated component or `null` if no route has been found.
 
-Now that we have a way find the component associalted to a given route, we can create a function to preload it:
+Now that we have a way to find the component associalted to a given route, we can create a function to preload it:
 
 ```javascript {4-6} title=Implementation of preloadRouteComponent
 const preloadRouteComponent = (path) => {
