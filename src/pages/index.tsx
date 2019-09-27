@@ -43,6 +43,31 @@ export const pageQuery = graphql`
   }
 `;
 
+const ShortcutList = styled('div')`
+  display: flex;
+  width: 100%;
+  margin-left: -6px;
+  margin-top: 8px;
+  margin-bottom: 30px;
+  div {
+    display: flex;
+    color: #73737d;
+  }
+`;
+
+const ShortcutIcon = styled('div')`
+  border: 2px solid #73737D;
+  border-radius: 5px;
+  min-width: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 6px;
+  margin-left: 6px;
+  justify-content: center;
+  font-size: 12px;
+}
+`;
+
 const IndexPage = ({ data, location }) => {
   return (
     <MainWrapper footer={true} header={true}>
@@ -77,6 +102,12 @@ const IndexPage = ({ data, location }) => {
           </h2>
         </TypistDiv>
         <hr />
+        <ShortcutList>
+          <div>
+            <ShortcutIcon>⌘/CTRL</ShortcutIcon> + <ShortcutIcon>K</ShortcutIcon>{' '}
+            to search
+          </div>
+        </ShortcutList>
         <List>
           {data.allMdx.edges.map(({ node }) => {
             return (
