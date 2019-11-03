@@ -1,19 +1,18 @@
 ---
-title: "React Lazy: a take on preloading views"
+title: 'React Lazy: a take on preloading views'
 description: How to add preloading to your route based code split apps
 date: '2019-09-24T14:01:01.595Z'
 categories: []
 keywords: ['react', 'react router', 'code split', 'preload', 'lazy', 'suspense']
 slug: preloading-views-with-react
 type: 'blogPost'
-featured: true
 ---
 
 Ever since I first got to use [React Loadable](https://github.com/jamiebuilds/react-loadable) and React Lazy and Suspense, I've been a big advocate of route base code splitting for big applications. They allow the client to only load the chunks of the apps they are actually accessing instead of having to download the whole app before rendering something on the screen.
 It works so well that this pattern is even featured on the official documentation of the [React Library](https://reactjs.org/docs/code-splitting.html#route-based-code-splitting).
 However, I'm always looking for tips and tricks on how I could make the end-user experience even better and that's why recently I've been trying to address the problem of **how to preload chunks in a route base code split React app** to make navigation between chunks more seamless. I've seen this behavior on some Gatsby sites and I really liked how discrete and efficient it is. That's why I decided to write my own take on implementing preloading and to share it with you all!
 
-*Note: I based this implementation on react-router-dom and react 16.8.0 or later. The code featured for this post is available [here](https://github.com/MaximeHeckel/react-lazy-preloading)*
+_Note: I based this implementation on react-router-dom and react 16.8.0 or later. The code featured for this post is available [here](https://github.com/MaximeHeckel/react-lazy-preloading)_
 
 ### Our app
 
@@ -21,38 +20,37 @@ Let's consider a React app with multiple routes: a landing page route, another o
 
 ```javascript {4-6,8-12,16} title=Sample route based code split app root
 import React from 'React';
-import { Route, Router, Switch } from 'react-router-dom'
+import { Route, Router, Switch } from 'react-router-dom';
 
 const App = React.lazy(() => import('./App'));
 const Todos = React.lazy(() => import('./Todos'));
 const Todo = React.lazy(() => import('./Todo'));
 
 const routes = [
-  { path: "/", exact: true, component: App },
-  { path: "/todos", exact: true, component: Todos },
-  { path: "/todos/:id", exact: true, component: Todo }
+  { path: '/', exact: true, component: App },
+  { path: '/todos', exact: true, component: Todos },
+  { path: '/todos/:id', exact: true, component: Todo },
 ];
 
 ReactDOM.render(
-	<Router>
-		<React.Suspense fallback={"Loading"}>
-	  		<Switch>
-		        {routes.map(route => (
-		            <Route
-		              key={route.path}
-		              exact={route.exact}
-		              path={route.path}
-		              component={route.component}
-		            />
-          		))}	  		
-        	</Switch>
-		</React.Suspense>
-	</Router>
+  <Router>
+    <React.Suspense fallback={'Loading'}>
+      <Switch>
+        {routes.map(route => (
+          <Route
+            key={route.path}
+            exact={route.exact}
+            path={route.path}
+            component={route.component}
+          />
+        ))}
+      </Switch>
+    </React.Suspense>
+  </Router>
 );
 ```
 
 If we run our app, we can see in the developer tools of our browser that navigating from one view to another is loading the different "pieces" or "chunks" of our app. Now let's focus on how we could start loading these chunks when the user hovers one of the navigation links instead of loading them after navigating to the new route.
-
 
 ### Preload components with React Lazy
 
@@ -70,25 +68,19 @@ const ReactLazyPreload = importStatement => {
 We can now redeclare our code split chunks as follows:
 
 ```javascript title=Examples of usage of ReactLazyPreload
-const App = ReactLazyPreload(() =>
-  import("./App")
-);
+const App = ReactLazyPreload(() => import('./App'));
 
-const Todos = ReactLazyPreload(() =>
-  import("./Todos")
-);
+const Todos = ReactLazyPreload(() => import('./Todos'));
 
-const Todo = ReactLazyPreload(() =>
-  import("./Todo")
-);
+const Todo = ReactLazyPreload(() => import('./Todo'));
 ```
 
 With the code above we can now call the preload method at will on any of our components which will result in each of them loading their respective chunks:
 
 ```javascript title=Calling "preload" on our components
-App.preload()
-Todos.preload()
-Todo.preload()
+App.preload();
+Todos.preload();
+Todo.preload();
 ```
 
 ### Calling preload on the right component for a given route
@@ -99,13 +91,13 @@ If we take a look at the first code snippet of this post, we can see that we dec
 Let's declare our `findComponentForRoute` function:
 
 ```javascript title=Implementation of findComponentForRoute
-import { matchPath } from "react-router-dom";
+import { matchPath } from 'react-router-dom';
 
 const findComponentForRoute = (path, routes) => {
   const matchingRoute = routes.find(route =>
     matchPath(path, {
       path: route.path,
-      exact: route.exact
+      exact: route.exact,
     })
   );
 
@@ -118,7 +110,7 @@ React Router comes with a pretty handy method called `matchPath` which for a giv
 Now that we have a way to find the component associalted to a given route, we can create a function to preload it:
 
 ```javascript {4-6} title=Implementation of preloadRouteComponent
-const preloadRouteComponent = (path) => {
+const preloadRouteComponent = path => {
   const component = findComponentForRoute(path, routes);
 
   if (component && component.preload) {
@@ -152,9 +144,3 @@ Now, by using this component instead of `Link`, as you can see below, hovering a
 ![Gif showcasing the preloading behavior we implemented using React Lazy and Suspense. When hovering, the chunk will load and the transition to the new route is seemless. However, if we don't hover long enough and click on the link, we will see the fallback component from Suspense until the chunk is fully loaded.](img/react-lazy-suspense-preloading.gif)
 
 Do you want to see the whole code? I made the app showcased in this article available [here](https://github.com/MaximeHeckel/react-lazy-preloading)!
-
-
-
-
- 
-
