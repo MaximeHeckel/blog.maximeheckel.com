@@ -5,6 +5,7 @@ module.exports = {
     ...config,
   },
   plugins: [
+    'gatsby-plugin-printer',
     {
       resolve: `gatsby-theme-maximeheckel`,
       options: {},
