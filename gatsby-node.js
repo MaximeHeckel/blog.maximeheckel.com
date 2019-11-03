@@ -1,5 +1,5 @@
 const slugify = require('@sindresorhus/slugify');
-const { createPrinterNode, runScreenshots } = require('gatsby-plugin-printer');
+const { runScreenshots } = require('gatsby-plugin-printer');
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions;
@@ -80,21 +80,59 @@ exports.createPages = ({ graphql, actions }) => {
   });
 };
 
-exports.onCreateNode = ({ actions, node }) => {
-  if (node.internal.type === 'Mdx') {
-    // createPrinterNode creates an object that can be passed in
-    // to `createNode`
-    const printerNode = createPrinterNode({
-      id: node.id,
-      // fileName is something you can use in opengraph images, etc
-      fileName: slugify(node.frontmatter.title),
-      // renderDir is relative to `public` by default
-      outputDir: 'opengraph-images',
-      // data gets passed directly to your react component
-      data: node.frontmatter,
-      // the component to use for rendering. Will get batched with
-      // other nodes that use the same component
-      component: require.resolve('./src/components/Printer/index.js'),
-    });
-  }
+// exports.onCreateNode = ({ actions, node }) => {
+//   if (node.internal.type === 'Mdx') {
+//     // createPrinterNode creates an object that can be passed in
+//     // to `createNode`
+//     const printerNode = createPrinterNode({
+//       id: node.id,
+//       // fileName is something you can use in opengraph images, etc
+//       fileName: slugify(node.frontmatter.title),
+//       // renderDir is relative to `public` by default
+//       outputDir: 'opengraph-images',
+//       // data gets passed directly to your react component
+//       data: node.frontmatter,
+//       // the component to use for rendering. Will get batched with
+//       // other nodes that use the same component
+//       component: require.resolve('./src/components/Printer/index.js'),
+//     });
+//   }
+// };
+
+exports.onPostBuild = async ({ graphql }) => {
+  const data = await graphql(`
+    {
+      allMdx {
+        edges {
+          node {
+            frontmatter {
+              title
+            }
+          }
+        }
+      }
+    }
+  `).then(r => {
+    if (r.errors) {
+      console.error(r.errors.join(`, `));
+    }
+    return r.data;
+  });
+
+  const titles = data.allMdx.edges.map(
+    ({
+      node: {
+        frontmatter: { title },
+      },
+    }) => ({
+      id: slugify(title),
+      title,
+    })
+  );
+
+  await runScreenshots({
+    data: titles,
+    component: require.resolve('./src/components/Printer/index.js'),
+    outputDir: 'opengraph-images',
+  });
 };

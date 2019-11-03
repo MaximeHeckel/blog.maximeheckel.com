@@ -23,6 +23,18 @@ export const pageQuery = graphql`
             title
             description
             date
+            cover {
+              childImageSharp {
+                fluid(
+                  maxWidth: 1050
+                  maxHeight: 900
+                  quality: 70
+                  cropFocus: ENTROPY
+                ) {
+                  ...GatsbyImageSharpFluid
+                }
+              }
+            }
           }
         }
       }
