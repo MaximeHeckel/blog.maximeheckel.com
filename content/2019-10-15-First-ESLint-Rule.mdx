@@ -11,7 +11,7 @@ type: 'blogPost'
 
 When I work with React or more generally with Javascript I always use ESLint for linting. Although I've been very familiar on how to use and configure this tool, I've never actually written a custom ESLint rule from scracth until very recently which sounded first like a daunting task but ended up teaching me a few things. This is what this article is about: how I built this specific rule and how I learned about "Abstract Syntax Tree". Let's dive in it together!
 
-### A simple rule
+## A simple rule
 
 The rule I had to implement stated the following: when using the validate method from the [yup](https://github.com/jquense/yup) package, we want `yup.validateSync()` to be preceeded by `CHECK &&` hence the following snippets will show an error
 
@@ -33,7 +33,7 @@ CHECK && yup.validateSync();
 CHECK && yup.validateSync() && SOMETHINGELSE;
 ```
 
-### Setting up our ESLint plugin
+## Setting up our ESLint plugin
 
 To create our custom ESLint rule, we'll need to build a ESLint plugin. Creating a ESLint plugin is similar to creating any other NPM project, with only one specificity: the name of the package needs to start with `eslint-plugin-`.
 Let's create our new project from scratch and install ESLint as a dev dependency:
@@ -50,7 +50,7 @@ yarn install -D eslint
 
 When it comes to organizing the different files and folder of the project, ESLint has a standard way of doing so. For this post, we can follow what is adivised in the [official documentation](https://eslint.org/docs/developer-guide) about working with rules, so we'll create a file called `check-before-type-validation.js` where we will implement our rule.
 
-### How to implement our rule
+## How to implement our rule
 
 A ESLint rule contains 2 main parts:
 
@@ -58,7 +58,7 @@ A ESLint rule contains 2 main parts:
 - `create`: a function that will return an object with all the methods that ESLint will use to parse our statement. Each method returned is an AST node.
 
 
-#### What is an AST (Abstract Syntax Tree)
+### What is an AST (Abstract Syntax Tree)
 
 You might have seen or heard about ASTs in the past but here's a definition just in case:
 
@@ -68,7 +68,7 @@ To build the ESLint rule, we need to get the represention of  the expression `CH
 
 However, before doing all that, let's start by addressing the `meta` section of our rule.
 
-#### Meta
+### Meta
 
 Let's start by adding the basic structure of our rule and the meta to `check-before-type-validation.js`
 
@@ -97,11 +97,11 @@ module.exports = {
 
 We can see above that we've added 2 important fields: messages and docs. The string under `messages.unexpected` is the message that will be displayed when the rule will fail. The one under `docs.description` provides a short description of the rule which can be display by some text editors like VSCode.
 
-#### Create
+### Create
 
-For this part, let's first go to AST explorer and write our statement to see how it translates into AST. By entering `CHECK && yup.validateSync()` we should get the following output:
+For this part, let's first go to AST explorer and write our expression to see how it translates into AST. By entering `CHECK && yup.validateSync()` we should get the following output:
 
-```json
+```json title=AST representation of our expression
 {
   "type": "Program",
   "start": 0,
@@ -161,7 +161,7 @@ To write our rule, we can start by highlighting `yup.validateSync()`. We see fro
 
 We'll first need ESLint to find that specific node with the object name `yup` and a property name `validateSync` in a `CallExpression`, if found can check one of the parents of that node to see if `CHECK &&` is present. Hence, we can start by writing the following code:
 
-```javascript
+```javascript {7-12} title=Writing the rule (step 1)
 
 create: function(context) {
   return {
@@ -185,7 +185,7 @@ create: function(context) {
 
 The next part of the AST tree that we're looking for is a `LogicalExpression`. We can see from the screenshot above that it's present 2 levels up the tree. We can deduct from this that, if this parent were not to be a `LogicalExpression` our ESLint rule should report an error. We can then continue writing our code snipper above by adding the following:
 
-```javascript
+```javascript {15} title=Writing the rule (step 2)
 if (
   callee.object &&
   callee.object.name === 'yup' &&
@@ -209,7 +209,7 @@ As you can see above, in order to have ESLint reporting the error, we need to ca
 
 Next, we have to check that if it is a `LogicalExpression` the operator of that expression is actually a "AND" and not a "OR":
 
-```javascript
+```javascript {17-21} title=Writing the rule (step 3)
 if (
   callee.object &&
   callee.object.name === 'yup' &&
@@ -257,7 +257,7 @@ We can see that a `LogicalExpression` has 3 main parts:
 
 so for the last part of our rule we want to check whether the name of the left part of our `LogicalExpression` is `CHECK`:
 
-```javascript
+```javascript {16-17} title=Writing the rule (step 4)
 if (
   callee.object &&
   callee.object.name === 'yup' &&
@@ -285,11 +285,11 @@ if (
 }
 ```
 
-### How to test our rule
+## How to test our rule
 
 Now that we wrote all the cases we want our rule to handle, it's time to test it. We're lucky, because ESLint comes with its own tool for testing rules called `RuleTester`. With this tool, we can specify all the cases we want to run the rule against and whether these cases are expected to pass or be reported as errors. Our test will live in `tests/lib` and will import the rule we just wrote in the previous part:
 
-```javascript
+```javascript {5,13,15-18} title=Test for our ESLint rule
 // we import the check-before-type-validation ESLint rule
 const rules = require('../../lib/check-before-type-validation');
 const RuleTester = require('eslint').RuleTester;
