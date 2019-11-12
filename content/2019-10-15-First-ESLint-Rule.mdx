@@ -62,7 +62,7 @@ A ESLint rule contains 2 main parts:
 
 You might have seen or heard about ASTs in the past but here's a definition just in case:
 
-> an AST is simplified and condensed treerepresentation of the structure of source code written in a given programming language. It is "abstract" as it does not represent every detail appearing in the real synta but just the content or structural details.
+> an AST is simplified and condensed tree representation of the structure of source code written in a given programming language. It is "abstract" as it does not represent every detail appearing in the real syntax but just the content or structural details.
 
 To build the ESLint rule, we need to get the represention of  the expression `CHECK && yup.validateSync();` in a AST and let the `create` function to return an error everytime the tree for that given expression does not match the valid tree. To find the AST representation of our expression you can use [AST Explorer](https://astexplorer.net), which was very helpful for me.
 
