@@ -1,7 +1,7 @@
 ---
 title: 'How I built my first custom ESLint rule'
 description: A guide to get started with AST (Abstract Syntax Tree) and custom built ESLint plugins
-date: '2019-10-15T14:01:01.595Z'
+date: '2019-11-19T14:01:01.595Z'
 categories: []
 keywords: ['eslint', 'rule', 'testing', 'AST', 'javascript', 'ui', 'linting', 'syntax']
 slug: how-to-build-first-eslint-rule
@@ -9,11 +9,11 @@ cover: './img/tim-gouw-_U-x3_FYxfI-unsplash.jpg'
 type: 'blogPost'
 ---
 
-When I work with React or more generally with Javascript I always use ESLint for linting. Although I've been very familiar on how to use and configure this tool, I've never actually written a custom ESLint rule from scracth until very recently which sounded first like a daunting task but ended up teaching me a few things. This is what this article is about: how I built this specific rule and how I learned about "Abstract Syntax Tree". Let's dive in it together!
+When I work with React or more generally with Javascript, I always use ESLint for linting. Although I've been very familiar with how to use and configure this tool, I've never actually written a custom ESLint rule from scratch until recently. At first, it sounded like a daunting task, but it ended up teaching me quite a few things. This is what this article is about: how I built this specific rule and how I learned about "Abstract Syntax Tree". Let's dive in together!
 
 ## A simple rule
 
-The rule I had to implement stated the following: when using the validate method from the [yup](https://github.com/jquense/yup) package, we want `yup.validateSync()` to be preceeded by `CHECK &&` hence the following snippets will show an error
+The rule I had to implement stated the following: when using the validate method from the [yup](https://github.com/jquense/yup) package, we want `yup.validateSync()` to be preceeded by `CHECK &&`; hence the following snippets will show an error
 
 ```javascript
 yup.validateSync();
@@ -35,7 +35,7 @@ CHECK && yup.validateSync() && SOMETHINGELSE;
 
 ## Setting up our ESLint plugin
 
-To create our custom ESLint rule, we'll need to build a ESLint plugin. Creating a ESLint plugin is similar to creating any other NPM project, with only one specificity: the name of the package needs to start with `eslint-plugin-`.
+To create our custom ESLint rule, we'll need to build a ESLint plugin. Creating a ESLint plugin is similar to creating any other NPM project, except that the name of the package needs to start with `eslint-plugin-`.
 Let's create our new project from scratch and install ESLint as a dev dependency:
 
 ```bash title=Commands to initialize our ESLint plugin
@@ -64,7 +64,7 @@ You might have seen or heard about ASTs in the past but here's a definition just
 
 > an AST is simplified and condensed tree representation of the structure of source code written in a given programming language. It is "abstract" as it does not represent every detail appearing in the real syntax but just the content or structural details.
 
-To build the ESLint rule, we need to get the represention of  the expression `CHECK && yup.validateSync();` in a AST and let the `create` function to return an error everytime the tree for that given expression does not match the valid tree. To find the AST representation of our expression you can use [AST Explorer](https://astexplorer.net), which was very helpful for me.
+To build the ESLint rule, we need to get the represention of the expression `CHECK && yup.validateSync();` in a AST and let the `create` function return an error everytime the tree for the given expression does not match the valid tree. To find the AST representation of our expression you can use [AST Explorer](https://astexplorer.net), which was very helpful for me.
 
 However, before doing all that, let's start by addressing the `meta` section of our rule.
 
@@ -99,7 +99,7 @@ We can see above that we've added 2 important fields: messages and docs. The str
 
 ### Create
 
-For this part, let's first go to AST explorer and write our expression to see how it translates into AST. By entering `CHECK && yup.validateSync()` we should get the following output:
+For this part, let's first go to AST explorer and write our statement to see how it translates into AST. By entering `CHECK && yup.validateSync()` we should get the following output:
 
 ```json title=AST representation of our expression
 {
@@ -159,7 +159,7 @@ To write our rule, we can start by highlighting `yup.validateSync()`. We see fro
 
 ![Here we're highlighting the yup.validateSync() expression to see its AST equivalent](img/ast-explorer.png)
 
-We'll first need ESLint to find that specific node with the object name `yup` and a property name `validateSync` in a `CallExpression`, if found can check one of the parents of that node to see if `CHECK &&` is present. Hence, we can start by writing the following code:
+We'll first need ESLint to find that specific node with the object name `yup` and a property name `validateSync` in a `CallExpression`. If found, we can check one of the parents of that node to see if `CHECK &&` is present. Hence, we can start by writing the following code:
 
 ```javascript {7-12} title=Writing the rule (step 1)
 
@@ -183,7 +183,7 @@ create: function(context) {
 
 ```
 
-The next part of the AST tree that we're looking for is a `LogicalExpression`. We can see from the screenshot above that it's present 2 levels up the tree. We can deduct from this that, if this parent were not to be a `LogicalExpression` our ESLint rule should report an error. We can then continue writing our code snipper above by adding the following:
+The next part of the AST tree that we're looking for is a `LogicalExpression`. We can see from the screenshot above that it's present 2 levels up the tree. We can deduct from this that if this parent were not to be a `LogicalExpression`, our ESLint rule should report an error. We can then continue writing our code snippet above by adding the following:
 
 ```javascript {15} title=Writing the rule (step 2)
 if (
@@ -235,7 +235,7 @@ if (
 }
 ```
 
-With this code our ESLint rule report an error with the following:
+With this code our ESLint rule will report an error for the following:
 
 ```javascript
 yup.validateSync(); // LogicalExpression missing
@@ -244,7 +244,7 @@ CHECK || yup.validateSync(); // The LogicalExpression has not the expected opera
 
 However if we have something like the following:
 
-```javascript
+```javascript 
 TEST && yup.validateSync();
 ```
 
@@ -359,4 +359,4 @@ type-check
 
 Now that we've ensured that the rule is working as expected, we can publish it as an NPM package and add it as a plugin to any ESLint configuration we want.
 
-This whole process might seem like a lot at first, especially since it involves dealing with AST which isn't the most accessible thing to learn. But, now that we know what is the anatomy of an ESLint rule, we can appreciate even more the insane amount of work done by the community to provide us with all this linting rules that we're using on a day to day basis to make our codebase cleaner and more consistent.
+This whole process might seem like a lot at first, especially since it involves dealing with AST which isn't the most accessible thing to learn. But, now that we know what the anatomy of an ESLint rule is, we can appreciate even more the insane amount of work done by the community to provide us with all this linting rules that we're using on a day to day basis to make our codebase cleaner and more consistent.
