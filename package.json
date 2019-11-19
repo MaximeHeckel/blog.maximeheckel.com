@@ -2,7 +2,7 @@
   "name": "blog.maximeheckel.com",
   "private": true,
   "description": "blog.maximeheckel.com - Blog",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "author": "Maxime Heckel <hello@maximeheckel.com>",
   "dependencies": {
     "@emotion/core": "^10.0.6",
@@ -24,7 +24,7 @@
     "gatsby-plugin-tslint": "^0.0.2",
     "gatsby-plugin-typescript": "^2.0.3",
     "gatsby-source-filesystem": "^2.1.9",
-    "gatsby-theme-maximeheckel": "0.1.39",
+    "gatsby-theme-maximeheckel": "0.1.42",
     "mousetrap": "^1.6.3",
     "prop-types": "^15.7.2",
     "react": "16.8.0",
