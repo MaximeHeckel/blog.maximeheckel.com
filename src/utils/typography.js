@@ -47,8 +47,15 @@ const typography = new Typography({
       lineHeight: 2,
     },
     p: {
-      fontSize: '16px',
-      lineHeight: 1.756,
+      fontSize: '18px',
+      lineHeight: 1.75,
+      letterSpacing: '0.5px',
+      marginBottom: '2.25rem',
+    },
+    li: {
+      fontSize: '18px',
+      lineHeight: 1.65,
+      letterSpacing: '0.5px',
     },
   }),
 });

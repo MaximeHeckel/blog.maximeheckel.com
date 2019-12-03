@@ -9,8 +9,6 @@ cover: './img/1__iLiODjb0hFjNooC364a__1w.jpeg'
 type: 'blogPost'
 ---
 
-import ColoredBlock from 'gatsby-theme-maximeheckel/src/components/ColoredBlock';
-
 _Note: the content of this post and the code featured in it have been produced on my own personal time and does not reflect my current work being done at Docker._
 
 For the past 6 years, I have been working with the [Docker API](https://docs.docker.com/engine/api/v1.39/) almost on a daily basis, whether it’s been in the context of personal projects, or when building products at Docker. However, since I started building UIs for container management software, I’ve always struggled with how to know how the different Docker objects are related. This made building comprehensive and easy to use user interfaces challenging, especially because in order to get all the related resources orbiting around a service or a container, for example, we always ended up doing quite a few REST API calls, manipulating filters, and “over fetching” to get the data we were interested in displaying.  
@@ -19,8 +17,6 @@ These are exactly the problems that GraphQL is trying to solve and this is what 
 **Why?**  
 I’ve never taken the time to get started seriously with GraphQL and I know the Docker API and how it could be better and easier to use. So, I thought this would be the perfect project to learn more about GraphQL, build something that matters and of course share with you about what I’ve learned.
 
-<ColoredBlock color="#BEF3EF">
-
 **What you will learn**  
 In this post you will learn to:
 
@@ -28,8 +24,6 @@ In this post you will learn to:
 - Build and organize resolvers and schemas
 - Running queries against our GraphQL server
 - Generate typescript types from the GraphQL schemas
-
-</ColoredBlock>
 
 If you want to follow along with this article with more details about the code I recommend checking out [the project on Github](https://github.com/MaximeHeckel/docker-graphql). It’s based on `apollo-server` , `typescript`, `graphql`, `lodash` and `superagent` .
 

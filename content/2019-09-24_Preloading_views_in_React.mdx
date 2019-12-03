@@ -14,6 +14,8 @@ However, I'm always looking for tips and tricks on how I could make the end-user
 
 _Note: I based this implementation on react-router-dom and react 16.8.0 or later. The code featured for this post is available [here](https://github.com/MaximeHeckel/react-lazy-preloading)_
 
+---
+
 ### Our app
 
 Let's consider a React app with multiple routes: a landing page route, another one to get a list of todos, another one to inspect todos. Each route renders a specific view / components. We carefully read [the React documentation about code splitting](https://reactjs.org/docs/code-splitting.html) and used `React.Lazy` and `React.Suspense` which results in us having a codebase similar to the following:
