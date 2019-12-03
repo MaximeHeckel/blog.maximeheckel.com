@@ -171,9 +171,10 @@ const DescriptionBlock = styled('p')`
 const ItemFooterBlock = styled('div')`
   display: flex;
   align-items: center;
+  font-size: 14px;
 
   p {
-    font-size: 14px;
+    font-size: inherit;
     font-weight: 600;
     margin-right: 8px;
     margin-bottom: 0px;
