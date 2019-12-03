@@ -165,7 +165,7 @@ const List = styled('ul')`
 const DescriptionBlock = styled('p')`
   color: #73737d;
   margin-bottom: 8px;
-  max-width: 350px;
+  max-width: 450px;
 `;
 
 const ItemFooterBlock = styled('div')`
