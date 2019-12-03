@@ -157,6 +157,7 @@ const List = styled('ul')`
   }
 
   h3 {
+    letter-spacing: 0px;
     margin-bottom: 10px;
   }
 `;
