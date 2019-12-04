@@ -2,7 +2,7 @@
   "name": "blog.maximeheckel.com",
   "private": true,
   "description": "blog.maximeheckel.com - Blog",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "author": "Maxime Heckel <hello@maximeheckel.com>",
   "dependencies": {
     "@emotion/core": "^10.0.6",
