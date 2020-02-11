@@ -76,7 +76,7 @@ const IndexPage = ({ data, location }) => {
         <br />
         <h1>Hi 👋 I'm Maxime, and this is my blog.</h1>
         <TypistDiv>
-          <h2>I write about </h2>
+          <h2>I write about</h2>
           <h2>
             <TypistLoop interval={2000}>
               {[
