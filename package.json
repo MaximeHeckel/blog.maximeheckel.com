@@ -21,10 +21,9 @@
     "gatsby-plugin-printer": "1.0.8",
     "gatsby-plugin-react-helmet": "^3.1.3",
     "gatsby-plugin-sitemap": "2.2.6",
-    "gatsby-plugin-tslint": "^0.0.2",
     "gatsby-plugin-typescript": "^2.0.3",
     "gatsby-source-filesystem": "^2.1.9",
-    "gatsby-theme-maximeheckel": "0.1.43",
+    "gatsby-theme-maximeheckel": "0.1.46",
     "mousetrap": "^1.6.3",
     "prop-types": "^15.7.2",
     "react": "16.8.0",
@@ -71,7 +70,7 @@
     "start": "yarn develop",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
-    "lint": "tslint --project ."
+    "lint": "eslint --ext=jsx,ts,tsx src"
   },
   "repository": {
     "type": "git",

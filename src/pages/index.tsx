@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import styled from '@emotion/styled';
 import { graphql, Link } from 'gatsby';
 import { Button, MainWrapper, Seo } from 'gatsby-theme-maximeheckel';

@@ -56,7 +56,7 @@ const SearchBox = props => {
     if (searchQuery === '') {
       setResults([]);
     }
-  }, [location.search, show]);
+  }, [location.search, show, searchQuery]);
 
   const onClose = () => {
     toggleLockScroll();
@@ -121,6 +121,7 @@ const SearchBox = props => {
               <a
                 href="https://maximeheckel.com"
                 target="_blank"
+                rel="noopener noreferrer"
                 style={{ textDecoration: `none` }}
               >
                 <div>
@@ -133,6 +134,7 @@ const SearchBox = props => {
               <a
                 href="https://twitter.com/maximeheckel"
                 target="_blank"
+                rel="noopener noreferrer"
                 style={{ textDecoration: `none` }}
               >
                 <div>

@@ -12,7 +12,9 @@ const TypistLoop = ({ interval = 1000, children }) => {
     timer = setTimeout(showNext, interval);
   };
 
-  React.useEffect(() => {}, [clearTimeout(timer)]);
+  React.useEffect(() => {
+    clearTimeout(timer);
+  }, [timer]);
 
   return React.Children.map(
     children,
