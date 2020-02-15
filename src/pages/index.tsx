@@ -1,7 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
-import styled from '@emotion/styled';
 import { graphql, Link } from 'gatsby';
-import { Button, MainWrapper, Seo } from 'gatsby-theme-maximeheckel';
+import { FluidObject } from 'gatsby-image';
+import Button from 'gatsby-theme-maximeheckel/src/components/Button';
+import Seo from 'gatsby-theme-maximeheckel/src/components/Seo';
+import MainWrapper from 'gatsby-theme-maximeheckel/src/layouts/MainWrapper';
+import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
 import React from 'react';
 import Typist from 'react-typist';
 import SearchBox from '../components/SearchBox';
@@ -68,7 +71,46 @@ const ShortcutIcon = styled('div')`
 }
 `;
 
-const IndexPage = ({ data, location }) => {
+interface IProps {
+  data: {
+    allMdx: {
+      edges: Array<{
+        node: {
+          id: string;
+          frontmatter: {
+            slug: string;
+            title: string;
+            description: string;
+            date: string;
+            subtitle: string;
+            tags: string[];
+            cover: {
+              childImageSharp: {
+                fluid: FluidObject;
+              };
+            };
+          };
+          timeToRead: number;
+        };
+      }>;
+    };
+    site: {
+      siteMetadata: {
+        title: string;
+        posts: Array<{
+          title: string;
+          url: string;
+          date: string;
+        }>;
+      };
+    };
+  };
+  location: {
+    search?: string;
+  };
+}
+
+const IndexPage = ({ data, location }: IProps) => {
   return (
     <MainWrapper footer={true} header={true}>
       <Seo title={data.site.siteMetadata.title} />
