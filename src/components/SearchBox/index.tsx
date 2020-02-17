@@ -31,10 +31,11 @@ type Result = {
 
 interface IProps {
   location: { search?: string };
+  showOverride?: boolean;
 }
 
 const SearchBox: React.FC<IProps> = props => {
-  const { location } = props;
+  const { location, showOverride } = props;
   const searchQuery = new URLSearchParams(location.search).get('search') || '';
   const toggleLockScroll = () =>
     document.documentElement.classList.toggle('lock-scroll');
@@ -42,7 +43,7 @@ const SearchBox: React.FC<IProps> = props => {
   const theme = useTheme();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const searchBoxRef = React.useRef<HTMLDivElement>(null);
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = React.useState(false || showOverride);
   const [results, setResults] = React.useState<Result[]>([]);
 
   React.useEffect(() => {
@@ -142,7 +143,7 @@ const SearchBox: React.FC<IProps> = props => {
                 </Item>
               );
             })}
-            <Item dark={theme.dark}>
+            <Item data-testid="portfolio-link" dark={theme.dark}>
               <a
                 href="https://maximeheckel.com"
                 target="_blank"
@@ -155,7 +156,7 @@ const SearchBox: React.FC<IProps> = props => {
                 </div>
               </a>
             </Item>
-            <Item dark={theme.dark}>
+            <Item data-testid="twitter-link" dark={theme.dark}>
               <a
                 href="https://twitter.com/maximeheckel"
                 target="_blank"

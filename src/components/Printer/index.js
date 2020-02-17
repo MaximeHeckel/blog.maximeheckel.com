@@ -81,7 +81,6 @@ const PrinterComponent = ({ title }) => (
       <Title>{title}</Title>
       <h3 style={{ color: '#196FD8', paddingLeft: '20px' }}>@MaximeHeckel</h3>
     </div>
-    {/*  */}
   </Wrapper>
 );
 

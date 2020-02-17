@@ -70,7 +70,9 @@
     "format": "prettier --write \"src/**/*.{js|ts|tsx}\"",
     "start": "yarn develop",
     "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
+    "test": "is-ci \"test:coverage\" \"test:watch\"",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
     "type-check": "tsc --noEmit",
     "lint": "eslint --ext=jsx,ts,tsx src"
   },
@@ -80,5 +82,46 @@
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "jest-emotion"
+    ],
+    "setupTestFrameworkScriptFile": "./setup-jest.js",
+    "globals": {
+      "__PATH_PREFIX__": "",
+      "ts-jest": {
+        "diagnostics": false,
+        "tsConfig": "tsconfig.test.json"
+      }
+    },
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.(tsx?|jsx?)$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(gatsby)/)"
+    ],
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js|jsx)$",
+    "testPathIgnorePatterns": [
+      "node_modules",
+      ".cache"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "moduleNameMapper": {
+      "typeface-*": "identity-obj-proxy",
+      ".+\\.(css|styl|less|sass|scss)$": "identity-obj-proxy",
+      ".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/file.js"
+    },
+    "collectCoverage": false,
+    "coverageReporters": [
+      "lcov",
+      "text",
+      "html"
+    ]
   }
 }
