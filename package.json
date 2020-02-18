@@ -43,7 +43,7 @@
     "@typescript-eslint/parser": "^2.19.2",
     "babel-jest": "^23.1.0",
     "babel-preset-gatsby": "^0.1.7",
-    "cypress": "^3.1.5",
+    "cypress": "4.0.1",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
@@ -70,11 +70,17 @@
     "format": "prettier --write \"src/**/*.{js|ts|tsx}\"",
     "start": "yarn develop",
     "serve": "gatsby serve",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run --browser chrome",
     "test": "is-ci \"test:coverage\" \"test:watch\"",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
+    "test:e2e": "is-ci \"test:e2e:ci\" \"test:e2e:dev\"",
+    "test:e2e:dev": "start-server-and-test develop http://localhost:8000 cy:open",
+    "test:e2e:ci": "start-server-and-test develop http://localhost:8000 cy:run",
     "type-check": "tsc --noEmit",
-    "lint": "eslint --ext=jsx,ts,tsx src"
+    "lint": "eslint --ext=jsx,ts,tsx src",
+    "validate": "npm run test:coverage && npm run test:e2e:ci"
   },
   "repository": {
     "type": "git",

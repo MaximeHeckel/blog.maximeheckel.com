@@ -150,10 +150,10 @@ const IndexPage = ({ data, location }: IProps) => {
             to search
           </div>
         </ShortcutList>
-        <List>
+        <List data-testid="article-list">
           {data.allMdx.edges.map(({ node }) => {
             return (
-              <li key={node.frontmatter.slug}>
+              <li key={node.frontmatter.slug} data-testid="article-item">
                 <Link
                   style={{ textDecoration: `none` }}
                   to={`/posts/${node.frontmatter.slug}`}
@@ -172,7 +172,9 @@ const IndexPage = ({ data, location }: IProps) => {
                     style={{ textDecoration: `none` }}
                     to={`/posts/${node.frontmatter.slug}`}
                   >
-                    <Button secondary={true}>Read</Button>
+                    <Button data-testid="article-link" secondary={true}>
+                      Read
+                    </Button>
                   </Link>
                 </ItemFooterBlock>
               </li>

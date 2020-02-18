@@ -105,6 +105,7 @@ const SearchBox: React.FC<IProps> = props => {
     <FocusTrap>
       <SearchBoxOverlay
         onClick={clickAway}
+        data-testid="searchbox-overlay"
         aria-label="search"
         // The dialog container element has aria-modal set to true.
         aria-modal="true"
@@ -112,13 +113,14 @@ const SearchBox: React.FC<IProps> = props => {
         // All elements required to operate the dialog are descendants of the element that has role dialog.
         role="dialog"
       >
-        <SearchBoxWrapper ref={searchBoxRef}>
+        <SearchBoxWrapper data-testid="searchbox" ref={searchBoxRef}>
           <form>
             <input
               ref={inputRef}
               autoComplete="off"
               type="search"
               placeholder="Search..."
+              data-testid="search-input"
               id="search-input"
               name="search"
               onKeyDown={e => e.keyCode === 27 && onClose()}
@@ -131,7 +133,11 @@ const SearchBox: React.FC<IProps> = props => {
           <SearchResults>
             {results.map(result => {
               return (
-                <Item key={result.slug} dark={theme.dark}>
+                <Item
+                  data-testid="search-result"
+                  key={result.slug}
+                  dark={theme.dark}
+                >
                   <Link
                     style={{ textDecoration: `none` }}
                     onClick={() => toggleLockScroll()}
