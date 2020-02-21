@@ -1,0 +1,17 @@
+name: Lighthouse Audit
+on: pull_request
+
+jobs:
+  audit:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Sleep for 10 min
+        run: sleep 600
+      - name: Lighthouse Audit
+        uses: jakejarvis/lighthouse-action@master
+        with:
+          netlify_site: 'blogmaximeheckel.netlify.com'
+      - uses: actions/upload-artifact@master
+        with:
+          name: report
+          path: './report'
