@@ -1,7 +1,7 @@
 import { ThemeProvider } from 'emotion-theming';
 import { cleanup, render } from '@testing-library/react';
-import theme from 'gatsby-theme-maximeheckel/src/theme_light';
 import React from 'react';
+import theme from '../../../utils/theme_mock';
 import SearchBox from '../';
 
 afterEach(() => {

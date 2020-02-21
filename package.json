@@ -12,8 +12,8 @@
     "@sindresorhus/slugify": "^0.9.1",
     "emotion-theming": "^10.0.6",
     "focus-trap-react": "^6.0.0",
-    "gatsby": "2.17.7",
-    "gatsby-image": "2.2.19",
+    "gatsby": "2.19.18",
+    "gatsby-image": "2.2.41",
     "gatsby-plugin-google-analytics": "^2.0.9",
     "gatsby-plugin-lunr": "^1.5.2",
     "gatsby-plugin-manifest": "2.2.8",
@@ -23,21 +23,22 @@
     "gatsby-plugin-sitemap": "2.2.6",
     "gatsby-plugin-typescript": "^2.0.3",
     "gatsby-source-filesystem": "^2.1.9",
-    "gatsby-theme-maximeheckel": "0.1.47",
+    "gatsby-theme-maximeheckel": "0.1.49",
     "mousetrap": "^1.6.3",
     "prop-types": "^15.7.2",
-    "react": "16.8.0",
-    "react-dom": "16.8.0",
+    "react": "16.12.0",
+    "react-dom": "16.12.0",
     "react-typist": "^2.0.5",
     "react-typography": "^0.16.18",
     "typography": "^0.16.18"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "7.8.3",
     "@testing-library/react": "^8.0.7",
     "@types/jest": "^23.0.0",
     "@types/mousetrap": "^1.6.3",
-    "@types/react": "^16.8.2",
-    "@types/react-dom": "^16.8.0",
+    "@types/react": "16.9.20",
+    "@types/react-dom": "16.9.5",
     "@types/react-helmet": "^5.0.8",
     "@typescript-eslint/eslint-plugin": "^2.19.2",
     "@typescript-eslint/parser": "^2.19.2",
@@ -51,13 +52,12 @@
     "eslint-plugin-react-hooks": "^2.3.0",
     "identity-obj-proxy": "^3.0.0",
     "is-ci-cli": "^1.1.1",
-    "jest": "^23.0.1",
+    "jest": "25.1.0",
     "jest-dom": "^3.0.2",
     "jest-emotion": "^10.0.7",
     "prettier": "^1.19.1",
     "react-test-renderer": "^16.8.1",
     "start-server-and-test": "^1.7.11",
-    "ts-jest": "^23.10.5",
     "typescript": "^3.2.4"
   },
   "keywords": [
@@ -93,30 +93,23 @@
     "snapshotSerializers": [
       "jest-emotion"
     ],
-    "setupTestFrameworkScriptFile": "./setup-jest.js",
+    "setupFilesAfterEnv": [
+      "./setup-jest.js"
+    ],
     "globals": {
-      "__PATH_PREFIX__": "",
-      "ts-jest": {
-        "diagnostics": false,
-        "tsConfig": "tsconfig.test.json"
-      }
+      "__PATH_PREFIX__": ""
     },
     "testURL": "http://localhost",
     "transform": {
-      "^.+\\.(tsx?|jsx?)$": "ts-jest"
+      "^.+\\.[jt]sx?$": "<rootDir>/jest-preprocess.js"
     },
     "transformIgnorePatterns": [
       "node_modules/(?!(gatsby)/)"
     ],
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js|jsx)$",
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$",
     "testPathIgnorePatterns": [
       "node_modules",
       ".cache"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
     ],
     "moduleNameMapper": {
       "typeface-*": "identity-obj-proxy",
