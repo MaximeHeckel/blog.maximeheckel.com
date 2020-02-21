@@ -4,6 +4,21 @@
   "description": "blog.maximeheckel.com - Blog",
   "version": "0.4.0",
   "author": "Maxime Heckel <hello@maximeheckel.com>",
+  "scripts": {
+    "serve": "gatsby serve",
+    "build": "rm -rf .cache && gatsby build",
+    "develop": "rm -rf .cache && gatsby develop",
+    "start": "yarn develop",
+    "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
+    "test": "is-ci \"test:coverage\" \"test:watch\"",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint --ext=jsx,ts,tsx src",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run --browser chrome",
+    "test:e2e": "start-server-and-test develop http://localhost:8000 cy:open"
+  },
   "dependencies": {
     "@emotion/core": "^10.0.6",
     "@emotion/styled": "^10.0.6",
@@ -64,27 +79,9 @@
     "gatsby"
   ],
   "license": "MIT",
-  "scripts": {
-    "build": "rm -rf .cache && gatsby build",
-    "develop": "rm -rf .cache && gatsby develop",
-    "format": "prettier --write \"src/**/*.{js|ts|tsx}\"",
-    "start": "yarn develop",
-    "serve": "gatsby serve",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run --browser chrome",
-    "test": "is-ci \"test:coverage\" \"test:watch\"",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch",
-    "test:e2e": "is-ci \"test:e2e:ci\" \"test:e2e:dev\"",
-    "test:e2e:dev": "start-server-and-test develop http://localhost:8000 cy:open",
-    "test:e2e:ci": "start-server-and-test develop http://localhost:8000 cy:run",
-    "type-check": "tsc --noEmit",
-    "lint": "eslint --ext=jsx,ts,tsx src",
-    "validate": "npm run test:coverage && npm run test:e2e:ci"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/MaximeHeckel/blog.maximeheckel.com"
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"

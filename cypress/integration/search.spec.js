@@ -49,7 +49,6 @@ describe('Search tests', () => {
     cy.get('[data-testid="search-input"]')
       .clear()
       .type('react');
-    cy.url().should('include', '?search=react');
     cy.get('[data-testid="search-result"]')
       .eq(0)
       .click();

@@ -8,6 +8,29 @@ afterEach(() => {
   cleanup();
 });
 
+jest.mock('gatsby-theme-maximeheckel/src/utils/styled', () => {
+  const styled = require('@emotion/styled');
+  return styled;
+});
+
+jest.mock('gatsby-theme-maximeheckel/src/context/ThemeContext', () => {
+  return {
+    useTheme: () => ({
+      dark: true,
+    }),
+  };
+});
+
+jest.mock('gatsby-theme-maximeheckel/src/components/Logo', () => {
+  return {
+    __esModule: true,
+    // eslint-disable-next-line react/display-name
+    default: () => {
+      return <div></div>;
+    },
+  };
+});
+
 describe('SearchBox', () => {
   it('Renders the SearchBox component properly', () => {
     const location = { search: '' };
