@@ -1,11 +1,34 @@
 import { ThemeProvider } from 'emotion-theming';
 import { cleanup, render } from '@testing-library/react';
-import theme from 'gatsby-theme-maximeheckel/src/theme_light';
 import React from 'react';
+import theme from '../../../utils/theme_mock';
 import SearchBox from '../';
 
 afterEach(() => {
   cleanup();
+});
+
+jest.mock('gatsby-theme-maximeheckel/src/utils/styled', () => {
+  const styled = require('@emotion/styled');
+  return styled;
+});
+
+jest.mock('gatsby-theme-maximeheckel/src/context/ThemeContext', () => {
+  return {
+    useTheme: () => ({
+      dark: true,
+    }),
+  };
+});
+
+jest.mock('gatsby-theme-maximeheckel/src/components/Logo', () => {
+  return {
+    __esModule: true,
+    // eslint-disable-next-line react/display-name
+    default: () => {
+      return <div></div>;
+    },
+  };
 });
 
 describe('SearchBox', () => {

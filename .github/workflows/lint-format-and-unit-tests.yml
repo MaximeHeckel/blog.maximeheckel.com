@@ -1,0 +1,30 @@
+name: Run Formatting and Unit Tests
+
+on: [push]
+
+jobs:
+  install-and-test:
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        node: [12.x]
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node: ${{ matrix.node }}
+      - name: Install Dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: |
+          yarn install --force --non-interactive
+      - name: Run Prettier
+        run: |
+          yarn format
+      - name: Run Lint
+        run: |
+          yarn lint
+      - name: Run Unit Tests
+        run: |
+          yarn test:coverage
