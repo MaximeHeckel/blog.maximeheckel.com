@@ -1,3 +1,4 @@
+const path = require('path');
 const slugify = require('@sindresorhus/slugify');
 const { runScreenshots } = require('gatsby-plugin-printer');
 
@@ -80,24 +81,16 @@ exports.createPages = ({ graphql, actions }) => {
   });
 };
 
-// exports.onCreateNode = ({ actions, node }) => {
-//   if (node.internal.type === 'Mdx') {
-//     // createPrinterNode creates an object that can be passed in
-//     // to `createNode`
-//     const printerNode = createPrinterNode({
-//       id: node.id,
-//       // fileName is something you can use in opengraph images, etc
-//       fileName: slugify(node.frontmatter.title),
-//       // renderDir is relative to `public` by default
-//       outputDir: 'opengraph-images',
-//       // data gets passed directly to your react component
-//       data: node.frontmatter,
-//       // the component to use for rendering. Will get batched with
-//       // other nodes that use the same component
-//       component: require.resolve('./src/components/Printer/index.js'),
-//     });
-//   }
-// };
+exports.onCreateWebpackConfig = ({ actions }) => {
+  actions.setWebpackConfig({
+    resolve: {
+      alias: {
+        react: path.resolve('./node_modules/react'),
+        'react-dom': path.resolve('./node_modules/react-dom'),
+      },
+    },
+  });
+};
 
 exports.onPostBuild = async ({ graphql }) => {
   const data = await graphql(`
