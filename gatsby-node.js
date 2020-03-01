@@ -85,6 +85,7 @@ exports.onCreateWebpackConfig = ({ actions }) => {
   actions.setWebpackConfig({
     resolve: {
       alias: {
+        '@mdx-js/react': path.resolve('./node_modules/@mdx-js/react'),
         react: path.resolve('./node_modules/react'),
         'react-dom': path.resolve('./node_modules/react-dom'),
       },
@@ -107,6 +108,7 @@ exports.onPostBuild = async ({ graphql }) => {
     }
   `).then(r => {
     if (r.errors) {
+      // eslint-disable-next-line no-console
       console.error(r.errors.join(`, `));
     }
     return r.data;
