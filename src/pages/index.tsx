@@ -202,6 +202,7 @@ const List = styled('ul')`
   }
 
   h3 {
+    color: ${p => p.theme.fontColor};
     letter-spacing: 0px;
     margin-bottom: 10px;
   }
