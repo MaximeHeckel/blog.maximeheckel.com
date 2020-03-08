@@ -1,6 +1,6 @@
 name: Run Formatting and Unit Tests
 
-on: [delete]
+on: [push]
 
 jobs:
   install-and-test:

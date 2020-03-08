@@ -1,6 +1,6 @@
 name: Run End-to-End Test Suite
 
-on: [delete]
+on: [push]
 
 jobs:
   build-and-e2e-test:

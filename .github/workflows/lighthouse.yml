@@ -1,5 +1,5 @@
 name: Lighthouse Audit
-on: delete
+on: pull_request
 
 jobs:
   audit:

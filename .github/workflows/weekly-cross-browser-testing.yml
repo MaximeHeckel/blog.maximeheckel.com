@@ -1,6 +1,9 @@
 name: Weekly cross-browser testing
 
-on: [push]
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron: '0 12 * * 1'
 
 jobs:
   cross-browser:
