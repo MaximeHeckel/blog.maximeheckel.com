@@ -12,7 +12,7 @@ type: 'blogPost'
 *This is going to be a short post, the first one for 2020! Better late than never right?*
 
 You might have noticed in some of my previous posts that I like testing and love to use [Cypress](https://cypress.io) as a way to run my end-to-end tests. I was excited when I learned that they added support for Firefox which is one of the main features that was missing to use it in a professional setting.
-I also always wanted to make sure the personal projects I work on run well on every browser, including this blog, automatically on a weekly basis. This is why I created this small Github action workflow to do just that and I wanted to share it with you all as it might come handy to some people.
+I also always wanted to make sure the personal projects I work on run well on every browser automatically on a weekly basis, including this blog. This is why I created this small Github action workflow to do just that and I wanted to share it with you all as it might come handy to some people.
 
 <hr/>
 
@@ -28,7 +28,7 @@ We can now run these tests and check if everything passes before going to the ne
 
 Adding automated tasks to run on every Pull Request with Github workflows [is very simple](https://help.github.com/en/actions/reference/events-that-trigger-workflows#push-event-push). However, here what we want to do is slightly different. We probably already have automated tasks that run our cypress tests for every PR and running them on every supported  browser on top of that might be a bit overkill and might increase CI costs. Thus the following Github workflows will only work weekly, [which is an option that Github allows](https://help.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events-schedule):
 
-```yaml title=Weekly cross-browser testing Github workflow
+```yaml {3-6,11-12,23,31}title=Weekly cross-browser testing Github workflow
 name: Weekly cross-browser testing
 
 on:
@@ -67,24 +67,21 @@ jobs:
 
 ```
 
-In the code snippet above, we can see that instead of running this action "on push", we run them "on schedule" with a cron syntax setting the run every Monday at 12 PM.
+In the code snippet above, we can see that instead of running this action "on push", we run them "on schedule" with a cron syntax setting the run every Monday at 12 PM. I used [Crontab Guru](https://crontab.guru/) as suggested in the Github docs to generate the proper cron schedule expression.
+When the scheduled time is reached, this Github workflow will get triggered with the following steps:
 
-Then the following steps include:
-
-- Checking out the latest commit (this task will run on the master branch)
-- Install the dependencies
-- Build the project
-- Run the end-to-end tests on Firefox
+- Checking out the latest commit (this task will run on the master branch) (L16)
+- Install the dependencies (L19)
+- Start the project (L24 and L 32)
+- Run the end-to-end tests on Firefox 
 - Run the end-to-end tests on Chrome
 
-For the last two steps, we use the `cypress-io/github-action@v1` which allows running Cypress in Github workflows with little to almost no configuration required.
+For the last two steps, we use the `cypress-io/github-action@v1` which allows running Cypress in Github workflows with little to almost no configuration required besides setting the browser on which we want to run the tests (see L23 and L31). However, we have to specify that we want to use the `cypress/browsers` (see L11-12) Docker image for this workflow, as in its default setting, it seems that Github CI doesn't include Firefox.
 
-ADD MORE DETAILS ABOUT CONTAINER USAGE 
-
-Note: Sadly as I'm writting this word it looks like the Cypress Github action does not support Edge just yet. I opened an [issue](https://github.com/cypress-io/github-action/issues/105) to get updates related to that and will make sure to update this post once it's up to date!
+![Screenshot showcasing a successful Github CI run including our scheduled cross-browser tests on Chrome and Firefox](img/cypress-cross-browser-run.png)
 
 Now that this new automated weekly task is implemented we can ensure our projects run as expected and guarantee the best user experience regardless of which browser is being used 🎉!
 
 <hr/>
 
-If you want to see this workflow in action, I use it right now on some of my open-source repositories, click here (LINK TO GH ACTION BLOG) to see an example.
+Before adding such scheduled task on your own project, remember that, as I'm writing these words, Firefox support on Cypress is still currently in beta, so this post only showcased something I'd consider "experimental" at this point. We'll have to be a bit more patient before running this in production. If you want to see this workflow in action, I use it right now on some of my open-source repositories, [click here](https://github.com/MaximeHeckel/blog.maximeheckel.com/pull/21/checks?check_run_id=491807460) to see an example.
