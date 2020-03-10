@@ -28,7 +28,7 @@ We can now run these tests and check if everything passes before going to the ne
 
 Adding automated tasks to run on every Pull Request with Github workflows [is very simple](https://help.github.com/en/actions/reference/events-that-trigger-workflows#push-event-push). However, here what we want to do is slightly different. We probably already have automated tasks that run our cypress tests for every PR and running them on every supported  browser on top of that might be a bit overkill and might increase CI costs. Thus the following Github workflows will only work weekly, [which is an option that Github allows](https://help.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events-schedule):
 
-```yaml {3-6,11-12,23,31}title=Weekly cross-browser testing Github workflow
+```yaml {3-6,11-12,20,28}title=Weekly cross-browser testing Github workflow
 name: Weekly cross-browser testing
 
 on:
@@ -45,9 +45,6 @@ jobs:
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v1
-      - name: Install Dependencies
-        run: |
-          yarn install --force --non-interactive
       - name: Firefox Browser Tests
         uses: cypress-io/github-action@v1
         with:
@@ -71,12 +68,11 @@ In the code snippet above, we can see that instead of running this action "on pu
 When the scheduled time is reached, this Github workflow will get triggered with the following steps:
 
 - Checking out the latest commit (this task will run on the master branch) (L16)
-- Install the dependencies (L19)
-- Start the project (L24 and L 32)
+- Start the project (L21 and L 29)
 - Run the end-to-end tests on Firefox 
 - Run the end-to-end tests on Chrome
 
-For the last two steps, we use the `cypress-io/github-action@v1` which allows running Cypress in Github workflows with little to almost no configuration required besides setting the browser on which we want to run the tests (see L23 and L31). However, we have to specify that we want to use the `cypress/browsers` (see L11-12) Docker image for this workflow, as in its default setting, it seems that Github CI doesn't include Firefox.
+For the last two steps, we use the `cypress-io/github-action@v1` which allows running Cypress in Github workflows with little to almost no configuration required besides setting the browser on which we want to run the tests (see L20 and L28). However, we have to specify that we want to use the `cypress/browsers` (see L11-12) Docker image for this workflow, as in its default setting, it seems that Github CI doesn't include Firefox.
 
 ![Screenshot showcasing a successful Github CI run including our scheduled cross-browser tests on Chrome and Firefox](img/cypress-cross-browser-run.png)
 
