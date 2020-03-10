@@ -201,6 +201,7 @@ const Item = styled('li')<{ dark: boolean }>`
   }
 
   a {
+    color: ${props => props.theme.fontColor};
     height: inherit;
     display: flex;
     flex-direction: column;
