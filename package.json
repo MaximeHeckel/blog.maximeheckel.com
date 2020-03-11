@@ -38,7 +38,7 @@
     "gatsby-plugin-printer": "1.0.8",
     "gatsby-plugin-react-helmet": "^3.1.3",
     "gatsby-plugin-sitemap": "2.2.27",
-    "gatsby-plugin-typescript": "^2.0.3",
+    "gatsby-plugin-typescript": "^2.2.2",
     "gatsby-source-filesystem": "^2.1.9",
     "gatsby-theme-maximeheckel": "0.2.1",
     "mousetrap": "^1.6.3",
