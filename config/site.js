@@ -13,10 +13,10 @@ module.exports = {
     'Engineering',
     'Blog',
   ],
-  title: 'Words by Maxime Heckel',
+  title: "Maxime Heckel's Blog",
   titleAlt: 'Maxime Heckel | Blog',
   description:
-    "Hi I'm Maxime, software engineer and space enthusiast, and this is my blog where I talk about react, redux and many other things!",
+    "Hi I'm Maxime, I write about React, Redux, JAMStack, Typescript, GraphQL, Serverless, Testing and many other things!",
   url: 'https://blog.maximeheckel.com', // Site domain without trailing slash
   siteUrl: 'https://blog.maximeheckel.com/', // url + pathPrefix
   siteLanguage: 'en', // Language Tag on <html> element
@@ -29,5 +29,5 @@ module.exports = {
   backgroundColor: '#ffffff',
   twitter: '@MaximeHeckel', // Twitter Username
   twitterDesc:
-    'Maxime Heckel is a senior frontend engineer and space enthusiast currently working for Docker in San Francisco.',
+    'Maxime Heckel is a lead frontend engineer and space enthusiast currently based in New York.',
 };
