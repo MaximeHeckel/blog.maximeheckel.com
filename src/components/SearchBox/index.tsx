@@ -31,11 +31,12 @@ type Result = {
 
 interface IProps {
   location: { search?: string };
+  onClose: () => void;
   showOverride?: boolean;
 }
 
 const SearchBox: React.FC<IProps> = props => {
-  const { location, showOverride } = props;
+  const { location, onClose, showOverride } = props;
   const searchQuery = new URLSearchParams(location.search).get('search') || '';
   const toggleLockScroll = () =>
     document.documentElement.classList.toggle('lock-scroll');
@@ -43,7 +44,7 @@ const SearchBox: React.FC<IProps> = props => {
   const theme = useTheme();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const searchBoxRef = React.useRef<HTMLDivElement>(null);
-  const [show, setShow] = React.useState(false || showOverride);
+  const [show, setShow] = React.useState(showOverride);
   const [results, setResults] = React.useState<Result[]>([]);
 
   React.useEffect(() => {
@@ -52,6 +53,10 @@ const SearchBox: React.FC<IProps> = props => {
       Mousetrap.unbind(['command+k', 'ctrl+k']);
     };
   }, []);
+
+  React.useEffect(() => {
+    setShow(showOverride);
+  }, [showOverride]);
 
   React.useEffect(() => {
     if (show) {
@@ -81,8 +86,9 @@ const SearchBox: React.FC<IProps> = props => {
     }
   }, [location.search, show, searchQuery]);
 
-  const onClose = () => {
+  const close = () => {
     toggleLockScroll();
+    onClose();
     return setShow(false);
   };
 
@@ -94,7 +100,7 @@ const SearchBox: React.FC<IProps> = props => {
     ) {
       return null;
     }
-    return onClose();
+    return close();
   };
 
   if (!show) {
@@ -123,7 +129,7 @@ const SearchBox: React.FC<IProps> = props => {
               data-testid="search-input"
               id="search-input"
               name="search"
-              onKeyDown={e => e.keyCode === 27 && onClose()}
+              onKeyDown={e => e.keyCode === 27 && close()}
               onChange={e =>
                 navigate(`?search=${encodeURIComponent(e.target.value)}`)
               }
@@ -149,6 +155,8 @@ const SearchBox: React.FC<IProps> = props => {
                 </Item>
               );
             })}
+          </SearchResults>
+          <ul style={{ margin: '0px' }}>
             <Item data-testid="portfolio-link" dark={theme.dark}>
               <a
                 href="https://maximeheckel.com"
@@ -174,7 +182,7 @@ const SearchBox: React.FC<IProps> = props => {
                 </div>
               </a>
             </Item>
-          </SearchResults>
+          </ul>
         </SearchBoxWrapper>
       </SearchBoxOverlay>
     </FocusTrap>,
@@ -185,11 +193,16 @@ const SearchBox: React.FC<IProps> = props => {
 export default SearchBox;
 
 const Item = styled('li')<{ dark: boolean }>`
+  @media (max-width: 700px) {
+    height: 90px;
+  }
+
   height: 75px;
   margin-bottom: 0px;
   padding-left: 24px;
   padding-right: 24px;
   transition: ${props => props.theme.transitionTime / 1.7}s;
+  list-style: none;
 
   &:hover {
     background: ${p =>
@@ -236,16 +249,25 @@ const Item = styled('li')<{ dark: boolean }>`
 `;
 
 const SearchResults = styled('ul')`
-  max-height: 400px;
+  @media (max-width: 700px) {
+    max-height: 300px;
+  }
+
+  max-height: 500px;
   overflow: scroll;
   margin: 0px;
 `;
 
 const SearchBoxWrapper = styled('div')`
+  @media (max-width: 700px) {
+    width: 100%;
+    top: 0;
+  }
+
   position: fixed;
   background: ${p => p.theme.backgroundColor};
   width: 600px;
-  top: 18%;
+  top: 15%;
   left: 50%;
   transform: translate(-50%, 0%);
   border-radius: 5px;

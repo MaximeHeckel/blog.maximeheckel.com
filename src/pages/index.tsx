@@ -55,6 +55,7 @@ const ShortcutList = styled('div')`
   div {
     display: flex;
     color: #73737d;
+    cursor: pointer;
   }
 `;
 
@@ -111,10 +112,16 @@ interface IProps {
 }
 
 const IndexPage = ({ data, location }: IProps) => {
+  const [showSearch, setShowSearch] = React.useState(false);
+
   return (
     <MainWrapper footer={true} header={true}>
       <Seo title={data.site.siteMetadata.title} />
-      <SearchBox location={location} />
+      <SearchBox
+        location={location}
+        showOverride={showSearch}
+        onClose={() => setShowSearch(false)}
+      />
       <div style={{ paddingBottom: '10px' }}>
         <br />
         <h1>Hi 👋 I'm Maxime, and this is my blog.</h1>
@@ -145,9 +152,9 @@ const IndexPage = ({ data, location }: IProps) => {
         </TypistDiv>
         <hr />
         <ShortcutList>
-          <div>
-            <ShortcutIcon>⌘/CTRL</ShortcutIcon> + <ShortcutIcon>K</ShortcutIcon>{' '}
-            to search
+          <div role="button" tabIndex={0} onClick={() => setShowSearch(true)}>
+            Click or<ShortcutIcon>⌘/CTRL</ShortcutIcon> +{' '}
+            <ShortcutIcon>K</ShortcutIcon> to search
           </div>
         </ShortcutList>
         <List data-testid="article-list">
@@ -164,15 +171,16 @@ const IndexPage = ({ data, location }: IProps) => {
                   {node.frontmatter.description}
                 </DescriptionBlock>
                 <ItemFooterBlock>
-                  <p>
-                    {new Date(Date.parse(node.frontmatter.date)).toDateString()}
-                  </p>
                   <p>{node.timeToRead} min read</p>
                   <Link
                     style={{ textDecoration: `none` }}
                     to={`/posts/${node.frontmatter.slug}`}
                   >
-                    <Button data-testid="article-link" secondary={true}>
+                    <Button
+                      tabIndex={-1}
+                      data-testid="article-link"
+                      secondary={true}
+                    >
                       Read
                     </Button>
                   </Link>
