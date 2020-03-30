@@ -132,6 +132,7 @@ const IndexPage = ({ data, location }: IProps) => {
               {[
                 'React',
                 'Redux',
+                'Typescript',
                 'GraphQL',
                 'testing',
                 'Docker',

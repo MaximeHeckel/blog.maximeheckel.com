@@ -44,7 +44,7 @@ describe('Search tests', () => {
   it('Clicking on a result navigates the user to an article', () => {
     cy.visit('http://localhost:8000/?search=react');
     cy.wait(2000);
-    cy.get('body').type('{ctrl}k');
+    cy.get('body').type('{ctrl}k', { force: true });
     cy.get('[data-testid="search-result"]')
       .eq(0)
       .click();

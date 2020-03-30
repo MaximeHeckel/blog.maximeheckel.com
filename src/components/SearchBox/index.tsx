@@ -155,8 +155,6 @@ const SearchBox: React.FC<IProps> = props => {
                 </Item>
               );
             })}
-          </SearchResults>
-          <ul style={{ margin: '0px' }}>
             <Item data-testid="portfolio-link" dark={theme.dark}>
               <a
                 href="https://maximeheckel.com"
@@ -182,7 +180,7 @@ const SearchBox: React.FC<IProps> = props => {
                 </div>
               </a>
             </Item>
-          </ul>
+          </SearchResults>
         </SearchBoxWrapper>
       </SearchBoxOverlay>
     </FocusTrap>,
