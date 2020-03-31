@@ -112,7 +112,7 @@ interface IProps {
 }
 
 const IndexPage = ({ data, location }: IProps) => {
-  const [showSearch, setShowSearch] = React.useState(false);
+  const [showSearch, setShowSearch] = React.useState(location.search !== '');
 
   return (
     <MainWrapper footer={true} header={true}>

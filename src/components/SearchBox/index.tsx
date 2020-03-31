@@ -47,6 +47,24 @@ const SearchBox: React.FC<IProps> = props => {
   const [show, setShow] = React.useState(showOverride);
   const [results, setResults] = React.useState<Result[]>([]);
 
+  const close = React.useCallback(() => {
+    toggleLockScroll();
+    navigate('');
+    onClose();
+    return setShow(false);
+  }, [onClose]);
+
+  const clickAway = (e: React.BaseSyntheticEvent) => {
+    if (
+      searchBoxRef &&
+      searchBoxRef.current &&
+      searchBoxRef.current.contains(e.target)
+    ) {
+      return null;
+    }
+    return close();
+  };
+
   React.useEffect(() => {
     Mousetrap.bind(['command+k', 'ctrl+k'], () => setShow(true));
     return () => {
@@ -64,6 +82,23 @@ const SearchBox: React.FC<IProps> = props => {
       inputRef && inputRef.current && inputRef.current.focus();
     }
   }, [show]);
+
+  React.useEffect(() => {
+    const keyPressHandler = (e: KeyboardEvent): void => {
+      switch (e.keyCode) {
+        case 27:
+          return close();
+        default:
+          return;
+      }
+    };
+
+    document.addEventListener('keydown', keyPressHandler);
+
+    return () => {
+      document.removeEventListener('keydown', keyPressHandler);
+    };
+  }, [close]);
 
   React.useEffect(() => {
     if (searchQuery && searchQuery !== '' && window.__LUNR__) {
@@ -86,23 +121,6 @@ const SearchBox: React.FC<IProps> = props => {
     }
   }, [location.search, show, searchQuery]);
 
-  const close = () => {
-    toggleLockScroll();
-    onClose();
-    return setShow(false);
-  };
-
-  const clickAway = (e: React.BaseSyntheticEvent) => {
-    if (
-      searchBoxRef &&
-      searchBoxRef.current &&
-      searchBoxRef.current.contains(e.target)
-    ) {
-      return null;
-    }
-    return close();
-  };
-
   if (!show) {
     return null;
   }
@@ -120,16 +138,15 @@ const SearchBox: React.FC<IProps> = props => {
         role="dialog"
       >
         <SearchBoxWrapper data-testid="searchbox" ref={searchBoxRef}>
-          <form>
+          <form onSubmit={e => e.preventDefault()}>
             <input
               ref={inputRef}
               autoComplete="off"
               type="search"
-              placeholder="Search..."
+              placeholder="Type keywords to search..."
               data-testid="search-input"
               id="search-input"
               name="search"
-              onKeyDown={e => e.keyCode === 27 && close()}
               onChange={e =>
                 navigate(`?search=${encodeURIComponent(e.target.value)}`)
               }
@@ -137,24 +154,28 @@ const SearchBox: React.FC<IProps> = props => {
             />
           </form>
           <SearchResults>
-            {results.map(result => {
-              return (
-                <Item
-                  data-testid="search-result"
-                  key={result.slug}
-                  dark={theme.dark}
-                >
-                  <Link
-                    style={{ textDecoration: `none` }}
-                    onClick={() => toggleLockScroll()}
-                    to={result.slug}
+            {searchQuery === '' || results.length > 0 ? (
+              results.map(result => {
+                return (
+                  <Item
+                    data-testid="search-result"
+                    key={result.slug}
+                    dark={theme.dark}
                   >
-                    <h4>{result.title}</h4>
-                    <p>{new Date(Date.parse(result.date)).toDateString()}</p>
-                  </Link>
-                </Item>
-              );
-            })}
+                    <Link
+                      style={{ textDecoration: `none` }}
+                      onClick={() => toggleLockScroll()}
+                      to={result.slug}
+                    >
+                      <h4>{result.title}</h4>
+                      <p>{new Date(Date.parse(result.date)).toDateString()}</p>
+                    </Link>
+                  </Item>
+                );
+              })
+            ) : (
+              <NoResultsWrapper>No results</NoResultsWrapper>
+            )}
             <Item data-testid="portfolio-link" dark={theme.dark}>
               <a
                 href="https://maximeheckel.com"
@@ -189,6 +210,15 @@ const SearchBox: React.FC<IProps> = props => {
 };
 
 export default SearchBox;
+
+const NoResultsWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  color: ${p => p.theme.fontColor};
+  font-weight: 600;
+`;
 
 const Item = styled('li')<{ dark: boolean }>`
   @media (max-width: 700px) {
