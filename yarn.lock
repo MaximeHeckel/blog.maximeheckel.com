@@ -7668,10 +7668,10 @@ gatsby-telemetry@^1.1.51:
     stack-utils "1.0.2"
     uuid "3.3.3"
 
-gatsby-theme-maximeheckel@0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.2.3.tgz#eabab3ed165b895bc8c0c9d97eaab2d4be23e729"
-  integrity sha512-9+Oz5mvyrR+//XvSIhrtr5RcblplxWKcw75zbhMnMbVDLRz++6kNyOapo7HEF3goklESz+bZAkeZPo65Ijjb5A==
+gatsby-theme-maximeheckel@0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.2.4.tgz#2d35398c156f56c4d0b6782fdd0c86871f1d7a25"
+  integrity sha512-4qeVKhjgUs56gWZKJGbZ7X06C42xPA0RYh95mLHidn+P24UQXDOKC08charEJoiQh8FrAnfpfz0UEstRiRNL+A==
   dependencies:
     "@emotion/core" "^10.0.6"
     "@emotion/styled" "^10.0.6"
@@ -13805,13 +13805,6 @@ react-test-renderer@^16.8.1:
     prop-types "^15.6.2"
     react-is "^16.8.6"
     scheduler "^0.19.0"
-
-react-typist@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/react-typist/-/react-typist-2.0.5.tgz#9830395a73a03e6368e1392ecb98edaa3a648e44"
-  integrity sha512-iZCkeqeegO0TlkTMiH2JD1tvMtY9RrXkRylnAI6m8aCVAUUwNzoWTVF7CKLij6THeOMcUDCznLDDvNp55s+YZA==
-  dependencies:
-    prop-types "^15.5.10"
 
 react-typography@^0.16.18:
   version "0.16.19"

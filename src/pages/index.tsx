@@ -6,9 +6,22 @@ import Seo from 'gatsby-theme-maximeheckel/src/components/Seo';
 import MainWrapper from 'gatsby-theme-maximeheckel/src/layouts/MainWrapper';
 import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
 import React from 'react';
-import Typist from 'react-typist';
 import SearchBox from '../components/SearchBox';
-import TypistLoop from '../components/TypistLoop';
+
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 
 export const pageQuery = graphql`
   query IndexPageQuery {
@@ -27,6 +40,8 @@ export const pageQuery = graphql`
             title
             description
             date
+            featured
+            colorFeatured
             cover {
               childImageSharp {
                 fluid(
@@ -46,32 +61,6 @@ export const pageQuery = graphql`
   }
 `;
 
-const ShortcutList = styled('div')`
-  display: flex;
-  width: 100%;
-  margin-left: -6px;
-  margin-top: 8px;
-  margin-bottom: 30px;
-  div {
-    display: flex;
-    color: #73737d;
-    cursor: pointer;
-  }
-`;
-
-const ShortcutIcon = styled('div')`
-  border: 2px solid #73737D;
-  border-radius: 5px;
-  min-width: 30px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin-right: 6px;
-  margin-left: 6px;
-  justify-content: center;
-  font-size: 12px;
-}
-`;
-
 interface IProps {
   data: {
     allMdx: {
@@ -85,6 +74,8 @@ interface IProps {
             date: string;
             subtitle: string;
             tags: string[];
+            featured?: boolean;
+            colorFeatured?: string;
             cover: {
               childImageSharp: {
                 fluid: FluidObject;
@@ -113,6 +104,7 @@ interface IProps {
 
 const IndexPage = ({ data, location }: IProps) => {
   const [showSearch, setShowSearch] = React.useState(location.search !== '');
+  let year = 0;
 
   return (
     <MainWrapper footer={true} header={true}>
@@ -122,35 +114,13 @@ const IndexPage = ({ data, location }: IProps) => {
         showOverride={showSearch}
         onClose={() => setShowSearch(false)}
       />
-      <div style={{ paddingBottom: '10px' }}>
+      <div style={{ paddingTop: '10px', paddingBottom: '10px' }}>
         <br />
-        <h1>Hi 👋 I'm Maxime, and this is my blog.</h1>
-        <TypistDiv>
-          <h2>I write about</h2>
-          <h2>
-            <TypistLoop interval={2000}>
-              {[
-                'React',
-                'Redux',
-                'Typescript',
-                'GraphQL',
-                'testing',
-                'Docker',
-                'frontend development',
-                'styled components',
-                'a lot of other things',
-              ].map(text => (
-                <Typist
-                  cursor={{ blink: true, element: '_' }}
-                  key={text}
-                  startDelay={2000}
-                >
-                  <span>{text}</span>
-                </Typist>
-              ))}
-            </TypistLoop>
-          </h2>
-        </TypistDiv>
+        <h2>Hi 👋 I'm Maxime, and this is my blog.</h2>
+        <p>
+          I share my frontend engineering experience, with technical articles
+          about React, Typescript, Serverless and testing.
+        </p>
         <hr />
         <ShortcutList>
           <div role="button" tabIndex={0} onClick={() => setShowSearch(true)}>
@@ -158,34 +128,73 @@ const IndexPage = ({ data, location }: IProps) => {
             <ShortcutIcon>K</ShortcutIcon> to search
           </div>
         </ShortcutList>
+        <h3 style={{ fontWeight: 600 }}>Featured</h3>
+        <List data-testid="featured-list">
+          {data.allMdx.edges.map(({ node }) => {
+            if (!node.frontmatter.featured) {
+              return null;
+            }
+
+            return (
+              <BigBlock
+                key={node.frontmatter.slug}
+                color={node.frontmatter.colorFeatured}
+              >
+                <h3>{node.frontmatter.title}</h3>
+
+                <DescriptionBlock>
+                  <p>{node.frontmatter.description}</p>
+                  <hr />
+                </DescriptionBlock>
+                <ItemFooterBlock>
+                  <DateBlock>
+                    {`${
+                      MONTHS[new Date(node.frontmatter.date).getMonth()]
+                    } ${new Date(node.frontmatter.date).getDate()} ${new Date(
+                      node.frontmatter.date
+                    ).getFullYear()}`}
+                  </DateBlock>
+                  <Link
+                    style={{ textDecoration: `none` }}
+                    to={`/posts/${node.frontmatter.slug}?featured=true`}
+                  >
+                    <Button secondary={true}>Read</Button>
+                  </Link>
+                </ItemFooterBlock>
+              </BigBlock>
+            );
+          })}
+        </List>
+        <hr />
+        <h3 style={{ fontWeight: 600 }}>All articles</h3>
         <List data-testid="article-list">
           {data.allMdx.edges.map(({ node }) => {
+            let currentYear = new Date(node.frontmatter.date).getFullYear();
+            let printYear;
+
+            if (currentYear !== year) {
+              printYear = true;
+              year = currentYear;
+            } else {
+              printYear = false;
+            }
+
             return (
               <li key={node.frontmatter.slug} data-testid="article-item">
+                {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
                 <Link
                   style={{ textDecoration: `none` }}
                   to={`/posts/${node.frontmatter.slug}`}
                 >
-                  <h3>{node.frontmatter.title}</h3>
+                  <Block>
+                    <DateBlock>
+                      {`${
+                        MONTHS[new Date(node.frontmatter.date).getMonth()]
+                      } ${new Date(node.frontmatter.date).getDate()}`}
+                    </DateBlock>
+                    <TitleBlock>{node.frontmatter.title}</TitleBlock>
+                  </Block>
                 </Link>
-                <DescriptionBlock>
-                  {node.frontmatter.description}
-                </DescriptionBlock>
-                <ItemFooterBlock>
-                  <p>{node.timeToRead} min read</p>
-                  <Link
-                    style={{ textDecoration: `none` }}
-                    to={`/posts/${node.frontmatter.slug}`}
-                  >
-                    <Button
-                      tabIndex={-1}
-                      data-testid="article-link"
-                      secondary={true}
-                    >
-                      Read
-                    </Button>
-                  </Link>
-                </ItemFooterBlock>
               </li>
             );
           })}
@@ -195,44 +204,144 @@ const IndexPage = ({ data, location }: IProps) => {
   );
 };
 
-const TypistDiv = styled('div')`
+const ShortcutList = styled('div')`
   display: flex;
-  h2 {
-    margin-right: 8px;
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 30px;
+  div {
+    display: flex;
+    color: #8a8a90;
+    cursor: pointer;
   }
 `;
 
+const ShortcutIcon = styled('div')`
+  border: 2px solid #8a8a90;
+  border-radius: 5px;
+  min-width: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 6px;
+  margin-left: 6px;
+  justify-content: center;
+  font-size: 12px;
+}
+`;
+
+const DescriptionBlock = styled('div')`
+  width: 370px;
+
+  p {
+    mix-blend-mode: exclusion;
+    color: #8a8a90;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  hr {
+    margin-bottom: 10px;
+    width: 150px;
+    mix-blend-mode: exclusion;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+`;
+
+const ItemFooterBlock = styled('div')`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+`;
+
+const BigBlock = styled('li')`
+  @media (max-width: 600px) {
+    min-height: 150px;
+    height: unset;
+    padding: 30px 30px;
+
+    p {
+      display: none;
+    }
+  }
+
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+  height: 300px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 40px;
+  padding: 80px 70px;
+  background-color: ${p => p.color};
+  border-radius: 5px;
+  margin: 30px auto;
+  overflow: hidden;
+  transition: ${p => p.theme.transitionTime}s;
+  will-change: opacity;
+
+  h3 {
+    mix-blend-mode: exclusion;
+    color: #ffffff !important;
+    font-weight: 600;
+  }
+`;
+
+const Block = styled('div')`
+  @media (max-width: 700px) {
+    height: 100px;
+  }
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 15px;
+  border-radius: 2px;
+
+  height: 60px;
+  box-shadow: none;
+
+  color: ${p => p.theme.fontColor};
+  transition ${p => p.theme.transitionTime / 4}s;
+
+  div:first-of-type {
+    margin-right: 40px;
+  }
+
+  &:hover {
+    background-color: ${p => p.theme.overlayBackground};
+    box-shadow: ${p => p.theme.boxShadow};
+    color: ${p => p.theme.colors.blue};
+  }
+`;
+
+const YearBlock = styled('div')`
+  padding: 30px 15px;
+  font-weight: 600;
+  font-size: 18px;
+`;
+
+const DateBlock = styled('div')`
+  font-size: 14px;
+  font-weight: 500;
+  color: #8a8a90;
+  min-width: 50px;
+`;
+
+const TitleBlock = styled('div')`
+  font-weight: 500;
+  transition ${p => p.theme.transitionTime / 2}s;
+`;
+
 const List = styled('ul')`
-  margin-left: 0px;
+  margin-left: -10px;
 
   li {
     list-style: none;
-    margin-bottom: 30px;
   }
 
   h3 {
     color: ${p => p.theme.fontColor};
     letter-spacing: 0px;
     margin-bottom: 10px;
-  }
-`;
-
-const DescriptionBlock = styled('p')`
-  color: #73737d;
-  margin-bottom: 8px;
-  max-width: 450px;
-`;
-
-const ItemFooterBlock = styled('div')`
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-
-  p {
-    font-size: inherit;
-    font-weight: 600;
-    margin-right: 8px;
-    margin-bottom: 0px;
   }
 `;
 

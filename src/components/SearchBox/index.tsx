@@ -7,6 +7,21 @@ import Mousetrap from 'mousetrap';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
 const TwitterIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -156,6 +171,8 @@ const SearchBox: React.FC<IProps> = props => {
           <SearchResults>
             {searchQuery === '' || results.length > 0 ? (
               results.map(result => {
+                const parsedDate = new Date(Date.parse(result.date));
+
                 return (
                   <Item
                     data-testid="search-result"
@@ -168,7 +185,9 @@ const SearchBox: React.FC<IProps> = props => {
                       to={result.slug}
                     >
                       <h4>{result.title}</h4>
-                      <p>{new Date(Date.parse(result.date)).toDateString()}</p>
+                      <p>{`${
+                        MONTHS[parsedDate.getMonth()]
+                      } ${parsedDate.getDate()} ${parsedDate.getFullYear()}`}</p>
                     </Link>
                   </Item>
                 );
@@ -229,15 +248,15 @@ const Item = styled('li')<{ dark: boolean }>`
   margin-bottom: 0px;
   padding-left: 24px;
   padding-right: 24px;
+  color: ${p => p.theme.fontColor};
   transition: ${props => props.theme.transitionTime / 1.7}s;
   list-style: none;
 
   &:hover {
-    background: ${p =>
-      p.dark ? 'rgba(17, 18, 22, 0.5)' : 'rgba(17,18,22, 0.04)'};
+    background-color: ${p => p.theme.overlayBackground};
 
-    p {
-      color: unset;
+    h4 {
+      color: ${p => p.theme.colors.blue};
     }
   }
 
@@ -259,7 +278,7 @@ const Item = styled('li')<{ dark: boolean }>`
     font-size: 12px;
     font-weight: 600;
     margin-bottom: 0px;
-    color: #73737d;
+    color: #8a8a90;
   }
 
   div {
@@ -311,17 +330,17 @@ const SearchBoxWrapper = styled('div')`
     outline: none;
     background: transparent;
     border: none;
-    font-size: 32px;
+    font-size: 25px;
     font-weight: 300;
     height: 55px;
     width: 100%;
     color: ${p => p.theme.fontColor};
     ::placeholder,
     ::-webkit-input-placeholder {
-      color: #73737d;
+      color: #8a8a90;
     }
     :-ms-input-placeholder {
-      color: #73737d;
+      color: #8a8a90;
     }
 
     ::-webkit-autofill {
