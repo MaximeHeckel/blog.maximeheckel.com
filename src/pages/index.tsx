@@ -186,7 +186,7 @@ const IndexPage = ({ data, location }: IProps) => {
                   style={{ textDecoration: `none` }}
                   to={`/posts/${node.frontmatter.slug}`}
                 >
-                  <Block>
+                  <Block data-testid="article-link">
                     <DateBlock>
                       {`${
                         MONTHS[new Date(node.frontmatter.date).getMonth()]
@@ -340,7 +340,6 @@ const List = styled('ul')`
 
   h3 {
     color: ${p => p.theme.fontColor};
-    letter-spacing: 0px;
     margin-bottom: 10px;
   }
 `;
