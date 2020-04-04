@@ -53,6 +53,9 @@ const typography = new Typography({
       letterSpacing: '0.5px',
       marginBottom: '2.25rem',
     },
+    code: {
+      fontFamily: 'Fira Code',
+    },
     li: {
       fontSize: '18px',
       lineHeight: 1.65,
