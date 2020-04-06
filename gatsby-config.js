@@ -59,7 +59,37 @@ module.exports = {
         head: true,
       },
     },
-    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-sitemap',
+      options: {
+        query: `
+          {
+            site {
+              siteMetadata {
+                siteUrl
+              }
+            }
+            allSitePage {
+              edges {
+                node {
+                  path
+                }
+              }
+            }
+          }
+        `,
+        serialize: ({ site, allSitePage }) =>
+          allSitePage.edges.map(edge => {
+            return {
+              url: `${site.siteMetadata.siteUrl}${
+                edge.node.path === '/' ? '' : edge.node.path
+              }/`,
+              changefreq: `daily`,
+              priority: 0.7,
+            };
+          }),
+      },
+    },
     'gatsby-plugin-offline',
     'gatsby-plugin-typescript',
   ],
