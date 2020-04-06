@@ -7668,10 +7668,10 @@ gatsby-telemetry@^1.1.51:
     stack-utils "1.0.2"
     uuid "3.3.3"
 
-gatsby-theme-maximeheckel@0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.2.4.tgz#2d35398c156f56c4d0b6782fdd0c86871f1d7a25"
-  integrity sha512-4qeVKhjgUs56gWZKJGbZ7X06C42xPA0RYh95mLHidn+P24UQXDOKC08charEJoiQh8FrAnfpfz0UEstRiRNL+A==
+gatsby-theme-maximeheckel@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.4.0.tgz#f53ff326549c212165972ed5e5221c04c77efdf2"
+  integrity sha512-E8FTTgsHIJr3GuWBR46w7uAtTECQgU/U2MtCVHEVG+M/yJo8BtgHBPNUVYmouDnEWWOdKt0S2xSqn5a34Bw2Ow==
   dependencies:
     "@emotion/core" "^10.0.6"
     "@emotion/styled" "^10.0.6"
@@ -7700,6 +7700,7 @@ gatsby-theme-maximeheckel@0.2.4:
     react-anchor-link-smooth-scroll "^1.0.11"
     react-helmet "5.2.1"
     remark-toc "^7.0.0"
+    typeface-fira-code "^1.1.4"
 
 gatsby-transformer-sharp@2.4.3:
   version "2.4.3"
@@ -16317,6 +16318,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typeface-fira-code@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/typeface-fira-code/-/typeface-fira-code-1.1.4.tgz#ef36e81c43af0d01a69c15191da416467055d873"
+  integrity sha512-RInwMBx+jPn42hsPAzu6DWyoReLHximaMix5/brUJGPpthPs1QRH6qCXuUrndnLi1dqV551bb+qepudVygFDMQ==
 
 typescript@^3.2.4:
   version "3.8.3"
