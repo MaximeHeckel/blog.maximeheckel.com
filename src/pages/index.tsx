@@ -136,32 +136,35 @@ const IndexPage = ({ data, location }: IProps) => {
             }
 
             return (
-              <BigBlock
-                key={node.frontmatter.slug}
-                color={node.frontmatter.colorFeatured}
-              >
-                <h3>{node.frontmatter.title}</h3>
-
-                <DescriptionBlock>
-                  <p>{node.frontmatter.description}</p>
-                  <hr />
-                </DescriptionBlock>
-                <ItemFooterBlock>
-                  <DateBlock>
-                    {`${
-                      MONTHS[new Date(node.frontmatter.date).getMonth()]
-                    } ${new Date(node.frontmatter.date).getDate()} ${new Date(
-                      node.frontmatter.date
-                    ).getFullYear()}`}
-                  </DateBlock>
+              <li key={node.frontmatter.slug}>
+                <BigBlock color={node.frontmatter.colorFeatured}>
                   <Link
                     style={{ textDecoration: `none` }}
                     to={`/posts/${node.frontmatter.slug}?featured=true`}
                   >
-                    <Button secondary={true}>Read</Button>
+                    <h3>{node.frontmatter.title}</h3>
                   </Link>
-                </ItemFooterBlock>
-              </BigBlock>
+                  <DescriptionBlock>
+                    <p>{node.frontmatter.description}</p>
+                    <hr />
+                  </DescriptionBlock>
+                  <ItemFooterBlock>
+                    <DateBlock>
+                      {`${
+                        MONTHS[new Date(node.frontmatter.date).getMonth()]
+                      } ${new Date(node.frontmatter.date).getDate()} ${new Date(
+                        node.frontmatter.date
+                      ).getFullYear()}`}
+                    </DateBlock>
+                    <Link
+                      style={{ textDecoration: `none` }}
+                      to={`/posts/${node.frontmatter.slug}?featured=true`}
+                    >
+                      <Button secondary={true}>Read</Button>
+                    </Link>
+                  </ItemFooterBlock>
+                </BigBlock>
+              </li>
             );
           })}
         </List>
@@ -254,7 +257,7 @@ const ItemFooterBlock = styled('div')`
   font-size: 14px;
 `;
 
-const BigBlock = styled('li')`
+const BigBlock = styled('div')`
   @media (max-width: 600px) {
     min-height: 150px;
     height: unset;
