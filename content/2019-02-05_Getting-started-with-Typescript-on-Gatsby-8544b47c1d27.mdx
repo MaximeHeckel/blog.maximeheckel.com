@@ -36,7 +36,7 @@ yarn add gatsby-plugin-typescript gatsby-plugin-tslint && yarn add --dev typescr
 
 Now that we have everything installed, we can start setting up Typescript. It can be a bit overwhelming at first so I’ll break the steps down and give a bit more context below:
 
-1.  **Typescript config:** this config will live in a file at the root of our Gatsby project and will be named **tsconfig.json**. Here we will set up our compiler options, and which folder to include or exclude in our project when it comes to compiling Typescript files. You can generate a sample config using the `./node_modules/typescript/bin/tsc --init` command.  
+-  **Typescript config:** this config will live in a file at the root of our Gatsby project and will be named **tsconfig.json**. Here we will set up our compiler options, and which folder to include or exclude in our project when it comes to compiling Typescript files. You can generate a sample config using the `./node_modules/typescript/bin/tsc --init` command.  
     Here’s the config I ended up using on my end, but feel free to tweak it so it fits the needs of your project:
 
 ```javascript title=tsconfig.json example
@@ -70,7 +70,7 @@ Now that we have everything installed, we can start setting up Typescript. It ca
 }
 ```
 
-2. **Tslint config:** this config will contain our linting rules for our typescript codebase. At the root of our project, we can create a **tslint.json** file and add the following to it (or you can also initialize a config `./node_modules/.bin/tslint —-init`):
+- **Tslint config:** this config will contain our linting rules for our typescript codebase. At the root of our project, we can create a **tslint.json** file and add the following to it (or you can also initialize a config `./node_modules/.bin/tslint —-init`):
 
 ```javascript {3} title=tslint.json example
 {
@@ -90,9 +90,9 @@ Now that we have everything installed, we can start setting up Typescript. It ca
 **Note:** It is very important to have `tslint-config-prettier` as the last tslint set of rules in the `extends` array to ensure the other rules will be overridden by the rules of this package.  
 Under **rules,** you can enable or disable any tslint rules you want. The documentation for the core rules of tslint is available [here](https://palantir.github.io/tslint/rules/).
 
-3. **gatsby-plugin-typescript and gatsby-plugin-tslint:** here we simply need to add gatsby-plugin-typescript and gatsby-plugin-tslint to the gatsby-config of our project. Other options can be added as well but they are not needed for the rest of this post.
+- **gatsby-plugin-typescript and gatsby-plugin-tslint:** here we simply need to add gatsby-plugin-typescript and gatsby-plugin-tslint to the gatsby-config of our project. Other options can be added as well but they are not needed for the rest of this post.
 
-4. Add the following scripts yo your **package.json**:
+- Add the following scripts yo your **package.json**:
 
 ```json title=package.json scripts
 "type-check": "tsc --noEmit",
@@ -137,8 +137,6 @@ We now have a fully working Typescript setup for our Gatsby project with tslint 
 I used the steps above to setup Typescript on my own Gatsby website and thanks to that I feel more confident to start using it on bigger projects in the near future.
 
 Shout out to [Marino Guerieri (marinoguerieri.com)](https://medium.com/u/ef9cf00366c2) for commenting on the post with the parts I’ve missed.
-
-#### If you liked this article don’t forget to hit the “clap” button and if you have any other questions I’m always reachable on [Twitter](http://twitter.com/MaximeHeckel), or on my [website](https://maximeheckel.com). You can also subscribe to my [Medium publication](https://medium.com/maxime-heckel) to not miss my next post.
 
 **What to read next?**  
 If you want to read more about React or frontend development, you can check the following articles:

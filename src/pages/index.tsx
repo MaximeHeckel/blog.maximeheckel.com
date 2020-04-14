@@ -310,7 +310,7 @@ const Block = styled('div')`
   }
 
   &:hover {
-    background-color: ${p => p.theme.overlayBackground};
+    background-color: ${p => p.theme.foregroundColor};
     box-shadow: ${p => p.theme.boxShadow};
     color: ${p => p.theme.colors.blue};
   }

@@ -19,6 +19,7 @@ This post is about an issue that keeps coming on several of my projects involvin
 As an example, to illustrate the problem, we can consider a main React project called "myApp" bundled with Webpack. The app will be themed through emotion-theming and Emotion which use React Context to inject a theme object to be used by the entire app and any styled-components which are consumers of that “theme context”.
 
 Now let’s consider a third-party package that will be consumed by our app, called "myLib". The "myLib" package has two important specs:
+
 - It has React and Emotion as `peerDependencies` meaning that we want the "myLib" to use whatever version of React or Emotion the consumer app is using.
 - It has React and Emotion as `devDependencies` for development purposes. These are installed locally as we're actively working on this package.
 - It contains a set of Emotion styled-components such as Buttons, Dropdowns, Lists,  that have colors, background colors, or fonts set by the theme of "myApp".
