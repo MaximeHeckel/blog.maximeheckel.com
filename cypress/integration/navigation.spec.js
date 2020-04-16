@@ -29,6 +29,5 @@ describe('Navigation Tests', () => {
       easing: 'swing',
     });
     cy.get('[data-testid="progress-bar"]').should('be.visible');
-    cy.get('[data-testprogress=100]').should('be.visible');
   });
 });
