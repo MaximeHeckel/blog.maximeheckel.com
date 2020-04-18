@@ -37,7 +37,7 @@ describe('SearchBox', () => {
 
     const { container } = render(
       <ThemeProvider theme={theme}>
-        <SearchBox location={location} showOverride={true} />
+        <SearchBox onClose={jest.fn} location={location} showOverride={true} />
       </ThemeProvider>
     );
 
