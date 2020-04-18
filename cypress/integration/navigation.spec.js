@@ -18,16 +18,13 @@ describe('Navigation Tests', () => {
   });
   it('It shows the progress bar when scrolling', () => {
     cy.visit('http://localhost:8000');
-    cy.get('[data-testid="article-link"]')
-      .eq(0)
-      .click();
+    cy.get(
+      'a[href="/posts/switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website"]'
+    ).click({ force: true });
     cy.url().should('include', '/posts/');
     cy.get('[data-testid="blogPost"]').should('be.visible');
     cy.get('[data-testid="progress-bar"]').should('not.be.visible');
-    cy.scrollTo('bottom', {
-      duration: 2000,
-      easing: 'swing',
-    });
+    cy.scrollTo(0, 800);
     cy.get('[data-testid="progress-bar"]').should('be.visible');
   });
 });
