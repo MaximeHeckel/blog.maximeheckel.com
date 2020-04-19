@@ -358,5 +358,6 @@ const SearchBoxOverlay = styled('aside')`
   width: 100%;
   height: 100%;
   z-index: 50;
+  backdrop-filter: blur(6px);
   background: ${p => p.theme.overlayBackground};
 `;
