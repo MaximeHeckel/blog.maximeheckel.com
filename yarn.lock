@@ -8119,10 +8119,10 @@ gatsby-telemetry@^1.2.3:
     stack-utils "1.0.2"
     uuid "3.4.0"
 
-gatsby-theme-maximeheckel@0.5.5:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.5.5.tgz#f5ed5985892eb934f8cb56b9c2b921e29430b76f"
-  integrity sha512-ba34z06yu+JbofhqIBuj8uDkzHl1ZwgGmXyDOIc/cBMPuqALM4+aM8szCEYYGcjEBNyZ5QNsfaJq/Yc9AO40hg==
+gatsby-theme-maximeheckel@0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.7.1.tgz#2db83b1594bc130c745c85a11cfbf0c5ee5899af"
+  integrity sha512-lw8m6t7zUWYHKfUSqSKo95JeU3a/hJp0WrMQpob0RwW9YbJKIQvb+GNiWXEC08M0m8+xQxnlI1OM99n2rhRUQA==
   dependencies:
     "@emotion/core" "^10.0.6"
     "@emotion/styled" "^10.0.6"
@@ -8150,6 +8150,7 @@ gatsby-theme-maximeheckel@0.5.5:
     prism-react-renderer "^1.0.2"
     prismjs "^1.17.1"
     react-anchor-link-smooth-scroll "^1.0.11"
+    react-error-boundary "^1.2.5"
     react-helmet "5.2.1"
     react-scrollspy "^3.4.2"
     remark-toc "^7.0.0"
@@ -14330,6 +14331,11 @@ react-dom@16.13.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.19.0"
+
+react-error-boundary@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-1.2.5.tgz#a362cb799d2e58ff8f114f7c4bc25677ce4e4149"
+  integrity sha512-5CPSeLJA2igJNppAgFRwnTL9aK3ojenk65enNzhVyoxYNbHpIJXnChUO7+4vPhkncRA9wvQMXq6Azp2XeXd+iQ==
 
 react-error-overlay@^3.0.0:
   version "3.0.0"
