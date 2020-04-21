@@ -47,7 +47,7 @@ describe('Search tests', () => {
     cy.get('body').type('{ctrl}k', { force: true });
     cy.get('input')
       .clear()
-      .type('react');
+      .type('react', { delay: 400 });
     cy.get('[data-testid="search-result"]')
       .eq(0)
       .click();

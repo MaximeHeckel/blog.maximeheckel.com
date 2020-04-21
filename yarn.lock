@@ -8119,10 +8119,10 @@ gatsby-telemetry@^1.2.3:
     stack-utils "1.0.2"
     uuid "3.4.0"
 
-gatsby-theme-maximeheckel@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.5.2.tgz#df4fc8e84d7b13d584e26bf857d148dac1244670"
-  integrity sha512-jLccRtqzgOj4CNeLHThZjRrT7qUR1RXZWdz2TQpiHI62sIJUVoNiG6sFXUvy9Y7/Kr8YMj7VRI3n044Cech7jA==
+gatsby-theme-maximeheckel@0.5.5:
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.5.5.tgz#f5ed5985892eb934f8cb56b9c2b921e29430b76f"
+  integrity sha512-ba34z06yu+JbofhqIBuj8uDkzHl1ZwgGmXyDOIc/cBMPuqALM4+aM8szCEYYGcjEBNyZ5QNsfaJq/Yc9AO40hg==
   dependencies:
     "@emotion/core" "^10.0.6"
     "@emotion/styled" "^10.0.6"
