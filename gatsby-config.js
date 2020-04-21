@@ -60,6 +60,19 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-webmention`,
+      options: {
+        username: 'blog.maximeheckel.com', // webmention.io username
+        identity: {
+          twitter: 'maximeheckel', // no @
+        },
+        mentions: true,
+        pingbacks: true,
+        domain: 'blog.maximeheckel.com',
+        token: process.env.WEBMENTIONS_TOKEN,
+      },
+    },
+    {
       resolve: 'gatsby-plugin-sitemap',
       options: {
         query: `
