@@ -1,6 +1,6 @@
 ---
 title: Automated UI accessibility testing with Cypress
-description: >-
+subtitle: >-
   Make sure your UI projects follow accessibility standards before deploying to
   production
 date: '2019-07-09T14:01:01.595Z'
@@ -16,7 +16,11 @@ Skipping this was a mistake on my end, so I started looking to see if there were
 
 In this short post, we’ll see how to setup cypress and cypress-axe and write tests that will make sure your frontend projects follow proper accessibility rules.
 
-_Note: The repository containing the code snippets featured in this article is available_ [_here_](https://github.com/MaximeHeckel/cypress-axe-example)_._
+<Callout variant="info">
+
+Note: The repository containing the code snippets featured in this article is available [here](https://github.com/MaximeHeckel/cypress-axe-example).
+
+</Callout>
 
 ---
 
@@ -32,7 +36,9 @@ First, we’ll have to install a few dev dependencies:
 
 To get these you can run the following command at the root of your UI project:
 
+```
 yarn add -D cypress cypress-axe axe-core start-server-and-test
+```
 
 Now that we have all the tools installed in our project, we’ll have to write some scripts in our `package.json` to help us run the tests:
 

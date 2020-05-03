@@ -1,6 +1,6 @@
 ---
 title: Fixing the "dark mode flash" issue on server rendered websites
-description: >-
+subtitle: >-
   Bringing a proper solution to dark mode flashing without an ugly hack.
 date: '2020-04-16T08:00:00.000Z'
 categories: []
@@ -122,10 +122,17 @@ If not already available in the `src` folder the `html.js` can be copied from th
 ```bash
 cp .cache/default-html.js src/html.js
 ```
+<Callout variant="info">
 
-*Note: you can read more about custom `html.js` in the [Gatsby documentation](https://www.gatsbyjs.org/docs/custom-html/)*
+Note: you can read more about custom `html.js` in the [Gatsby documentation](https://www.gatsbyjs.org/docs/custom-html/)
 
-*Note 2: I'll try to take some time to investigate and update this post with a solution for NextJS*
+</Callout>
+
+<Callout variant="info">
+
+Note 2: I'll try to take some time to investigate and update this post with a solution for NextJS
+
+</Callout>
 
 The following will have to be added to this file:
 

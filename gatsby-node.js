@@ -18,7 +18,7 @@ exports.createPages = ({ graphql, actions }) => {
                   frontmatter {
                     slug
                     title
-                    description
+                    subtitle
                     date
                     type
                     cover {

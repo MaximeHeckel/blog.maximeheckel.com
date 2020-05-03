@@ -7,11 +7,11 @@ describe('Navigation Tests', () => {
       .eq(0)
       .click();
     cy.url().should('include', '/posts/');
-    cy.get('[data-testid="blogPost"]').should('be.visible');
+    cy.get('[data-testid="hero"]').should('be.visible');
   });
   it('It can go from an article to the landing page', () => {
     cy.visit('http://localhost:8000/posts/how-to-build-first-eslint-rule');
-    cy.get('[data-testid="header-site-title"]').click();
+    cy.get('[title="Go back to article list"]').click();
     cy.url().should('include', 'http://localhost:8000');
     cy.get('[data-testid="article-list"]').should('be.visible');
     cy.get('[data-testid="article-item"]').should('be.visible');
@@ -22,7 +22,7 @@ describe('Navigation Tests', () => {
       'a[href="/posts/switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website"]'
     ).click({ force: true });
     cy.url().should('include', '/posts/');
-    cy.get('[data-testid="blogPost"]').should('be.visible');
+    cy.get('[data-testid="hero"]').should('be.visible');
     cy.get('[data-testid="progress-bar"]').should('not.be.visible');
     cy.scrollTo(0, 800);
     cy.get('[data-testid="progress-bar"]').should('be.visible');

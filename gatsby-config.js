@@ -16,7 +16,7 @@ module.exports = {
         languages: [{ name: 'en' }],
         fields: [
           { name: 'title', store: true, attributes: { boost: 20 } },
-          { name: 'description', store: true, attributes: { boost: 5 } },
+          { name: 'subtitle', store: true, attributes: { boost: 5 } },
           { name: 'content' },
           { name: 'slug', store: true },
           { name: 'date', store: true },
@@ -24,7 +24,7 @@ module.exports = {
         resolvers: {
           Mdx: {
             title: node => node.frontmatter.title,
-            description: node => node.frontmatter.description,
+            subtitle: node => node.frontmatter.subtitle,
             content: node => node.rawBody,
             date: node => node.frontmatter.date,
             slug: node => `/posts/${node.frontmatter.slug}`,
