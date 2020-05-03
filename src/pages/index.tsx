@@ -3,10 +3,10 @@ import { graphql, Link } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
 import Button from 'gatsby-theme-maximeheckel/src/components/Button';
 import Seo from 'gatsby-theme-maximeheckel/src/components/Seo';
-import MainWrapper from 'gatsby-theme-maximeheckel/src/layouts/MainWrapper';
+import Layout from 'gatsby-theme-maximeheckel/src/layouts/index';
 import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
 import React from 'react';
-import SearchBox from '../components/SearchBox';
+import SearchBox from 'gatsby-theme-maximeheckel/src/components/SearchBox';
 
 const MONTHS = [
   'Jan',
@@ -38,7 +38,7 @@ export const pageQuery = graphql`
           frontmatter {
             slug
             title
-            description
+            subtitle
             date
             featured
             colorFeatured
@@ -61,7 +61,7 @@ export const pageQuery = graphql`
   }
 `;
 
-interface IProps {
+interface Props {
   data: {
     allMdx: {
       edges: Array<{
@@ -70,9 +70,8 @@ interface IProps {
           frontmatter: {
             slug: string;
             title: string;
-            description: string;
-            date: string;
             subtitle: string;
+            date: string;
             tags: string[];
             featured?: boolean;
             colorFeatured?: string;
@@ -86,124 +85,137 @@ interface IProps {
         };
       }>;
     };
-    site: {
-      siteMetadata: {
-        title: string;
-        posts: Array<{
-          title: string;
-          url: string;
-          date: string;
-        }>;
-      };
-    };
   };
   location: {
     search?: string;
   };
 }
 
-const IndexPage = ({ data, location }: IProps) => {
+const IndexPage = ({ data, location }: Props) => {
   const [showSearch, setShowSearch] = React.useState(location.search !== '');
   let year = 0;
 
   return (
-    <MainWrapper footer={true} header={true}>
-      <Seo title={data.site.siteMetadata.title} />
-      <SearchBox
-        location={location}
-        showOverride={showSearch}
-        onClose={() => setShowSearch(false)}
-      />
-      <div style={{ paddingTop: '10px', paddingBottom: '10px' }}>
-        <br />
-        <h2>Hi 👋 I'm Maxime, and this is my blog.</h2>
-        <p>
-          I share my frontend engineering experience, with technical articles
-          about React, Typescript, Serverless and testing.
-        </p>
-        <hr />
-        <ShortcutList>
-          <div role="button" tabIndex={0} onClick={() => setShowSearch(true)}>
-            Click or<ShortcutIcon>⌘/CTRL</ShortcutIcon> +{' '}
-            <ShortcutIcon>K</ShortcutIcon> to search
-          </div>
-        </ShortcutList>
-        <h3 style={{ fontWeight: 600 }}>Featured</h3>
-        <List data-testid="featured-list">
-          {data.allMdx.edges.map(({ node }) => {
-            if (!node.frontmatter.featured) {
-              return null;
-            }
-
-            return (
-              <li key={node.frontmatter.slug}>
-                <BigBlock color={node.frontmatter.colorFeatured}>
-                  <Link
-                    style={{ textDecoration: `none` }}
-                    to={`/posts/${node.frontmatter.slug}?featured=true`}
-                  >
-                    <h3>{node.frontmatter.title}</h3>
-                  </Link>
-                  <DescriptionBlock>
-                    <p>{node.frontmatter.description}</p>
-                    <hr />
-                  </DescriptionBlock>
-                  <ItemFooterBlock>
-                    <DateBlock>
-                      {`${
-                        MONTHS[new Date(node.frontmatter.date).getMonth()]
-                      } ${new Date(node.frontmatter.date).getDate()} ${new Date(
-                        node.frontmatter.date
-                      ).getFullYear()}`}
-                    </DateBlock>
-                    <Link
-                      style={{ textDecoration: `none` }}
-                      to={`/posts/${node.frontmatter.slug}?featured=true`}
-                    >
-                      <Button secondary={true}>Read</Button>
-                    </Link>
-                  </ItemFooterBlock>
-                </BigBlock>
-              </li>
-            );
-          })}
-        </List>
-        <hr />
-        <h3 style={{ fontWeight: 600 }}>All articles</h3>
-        <List data-testid="article-list">
-          {data.allMdx.edges.map(({ node }) => {
-            let currentYear = new Date(node.frontmatter.date).getFullYear();
-            let printYear;
-
-            if (currentYear !== year) {
-              printYear = true;
-              year = currentYear;
-            } else {
-              printYear = false;
-            }
-
-            return (
-              <li key={node.frontmatter.slug} data-testid="article-item">
-                {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
-                <Link
-                  style={{ textDecoration: `none` }}
-                  to={`/posts/${node.frontmatter.slug}`}
+    <Layout footer={true} header={true}>
+      {(layoutProps: {
+        site: {
+          siteMetadata: {
+            author: string;
+            title: string;
+            url: string;
+          };
+        };
+      }) => {
+        const { site } = layoutProps;
+        return (
+          <>
+            <Seo title={site.siteMetadata.title} />
+            <SearchBox
+              location={location}
+              showOverride={showSearch}
+              onClose={() => setShowSearch(false)}
+            />
+            <div style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+              <br />
+              <h2>Hi 👋 I'm Maxime, and this is my blog.</h2>
+              <p>
+                I share my frontend engineering experience, with technical
+                articles about React, Typescript, Serverless and testing.
+              </p>
+              <hr />
+              <ShortcutList>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setShowSearch(true)}
                 >
-                  <Block data-testid="article-link">
-                    <DateBlock>
-                      {`${
-                        MONTHS[new Date(node.frontmatter.date).getMonth()]
-                      } ${new Date(node.frontmatter.date).getDate()}`}
-                    </DateBlock>
-                    <TitleBlock>{node.frontmatter.title}</TitleBlock>
-                  </Block>
-                </Link>
-              </li>
-            );
-          })}
-        </List>
-      </div>
-    </MainWrapper>
+                  Click or<ShortcutIcon>⌘/CTRL</ShortcutIcon> +{' '}
+                  <ShortcutIcon>K</ShortcutIcon> to search
+                </div>
+              </ShortcutList>
+              <h3 style={{ fontWeight: 600 }}>Featured</h3>
+              <List data-testid="featured-list">
+                {data.allMdx.edges.map(({ node }) => {
+                  if (!node.frontmatter.featured) {
+                    return null;
+                  }
+
+                  return (
+                    <li key={node.frontmatter.slug}>
+                      <BigBlock color={node.frontmatter.colorFeatured}>
+                        <Link
+                          style={{ textDecoration: `none` }}
+                          to={`/posts/${node.frontmatter.slug}?featured=true`}
+                        >
+                          <h3>{node.frontmatter.title}</h3>
+                        </Link>
+                        <DescriptionBlock>
+                          <p>{node.frontmatter.subtitle}</p>
+                          <hr />
+                        </DescriptionBlock>
+                        <ItemFooterBlock>
+                          <DateBlock>
+                            {`${
+                              MONTHS[new Date(node.frontmatter.date).getMonth()]
+                            } ${new Date(
+                              node.frontmatter.date
+                            ).getDate()} ${new Date(
+                              node.frontmatter.date
+                            ).getFullYear()}`}
+                          </DateBlock>
+                          <Link
+                            style={{ textDecoration: `none` }}
+                            to={`/posts/${node.frontmatter.slug}?featured=true`}
+                          >
+                            <Button tertiary={true}>Read</Button>
+                          </Link>
+                        </ItemFooterBlock>
+                      </BigBlock>
+                    </li>
+                  );
+                })}
+              </List>
+              <hr />
+              <h3 style={{ fontWeight: 600 }}>All articles</h3>
+              <List data-testid="article-list">
+                {data.allMdx.edges.map(({ node }) => {
+                  let currentYear = new Date(
+                    node.frontmatter.date
+                  ).getFullYear();
+                  let printYear;
+
+                  if (currentYear !== year) {
+                    printYear = true;
+                    year = currentYear;
+                  } else {
+                    printYear = false;
+                  }
+
+                  return (
+                    <li key={node.frontmatter.slug} data-testid="article-item">
+                      {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
+                      <Link
+                        style={{ textDecoration: `none` }}
+                        to={`/posts/${node.frontmatter.slug}`}
+                      >
+                        <Block data-testid="article-link">
+                          <DateBlock>
+                            {`${
+                              MONTHS[new Date(node.frontmatter.date).getMonth()]
+                            } ${new Date(node.frontmatter.date).getDate()}`}
+                          </DateBlock>
+                          <TitleBlock>{node.frontmatter.title}</TitleBlock>
+                        </Block>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </List>
+            </div>
+          </>
+        );
+      }}
+    </Layout>
   );
 };
 
@@ -258,12 +270,13 @@ const ItemFooterBlock = styled('div')`
 `;
 
 const BigBlock = styled('div')`
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
     min-height: 150px;
     height: unset;
-    padding: 30px 30px;
+    padding: 40px 30px;
 
-    p {
+    p,
+    hr {
       display: none;
     }
   }

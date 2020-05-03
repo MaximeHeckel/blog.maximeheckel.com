@@ -25,6 +25,7 @@ jobs:
       - name: Run Lint
         run: |
           yarn lint
-      - name: Run Unit Tests
-        run: |
-          yarn test:coverage
+      # All unit tests are now executed at the theme level
+      # - name: Run Unit Tests
+      #   run: |
+      #     yarn test:coverage

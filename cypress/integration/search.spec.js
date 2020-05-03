@@ -52,6 +52,6 @@ describe('Search tests', () => {
       .eq(0)
       .click();
     cy.url().should('include', '/posts/');
-    cy.get('[data-testid="blogPost"]').should('be.visible');
+    cy.get('[data-testid="hero"]').should('be.visible');
   });
 });

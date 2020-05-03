@@ -1,6 +1,6 @@
 ---
 title: Building a GraphQL wrapper for the Docker API
-description: From REST calls to powerful queries
+subtitle: From REST calls to powerful queries
 date: '2019-05-28T14:17:39.673Z'
 categories: []
 keywords: []
@@ -73,12 +73,17 @@ The schema we will need for our Docker API GraphQL wrapper is composed of two ma
 - **typeDefs** or type definitions. We will define how our Docker resources are architected and related to each other in our graph.
 - **resolvers** which are functions where each one of them is associated with a single field and will be used to fetch data from the Docker API.
 
+<Callout variant="info">
+
 To keep this article as accessible as possible and not too overwhelming, we will only focus on implementing typeDefs and resolvers for Docker **services** and **containers**. If you don’t know what a service or a container is, you can learn more about them at the following links:
 
 - [What is a service](https://docs.docker.com/v17.12/docker-cloud/getting-started/your_first_service/)
 - [Main Docker concepts](https://docs.docker.com/get-started/)
 
 These two resources are closely related: A service is composed of multiple containers. However, if you want to know which containers are within a given service, you have to do at least two REST API calls: one to get the service and one to get a filtered list of containers that compose that service.   
+
+</Callout>
+
 We will see that thanks to the GraphQL wrapper we can have the same information with one single query, and with exactly the data we want (i.e. no over fetching).
 
 #### Writing our type definitions
