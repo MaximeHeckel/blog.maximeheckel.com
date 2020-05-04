@@ -66,7 +66,7 @@
     "eslint-plugin-react-hooks": "^2.3.0",
     "identity-obj-proxy": "^3.0.0",
     "is-ci-cli": "^1.1.1",
-    "jest": "25.1.0",
+    "jest": "26.0.0",
     "jest-dom": "^3.0.2",
     "jest-emotion": "^10.0.7",
     "prettier": "^1.19.1",
