@@ -7,6 +7,7 @@ import Layout from 'gatsby-theme-maximeheckel/src/layouts/index';
 import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
 import React from 'react';
 import SearchBox from 'gatsby-theme-maximeheckel/src/components/SearchBox';
+import PrinterComponent from '../components/Printer';
 
 const MONTHS = [
   'Jan',
@@ -116,6 +117,7 @@ const IndexPage = ({ data, location }: Props) => {
               onClose={() => setShowSearch(false)}
             />
             <div style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+              <PrinterComponent title="Fixing the 'dark mode flash' issue on server rendered websites" />
               <br />
               <h2>Hi 👋 I'm Maxime, and this is my blog.</h2>
               <p>
