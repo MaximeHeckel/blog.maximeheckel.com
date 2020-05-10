@@ -1,32 +1,69 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-const Wrapper = styled('div')`
-  width: 800px;
-  height: 400px;
-  color: #2b2d3e;
-  font-family: 'Helvetica', sans-serif;
-  display: flex;
-  background: #fff;
-  svg {
-    max-width: 200px;
-    min-width: 200px;
-  }
-`;
-
-const Title = styled('h1')`
-  padding-left: 20px;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  font-size: 38px;
-  font-weight: 500;
-  line-height: 1.5;
-`;
+const Matrix = () => (
+  <svg
+    width="878"
+    height="402"
+    viewBox="0 0 878 402"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M1.61902 242.59L876.479 238.357"
+      stroke="#8A8A90"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeDasharray="0.1 50"
+    />
+    <path
+      d="M1.61902 321.513L876.479 317.28"
+      stroke="#8A8A90"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeDasharray="0.1 50"
+    />
+    <path
+      d="M1.61902 400.436L876.479 396.202"
+      stroke="#8A8A90"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeDasharray="0.1 50"
+    />
+    <path
+      d="M1.61902 5.82227L876.479 1.58895"
+      stroke="#8A8A90"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeDasharray="0.1 50"
+    />
+    <path
+      d="M1.61902 84.7451L876.479 80.5118"
+      stroke="#8A8A90"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeDasharray="0.1 50"
+    />
+    <path
+      d="M1.61902 163.667L876.479 159.434"
+      stroke="#8A8A90"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeDasharray="0.1 50"
+    />
+  </svg>
+);
 
 const LocalLogo = () => (
   <svg
-    width="401"
-    height="401"
+    width="50"
+    height="50"
     viewBox="0 0 401 401"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -64,23 +101,61 @@ const LocalLogo = () => (
   </svg>
 );
 
+const Wrapper = styled('div')`
+  width: 1200px;
+  height: 630px;
+  position: relative;
+  color: white;
+  background: linear-gradient(90deg, #5284f9 -48.68%, #1b1e21 70.39%), #1b1e21;
+  font-family: 'Helvetica', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > svg {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+`;
+
+const TitleWrapper = styled('div')`
+  margin-top: 110px;
+  width: 730px;
+  h1 {
+    min-height: 95px;
+    max-height: 95px;
+    font-weight: 500;
+    font-size: 47px;
+    line-height: 60px;
+  }
+`;
+
+const InfoWrapper = styled('div')`
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  p {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+  }
+`;
+
 const PrinterComponent = ({ title }) => (
   <Wrapper>
-    <div
-      style={{ backgroundColor: '#2b2d3e', maxWidth: '250px', height: '100%' }}
-    >
-      <LocalLogo />
-    </div>
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-      }}
-    >
-      <Title>{title}</Title>
-      <h3 style={{ color: '#196FD8', paddingLeft: '20px' }}>@MaximeHeckel</h3>
-    </div>
+    <Matrix />
+    <TitleWrapper>
+      <h1>{title}</h1>
+      <InfoWrapper>
+        <LocalLogo />
+        <p>@MaximeHeckel</p>
+      </InfoWrapper>
+    </TitleWrapper>
   </Wrapper>
 );
 
