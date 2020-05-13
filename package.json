@@ -5,7 +5,8 @@
   "version": "0.5.0",
   "author": "Maxime Heckel <hello@maximeheckel.com>",
   "scripts": {
-    "build": "rm -rf .cache && gatsby build",
+    "build": "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build --log-pages",
+    "build:dev": "rm -rf .cache && gatsby build",
     "cy:open": "cypress open",
     "cy:run": "cypress run --browser chrome",
     "develop": "gatsby develop",
