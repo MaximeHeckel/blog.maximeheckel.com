@@ -1,0 +1,43 @@
+
+---
+image: './img/2020-5-16-test-code-snippet.png'
+---
+
+```js title=Test Code Snippet
+
+export const getScreenshotFromUrl = async ({ url }: { url: string }) => {
+  const page = await getPage(isDev);
+
+  // Set viewport to something big
+  // Prevents Carbon from cutting off lines
+  await page.setViewport({
+    width: 2560,
+    height: 1080,
+    deviceScaleFactor: 2,
+  });
+
+  await page.goto(url, { waitUntil: "load" });
+
+  const exportContainer = await page.waitForSelector("#export-container");
+  const elementBounds = await exportContainer.boundingBox();
+
+  if (!elementBounds)
+    throw new Error("Cannot get export container bounding box");
+
+  const buffer = await exportContainer.screenshot({
+    encoding: "binary",
+    clip: {
+      ...elementBounds,
+      // This avoids a black line towards the left and bottom side of images,
+      // which only occured when certain fonts were used, see https://goo.gl/JHHskx
+      x: Math.round(elementBounds.x),
+      height: Math.round(elementBounds.height) - 1,
+    },
+  });
+
+  return buffer;
+};
+
+
+```
+  
