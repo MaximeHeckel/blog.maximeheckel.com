@@ -9,9 +9,17 @@ import * as Github from '@actions/github';
 const postAsync = promisify(post);
 const writeFileAsync = promisify(fs.writeFile);
 
+/**
+ * Here we create a new Github client with the GITHUB_TOKEN environment variable
+ * that is passed to this action by the Github workflow.
+ */
 const ghClient =
   process.env.GITHUB_TOKEN && new Github.GitHub(process.env.GITHUB_TOKEN);
 
+/**
+ * This variable will store any logs from any exec commands ran by
+ * this action
+ */
 let execLogs = '';
 
 const execOptions = {
@@ -79,18 +87,15 @@ interface Args {
  * - calls createSnippetImage for that specific snippet code string and fileName
  * - commits and pushes the new files
  * @param {Args} args An object with the following fields:
- * - email: the email associated to the github user,
- * - username: the username associated to the github user,
- * - title: the title of the code snippet,
- * - code: the base64 encoded code snippet string,
- * - language: the language of the code snippet,
+ * - email: the email associated to the github user
+ * - username: the username associated to the github user
+ * - title: the title/name of the code snippet
+ * - code: the base64 encoded code snippet string
+ * - language: the language of the code snippet
  *
  */
 const createSnippet = async (args: Args): Promise<void> => {
   const { title, code, language, username, email } = args;
-  console.log(username);
-  console.log(email);
-  console.log('TOKEN:', process.env.GITHUB_TOKEN);
 
   /**
    * Set up git config
@@ -118,8 +123,19 @@ const createSnippet = async (args: Args): Promise<void> => {
   const fileName = `${today.getFullYear()}-${today.getMonth() +
     1}-${today.getDate()}-${title.replace(/ /g, '-').toLocaleLowerCase()}`;
 
+  /**
+   * "data" is the .mdx file content for the new snippet.
+   *  It has 4 frontmatter fields:
+   *  - title: the title/name of the code snippet
+   *  - language: the language of the code snippet
+   *  - created: the date when the code snippet was created
+   *  - image: the corresponsind code snippet screenshot in png
+   */
   const data = `
 ---
+title: ${title}
+language: ${language}
+created: ${today}
 image: './img/${fileName}.png'
 ---
 
@@ -154,12 +170,26 @@ ${codeString}
   ]);
 };
 
+/**
+ * Core function of the Github action
+ */
 const run = async (): Promise<void> => {
+  /**
+   * We first parse the inputs of the action that are passed by the Github workflow
+   */
   const title = core.getInput('title');
   const code = core.getInput('code');
   const language = core.getInput('language');
 
+  /**
+   * Then we get the Github context in which this action is being ran
+   */
   const context = await Github.context;
+
+  /**
+   * We get the repositorie's owner's name by splitting the full name of the
+   * repository and reading the first item in the resulting array.
+   */
   const repo = context.payload.repository!.full_name!.split('/');
   const [owner] = repo!;
 
@@ -167,11 +197,19 @@ const run = async (): Promise<void> => {
 
   if (!client) throw 'Failed to load Github client from token.';
 
+  /**
+   * With the username we get the user's email by using the Github client instanciated
+   * above (L16). The username and email are used to setup the local git config to have
+   * proper commit messages and commit authors.
+   */
   const {
     data: { email },
   } = await client.users.getByUsername({ username: owner });
 
   try {
+    /**
+     * Run the createSnippet function
+     */
     await createSnippet({
       email,
       username: owner,
@@ -180,6 +218,10 @@ const run = async (): Promise<void> => {
       language,
     });
   } catch (e) {
+    /**
+     * If it fails, log the error, set the action to failed and send any exec logs gathered by
+     * the action as error payload (useful for debugging)
+     */
     console.error(e);
     core.setFailed(execLogs);
   }
