@@ -3,14 +3,16 @@ author: 'Maxime Heckel'
 description: 'Generates a snippet post from a code snippet posted in an issue'
 inputs:
   title:
-    description: 'The title of the snippets'
+    description: 'A title of the snippets'
     required: true
   code:
-    description: 'The code snippet in base64'
+    description: 'A code snippet in base64'
     required: true
   language:
-    description: 'The shortened language name (e.g js for Javascript)'
+    description: 'A shortened language name (e.g js for Javascript)'
     required: true
+  params:
+    description: 'An string representing a "query-stringified" carbon.now.sh config'
 runs:
   using: 'node12'
   main: 'dist/index.js'

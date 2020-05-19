@@ -23,5 +23,6 @@ jobs:
           title: ${{ github.event.client_payload.title }}
           code: ${{ github.event.client_payload.code }}
           language: ${{ github.event.client_payload.language }}
+          params: ${{ github.event.client_payload.params }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

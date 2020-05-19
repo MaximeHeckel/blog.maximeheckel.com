@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
-import fs from 'fs';
-import { post } from 'request';
-import { promisify } from 'util';
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as Github from '@actions/github';
+import fs from 'fs';
+import { post } from 'request';
+import { promisify } from 'util';
 
 const postAsync = promisify(post);
 const writeFileAsync = promisify(fs.writeFile);
@@ -40,6 +40,7 @@ const git = (args: string[]): Promise<number> => {
 interface SnippetImageArgs {
   code: string;
   fileName: string;
+  params: string;
 }
 
 /**
@@ -49,13 +50,14 @@ interface SnippetImageArgs {
  * @param {SnippetImageArgs} args An object with the following fields:
  * - code: the base64 encoded code snippet string
  * - fileName: the name of the output png file
+ * - params: the query-stringified carbon.now.sh params object
  */
 const createSnippetImage = async (args: SnippetImageArgs): Promise<void> => {
-  const { code, fileName } = args;
+  const { code, fileName, params } = args;
 
   try {
     const { body } = await postAsync({
-      url: 'https://carboncloud.now.sh/api/carbonara',
+      url: `https://carboncloud.now.sh/api/carbonara?${params}`,
       formData: {
         data: code,
       },
@@ -74,6 +76,7 @@ interface Args {
   title: string;
   code: string;
   language: string;
+  params: string;
 }
 
 /**
@@ -92,10 +95,10 @@ interface Args {
  * - title: the title/name of the code snippet
  * - code: the base64 encoded code snippet string
  * - language: the language of the code snippet
- *
+ * - params: the query-stringified carbon.now.sh params object
  */
 const createSnippet = async (args: Args): Promise<void> => {
-  const { title, code, language, username, email } = args;
+  const { title, code, language, username, email, params } = args;
 
   /**
    * Set up git config
@@ -121,7 +124,10 @@ const createSnippet = async (args: Args): Promise<void> => {
 
   const today = new Date();
   const fileName = `${today.getFullYear()}-${today.getMonth() +
-    1}-${today.getDate()}-${title.replace(/ /g, '-').toLocaleLowerCase()}`;
+    1}-${today.getDate()}-${title
+    .replace(/ /g, '-')
+    .replace(/[^\w\s]/gi, '')
+    .toLocaleLowerCase()}`;
 
   /**
    * "data" is the .mdx file content for the new snippet.
@@ -135,7 +141,7 @@ const createSnippet = async (args: Args): Promise<void> => {
 ---
 title: ${title}
 language: ${language}
-created: ${today}
+created: ${today.toISOString()}
 image: './img/${fileName}.png'
 ---
 
@@ -152,7 +158,7 @@ ${codeString}
   /**
    * Create snippet image
    */
-  await createSnippetImage({ code, fileName });
+  await createSnippetImage({ code, fileName, params });
 
   /**
    * Save new files and push
@@ -180,6 +186,7 @@ const run = async (): Promise<void> => {
   const title = core.getInput('title');
   const code = core.getInput('code');
   const language = core.getInput('language');
+  const params = core.getInput('params');
 
   /**
    * Then we get the Github context in which this action is being ran
@@ -216,6 +223,7 @@ const run = async (): Promise<void> => {
       title,
       code,
       language,
+      params,
     });
   } catch (e) {
     /**
