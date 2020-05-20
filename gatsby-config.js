@@ -41,6 +41,13 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `snippets`,
+        path: `${__dirname}/snippets/`,
+      },
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Maxime Heckel's blog`,

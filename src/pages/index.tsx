@@ -41,6 +41,7 @@ export const pageQuery = graphql`
             subtitle
             date
             featured
+            type
             colorFeatured
             cover {
               childImageSharp {
@@ -73,6 +74,7 @@ interface Props {
             subtitle: string;
             date: string;
             tags: string[];
+            type: 'snippet' | 'blogPost';
             featured?: boolean;
             colorFeatured?: string;
             cover: {
@@ -178,38 +180,47 @@ const IndexPage = ({ data, location }: Props) => {
               <hr />
               <h3 style={{ fontWeight: 600 }}>All articles</h3>
               <List data-testid="article-list">
-                {data.allMdx.edges.map(({ node }) => {
-                  let currentYear = new Date(
-                    node.frontmatter.date
-                  ).getFullYear();
-                  let printYear;
+                {data.allMdx.edges
+                  .filter(({ node }) => node.frontmatter.type !== 'snippet')
+                  .map(({ node }) => {
+                    let currentYear = new Date(
+                      node.frontmatter.date
+                    ).getFullYear();
+                    let printYear;
 
-                  if (currentYear !== year) {
-                    printYear = true;
-                    year = currentYear;
-                  } else {
-                    printYear = false;
-                  }
+                    if (currentYear !== year) {
+                      printYear = true;
+                      year = currentYear;
+                    } else {
+                      printYear = false;
+                    }
 
-                  return (
-                    <li key={node.frontmatter.slug} data-testid="article-item">
-                      {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
-                      <Link
-                        style={{ textDecoration: `none` }}
-                        to={`/posts/${node.frontmatter.slug}`}
+                    return (
+                      <li
+                        key={node.frontmatter.slug}
+                        data-testid="article-item"
                       >
-                        <Block data-testid="article-link">
-                          <DateBlock>
-                            {`${
-                              MONTHS[new Date(node.frontmatter.date).getMonth()]
-                            } ${new Date(node.frontmatter.date).getDate()}`}
-                          </DateBlock>
-                          <TitleBlock>{node.frontmatter.title}</TitleBlock>
-                        </Block>
-                      </Link>
-                    </li>
-                  );
-                })}
+                        {printYear ? (
+                          <YearBlock>{currentYear}</YearBlock>
+                        ) : null}
+                        <Link
+                          style={{ textDecoration: `none` }}
+                          to={`/posts/${node.frontmatter.slug}`}
+                        >
+                          <Block data-testid="article-link">
+                            <DateBlock>
+                              {`${
+                                MONTHS[
+                                  new Date(node.frontmatter.date).getMonth()
+                                ]
+                              } ${new Date(node.frontmatter.date).getDate()}`}
+                            </DateBlock>
+                            <TitleBlock>{node.frontmatter.title}</TitleBlock>
+                          </Block>
+                        </Link>
+                      </li>
+                    );
+                  })}
               </List>
             </div>
           </>

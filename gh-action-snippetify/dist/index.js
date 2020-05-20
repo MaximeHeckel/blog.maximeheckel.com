@@ -33462,13 +33462,13 @@ const createSnippet = async (args) => {
 title: ${title}
 language: ${language}
 created: ${today.toISOString()}
-image: './img/${fileName}.png'
+slug: ${fileName}
+snippetImage: './img/${fileName}.png'
+type: snippet
 ---
 
-\`\`\`${language} title=${title}
-
+\`\`\`${language} snippet
 ${codeString}
-
 \`\`\`
   `;
     await writeFileAsync(`./snippets/${fileName}.mdx`, data);

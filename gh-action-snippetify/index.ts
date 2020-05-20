@@ -142,13 +142,13 @@ const createSnippet = async (args: Args): Promise<void> => {
 title: ${title}
 language: ${language}
 created: ${today.toISOString()}
-image: './img/${fileName}.png'
+slug: ${fileName}
+snippetImage: './img/${fileName}.png'
+type: snippet
 ---
 
-\`\`\`${language} title=${title}
-
+\`\`\`${language} snippet
 ${codeString}
-
 \`\`\`
   `;
 

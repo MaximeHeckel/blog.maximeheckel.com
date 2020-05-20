@@ -21,7 +21,16 @@ exports.createPages = ({ graphql, actions }) => {
                     subtitle
                     date
                     type
+                    snippetImage {
+                      childImageSharp {
+                        fluid(quality: 100) {
+                          src
+                          srcSet
+                        }
+                      }
+                    }
                     cover {
+                      absolutePath
                       childImageSharp {
                         fluid(
                           maxWidth: 1500
@@ -65,7 +74,17 @@ exports.createPages = ({ graphql, actions }) => {
 
         // Create blog posts pages.
         result.data.allMdx.edges.forEach(({ node }) => {
-          createPage({
+          if (node.frontmatter.type === 'snippet') {
+            return createPage({
+              path: `/snippets/${node.frontmatter.slug}`,
+              component: node.parent.absolutePath,
+              context: {
+                snippetImage: node.frontmatter.snippetImage,
+                absPath: node.parent.absolutePath,
+              },
+            });
+          }
+          return createPage({
             path: `/posts/${node.frontmatter.slug}`,
             component: node.parent.absolutePath,
             context: {
