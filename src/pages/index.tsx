@@ -117,7 +117,7 @@ const IndexPage = ({ data, location }: Props) => {
               showOverride={showSearch}
               onClose={() => setShowSearch(false)}
             />
-            <div style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+            <div style={{ paddingTop: '40px', paddingBottom: '10px' }}>
               <br />
               <h2>Hi 👋 I'm Maxime, and this is my blog.</h2>
               <p>
