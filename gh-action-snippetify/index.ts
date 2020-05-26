@@ -137,8 +137,7 @@ const createSnippet = async (args: Args): Promise<void> => {
    *  - created: the date when the code snippet was created
    *  - image: the corresponsind code snippet screenshot in png
    */
-  const data = `
----
+  const data = `---
 title: ${title}
 language: ${language}
 created: ${today.toISOString()}
