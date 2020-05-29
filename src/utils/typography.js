@@ -31,9 +31,9 @@ const typography = new Typography({
   ],
   overrideStyles: () => ({
     h1: {
-      fontWeight: 500,
+      fontWeight: 600,
       fontSize: '38px',
-      lineHeight: 1.5,
+      lineHeight: 1.666,
     },
     h2: {
       fontWeight: 600,

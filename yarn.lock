@@ -7149,10 +7149,10 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framer-motion@^1.10.3:
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-1.10.3.tgz#d58a57ccb0ccc3317d0fc3abc4da2b3e4227bd43"
-  integrity sha512-VooCzGWg7brSO4Gc0YwpY5AadJe4OPS74ZyOlOHWll5rMXCoOc6Ia3uDQ6RfOJlwCP/D9TQuRGtboyJiVXjVcw==
+framer-motion@1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-1.11.0.tgz#9463a4d8e1be9f25d0f75712a4a835691c028d65"
+  integrity sha512-DkJFWAHIv57L4xu8Ufq9GMs9Ifqpgt5Yi55pc4NQos8TUGomgbLlnwpO1IXK85X5K1dVNKuTZMiqjWZLeOfG/A==
   dependencies:
     "@popmotion/easing" "^1.0.2"
     "@popmotion/popcorn" "^0.4.2"
@@ -7770,10 +7770,10 @@ gatsby-telemetry@^1.2.3, gatsby-telemetry@^1.3.1, gatsby-telemetry@^1.3.3:
     stack-utils "1.0.2"
     uuid "3.4.0"
 
-gatsby-theme-maximeheckel@0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.9.0.tgz#0e713de1127f5971da064b3baed6c1b1a0a42c95"
-  integrity sha512-ORa7SwlcgxnarpBvZtlJ3ylK1JCxgcoSfE/0f6G8n8cVHdwFvsbkEWbDygWFLT/Qikp1oFiPCbT0vkOiWM/goA==
+gatsby-theme-maximeheckel@0.9.4:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.9.4.tgz#3c30f88e2f25cf7e9b2f7fee0927e5c264b154e3"
+  integrity sha512-YGNUbN4ZcwJZpPJ6pxG6oMRaeh5UHaKDAEzwLLKeaVWwvTNqE335vD7Vzn9H5/IOOeIFV2tDn04B6N7w+EInZg==
   dependencies:
     "@emotion/core" "^10.0.6"
     "@emotion/styled" "^10.0.6"
@@ -7782,7 +7782,7 @@ gatsby-theme-maximeheckel@0.9.0:
     "@sindresorhus/slugify" "^0.11.0"
     emotion-theming "^10.0.6"
     focus-trap-react "^6.0.0"
-    framer-motion "^1.10.3"
+    framer-motion "1.11.0"
     gatsby "2.20.12"
     gatsby-image "2.3.1"
     gatsby-plugin-emotion "4.1.22"
