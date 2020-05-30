@@ -117,111 +117,117 @@ const IndexPage = ({ data, location }: Props) => {
               showOverride={showSearch}
               onClose={() => setShowSearch(false)}
             />
-            <div style={{ paddingTop: '40px', paddingBottom: '10px' }}>
+            <div style={{ marginTop: '100px', paddingBottom: '10px' }}>
               <br />
-              <h2>Hi 👋 I'm Maxime, and this is my blog.</h2>
-              <p>
-                I share my frontend engineering experience, with technical
-                articles about React, Typescript, Serverless and testing.
-              </p>
-              <hr />
-              <ShortcutList>
-                <div
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setShowSearch(true)}
-                >
-                  Click or<ShortcutIcon>⌘/CTRL</ShortcutIcon> +{' '}
-                  <ShortcutIcon>K</ShortcutIcon> to search
-                </div>
-              </ShortcutList>
-              <h3 style={{ fontWeight: 600 }}>Featured</h3>
-              <List data-testid="featured-list">
-                {data.allMdx.edges.map(({ node }) => {
-                  if (!node.frontmatter.featured) {
-                    return null;
-                  }
+              <h1>Hi 👋 I'm Maxime, and this is my blog.</h1>
+              <h3 style={{ fontWeight: 400 }}>
+                I share my frontend engineering experience, and my expertise
+                with technical articles about React, Typescript, Jamstack,
+                Serverless, and testing.
+              </h3>
+              <section style={{ marginTop: '100px' }}>
+                <h2>Featured</h2>
+                <List data-testid="featured-list">
+                  {data.allMdx.edges.map(({ node }) => {
+                    if (!node.frontmatter.featured) {
+                      return null;
+                    }
 
-                  return (
-                    <li key={node.frontmatter.slug}>
-                      <BigBlock color={node.frontmatter.colorFeatured}>
-                        <Link
-                          style={{ textDecoration: `none` }}
-                          to={`/posts/${node.frontmatter.slug}?featured=true`}
-                        >
-                          <h3>{node.frontmatter.title}</h3>
-                        </Link>
-                        <DescriptionBlock>
-                          <p>{node.frontmatter.subtitle}</p>
-                          <hr />
-                        </DescriptionBlock>
-                        <ItemFooterBlock>
-                          <DateBlock>
-                            {`${
-                              MONTHS[new Date(node.frontmatter.date).getMonth()]
-                            } ${new Date(
-                              node.frontmatter.date
-                            ).getDate()} ${new Date(
-                              node.frontmatter.date
-                            ).getFullYear()}`}
-                          </DateBlock>
+                    return (
+                      <li key={node.frontmatter.slug}>
+                        <BigBlock color={node.frontmatter.colorFeatured}>
                           <Link
                             style={{ textDecoration: `none` }}
                             to={`/posts/${node.frontmatter.slug}?featured=true`}
                           >
-                            <Button tertiary={true}>Read</Button>
+                            <h3>{node.frontmatter.title}</h3>
                           </Link>
-                        </ItemFooterBlock>
-                      </BigBlock>
-                    </li>
-                  );
-                })}
-              </List>
-              <hr />
-              <h3 style={{ fontWeight: 600 }}>All articles</h3>
-              <List data-testid="article-list">
-                {data.allMdx.edges
-                  .filter(({ node }) => node.frontmatter.type !== 'snippet')
-                  .map(({ node }) => {
-                    let currentYear = new Date(
-                      node.frontmatter.date
-                    ).getFullYear();
-                    let printYear;
-
-                    if (currentYear !== year) {
-                      printYear = true;
-                      year = currentYear;
-                    } else {
-                      printYear = false;
-                    }
-
-                    return (
-                      <li
-                        key={node.frontmatter.slug}
-                        data-testid="article-item"
-                      >
-                        {printYear ? (
-                          <YearBlock>{currentYear}</YearBlock>
-                        ) : null}
-                        <Link
-                          style={{ textDecoration: `none` }}
-                          to={`/posts/${node.frontmatter.slug}`}
-                        >
-                          <Block data-testid="article-link">
+                          <DescriptionBlock>
+                            <p>{node.frontmatter.subtitle}</p>
+                            <hr />
+                          </DescriptionBlock>
+                          <ItemFooterBlock>
                             <DateBlock>
                               {`${
                                 MONTHS[
                                   new Date(node.frontmatter.date).getMonth()
                                 ]
-                              } ${new Date(node.frontmatter.date).getDate()}`}
+                              } ${new Date(
+                                node.frontmatter.date
+                              ).getDate()} ${new Date(
+                                node.frontmatter.date
+                              ).getFullYear()}`}
                             </DateBlock>
-                            <TitleBlock>{node.frontmatter.title}</TitleBlock>
-                          </Block>
-                        </Link>
+                            <Link
+                              style={{ textDecoration: `none` }}
+                              to={`/posts/${node.frontmatter.slug}?featured=true`}
+                            >
+                              <Button tertiary={true}>Read</Button>
+                            </Link>
+                          </ItemFooterBlock>
+                        </BigBlock>
                       </li>
                     );
                   })}
-              </List>
+                </List>
+              </section>
+              <section style={{ marginTop: '100px' }}>
+                <h2>All articles</h2>
+                <ShortcutList>
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setShowSearch(true)}
+                  >
+                    Click or<ShortcutIcon>⌘/CTRL</ShortcutIcon> +{' '}
+                    <ShortcutIcon>K</ShortcutIcon> to search
+                  </div>
+                </ShortcutList>
+                <List data-testid="article-list">
+                  {data.allMdx.edges
+                    .filter(({ node }) => node.frontmatter.type !== 'snippet')
+                    .map(({ node }) => {
+                      let currentYear = new Date(
+                        node.frontmatter.date
+                      ).getFullYear();
+                      let printYear;
+
+                      if (currentYear !== year) {
+                        printYear = true;
+                        year = currentYear;
+                      } else {
+                        printYear = false;
+                      }
+
+                      return (
+                        <li
+                          style={{ marginLeft: '-10px' }}
+                          key={node.frontmatter.slug}
+                          data-testid="article-item"
+                        >
+                          {printYear ? (
+                            <YearBlock>{currentYear}</YearBlock>
+                          ) : null}
+                          <Link
+                            style={{ textDecoration: `none` }}
+                            to={`/posts/${node.frontmatter.slug}`}
+                          >
+                            <Block data-testid="article-link">
+                              <DateBlock>
+                                {`${
+                                  MONTHS[
+                                    new Date(node.frontmatter.date).getMonth()
+                                  ]
+                                } ${new Date(node.frontmatter.date).getDate()}`}
+                              </DateBlock>
+                              <TitleBlock>{node.frontmatter.title}</TitleBlock>
+                            </Block>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                </List>
+              </section>
             </div>
           </>
         );
@@ -299,7 +305,7 @@ const BigBlock = styled('div')`
   box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 40px;
   padding: 80px 70px;
   background-color: ${p => p.color};
-  border-radius: 5px;
+  border-radius: 6px;
   margin: 30px auto;
   overflow: hidden;
   transition: ${p => p.theme.transitionTime}s;
@@ -321,7 +327,7 @@ const Block = styled('div')`
   justify-content: flex-start;
   align-items: center;
   padding-left: 15px;
-  border-radius: 2px;
+  border-radius: 6px;
 
   height: 60px;
   box-shadow: none;
@@ -359,7 +365,7 @@ const TitleBlock = styled('div')`
 `;
 
 const List = styled('ul')`
-  margin-left: -10px;
+  margin-left: 0px;
 
   li {
     list-style: none;
