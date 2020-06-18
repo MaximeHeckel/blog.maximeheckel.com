@@ -99,15 +99,6 @@ const IndexPage = ({ data, location }: Props) => {
 
   return (
     <>
-      <div style={{ backgroundColor: 'black', color: 'white', white: '100%' }}>
-        <h1>Black Lives Matter</h1>
-        <a
-          style={{ color: 'white' }}
-          href="https://blacklivesmatters.carrd.co/"
-        >
-          Go here to find out how you can help.
-        </a>
-      </div>
       <Layout footer={true} header={true}>
         {(layoutProps: {
           site: {
@@ -242,6 +233,18 @@ const IndexPage = ({ data, location }: Props) => {
                       })}
                   </List>
                 </section>
+                <BigBlock color="black">
+                  <h3>#BlackLivesMatter</h3>
+
+                  <DescriptionBlock>
+                    <a
+                      style={{ color: 'white' }}
+                      href="https://blacklivesmatters.carrd.co/"
+                    >
+                      Go here to find out how you can help.
+                    </a>
+                  </DescriptionBlock>
+                </BigBlock>
               </div>
             </>
           );
@@ -250,6 +253,14 @@ const IndexPage = ({ data, location }: Props) => {
     </>
   );
 };
+
+/**
+ * 
+ * <div style={{ backgroundColor: 'black', color: 'white', white: '100%' }}>
+        <h1>Black Lives Matter</h1>
+       
+      </div>
+ */
 
 const ShortcutList = styled('div')`
   display: flex;
