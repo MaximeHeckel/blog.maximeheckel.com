@@ -84,7 +84,7 @@ interface Args {
  * It executes the following steps:
  * - sets the git config
  * - fetches all the repo branch
- * - checks out to the master branch
+ * - checks out to the main branch
  * - decode the base64 encoded code string
  * - writes the code string, title and language to an .mdx file in the /snippets folder
  * - calls createSnippetImage for that specific snippet code string and fileName
@@ -107,10 +107,10 @@ const createSnippet = async (args: Args): Promise<void> => {
   await git(['config', '--local', 'user.email', email]);
 
   /**
-   * Fetch branches and checkout to master
+   * Fetch branches and checkout to main
    */
   await git(['fetch', '--all']);
-  await git(['checkout', 'master']);
+  await git(['checkout', 'main']);
 
   /**
    * Decode base64 code string
@@ -171,7 +171,7 @@ ${codeString}
   await git([
     'push',
     `https://${process.env.GITHUB_ACTOR}:${process.env.GITHUB_TOKEN}@github.com/${username}/blog.maximeheckel.com.git`,
-    'master',
+    'main',
   ]);
 };
 
