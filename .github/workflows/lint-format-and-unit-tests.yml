@@ -1,9 +1,9 @@
-name: Run Formatting and Unit Tests
+name: Run Formatting and Linting
 
 on: [pull_request]
 
 jobs:
-  install-and-test:
+  lint-format:
     runs-on: ubuntu-16.04
     strategy:
       matrix:
@@ -25,7 +25,3 @@ jobs:
       - name: Run Lint
         run: |
           yarn lint
-      # All unit tests are now executed at the theme level
-      # - name: Run Unit Tests
-      #   run: |
-      #     yarn test:coverage
