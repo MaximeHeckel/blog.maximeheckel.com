@@ -1,6 +1,6 @@
 describe('Search tests', () => {
   it('Toggles the search box when hitting ctrl + k', () => {
-    cy.visit('http://localhost:8000');
+    cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
     cy.get('[data-testid="searchbox-overlay"]').should('be.visible');
@@ -10,7 +10,7 @@ describe('Search tests', () => {
   });
 
   it('Hides the search box when hitting esc', () => {
-    cy.visit('http://localhost:8000');
+    cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
     cy.wait(1000);
@@ -20,7 +20,7 @@ describe('Search tests', () => {
   });
 
   it('Hides the search box when clicking on the overlay', () => {
-    cy.visit('http://localhost:8000');
+    cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
     cy.wait(1000);
@@ -30,7 +30,7 @@ describe('Search tests', () => {
   });
 
   // it('Searches when typing on the input and shows results', () => {
-  //   cy.visit('http://localhost:8000');
+  //   cy.visit('/');
   //   cy.wait(2000);
   //   cy.get('body').type('{ctrl}k');
   //   cy.get('[data-testid="searchbox-overlay"]').should('be.visible');
@@ -42,7 +42,7 @@ describe('Search tests', () => {
   // });
 
   it('Clicking on a result navigates the user to an article', () => {
-    cy.visit('http://localhost:8000/');
+    cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k', { force: true });
     cy.get('input')
