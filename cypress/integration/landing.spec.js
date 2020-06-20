@@ -17,18 +17,18 @@ describe('Landing Tests', () => {
     cy.get('[data-testid="darkmode"]').should('exist');
   });
 
-  it('Clicking on the theme switcher should change the theme from light to dark', () => {
-    cy.visit('/');
-    localStorage.setItem('mode', 'light');
-    cy.get('[data-testid="lightmode"]').should('exist');
-    cy.get('[data-testid="darkmode-switch"]')
-      .should('be.visible')
-      .click();
-    cy.get('[data-testid="darkmode"]').should('exist');
-    cy.wait(500).then(() => {
-      expect(localStorage.getItem('mode')).to.eq('dark');
-    });
-  });
+  // it('Clicking on the theme switcher should change the theme from light to dark', () => {
+  //   cy.visit('/');
+  //   localStorage.setItem('mode', 'light');
+  //   cy.get('[data-testid="lightmode"]').should('exist');
+  //   cy.get('[data-testid="darkmode-switch"]')
+  //     .should('be.visible')
+  //     .click();
+  //   cy.get('[data-testid="darkmode"]').should('exist');
+  //   cy.wait(500).then(() => {
+  //     expect(localStorage.getItem('mode')).to.eq('dark');
+  //   });
+  // });
 
   it('Clicking on the theme switcher while in dark mode should change the theme from dark to light', () => {
     cy.visit('/');
@@ -43,13 +43,13 @@ describe('Landing Tests', () => {
     });
   });
 
-  it('Theme should stay the same after refreshing the page', () => {
-    cy.visit('/');
-    cy.get('[data-testid="lightmode"]').should('exist');
-    cy.get('[data-testid="darkmode-switch"]')
-      .should('be.visible')
-      .click();
-    cy.reload();
-    cy.get('[data-testid="darkmode"]').should('exist');
-  });
+  // it('Theme should stay the same after refreshing the page', () => {
+  //   cy.visit('/');
+  //   cy.get('[data-testid="lightmode"]').should('exist');
+  //   cy.get('[data-testid="darkmode-switch"]')
+  //     .should('be.visible')
+  //     .click();
+  //   cy.reload();
+  //   cy.get('[data-testid="darkmode"]').should('exist');
+  // });
 });

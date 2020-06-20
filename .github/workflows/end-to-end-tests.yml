@@ -3,7 +3,7 @@ name: Run End-to-End Test Suite
 on: [pull_request]
 
 jobs:
-  build-and-e2e-test:
+  deploy-and-e2e-test:
     runs-on: ubuntu-16.04
     strategy:
       matrix:
