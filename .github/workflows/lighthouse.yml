@@ -3,15 +3,21 @@ on: pull_request
 
 jobs:
   audit:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     steps:
-      - name: Sleep for 10 min
-        run: sleep 600
-      - name: Lighthouse Audit
-        uses: jakejarvis/lighthouse-action@master
+      - uses: actions/checkout@v1
+      - name: Waiting for Netlify Preview
+        uses: josephduffy/wait-for-netlify-action@v1
+        id: wait-for-netflify-preview
         with:
-          netlify_site: 'blogmaximeheckel.netlify.com'
-      - uses: actions/upload-artifact@master
+          site_name: 'blogmaximeheckel'
+          max_timeout: 600
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v3
         with:
-          name: report
-          path: './report'
+          runs: 3
+          urls: |
+            ${{ steps.wait-for-netflify-preview.outputs.url }}
+          # budgetPath: ./budget.json # test performance budgets
+          uploadArtifacts: true # save results as an action artifacts
+          temporaryPublicStorage: true # upload lighthouse report to the temporary storage
