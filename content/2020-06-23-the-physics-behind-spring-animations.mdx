@@ -1,0 +1,635 @@
+---
+title: The physics behind spring animations
+subtitle: A deep dive into the inner workings of spring animations in Framer Motion.
+date: '2020-06-23T08:00:00.000Z'
+categories: []
+keywords: ['spring animation', 'framer motion', 'physics', 'ui', 'ux', 'design', 'transition', 'physics', 'harmonic oscillator']
+slug: the-physics-behind-spring-animations
+---
+
+In the past few months, I've become a big fan of Framer Motion. After looking at how I could use it [to animate my styled-components](/posts/framer-motion-emotion), I've been tinkering around spring animations and rebuilt almost all the transitions and animations of components in several UI projects. While showcasing the result to some fellow developers I got some questions around the meaning of some of the terms and options used to set up a spring animation like **mass**, **stiffness**, and **damping**. Most of them were setting them without really knowing how they were influencing the resulting animation.
+Lucky for them, I used to study maths and physics in college and was able to bring light on the physics behind this type of animation.
+
+This article aims to explain how a spring animation in a library like Framer Motion works, the laws of physics that are behind it, and the relation between the different options you can set for a spring animation.
+
+<Callout variant="info">
+
+This is the **very first time** I'm using something I've learned in physics class in college 😅, everything is possible!
+
+Also, I only studied this subject in french and never wrote about it in english, if there are any misused terms or definitions, please let me know and I'll update the post with the appropriate fixes.
+
+</Callout>
+
+## Hooke's Law
+
+First of all, a spring animation has this name because the animation itself follows the physics of a spring or what we also call a **Harmonic Oscillator**. This term and the math surrounding it might seem very scary and complicated but bare with me, I'll break down everything as simply as possible.
+When I was in college, we defined a Harmonic Oscillator as follows:
+
+> a system that experiences a force (F) proportional to a displacement x when displaced from its equilibrium.
+
+The formula for such force is called Hooke's Law and it is defined as follows:
+
+```
+F = -k*x 
+```
+
+where `k` is a positive constant called **stiffness** which we can also write as:
+
+<Callout variant="danger">
+
+**force = negative stiffness * displacement**
+
+</Callout>
+
+What that means is that:
+
+- if we pull the spring (i.e. x > 0 ) to a certain distance away from its equilibrium, it will start to move
+- if we don't pull  it, it won't move (i.e. x = 0)
+
+
+However, maybe you might have heard at school or on one of the many science-focused Youtube channels on that force is the object's mass times its acceleration, which translates to the following formula:
+
+```
+F = m*a  
+```
+
+where `m` is the **mass** and `a` is the **acceleration**.
+
+Thus given this formula and the formula above, we can deduct that:
+
+```
+m*a = -k*x
+```
+
+which is equivalent to
+
+```
+a = -k *x / m
+```
+
+<Callout variant="danger">
+
+**acceleration = negative stiffness * displacement / mass**
+
+</Callout>
+
+We now have an equation from which we define the acceleration based on the displacement of our spring and the mass of the object attached to that spring. From the acceleration we can deduct the following:
+- the velocity of the object at any given time
+- the position of the object at any given time
+
+To get the velocity of the object, you need to add the acceleration rate to the previously recorded velocity, which can translate to the following equation:
+
+```
+v2 = v1 + a*t
+```
+
+<Callout variant="danger">
+
+**velocity = old velocity + acceleration * time interval**
+
+</Callout>
+
+Finally, we can get the position as it follows a similar principle: the position of the object is equal to the previously recorded position to which we add the velocity:
+
+```
+p2 =  p1 + v*t
+```
+
+<Callout variant="danger">
+
+**position = old position + velocity * time interval**
+
+</Callout>
+
+For the time interval, as frontend developers, we might know it better as a **frame rate** or **"frames per second"**. Considering the smoothness of Framer Motion's animations we can assume that its spring animations runs at 60 frames per second thus a time interval that is constant and equal to `1/60` or `0.01666`.
+
+## Translating the maths to Javascript
+
+Now that we've done the math, you can see that by knowing the **mass** of the object, the **stiffness** and the **displacement** of our spring, we can know the position of the object attached to that spring at any given time, i.e at any given frame.
+We can translate all the equations above in Javascript, and for a given displacement calculate all the positions of an object for 600 frames, i.e. 10 seconds:
+
+```js title=Function that returns the positions of an object following the motion of a spring
+
+const loop = (stiffness, mass) => {
+  /* Spring Length, set to 1 for simplicity */
+  let springLength = 1;
+
+  /* Object position and velocity. */
+  let x = 2;
+  let v = 0;
+
+  /* Spring stiffness, in kg / s^2 */
+  let k = -stiffness;
+
+  /* Framerate: we want 60 fps hence the framerate here is at 1/60 */
+  let frameRate = 1 / 60;
+
+  /* Initiate the array of position and the current framerate i to 0 */
+  let positions = [];
+  let i = 0;
+
+  /* We loop 600 times, i.e. for 600 frames which is equivalent to 10s*/
+  while (i < 600) {
+    let Fspring = k * (x - springLength);
+
+    let a = Fspring / mass;
+    v += a * frameRate;
+    x += v * frameRate;
+
+    i++;
+
+    positions.push({
+      position: x,
+      frame: i,
+    });
+  }
+
+  /**
+   * positions is an array of number where each number
+   * represents the position of the object in a spring
+   * motion at a specific frame
+   * 
+   * We use this array to plot all the position of the
+   * object for 10 seconds.
+   */
+  return positions;
+};
+
+```
+
+
+I built this small playground below with a graph representation of the positions that are returned by the function above a component animated by Framer Motion that has the same mass and stiffness. You can tune the mass and the stiffness with the range inputs above the graph and observe how each variable influences the animated component and the graph of positions.
+
+```js render
+
+const {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+} = Recharts;
+
+const loop = (stiffness, mass) => {
+  /* Spring Length, set to 1 for simplicity */
+  let springLength = 1;
+
+  /* Object position and velocity. */
+  let x = 2;
+  let v = 0;
+
+  /* Spring stiffness, in kg / s^2 */
+  let k = -stiffness;
+
+  /* Framerate: we want 60 fps hence the framerate here is at 1/60 */
+  let frameRate = 1 / 60;
+
+  let positions = [];
+  let i = 0;
+
+  /* We loop 600 times, i.e. for 600 frames which is equivalent to 10s*/
+  while (i < 600) {
+    let Fspring = k * (x - springLength);
+
+    let a = Fspring / mass;
+    v += a * frameRate;
+    x += v * frameRate;
+
+    i++;
+
+    positions.push({
+      position: x,
+      frame: i,
+    });
+  }
+
+  return positions;
+};
+
+const Chart = () => {
+  const [mass, setMass] = React.useState(1);
+  const [stiffness, setStiffness] = React.useState(20);
+
+  const initialData = loop(stiffness, mass);
+  const [data, setData] = React.useState(initialData);
+  const [count, setCount] = React.useState(0);
+
+  React.useEffect(() => {
+    setData(loop(stiffness, mass));
+    setCount(count + 1);
+  }, [mass, stiffness]);
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        width: '90%',
+        minWidth: '400px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <form
+        style={{
+          margin: '20px 0',
+          height: '150px',
+          width: '90%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+        }}
+      >
+        <div style={{ display: 'grid' }}>
+          <label for="mass1">Mass {mass}</label>
+          <input
+            id="mass1"
+            type="range"
+            min="1"
+            max="10"
+            value={mass}
+            onChange={e => setMass(e.target.value)}
+          />
+        </div>
+        <div style={{ display: 'grid' }}>
+          <label for="stiffness1">Stiffness {stiffness}</label>
+          <input
+            id="stiffness1"
+            type="range"
+            min="1"
+            max="500"
+            value={stiffness}
+            onChange={e => setStiffness(e.target.value)}
+          />
+        </div>
+      </form>
+
+      <ResponsiveContainer width="95%" height={200}>
+        <LineChart
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <XAxis
+            scale="time"
+            dataKey="frame"
+            tickLine={{ stroke: '#8a8a90' }}
+            tick={{ fill: '#8a8a90' }}
+            ticks={[0, 120, 240, 360, 480, 600]}
+          />
+          <Line
+            dot={false}
+            type="monotone"
+            dataKey="position"
+            stroke="#ff008c"
+            strokeWidth={2}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          height: '200px',
+          marginTop: '30px',
+        }}
+      >
+        <motion.div
+          key={count}
+          style={{
+            background:
+              'linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)',
+            height: '100px',
+            width: '100px',
+            borderRadius: '10px',
+          }}
+          animate={{
+            rotate: 180,
+            y: -20,
+            borderRadius: '50%',
+          }}
+          transition={{ type: 'spring', stiffness, mass, damping: 0 }}
+        />
+      </div>
+    </div>
+  );
+};
+
+render(
+  <div>
+    <Chart />
+  </div>
+);
+
+```
+
+
+## Taking damping into account
+
+While observing the visualization above, you might have wondered why is the spring animation never-ending as opposed to the ones you might have tried yourself with Framer Motion. That is because the math formulas we used to generate the position of the object were not taking into account friction and heat. If we want to obtain a spring animation that feels natural, we should see the movement of the object slowing down as time passes to eventually stop moving.
+That is where the **damping** comes into the picture. You might have seen this term when looking at the documentation of Framer Motion and wondered what it meant or does to the resulting spring animation, here's how we will define it:
+
+
+> Damping is the force that slows down and eventually stops an oscillation by dissipating energy
+
+Its formula is:
+
+```
+Fd = -d * v
+```
+where `d` is the damping ratio and `v` the velocity
+
+<Callout variant="danger">
+
+**damping Force = negative damping * velocity**
+
+</Callout>
+
+Taking damping into account will bring some changes to the acceleration formula we established in the first part. 
+We know that 
+
+```
+F = m*a  
+```
+
+However, F here is equal to the spring force and the damping force, instead of just the spring force, thus:
+
+```
+Fs + Fd = m*a -> a = (Fs + Fd)/m
+```
+
+We can now add this new formula to the Javascript code we've showcased in the previous part (I highlighted the additions I've made to the code compared to the previous implementation):
+
+```js {12-13,24,26} title=Updated function that takes into account the damping ratio
+const loop = (stiffness, mass, damping) => {
+  /* Spring Length, set to 1 for simplicity */
+  let springLength = 1;
+
+  /* Object position and velocity. */
+  let x = 2;
+  let v = 0;
+
+  /* Spring stiffness, in kg / s^2 */
+  let k = -stiffness;
+
+  /* Damping constant, in kg / s */
+  let d = -damping;
+
+  /* Framerate: we want 60 fps hence the framerate here is at 1/60 */
+  let frameRate = 1 / 60;
+
+  let positions = [];
+  let i = 0;
+
+  /* We loop 600 times, i.e. for 600 frames which is equivalent to 10s*/
+  while (i < 600) {
+    let Fspring = k * (x - springLength);
+    let Fdamping = d * v;
+
+    let a = (Fspring + Fdamping) / mass;
+    v += a * frameRate;
+    x += v * frameRate;
+
+    i++;
+
+    positions.push({
+      position: x,
+      frame: i,
+    });
+  }
+
+  return positions;
+};
+```
+
+And finally, represent the resulting position data in the playground:
+
+```js render
+const { ResponsiveContainer, LineChart, Line, XAxis } = Recharts;
+
+const loop = (stiffness, mass, damping) => {
+  /* Spring Length, set to 1 for simplicity */
+  let springLength = 1;
+
+  /* Object position and velocity. */
+  let x = 2;
+  let v = 0;
+
+  /* Spring stiffness, in kg / s^2 */
+  let k = -stiffness;
+
+  /* Damping constant, in kg / s */
+  let d = -damping;
+
+  /* Framerate: we want 60 fps hence the framerate here is at 1/60 */
+  let frameRate = 1 / 60;
+
+  let positions = [];
+  let i = 0;
+
+  /* We loop 600 times, i.e. for 600 frames which is equivalent to 10s*/
+  while (i < 600) {
+    let Fspring = k * (x - springLength);
+    let Fdamping = d * v;
+
+    let a = (Fspring + Fdamping) / mass;
+    v += a * frameRate;
+    x += v * frameRate;
+
+    i++;
+
+    positions.push({
+      position: x,
+      frame: i,
+    });
+  }
+
+  return positions;
+};
+
+const Chart = () => {
+  const [mass, setMass] = React.useState(1);
+  const [stiffness, setStiffness] = React.useState(20);
+  const [damping, setDamping] = React.useState(0.3);
+
+  const initialData = loop(stiffness, mass, damping);
+  const [data, setData] = React.useState(initialData);
+
+  const [count, setCount] = React.useState(0);
+
+  React.useEffect(() => {
+    setData(loop(stiffness, mass, damping));
+    setCount(count + 1);
+  }, [mass, stiffness, damping]);
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        width: '90%',
+        minWidth: '400px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <form
+        style={{
+          margin: '20px 0',
+          height: '175px',
+          width: '90%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+        }}
+      >
+        <div style={{ display: 'grid' }}>
+          <label for="mass">Mass {mass}</label>
+          <input
+            id="mass"
+            type="range"
+            min="1"
+            max="10"
+            value={mass}
+            onChange={e => setMass(e.target.value)}
+          />
+        </div>
+        <div style={{ display: 'grid' }}>
+          <label for="stiffness">Stiffness {stiffness}</label>
+          <input
+            id="stiffness"
+            type="range"
+            min="1"
+            max="500"
+            value={stiffness}
+            onChange={e => setStiffness(e.target.value)}
+          />
+        </div>
+        <div style={{ display: 'grid' }}>
+          <label for="damping">Damping {damping}</label>
+          <input
+            id="damping"
+            type="range"
+            min="0"
+            max="5"
+            step="0.1"
+            value={damping}
+            onChange={e => setDamping(e.target.value)}
+          />
+        </div>
+      </form>
+
+      <ResponsiveContainer width="95%" height={200}>
+        <LineChart
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <XAxis
+            scale="time"
+            dataKey="frame"
+            tickLine={{ stroke: '#8a8a90' }}
+            tick={{ fill: '#8a8a90' }}
+            ticks={[0, 120, 240, 360, 480, 600]}
+          />
+          <Line
+            dot={false}
+            type="monotone"
+            dataKey="position"
+            stroke="#ff008c"
+            strokeWidth={2}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          height: '200px',
+          marginTop: '30px',
+        }}
+      >
+        <motion.div
+          key={count}
+          style={{
+            background:
+              'linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)',
+            height: '100px',
+            width: '100px',
+            borderRadius: '10px',
+          }}
+          animate={{
+            rotate: 180,
+            y: -20,
+            borderRadius: '50%',
+          }}
+          transition={{ type: 'spring', stiffness, mass, damping }}
+        />
+      </div>
+    </div>
+  );
+};
+
+render(<Chart />);
+
+```
+
+As you can see we now have a spring animation that eventually stops due to damping **dissipating the energy out of the system**. The chart above showcases this by **converging towards a final "resting position"**. By increasing the damping slider to a high value you can observe that the object subject to spring animation tends to converge to the "resting position" way faster than for a lower damping value.
+
+## A real-life example
+
+By default, Framer Motion sets the stiffness of the spring animation to **100**, the damping to **10**, and the mass to **1** [according to the docs](https://www.framer.com/api/motion/types/#spring). Below, I wrote an animated `Button` component that is closer to a real-life example that you might want to implement in your UI projects. Now that you know what **mass**, **stiffness** and **damping** you can try to fine-tune your spring animation.
+
+```js live
+
+const Example = () => {
+  return (
+    <motion.button
+      style={{
+        background: 'linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)',
+        color: 'white',
+        height: '50px',
+        width: '200px',
+        borderRadius: '10px',
+        border: 'none',
+        boxShadow: 'none',
+        outline: 'none',
+        cursor: 'pointer',
+      }}
+      whileTap={{
+        scale: 1.3,
+        borderRadius: '6px',
+      }}
+      transition={{ type: 'spring', stiffness: 100, damping: 10, mass: 1 }}
+    >
+      Click me!
+    </motion.button>
+  );
+};
+
+render(<Example />);
+
+```
+
+<Callout variant="info">
+
+To keep this article short, I omitted some other options that Framer Motion provides for spring animations such as:
+
+- **velocity**: I considered the initial velocity to be equal to 0 in our examples above
+- **restSpeed**
+- **restDelta**
+
+They are all defined [in the documentation](https://www.framer.com/api/motion/types/#spring), and I invite you to add them to the playground above to see how they influence the resulting animation.
+
+</Callout>
