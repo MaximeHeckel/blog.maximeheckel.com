@@ -330,7 +330,7 @@ const BigBlock = styled('div')`
   height: 300px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 40px;
   padding: 80px 70px;
-  background-color: ${p => p.color};
+  background: ${p => p.color};
   border-radius: 6px;
   margin: 30px auto;
   overflow: hidden;
