@@ -276,13 +276,13 @@ const ShortcutList = styled('div')`
   margin-bottom: 30px;
   div {
     display: flex;
-    color: #8a8a90;
+    color: ${p => p.theme.colors.gray};
     cursor: pointer;
   }
 `;
 
 const ShortcutIcon = styled('div')`
-  border: 2px solid #8a8a90;
+  border: 2px solid ${p => p.theme.colors.gray};
   border-radius: 5px;
   min-width: 30px;
   padding-left: 5px;
@@ -395,7 +395,7 @@ const YearBlock = styled('div')`
 const DateBlock = styled('div')`
   font-size: 14px;
   font-weight: 500;
-  color: #8a8a90;
+  color: ${p => p.theme.colors.gray};
   min-width: 50px;
 `;
 
