@@ -43,6 +43,7 @@ export const pageQuery = graphql`
             featured
             type
             colorFeatured
+            fontFeatured
             cover {
               childImageSharp {
                 fluid(
@@ -77,6 +78,7 @@ interface Props {
             type: 'snippet' | 'blogPost';
             featured?: boolean;
             colorFeatured?: string;
+            fontFeatured?: string;
             cover: {
               childImageSharp: {
                 fluid: FluidObject;
@@ -136,19 +138,22 @@ const IndexPage = ({ data, location }: Props) => {
 
                       return (
                         <li key={node.frontmatter.slug}>
-                          <BigBlock color={node.frontmatter.colorFeatured}>
-                            <Link
-                              style={{ textDecoration: `none` }}
-                              to={`/posts/${node.frontmatter.slug}?featured=true`}
+                          <Link
+                            style={{ textDecoration: `none` }}
+                            to={`/posts/${node.frontmatter.slug}?featured=true`}
+                          >
+                            <BigBlock
+                              background={node.frontmatter.colorFeatured}
+                              color={node.frontmatter.fontFeatured}
                             >
                               <h3>{node.frontmatter.title}</h3>
-                            </Link>
-                            <DescriptionBlock>
-                              <p>{node.frontmatter.subtitle}</p>
-                              <hr />
-                            </DescriptionBlock>
-                            <ItemFooterBlock>
-                              <DateBlock>
+
+                              <DescriptionBlock>
+                                <p>{node.frontmatter.subtitle}</p>
+                                <hr />
+                              </DescriptionBlock>
+                              <ItemFooterBlock>
+                                {/* <DateBlock>
                                 {`${
                                   MONTHS[
                                     new Date(node.frontmatter.date).getMonth()
@@ -158,15 +163,17 @@ const IndexPage = ({ data, location }: Props) => {
                                 ).getDate()} ${new Date(
                                   node.frontmatter.date
                                 ).getFullYear()}`}
-                              </DateBlock>
-                              <Link
-                                style={{ textDecoration: `none` }}
-                                to={`/posts/${node.frontmatter.slug}?featured=true`}
-                              >
-                                <Button tertiary={true}>Read</Button>
-                              </Link>
-                            </ItemFooterBlock>
-                          </BigBlock>
+                              </DateBlock> */}
+                                <div />
+                                <Link
+                                  style={{ textDecoration: `none` }}
+                                  to={`/posts/${node.frontmatter.slug}?featured=true`}
+                                >
+                                  <Button tertiary={true}>Read</Button>
+                                </Link>
+                              </ItemFooterBlock>
+                            </BigBlock>
+                          </Link>
                         </li>
                       );
                     })}
@@ -233,7 +240,7 @@ const IndexPage = ({ data, location }: Props) => {
                       })}
                   </List>
                 </section>
-                <BigBlock color="black">
+                <BigBlock background="black">
                   <h3>#BlackLivesMatter</h3>
 
                   <DescriptionBlock>
@@ -291,8 +298,6 @@ const DescriptionBlock = styled('div')`
   width: 370px;
 
   p {
-    mix-blend-mode: exclusion;
-    color: #8a8a90;
     font-size: 16px;
     margin-bottom: 20px;
   }
@@ -300,7 +305,6 @@ const DescriptionBlock = styled('div')`
   hr {
     margin-bottom: 10px;
     width: 150px;
-    mix-blend-mode: exclusion;
     background-color: rgba(255, 255, 255, 0.1);
   }
 `;
@@ -312,7 +316,7 @@ const ItemFooterBlock = styled('div')`
   font-size: 14px;
 `;
 
-const BigBlock = styled('div')`
+const BigBlock = styled('div')<{ color?: string; background?: string }>`
   @media (max-width: 700px) {
     min-height: 150px;
     height: unset;
@@ -324,22 +328,32 @@ const BigBlock = styled('div')`
     }
   }
 
+  &:hover {
+    button {
+      color: unset;
+    }
+  }
+
   position: relative;
   width: 100%;
   min-height: 300px;
   height: 300px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 40px;
-  padding: 80px 70px;
-  background: ${p => p.color};
+  padding: 80px 60px;
+  background: ${p => p.background};
   border-radius: 6px;
   margin: 30px auto;
   overflow: hidden;
   transition: ${p => p.theme.transitionTime}s;
-  will-change: opacity;
+  color: ${p => p.color || '#ffffff'};
+
+  button {
+    color: ${p => p.color || '#ffffff'};
+    transition: ${p => p.theme.transitionTime}s;
+  }
 
   h3 {
-    mix-blend-mode: exclusion;
-    color: #ffffff !important;
+    color: ${p => p.color || '#ffffff'}!important;
     font-weight: 600;
   }
 `;
