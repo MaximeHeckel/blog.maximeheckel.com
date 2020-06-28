@@ -8714,6 +8714,22 @@ framer-motion@1.11.0:
   optionalDependencies:
     "@emotion/is-prop-valid" "^0.8.2"
 
+framer-motion@^1.11.1:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-1.11.1.tgz#b031d1556a78854e0989b8c7e96418c6e15aa474"
+  integrity sha512-CP6aYLPSivAWkq9UoSurefHBggxG85IT8ObYyWYkcZppgtjHzpwRzhaA8P0ljMGRqtcpeQAIybiGgPioBPlOSw==
+  dependencies:
+    "@popmotion/easing" "^1.0.2"
+    "@popmotion/popcorn" "^0.4.2"
+    framesync "^4.0.4"
+    hey-listen "^1.0.8"
+    popmotion "9.0.0-beta-8"
+    style-value-types "^3.1.6"
+    stylefire "^7.0.2"
+    tslib "^1.10.0"
+  optionalDependencies:
+    "@emotion/is-prop-valid" "^0.8.2"
+
 framesync@^4.0.0, framesync@^4.0.1, framesync@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/framesync/-/framesync-4.0.4.tgz#79c42c0118f26821c078570db0ff81fb863516a2"
@@ -9545,10 +9561,10 @@ gatsby-telemetry@^1.3.11, gatsby-telemetry@^1.3.13:
     stack-utils "1.0.2"
     uuid "3.4.0"
 
-gatsby-theme-maximeheckel@0.9.7:
-  version "0.9.7"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.9.7.tgz#786c87154871deebc04514ef2c223cf336d613fd"
-  integrity sha512-JfaCLHz4ThhFwjYBD+iglY1HNrnDnXNU6tQX9x0GT4crIbofi58wfJ6RurN0CvGblxli7GfOouMsJejnkuJxxQ==
+gatsby-theme-maximeheckel@0.9.8:
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.9.8.tgz#cf97a8fbef92d6140f59b03e116234fe369d794c"
+  integrity sha512-I0QiSxH8TOLbSatuFa051gcJgCDOmo6Dz99mqssUQ7EjMAFH0aX4gS9l1EMXneXV3C2H4mNCpaQttfdQUT0/nQ==
   dependencies:
     "@emotion/core" "^10.0.6"
     "@emotion/styled" "^10.0.6"

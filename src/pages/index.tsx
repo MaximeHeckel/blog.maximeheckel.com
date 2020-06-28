@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+import { motion } from 'framer-motion';
 import { graphql, Link } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
 import Button from 'gatsby-theme-maximeheckel/src/components/Button';
@@ -143,6 +144,12 @@ const IndexPage = ({ data, location }: Props) => {
                             to={`/posts/${node.frontmatter.slug}?featured=true`}
                           >
                             <BigBlock
+                              whileHover={{
+                                scale: 1.05,
+                                marginBottom: '60px',
+                                marginTop: '60px',
+                              }}
+                              transition={{ type: 'spring', damping: 20 }}
                               background={node.frontmatter.colorFeatured}
                               color={node.frontmatter.fontFeatured}
                             >
@@ -153,23 +160,25 @@ const IndexPage = ({ data, location }: Props) => {
                                 <hr />
                               </DescriptionBlock>
                               <ItemFooterBlock>
-                                {/* <DateBlock>
-                                {`${
-                                  MONTHS[
-                                    new Date(node.frontmatter.date).getMonth()
-                                  ]
-                                } ${new Date(
-                                  node.frontmatter.date
-                                ).getDate()} ${new Date(
-                                  node.frontmatter.date
-                                ).getFullYear()}`}
-                              </DateBlock> */}
+                                <DateBlock>
+                                  {`${
+                                    MONTHS[
+                                      new Date(node.frontmatter.date).getMonth()
+                                    ]
+                                  } ${new Date(
+                                    node.frontmatter.date
+                                  ).getDate()} ${new Date(
+                                    node.frontmatter.date
+                                  ).getFullYear()}`}
+                                </DateBlock>
                                 <div />
                                 <Link
                                   style={{ textDecoration: `none` }}
                                   to={`/posts/${node.frontmatter.slug}?featured=true`}
                                 >
-                                  <Button tertiary={true}>Read</Button>
+                                  <Button tabIndex={-1} tertiary={true}>
+                                    Read
+                                  </Button>
                                 </Link>
                               </ItemFooterBlock>
                             </BigBlock>
@@ -261,14 +270,6 @@ const IndexPage = ({ data, location }: Props) => {
   );
 };
 
-/**
- * 
- * <div style={{ backgroundColor: 'black', color: 'white', white: '100%' }}>
-        <h1>Black Lives Matter</h1>
-       
-      </div>
- */
-
 const ShortcutList = styled('div')`
   display: flex;
   width: 100%;
@@ -316,7 +317,7 @@ const ItemFooterBlock = styled('div')`
   font-size: 14px;
 `;
 
-const BigBlock = styled('div')<{ color?: string; background?: string }>`
+const BigBlock = styled(motion.div)<{ color?: string; background?: string }>`
   @media (max-width: 700px) {
     min-height: 150px;
     height: unset;
@@ -341,11 +342,14 @@ const BigBlock = styled('div')<{ color?: string; background?: string }>`
   box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 40px;
   padding: 80px 60px;
   background: ${p => p.background};
-  border-radius: 6px;
+  border-radius: 10px;
   margin: 30px auto;
   overflow: hidden;
-  transition: ${p => p.theme.transitionTime}s;
   color: ${p => p.color || '#ffffff'};
+
+  div {
+    color: ${p => p.color || '#ffffff'}!important;
+  }
 
   button {
     color: ${p => p.color || '#ffffff'};
