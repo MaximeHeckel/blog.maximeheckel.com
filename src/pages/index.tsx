@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+import { motion } from 'framer-motion';
 import { graphql, Link } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
 import Button from 'gatsby-theme-maximeheckel/src/components/Button';
@@ -43,6 +44,7 @@ export const pageQuery = graphql`
             featured
             type
             colorFeatured
+            fontFeatured
             cover {
               childImageSharp {
                 fluid(
@@ -77,6 +79,7 @@ interface Props {
             type: 'snippet' | 'blogPost';
             featured?: boolean;
             colorFeatured?: string;
+            fontFeatured?: string;
             cover: {
               childImageSharp: {
                 fluid: FluidObject;
@@ -136,37 +139,50 @@ const IndexPage = ({ data, location }: Props) => {
 
                       return (
                         <li key={node.frontmatter.slug}>
-                          <BigBlock color={node.frontmatter.colorFeatured}>
-                            <Link
-                              style={{ textDecoration: `none` }}
-                              to={`/posts/${node.frontmatter.slug}?featured=true`}
+                          <Link
+                            style={{ textDecoration: `none` }}
+                            to={`/posts/${node.frontmatter.slug}?featured=true`}
+                          >
+                            <BigBlock
+                              whileHover={{
+                                scale: 1.05,
+                                marginBottom: '60px',
+                                marginTop: '60px',
+                              }}
+                              transition={{ type: 'spring', damping: 20 }}
+                              background={node.frontmatter.colorFeatured}
+                              color={node.frontmatter.fontFeatured}
                             >
                               <h3>{node.frontmatter.title}</h3>
-                            </Link>
-                            <DescriptionBlock>
-                              <p>{node.frontmatter.subtitle}</p>
-                              <hr />
-                            </DescriptionBlock>
-                            <ItemFooterBlock>
-                              <DateBlock>
-                                {`${
-                                  MONTHS[
-                                    new Date(node.frontmatter.date).getMonth()
-                                  ]
-                                } ${new Date(
-                                  node.frontmatter.date
-                                ).getDate()} ${new Date(
-                                  node.frontmatter.date
-                                ).getFullYear()}`}
-                              </DateBlock>
-                              <Link
-                                style={{ textDecoration: `none` }}
-                                to={`/posts/${node.frontmatter.slug}?featured=true`}
-                              >
-                                <Button tertiary={true}>Read</Button>
-                              </Link>
-                            </ItemFooterBlock>
-                          </BigBlock>
+
+                              <DescriptionBlock>
+                                <p>{node.frontmatter.subtitle}</p>
+                                <hr />
+                              </DescriptionBlock>
+                              <ItemFooterBlock>
+                                <DateBlock>
+                                  {`${
+                                    MONTHS[
+                                      new Date(node.frontmatter.date).getMonth()
+                                    ]
+                                  } ${new Date(
+                                    node.frontmatter.date
+                                  ).getDate()} ${new Date(
+                                    node.frontmatter.date
+                                  ).getFullYear()}`}
+                                </DateBlock>
+                                <div />
+                                <Link
+                                  style={{ textDecoration: `none` }}
+                                  to={`/posts/${node.frontmatter.slug}?featured=true`}
+                                >
+                                  <Button tabIndex={-1} tertiary={true}>
+                                    Read
+                                  </Button>
+                                </Link>
+                              </ItemFooterBlock>
+                            </BigBlock>
+                          </Link>
                         </li>
                       );
                     })}
@@ -233,7 +249,7 @@ const IndexPage = ({ data, location }: Props) => {
                       })}
                   </List>
                 </section>
-                <BigBlock color="black">
+                <BigBlock background="black">
                   <h3>#BlackLivesMatter</h3>
 
                   <DescriptionBlock>
@@ -254,14 +270,6 @@ const IndexPage = ({ data, location }: Props) => {
   );
 };
 
-/**
- * 
- * <div style={{ backgroundColor: 'black', color: 'white', white: '100%' }}>
-        <h1>Black Lives Matter</h1>
-       
-      </div>
- */
-
 const ShortcutList = styled('div')`
   display: flex;
   width: 100%;
@@ -269,13 +277,13 @@ const ShortcutList = styled('div')`
   margin-bottom: 30px;
   div {
     display: flex;
-    color: #8a8a90;
+    color: ${p => p.theme.colors.gray};
     cursor: pointer;
   }
 `;
 
 const ShortcutIcon = styled('div')`
-  border: 2px solid #8a8a90;
+  border: 2px solid ${p => p.theme.colors.gray};
   border-radius: 5px;
   min-width: 30px;
   padding-left: 5px;
@@ -291,8 +299,6 @@ const DescriptionBlock = styled('div')`
   width: 370px;
 
   p {
-    mix-blend-mode: exclusion;
-    color: #8a8a90;
     font-size: 16px;
     margin-bottom: 20px;
   }
@@ -300,7 +306,6 @@ const DescriptionBlock = styled('div')`
   hr {
     margin-bottom: 10px;
     width: 150px;
-    mix-blend-mode: exclusion;
     background-color: rgba(255, 255, 255, 0.1);
   }
 `;
@@ -312,7 +317,7 @@ const ItemFooterBlock = styled('div')`
   font-size: 14px;
 `;
 
-const BigBlock = styled('div')`
+const BigBlock = styled(motion.div)<{ color?: string; background?: string }>`
   @media (max-width: 700px) {
     min-height: 150px;
     height: unset;
@@ -324,22 +329,35 @@ const BigBlock = styled('div')`
     }
   }
 
+  &:hover {
+    button {
+      color: unset;
+    }
+  }
+
   position: relative;
   width: 100%;
   min-height: 300px;
   height: 300px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 40px;
-  padding: 80px 70px;
-  background: ${p => p.color};
-  border-radius: 6px;
+  padding: 80px 60px;
+  background: ${p => p.background};
+  border-radius: 10px;
   margin: 30px auto;
   overflow: hidden;
-  transition: ${p => p.theme.transitionTime}s;
-  will-change: opacity;
+  color: ${p => p.color || '#ffffff'};
+
+  div {
+    color: ${p => p.color || '#ffffff'}!important;
+  }
+
+  button {
+    color: ${p => p.color || '#ffffff'};
+    transition: ${p => p.theme.transitionTime}s;
+  }
 
   h3 {
-    mix-blend-mode: exclusion;
-    color: #ffffff !important;
+    color: ${p => p.color || '#ffffff'}!important;
     font-weight: 600;
   }
 `;
@@ -381,7 +399,7 @@ const YearBlock = styled('div')`
 const DateBlock = styled('div')`
   font-size: 14px;
   font-weight: 500;
-  color: #8a8a90;
+  color: ${p => p.theme.colors.gray};
   min-width: 50px;
 `;
 
