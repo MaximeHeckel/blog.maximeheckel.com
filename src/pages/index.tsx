@@ -146,10 +146,14 @@ const IndexPage = ({ data, location }: Props) => {
                             <BigBlock
                               whileHover={{
                                 scale: 1.05,
-                                marginBottom: '60px',
+                                marginBottom: '-5px',
                                 marginTop: '60px',
                               }}
-                              transition={{ type: 'spring', damping: 20 }}
+                              transition={{
+                                type: 'spring',
+                                damping: 30,
+                                stiffness: 250,
+                              }}
                               background={node.frontmatter.colorFeatured}
                               color={node.frontmatter.fontFeatured}
                             >
