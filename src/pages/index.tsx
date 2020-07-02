@@ -127,8 +127,8 @@ const IndexPage = ({ data, location }: Props) => {
                   Hi{' '}
                   <motion.div
                     style={{
-                      width: '30px',
                       marginBottom: '-20px',
+                      marginRight: '-45px',
                       paddingBottom: '20px',
                       paddingRight: '45px',
                       display: 'inline-block',
