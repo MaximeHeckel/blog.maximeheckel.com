@@ -123,7 +123,29 @@ const IndexPage = ({ data, location }: Props) => {
               />
               <div style={{ marginTop: '100px', paddingBottom: '10px' }}>
                 <br />
-                <h1>Hi 👋 I'm Maxime, and this is my blog.</h1>
+                <h1>
+                  Hi{' '}
+                  <motion.div
+                    style={{
+                      width: '30px',
+                      marginBottom: '-20px',
+                      paddingBottom: '20px',
+                      paddingRight: '45px',
+                      display: 'inline-block',
+                    }}
+                    animate={{ rotate: 20 }}
+                    transition={{
+                      yoyo: 7,
+                      from: 0,
+                      duration: 0.2,
+                      ease: 'easeInOut',
+                      type: 'tween',
+                    }}
+                  >
+                    👋
+                  </motion.div>{' '}
+                  I'm Maxime, and this is my blog.
+                </h1>
                 <h3 style={{ fontWeight: 400 }}>
                   I share my frontend engineering experience, and my expertise
                   with technical articles about React, Typescript, Jamstack,
