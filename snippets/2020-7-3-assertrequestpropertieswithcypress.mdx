@@ -1,0 +1,45 @@
+---
+title: Assert request properties with cypress
+language: js
+created: 2020-07-03T15:40:13.306Z
+slug: 2020-7-3-assertrequestpropertieswithcypress
+snippetImage: './img/2020-7-3-assertrequestpropertieswithcypress.png'
+type: snippet
+---
+
+```js snippet
+import React from "react";
+import motion from "framer-motion";
+
+const WavingHand = () => (
+  <motion.div
+    style={{
+      marginBottom: "-20px",
+      marginRight: "-45px",
+      paddingBottom: "20px",
+      paddingRight: "45px",
+      display: "inline-block",
+    }}
+    animate={{ rotate: 20 }}
+    transition={{
+      yoyo: 7,
+      from: 0,
+      duration: 0.2,
+      ease: "easeInOut",
+      type: "tween",
+    }}
+  >
+    👋
+  </motion.div>
+);
+
+const Hi = () => (
+  <h1>
+    Hi <WavingHand /> !
+  </h1>
+);
+
+render(<Hi />);
+
+```
+  
