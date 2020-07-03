@@ -1,16 +1,14 @@
 ---
-title: Assert request properties with cypress
+title: Waving Hand Animation with Framer Motion
 language: js
 created: 2020-07-03T15:40:13.306Z
-slug: 2020-7-3-assertrequestpropertieswithcypress
-snippetImage: './img/2020-7-3-assertrequestpropertieswithcypress.png'
+slug: 2020-7-3-waving-hand-animation-framer-motion
+snippetImage: './img/2020-7-3-waving-hand-animation-framer-motion.png'
 type: snippet
 ---
+<div style={{maxWidth: '700px', margin: '0 auto'}}>
 
-```js snippet
-import React from "react";
-import motion from "framer-motion";
-
+```js live
 const WavingHand = () => (
   <motion.div
     style={{
@@ -22,7 +20,7 @@ const WavingHand = () => (
     }}
     animate={{ rotate: 20 }}
     transition={{
-      yoyo: 7,
+      yoyo: Infinity,
       from: 0,
       duration: 0.2,
       ease: "easeInOut",
@@ -42,4 +40,6 @@ const Hi = () => (
 render(<Hi />);
 
 ```
+
+</div>
   

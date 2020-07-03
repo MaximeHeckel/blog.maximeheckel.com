@@ -96,6 +96,28 @@ interface Props {
   };
 }
 
+const WavingHand = () => (
+  <motion.div
+    style={{
+      marginBottom: '-20px',
+      marginRight: '-45px',
+      paddingBottom: '20px',
+      paddingRight: '45px',
+      display: 'inline-block',
+    }}
+    animate={{ rotate: 20 }}
+    transition={{
+      yoyo: 7,
+      from: 0,
+      duration: 0.2,
+      ease: 'easeInOut',
+      type: 'tween',
+    }}
+  >
+    👋
+  </motion.div>
+);
+
 const IndexPage = ({ data, location }: Props) => {
   const [showSearch, setShowSearch] = React.useState(location.search !== '');
   let year = 0;
@@ -124,27 +146,7 @@ const IndexPage = ({ data, location }: Props) => {
               <div style={{ marginTop: '100px', paddingBottom: '10px' }}>
                 <br />
                 <h1>
-                  Hi{' '}
-                  <motion.div
-                    style={{
-                      marginBottom: '-20px',
-                      marginRight: '-45px',
-                      paddingBottom: '20px',
-                      paddingRight: '45px',
-                      display: 'inline-block',
-                    }}
-                    animate={{ rotate: 20 }}
-                    transition={{
-                      yoyo: 7,
-                      from: 0,
-                      duration: 0.2,
-                      ease: 'easeInOut',
-                      type: 'tween',
-                    }}
-                  >
-                    👋
-                  </motion.div>{' '}
-                  I'm Maxime, and this is my blog.
+                  Hi <WavingHand /> I'm Maxime, and this is my blog.
                 </h1>
                 <h3 style={{ fontWeight: 400 }}>
                   I share my frontend engineering experience, and my expertise
