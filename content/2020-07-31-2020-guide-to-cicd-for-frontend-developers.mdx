@@ -10,6 +10,15 @@ colorFeatured: 'linear-gradient(160deg,rgb(74, 123, 210) 0%,rgba(28,90,221,0.55)
 fontFeatured: '#FFFFFF'
 ---
 
+import {
+  BranchPreview,
+  CodeValidation,
+  E2ETest,
+  FeatureFlags,
+  IntegrationTest,
+  UnitTest
+} from '../src/components/MicroAnimations/CICD.tsx';
+
 If you've been following my work for a while, or read my previous articles, you might have noticed that I love building tools that improve the reliability and the scalability of the projects I work on, and  **C**ontinuous **I**ntegration and **C**ontinuous **D**elivery pipeline, also referred to as **CI/CD**, is one of them.
 Building such a pipeline and making it as automated as possible, is like giving superpowers to your team. With it, you can enable your organization to deliver:
 
@@ -47,9 +56,9 @@ These four items of the CI/CD pipeline listed above are the fundamental pieces f
 
 ### Linting and formatting
 
-**[ANIMATION LINTING]**
+<CodeValidation/>
 
-**Linting and formatting** are essential to keep your codebase **consistent** and **clean**. Each team member should follow the same rules and conventions when it comes to writing code. **Consistency** in the codebase itself is essential: 
+Linting and formatting are essential to keep your codebase **consistent** and **clean**. Each team member should follow the same rules and conventions when it comes to writing code. **Consistency** in the codebase itself is essential: 
 
 -   you do not want to bring confusion on how to write a given piece of your app when you onboard a new team members
 -   you do not want to have to document multiple ways of doing the same thing
@@ -67,7 +76,7 @@ Then, we arrive at the first set of tests that will be executed in our CI/CD pip
 
 ### Unit tests
 
-**[ANIMATION UNIT TESTS]**
+<UnitTest/>
 
 As stated earlier, I like to call these tests **fast to run**, **fast to fail. **They should not take an extensive amount of time to run and should reveal errors or bugs in a matter of a few seconds or even a few minutes depending on the scale of your project.
 
@@ -119,6 +128,8 @@ I'm dedicating this section to both integration and end-to-end testing as I some
 
 ### Integration tests
 
+<IntegrationTest/>
+
 This is perhaps where most of your effort should go when writing tests.
 
 Why? Well, **when considering the effort it takes to write tests, the time it takes to execute them and the confidence level it gives back to your team: integration tests are simply the bests**. Unit tests give you a low confidence level but are fast to run, while end-to-end tests are slow to execute (sometimes taking over an hour in some large apps) and require expensive infrastructure to run but give you the highest confidence level possible.
@@ -147,6 +158,8 @@ When it comes to integration tests I'm split between using two different tools, 
 [CODE SNIPPET example of jest integration test with msw]
 
 ## End to End testing
+
+<E2ETest/>
 
 End-to-End tests, or also sometimes called e2e, are the set of tests that are the closest to what the user should experience when using your product. In most frameworks like Selenium or Cypress, an e2e test suite is nothing more than a **scripted user flow** that the computer will go through. Additionally, most of these tests will be executed **directly within a browser **which gives you the ability to validate whether your app runs properly on different browsers that your customer may use.
 
@@ -188,7 +201,7 @@ This is the last and the most important piece of the CI/CD pipeline. Often enoug
 Nothing is more efficient than sitting in front of your computer and using your app with a screen reader, however, here are some tools that I use to **guide the accessibility efforts:**
 
 -   [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci): This is a suite of tools to help you audit performance, accessibility, and whether your app follows best practices. I use this tool to essentially **hold the line and ensure things do not get worse over time**. It allows you to put together "performance and accessibility budgets" and thresholds and will fail in case your score goes below the targetted budget. This probably deserves an entire article on its own.
--   [Cypress Axe](https://github.com/avanslaars/cypress-axe): This package works on top of Cypress and allows you to run accessibility focus test suite. It helped me find some more complex accessibility issues that Lighthouse CI would skip. I wrote a blog post about Cypress Axe last year (<https://blog.maximeheckel.com/posts/automated-ui-accessibility-testing-with-cypress-cc2e38231241>), and invite you to check it out if you want to learn more about it!
+-   [Cypress Axe](https://github.com/avanslaars/cypress-axe): This package works on top of Cypress and allows you to run accessibility focused test suite. It helped me find some more complex accessibility issues that Lighthouse CI would skip. I wrote a blog post about Cypress Axe last year (<https://blog.maximeheckel.com/posts/automated-ui-accessibility-testing-with-cypress-cc2e38231241>), and invite you to check it out if you want to learn more about it!
 
 <Callout variant="info">
 
@@ -205,7 +218,9 @@ These, however, are purely used outside of my CI/CD pipeline, but I figured they
 
 Now that we have written some unit, integration, and e2e tests, it's time to talk automation. The objective for your team should be to automate as much as possible, from running the tests to previewing the deployments, to deploying to production. **The only manual step left in your CI/CD pipeline should be the code review. **Automation is the key component of any High-Velocity development team.
 
-**Validate every code change**
+### Validate every code change
+
+<BranchPreview/>
 
 As of now, we know how to run these tests locally but we want to ensure that these tests can be run automatically every time a change occurs on the codebase. 
 
@@ -223,7 +238,9 @@ There are a couple of services out there that provide a great preview deployment
 
 </Callout>
 
-**Releases**
+### Releases
+
+<FeatureFlags/>
 
 The last thing we want to automate is **the release process**. You do not want to have to run 20 scripts, manually, in a specific order, to get your application from your main branch to production. For this, I tend to favor having what I call a **release branch in my Github repository** and have the automated scripts run **every time the main branch is merged on the release branch**. You could also run the automated script on other events such as when you **tag a release or have scheduled deployments**. At this point, it depends on your team and how you want to do your release.
 
