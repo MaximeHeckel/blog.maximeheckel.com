@@ -29,25 +29,25 @@ Building such a pipeline and making it as automated as possible, is like giving 
 - Consistent releases: releasing a new version to the customer is as easy as possible and your team can ship fixes to production in no time
 - Features that can easily be reverted if they degrade the user experience
 - Any upcoming change to the product can be previewed as an independent unit of change
-- Use every developer's time as efficiently as possible. Developer's cost money and you don't want them to be constantly putting out fires in production.  Automate testing and releases, remove all the humans in the process as much as possible. More testing means fewer bugs means less fear of change. Less fear of change means more experimentation and innovation. More automation means more time for experimentation and innovation.
+- Use every developer's time as efficiently as possible. Developers cost money and you don't want them to be constantly putting out fires in production.  Automate testing and releases, remove all the humans in the process as much as possible. More testing means fewer bugs means less fear of change. Less fear of change means more experimentation and innovation. More automation means more time for experimentation and innovation.
 
 > Change must be in the DNA of the team -- [Eric Elliott in How to Build a High-Velocity Development Team](https://medium.com/javascript-scene/how-to-build-a-high-velocity-development-team-4b2360d34021)
 
 If your team suffers from complex release processes, struggles to patch production within the same day or to get a new feature to the customers reliably: **this article is for you!**
-In this post, I'll give you all the tools that you and your team need to build a high-velocity development environment, eradicate the fear of releasing, and establishing processes **for your team to become unstoppable**.  Like the title suggests, the following will be written for frontend developers since this is the area where I'm the most knowledgeable, especially when it comes to tooling. However, the concepts and steps that I will detail can also be valuable to backend developers who are looking to improve their team's testing and release pipeline.
+In this post, I'll give you all the tools that you and your team need to build a high-velocity development environment, eradicate the fear of releasing, and establish processes **for your team to become unstoppable**.  Like the title suggests, the following will be written for frontend developers since this is the area where I'm the most knowledgeable, especially when it comes to tooling. However, the concepts and steps that I will detail can also be valuable to backend developers who are looking to improve their team's testing and release pipeline.
 
 ## The impact of automation on your team, your org ,and your users
 
 When starting to work on a new CI/CD pipeline, or looking at improving an existing one, it's essential to target the efforts where you want to make the most positive impact:
 
-- **unit-testing, formatting, linting, and integration-testing**: impact mainly the developers within your team. Having a good habit of writing unit tests, and having consistent code styling can increase velocity within the team. These are what I called **fast to run fast to fail**: they can be run quickly to identify any issues withing the codebase and act as the first safeguard against bugs.
-- **end to end testing, automated release, and branch previews** are more impactful at the cross-functional or organizational level. **End to End testing** will, for example, enable **your frontend team and backend team** to test some critical user paths. **The automated releases** ensure things are released with as little friction as possible and that your entire org can address a customer request as fast as possible. Finally, **branch previews** enable **your frontend team and QA team** to review, work before it lands on production. Each upcoming feature or fix can be hosted in its service and tested on its own.
+- **unit-testing, formatting, linting, and integration-testing**: impact mainly the developers within your team. Having a good habit of writing unit tests, and having consistent code styling can increase velocity within the team. These are what I called **fast to run fast to fail**: they can be run quickly to identify any issues within the codebase and act as the first safeguard against bugs.
+- **end to end testing, automated release, and branch previews** are more impactful at the cross-functional or organizational level. **End to End testing** will, for example, enable **your frontend team and backend team** to test some critical user paths. **The automated releases** ensure things are released with as little friction as possible and that your entire org can address a customer request as fast as possible. Finally, **branch previews** enable **your frontend team and QA team** to review work before it lands on production. Each upcoming feature or fix can be hosted in its service and tested on its own.
 - **feature flags and accessibility testing** are more customer-facing. They guarantee a better and more inclusive experience for all your users and also avoid any service disruption when it comes to releasing new features.
 
 The following showcases a rather complete CI/CD pipeline and all its different steps. Additionally I separated that pipeline in 3 parts, representing which of the team, the org and the end-user each step of the pipeline is bringing the most positive impact:
 
 ![Illustration of each step of a CI/CD pipeline and which of the team, the organization and the end-user they impact the most](img/CICD.svg)
-<figcaption>Illustration of each step of a CI/CD pipeline and which of the team, the organization and the end-user they impact the most</figcaption>
+<figcaption>A CI/CD pipeline and which of the team, the organization and the end-user is most impacted at different steps</figcaption>
 
 ## Linting, Formatting, and Unit tests
 
@@ -59,7 +59,7 @@ These three items are the foundational pieces for your team to ship more reliabl
 
 Linting and formatting are essential to keep your codebase **consistent** and **clean**. Each team member should follow the same rules and conventions when it comes to writing code. **Consistency** in the codebase itself is essential: 
 
--   you do not want to bring confusion on how to write a given piece of code in your app when you onboard a new team members
+-   you do not want to bring confusion on how to write a given piece of code in your app when you onboard a new team member
 -   you do not want to have to document multiple ways of doing the same thing
 
 <Card title="Tools I use">
@@ -67,7 +67,7 @@ Linting and formatting are essential to keep your codebase **consistent** and�
 For this step, I want my tools to be fast and reliable. It should only take **a few seconds **to lint and format my codebase. As a frontend engineer, I use
 
 -   **[ESlint](https://eslint.org/)** for linting, it comes with a set of rules to write proper Javascript, and these rules can be customized to your own team's fit. Additionally, should you need something more specific, you can build your own ESLint rules, [I wrote about it here](https://blog.maximeheckel.com/posts/how-to-build-first-eslint-rule), it's an interesting exercise that involves Abstract Syntax Tree (AST).
--   **[Prettier](https://prettier.io/)** for formatting. It became de defacto formatting tool for Javascript developers within a few years. I set it up in my project and editor in a way that saving a file will format it automatically for me.
+-   **[Prettier](https://prettier.io/)** for formatting. It became the defacto formatting tool for Javascript developers within the last few years. I set it up in my project and editor in a way that saving a file will format it automatically for me.
 
 </Card>
 
@@ -82,7 +82,7 @@ As stated earlier, I like to call these tests **fast to run**, **fast to fail.
 The aim here is to test each part of your app as "units" or isolated components. In a React project, for example, these tests can cover: 
 
 -   **Components**: I like to use unit tests to ensure my components have the proper behavior and are functioning as expected **on their own**, i.e.** not in combination with other components or views of my app**. 
--   **Reducers / State / Actions**: unit tests can help to validate that your state is updated in a specific way for a given action. Reducers are pure function (i.e. functions that always return the same output for a given input)
+-   **Reducers / State / Actions**: unit tests can help to validate that your state is updated in a specific way for a given action. Reducers are pure functions (i.e. functions that always return the same output for a given input)
 -   **Utility functions**: we build a lot of helpers, or abstract a lot of functions in our projects: these are a perfect example of things that you might want to write unit tests for.
 
 I like unit tests a lot because they act as a sanity check for your project to make sure its individual pieces work as intended **over time**, in a very efficient way (fast, reliable).
@@ -93,7 +93,7 @@ As frontend developers, you might have probably heard about **[Jest](https://je
 
 - **[@testing-library/react](https://testing-library.com/docs/react-testing-library/intro)** : If you want to write maintainable tests over time without worrying about implementation details. I mainly use it to render individual components and test them.
 - **[@testing-library/react-hooks](https://github.com/testing-library/react-hooks-testing-library)**: This library gives you all the tooling necessary to test your custom hooks.
-- **[@testing-library/jest-dom](https://testing-library.com/docs/ecosystem-jest-dom)**: This package gives you extra DOM element matchers to make your test even easier to write and read.
+- **[@testing-library/jest-dom](https://testing-library.com/docs/ecosystem-jest-dom)**: This package gives you extra DOM element matchers to make your tests even easier to write and read.
 
 The @testing-library maintainers also provided a ton of other packages that will help you test your app no matter the framework (Svelte, VueJS, etc).
 
@@ -324,19 +324,19 @@ I'm dedicating this section to both integration and end-to-end testing as I some
 
 <IntegrationTest/>
 
-This is perhaps where most of your effort should go when writing tests.
+This is perhaps where most of your efforts should go when writing tests.
 
-Why? Well, **when considering the effort it takes to write tests, the time it takes to execute them and the confidence level it gives back to your team: integration tests are simply the bests**. Unit tests give you a low confidence level but are fast to run, while end-to-end tests are slow to execute (sometimes taking over an hour in some large apps) and require expensive infrastructure to run but give you the highest confidence level possible. Integration tests, however, are easier to write than e2e tests and help you validate more complex behaviors than unit tests, all that in a pretty short amount of time.
+Why? Well, **when considering the effort it takes to write tests, the time it takes to execute them and the confidence level it gives back to your team: integration tests are simply the best**. Unit tests give you a low confidence level but are fast to run, while end-to-end tests are slow to execute (sometimes taking over an hour in some large apps) and require expensive infrastructure to run but give you the highest confidence level possible. Integration tests, however, are easier to write than e2e tests and help you validate more complex behaviors than unit tests, all that in a pretty short amount of time.
 
-> Write tests not too much mostly integrations -- [Guillermo Rauch](https://twitter.com/rauchg)
+> Write tests not too much mostly integration -- [Guillermo Rauch](https://twitter.com/rauchg)
 
 If you want to know why in detail, I advise reading [Kent C Dodd's *Write Tests* blog post](https://kentcdodds.com/blog/write-tests).
 
-While unit tests aimed to test parts of your project in isolation, integration tests, aim to test whether an entire set of units work together as expected. They also allow you to test full user flows and all the different paths they can take (error state, loading state, success state).
+While unit tests help to test parts of your project in isolation, integration tests help to test whether an entire set of units work together as expected. They also allow you to test full user flows and all the different paths they can take (error state, loading state, success state).
 
 With integration tests, I like testing groups of components, functionalities together such as:
 
--   **Navigation**: Does clicking on the user setting menu item loads the expected view?
+-   **Navigation**: Does clicking on the user setting menu item load the expected view?
 -   **Forms**: Fill up the form in all possible ways (valid and invalid, with and without optional fields). Test that the expected error messages are displayed when invalid. Validate that clicking on submit sends the right payload when valid. A form like this may be composed of components, reducers, and utility functions that we tested individually in the unit test phase. Here we're testing them working altogether in a specific context.
 -   **Views **depending on external data: Test your list view that's fetching some data with different mocked API responses: does it show the proper empty state if there's no data? Is the filter button enabled if your API returned an error? Does it show a notification if the fetch was successful? 
 
@@ -403,8 +403,8 @@ const App = () => {
 export default App;
 ```
 
-You might have noticed that this app uses the same `Button` component and `reducer` we tested in isolation (i.e. unit tested) before. As stated before, the aim of integration tests is to validates whether these units can now work together in a specific use case. Below is an example of a typical integration test I'd write for an app like the one showcased above. I'd test the different possible outcomes for this list of posts:
-- The list of posts loads as expected and are properly displayed
+You might have noticed that this app uses the same `Button` component and `reducer` we tested in isolation (i.e. unit tested) before. As stated before, the aim of integration tests is to validate whether these units can now work together in a specific use case. Below is an example of a typical integration test I'd write for an app like the one showcased above. I'd test the different possible outcomes for this list of posts:
+- The list of posts loads as expected and is properly displayed
 - The list of posts loads but is empty
 - An error occurs when fetching the posts and the fallback error state is displayed as expected
 
