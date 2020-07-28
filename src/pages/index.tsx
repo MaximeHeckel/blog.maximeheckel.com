@@ -204,7 +204,7 @@ const IndexPage = ({ data, location }: Props) => {
                                   style={{ textDecoration: `none` }}
                                   to={`/posts/${node.frontmatter.slug}?featured=true`}
                                 >
-                                  <Button tabIndex={-1} tertiary={true}>
+                                  <Button tab-index={-1} tertiary={true}>
                                     Read
                                   </Button>
                                 </Link>
