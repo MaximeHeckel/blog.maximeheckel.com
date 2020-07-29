@@ -18,7 +18,7 @@ jobs:
         with:
           node: ${{ matrix.node }}
       - name: Snippetify
-        uses: ./gh-action-snippetify
+        uses: ./.github/actions/gh-action-snippetify
         with:
           title: ${{ github.event.client_payload.title }}
           code: ${{ github.event.client_payload.code }}
