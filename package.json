@@ -73,7 +73,7 @@
     "jest": "26.0.1",
     "jest-dom": "^4.0.0",
     "jest-emotion": "^10.0.7",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.5",
     "react-test-renderer": "^16.8.1",
     "start-server-and-test": "^1.10.11",
     "typescript": "^3.2.4"
