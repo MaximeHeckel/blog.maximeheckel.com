@@ -170,8 +170,6 @@ const IndexPage = ({ data, location }: Props) => {
                             <BigBlock
                               whileHover={{
                                 scale: 1.05,
-                                marginBottom: '-5px',
-                                marginTop: '60px',
                               }}
                               transition={{
                                 type: 'spring',
