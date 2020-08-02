@@ -23,11 +23,11 @@ module.exports = {
         ],
         resolvers: {
           Mdx: {
-            title: node => node.frontmatter.title,
-            subtitle: node => node.frontmatter.subtitle,
-            content: node => node.rawBody,
-            date: node => node.frontmatter.date,
-            slug: node => `/posts/${node.frontmatter.slug}`,
+            title: (node) => node.frontmatter.title,
+            subtitle: (node) => node.frontmatter.subtitle,
+            content: (node) => node.rawBody,
+            date: (node) => node.frontmatter.date,
+            slug: (node) => `/posts/${node.frontmatter.slug}`,
           },
         },
         filename: 'search_index.json',
@@ -86,7 +86,7 @@ module.exports = {
           }
         `,
         serialize: ({ site, allSitePage }) =>
-          allSitePage.edges.map(edge => {
+          allSitePage.edges.map((edge) => {
             return {
               url: `${site.siteMetadata.siteUrl}${
                 edge.node.path === '/' ? '' : edge.node.path
@@ -95,6 +95,13 @@ module.exports = {
               priority: 0.7,
             };
           }),
+      },
+    },
+    {
+      resolve: `gatsby-plugin-canonical-urls`,
+      options: {
+        siteUrl: config.url,
+        stripQueryString: true,
       },
     },
     {
@@ -114,7 +121,7 @@ module.exports = {
         feeds: [
           {
             serialize: ({ query: { site, allMdx } }) => {
-              return allMdx.edges.map(edge => {
+              return allMdx.edges.map((edge) => {
                 return Object.assign({}, edge.node.frontmatter, {
                   description: edge.node.frontmatter.subtitle,
                   date:

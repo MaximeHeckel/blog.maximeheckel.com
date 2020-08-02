@@ -9025,6 +9025,13 @@ gatsby-page-utils@^0.2.11:
     lodash "^4.17.15"
     micromatch "^3.1.10"
 
+gatsby-plugin-canonical-urls@^2.3.10:
+  version "2.3.10"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-canonical-urls/-/gatsby-plugin-canonical-urls-2.3.10.tgz#6d66431883bca4df017a54795b7f943d00c76e4a"
+  integrity sha512-KidooQt7cjpy3m8Tr5NSje5WGKrsLfdmtJr/AdyBmPAHxlAquDs2Fy7haoZQaAJGz+QZYUhs6HYmgUrYRCbfKA==
+  dependencies:
+    "@babel/runtime" "^7.10.3"
+
 gatsby-plugin-emotion@4.1.22:
   version "4.1.22"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-emotion/-/gatsby-plugin-emotion-4.1.22.tgz#e153debef74afa205336738dcf1988c95b308c4f"
