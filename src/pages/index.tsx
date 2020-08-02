@@ -165,7 +165,7 @@ const IndexPage = ({ data, location }: Props) => {
                         <li key={node.frontmatter.slug}>
                           <Link
                             style={{ textDecoration: `none` }}
-                            to={`/posts/${node.frontmatter.slug}?featured=true`}
+                            to={`/posts/${node.frontmatter.slug}`}
                           >
                             <BigBlock
                               whileHover={{
@@ -303,13 +303,13 @@ const ShortcutList = styled('div')`
   margin-bottom: 30px;
   div {
     display: flex;
-    color: ${p => p.theme.colors.gray};
+    color: ${(p) => p.theme.colors.gray};
     cursor: pointer;
   }
 `;
 
 const ShortcutIcon = styled('div')`
-  border: 2px solid ${p => p.theme.colors.gray};
+  border: 2px solid ${(p) => p.theme.colors.gray};
   border-radius: 5px;
   min-width: 30px;
   padding-left: 5px;
@@ -367,23 +367,23 @@ const BigBlock = styled(motion.div)<{ color?: string; background?: string }>`
   height: 300px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 40px;
   padding: 80px 60px;
-  background: ${p => p.background};
+  background: ${(p) => p.background};
   border-radius: 10px;
   margin: 30px auto;
   overflow: hidden;
-  color: ${p => p.color || '#ffffff'};
+  color: ${(p) => p.color || '#ffffff'};
 
   div {
-    color: ${p => p.color || '#ffffff'}!important;
+    color: ${(p) => p.color || '#ffffff'}!important;
   }
 
   button {
-    color: ${p => p.color || '#ffffff'};
-    transition: ${p => p.theme.transitionTime}s;
+    color: ${(p) => p.color || '#ffffff'};
+    transition: ${(p) => p.theme.transitionTime}s;
   }
 
   h3 {
-    color: ${p => p.color || '#ffffff'}!important;
+    color: ${(p) => p.color || '#ffffff'}!important;
     font-weight: 600;
   }
 `;
@@ -402,17 +402,17 @@ const Block = styled('div')`
   height: 60px;
   box-shadow: none;
 
-  color: ${p => p.theme.fontColor};
-  transition ${p => p.theme.transitionTime / 4}s;
+  color: ${(p) => p.theme.fontColor};
+  transition ${(p) => p.theme.transitionTime / 4}s;
 
   div:first-of-type {
     margin-right: 40px;
   }
 
   &:hover {
-    background-color: ${p => p.theme.foregroundColor};
-    box-shadow: ${p => p.theme.boxShadow};
-    color: ${p => p.theme.colors.blue};
+    background-color: ${(p) => p.theme.foregroundColor};
+    box-shadow: ${(p) => p.theme.boxShadow};
+    color: ${(p) => p.theme.colors.blue};
   }
 `;
 
@@ -425,13 +425,13 @@ const YearBlock = styled('div')`
 const DateBlock = styled('div')`
   font-size: 14px;
   font-weight: 500;
-  color: ${p => p.theme.colors.gray};
+  color: ${(p) => p.theme.colors.gray};
   min-width: 50px;
 `;
 
 const TitleBlock = styled('div')`
   font-weight: 500;
-  transition ${p => p.theme.transitionTime / 2}s;
+  transition ${(p) => p.theme.transitionTime / 2}s;
 `;
 
 const List = styled('ul')`
@@ -442,7 +442,7 @@ const List = styled('ul')`
   }
 
   h3 {
-    color: ${p => p.theme.fontColor};
+    color: ${(p) => p.theme.fontColor};
     margin-bottom: 10px;
   }
 `;
