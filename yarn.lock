@@ -9554,10 +9554,10 @@ gatsby-telemetry@^1.3.11, gatsby-telemetry@^1.3.13:
     stack-utils "1.0.2"
     uuid "3.4.0"
 
-gatsby-theme-maximeheckel@0.9.9:
-  version "0.9.9"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.9.9.tgz#553c251f29b4f24a21f3b88c49d9e6907989d298"
-  integrity sha512-a50KUKDPONKriiIKU6pcRauoTZTlNcqBiaI0TuA/53MCI/j+5ZiH0roha7aDgtl1z66Py1kvCdvbF8afCB0Jxg==
+gatsby-theme-maximeheckel@0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-maximeheckel/-/gatsby-theme-maximeheckel-0.10.0.tgz#8ecf47af006eaaa91a8f2edc2b977673d5ea1e91"
+  integrity sha512-i4NJLHjKrbAqIVVwFkLiiQdVRgGYOXvpmOUc+VEYSuY/WuyA8AdARnxWm9h41MeC5DPiqWrHaGRbxyJ/6qgTwA==
   dependencies:
     "@emotion/core" "^10.0.6"
     "@emotion/styled" "^10.0.6"
