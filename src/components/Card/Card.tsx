@@ -9,6 +9,15 @@ const CardWrapper = styled('div')`
   border-radius: 4px;
   padding: 30px;
   color: ${p => p.theme.colors.black};
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  strong {
+    color: ${p => p.theme.colors.black} !important;
+  }
 `;
 
 const CardTitle = styled('h2')`
