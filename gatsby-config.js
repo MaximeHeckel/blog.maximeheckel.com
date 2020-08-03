@@ -97,72 +97,72 @@ module.exports = {
           }),
       },
     },
-    {
-      resolve: `gatsby-plugin-feed`,
-      options: {
-        query: `
-          {
-            site {
-              siteMetadata {
-                title
-                description
-                siteUrl
-              }
-            }
-          }
-        `,
-        feeds: [
-          {
-            serialize: ({ query: { site, allMdx } }) => {
-              return allMdx.edges.map(edge => {
-                return Object.assign({}, edge.node.frontmatter, {
-                  description: edge.node.frontmatter.subtitle,
-                  date:
-                    edge.node.frontmatter.type === 'snippet'
-                      ? edge.node.frontmatter.created
-                      : edge.node.frontmatter.date,
-                  url: `${site.siteMetadata.siteUrl}/${
-                    edge.node.frontmatter.type === 'snippet'
-                      ? 'snippets'
-                      : 'posts'
-                  }/${edge.node.frontmatter.slug}`,
-                  guid: `${site.siteMetadata.siteUrl}/${
-                    edge.node.frontmatter.type === 'snippet'
-                      ? 'snippets'
-                      : 'posts'
-                  }/${edge.node.frontmatter.slug}`,
-                });
-              });
-            },
-            query: `
-            {
-              allMdx(
-                limit: 1000,
-                sort: { order: DESC, fields: [frontmatter___date] }
-              ) {
-                edges {
-                  node {
-                    frontmatter {
-                      title
-                      subtitle
-                      date
-                      created
-                      slug
-                      type
-                    }
-                    html
-                  }
-                }
-              }
-            }
-            `,
-            output: '/rss.xml',
-            title: `Maxime Heckel's Blog RSS Feed`,
-            site_url: `https://blog.maximeheckel.com`,
-          },
-        ],
-      },
-    },
+    // {
+    //   resolve: `gatsby-plugin-feed`,
+    //   options: {
+    //     query: `
+    //       {
+    //         site {
+    //           siteMetadata {
+    //             title
+    //             description
+    //             siteUrl
+    //           }
+    //         }
+    //       }
+    //     `,
+    //     feeds: [
+    //       {
+    //         serialize: ({ query: { site, allMdx } }) => {
+    //           return allMdx.edges.map(edge => {
+    //             return Object.assign({}, edge.node.frontmatter, {
+    //               description: edge.node.frontmatter.subtitle,
+    //               date:
+    //                 edge.node.frontmatter.type === 'snippet'
+    //                   ? edge.node.frontmatter.created
+    //                   : edge.node.frontmatter.date,
+    //               url: `${site.siteMetadata.siteUrl}/${
+    //                 edge.node.frontmatter.type === 'snippet'
+    //                   ? 'snippets'
+    //                   : 'posts'
+    //               }/${edge.node.frontmatter.slug}`,
+    //               guid: `${site.siteMetadata.siteUrl}/${
+    //                 edge.node.frontmatter.type === 'snippet'
+    //                   ? 'snippets'
+    //                   : 'posts'
+    //               }/${edge.node.frontmatter.slug}`,
+    //             });
+    //           });
+    //         },
+    //         query: `
+    //         {
+    //           allMdx(
+    //             limit: 1000,
+    //             sort: { order: DESC, fields: [frontmatter___date] }
+    //           ) {
+    //             edges {
+    //               node {
+    //                 frontmatter {
+    //                   title
+    //                   subtitle
+    //                   date
+    //                   created
+    //                   slug
+    //                   type
+    //                 }
+    //                 html
+    //               }
+    //             }
+    //           }
+    //         }
+    //         `,
+    //         output: '/rss.xml',
+    //         title: `Maxime Heckel's Blog RSS Feed`,
+    //         site_url: `https://blog.maximeheckel.com`,
+    //       },
+    //     ],
+    //   },
+    // },
     'gatsby-plugin-offline',
     'gatsby-plugin-typescript',
   ],
