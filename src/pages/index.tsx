@@ -165,7 +165,7 @@ const IndexPage = ({ data, location }: Props) => {
                         <li key={node.frontmatter.slug}>
                           <Link
                             style={{ textDecoration: `none` }}
-                            to={`/posts/${node.frontmatter.slug}?featured=true`}
+                            to={`/posts/${node.frontmatter.slug}/`}
                           >
                             <BigBlock
                               whileHover={{
@@ -200,7 +200,7 @@ const IndexPage = ({ data, location }: Props) => {
                                 <div />
                                 <Link
                                   style={{ textDecoration: `none` }}
-                                  to={`/posts/${node.frontmatter.slug}?featured=true`}
+                                  to={`/posts/${node.frontmatter.slug}/`}
                                 >
                                   <Button tab-index={-1} tertiary={true}>
                                     Read
@@ -253,7 +253,7 @@ const IndexPage = ({ data, location }: Props) => {
                             ) : null}
                             <Link
                               style={{ textDecoration: `none` }}
-                              to={`/posts/${node.frontmatter.slug}`}
+                              to={`/posts/${node.frontmatter.slug}/`}
                             >
                               <Block data-testid="article-link">
                                 <DateBlock>
