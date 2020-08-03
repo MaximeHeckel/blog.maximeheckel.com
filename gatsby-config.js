@@ -23,11 +23,11 @@ module.exports = {
         ],
         resolvers: {
           Mdx: {
-            title: node => node.frontmatter.title,
-            subtitle: node => node.frontmatter.subtitle,
-            content: node => node.rawBody,
-            date: node => node.frontmatter.date,
-            slug: node => `/posts/${node.frontmatter.slug}`,
+            title: (node) => node.frontmatter.title,
+            subtitle: (node) => node.frontmatter.subtitle,
+            content: (node) => node.rawBody,
+            date: (node) => node.frontmatter.date,
+            slug: (node) => `/posts/${node.frontmatter.slug}`,
           },
         },
         filename: 'search_index.json',
@@ -86,7 +86,7 @@ module.exports = {
           }
         `,
         serialize: ({ site, allSitePage }) =>
-          allSitePage.edges.map(edge => {
+          allSitePage.edges.map((edge) => {
             return {
               url: `${site.siteMetadata.siteUrl}${
                 edge.node.path === '/' ? '' : edge.node.path
@@ -97,73 +97,73 @@ module.exports = {
           }),
       },
     },
-    {
-      resolve: `gatsby-plugin-feed`,
-      options: {
-        query: `
-          {
-            site {
-              siteMetadata {
-                title
-                description
-                siteUrl
-              }
-            }
-          }
-        `,
-        feeds: [
-          {
-            serialize: ({ query: { site, allMdx } }) => {
-              return allMdx.edges.map(edge => {
-                return Object.assign({}, edge.node.frontmatter, {
-                  description: edge.node.frontmatter.subtitle,
-                  date:
-                    edge.node.frontmatter.type === 'snippet'
-                      ? edge.node.frontmatter.created
-                      : edge.node.frontmatter.date,
-                  url: `${site.siteMetadata.siteUrl}/${
-                    edge.node.frontmatter.type === 'snippet'
-                      ? 'snippets'
-                      : 'posts'
-                  }/${edge.node.frontmatter.slug}`,
-                  guid: `${site.siteMetadata.siteUrl}/${
-                    edge.node.frontmatter.type === 'snippet'
-                      ? 'snippets'
-                      : 'posts'
-                  }/${edge.node.frontmatter.slug}`,
-                });
-              });
-            },
-            query: `
-            {
-              allMdx(
-                limit: 1000,
-                sort: { order: DESC, fields: [frontmatter___date] }
-              ) {
-                edges {
-                  node {
-                    frontmatter {
-                      title
-                      subtitle
-                      date
-                      created
-                      slug
-                      type
-                    }
-                    html
-                  }
-                }
-              }
-            }
-            `,
-            output: '/rss.xml',
-            title: `Maxime Heckel's Blog RSS Feed`,
-            site_url: `https://blog.maximeheckel.com`,
-          },
-        ],
-      },
-    },
-    'gatsby-plugin-offline',
+    // {
+    //   resolve: `gatsby-plugin-feed`,
+    //   options: {
+    //     query: `
+    //       {
+    //         site {
+    //           siteMetadata {
+    //             title
+    //             description
+    //             siteUrl
+    //           }
+    //         }
+    //       }
+    //     `,
+    //     feeds: [
+    //       {
+    //         serialize: ({ query: { site, allMdx } }) => {
+    //           return allMdx.edges.map(edge => {
+    //             return Object.assign({}, edge.node.frontmatter, {
+    //               description: edge.node.frontmatter.subtitle,
+    //               date:
+    //                 edge.node.frontmatter.type === 'snippet'
+    //                   ? edge.node.frontmatter.created
+    //                   : edge.node.frontmatter.date,
+    //               url: `${site.siteMetadata.siteUrl}/${
+    //                 edge.node.frontmatter.type === 'snippet'
+    //                   ? 'snippets'
+    //                   : 'posts'
+    //               }/${edge.node.frontmatter.slug}`,
+    //               guid: `${site.siteMetadata.siteUrl}/${
+    //                 edge.node.frontmatter.type === 'snippet'
+    //                   ? 'snippets'
+    //                   : 'posts'
+    //               }/${edge.node.frontmatter.slug}`,
+    //             });
+    //           });
+    //         },
+    //         query: `
+    //         {
+    //           allMdx(
+    //             limit: 1000,
+    //             sort: { order: DESC, fields: [frontmatter___date] }
+    //           ) {
+    //             edges {
+    //               node {
+    //                 frontmatter {
+    //                   title
+    //                   subtitle
+    //                   date
+    //                   created
+    //                   slug
+    //                   type
+    //                 }
+    //                 html
+    //               }
+    //             }
+    //           }
+    //         }
+    //         `,
+    //         output: '/rss.xml',
+    //         title: `Maxime Heckel's Blog RSS Feed`,
+    //         site_url: `https://blog.maximeheckel.com`,
+    //       },
+    //     ],
+    //   },
+    // },
+    // 'gatsby-plugin-offline',
     'gatsby-plugin-typescript',
   ],
 };
