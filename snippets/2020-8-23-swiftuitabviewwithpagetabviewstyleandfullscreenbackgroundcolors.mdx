@@ -17,16 +17,17 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-       colors[selected].edgesIgnoringSafeArea(.all).animation(.easeIn)
-           TabView(selection: $selected){
-               Text("☀️").font(.title).tag(0)
-               Text("🌦").font(.title).tag(1)
-               Text("⛈").font(.title).foregroundColor(Color.white).tag(2)
-           }.indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
-           .tabViewStyle(PageTabViewStyle())
-           .animation(.easeIn)
-       }.statusBar(hidden: true)
+            colors[selected].edgesIgnoringSafeArea(.all).animation(.easeIn)
+            TabView(selection: $selected){
+                Text("☀️").font(.title/).tag(0)
+                Text("🌦").font(.title/).tag(1)
+                Text("⛈").font(.title/).foregroundColor(Color.white).tag(2)
+            }.indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+            .tabViewStyle(PageTabViewStyle())
+            .animation(.easeIn)
+        }.statusBar(hidden: true)
     }
+
     
 }
 
