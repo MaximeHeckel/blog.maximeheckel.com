@@ -57,13 +57,13 @@ const Label = styled(motion.div)`
 `;
 
 const PreviewDeploy = () => {
-  const [currentKey, setCurrentKey] = React.useState(0);
+  // const [currentKey, setCurrentKey] = React.useState(0);
 
-  React.useEffect(() => {
-    setInterval(() => {
-      setCurrentKey(currentKey + 1);
-    }, 13000);
-  }, [currentKey]);
+  // React.useEffect(() => {
+  //   setInterval(() => {
+  //     setCurrentKey(currentKey + 1);
+  //   }, 13000);
+  // }, [currentKey]);
 
   return (
     <motion.div
@@ -84,15 +84,14 @@ const PreviewDeploy = () => {
         ease: 'easeInOut',
         duration: 1,
       }}
-      key={currentKey}
     >
       <motion.div
-        initial={{
-          opacity: 1,
-        }}
-        animate={{
-          opacity: 0,
-        }}
+        // initial={{
+        //   opacity: 1,
+        // }}
+        // animate={{
+        //   opacity: 0,
+        // }}
         transition={{
           ease: 'easeInOut',
           duration: 1,
@@ -266,18 +265,18 @@ const IsometricWrapper = styled(motion.div)`
 `;
 
 const DockerBuild = () => {
-  const [currentKey, setCurrentKey] = React.useState(0);
+  // const [, updateState] = React.useState();
+  // const forceUpdate = React.useCallback(() => updateState({}), []);
 
-  React.useEffect(() => {
-    setInterval(() => {
-      setCurrentKey(currentKey + 1);
-    }, 8000);
-  }, [currentKey]);
+  // React.useEffect(() => {
+  //   setInterval(() => {
+  //     forceUpdate();
+  //   }, 8000);
+  // }, []);
 
   return (
     <Wrappwr>
       <motion.div
-        key={currentKey}
         initial={{
           opacity: 0,
         }}
@@ -290,12 +289,12 @@ const DockerBuild = () => {
         }}
       >
         <motion.div
-          initial={{
-            opacity: 1,
-          }}
-          animate={{
-            opacity: 0,
-          }}
+          // initial={{
+          //   opacity: 1,
+          // }}
+          // animate={{
+          //   opacity: 0,
+          // }}
           transition={{
             ease: 'easeInOut',
             duration: 1,
