@@ -3,9 +3,7 @@ describe('Navigation Tests', () => {
     cy.visit('/');
     cy.get('[data-testid="article-list"]').should('be.visible');
     cy.get('[data-testid="article-item"]').should('be.visible');
-    cy.get('[data-testid="article-link"]')
-      .eq(0)
-      .click();
+    cy.get('[data-testid="article-link"]').eq(0).click();
     cy.url().should('include', '/posts/');
     cy.get('[data-testid="hero"]').should('be.visible');
   });
@@ -19,7 +17,7 @@ describe('Navigation Tests', () => {
   it('It shows the progress bar when scrolling', () => {
     cy.visit('/');
     cy.get(
-      'a[href="/posts/switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website"]'
+      'a[href="/posts/switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website/"]'
     ).click({ force: true });
     cy.url().should('include', '/posts/');
     cy.get('[data-testid="hero"]').should('be.visible');
