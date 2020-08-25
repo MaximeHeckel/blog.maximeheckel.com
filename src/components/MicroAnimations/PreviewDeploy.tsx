@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const Box = styled(motion.div)`
   width: 140px;
@@ -57,184 +58,169 @@ const Label = styled(motion.div)`
 `;
 
 const PreviewDeploy = () => {
-  // const [currentKey, setCurrentKey] = React.useState(0);
-
-  // React.useEffect(() => {
-  //   setInterval(() => {
-  //     setCurrentKey(currentKey + 1);
-  //   }, 13000);
-  // }, [currentKey]);
+  const [ref, inView] = useInView();
 
   return (
-    <motion.div
+    <div
+      ref={ref}
       style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        // marginBottom: '20px',
         height: '350px',
       }}
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      transition={{
-        ease: 'easeInOut',
-        duration: 1,
-      }}
     >
-      <motion.div
-        // initial={{
-        //   opacity: 1,
-        // }}
-        // animate={{
-        //   opacity: 0,
-        // }}
-        transition={{
-          ease: 'easeInOut',
-          duration: 1,
-          delay: 10,
-        }}
-      >
-        <Box
+      {inView ? (
+        <motion.div
           initial={{
-            x: '-100px',
-            y: '110px',
-          }}
-        >
-          <NavBar
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              width: '100%',
-              background: '#95D3F5',
-              borderRadius: '15px',
-              scale: 1.25,
-            }}
-          >
-            <MiniProfile style={{ marginRight: '8px', scale: 0.75 }} />
-          </NavBar>
-          <MiniButton
-            style={{
-              background: '#336ef5',
-              x: '15px',
-            }}
-          />
-          <div />
-        </Box>
-        <Box
-          initial={{
-            x: '-100px',
-            y: '-30px',
+            opacity: 0,
           }}
           animate={{
-            x: '100px',
-            y: '60px',
+            opacity: 1,
           }}
           transition={{
             ease: 'easeInOut',
-            duration: 1.5,
-            delay: 7,
+            duration: 1,
           }}
         >
-          <NavBar
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              width: '100%',
-              background: '#95D3F5',
-              borderRadius: '15px',
-              scale: 1.25,
+          <Box
+            initial={{
+              x: '-100px',
+              y: '110px',
             }}
           >
-            <MiniProfile style={{ marginRight: '8px', scale: 0.75 }} />
-          </NavBar>
-          <MiniButton
-            style={{
-              background: '#336ef5',
-              x: '15px',
-            }}
-          />
-          <Label
+            <NavBar
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                width: '100%',
+                background: '#95D3F5',
+                borderRadius: '15px',
+                scale: 1.25,
+              }}
+            >
+              <MiniProfile style={{ marginRight: '8px', scale: 0.75 }} />
+            </NavBar>
+            <MiniButton
+              style={{
+                background: '#336ef5',
+                x: '15px',
+              }}
+            />
+            <div />
+          </Box>
+          <Box
             initial={{
-              opacity: 0,
-              x: '-20px',
-              y: '-150px',
+              x: '-100px',
+              y: '-30px',
             }}
             animate={{
-              opacity: 1,
-              x: '0px',
-              y: '-88px',
+              x: '100px',
+              y: '60px',
             }}
             transition={{
-              type: 'spring',
-              delay: 5,
-              stiffness: 100,
-              damping: 7,
+              ease: 'easeInOut',
+              duration: 1.5,
+              delay: 7,
             }}
-          />
-        </Box>
+          >
+            <NavBar
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                width: '100%',
+                background: '#95D3F5',
+                borderRadius: '15px',
+                scale: 1.25,
+              }}
+            >
+              <MiniProfile style={{ marginRight: '8px', scale: 0.75 }} />
+            </NavBar>
+            <MiniButton
+              style={{
+                background: '#336ef5',
+                x: '15px',
+              }}
+            />
+            <Label
+              initial={{
+                opacity: 0,
+                x: '-20px',
+                y: '-150px',
+              }}
+              animate={{
+                opacity: 1,
+                x: '0px',
+                y: '-88px',
+              }}
+              transition={{
+                type: 'spring',
+                delay: 5,
+                stiffness: 100,
+                damping: 7,
+              }}
+            />
+          </Box>
 
-        <Box
-          initial={{
-            x: '-100px',
-            y: '-170px',
-          }}
-          animate={{
-            x: '100px',
-            y: '-250px',
-          }}
-          transition={{
-            ease: 'easeInOut',
-            duration: 1.5,
-            delay: 3,
-          }}
-        >
-          <NavBar
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              width: '100%',
-              background: '#95D3F5',
-              borderRadius: '15px',
-              scale: 1.25,
-            }}
-          >
-            <MiniProfile style={{ marginRight: '8px', scale: 0.75 }} />
-          </NavBar>
-          <MiniButton
-            style={{
-              background: '#336ef5',
-              x: '15px',
-            }}
-          />
-          <MiniButton
-            style={{
-              x: '15px',
-              background: '#f9576d',
-              boxShadow:
-                '3px 5px 8px 1px  rgba(0, 0, 0, 0.2),inset 0px -1px 1px 0px #f9576d, inset 0px 1px 4px 0px #FFA1AE',
-            }}
+          <Box
             initial={{
-              opacity: 0,
-              y: '-150px',
+              x: '-100px',
+              y: '-170px',
             }}
             animate={{
-              opacity: 1,
-              y: '0px',
+              x: '100px',
+              y: '-250px',
             }}
             transition={{
-              type: 'spring',
-              delay: 1,
-              stiffness: 100,
-              damping: 7,
+              ease: 'easeInOut',
+              duration: 1.5,
+              delay: 3,
             }}
-          />
-        </Box>
-      </motion.div>
-    </motion.div>
+          >
+            <NavBar
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                width: '100%',
+                background: '#95D3F5',
+                borderRadius: '15px',
+                scale: 1.25,
+              }}
+            >
+              <MiniProfile style={{ marginRight: '8px', scale: 0.75 }} />
+            </NavBar>
+            <MiniButton
+              style={{
+                background: '#336ef5',
+                x: '15px',
+              }}
+            />
+            <MiniButton
+              style={{
+                x: '15px',
+                background: '#f9576d',
+                boxShadow:
+                  '3px 5px 8px 1px  rgba(0, 0, 0, 0.2),inset 0px -1px 1px 0px #f9576d, inset 0px 1px 4px 0px #FFA1AE',
+              }}
+              initial={{
+                opacity: 0,
+                y: '-150px',
+              }}
+              animate={{
+                opacity: 1,
+                y: '0px',
+              }}
+              transition={{
+                type: 'spring',
+                delay: 1,
+                stiffness: 100,
+                damping: 7,
+              }}
+            />
+          </Box>
+        </motion.div>
+      ) : null}
+    </div>
   );
 };
 
@@ -250,7 +236,7 @@ const StackLayer = styled(motion.div)`
   border-radius: 25px;
 `;
 
-const Wrappwr = styled('div')`
+const Wrapper = styled('div')`
   width: 100%;
   height: 300px;
   justify-content: center;
@@ -265,40 +251,21 @@ const IsometricWrapper = styled(motion.div)`
 `;
 
 const DockerBuild = () => {
-  // const [, updateState] = React.useState();
-  // const forceUpdate = React.useCallback(() => updateState({}), []);
-
-  // React.useEffect(() => {
-  //   setInterval(() => {
-  //     forceUpdate();
-  //   }, 8000);
-  // }, []);
+  const [ref, inView] = useInView();
 
   return (
-    <Wrappwr>
-      <motion.div
-        initial={{
-          opacity: 0,
-        }}
-        animate={{
-          opacity: 1,
-        }}
-        transition={{
-          ease: 'easeInOut',
-          duration: 1,
-        }}
-      >
+    <Wrapper ref={ref}>
+      {inView ? (
         <motion.div
-          // initial={{
-          //   opacity: 1,
-          // }}
-          // animate={{
-          //   opacity: 0,
-          // }}
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
           transition={{
             ease: 'easeInOut',
             duration: 1,
-            delay: 5,
           }}
         >
           <IsometricWrapper>
@@ -388,8 +355,8 @@ const DockerBuild = () => {
             />
           </IsometricWrapper>
         </motion.div>
-      </motion.div>
-    </Wrappwr>
+      ) : null}
+    </Wrapper>
   );
 };
 

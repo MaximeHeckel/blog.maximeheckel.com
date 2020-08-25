@@ -48,6 +48,7 @@
     "prop-types": "^15.7.2",
     "react": "16.13.0",
     "react-dom": "16.13.0",
+    "react-intersection-observer": "^8.27.1",
     "react-typography": "^0.16.18",
     "typography": "^0.16.18"
   },
