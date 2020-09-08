@@ -29,7 +29,7 @@
     "@mdx-js/react": "^1.1.6",
     "@sindresorhus/slugify": "^0.11.0",
     "emotion-theming": "^10.0.6",
-    "framer-motion": "^1.11.1",
+    "framer-motion": "^2.6.6",
     "gatsby": "2.21.11",
     "gatsby-image": "2.2.43",
     "gatsby-plugin-feed": "^2.5.7",
