@@ -150,7 +150,7 @@ const IndexPage = ({ data, location }: Props) => {
                 </h1>
                 <h3 style={{ fontWeight: 400 }}>
                   I share my frontend engineering experience, and my expertise
-                  with technical articles about React, Typescript, Jamstack,
+                  with technical articles about React, Typescript, SwiftUI,
                   Serverless, and testing.
                 </h3>
                 <section style={{ marginTop: '100px' }}>

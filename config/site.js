@@ -2,6 +2,7 @@ module.exports = {
   pathPrefix: '/',
   keywords: [
     'Software Engineer',
+    'SwiftUI',
     'React',
     'Redux',
     'Typescript',
@@ -12,11 +13,13 @@ module.exports = {
     'Frontend',
     'Engineering',
     'Blog',
+    'iOS',
+    'native',
   ],
   title: "Maxime Heckel's Blog",
   titleAlt: 'Maxime Heckel | Blog',
   description:
-    "Hi I'm Maxime, I write about React, Redux, JAMStack, Typescript, GraphQL, Serverless, Testing and many other things!",
+    "Hi I'm Maxime, I write about React, JAMStack, Typescript, Serverless, SwiftUI, Testing and many other things!",
   url: 'https://blog.maximeheckel.com', // Site domain without trailing slash
   siteUrl: 'https://blog.maximeheckel.com/', // url + pathPrefix
   siteLanguage: 'en', // Language Tag on <html> element
