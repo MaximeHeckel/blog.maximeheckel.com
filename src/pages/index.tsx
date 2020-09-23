@@ -148,11 +148,11 @@ const IndexPage = ({ data, location }: Props) => {
                 <h1>
                   Hi <WavingHand /> I'm Maxime, and this is my blog.
                 </h1>
-                <h3 style={{ fontWeight: 400 }}>
+                <p style={{}}>
                   I share my frontend engineering experience, and my expertise
                   with technical articles about React, Typescript, SwiftUI,
                   Serverless, and testing.
-                </h3>
+                </p>
                 <section style={{ marginTop: '100px' }}>
                   <h2>Featured</h2>
                   <List data-testid="featured-list">
@@ -179,34 +179,37 @@ const IndexPage = ({ data, location }: Props) => {
                               background={node.frontmatter.colorFeatured}
                               color={node.frontmatter.fontFeatured}
                             >
-                              <h3>{node.frontmatter.title}</h3>
+                              <BigBlockBody>
+                                <h3>{node.frontmatter.title}</h3>
 
-                              <DescriptionBlock>
-                                <p>{node.frontmatter.subtitle}</p>
-                                <hr />
-                              </DescriptionBlock>
-                              <ItemFooterBlock>
-                                <DateBlock>
-                                  {`${
-                                    MONTHS[
-                                      new Date(node.frontmatter.date).getMonth()
-                                    ]
-                                  } ${new Date(
-                                    node.frontmatter.date
-                                  ).getDate()} ${new Date(
-                                    node.frontmatter.date
-                                  ).getFullYear()}`}
-                                </DateBlock>
-                                <div />
-                                <Link
-                                  style={{ textDecoration: `none` }}
-                                  to={`/posts/${node.frontmatter.slug}/`}
-                                >
-                                  <Button tab-index={-1} tertiary={true}>
-                                    Read
-                                  </Button>
-                                </Link>
-                              </ItemFooterBlock>
+                                <DescriptionBlock>
+                                  <p>{node.frontmatter.subtitle}</p>
+                                </DescriptionBlock>
+                                <ItemFooterBlock>
+                                  <DateBlock>
+                                    {`${
+                                      MONTHS[
+                                        new Date(
+                                          node.frontmatter.date
+                                        ).getMonth()
+                                      ]
+                                    } ${new Date(
+                                      node.frontmatter.date
+                                    ).getDate()} ${new Date(
+                                      node.frontmatter.date
+                                    ).getFullYear()}`}
+                                  </DateBlock>
+                                  <div />
+                                  <Link
+                                    style={{ textDecoration: `none` }}
+                                    to={`/posts/${node.frontmatter.slug}/`}
+                                  >
+                                    <Button tab-index={-1} tertiary={true}>
+                                      Read
+                                    </Button>
+                                  </Link>
+                                </ItemFooterBlock>
+                              </BigBlockBody>
                             </BigBlock>
                           </Link>
                         </li>
@@ -216,7 +219,7 @@ const IndexPage = ({ data, location }: Props) => {
                 </section>
                 <section style={{ marginTop: '100px' }}>
                   <h2>All articles</h2>
-                  <ShortcutList>
+                  {/* <ShortcutList>
                     <div
                       role="button"
                       tabIndex={0}
@@ -225,7 +228,7 @@ const IndexPage = ({ data, location }: Props) => {
                       Click or<ShortcutIcon>⌘/CTRL</ShortcutIcon> +{' '}
                       <ShortcutIcon>K</ShortcutIcon> to search
                     </div>
-                  </ShortcutList>
+                  </ShortcutList> */}
                   <List data-testid="article-list">
                     {data.allMdx.edges
                       .filter(({ node }) => node.frontmatter.type !== 'snippet')
@@ -275,17 +278,18 @@ const IndexPage = ({ data, location }: Props) => {
                       })}
                   </List>
                 </section>
-                <BigBlock background="black">
-                  <h3>#BlackLivesMatter</h3>
-
-                  <DescriptionBlock>
-                    <a
-                      style={{ color: 'white' }}
-                      href="https://blacklivesmatters.carrd.co/"
-                    >
-                      Go here to find out how you can help.
-                    </a>
-                  </DescriptionBlock>
+                <BigBlock background="black" color="white">
+                  <BigBlockBody>
+                    <h3>#BlackLivesMatter</h3>
+                    <DescriptionBlock>
+                      <a
+                        style={{ color: 'white' }}
+                        href="https://blacklivesmatters.carrd.co/"
+                      >
+                        Go here to find out how you can help.
+                      </a>
+                    </DescriptionBlock>
+                  </BigBlockBody>
                 </BigBlock>
               </div>
             </>
@@ -323,16 +327,14 @@ const ShortcutIcon = styled('div')`
 
 const DescriptionBlock = styled('div')`
   width: 370px;
+  height: 85px;
+  max-height: 85px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 
   p {
     font-size: 16px;
-    margin-bottom: 20px;
-  }
-
-  hr {
-    margin-bottom: 10px;
-    width: 150px;
-    background-color: rgba(255, 255, 255, 0.1);
   }
 `;
 
@@ -344,15 +346,38 @@ const ItemFooterBlock = styled('div')`
 `;
 
 const BigBlock = styled(motion.div)<{ color?: string; background?: string }>`
+  div {
+    color: ${p => p.color}!important;
+  }
+
+  button {
+    color: ${p => p.color} !important;
+    transition: ${p => p.theme.transitionTime}s;
+  }
+
+  h3 {
+    color: ${p => p.color}!important;
+    font-weight: 600;
+  }
+
+  position: relative;
+
+  width: 100%;
+  min-height: 275px;
+  height: 275px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 15px 40px;
+
+  background: ${p => p.background};
+  border-radius: 10px;
+  margin: 30px auto;
+`;
+
+const BigBlockBody = styled('div')<{ color?: string; background?: string }>`
   @media (max-width: 700px) {
-    min-height: 150px;
+    min-height: 100px;
     height: unset;
     padding: 40px 30px;
-
-    p,
-    hr {
-      display: none;
-    }
+    padding: 40px 30px;
   }
 
   &:hover {
@@ -361,31 +386,11 @@ const BigBlock = styled(motion.div)<{ color?: string; background?: string }>`
     }
   }
 
-  position: relative;
-  width: 100%;
-  min-height: 300px;
-  height: 300px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 40px;
-  padding: 80px 60px;
-  background: ${p => p.background};
-  border-radius: 10px;
-  margin: 30px auto;
-  overflow: hidden;
-  color: ${p => p.color || '#ffffff'};
-
-  div {
-    color: ${p => p.color || '#ffffff'}!important;
-  }
-
-  button {
-    color: ${p => p.color || '#ffffff'};
-    transition: ${p => p.theme.transitionTime}s;
-  }
-
-  h3 {
-    color: ${p => p.color || '#ffffff'}!important;
-    font-weight: 600;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 25px 60px 0px;
+  height: 100%;
 `;
 
 const Block = styled('div')`
@@ -424,12 +429,12 @@ const YearBlock = styled('div')`
 
 const DateBlock = styled('div')`
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: ${p => p.theme.colors.gray};
   min-width: 50px;
 `;
 
-const TitleBlock = styled('div')`
+const TitleBlock = styled('p')`
   font-weight: 500;
   transition ${p => p.theme.transitionTime / 2}s;
 `;

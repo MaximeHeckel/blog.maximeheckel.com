@@ -4,6 +4,7 @@ const typography = new Typography({
   baseFontSize: '16px',
   baseLineHeight: '28px',
   headerFontFamily: [
+    'Inter',
     '-apple-system',
     'BlinkMacSystemFont',
     'Segoe UI',
@@ -17,6 +18,7 @@ const typography = new Typography({
     'sans-serif',
   ],
   bodyFontFamily: [
+    'Inter',
     '-apple-system',
     'BlinkMacSystemFont',
     'Segoe UI',
@@ -28,6 +30,12 @@ const typography = new Typography({
     'Droid Sans',
     'Helvetica Neue',
     'sans-serif',
+  ],
+  googleFonts: [
+    {
+      name: 'Inter',
+      styles: ['300', '400', '500', '600', '700'],
+    },
   ],
   overrideStyles: () => ({
     h1: {
@@ -49,8 +57,8 @@ const typography = new Typography({
     },
     p: {
       fontSize: '18px',
-      lineHeight: 1.75,
-      letterSpacing: '0.5px',
+      lineHeight: 1.9,
+      letterSpacing: '0.3px',
       marginBottom: '2.25rem',
     },
     code: {
@@ -58,8 +66,8 @@ const typography = new Typography({
     },
     li: {
       fontSize: '18px',
-      lineHeight: 1.65,
-      letterSpacing: '0.5px',
+      lineHeight: 1.9,
+      letterSpacing: '0.3px',
     },
   }),
 });
