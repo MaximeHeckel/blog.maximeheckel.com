@@ -6,7 +6,7 @@ const CardWrapper = styled('div')`
   width: 100%;
   max-width: 800px;
   margin-bottom: 25px;
-  border-radius: 4px;
+  border-radius: 10px;
   padding: 30px;
   color: ${p => p.theme.colors.black};
 

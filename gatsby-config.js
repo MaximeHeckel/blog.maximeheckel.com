@@ -27,7 +27,10 @@ module.exports = {
             subtitle: node => node.frontmatter.subtitle,
             content: node => node.rawBody,
             date: node => node.frontmatter.date,
-            slug: node => `/posts/${node.frontmatter.slug}`,
+            slug: node =>
+              node.frontmatter.type === 'snippet'
+                ? `/snippets/${node.frontmatter.slug}`
+                : `/posts/${node.frontmatter.slug}`,
           },
         },
         filename: 'search_index.json',
