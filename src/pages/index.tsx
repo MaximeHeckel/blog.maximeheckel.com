@@ -7,7 +7,6 @@ import Seo from 'gatsby-theme-maximeheckel/src/components/Seo';
 import Layout from 'gatsby-theme-maximeheckel/src/layouts/index';
 import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
 import React from 'react';
-import SearchBox from 'gatsby-theme-maximeheckel/src/components/SearchBox';
 
 const MONTHS = [
   'Jan',
@@ -118,13 +117,12 @@ const WavingHand = () => (
   </motion.div>
 );
 
-const IndexPage = ({ data, location }: Props) => {
-  const [showSearch, setShowSearch] = React.useState(location.search !== '');
+const IndexPage = ({ data }: Props) => {
   let year = 0;
 
   return (
     <>
-      <Layout footer={true} header={true}>
+      <Layout footer={true} header={true} headerProps={{ search: true }}>
         {(layoutProps: {
           site: {
             siteMetadata: {
@@ -138,21 +136,17 @@ const IndexPage = ({ data, location }: Props) => {
           return (
             <>
               <Seo title={site.siteMetadata.title} />
-              <SearchBox
-                location={location}
-                showOverride={showSearch}
-                onClose={() => setShowSearch(false)}
-              />
+              {/* <SearchBox onClose={() => setShowSearch(false)} /> */}
               <div style={{ marginTop: '100px', paddingBottom: '10px' }}>
                 <br />
                 <h1>
                   Hi <WavingHand /> I'm Maxime, and this is my blog.
                 </h1>
-                <h3 style={{ fontWeight: 400 }}>
+                <p style={{ fontSize: '21px' }}>
                   I share my frontend engineering experience, and my expertise
                   with technical articles about React, Typescript, SwiftUI,
                   Serverless, and testing.
-                </h3>
+                </p>
                 <section style={{ marginTop: '100px' }}>
                   <h2>Featured</h2>
                   <List data-testid="featured-list">
@@ -167,7 +161,7 @@ const IndexPage = ({ data, location }: Props) => {
                             style={{ textDecoration: `none` }}
                             to={`/posts/${node.frontmatter.slug}/`}
                           >
-                            <BigBlock
+                            <FeaturedCard
                               whileHover={{
                                 scale: 1.05,
                               }}
@@ -177,15 +171,16 @@ const IndexPage = ({ data, location }: Props) => {
                                 stiffness: 250,
                               }}
                               background={node.frontmatter.colorFeatured}
-                              color={node.frontmatter.fontFeatured}
+                              foreground={node.frontmatter.fontFeatured}
                             >
-                              <h3>{node.frontmatter.title}</h3>
+                              <FeatureCardBody>
+                                <h3>{node.frontmatter.title}</h3>
 
-                              <DescriptionBlock>
-                                <p>{node.frontmatter.subtitle}</p>
-                                <hr />
-                              </DescriptionBlock>
-                              <ItemFooterBlock>
+                                <DescriptionBlock>
+                                  {node.frontmatter.subtitle}
+                                </DescriptionBlock>
+                              </FeatureCardBody>
+                              <FeatureCardFooter>
                                 <DateBlock>
                                   {`${
                                     MONTHS[
@@ -206,8 +201,8 @@ const IndexPage = ({ data, location }: Props) => {
                                     Read
                                   </Button>
                                 </Link>
-                              </ItemFooterBlock>
-                            </BigBlock>
+                              </FeatureCardFooter>
+                            </FeaturedCard>
                           </Link>
                         </li>
                       );
@@ -216,7 +211,7 @@ const IndexPage = ({ data, location }: Props) => {
                 </section>
                 <section style={{ marginTop: '100px' }}>
                   <h2>All articles</h2>
-                  <ShortcutList>
+                  {/* <ShortcutList>
                     <div
                       role="button"
                       tabIndex={0}
@@ -225,7 +220,7 @@ const IndexPage = ({ data, location }: Props) => {
                       Click or<ShortcutIcon>⌘/CTRL</ShortcutIcon> +{' '}
                       <ShortcutIcon>K</ShortcutIcon> to search
                     </div>
-                  </ShortcutList>
+                  </ShortcutList> */}
                   <List data-testid="article-list">
                     {data.allMdx.edges
                       .filter(({ node }) => node.frontmatter.type !== 'snippet')
@@ -296,47 +291,67 @@ const IndexPage = ({ data, location }: Props) => {
   );
 };
 
-const ShortcutList = styled('div')`
-  display: flex;
-  width: 100%;
-  margin-top: 8px;
-  margin-bottom: 30px;
+const FeaturedCard = styled(motion.div)<{
+  background?: string;
+  foreground?: string;
+}>`
+  @media (max-width: 700px) {
+    padding: 35px 30px 0px 30px;
+  }
+
+  height: 275px;
+  background: ${p => p.background};
+  border-radius: 10px;
+  padding: 40px 40px 0px 40px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 40px;
+  margin: 40px auto;
+
+  color: ${p => p.foreground || '#ffffff'};
+
   div {
-    display: flex;
-    color: ${p => p.theme.colors.gray};
-    cursor: pointer;
+    color: ${p => p.foreground || '#ffffff'}!important;
+  }
+
+  button {
+    color: ${p => p.foreground || '#ffffff'};
+    transition: ${p => p.theme.transitionTime}s;
+  }
+
+  h3 {
+    color: ${p => p.foreground || '#ffffff'}!important;
+    font-weight: 600;
+  }
+
+  &:hover {
+    button {
+      color: unset;
+    }
   }
 `;
 
-const ShortcutIcon = styled('div')`
-  border: 2px solid ${p => p.theme.colors.gray};
-  border-radius: 5px;
-  min-width: 30px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin-right: 6px;
-  margin-left: 6px;
-  justify-content: center;
-  font-size: 12px;
-}
-`;
-
-const DescriptionBlock = styled('div')`
-  width: 370px;
-
-  p {
-    font-size: 16px;
-    margin-bottom: 20px;
+const FeatureCardBody = styled('div')`
+  @media (max-width: 700px) {
+    height: 180px;
   }
 
-  hr {
-    margin-bottom: 10px;
-    width: 150px;
-    background-color: rgba(255, 255, 255, 0.1);
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 165px;
 `;
 
-const ItemFooterBlock = styled('div')`
+const DescriptionBlock = styled('p')`
+  max-width: 370px;
+  height: 100%;
+  max-height: 100px;
+
+  font-size: 16px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  text-wrap: pre-wrap;
+`;
+
+const FeatureCardFooter = styled('div')`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -348,11 +363,6 @@ const BigBlock = styled(motion.div)<{ color?: string; background?: string }>`
     min-height: 150px;
     height: unset;
     padding: 40px 30px;
-
-    p,
-    hr {
-      display: none;
-    }
   }
 
   &:hover {
@@ -369,7 +379,7 @@ const BigBlock = styled(motion.div)<{ color?: string; background?: string }>`
   padding: 80px 60px;
   background: ${p => p.background};
   border-radius: 10px;
-  margin: 30px auto;
+
   overflow: hidden;
   color: ${p => p.color || '#ffffff'};
 

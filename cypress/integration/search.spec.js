@@ -3,16 +3,18 @@ describe('Search tests', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
+    cy.get('input').clear();
     cy.get('[data-testid="searchbox-overlay"]').should('be.visible');
     cy.get('[data-testid="searchbox"]').should('be.visible');
-    cy.get('[data-testid="portfolio-link"]').should('be.visible');
-    cy.get('[data-testid="twitter-link"]').should('be.visible');
+    cy.get('[data-testid="link"]').should('have.length', 3);
+    cy.get('[data-testid="shortcut"]').should('have.length', 2);
   });
 
   it('Hides the search box when hitting esc', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
+    cy.get('input').clear();
     cy.wait(1000);
     cy.get('body').type('{esc}');
     cy.get('[data-testid="searchbox-overlay"]').should('not.be.visible');
@@ -23,6 +25,7 @@ describe('Search tests', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
+    cy.get('input').clear();
     cy.wait(1000);
     cy.get('body').click(10, 10);
     cy.get('[data-testid="searchbox-overlay"]').should('not.be.visible');
