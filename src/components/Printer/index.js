@@ -1,162 +1,122 @@
-import React from 'react';
-import styled from '@emotion/styled';
-
-const Matrix = () => (
-  <svg
-    width="878"
-    height="402"
-    viewBox="0 0 878 402"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M1.61902 242.59L876.479 238.357"
-      stroke="#8A8A90"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeDasharray="0.1 50"
-    />
-    <path
-      d="M1.61902 321.513L876.479 317.28"
-      stroke="#8A8A90"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeDasharray="0.1 50"
-    />
-    <path
-      d="M1.61902 400.436L876.479 396.202"
-      stroke="#8A8A90"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeDasharray="0.1 50"
-    />
-    <path
-      d="M1.61902 5.82227L876.479 1.58895"
-      stroke="#8A8A90"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeDasharray="0.1 50"
-    />
-    <path
-      d="M1.61902 84.7451L876.479 80.5118"
-      stroke="#8A8A90"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeDasharray="0.1 50"
-    />
-    <path
-      d="M1.61902 163.667L876.479 159.434"
-      stroke="#8A8A90"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeDasharray="0.1 50"
-    />
-  </svg>
-);
+/** @jsx jsx */
+import { jsx, Global } from '@emotion/core';
 
 const LocalLogo = () => (
   <svg
-    width="50"
+    width="60"
     height="50"
-    viewBox="0 0 401 401"
+    viewBox="0 0 595 503"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g>
-      <circle cx="200.633" cy="200.58" r="200" fill="none" />
-      <rect
-        x="131.283"
-        y="104.174"
-        width="46.5558"
-        height="144.938"
-        rx="23.2779"
-        transform="rotate(26 131.283 104.174)"
-        fill="#fff"
-      />
-      <rect
-        x="231.663"
-        y="109.137"
-        width="46.5558"
-        height="144.938"
-        rx="23.2779"
-        transform="rotate(26 231.663 109.137)"
-        fill="#fff"
-      />
-      <rect
-        x="257.779"
-        y="207.753"
-        width="46.5558"
-        height="68.1965"
-        rx="23.2779"
-        transform="rotate(-30 257.779 207.753)"
-        fill="#fff"
-      />
-    </g>
+    <rect
+      x="375.955"
+      y="44.1826"
+      width="170"
+      height="420.461"
+      rx="85"
+      strokeWidth="30"
+      stroke="#FEFEFE"
+      fill="#141516"
+    />
+    <path
+      d="M532.053 150.507L382.796 412.659C360.385 452.022 307.914 470.831 265.599 454.671C223.284 438.51 207.149 393.499 229.561 354.136L378.817 91.9835C401.228 52.6204 453.699 33.8111 496.014 49.9718C538.329 66.1325 554.464 111.143 532.053 150.507Z"
+      strokeWidth="30"
+      stroke="#FEFEFE"
+      fill="#141516"
+    />
+    <rect
+      x="208.566"
+      y="42.0908"
+      width="170"
+      height="420.461"
+      rx="85"
+      strokeWidth="30"
+      stroke="#FEFEFE"
+      fill="#141516"
+    />
+    <path
+      d="M364.791 148.503L215.535 410.655C193.123 450.018 140.652 468.827 98.3375 452.667C56.0226 436.506 39.8875 391.495 62.2988 352.132L211.555 89.9796C233.966 50.6165 286.437 31.8072 328.752 47.9679C371.067 64.1286 387.202 109.14 364.791 148.503Z"
+      strokeWidth="30"
+      stroke="#FEFEFE"
+      fill="#141516"
+    />
   </svg>
 );
 
-const Wrapper = styled('div')`
-  width: 1200px;
-  height: 630px;
-  position: relative;
-  color: white;
-  background: linear-gradient(90deg, #5284f9 -48.68%, #1b1e21 70.39%), #1b1e21;
-  font-family: 'Helvetica', sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  & > svg {
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-`;
-
-const TitleWrapper = styled('div')`
-  margin-top: 110px;
-  width: 730px;
-  h1 {
-    min-height: 95px;
-    max-height: 95px;
-    font-weight: 500;
-    font-size: 47px;
-    line-height: 60px;
-  }
-`;
-
-const InfoWrapper = styled('div')`
-  margin-top: 100px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  p {
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 28px;
-  }
-`;
-
-const PrinterComponent = ({ title }) => (
-  <Wrapper>
-    <Matrix />
-    <TitleWrapper>
-      <h1>{title}</h1>
-      <InfoWrapper>
-        <LocalLogo />
-        <p>@MaximeHeckel</p>
-      </InfoWrapper>
-    </TitleWrapper>
-  </Wrapper>
-);
+const PrinterComponent = ({ title }) => {
+  return (
+    <div
+      css={{
+        width: '1200px',
+        height: '630px',
+        background: '#141516',
+      }}
+    >
+      <Global
+        styles={{
+          '*': {
+            boxSizing: 'border-box',
+            margin: 0,
+            padding: 0,
+            fontFamily: 'Helvetica',
+          },
+        }}
+      />
+      <div
+        css={{
+          padding: '140px 145px 120px 145px',
+          display: 'flex',
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '100%',
+        }}
+      >
+        <div
+          css={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            maxWidth: '840px',
+            height: '330px',
+            maxheight: '330px',
+          }}
+        >
+          <h1
+            css={{
+              fontSize: '64px',
+              lineHeight: '73.59px',
+              color: '#FEFEFE',
+              fontWeight: 700,
+              fontStyle: 'normal',
+              textAlign: 'center',
+            }}
+          >
+            {title}
+          </h1>
+        </div>
+        <div
+          css={{
+            color: '#FEFEFE',
+            justifyContent: 'space-between',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <LocalLogo />
+          <span
+            css={{
+              fontSize: '24px',
+              fontWeight: 600,
+            }}
+          >
+            @MaximeHeckel
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default PrinterComponent;
