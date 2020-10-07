@@ -136,17 +136,18 @@ const IndexPage = ({ data }: Props) => {
           return (
             <>
               <Seo title={site.siteMetadata.title} />
-              {/* <SearchBox onClose={() => setShowSearch(false)} /> */}
               <div style={{ marginTop: '100px', paddingBottom: '10px' }}>
                 <br />
-                <h1>
-                  Hi <WavingHand /> I'm Maxime, and this is my blog.
+                <h1 style={{ fontSize: '33px' }}>
+                  Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
+                  <span
+                    style={{ color: 'var(--maximeheckel-colors-typeface-2)' }}
+                  >
+                    Here, I share through my writing my experience as a frontend
+                    engineer and everything I'm learning about on React,
+                    Typescript, SwiftUI, Serverless, and testing.
+                  </span>
                 </h1>
-                <p style={{ fontSize: '21px' }}>
-                  I share my frontend engineering experience, and my expertise
-                  with technical articles about React, Typescript, SwiftUI,
-                  Serverless, and testing.
-                </p>
                 <section style={{ marginTop: '100px' }}>
                   <h2>Featured</h2>
                   <List data-testid="featured-list">
