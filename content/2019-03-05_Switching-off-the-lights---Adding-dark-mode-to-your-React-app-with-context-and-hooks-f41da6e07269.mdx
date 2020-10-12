@@ -135,7 +135,7 @@ const useEffectDarkMode = () => {
 };
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [themeState, setThemeState] = useDarkMode();
+  const [themeState, setThemeState] = useEffectDarkMode();
 
   if (!themeState.hasThemeLoaded) {
     /*
