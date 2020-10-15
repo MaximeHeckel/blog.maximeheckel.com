@@ -120,6 +120,8 @@ exports.onPostBuild = async ({ graphql }) => {
           node {
             frontmatter {
               title
+              colorFeatured
+              fontFeatured
             }
           }
         }
@@ -133,19 +135,21 @@ exports.onPostBuild = async ({ graphql }) => {
     return r.data;
   });
 
-  const titles = data.allMdx.edges.map(
+  const details = data.allMdx.edges.map(
     ({
       node: {
-        frontmatter: { title },
+        frontmatter: { title, colorFeatured, fontFeatured },
       },
     }) => ({
       id: slugify(title),
       title,
+      colorFeatured,
+      fontFeatured,
     })
   );
 
   await runScreenshots({
-    data: titles,
+    data: details,
     component: require.resolve('./src/components/Printer/index.js'),
     outputDir: 'opengraph-images',
   });
