@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Global } from '@emotion/core';
+import { jsx, Global, css } from '@emotion/core';
 
 const LocalLogo = () => (
   <svg
@@ -54,14 +54,16 @@ const PrinterComponent = ({ title }) => {
       }}
     >
       <Global
-        styles={{
-          '*': {
-            boxSizing: 'border-box',
-            margin: 0,
-            padding: 0,
-            fontFamily: 'Helvetica',
-          },
-        }}
+        styles={css`
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap');
+
+          * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Helvetica, sans-serif;
+          }
+        `}
       />
       <div
         css={{
