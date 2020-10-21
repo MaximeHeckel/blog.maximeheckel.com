@@ -50,7 +50,7 @@ module.exports = {
       ]
     }
   },
-  "__version": "4.1.0",
+  "__version": "5.4.0",
   "SEO: Verify meta tag integrity": {
     "has all the meta tags in the landing page head": {
       "1": [

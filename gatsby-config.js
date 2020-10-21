@@ -160,7 +160,7 @@ module.exports = {
             }
             `,
             output: '/rss.xml',
-            title: `Maxime Heckel's Blog RSS Feed`,
+            title: `Maxime Heckel's Blog`,
             site_url: `https://blog.maximeheckel.com`,
           },
         ],
