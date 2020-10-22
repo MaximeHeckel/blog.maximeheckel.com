@@ -122,7 +122,11 @@ const IndexPage = ({ data }: Props) => {
 
   return (
     <>
-      <Layout footer={true} header={true} headerProps={{ search: true }}>
+      <Layout
+        footer={true}
+        header={true}
+        headerProps={{ search: true, rss: true }}
+      >
         {(layoutProps: {
           site: {
             siteMetadata: {

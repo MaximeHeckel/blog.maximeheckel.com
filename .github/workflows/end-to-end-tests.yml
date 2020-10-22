@@ -22,7 +22,7 @@ jobs:
           site_name: 'blogmaximeheckel'
           max_timeout: 600
       - name: Run E2E Tests
-        uses: cypress-io/github-action@v1
+        uses: cypress-io/github-action@v2.2.7
         with:
           browser: chrome
           headless: true
