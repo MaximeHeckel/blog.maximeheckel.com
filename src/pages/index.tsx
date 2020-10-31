@@ -216,16 +216,6 @@ const IndexPage = ({ data }: Props) => {
                 </section>
                 <section style={{ marginTop: '100px' }}>
                   <h2>All articles</h2>
-                  {/* <ShortcutList>
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setShowSearch(true)}
-                    >
-                      Click or<ShortcutIcon>⌘/CTRL</ShortcutIcon> +{' '}
-                      <ShortcutIcon>K</ShortcutIcon> to search
-                    </div>
-                  </ShortcutList> */}
                   <List data-testid="article-list">
                     {data.allMdx.edges
                       .filter(({ node }) => node.frontmatter.type !== 'snippet')
