@@ -45,11 +45,14 @@
     "gatsby-remark-sectionize": "^1.0.0",
     "gatsby-source-filesystem": "^2.1.9",
     "gatsby-theme-maximeheckel": "0.14.2",
+    "graphql-request": "3.3.0",
     "prop-types": "^15.7.2",
     "react": "16.13.0",
     "react-dom": "16.13.0",
     "react-intersection-observer": "^8.27.1",
+    "react-query": "2.25.2",
     "react-typography": "^0.16.18",
+    "recharts": "1.8.5",
     "typography": "^0.16.18"
   },
   "devDependencies": {
@@ -60,6 +63,7 @@
     "@types/react": "16.9.23",
     "@types/react-dom": "16.9.5",
     "@types/react-helmet": "^5.0.8",
+    "@types/recharts": "^1.8.16",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.19.2",
     "babel-jest": "^23.1.0",
