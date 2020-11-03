@@ -45,10 +45,6 @@ const GraphWidget = styled('div')`
 `;
 
 const GraphWrapper = styled('div')`
-  @media (max-width: 700px) {
-    // padding: 40px 30px;
-  }
-
   width: 100%;
   min-height: 300px;
   height: 300px;
@@ -76,10 +72,10 @@ function useData() {
   return useQuery(
     'data',
     async () => {
-      const { allEntries } = await graphQLClient.request(
+      const { allEntriesSortedByDate } = await graphQLClient.request(
         gql`
           query {
-            allEntries {
+            allEntriesSortedByDate(_size: 1) {
               data {
                 date
                 heartRate {
@@ -96,7 +92,7 @@ function useData() {
         `
       );
 
-      return allEntries.data;
+      return allEntriesSortedByDate.data;
     },
     {
       refetchInterval: 300000,
@@ -162,12 +158,10 @@ const Heart = ({ bpm }: { bpm: number }) => {
 };
 
 const HeartRateWidget = () => {
-  const { status, data: healthData, error, isFetching } = useData();
+  const { data: healthData, isFetching } = useData();
   const { dark } = useTheme();
 
-  const lastEntry = healthData
-    ? healthData[healthData.length - 1]
-    : { heartRate: [] };
+  const lastEntry = healthData ? healthData[0] : { heartRate: [] };
 
   const dataPoints = lastEntry.heartRate.map(entry => ({
     value: entry.value,
@@ -208,15 +202,6 @@ const HeartRateWidget = () => {
               dataKey="timestamp"
               domain={['dataMin', 'dataMax']}
               type="number"
-              // interval="preserveEnd"
-              // stroke="#949699"
-              // tickFormatter={date =>
-              //   `${new Date(date).getHours()}:${(new Date(
-              //     date
-              //   ).getMinutes() < 10
-              //     ? '0'
-              //     : '') + new Date(date).getMinutes()}`
-              // }
             />
             <Area
               dot={false}
