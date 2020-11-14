@@ -3,7 +3,7 @@ describe('Search tests', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
-    cy.get('input').clear();
+    cy.get('input[data-testid="search-input"]').clear();
     cy.get('[data-testid="searchbox-overlay"]').should('be.visible');
     cy.get('[data-testid="searchbox"]').should('be.visible');
     cy.get('[data-testid="link"]').should('have.length', 3);
@@ -14,7 +14,7 @@ describe('Search tests', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
-    cy.get('input').clear();
+    cy.get('input[data-testid="search-input"]').clear();
     cy.wait(1000);
     cy.get('body').type('{esc}');
     cy.get('[data-testid="searchbox-overlay"]').should('not.be.visible');
@@ -25,7 +25,7 @@ describe('Search tests', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
-    cy.get('input').clear();
+    cy.get('input[data-testid="search-input"]').clear();
     cy.wait(1000);
     cy.get('body').click(10, 10);
     cy.get('[data-testid="searchbox-overlay"]').should('not.be.visible');
@@ -48,7 +48,7 @@ describe('Search tests', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k', { force: true });
-    cy.get('input')
+    cy.get('input[data-testid="search-input"]')
       .clear()
       .type('react', { delay: 400 });
     cy.get('[data-testid="search-result"]')

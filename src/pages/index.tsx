@@ -7,6 +7,7 @@ import Seo from 'gatsby-theme-maximeheckel/src/components/Seo';
 import Layout from 'gatsby-theme-maximeheckel/src/layouts/index';
 import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
 import React from 'react';
+import NewsletterCard from '../components/Newsletter';
 
 const MONTHS = [
   'Jan',
@@ -156,6 +157,10 @@ const IndexPage = ({ data }: Props) => {
                   </span>
                 </h1>
                 <section style={{ marginTop: '100px' }}>
+                  <h2>Newsletter</h2>
+                  <NewsletterCard />
+                </section>
+                <section style={{ marginTop: '100px' }}>
                   <h2>Featured</h2>
                   <List data-testid="featured-list">
                     {data.allMdx.edges.map(({ node }) => {
@@ -217,6 +222,7 @@ const IndexPage = ({ data }: Props) => {
                     })}
                   </List>
                 </section>
+
                 <section style={{ marginTop: '100px' }}>
                   <h2>All articles</h2>
                   <List data-testid="article-list">
