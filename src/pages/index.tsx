@@ -139,7 +139,10 @@ const IndexPage = ({ data }: Props) => {
           const { site } = layoutProps;
           return (
             <>
-              <Seo title={site.siteMetadata.title} />
+              <Seo
+                title={site.siteMetadata.title}
+                banner="/main-og-image.png"
+              />
               <div style={{ marginTop: '100px', paddingBottom: '10px' }}>
                 <br />
                 <h1 style={{ fontSize: '33px' }}>
