@@ -339,7 +339,7 @@ const FeatureCardBody = styled('div')`
 `;
 
 const DescriptionBlock = styled('p')`
-  max-width: 370px;
+  max-width: 450px;
   height: 100%;
   max-height: 100px;
 
