@@ -9,24 +9,11 @@ import {
 
 const ClipboardAnimationDetails = () => {
   const clipboardIconVariants = {
-    hover: (isClicked: boolean) => ({
-      scale: 1.05,
-      strokeWidth: 3,
-      // This makes sure that theclip board doesn't show up on hover
-      opacity: isClicked ? 0 : 1,
-    }),
-    pressed: (isClicked: boolean) => ({
-      scale: 0.95,
-      strokeWidth: 1,
-      // This makes sure that theclip board doesn't show up on hover
-      opacity: isClicked ? 0 : 1,
-    }),
     clicked: { opacity: 0 },
-    unclicked: { strokeWidth: 2, opacity: 1 },
+    unclicked: { opacity: 1 },
   };
 
   const checkmarkIconVariants = {
-    pressed: (isClicked: boolean) => ({ pathLength: isClicked ? 0.85 : 0.05 }),
     clicked: { pathLength: 1 },
     unclicked: { pathLength: 0 },
   };
@@ -98,12 +85,7 @@ const ClipboardAnimationDetails = () => {
             setIsClicked(true);
           }}
         >
-          <motion.svg
-            initial={false}
-            animate={isClicked ? 'clicked' : 'unclicked'}
-            whileHover="hover"
-            whileTap="pressed"
-            transition={{ duration }}
+          <svg
             width="100"
             height="100"
             viewBox="0 0 25 25"
@@ -116,8 +98,9 @@ const ClipboardAnimationDetails = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              initial={false}
+              animate={isClicked ? 'clicked' : 'unclicked'}
               variants={clipboardIconVariants}
-              custom={isClicked}
               transition={{ duration }}
             />
             <motion.path
@@ -126,8 +109,9 @@ const ClipboardAnimationDetails = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              initial={false}
+              animate={isClicked ? 'clicked' : 'unclicked'}
               variants={clipboardIconVariants}
-              custom={isClicked}
               transition={{ duration }}
             />
             <motion.path
@@ -136,12 +120,13 @@ const ClipboardAnimationDetails = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              initial={false}
+              animate={isClicked ? 'clicked' : 'unclicked'}
               variants={checkmarkIconVariants}
               style={{ pathLength, opacity }}
-              custom={isClicked}
               transition={{ duration }}
             />
-          </motion.svg>
+          </svg>
         </button>
         <Form>
           <label htmlFor="duration">

@@ -525,24 +525,11 @@ const CopyToClipboardButton = () => {
   const duration = 0.4;
 
   const clipboardIconVariants = {
-    hover: (isClicked: boolean) => ({
-      scale: 1.05,
-      strokeWidth: 3,
-      // This makes sure that the clipboard doesn't show up on hover
-      opacity: isClicked ? 0 : 1,
-    }),
-    pressed: (isClicked: boolean) => ({
-      scale: 0.95,
-      strokeWidth: 1,
-      // This makes sure that the clipboard doesn't show up on hover
-      opacity: isClicked ? 0 : 1,
-    }),
     clicked: { opacity: 0 },
-    unclicked: { strokeWidth: 2, opacity: 1 },
+    unclicked: { opacity: 1 },
   };
 
   const checkmarkIconVariants = {
-    pressed: (isClicked: boolean) => ({ pathLength: isClicked ? 0.85 : 0.05 }),
     clicked: { pathLength: 1 },
     unclicked: { pathLength: 0 },
   };
@@ -568,12 +555,7 @@ const CopyToClipboardButton = () => {
         setIsClicked(true);
       }}
     >
-      <motion.svg
-        initial={false}
-        animate={isClicked ? 'clicked' : 'unclicked'}
-        whileHover="hover"
-        whileTap="pressed"
-        transition={{ duration }}
+      <svg
         width="100"
         height="100"
         viewBox="0 0 25 25"
@@ -586,8 +568,9 @@ const CopyToClipboardButton = () => {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          initial={false}
+          animate={isClicked ? 'clicked' : 'unclicked'}
           variants={clipboardIconVariants}
-          custom={isClicked}
           transition={{ duration }}
         />
         <motion.path
@@ -596,8 +579,9 @@ const CopyToClipboardButton = () => {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          initial={false}
+          animate={isClicked ? 'clicked' : 'unclicked'}
           variants={clipboardIconVariants}
-          custom={isClicked}
           transition={{ duration }}
         />
         <motion.path
@@ -606,12 +590,13 @@ const CopyToClipboardButton = () => {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          initial={false}
+          animate={isClicked ? 'clicked' : 'unclicked'}
           variants={checkmarkIconVariants}
           style={{ pathLength, opacity }}
-          custom={isClicked}
           transition={{ duration }}
         />
-      </motion.svg>
+      </svg>
     </button>
   );
 };
@@ -621,44 +606,19 @@ It might seem dense at first, but you'll notice that **it is composed of element
 - **variants** for the clipboard SVG and the checkmark SVG
 ```js
 const clipboardIconVariants = {
-    hover: (isClicked: boolean) => ({
-      scale: 1.05,
-      strokeWidth: 3,
-      // This makes sure that theclip board doesn't show up on hover
-      opacity: isClicked ? 0 : 1,
-    }),
-    pressed: (isClicked: boolean) => ({
-      scale: 0.95,
-      strokeWidth: 1,
-      // This makes sure that theclip board doesn't show up on hover
-      opacity: isClicked ? 0 : 1,
-    }),
-    clicked: { opacity: 0 },
-    unclicked: { strokeWidth: 2, opacity: 1 },
-  };
+  clicked: { opacity: 0 },
+  unclicked: { opacity: 1 },
+};
 
-  const checkmarkIconVariants = {
-    pressed: (isClicked: boolean) => ({ pathLength: isClicked ? 0.85 : 0.05 }),
-    clicked: { pathLength: 1 },
-    unclicked: { pathLength: 0 },
-  };
+const checkmarkIconVariants = {
+  clicked: { pathLength: 1 },
+  unclicked: { pathLength: 0 },
+};
 ```
-- a `custom` prop passed to the clipboard SVG so we can adapt the variants based on the status of the button
-transition objects that we've seen in the first part
 - `useMotionValue` and `useTransform` to intertwine the opacity and pathLength values together
 ```js
 const pathLength = useMotionValue(0);
 const opacity = useTransform(pathLength, [0, 0.5], [0, 1]);
-```
-- some **gesture-based animation object** to add a dedicated `hover` and `pressed` animation on the clipboard SVG 
-```js
-<motion.svg
-    initial={false}
-    animate={isClicked ? 'clicked' : 'unclicked'}
-    whileHover="hover"
-    whileTap="pressed"
- ...
->
 ```
 
 ## Orchestration
