@@ -13,7 +13,7 @@ interface Props {
 const Wrapper = styled('div')<{ width?: number }>`
   .plyr {
     margin: 0 auto;
-    border-radius: 10px;
+    border-radius: var(--border-radius-2);
     background: unset;
     width: ${p => `${p.width}px` || '100%'};
   }

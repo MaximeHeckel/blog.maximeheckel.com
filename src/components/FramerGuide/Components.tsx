@@ -23,7 +23,7 @@ export const AnimationCard = styled('div')`
   color: var(--maximeheckel-colors-typeface-1);
   font-weight: 500;
   backdrop-filter: blur(6px);
-  border-radius: 25px;
+  border-radius: var(--border-radius-2);
   margin: 0 auto;
   overflow: hidden;
   box-shadow: var(--maximeheckel-shadow-2);
@@ -96,7 +96,7 @@ export const Form = styled('form')`
     background-color: var(--maximeheckel-colors-emphasis);
     color: var(--maximeheckel-colors-brand);
     height: 30px;
-    border-radius: 5px;
+    border-radius: 4px;
     padding: 5px;
   }
 `;

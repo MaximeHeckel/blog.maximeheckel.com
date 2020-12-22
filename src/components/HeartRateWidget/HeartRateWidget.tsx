@@ -49,7 +49,7 @@ const GraphWrapper = styled('div')`
   min-height: 300px;
   height: 300px;
   background: var(--maximeheckel-colors-foreground);
-  border-radius: 10px;
+  border-radius: var(--border-radius-2);
   padding: 0px 0px 10px 0px;
   overflow: hidden;
 

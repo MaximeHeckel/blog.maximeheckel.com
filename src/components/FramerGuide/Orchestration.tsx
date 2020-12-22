@@ -91,7 +91,7 @@ const Orchestration = () => {
         <motion.div
           key={key}
           css={{
-            background: 'linear-gradient(315deg, #fde7f9 0%, #aacaef 74%)',
+            background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
             height: '280px',
             width: '230px',
             borderRadius: '10px',

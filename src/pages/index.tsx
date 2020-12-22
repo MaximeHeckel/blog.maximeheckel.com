@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+import { css } from '@emotion/core';
 import { motion } from 'framer-motion';
 import { graphql, Link } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
@@ -120,6 +121,15 @@ const WavingHand = () => (
 const IndexPage = ({ data }: Props) => {
   let year = 0;
 
+  const cardVariants = {
+    hover: {
+      scale: 1.05,
+    },
+    initial: {
+      scale: 1,
+    },
+  };
+
   return (
     <>
       <Layout
@@ -143,79 +153,83 @@ const IndexPage = ({ data }: Props) => {
                 title={site.siteMetadata.title}
                 banner="/main-og-image.png"
               />
-              <div style={{ marginTop: '100px', paddingBottom: '10px' }}>
+              <div
+                css={css`
+                  margin-top: 100px;
+                  padding-bottom: 10px;
+                `}
+              >
                 <br />
-                <h1 style={{ fontSize: '33px' }}>
+                <h1
+                  css={css`
+                    font-size: 33px;
+                  `}
+                >
                   Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
                   <span
-                    style={{ color: 'var(--maximeheckel-colors-typeface-2)' }}
+                    css={css`
+                      color: var(--maximeheckel-colors-typeface-2);
+                    `}
                   >
                     Here, I share through my writing my experience as a frontend
                     engineer and everything I'm learning about on React,
                     Typescript, SwiftUI, Serverless, and testing.
                   </span>
                 </h1>
-                <section style={{ marginTop: '100px' }}>
+                <section
+                  css={css`
+                    margin-top: 100px;
+                  `}
+                >
                   <h2>Featured</h2>
-                  <List data-testid="featured-list">
-                    {data.allMdx.edges.map(({ node }) => {
-                      if (!node.frontmatter.featured) {
-                        return null;
-                      }
-
-                      return (
-                        <li key={node.frontmatter.slug}>
-                          <Link
-                            style={{ textDecoration: `none` }}
-                            to={`/posts/${node.frontmatter.slug}/`}
+                  <List
+                    data-testid="featured-list"
+                    css={css`
+                      padding-top: 30px;
+                      display: grid;
+                      grid-gap: 15px;
+                    `}
+                  >
+                    {data.allMdx.edges
+                      .filter(({ node }) => node.frontmatter.featured)
+                      .map(({ node }) => {
+                        return (
+                          <li
+                            key={node.frontmatter.slug}
+                            data-testid="featured-article-item"
                           >
-                            <FeaturedCard
-                              whileHover={{
-                                scale: 1.05,
-                              }}
-                              transition={{
-                                type: 'easeOut',
-                              }}
-                              background={node.frontmatter.colorFeatured}
-                              foreground={node.frontmatter.fontFeatured}
+                            <Link
+                              style={{ textDecoration: `none` }}
+                              to={`/posts/${node.frontmatter.slug}/`}
                             >
-                              <FeatureCardBody>
-                                <h3>{node.frontmatter.title}</h3>
-
-                                <DescriptionBlock>
-                                  {node.frontmatter.subtitle}
-                                </DescriptionBlock>
-                              </FeatureCardBody>
-                              <FeatureCardFooter>
-                                <DateBlock>
-                                  {`${
-                                    MONTHS[
-                                      new Date(node.frontmatter.date).getMonth()
-                                    ]
-                                  } ${new Date(
-                                    node.frontmatter.date
-                                  ).getDate()} ${new Date(
-                                    node.frontmatter.date
-                                  ).getFullYear()}`}
-                                </DateBlock>
-                                <div />
-                                <Link
-                                  style={{ textDecoration: `none` }}
-                                  to={`/posts/${node.frontmatter.slug}/`}
+                              <Card
+                                variants={cardVariants}
+                                initial="initial"
+                                whileHover="hover"
+                                transition={{
+                                  ease: 'easeOut',
+                                  delay: 0.1,
+                                  duration: 0.4,
+                                }}
+                              >
+                                <TitleWithBackground
+                                  background={node.frontmatter.colorFeatured!}
                                 >
-                                  <Button tab-index={-1} tertiary={true}>
-                                    Read
-                                  </Button>
-                                </Link>
-                              </FeatureCardFooter>
-                            </FeaturedCard>
-                          </Link>
-                        </li>
-                      );
-                    })}
+                                  {node.frontmatter.title}
+                                </TitleWithBackground>
+                                <p>{node.frontmatter.subtitle}</p>
+                              </Card>
+                            </Link>
+                          </li>
+                        );
+                      })}
                   </List>
                 </section>
-                <section style={{ marginTop: '100px' }}>
+                <section
+                  css={css`
+                    margin-top: 100px;
+                  `}
+                >
                   <h2>All articles</h2>
                   <List data-testid="article-list">
                     {data.allMdx.edges
@@ -235,7 +249,6 @@ const IndexPage = ({ data }: Props) => {
 
                         return (
                           <li
-                            style={{ marginLeft: '-10px' }}
                             key={node.frontmatter.slug}
                             data-testid="article-item"
                           >
@@ -266,19 +279,12 @@ const IndexPage = ({ data }: Props) => {
                       })}
                   </List>
                 </section>
-                <FeaturedCard background="black">
+                <Card>
                   <h3>#BlackLivesMatter</h3>
-                  <FeatureCardBody>
-                    <DescriptionBlock>
-                      <a
-                        style={{ color: 'white' }}
-                        href="https://blacklivesmatters.carrd.co/"
-                      >
-                        Go here to find out how you can help.
-                      </a>
-                    </DescriptionBlock>
-                  </FeatureCardBody>
-                </FeaturedCard>
+                  <a href="https://blacklivesmatters.carrd.co/">
+                    Click here to find out how you can help.
+                  </a>
+                </Card>
               </div>
             </>
           );
@@ -288,71 +294,33 @@ const IndexPage = ({ data }: Props) => {
   );
 };
 
-const FeaturedCard = styled(motion.div)<{
-  background?: string;
-  foreground?: string;
-}>`
-  @media (max-width: 700px) {
-    padding: 35px 30px 0px 30px;
-  }
-
-  height: 275px;
-  background: var(--maximeheckel-colors-foreground);
-  border-radius: 10px;
-  padding: 40px 40px 0px 40px;
-  box-shadow: var(--maximeheckel-shadow-2);
-  margin: 40px auto;
-
-  color: var(--maximeheckel-colors-typeface-0);
-
-  div {
-    color: var(--maximeheckel-colors-typeface-0) !important;
-  }
-
-  button {
-    color: var(--maximeheckel-colors-typeface-0);
-    transition: 0.5s;
-  }
-
-  h3 {
-    color: var(--maximeheckel-colors-typeface-0) !important;
-    font-weight: 600;
-  }
-
-  &:hover {
-    button {
-      color: unset;
-    }
-  }
-`;
-
-const FeatureCardBody = styled('div')`
-  @media (max-width: 700px) {
-    height: 180px;
-  }
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  height: 165px;
-`;
-
-const DescriptionBlock = styled('p')`
-  max-width: 450px;
-  height: 100%;
-  max-height: 100px;
-
-  font-size: 16px;
-  margin-bottom: 20px;
+const Card = styled(motion.div)`
+  border-radius: var(--border-radius-2);
+  margin-bottom: 0px;
   overflow: hidden;
-  text-wrap: pre-wrap;
+  position: relative;
+  background: var(--maximeheckel-colors-foreground);
+  box-shadow: var(--maximeheckel-shadow-1);
+
+  padding: 36px 24px;
+
+  p {
+    color: var(--maximeheckel-colors-typeface-1);
+    margin-top: 1em;
+  }
 `;
 
-const FeatureCardFooter = styled('div')`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
+const TitleWithBackground = styled('h2')<{ background: string }>`
+  color: var(--maximeheckel-colors-typeface-0);
+  margin-bottom: 0px !important;
+  letter-spacing: -0.02em;
+  margin-block-end: 0px;
+  background: ${p => p.background};
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
 `;
 
 const Block = styled('div')`
@@ -364,7 +332,8 @@ const Block = styled('div')`
   justify-content: flex-start;
   align-items: center;
   padding-left: 15px;
-  border-radius: 6px;
+  border-radius: var(--border-radius-2);
+  margin-left: -10px;
 
   height: 60px;
   box-shadow: none;

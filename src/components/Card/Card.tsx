@@ -6,7 +6,7 @@ const CardWrapper = styled('div')`
   width: 100%;
   max-width: 800px;
   margin-bottom: 25px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-2);
   padding: 30px;
   color: var(--palette-gray-70);
   box-shadow: var(--maximeheckel-shadow-2);
