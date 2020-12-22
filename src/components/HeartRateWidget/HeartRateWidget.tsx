@@ -48,7 +48,7 @@ const GraphWrapper = styled('div')`
   width: 100%;
   min-height: 300px;
   height: 300px;
-  background: ${p => p.theme.colors.prism.plain.backgroundColor};
+  background: var(--maximeheckel-colors-foreground);
   border-radius: 10px;
   padding: 0px 0px 10px 0px;
   overflow: hidden;

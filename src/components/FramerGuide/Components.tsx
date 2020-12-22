@@ -19,14 +19,14 @@ export const TransitionGridWrapper = styled('div')`
 `;
 
 export const AnimationCard = styled('div')`
-  background: ${p => p.theme.colors.prism.plain.backgroundColor}70;
-  color: ${p => p.theme.bodyColor};
+  background: var(--maximeheckel-colors-foreground);
+  color: var(--maximeheckel-colors-typeface-1);
   font-weight: 500;
   backdrop-filter: blur(6px);
   border-radius: 25px;
   margin: 0 auto;
   overflow: hidden;
-  box-shadow: ${p => p.theme.boxShadow};
+  box-shadow: var(--maximeheckel-shadow-2);
   margin: 30px 0px;
 
   .snippet {
@@ -58,9 +58,9 @@ export const AnimationCardHeader = styled('div')`
 
 export const HighlightedValue = styled('div')`
   border-radius: 4px;
-  background-color: rgba(81, 132, 249, 0.15);
-  color: ${p => p.theme.colors.blue};
-  border: 1px solid ${p => p.theme.colors.blue};
+  background-color: var(--maximeheckel-colors-emphasis);
+  color: var(--maximeheckel-colors-brand);
+  border: 1px solid var(--maximeheckel-colors-brand);
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 6px;
@@ -91,10 +91,10 @@ export const Form = styled('form')`
   }
 
   select {
-    border: 1px solid ${p => p.theme.colors.blue};
+    border: 1px solid var(--maximeheckel-colors-brand);
     box-shadow: none;
-    background-color: rgba(81, 132, 249, 0.15);
-    color: ${p => p.theme.colors.blue};
+    background-color: var(--maximeheckel-colors-emphasis);
+    color: var(--maximeheckel-colors-brand);
     height: 30px;
     border-radius: 5px;
     padding: 5px;

@@ -8,7 +8,8 @@ const CardWrapper = styled('div')`
   margin-bottom: 25px;
   border-radius: 10px;
   padding: 30px;
-  color: ${p => p.theme.colors.black};
+  color: var(--palette-gray-70);
+  box-shadow: var(--maximeheckel-shadow-2);
 
   h1,
   h2,
@@ -16,7 +17,7 @@ const CardWrapper = styled('div')`
   h4,
   p,
   strong {
-    color: ${p => p.theme.colors.black} !important;
+    color: var(--palette-gray-70) !important;
   }
 `;
 

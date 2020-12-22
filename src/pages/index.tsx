@@ -174,9 +174,7 @@ const IndexPage = ({ data }: Props) => {
                                 scale: 1.05,
                               }}
                               transition={{
-                                type: 'spring',
-                                damping: 30,
-                                stiffness: 250,
+                                type: 'easeOut',
                               }}
                               background={node.frontmatter.colorFeatured}
                               foreground={node.frontmatter.fontFeatured}
@@ -268,18 +266,19 @@ const IndexPage = ({ data }: Props) => {
                       })}
                   </List>
                 </section>
-                <BigBlock background="black">
+                <FeaturedCard background="black">
                   <h3>#BlackLivesMatter</h3>
-
-                  <DescriptionBlock>
-                    <a
-                      style={{ color: 'white' }}
-                      href="https://blacklivesmatters.carrd.co/"
-                    >
-                      Go here to find out how you can help.
-                    </a>
-                  </DescriptionBlock>
-                </BigBlock>
+                  <FeatureCardBody>
+                    <DescriptionBlock>
+                      <a
+                        style={{ color: 'white' }}
+                        href="https://blacklivesmatters.carrd.co/"
+                      >
+                        Go here to find out how you can help.
+                      </a>
+                    </DescriptionBlock>
+                  </FeatureCardBody>
+                </FeaturedCard>
               </div>
             </>
           );
@@ -298,25 +297,25 @@ const FeaturedCard = styled(motion.div)<{
   }
 
   height: 275px;
-  background: ${p => p.background};
+  background: var(--maximeheckel-colors-foreground);
   border-radius: 10px;
   padding: 40px 40px 0px 40px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 40px;
+  box-shadow: var(--maximeheckel-shadow-2);
   margin: 40px auto;
 
-  color: ${p => p.foreground || '#ffffff'};
+  color: var(--maximeheckel-colors-typeface-0);
 
   div {
-    color: ${p => p.foreground || '#ffffff'}!important;
+    color: var(--maximeheckel-colors-typeface-0) !important;
   }
 
   button {
-    color: ${p => p.foreground || '#ffffff'};
-    transition: ${p => p.theme.transitionTime}s;
+    color: var(--maximeheckel-colors-typeface-0);
+    transition: 0.5s;
   }
 
   h3 {
-    color: ${p => p.foreground || '#ffffff'}!important;
+    color: var(--maximeheckel-colors-typeface-0) !important;
     font-weight: 600;
   }
 
@@ -356,46 +355,6 @@ const FeatureCardFooter = styled('div')`
   font-size: 14px;
 `;
 
-const BigBlock = styled(motion.div)<{ color?: string; background?: string }>`
-  @media (max-width: 700px) {
-    min-height: 150px;
-    height: unset;
-    padding: 40px 30px;
-  }
-
-  &:hover {
-    button {
-      color: unset;
-    }
-  }
-
-  position: relative;
-  width: 100%;
-  min-height: 300px;
-  height: 300px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 40px;
-  padding: 80px 60px;
-  background: ${p => p.background};
-  border-radius: 10px;
-
-  overflow: hidden;
-  color: ${p => p.color || '#ffffff'};
-
-  div {
-    color: ${p => p.color || '#ffffff'}!important;
-  }
-
-  button {
-    color: ${p => p.color || '#ffffff'};
-    transition: ${p => p.theme.transitionTime}s;
-  }
-
-  h3 {
-    color: ${p => p.color || '#ffffff'}!important;
-    font-weight: 600;
-  }
-`;
-
 const Block = styled('div')`
   @media (max-width: 700px) {
     height: 100px;
@@ -410,17 +369,17 @@ const Block = styled('div')`
   height: 60px;
   box-shadow: none;
 
-  color: ${p => p.theme.fontColor};
-  transition ${p => p.theme.transitionTime / 4}s;
+  color: var(--maximeheckel-colors-typeface-0);
+  transition: background-color 0.25s, box-shadow 0.25s, color 0.25s;
 
   div:first-of-type {
     margin-right: 40px;
   }
 
   &:hover {
-    background-color: ${p => p.theme.foregroundColor};
-    box-shadow: ${p => p.theme.boxShadow};
-    color: ${p => p.theme.colors.blue};
+    background-color: var(--maximeheckel-colors-foreground);
+    box-shadow: var(--maximeheckel-shadow-1);
+    color: var(--maximeheckel-colors-brand);
   }
 `;
 
@@ -433,13 +392,12 @@ const YearBlock = styled('div')`
 const DateBlock = styled('div')`
   font-size: 14px;
   font-weight: 500;
-  color: ${p => p.theme.colors.gray};
+  color: var(--maximeheckel-colors-typeface-2);
   min-width: 50px;
 `;
 
 const TitleBlock = styled('div')`
   font-weight: 500;
-  transition ${p => p.theme.transitionTime / 2}s;
 `;
 
 const List = styled('ul')`
@@ -450,7 +408,7 @@ const List = styled('ul')`
   }
 
   h3 {
-    color: ${p => p.theme.fontColor};
+    color: var(--maximeheckel-colors-typeface-0);
     margin-bottom: 10px;
   }
 `;

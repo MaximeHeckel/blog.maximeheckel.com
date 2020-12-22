@@ -19,7 +19,7 @@ const Wrapper = styled('div')<{ width?: number }>`
   }
 
   .plyr__video-wrapper {
-    background: var(--maximeheckel-colors-body-1);
+    background: var(--maximeheckel-colors-emphasis);
   }
 `;
 
