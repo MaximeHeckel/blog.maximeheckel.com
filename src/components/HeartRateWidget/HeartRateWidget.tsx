@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useTheme } from 'gatsby-theme-maximeheckel/src/context/ThemeContext';
-import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
+import styled from '@emotion/styled';
 import { GraphQLClient, gql } from 'graphql-request';
 import React from 'react';
 import {

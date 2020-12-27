@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
+import styled from '@emotion/styled';
 import { useTheme } from 'gatsby-theme-maximeheckel/src/context/ThemeContext';
 
 interface Props {

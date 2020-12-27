@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
+import styled from '@emotion/styled';
 
 const CardWrapper = styled('div')`
   background: linear-gradient(301.9deg, #fef8fd -5.6%, #e4eeff 93.18%);
@@ -8,7 +8,7 @@ const CardWrapper = styled('div')`
   margin-bottom: 25px;
   border-radius: var(--border-radius-2);
   padding: 30px;
-  color: var(--palette-gray-70);
+  color: hsla(var(--palette-gray-95), 100%);
   box-shadow: var(--maximeheckel-shadow-2);
 
   h1,
@@ -17,7 +17,7 @@ const CardWrapper = styled('div')`
   h4,
   p,
   strong {
-    color: var(--palette-gray-70) !important;
+    color: hsla(var(--palette-gray-95), 100%) !important;
   }
 `;
 

@@ -1,4 +1,4 @@
-import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
+import styled from '@emotion/styled';
 
 export const TransitionGridWrapper = styled('div')`
   display: grid;
@@ -53,7 +53,7 @@ export const AnimationCardHeader = styled('div')`
   width: 100%;
   text-align: center;
   font-weight: 600;
-  font-size: 18px;
+  // font-size: 18px;
 `;
 
 export const HighlightedValue = styled('div')`
@@ -85,6 +85,10 @@ export const Form = styled('form')`
   flex-direction: column;
   justify-content: space-around;
   font-size: 14px;
+
+  label {
+    margin-bottom: 8px;
+  }
 
   input {
     margin-bottom: 8px;

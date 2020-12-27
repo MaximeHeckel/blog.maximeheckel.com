@@ -6,8 +6,9 @@ import { FluidObject } from 'gatsby-image';
 import Button from 'gatsby-theme-maximeheckel/src/components/Button';
 import Seo from 'gatsby-theme-maximeheckel/src/components/Seo';
 import Layout from 'gatsby-theme-maximeheckel/src/layouts/index';
-import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
+import styled from '@emotion/styled';
 import React from 'react';
+import VisuallyHidden from 'gatsby-theme-maximeheckel/src/components/VisuallyHidden';
 
 const MONTHS = [
   'Jan',
@@ -96,6 +97,25 @@ interface Props {
   };
 }
 
+const TwitterIcon = () => (
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 25 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    stroke="var(--maximeheckel-colors-typeface-2)"
+  >
+    <path
+      d="M23.8618 2.9995C22.9042 3.67497 21.8439 4.19161 20.7218 4.5295C20.1196 3.83701 19.3192 3.34619 18.4289 3.12342C17.5386 2.90066 16.6013 2.95669 15.7439 3.28395C14.8865 3.61121 14.1503 4.1939 13.6348 4.95321C13.1193 5.71253 12.8495 6.61183 12.8618 7.5295V8.5295C11.1044 8.57506 9.36309 8.18531 7.79283 7.39494C6.22256 6.60458 4.87213 5.43813 3.86182 3.9995C3.86182 3.9995 -0.138184 12.9995 8.86182 16.9995C6.80234 18.3975 4.34897 19.0984 1.86182 18.9995C10.8618 23.9995 21.7818 18.8949 21.7818 7.39494C21.7809 7.1164 21.8341 6.94309 21.7818 6.6695C22.8024 5.66299 23.5226 4.39221 23.8618 2.9995Z"
+      stroke="var(--maximeheckel-colors-brand)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 const WavingHand = () => (
   <motion.div
     style={{
@@ -110,6 +130,7 @@ const WavingHand = () => (
       yoyo: 7,
       from: 0,
       duration: 0.2,
+      delay: 0.5,
       ease: 'easeInOut',
       type: 'tween',
     }}
@@ -127,6 +148,16 @@ const IndexPage = ({ data }: Props) => {
     },
     initial: {
       scale: 1,
+    },
+  };
+
+  const glowVariants = {
+    hover: {
+      opacity: 0.8,
+    },
+    initial: {
+      scale: 1.05,
+      opacity: 0,
     },
   };
 
@@ -160,11 +191,7 @@ const IndexPage = ({ data }: Props) => {
                 `}
               >
                 <br />
-                <h1
-                  css={css`
-                    font-size: 33px;
-                  `}
-                >
+                <h1>
                   Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
                   <span
                     css={css`
@@ -176,6 +203,45 @@ const IndexPage = ({ data }: Props) => {
                     Typescript, SwiftUI, Serverless, and testing.
                   </span>
                 </h1>
+                <div
+                  css={css`
+                    display: flex;
+                    justify-content: space-between;
+                    width: 300px;
+                  `}
+                >
+                  <a
+                    href="https://maximeheckel.com"
+                    style={{ textDecoration: 'none' }}
+                    tabIndex={-1}
+                  >
+                    <Button tertiary>About me</Button>
+                    <VisuallyHidden as="p">
+                      Link redirects to my portfolio https://maximeheckel.com.
+                    </VisuallyHidden>
+                  </a>
+                  <a
+                    href="https://twitter.com/MaximeHeckel"
+                    style={{ textDecoration: 'none' }}
+                    tabIndex={-1}
+                  >
+                    <Button tertiary>
+                      <TwitterIcon />
+                      <span
+                        css={css`
+                          padding-left: 4px;
+                        `}
+                      >
+                        {' '}
+                        @MaximeHeckel
+                      </span>
+                    </Button>
+                    <VisuallyHidden as="p">
+                      Link redirects to my Twitter profile page
+                      https://twitter.com/MaximeHeckel.
+                    </VisuallyHidden>
+                  </a>
+                </div>
                 <section
                   css={css`
                     margin-top: 100px;
@@ -187,29 +253,57 @@ const IndexPage = ({ data }: Props) => {
                     css={css`
                       padding-top: 30px;
                       display: grid;
-                      grid-gap: 15px;
+                      grid-gap: 16px;
                     `}
                   >
                     {data.allMdx.edges
                       .filter(({ node }) => node.frontmatter.featured)
                       .map(({ node }) => {
                         return (
-                          <li
+                          <motion.li
+                            css={css`
+                              position: relative;
+                              margin-left: -10px;
+                            `}
                             key={node.frontmatter.slug}
                             data-testid="featured-article-item"
+                            initial="initial"
+                            whileHover="hover"
                           >
                             <Link
                               style={{ textDecoration: `none` }}
                               to={`/posts/${node.frontmatter.slug}/`}
                             >
-                              <Card
-                                variants={cardVariants}
-                                initial="initial"
-                                whileHover="hover"
+                              <Glow
+                                css={css`
+                                  background: ${node.frontmatter.colorFeatured};
+                                `}
+                                variants={glowVariants}
                                 transition={{
                                   ease: 'easeOut',
-                                  delay: 0.1,
-                                  duration: 0.4,
+                                  delay: 0.15,
+                                }}
+                              />
+                              <div
+                                css={css`
+                                  height: 95%;
+                                  width: 105%;
+                                  position: absolute;
+                                  border-radius: var(--border-radius-2);
+                                  top: 50%;
+                                  left: 50%;
+                                  background: var(--maximeheckel-colors-body);
+                                  transform: translateY(-50%) translateX(-50%);
+                                  filter: blur(20px);
+                                  transition: 0.5s;
+                                `}
+                              />
+                              <Card
+                                variants={cardVariants}
+                                transition={{
+                                  ease: 'easeOut',
+                                  delay: 0.15,
+                                  duration: 0.5,
                                 }}
                               >
                                 <TitleWithBackground
@@ -220,7 +314,7 @@ const IndexPage = ({ data }: Props) => {
                                 <p>{node.frontmatter.subtitle}</p>
                               </Card>
                             </Link>
-                          </li>
+                          </motion.li>
                         );
                       })}
                   </List>
@@ -294,6 +388,17 @@ const IndexPage = ({ data }: Props) => {
   );
 };
 
+const Glow = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-filter: blur(15px);
+  filter: blur(15px);
+  border-radius: border-radius: var(--border-radius-2);
+`;
+
 const Card = styled(motion.div)`
   border-radius: var(--border-radius-2);
   margin-bottom: 0px;
@@ -301,7 +406,7 @@ const Card = styled(motion.div)`
   position: relative;
   background: var(--maximeheckel-colors-foreground);
   box-shadow: var(--maximeheckel-shadow-1);
-
+  position: relative;
   padding: 36px 24px;
 
   p {
@@ -331,7 +436,7 @@ const Block = styled('div')`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding-left: 15px;
+  padding-left: 10px;
   border-radius: var(--border-radius-2);
   margin-left: -10px;
 
@@ -353,9 +458,8 @@ const Block = styled('div')`
 `;
 
 const YearBlock = styled('div')`
-  padding: 30px 15px;
+  padding: 30px 0px;
   font-weight: 600;
-  font-size: 18px;
 `;
 
 const DateBlock = styled('div')`

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
+import styled from '@emotion/styled';
 
 interface ILogoProp {
   alt: string;
