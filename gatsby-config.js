@@ -60,13 +60,6 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-google-analytics`,
-      options: {
-        trackingId: 'UA-56475503-4',
-        head: true,
-      },
-    },
-    {
       resolve: 'gatsby-plugin-sitemap',
       options: {
         query: `
