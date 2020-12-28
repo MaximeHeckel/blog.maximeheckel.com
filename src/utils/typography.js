@@ -1,8 +1,7 @@
 import Typography from 'typography';
 
 const typography = new Typography({
-  baseFontSize: '16px',
-  baseLineHeight: '28px',
+  baseFontSize: '18px',
   headerFontFamily: [
     'Inter',
     '-apple-system',
@@ -40,23 +39,20 @@ const typography = new Typography({
   overrideStyles: () => ({
     h1: {
       fontWeight: 600,
-      fontSize: '38px',
-      lineHeight: 1.666,
+      lineHeight: 1.6818,
     },
     h2: {
       fontWeight: 600,
-      fontSize: '25px',
-      lineHeight: 1.333,
+      lineHeight: 1.6818,
     },
     h3: {
-      lineHeight: 1.6,
       fontWeight: 600,
+      lineHeight: 1.6818,
     },
     h4: {
       lineHeight: 2,
     },
     p: {
-      fontSize: '18px',
       lineHeight: 1.9,
       letterSpacing: '0.3px',
       marginBottom: '2.25rem',
@@ -65,7 +61,6 @@ const typography = new Typography({
       fontFamily: 'Fira Code',
     },
     li: {
-      fontSize: '18px',
       lineHeight: 1.9,
       letterSpacing: '0.3px',
     },

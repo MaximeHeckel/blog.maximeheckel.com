@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useTheme } from 'gatsby-theme-maximeheckel/src/context/ThemeContext';
-import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
+import styled from '@emotion/styled';
 import { GraphQLClient, gql } from 'graphql-request';
 import React from 'react';
 import {
@@ -48,8 +48,8 @@ const GraphWrapper = styled('div')`
   width: 100%;
   min-height: 300px;
   height: 300px;
-  background: ${p => p.theme.colors.prism.plain.backgroundColor};
-  border-radius: 10px;
+  background: var(--maximeheckel-colors-foreground);
+  border-radius: var(--border-radius-2);
   padding: 0px 0px 10px 0px;
   overflow: hidden;
 

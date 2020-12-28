@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
+import styled from '@emotion/styled';
 
 interface ILogoProp {
   alt: string;
@@ -15,21 +15,25 @@ type LogoWrapperProps = {
 const LogoWrapper = styled('div')<LogoWrapperProps>`
   height: ${props => props.size}px;
   width: ${props => props.size}px;
-  transition: ${props => props.theme.transitionTime}s;
+  transition: 0.5s;
   & > * {
-    transition: ${props => props.theme.transitionTime}s;
+    transition: 0.5s;
   }
   svg {
     height: ${props => props.size}px;
     width: ${props => props.size}px;
     rect {
       fill: ${props =>
-        props.inverted ? props.theme.fontColor : props.theme.backgroundColor};
+        props.inverted
+          ? 'var(--maximeheckel-colors-typeface-0)'
+          : 'var(--maximeheckel-colors-body)'};
     }
 
     circle {
       fill: ${props =>
-        props.inverted ? props.theme.backgroundColor : props.theme.fontColor};
+        props.inverted
+          ? 'var(--maximeheckel-colors-body)'
+          : 'var(--maximeheckel-colors-typeface-0)'};
     }
   }
 `;

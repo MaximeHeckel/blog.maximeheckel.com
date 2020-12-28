@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
+import styled from '@emotion/styled';
 import { useTheme } from 'gatsby-theme-maximeheckel/src/context/ThemeContext';
 
 interface Props {
@@ -13,13 +13,13 @@ interface Props {
 const Wrapper = styled('div')<{ width?: number }>`
   .plyr {
     margin: 0 auto;
-    border-radius: 10px;
+    border-radius: var(--border-radius-2);
     background: unset;
     width: ${p => `${p.width}px` || '100%'};
   }
 
   .plyr__video-wrapper {
-    background: var(--maximeheckel-colors-body-1);
+    background: var(--maximeheckel-colors-emphasis);
   }
 `;
 

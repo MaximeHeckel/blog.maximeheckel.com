@@ -1,12 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
+import { css } from '@emotion/core';
 import { motion } from 'framer-motion';
 import { graphql, Link } from 'gatsby';
 import { FluidObject } from 'gatsby-image';
 import Button from 'gatsby-theme-maximeheckel/src/components/Button';
 import Seo from 'gatsby-theme-maximeheckel/src/components/Seo';
 import Layout from 'gatsby-theme-maximeheckel/src/layouts/index';
-import styled from 'gatsby-theme-maximeheckel/src/utils/styled';
+import styled from '@emotion/styled';
 import React from 'react';
+import VisuallyHidden from 'gatsby-theme-maximeheckel/src/components/VisuallyHidden';
 
 const MONTHS = [
   'Jan',
@@ -95,6 +97,58 @@ interface Props {
   };
 }
 
+const TwitterIcon = () => (
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 25 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    stroke="var(--maximeheckel-colors-typeface-2)"
+  >
+    <path
+      d="M23.8618 2.9995C22.9042 3.67497 21.8439 4.19161 20.7218 4.5295C20.1196 3.83701 19.3192 3.34619 18.4289 3.12342C17.5386 2.90066 16.6013 2.95669 15.7439 3.28395C14.8865 3.61121 14.1503 4.1939 13.6348 4.95321C13.1193 5.71253 12.8495 6.61183 12.8618 7.5295V8.5295C11.1044 8.57506 9.36309 8.18531 7.79283 7.39494C6.22256 6.60458 4.87213 5.43813 3.86182 3.9995C3.86182 3.9995 -0.138184 12.9995 8.86182 16.9995C6.80234 18.3975 4.34897 19.0984 1.86182 18.9995C10.8618 23.9995 21.7818 18.8949 21.7818 7.39494C21.7809 7.1164 21.8341 6.94309 21.7818 6.6695C22.8024 5.66299 23.5226 4.39221 23.8618 2.9995Z"
+      stroke="var(--maximeheckel-colors-brand)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const ExternalIcon = () => (
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 25 25"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    stroke="var(--maximeheckel-colors-typeface-2)"
+  >
+    <path
+      d="M18.4282 13.5736V19.5736C18.4282 20.104 18.2175 20.6127 17.8424 20.9878C17.4674 21.3629 16.9587 21.5736 16.4282 21.5736H5.42822C4.89779 21.5736 4.38908 21.3629 4.01401 20.9878C3.63894 20.6127 3.42822 20.104 3.42822 19.5736V8.57361C3.42822 8.04318 3.63894 7.53447 4.01401 7.15939C4.38908 6.78432 4.89779 6.57361 5.42822 6.57361H11.4282"
+      stroke="var(--maximeheckel-colors-brand)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M15.4282 3.57361H21.4282V9.57361"
+      stroke="var(--maximeheckel-colors-brand)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M10.4282 14.5736L21.4282 3.57361"
+      stroke="var(--maximeheckel-colors-brand)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 const WavingHand = () => (
   <motion.div
     style={{
@@ -106,9 +160,10 @@ const WavingHand = () => (
     }}
     animate={{ rotate: 20 }}
     transition={{
-      yoyo: 7,
-      from: 0,
+      repeat: 7,
+      repeatType: 'mirror',
       duration: 0.2,
+      delay: 0.5,
       ease: 'easeInOut',
       type: 'tween',
     }}
@@ -119,6 +174,25 @@ const WavingHand = () => (
 
 const IndexPage = ({ data }: Props) => {
   let year = 0;
+
+  const cardVariants = {
+    hover: {
+      scale: 1.05,
+    },
+    initial: {
+      scale: 1,
+    },
+  };
+
+  const glowVariants = {
+    hover: {
+      opacity: 0.8,
+    },
+    initial: {
+      scale: 1.05,
+      opacity: 0,
+    },
+  };
 
   return (
     <>
@@ -143,81 +217,155 @@ const IndexPage = ({ data }: Props) => {
                 title={site.siteMetadata.title}
                 banner="/main-og-image.png"
               />
-              <div style={{ marginTop: '100px', paddingBottom: '10px' }}>
+              <div
+                css={css`
+                  margin-top: 100px;
+                  padding-bottom: 10px;
+                `}
+              >
                 <br />
-                <h1 style={{ fontSize: '33px' }}>
+                <h1>
                   Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
                   <span
-                    style={{ color: 'var(--maximeheckel-colors-typeface-2)' }}
+                    css={css`
+                      color: var(--maximeheckel-colors-typeface-2);
+                    `}
                   >
                     Here, I share through my writing my experience as a frontend
                     engineer and everything I'm learning about on React,
                     Typescript, SwiftUI, Serverless, and testing.
                   </span>
                 </h1>
-                <section style={{ marginTop: '100px' }}>
+                <div
+                  css={css`
+                    display: flex;
+                    justify-content: space-between;
+                    width: 310px;
+                  `}
+                >
+                  <a
+                    href="https://maximeheckel.com"
+                    style={{ textDecoration: 'none' }}
+                    tabIndex={-1}
+                  >
+                    <Button tertiary>
+                      <span
+                        css={css`
+                          padding-right: 8px;
+                        `}
+                      >
+                        About me
+                      </span>
+                      <ExternalIcon />
+                    </Button>
+                    <VisuallyHidden as="p">
+                      Link redirects to my portfolio https://maximeheckel.com.
+                    </VisuallyHidden>
+                  </a>
+                  <a
+                    href="https://twitter.com/MaximeHeckel"
+                    style={{ textDecoration: 'none' }}
+                    tabIndex={-1}
+                  >
+                    <Button tertiary>
+                      <span
+                        css={css`
+                          padding-right: 8px;
+                        `}
+                      >
+                        {' '}
+                        @MaximeHeckel
+                      </span>
+                      <TwitterIcon />
+                    </Button>
+                    <VisuallyHidden as="p">
+                      Link redirects to my Twitter profile page
+                      https://twitter.com/MaximeHeckel.
+                    </VisuallyHidden>
+                  </a>
+                </div>
+                <section
+                  css={css`
+                    margin-top: 100px;
+                  `}
+                >
                   <h2>Featured</h2>
-                  <List data-testid="featured-list">
-                    {data.allMdx.edges.map(({ node }) => {
-                      if (!node.frontmatter.featured) {
-                        return null;
-                      }
-
-                      return (
-                        <li key={node.frontmatter.slug}>
-                          <Link
-                            style={{ textDecoration: `none` }}
-                            to={`/posts/${node.frontmatter.slug}/`}
+                  <List
+                    data-testid="featured-list"
+                    css={css`
+                      padding-top: 30px;
+                      display: grid;
+                      grid-gap: 16px;
+                    `}
+                  >
+                    {data.allMdx.edges
+                      .filter(({ node }) => node.frontmatter.featured)
+                      .map(({ node }) => {
+                        return (
+                          <motion.li
+                            css={css`
+                              position: relative;
+                              margin-left: -10px;
+                            `}
+                            key={node.frontmatter.slug}
+                            data-testid="featured-article-item"
+                            initial="initial"
+                            whileHover="hover"
                           >
-                            <FeaturedCard
-                              whileHover={{
-                                scale: 1.05,
-                              }}
-                              transition={{
-                                type: 'spring',
-                                damping: 30,
-                                stiffness: 250,
-                              }}
-                              background={node.frontmatter.colorFeatured}
-                              foreground={node.frontmatter.fontFeatured}
+                            <Link
+                              style={{ textDecoration: `none` }}
+                              to={`/posts/${node.frontmatter.slug}/`}
                             >
-                              <FeatureCardBody>
-                                <h3>{node.frontmatter.title}</h3>
-
-                                <DescriptionBlock>
-                                  {node.frontmatter.subtitle}
-                                </DescriptionBlock>
-                              </FeatureCardBody>
-                              <FeatureCardFooter>
-                                <DateBlock>
-                                  {`${
-                                    MONTHS[
-                                      new Date(node.frontmatter.date).getMonth()
-                                    ]
-                                  } ${new Date(
-                                    node.frontmatter.date
-                                  ).getDate()} ${new Date(
-                                    node.frontmatter.date
-                                  ).getFullYear()}`}
-                                </DateBlock>
-                                <div />
-                                <Link
-                                  style={{ textDecoration: `none` }}
-                                  to={`/posts/${node.frontmatter.slug}/`}
+                              <Glow
+                                css={css`
+                                  background: ${node.frontmatter.colorFeatured};
+                                `}
+                                variants={glowVariants}
+                                transition={{
+                                  ease: 'easeOut',
+                                  delay: 0.15,
+                                }}
+                              />
+                              <div
+                                css={css`
+                                  height: 95%;
+                                  width: 105%;
+                                  position: absolute;
+                                  border-radius: var(--border-radius-2);
+                                  top: 50%;
+                                  left: 50%;
+                                  background: var(--maximeheckel-colors-body);
+                                  transform: translateY(-50%) translateX(-50%);
+                                  filter: blur(20px);
+                                  transition: 0.5s;
+                                `}
+                              />
+                              <Card
+                                variants={cardVariants}
+                                transition={{
+                                  ease: 'easeOut',
+                                  delay: 0.15,
+                                  duration: 0.5,
+                                }}
+                              >
+                                <TitleWithBackground
+                                  background={node.frontmatter.colorFeatured!}
                                 >
-                                  <Button tab-index={-1} tertiary={true}>
-                                    Read
-                                  </Button>
-                                </Link>
-                              </FeatureCardFooter>
-                            </FeaturedCard>
-                          </Link>
-                        </li>
-                      );
-                    })}
+                                  {node.frontmatter.title}
+                                </TitleWithBackground>
+                                <p>{node.frontmatter.subtitle}</p>
+                              </Card>
+                            </Link>
+                          </motion.li>
+                        );
+                      })}
                   </List>
                 </section>
-                <section style={{ marginTop: '100px' }}>
+                <section
+                  css={css`
+                    margin-top: 100px;
+                  `}
+                >
                   <h2>All articles</h2>
                   <List data-testid="article-list">
                     {data.allMdx.edges
@@ -237,7 +385,6 @@ const IndexPage = ({ data }: Props) => {
 
                         return (
                           <li
-                            style={{ marginLeft: '-10px' }}
                             key={node.frontmatter.slug}
                             data-testid="article-item"
                           >
@@ -268,18 +415,12 @@ const IndexPage = ({ data }: Props) => {
                       })}
                   </List>
                 </section>
-                <BigBlock background="black">
+                <Card>
                   <h3>#BlackLivesMatter</h3>
-
-                  <DescriptionBlock>
-                    <a
-                      style={{ color: 'white' }}
-                      href="https://blacklivesmatters.carrd.co/"
-                    >
-                      Go here to find out how you can help.
-                    </a>
-                  </DescriptionBlock>
-                </BigBlock>
+                  <a href="https://blacklivesmatters.carrd.co/">
+                    Click here to find out how you can help.
+                  </a>
+                </Card>
               </div>
             </>
           );
@@ -289,111 +430,44 @@ const IndexPage = ({ data }: Props) => {
   );
 };
 
-const FeaturedCard = styled(motion.div)<{
-  background?: string;
-  foreground?: string;
-}>`
-  @media (max-width: 700px) {
-    padding: 35px 30px 0px 30px;
-  }
-
-  height: 275px;
-  background: ${p => p.background};
-  border-radius: 10px;
-  padding: 40px 40px 0px 40px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 40px;
-  margin: 40px auto;
-
-  color: ${p => p.foreground || '#ffffff'};
-
-  div {
-    color: ${p => p.foreground || '#ffffff'}!important;
-  }
-
-  button {
-    color: ${p => p.foreground || '#ffffff'};
-    transition: ${p => p.theme.transitionTime}s;
-  }
-
-  h3 {
-    color: ${p => p.foreground || '#ffffff'}!important;
-    font-weight: 600;
-  }
-
-  &:hover {
-    button {
-      color: unset;
-    }
-  }
-`;
-
-const FeatureCardBody = styled('div')`
-  @media (max-width: 700px) {
-    height: 180px;
-  }
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  height: 165px;
-`;
-
-const DescriptionBlock = styled('p')`
-  max-width: 450px;
-  height: 100%;
-  max-height: 100px;
-
-  font-size: 16px;
-  margin-bottom: 20px;
-  overflow: hidden;
-  text-wrap: pre-wrap;
-`;
-
-const FeatureCardFooter = styled('div')`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-`;
-
-const BigBlock = styled(motion.div)<{ color?: string; background?: string }>`
-  @media (max-width: 700px) {
-    min-height: 150px;
-    height: unset;
-    padding: 40px 30px;
-  }
-
-  &:hover {
-    button {
-      color: unset;
-    }
-  }
-
-  position: relative;
+const Glow = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  min-height: 300px;
-  height: 300px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 40px;
-  padding: 80px 60px;
-  background: ${p => p.background};
-  border-radius: 10px;
+  height: 100%;
+  -webkit-filter: blur(15px);
+  filter: blur(15px);
+  border-radius: border-radius: var(--border-radius-2);
+`;
 
+const Card = styled(motion.div)`
+  border-radius: var(--border-radius-2);
+  margin-bottom: 0px;
   overflow: hidden;
-  color: ${p => p.color || '#ffffff'};
+  position: relative;
+  background: var(--maximeheckel-colors-foreground);
+  box-shadow: var(--maximeheckel-shadow-1);
+  position: relative;
+  padding: 36px 24px;
 
-  div {
-    color: ${p => p.color || '#ffffff'}!important;
+  p {
+    color: var(--maximeheckel-colors-typeface-1);
+    margin-top: 1em;
   }
+`;
 
-  button {
-    color: ${p => p.color || '#ffffff'};
-    transition: ${p => p.theme.transitionTime}s;
-  }
-
-  h3 {
-    color: ${p => p.color || '#ffffff'}!important;
-    font-weight: 600;
-  }
+const TitleWithBackground = styled('h2')<{ background: string }>`
+  color: var(--maximeheckel-colors-typeface-0);
+  margin-bottom: 0px !important;
+  letter-spacing: -0.02em;
+  margin-block-end: 0px;
+  background: ${p => p.background};
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
 `;
 
 const Block = styled('div')`
@@ -404,42 +478,41 @@ const Block = styled('div')`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding-left: 15px;
-  border-radius: 6px;
+  padding-left: 10px;
+  border-radius: var(--border-radius-2);
+  margin-left: -10px;
 
   height: 60px;
   box-shadow: none;
 
-  color: ${p => p.theme.fontColor};
-  transition ${p => p.theme.transitionTime / 4}s;
+  color: var(--maximeheckel-colors-typeface-0);
+  transition: background-color 0.25s, box-shadow 0.25s, color 0.25s;
 
   div:first-of-type {
     margin-right: 40px;
   }
 
   &:hover {
-    background-color: ${p => p.theme.foregroundColor};
-    box-shadow: ${p => p.theme.boxShadow};
-    color: ${p => p.theme.colors.blue};
+    background-color: var(--maximeheckel-colors-foreground);
+    box-shadow: var(--maximeheckel-shadow-1);
+    color: var(--maximeheckel-colors-brand);
   }
 `;
 
 const YearBlock = styled('div')`
-  padding: 30px 15px;
+  padding: 30px 0px;
   font-weight: 600;
-  font-size: 18px;
 `;
 
 const DateBlock = styled('div')`
   font-size: 14px;
   font-weight: 500;
-  color: ${p => p.theme.colors.gray};
+  color: var(--maximeheckel-colors-typeface-2);
   min-width: 50px;
 `;
 
 const TitleBlock = styled('div')`
   font-weight: 500;
-  transition ${p => p.theme.transitionTime / 2}s;
 `;
 
 const List = styled('ul')`
@@ -450,7 +523,7 @@ const List = styled('ul')`
   }
 
   h3 {
-    color: ${p => p.theme.fontColor};
+    color: var(--maximeheckel-colors-typeface-0);
     margin-bottom: 10px;
   }
 `;

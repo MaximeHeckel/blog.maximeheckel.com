@@ -350,7 +350,7 @@ const DockerBuild = () => {
               style={{
                 marginTop: '-90px',
                 marginLeft: '-150px',
-                background: `linear-gradient(315deg, #fde7f9 0%, #aacaef 74%)`,
+                background: `linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)`,
               }}
             />
           </IsometricWrapper>

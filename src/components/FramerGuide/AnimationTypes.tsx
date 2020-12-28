@@ -130,8 +130,7 @@ const AnimationTypes = () => {
               <motion.div
                 key={countSpring}
                 style={{
-                  background:
-                    'linear-gradient(315deg, #fde7f9 0%, #aacaef 74%)',
+                  background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
                   height: '100px',
                   width: '100px',
                   borderRadius: '10px',
@@ -202,8 +201,7 @@ const AnimationTypes = () => {
               <motion.div
                 key={tweenAnimation}
                 style={{
-                  background:
-                    'linear-gradient(315deg, #fde7f9 0%, #aacaef 74%)',
+                  background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
                   height: '100px',
                   width: '100px',
                   borderRadius: '10px',
@@ -270,8 +268,7 @@ const AnimationTypes = () => {
               <motion.div
                 key={countInertia}
                 style={{
-                  background:
-                    'linear-gradient(315deg, #fde7f9 0%, #aacaef 74%)',
+                  background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
                   height: '100px',
                   width: '100px',
                   borderRadius: '10px',

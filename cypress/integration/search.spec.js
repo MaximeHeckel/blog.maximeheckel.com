@@ -6,7 +6,7 @@ describe('Search tests', () => {
     cy.get('input').clear();
     cy.get('[data-testid="searchbox-overlay"]').should('be.visible');
     cy.get('[data-testid="searchbox"]').should('be.visible');
-    cy.get('[data-testid="link"]').should('have.length', 3);
+    cy.get('[data-testid="link"]').should('have.length', 4);
     cy.get('[data-testid="shortcut"]').should('have.length', 2);
   });
 
