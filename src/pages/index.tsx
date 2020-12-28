@@ -116,6 +116,39 @@ const TwitterIcon = () => (
   </svg>
 );
 
+const ExternalIcon = () => (
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 25 25"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    stroke="var(--maximeheckel-colors-typeface-2)"
+  >
+    <path
+      d="M18.4282 13.5736V19.5736C18.4282 20.104 18.2175 20.6127 17.8424 20.9878C17.4674 21.3629 16.9587 21.5736 16.4282 21.5736H5.42822C4.89779 21.5736 4.38908 21.3629 4.01401 20.9878C3.63894 20.6127 3.42822 20.104 3.42822 19.5736V8.57361C3.42822 8.04318 3.63894 7.53447 4.01401 7.15939C4.38908 6.78432 4.89779 6.57361 5.42822 6.57361H11.4282"
+      stroke="var(--maximeheckel-colors-brand)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M15.4282 3.57361H21.4282V9.57361"
+      stroke="var(--maximeheckel-colors-brand)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M10.4282 14.5736L21.4282 3.57361"
+      stroke="var(--maximeheckel-colors-brand)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 const WavingHand = () => (
   <motion.div
     style={{
@@ -127,8 +160,8 @@ const WavingHand = () => (
     }}
     animate={{ rotate: 20 }}
     transition={{
-      yoyo: 7,
-      from: 0,
+      repeat: 7,
+      repeatType: 'mirror',
       duration: 0.2,
       delay: 0.5,
       ease: 'easeInOut',
@@ -207,7 +240,7 @@ const IndexPage = ({ data }: Props) => {
                   css={css`
                     display: flex;
                     justify-content: space-between;
-                    width: 300px;
+                    width: 310px;
                   `}
                 >
                   <a
@@ -215,7 +248,16 @@ const IndexPage = ({ data }: Props) => {
                     style={{ textDecoration: 'none' }}
                     tabIndex={-1}
                   >
-                    <Button tertiary>About me</Button>
+                    <Button tertiary>
+                      <span
+                        css={css`
+                          padding-right: 8px;
+                        `}
+                      >
+                        About me
+                      </span>
+                      <ExternalIcon />
+                    </Button>
                     <VisuallyHidden as="p">
                       Link redirects to my portfolio https://maximeheckel.com.
                     </VisuallyHidden>
@@ -226,15 +268,15 @@ const IndexPage = ({ data }: Props) => {
                     tabIndex={-1}
                   >
                     <Button tertiary>
-                      <TwitterIcon />
                       <span
                         css={css`
-                          padding-left: 4px;
+                          padding-right: 8px;
                         `}
                       >
                         {' '}
                         @MaximeHeckel
                       </span>
+                      <TwitterIcon />
                     </Button>
                     <VisuallyHidden as="p">
                       Link redirects to my Twitter profile page
