@@ -42,7 +42,7 @@
     "gatsby-plugin-typescript": "^2.2.2",
     "gatsby-remark-sectionize": "^1.0.0",
     "gatsby-source-filesystem": "^2.1.9",
-    "gatsby-theme-maximeheckel": "1.1.0",
+    "gatsby-theme-maximeheckel": "1.1.1",
     "graphql-request": "3.3.0",
     "prop-types": "^15.7.2",
     "react": "16.13.0",
