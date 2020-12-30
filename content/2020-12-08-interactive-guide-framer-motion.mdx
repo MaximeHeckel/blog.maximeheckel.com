@@ -841,11 +841,6 @@ const Example = () => {
   const item = {
     visible: { opacity: 1, x: 0 },
     hidden: { opacity: 0, x: -10 },
-    hover: {
-      // scale: 1.2,
-      marginRight: "5px",
-      transition: { ease: "easeOut" },
-    },
   };
 
   return (
@@ -872,7 +867,11 @@ const Example = () => {
           key={reply.id}
           data-testid={reply.id}
           variants={item}
-          whileHover="hover"
+          whileHover={{
+            // scale: 1.2,
+            marginRight: "5px",
+            transition: { ease: "easeOut" },
+          }}
         >
           <div
             style={{

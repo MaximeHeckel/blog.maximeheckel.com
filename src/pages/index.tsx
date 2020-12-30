@@ -212,7 +212,7 @@ const IndexPage = ({ data }: Props) => {
         }) => {
           const { site } = layoutProps;
           return (
-            <>
+            <main>
               <Seo
                 title={site.siteMetadata.title}
                 banner="/main-og-image.png"
@@ -322,8 +322,10 @@ const IndexPage = ({ data }: Props) => {
                                 `}
                                 variants={glowVariants}
                                 transition={{
+                                  type: 'tween',
                                   ease: 'easeOut',
-                                  delay: 0.15,
+                                  // delay: 0.15,
+                                  duration: 0.4,
                                 }}
                               />
                               <div
@@ -343,9 +345,10 @@ const IndexPage = ({ data }: Props) => {
                               <Card
                                 variants={cardVariants}
                                 transition={{
+                                  type: 'tween',
                                   ease: 'easeOut',
-                                  delay: 0.15,
-                                  duration: 0.5,
+                                  // delay: 0.15,
+                                  duration: 0.4,
                                 }}
                               >
                                 <TitleWithBackground
@@ -422,7 +425,7 @@ const IndexPage = ({ data }: Props) => {
                   </a>
                 </Card>
               </div>
-            </>
+            </main>
           );
         }}
       </Layout>
