@@ -1,0 +1,162 @@
+---
+title: Learning in public
+subtitle: Here's an up to date list of what I'm currently learning and what I plan to learn.
+date: '2020-04-21T08:00:00.000Z'
+categories: []
+keywords: []
+slug: learning-in-public
+cover: '/static/images/beatriz-perez-moya-XN4T2PVUUgk-unsplash.jpg'
+type: 'blogPost'
+featured: false
+colorFeatured: '#F8F9FD'
+fontFeatured: '#000000'
+---
+
+## Introduction
+
+As software engineers, we're in a constant state of learning and actualizing our knowledge and skillsets. This is part of the job, and it's a vital one as it helps to keep ourselves relevant in an ever-changing industry.
+The amount of knowledge I've accumulated over the years gives me sometimes little vertigo, but that's nothing compared to what lies ahead of me and what remains to be learned.
+
+I've felt very inspired by [@swyx](https://twitter.com/swyx)'s concept of learning in public. His [blog post](https://www.swyx.io/writing/learn-in-public/) "Learn In Public: The fastest way to learn" deep dives into the idea of sharing as much as possible what we're working on, what we learn, to become more than just lurker or content consumer and "to have a habit of creating learning exhaust".
+
+I've been producing content for the past 2 years now on this blog, sharing some bits of knowledge here and there, but I want to scale that a bit more.
+
+>  "open-source knowledge can scale just like open-source code"
+    — [@swyx](https://twitter.com/swyx/status/1247558714103496705)
+
+This blog post aims to be an updated list of what I've learned, what I'm currently learning, my sources and perhaps even some personal blog posts.
+I'll divide it into multiple categories, with a checklist and I'll tackle these items at my own pace. Maybe some of these items will pique my interest for just a few days and then give up on them because my priorities have changed or because something more interesting came along the way. But rest assured that I'll do my best to keep this as up to date and focused as possible.
+
+## How I plan to share what I learn
+
+I identified three different ways to share what I learn. I called them relaying content, mix and match content, new content. This is how I would define them:
+
+- **relaying content**: I read about something and write about this same subject with my own words. I'm not talking about copy-pasting here but rather about adding your touch to that subject. Otherwise I'll simply share my sources for a given subject. 
+- **mix and match content**: when learning about a concept, I might get inspired to try to write my take on this concept in a different context or using a different programming language or paradigm. An example of mixing and matching content I found was all these reimplementations of existing React patterns with the new React hooks back in 2019.
+- **new content**: I built something new and want to share it, I found a solution to a problem only I had or I'm sharing my own experience on some very specific subject.
+
+
+## My list
+
+Here's the list of what I'm **currently focused on learning including what I've already learned in the last few months**:
+
+<Callout variant="info">
+
+**Note**:
+
+Some items are still in progress, I'll make sure to add the resources I've used in the meantime until I decide whether a subject is worth writing or not.
+
+</Callout>
+
+**Serverless**
+- Basic serverless concepts <Pill color="#34C559" text="Done"/>
+- Deploy cloud functions on AWS Lambda <Pill color="#34C559" text="Done"/>
+- Use the serverless framework <Pill color="#34C559" text="Done"/>
+- Deploy some cloud functions with an API gateway <Pill color="#34C559" text="Done"/> 
+
+For these so far I've maily focused on the Serverless Framework's [Serverless for frontend developer's class](https://serverless.com/learn/courses/serverless-for-frontend-developers/) as well as [The Serverless Handbook](https://serverlesshandbook.dev/) from [@Swizec](https://twitter.com/Swizec).
+I only used the Serverless framework when learning, I prefered using [Vercel](https://vercel.com) which was, in my opinion, the easiest to use (I still have to checkout how to host serverless functions in Netlify, I'm pretty convinced the UX/DX is similar than on Vercel).
+
+It took me a while to find a use case for a serverless function, but I ended up finding one: **Generating screenshot from code snippets**. I wrote about it here in [this post](/posts/creating-beautiful-screenshots-source-code-with-serverless-function).
+
+- Deploy a server-side rendered React site with the serverless framework
+- Serverless GraphQL
+
+<br/>
+
+**NextJs**
+
+I'm late to the party on this one 😅
+
+- Basic concepts: [Introduction to Next.js 9](https://egghead.io/playlists/introduction-to-next-js-9-9c01) <Pill color="#34C559" text="Done"/>
+- Build a sample app that leverages server-side rendering
+- Dissect and try to understand all the concepts and mechanisms that [SWR](https://swr.now.sh/) provides.
+- Server-side rendering vs static site generation vs client-side rendering <Pill color="#34C559" text="Done"/>
+
+<br/>
+
+**Automate all the things**
+
+I've been focusing on this one since beginning of February 2020:
+
+- Writing my own Github action <Pill color="#34C559" text="Done"/>
+- Automating releases <Pill color="#34C559" text="Done"/>
+- Automated CI/CD <Pill color="#34C559" text="Done"/>
+- Get started with Semantic Release <Pill color="#34C559" text="Done"/>
+- Writing my own Semantic Release plugin <Pill color="#34C559" text="Done"/>
+- Setting up a High-Velocity Development environment for my team <Pill color="#34C559" text="Done"/>
+- Building my own preview deployment service <Pill color="#34C559" text="Done"/>
+
+I wrote [The little guide to CI/CD for frontend developers](/posts/guide-to-cicd-for-frontend-developers/) that contains everything I've learned when it comes to testing, automation, better release processes, deployments and overall anything that makes a team work faster!
+
+<br/>
+
+**Authentication**
+- Learn more about JWT Tokens
+- Implement my own authentication service and deploy it
+
+<br/>
+
+**Typescript**
+- Extend the Typescript compiler ([docs](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API))
+
+<br/>
+
+**JAMStack**
+- Gatsby Theme authoring <Pill color="#34C559" text="Done"/>
+
+I've been maintaining [my own Gatsby theme](https://github.com/MaximeHeckel/gatsby-theme-maximeheckel) for several months now and I'll probably write about it at some point. In the meantime if you're curious you can take a look at my theme's Github repository.
+
+- Everything I've learned (the hard way) when dealing with SEO and Gatsby <Pill color="#34C559" text="Done"/>
+
+I wrote [SEO mistakes I've made and how I fixed them](/posts/seo-mistakes-i-have-made-and-how-i-fixed-them/) that highlights the biggest mistakes I've made with my blog when it comes to SEO and the solution I brought to this problem. This post got a lot of feedback and somehow got ranked number 1 on Hacker News (see related [Twitter thread](https://twitter.com/MaximeHeckel/status/1316409998327664640)).
+
+<br/>
+
+**Framer**
+
+I've always loved beautiful transitions/animations and wanted to get into using the tool that Framer built for a while
+
+- Do more reading about how to build meaningful transition and animation
+- Convert some components from css transitions/animations to [Framer Motion](https://www.framer.com/motion/) <Pill color="#34C559" text="Done"/>
+- Demistify spring animations <Pill color="#34C559" text="Done"/>
+
+I dedicated an entire blog post for this one: [The physics behind spring animations](/posts/the-physics-behind-spring-animations).
+
+- Use Framer Web and try to build something cool with it 🤘
+
+<br/>
+
+**Design System**
+- What are the good practices to build a scalable and user friendly Design System, and Design System Component
+
+For this item I also want to write about what I learned and the mistakes I've made putting together a Design System, and Design System Component Library at Docker.
+
+<br/>
+
+**SwiftUI**
+- Getting started with SwiftUI development <Pill color="#34C559" text="Done"/>
+- Learn how to build beautiful apps (animation, custom SwiftUI views and components) <Pill color="#FF9502" text="In Progress"/>
+I've never done native mobile development before but I've always been attracted to it. With the release of SwiftUI, I believe the timing is perfect to finally dive into iOS development again.
+My main two resources I'd recommend for anyone willing to learn are: [designcode.io](https://designcode.io/swiftui?promo=learnswiftui) and [Hacking With Swift](https://www.hackingwithswift.com/). Both these courses are extremely helpful and teach you everything you know to build iOS and macOS app.
+
+- Comparing SwitftUI to React development <Pill color="#34C559" text="Done"/>
+
+I wrote [Going native: SwiftUI from the perspective of a React developer](/posts/swiftui-as-react-developer/) to analyze some of the common design patterns between SwiftUI and React. I also plan to write another article that will focus exclusively on state management patterns which also share quite a few things in common with React. I hope these post will help some React developers to feel more comfortable with SwiftUI.
+
+- Rebuilding an existing application
+
+I think this will be the best way for me to cement all the knowledge acquired regarding SwiftUI development. I think I'll start with rebuilding the app [Calmaria](https://calmaria.app/) which I like a lot! It's simple and elegant and I believe that after a few SwiftUI classes I should be able to rebuild a very similar app.
+
+- Building my own iOS app from scratch <Pill color="#FF9502" text="In Progress"/>
+
+If you follow me on [Twitter](https://twitter.com/MaximeHeckel) you'll be able to find some screen recordings a couple of times a week of my progress building my first app 🤘.
+
+- Building a cross platform iOS/iPadOS/macOS app
+
+<hr/>
+
+**Other learning in public inspirations**:
+
+- [https://www.swyx.io/writing/learn-in-public/](https://www.swyx.io/writing/learn-in-public/)
+- [https://duncanleung.com/learn/](https://duncanleung.com/learn/)

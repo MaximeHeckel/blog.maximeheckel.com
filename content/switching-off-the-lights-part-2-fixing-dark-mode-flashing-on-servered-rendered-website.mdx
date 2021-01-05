@@ -1,0 +1,238 @@
+---
+title: Fixing the "dark mode flash" issue on server rendered websites
+subtitle: >-
+  Bringing a proper solution to dark mode flashing without an ugly hack.
+date: '2020-04-16T08:00:00.000Z'
+categories: []
+keywords: ['react', 'dark mode', 'server rendered', 'gatsby', 'css custom properties', 'theme']
+slug: switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website
+type: 'blogPost'
+featured: false
+colorFeatured: 'rgb(22, 23, 28)'
+fontFeatured: '#FFFFFF'
+---
+
+This blog post is a follow up to [Switching off the lights - Adding dark mode to your React app](https://blog.maximeheckel.com/posts/switching-off-the-lights-adding-dark-mode-to-your-react-app-with-context-and-hooks-f41da6e07269) that I wrote a year ago. I finally took the time to fix my implementation which caused a lot of issues on server rendered websites and I wanted to share my solution with you.
+
+## An ugly hack
+
+When I first added dark mode on my Gatsby projects, I encountered what you might know as the "Dark mode flashing" issue. The colors of the light mode would show up for a brief moment when refreshing a webpage.
+
+![Gif showcasing the dark mode flash issue on this blog.](/static/images/dark-mode-flash.gif)
+
+Why does this issue show up? [@JoshWComeau](https://twitter.com/JoshWComeau) explains the reason behind this issue pretty well on his blog post [CSS Variables for React Devs](https://joshwcomeau.com/css/css-variables-for-react-devs/#dark-mode-flash-fix):
+
+> "Dark Mode" is surprisingly tricky, especially in a server-rendered context (like with Gatsby or Next.js). The problem is that the HTML is generated long before it reaches the user's device, so there's no way to know which color theme the user prefers.
+
+To avoid this issue back when implementing it for the first time I did what I'd call an "ugly hack". I'd  avoid rendering the whole website until the theme to render was known, and in the meantime, I'd just render a simple `<div/>`:
+
+```js title=Code snippet from my first dark mode article featuring the ugly hack to avoid "dark mode flash"
+  if (!themeState.hasThemeLoaded) {
+    /*
+      If the theme is not yet loaded we don't want to render
+      this is just a workaround to avoid having the app rendering
+      in light mode by default and then switch to dark mode while
+      getting the theme state from localStorage
+    */
+    return <div />;
+  }
+  const theme = themeState.dark ? theme('dark') : theme('light');
+```
+
+This ugly hack caused me some of the most frustrating problems I've had in a while, one of them even took me several days to figure out:
+
+<Tweet tweetLink="MaximeHeckel/status/1163877803583868928" />
+
+(Again thank you [@chrisbiscardi](https://twitter.com/chrisbiscardi) for taking the time to help me debug this)
+
+I then brought another solution to this problem: add a `display: hidden` CSS style to the main wrapper until the theme was loaded [as featured in this blog post](https://brianlovin.com/overthought/adding-dark-mode-with-next-js). It fixed my SEO issues, but I was still not satisfied with this fix.
+
+After reading Josh Comeau's blog post on using CSS variables along with  Emotion Styled Components, I decided to leverage these to fix the dark mode flashing issue once and for all (no hack this time!).
+
+## Using CSS variables in my themes
+
+Originally I had my theme set to an object looking roughly like the following:
+
+
+```js title=Original version of a theme including light and dark mode colors
+const theme = {
+  light: {
+    background: #F8F8F9,
+    body: #161617,
+  },
+  dark: {
+    background: #161617,
+    body: #FFFFFF,
+  },
+};
+```
+
+The cool thing I've learned recently is that it's possible to convert the hardcoded hex values to use [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*) in a theme object that is passed to the Emotion Theme Provider.
+
+The first thing to do add these CSS variables in a [Emotion Global component](https://emotion.sh/docs/globals):
+
+```js {8-9,13-14} title=Emotion global component with CSS Custom properties
+
+import { css, Global } from '@emotion/core';
+import React from 'react';
+
+const GlobalStyles = () => (
+  <Global
+    styles={css`
+      .theme-light {
+        --theme-colors-gray: #F8F8F9;
+        --theme-colors-black: #161617;
+      }
+
+      .theme-dark {
+        --theme-colors-black: #161617;
+        --theme-colors-white: #FFFFFF;
+      }
+    `}
+  />
+);
+
+export default GlobalStyles;
+```
+
+Then, replace the hex values in the themes with the corresponding CSS variable names:
+
+```js title=Updated version of the theme object using CSS Custom Properties
+
+const theme = {
+  light: {
+    background: var(--theme-colors-gray, #F8F8F9),
+    body: var(--theme-colors-black, #161617),
+  },
+  dark: {
+    background: var(--theme-colors-black, #161617),
+    body: var(--theme-colors-white, #FFFFFF),
+  },
+};
+
+```
+
+Everything should remain pretty much the same, we've simply moved some hex values around and put them in CSS variables under their respective CSS class mode `theme-light` and `theme-dark`. Now let's see how this can be leveraged with some good old inline Javascript in a HTML script tag.
+
+## Injecting a script
+
+Server rendered websites like Gatbsy let us customize the `html.js` file. This gives us the possibility to inject a script that will set the proper theme based on the value present in local storage.
+
+If not already available in the `src` folder the `html.js` can be copied from the `.cache` folder of your Gatsby project:
+
+```bash
+cp .cache/default-html.js src/html.js
+```
+<Callout variant="info">
+
+Note: you can read more about custom `html.js` in the [Gatsby documentation](https://www.gatsbyjs.org/docs/custom-html/)
+
+</Callout>
+
+<Callout variant="info">
+
+**For NextJS users: **
+
+~~I'll try to take some time to investigate and update this post with a solution for NextJS.~~
+
+Shout out to [@_aquaductape_](https://twitter.com/_aquaductape_) for writing a follow up implementation to fix this same issue on NextJS projects. You can check out the code [here](https://github.com/zeit/next.js/discussions/12533)!
+
+</Callout>
+
+The following will have to be added to this file:
+
+```js title=Javascript script that reads the local storage item with the key 'mode' to load the proper theme
+
+  (function() {
+    try {
+      var mode = localStorage.getItem('mode');
+      var supportDarkMode =
+        window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+      if (!mode && supportDarkMode)
+        document.body.classList.add('theme-dark');
+      if (!mode) return;
+      document.body.classList.add('theme-' + mode);
+    } catch (e) {}
+  })();
+
+```
+
+This script does the following:
+
+1. It looks for a local storage item with a key named `mode`
+2. It looks for the `prefers-color-scheme` CSS media query, here we look whether its set to dark, which translates to the user loading the website having a system using dark mode.
+3. If there's no mode set in local storage but the user's system uses dark mode, we add a class `theme-dark` do the body of the main document.
+4. If there's simply no mode set in local storage we don't do anything, which will end up loading the default theme of our UI
+5. Otherwise, we add the class associated with the mode set in local storage to the body of the document
+
+
+We can add the script to the `html.js` file inside the `<body>` tag as follows:
+
+```html {3-18} title=html.js file featuring our custom script
+...
+<body {...props.bodyAttributes}>
+        <script
+          key="maximeheckel-theme"
+          dangerouslySetInnerHTML={{
+            __html: `(function() {
+			    try {
+			      var mode = localStorage.getItem('mode');
+			      var supportDarkMode =
+			        window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+			      if (!mode && supportDarkMode)
+			        document.body.classList.add('theme-dark');
+			      if (!mode) return;
+			      document.body.classList.add('theme-' + mode);
+			    } catch (e) {}
+			  })();`,
+          }}
+        />
+        {props.preBodyComponents}
+        <div
+          key={`body`}
+          id="___gatsby"
+          dangerouslySetInnerHTML={{ __html: props.body }}
+        />
+        {props.postBodyComponents}
+      </body>
+      ...
+```
+
+## Updating the toggle function
+
+There's one last update to be done: updating the toggle light/dark mode function. We need to add a few lines of code to make sure we add or remove the appropriate CSS class from the body tag, otherwise the colors of our themes will be a bit messed up 😅.
+
+In the example featured in the [first blog post](https://blog.maximeheckel.com/posts/switching-off-the-lights-adding-dark-mode-to-your-react-app-with-context-and-hooks-f41da6e07269#theme-provider) this is what the function looked like:
+
+```js title=Original function to toggle between light and dark mode
+
+const toggle = () => {
+  const dark = !themeState.dark;
+  localStorage.setItem('dark', JSON.stringify(dark));
+  setThemeState({ ...themeState, dark });
+};
+
+```
+
+And this is what we need to add to make it work properly again:
+
+```js title=Updated function to toggle between light and dark mode
+
+const toggle = () => {
+  const dark = !themeState.dark;
+  if(dark) {
+	document.body.classList.remove('theme-light');
+	document.body.classList.add('theme-dark');
+  } else {
+  	document.body.classList.remove('theme-dark');
+	document.body.classList.add('theme-light');
+  }
+  localStorage.setItem('dark', JSON.stringify(dark));
+  setThemeState({ ...themeState, dark });
+};
+
+```
+
+## Result
+
+By adding the code featured in the previous parts, we allow the Javascript related to getting the proper theme to be executed before we start rendering the React code. The appropriate class name to the body tag is going to be set immediately which will allow out CSS variables to be set to the proper variables. Then, for the brief moment when our "flash" issue previously occurred, the theme being used does not matter, as the colors are solely based on the CSS variables 🎉! This is what makes the flash disappear under the hood.

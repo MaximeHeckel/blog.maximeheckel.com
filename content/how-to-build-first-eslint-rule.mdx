@@ -1,0 +1,370 @@
+---
+title: 'How I built my first custom ESLint rule'
+subtitle: A guide to get started with AST (Abstract Syntax Tree) and custom built ESLint plugins
+date: '2019-11-19T14:01:01.595Z'
+categories: []
+keywords:
+  ['eslint', 'rule', 'testing', 'AST', 'javascript', 'ui', 'linting', 'syntax']
+slug: how-to-build-first-eslint-rule
+cover: '/static/images/tim-gouw-_U-x3_FYxfI-unsplash.jpg'
+type: 'blogPost'
+featured: false
+colorFeatured: '#222838'
+fontFeatured: '#FFFFFF'
+---
+
+When I work with React or more generally with Javascript, I always use ESLint for linting. Although I've been very familiar with how to use and configure this tool, I've never actually written a custom ESLint rule from scratch until recently. At first, it sounded like a daunting task, but it ended up teaching me quite a few things. This is what this article is about: how I built this specific rule and how I learned about "Abstract Syntax Tree". Let's dive in together!
+
+---
+
+## A simple rule
+
+The rule I had to implement stated the following: when using the validate method from the [yup](https://github.com/jquense/yup) package, we want `yup.validateSync()` to be preceeded by `CHECK &&`; hence the following snippets will show an error
+
+```javascript
+yup.validateSync();
+```
+
+```javascript
+yup.validateSync() && CHECK;
+```
+
+and the next code snippets are valid:
+
+```javascript
+CHECK && yup.validateSync();
+```
+
+```javascript
+CHECK && yup.validateSync() && SOMETHINGELSE;
+```
+
+## Setting up our ESLint plugin
+
+To create our custom ESLint rule, we'll need to build a ESLint plugin. Creating a ESLint plugin is similar to creating any other NPM project, except that the name of the package needs to start with `eslint-plugin-`.
+Let's create our new project from scratch and install ESLint as a dev dependency:
+
+```bash title=Commands to initialize our ESLint plugin
+mkdir eslint-plugin-custom
+
+cd eslint-plugin-custom
+
+yarn init
+
+yarn install -D eslint
+```
+
+When it comes to organizing the different files and folder of the project, ESLint has a standard way of doing so. For this post, we can follow what is adivised in the [official documentation](https://eslint.org/docs/developer-guide) about working with rules, so we'll create a file called `check-before-type-validation.js` where we will implement our rule.
+
+## How to implement our rule
+
+A ESLint rule contains 2 main parts:
+
+- `meta`: an object where we will specify the usage of our rule.
+- `create`: a function that will return an object with all the methods that ESLint will use to parse our statement. Each method returned is an AST node.
+
+### What is an AST (Abstract Syntax Tree)
+
+You might have seen or heard about ASTs in the past but here's a definition just in case:
+
+> an AST is simplified and condensed tree representation of the structure of source code written in a given programming language. It is "abstract" as it does not represent every detail appearing in the real syntax but just the content or structural details.
+
+To build the ESLint rule, we need to get the represention of the expression `CHECK && yup.validateSync();` in a AST and let the `create` function return an error everytime the tree for the given expression does not match the valid tree. To find the AST representation of our expression you can use [AST Explorer](https://astexplorer.net), which was very helpful for me.
+
+However, before doing all that, let's start by addressing the `meta` section of our rule.
+
+### Meta
+
+Let's start by adding the basic structure of our rule and the meta to `check-before-type-validation.js`
+
+```javascript {2,4-6,10} title=Basic structure of our ESLint rule
+module.exports = {
+  'type-check-before-yup': {
+    meta: {
+      docs: {
+        description: '"yup.validateSync()" needs to be preceded by “CHECK &&”',
+      },
+      schema: [], // no options
+      messages: {
+        unexpected:
+          '"yup.validateSync()" is found but is not preceded "CHECK &&"',
+      },
+    },
+    create: function(context) {
+      return {
+        // AST goes here
+        // see next part
+      };
+    },
+  },
+};
+```
+
+We can see above that we've added 2 important fields: messages and docs. The string under `messages.unexpected` is the message that will be displayed when the rule will fail. The one under `docs.description` provides a short description of the rule which can be display by some text editors like VSCode.
+
+### Create
+
+For this part, let's first go to AST explorer and write our statement to see how it translates into AST. By entering `CHECK && yup.validateSync()` we should get the following output:
+
+```json title=AST representation of our expression
+{
+  "type": "Program",
+  "start": 0,
+  "end": 27,
+  "body": [
+    {
+      "type": "ExpressionStatement",
+      "start": 0,
+      "end": 27,
+      "expression": {
+        "type": "LogicalExpression",
+        "start": 0,
+        "end": 27,
+        "left": {
+          "type": "Identifier",
+          "start": 0,
+          "end": 5,
+          "name": "CHECK"
+        },
+        "operator": "&&",
+        "right": {
+          "type": "CallExpression",
+          "start": 9,
+          "end": 27,
+          "callee": {
+            "type": "MemberExpression",
+            "start": 9,
+            "end": 25,
+            "object": {
+              "type": "Identifier",
+              "start": 9,
+              "end": 12,
+              "name": "yup"
+            },
+            "property": {
+              "type": "Identifier",
+              "start": 13,
+              "end": 25,
+              "name": "validateSync"
+            },
+            "computed": false
+          },
+          "arguments": []
+        }
+      }
+    }
+  ],
+  "sourceType": "module"
+}
+```
+<Callout variant="info">
+
+Note: You can check the resulting tree yourself [here](https://astexplorer.net/#/gist/dc0def03c26658b1bfa5d8743f9a9f91/058b77edfa0710fd3a697cc85c2513fee191ee7d).
+
+</Callout>
+
+To write our rule, we can start by highlighting `yup.validateSync()`. We see from the AST tree that this expression is a `CallExpression`:
+
+![Here we're highlighting the yup.validateSync() expression to see its AST equivalent](/static/images/ast-explorer.png)
+
+We'll first need ESLint to find that specific node with the object name `yup` and a property name `validateSync` in a `CallExpression`. If found, we can check one of the parents of that node to see if `CHECK &&` is present. Hence, we can start by writing the following code:
+
+```javascript {7-12} title=Writing the rule (step 1)
+
+create: function(context) {
+  return {
+    // Rule methods - AST Node Type
+    CallExpression: function(node) {
+      const callee = node.callee;
+      // this will return the properties of the current CallExpression:
+      if (
+        callee.object &&
+        callee.object.name === 'yup' &&
+        callee.property &&
+        callee.property.name === 'validateSync'
+      ) {
+      	 // check one of the parents to see if "CHECK &&" is present
+      }
+    }
+  }
+}
+
+```
+
+The next part of the AST tree that we're looking for is a `LogicalExpression`. We can see from the screenshot above that it's present 2 levels up the tree. We can deduct from this that if this parent were not to be a `LogicalExpression`, our ESLint rule should report an error. We can then continue writing our code snippet above by adding the following:
+
+```javascript {15} title=Writing the rule (step 2)
+if (
+  callee.object &&
+  callee.object.name === 'yup' &&
+  callee.property &&
+  callee.property.name === 'validateSync'
+) {
+  // check one of the parents to see if "CHECK &&" is present
+
+  const calleeLogicalExpression = callee.parent.parent;
+
+  if (calleeLogicalExpression.type !== 'LogicalExpression') {
+    // if that "grand parent" expression is not of type 'LogicalExpression' (meaning there's no logical operator || or &&)
+    // or that the left part of that expression is not CHECK (the right part being yup.validateSync)
+    // then we report this case as a lint error
+    context.report({ node, messageId: 'unexpected' });
+  }
+}
+```
+
+As you can see above, in order to have ESLint reporting the error, we need to call the `context.report` function. We pass the messageId that we specified in the meta of our rule instead of typing the full message as it is advised in the [ESLint documentation](https://eslint.org/docs/developer-guide/working-with-rules#messageids).
+
+Next, we have to check that if it is a `LogicalExpression` the operator of that expression is actually a "AND" and not a "OR":
+
+```javascript {17-21} title=Writing the rule (step 3)
+if (
+  callee.object &&
+  callee.object.name === 'yup' &&
+  callee.property &&
+  callee.property.name === 'validateSync'
+) {
+  // check one of the parents to see if "CHECK &&" is present
+
+  const calleeLogicalExpression = callee.parent.parent;
+
+  if (calleeLogicalExpression.type !== 'LogicalExpression') {
+    // if that "grand parent" expression is not of type 'LogicalExpression' (meaning there's no logical operator || or &&)
+    // or that the left part of that expression is not CHECK (the right part being yup.validateSync)
+    // then we report this case as a lint error
+    context.report({ node, messageId: 'unexpected' });
+  } else {
+    // if all the above case are satisfied but the operator of the logical expression is not '&&'
+    // then we report this case as a lint error
+    if (calleeLogicalExpression.operator !== '&&') {
+      context.report({ node, messageId: 'unexpected' });
+    }
+  }
+}
+```
+
+With this code our ESLint rule will report an error for the following:
+
+```javascript
+yup.validateSync(); // LogicalExpression missing
+CHECK || yup.validateSync(); // The LogicalExpression has not the expected operator
+```
+
+However if we have something like the following:
+
+```javascript
+TEST && yup.validateSync();
+```
+
+our rule will not catch any error. So let's go back to our AST tree to see what we can do here.
+We can see that a `LogicalExpression` has 3 main parts:
+
+- the left part: `CHECK`
+- the operator: `&&` or `||`
+- the right right: `yup.validateSync()`
+
+so for the last part of our rule we want to check whether the name of the left part of our `LogicalExpression` is `CHECK`:
+
+```javascript {16-17} title=Writing the rule (step 4)
+if (
+  callee.object &&
+  callee.object.name === 'yup' &&
+  callee.property &&
+  callee.property.name === 'validateSync'
+) {
+  // check one of the parents to see if "CHECK &&" is present
+
+  const calleeLogicalExpression = callee.parent.parent;
+
+  if (calleeLogicalExpression.type !== 'LogicalExpression') {
+    // if that "grand parent" expression is not of type 'LogicalExpression' (meaning there's no logical operator || or &&)
+    // or that the left part of that expression is not CHECK (the right part being yup.validateSync)
+    // then we report this case as a lint error
+    context.report({ node, messageId: 'unexpected' });
+  } else if (calleeLogicalExpression.left.name !== 'TYPE_CHECK') {
+    context.report({ node, messageId: 'unexpected' });
+  } else {
+    // if all the above case are satisfied but the operator of the logical expression is not '&&'
+    // then we report this case as a lint error
+    if (calleeLogicalExpression.operator !== '&&') {
+      context.report({ node, messageId: 'unexpected' });
+    }
+  }
+}
+```
+
+## How to test our rule
+
+Now that we wrote all the cases we want our rule to handle, it's time to test it. We're lucky, because ESLint comes with its own tool for testing rules called `RuleTester`. With this tool, we can specify all the cases we want to run the rule against and whether these cases are expected to pass or be reported as errors. Our test will live in `tests/lib` and will import the rule we just wrote in the previous part:
+
+```javascript {5,13,15-18} title=Test for our ESLint rule
+// we import the check-before-type-validation ESLint rule
+const rules = require('../../lib/check-before-type-validation');
+const RuleTester = require('eslint').RuleTester;
+
+const ruleTester = new RuleTester();
+
+// Here we pass the 'unexpected' messageId since it is the error we expect to be reported by the rule
+const errors = [{ messageId: 'unexpected' }];
+
+const typeCheckRule = rules['type-check-before-yup'];
+
+// Our test run with all the different test cases
+ruleTester.run('type-check', typeCheckRule, {
+  valid: [
+    {
+      code: 'CHECK && yup.validateSync()',
+      errors,
+    },
+    {
+      code: 'yup.someOtherCommand()',
+      errors,
+    },
+  ],
+  invalid: [
+    {
+      code: 'yup.validateSync()',
+      errors,
+    },
+    {
+      code: 'OTHER && yup.validateSync()',
+      errors,
+    },
+    {
+      code: 'CHECK || yup.validateSync()',
+      errors,
+    },
+  ],
+});
+```
+
+In the previous code snippet we can see that we're going to test our rule in 5 different cases:
+
+- an error is not reported if we have the statements `CHECK && yup.validate` or `yup.someOtherCommand()`
+- an error is reported if we have the following statements: `yup.validateSync()` (missing `LogicalExpression`) or `OTHER && yup.validateSync` (wrong left part of the `LogicalExpression`) or `CHECK || yup.validateSync()` (wrong operator).
+
+We can then run this test with [Jest](https://jestjs.io/) or any other test runner and we should get an output similar as this:
+
+```bash
+type-check
+
+    valid
+
+      ✓ OTHER && CHECK && yup.validateSync() (45ms)
+
+      ✓ CHECK && yup.validateSync() (3ms)
+
+      ✓ yup.someOtherCommand() (1ms)
+
+    invalid
+
+      ✓ yup.validateSync() (3ms)
+
+      ✓ OTHER && yup.validateSync() (1ms)
+
+      ✓ CHECK || yup.validateSync() (2ms)
+```
+
+Now that we've ensured that the rule is working as expected, we can publish it as an NPM package and add it as a plugin to any ESLint configuration we want.
+
+This whole process might seem like a lot at first, especially since it involves dealing with AST which isn't the most accessible thing to learn. But, now that we know what the anatomy of an ESLint rule is, we can appreciate even more the insane amount of work done by the community to provide us with all this linting rules that we're using on a day to day basis to make our codebase cleaner and more consistent.

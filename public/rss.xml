@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[Maxime Heckel's Blog]]></title>
+        <description><![CDATA[Hi I'm Maxime, and this is my blog. Here, I share through my writing my experience as a frontend engineer and everything I'm learning about on React, Typescript, SwiftUI, Serverless, and testing.]]></description>
+        <link>https://blog.maximeheckel.com</link>
+        <image>
+            <url>https://blog.maximeheckel.com/static/og/main-og-image.png</url>
+            <title>Maxime Heckel&apos;s Blog</title>
+            <link>https://blog.maximeheckel.com</link>
+        </image>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Fri, 22 Jan 2021 00:24:51 GMT</lastBuildDate>
+        <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
+        <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[My first failed SwiftUI project]]></title>
+            <description><![CDATA[A reflection on my experience building my first SwiftUI app, what I learned, the challenges I faced, and the reasons that made me not release it.]]></description>
+            <link>https://blog.maximeheckel.com/posts/first-failed-swiftui-project</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/first-failed-swiftui-project</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 19 Jan 2021 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Card with glow effect on hover]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-12-26-cardwithgloweffectonhover</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-12-26-cardwithgloweffectonhover</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Sat, 26 Dec 2020 15:38:50 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Guide to creating animations that spark joy with Framer Motion]]></title>
+            <description><![CDATA[An interactive guide introducing everything I've learned about Framer Motion through fun examples and little case studies of animations I built.]]></description>
+            <link>https://blog.maximeheckel.com/posts/guide-animations-spark-joy-framer-motion</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/guide-animations-spark-joy-framer-motion</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 15 Dec 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Storing User Settings in a SwiftUI app using UserDefaults]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-11-27-storing-user-settings-swift</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-11-27-storing-user-settings-swift</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Fri, 27 Nov 2020 23:17:26 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Substack subscription serverless function]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-11-12-substacksubscriptionserverlessfunction</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-11-12-substacksubscriptionserverlessfunction</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Thu, 12 Nov 2020 23:17:26 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Using Shortcuts and serverless to build a personal Apple Health API]]></title>
+            <description><![CDATA[Take ownership of your Apple Watch health data with a only few lines of code.]]></description>
+            <link>https://blog.maximeheckel.com/posts/build-personal-health-api-shortcuts-serverless</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/build-personal-health-api-shortcuts-serverless</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Mon, 02 Nov 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[SEO mistakes I've made and how I fixed them]]></title>
+            <description><![CDATA[A look back at what I learned fixing my terrible SEO mistakes on my Gatsby websites]]></description>
+            <link>https://blog.maximeheckel.com/posts/seo-mistakes-i-have-made-and-how-i-fixed-them</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/seo-mistakes-i-have-made-and-how-i-fixed-them</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 13 Oct 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Simple test to ensure that all dependencies have a pinned version]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-10-8-simpletesttoensurethatalldependencieshaveapinnedversion</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-10-8-simpletesttoensurethatalldependencieshaveapinnedversion</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Thu, 08 Oct 2020 01:28:17 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Animated copy to clipboard button with Framer Motion and SVG]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-9-26-animatedcopytoclipboardbuttonwithframermotionandsvg</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-9-26-animatedcopytoclipboardbuttonwithframermotionandsvg</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Sat, 26 Sep 2020 16:57:07 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Going native: SwiftUI from the perspective of a React developer]]></title>
+            <description><![CDATA[Approaching native iOS development with a React developer mindset]]></description>
+            <link>https://blog.maximeheckel.com/posts/swiftui-as-react-developer</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/swiftui-as-react-developer</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Wed, 16 Sep 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Semi transparent blur or frosted glass effect in SwiftUI]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-9-1-semitransparentblurorfrostedglasseffectinswiftui</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-9-1-semitransparentblurorfrostedglasseffectinswiftui</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 01 Sep 2020 23:09:32 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Build your own preview deployment service]]></title>
+            <description><![CDATA[Do you want to increase your team's development velocity and collaboration? Preview Deployments are one of the key pieces for that, and this post details how to implement your own serverless deployment service based on Google Cloud Run.]]></description>
+            <link>https://blog.maximeheckel.com/posts/build-serverless-preview-deployment</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/build-serverless-preview-deployment</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 25 Aug 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Animate LinearGradient on state change in SwiftUI]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-8-23-animatelineargradientonstatechangeinswiftui</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-8-23-animatelineargradientonstatechangeinswiftui</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Sun, 23 Aug 2020 22:32:22 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[SwiftUI TabView with PageTabViewStyle and full screen background colors]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-8-23-swiftuitabviewwithpagetabviewstyleandfullscreenbackgroundcolors</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-8-23-swiftuitabviewwithpagetabviewstyleandfullscreenbackgroundcolors</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Sun, 23 Aug 2020 00:16:40 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[The little guide to CI/CD for frontend developers]]></title>
+            <description><![CDATA[How to ship your app faster, more reliably and make your team unstoppable with good testing practices and automation.]]></description>
+            <link>https://blog.maximeheckel.com/posts/guide-to-cicd-for-frontend-developers</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/guide-to-cicd-for-frontend-developers</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 28 Jul 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Waving Hand Animation with Framer Motion]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-7-3-waving-hand-animation-framer-motion</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-7-3-waving-hand-animation-framer-motion</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Fri, 03 Jul 2020 15:40:13 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Immigrating to the US: My path from non-immigrant to permanent resident]]></title>
+            <description><![CDATA[US immigration explained for American citizens by an immigrant.]]></description>
+            <link>https://blog.maximeheckel.com/posts/immigrating-to-the-us-my-path</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/immigrating-to-the-us-my-path</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Fri, 26 Jun 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[The physics behind spring animations]]></title>
+            <description><![CDATA[A deep dive into the inner workings of spring animations in Framer Motion.]]></description>
+            <link>https://blog.maximeheckel.com/posts/the-physics-behind-spring-animations</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/the-physics-behind-spring-animations</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 23 Jun 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Assert request properties with cypress]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-6-11-assertrequestpropertieswithcypress</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-6-11-assertrequestpropertieswithcypress</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Thu, 11 Jun 2020 15:44:49 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Generate screenshots of your code with a serverless function]]></title>
+            <description><![CDATA[Programmatic Carbon images generation from a simple API]]></description>
+            <link>https://blog.maximeheckel.com/posts/creating-beautiful-screenshots-source-code-with-serverless-function</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/creating-beautiful-screenshots-source-code-with-serverless-function</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 09 Jun 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Cancel axios requests in a React context provider using refs]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-5-22-cancelaxiosrequestsinareactcontextproviderusingrefs</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-5-22-cancelaxiosrequestsinareactcontextproviderusingrefs</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Fri, 22 May 2020 14:59:51 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[First Code Snippet!]]></title>
+            <link>https://blog.maximeheckel.com/snippets/2020-5-19-firstcodesnippet</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-5-19-firstcodesnippet</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 19 May 2020 00:17:16 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to use Framer Motion with Emotion styled-components]]></title>
+            <description><![CDATA[Framer Motion x Emotion → animated styled-components]]></description>
+            <link>https://blog.maximeheckel.com/posts/framer-motion-emotion</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/framer-motion-emotion</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 12 May 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Data Fetching with NextJS: What I learned]]></title>
+            <description><![CDATA[GetServerSideProps vs GetStaticProps vs GetStaticPaths.]]></description>
+            <link>https://blog.maximeheckel.com/posts/data-fetching-with-next-js</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/data-fetching-with-next-js</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 05 May 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Learning in public]]></title>
+            <description><![CDATA[Here's an up to date list of what I'm currently learning and what I plan to learn.]]></description>
+            <link>https://blog.maximeheckel.com/posts/learning-in-public</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/learning-in-public</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 21 Apr 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Fixing the "dark mode flash" issue on server rendered websites]]></title>
+            <description><![CDATA[Bringing a proper solution to dark mode flashing without an ugly hack.]]></description>
+            <link>https://blog.maximeheckel.com/posts/switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Thu, 16 Apr 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to fix NPM link duplicate dependencies issues]]></title>
+            <description><![CDATA[Dealing with dependencies when developing a package and using it through npm link.]]></description>
+            <link>https://blog.maximeheckel.com/posts/duplicate-dependencies-npm-link</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/duplicate-dependencies-npm-link</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 31 Mar 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Running scheduled cross-browser end-to-end tests on Github CI]]></title>
+            <description><![CDATA[Github actions + Cypress + cross-browser testing = 🚀]]></description>
+            <link>https://blog.maximeheckel.com/posts/running-cross-browser-cypress-github-ci</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/running-cross-browser-cypress-github-ci</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 10 Mar 2020 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How I built my first custom ESLint rule]]></title>
+            <description><![CDATA[A guide to get started with AST (Abstract Syntax Tree) and custom built ESLint plugins]]></description>
+            <link>https://blog.maximeheckel.com/posts/how-to-build-first-eslint-rule</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/how-to-build-first-eslint-rule</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 19 Nov 2019 14:01:01 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[React Lazy: a take on preloading views]]></title>
+            <description><![CDATA[How to add preloading to your route based code split apps]]></description>
+            <link>https://blog.maximeheckel.com/posts/preloading-views-with-react</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/preloading-views-with-react</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 24 Sep 2019 14:01:01 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Automated UI accessibility testing with Cypress]]></title>
+            <description><![CDATA[Make sure your UI projects follow accessibility standards before deploying to production]]></description>
+            <link>https://blog.maximeheckel.com/posts/automated-ui-accessibility-testing-with-cypress-cc2e38231241</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/automated-ui-accessibility-testing-with-cypress-cc2e38231241</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 09 Jul 2019 14:01:01 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Building a GraphQL wrapper for the Docker API]]></title>
+            <description><![CDATA[From REST calls to powerful queries]]></description>
+            <link>https://blog.maximeheckel.com/posts/building-a-graphql-wrapper-for-the-docker-api-2109f2b9c202</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/building-a-graphql-wrapper-for-the-docker-api-2109f2b9c202</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 28 May 2019 14:17:39 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Switching off the lights - Adding dark mode to your React app]]></title>
+            <description><![CDATA[In this post, I’m going to share with you how I built dark mode support for a sample React app with Emotion themes.]]></description>
+            <link>https://blog.maximeheckel.com/posts/switching-off-the-lights-adding-dark-mode-to-your-react-app-with-context-and-hooks-f41da6e07269</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/switching-off-the-lights-adding-dark-mode-to-your-react-app-with-context-and-hooks-f41da6e07269</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 05 Mar 2019 16:31:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Getting started with Typescript on Gatsby]]></title>
+            <description><![CDATA[A step by step guide to get Typescript, tslint and Prettier working on any existing Gatsby project.]]></description>
+            <link>https://blog.maximeheckel.com/posts/getting-started-with-typescript-on-gatsby-8544b47c1d27</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/getting-started-with-typescript-on-gatsby-8544b47c1d27</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 05 Feb 2019 15:01:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Rebuilding Redux with Hooks and Context]]></title>
+            <description><![CDATA[A simple global state management package based on React constructs]]></description>
+            <link>https://blog.maximeheckel.com/posts/rebuilding-redux-with-hooks-and-context-e16b59faf51c</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/rebuilding-redux-with-hooks-and-context-e16b59faf51c</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 04 Dec 2018 16:31:51 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Asynchronous rendering with React]]></title>
+            <description><![CDATA[How the new React Suspense API might reshape the way we build components]]></description>
+            <link>https://blog.maximeheckel.com/posts/asynchronous-rendering-with-react-c323cda68f41</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/asynchronous-rendering-with-react-c323cda68f41</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 06 Nov 2018 16:52:30 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Using Flow generics to type generic React components]]></title>
+            <description><![CDATA[How Flow generics help typing complex multi-purpose components]]></description>
+            <link>https://blog.maximeheckel.com/posts/using-flow-generics-to-type-generic-react-components-22dd642634d8</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/using-flow-generics-to-type-generic-react-components-22dd642634d8</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 16 Oct 2018 16:07:39 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How to efficiently type your styled-components with Flow]]></title>
+            <description><![CDATA[Adding Flow on top of styled components to avoid misusages before they hit production, and make developers’ and designers’ life easier.]]></description>
+            <link>https://blog.maximeheckel.com/posts/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 09 Oct 2018 15:57:18 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[How I got started with Kubernetes on GKE]]></title>
+            <description><![CDATA[How I deployed, published, scaled and setup SSL certificates for my personal projects]]></description>
+            <link>https://blog.maximeheckel.com/posts/how-i-got-started-with-kubernetes-on-gke-5f829eca98bc</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/how-i-got-started-with-kubernetes-on-gke-5f829eca98bc</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 19 Jun 2018 17:33:16 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[React sub-components Part 3: Whitelisting sub-components with flow]]></title>
+            <description><![CDATA[Adding more control to the sub-component pattern with Flow types]]></description>
+            <link>https://blog.maximeheckel.com/posts/react-sub-components-part-3-whitelisting-sub-components-with-flow-b04f9bcf80c2</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/react-sub-components-part-3-whitelisting-sub-components-with-flow-b04f9bcf80c2</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 01 May 2018 16:17:42 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[React sub-components Part 2: Using the new Context API]]></title>
+            <description><![CDATA[Further simplifying the sub-component pattern using contexts to make flexible, easily testable and reusable React components]]></description>
+            <link>https://blog.maximeheckel.com/posts/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Mon, 16 Apr 2018 17:08:40 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[React sub-components]]></title>
+            <description><![CDATA[Making flexible, easily testable and reusable views in React without ending in “markup hell”]]></description>
+            <link>https://blog.maximeheckel.com/posts/react-sub-components-513f6679abed</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/react-sub-components-513f6679abed</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Mon, 26 Feb 2018 21:02:23 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Running Golang tests with Jest]]></title>
+            <description><![CDATA[How to use the Jest platform to run Golang test]]></description>
+            <link>https://blog.maximeheckel.com/posts/running-golang-tests-with-jest-b5d8f3d43a7</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/running-golang-tests-with-jest-b5d8f3d43a7</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Wed, 10 Jan 2018 17:00:17 GMT</pubDate>
+        </item>
+    </channel>
+</rss>

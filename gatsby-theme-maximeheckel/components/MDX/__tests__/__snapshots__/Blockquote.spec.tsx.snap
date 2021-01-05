@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Blockquote can render a Blockquote 1`] = `
+.emotion-0 {
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  margin: 30px 0px;
+  color: var(--maximeheckel-colors-typeface-0);
+  font-style: italic;
+  position: relative;
+  width: 100vw;
+  left: calc(-50vw + 50%);
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background: var(--maximeheckel-colors-emphasis);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.emotion-0>p {
+  max-width: 880px!important;
+  padding-left: 50px;
+  padding-bottom: 0;
+  width: 100%;
+  margin: 0 auto;
+  font-size: 27px;
+  line-height: 1.6818;
+  font-weight: 400;
+}
+
+<body>
+  <div>
+    <blockquote
+      class="emotion-0 emotion-1"
+    >
+      Test
+    </blockquote>
+  </div>
+</body>
+`;

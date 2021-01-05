@@ -1,0 +1,243 @@
+---
+title: Rebuilding Redux with Hooks and Context
+subtitle: A simple global state management package based on React constructs
+date: '2018-12-04T16:31:51.793Z'
+categories: []
+keywords: []
+slug: rebuilding-redux-with-hooks-and-context-e16b59faf51c
+cover: '/static/images/ivan-bandura-afc6MW6DK1U-unsplash.jpg'
+type: 'blogPost'
+---
+
+There’s been a lot of hype recently about [React Hooks](https://reactjs.org/docs/hooks-intro.html) and what they allow developers to achieve. Indeed, in the near future, **we will be able to rely on a single React pattern** to build pretty much anything we want. As of today, React consist of a lot of patterns, if not too many for some people: Stateful Classes, Functional components, Higher Order Components and render callbacks to mention just a few.  
+The React core team expressed several months ago their desire to slowly phase out React Classes. Hooks, along with Suspense, [which I talked about in a previous post](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41), are the main building blocks of this plan.
+
+In this post, however, rather than focusing on how hooks impact React components themselves, I want to go a bit further and showcase how they can be used, in conjunction with the already existing Context API, to build a very basic implementation of Redux. The example I will provide covers the basics functionality of Redux for global state management.
+
+For this example, we will consider a simple application. It will display some message that can be fetched through a Redux action `FETCH_DATA` which can be triggered by clicking on a button.
+
+## Provider and reducers
+
+Let’s consider the following reducers:
+
+```javascript title=Example of a classic reducer used with Redux
+// reducers.js
+export const initialState = {
+  data: null,
+};
+
+const reducer = (state, action) => {
+  const reduced = { ...state };
+  switch (action.type) {
+    case 'FETCH_DATA':
+      return {
+        ...reduced,
+        data: action.payload,
+      };
+    case 'RESET_DATA':
+      return initialState;
+    default:
+      return state;
+  }
+};
+
+export default reducer;
+```
+
+As we can see, this is the kind of reducers we’re used to seeing in any Redux based application. The objective is to have the same reducers working for our implementation of Redux.
+
+**First step: Defining our** `**Provider**`This will be the core of our reimplementation of Redux. The Redux Provider works quite like a basic React Context Provider, so we can base our work on the Context API. Our store Provider will wrap our app and let it access our store object at any level. Here’s how it looks like:
+
+```javascript {5,9} title=Implementation of a store provider using the React Context API
+// store.js
+import React, { createContext, useReducer, useContext } from 'react';
+import reducer, { initialState } from './reducer';
+
+const Store = createContext();
+
+const Provider = ({ children }) => {
+  const store = createStore(reducer, initialState); // we'll go back to this later
+  return <Store.Provider value={store}>{children}</Store.Provider>;
+};
+
+export { Store, Provider };
+```
+
+**Second step:** `**createStore **`We can see above the mention of the `createStore` function. If you’re familiar with Redux this should ring a bell. This function takes our reducer, and the initial state object of our app returns an object with 2 essential items that are injected into the app through our Provider:
+
+- **dispatch**: the function that lets us dispatch Redux action
+- **state**: the object containing the global state of our app.
+
+To reimplement this function in our example, let’s use the new React hooks. React has a very handy pre-built hook called `useReducer` which actually returns these 2 items stated above:
+
+```javascript {3,4} title=createStore implementation
+// store.js
+const createStore = (reducer, initialState) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return { state, dispatch };
+};
+```
+
+We now have all the elements for our implementation of Redux to work! Below you will see the code of our basic app that is using the examples above to dispatch actions and get some data from our store.
+
+```javascript {5,11} title=Small application using our basic reimplementation of Redux using Context and Hooks
+import React, { useContext } from 'react';
+import { Store, Provider } from './store';
+
+const Data = props => {
+  const { state, dispatch } = useContext(Store);
+  return <div>{props.data}</div>;
+};
+
+// An example of functional component using the useContext
+const Controls = () => {
+  const { state, dispatch } = useContext(Store);
+
+  return (
+    <div>
+      <button
+        onClick={() =>
+          dispatch({ type: 'FETCH_DATA', payload: 'Hello world!' })
+        }
+      >
+        Fetch Data
+      </button>
+      <button onClick={() => dispatch({ type: 'RESET_DATA', payload: null })}>
+        Reset
+      </button>
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <div className="App">
+      <Provider>
+        {/* This is an equivalent to the react-redux Provider component */}
+        <header className="App-header">
+          <h1>React {React.version}</h1>
+          <Controls />
+          <Data />
+        </header>
+      </Provider>
+    </div>
+  );
+};
+
+export default App;
+```
+
+However, we can see that although the constructs we came up with are quite similar to the ones of Redux, the way it’s used within an app is not quite the same. This is why I wanted to push the example a bit further and reimplement the `connect` Higher Order Component.
+
+## Rebuilding the Connect HoC
+
+For this part, we want to achieve the following:
+
+```javascript title=Example of a component using the connect HoC
+// App.js
+const mapStateToProps = (state, props) => ({
+  message: `${state.data} ${props.extra}`,
+});
+
+const mapDispatchToProps = dispatch => ({
+  get: () => dispatch({ type: 'FETCH_DATA', payload: 'Hello world!' }),
+  reset: () => dispatch({ type: 'RESET_DATA', payload: 'null' }),
+});
+
+const ConnectedData = connect(mapStateToProps, mapDispatchToProps)(Data);
+```
+
+Given the code above, our connect HoC must take 2 optional arguments: a `mapStateToProps` function and a `mapDispatchToProps` function. It will then inject the following items as props for the wrapped component:
+
+- the `dispatch` function
+- the objects returned by `mapStateToProps` and `mapDispatchToProps`
+
+```javascript {9-13} title=Implementation of the connect HoC from Redux based on the useContext hook
+// store.js
+const connect = (
+  mapStateToProps = () => {},
+  mapDispatchToProps = () => {}
+) => WrappedComponent => {
+  return props => {
+    const { dispatch, state } = useContext(Store);
+    return (
+      <WrappedComponent
+        dispatch={dispatch}
+        {...mapStateToProps(state, props)}
+        {...mapDispatchToProps(dispatch)}
+      />
+    );
+  };
+};
+```
+
+With this implementation of `connect`, we now have a more familiar way to access the state from our components.
+
+## Going even further by adding middleware support
+
+One other thing that would be nice to have in our reimplementation of Redux would be some support for middlewares. In this part will try to emulate how middlewares work in Redux, and try to end up having a similar implementation.
+
+**How do middlewares currently work?  
+**In a nutshell, middlewares are enhancements to the dispatch function.  
+Middlewares take a store object as an argument, which contains a `getState` function and a `dispatch` function, and are then composed to finally give us an enhanced dispatch. By looking in the [Redux codebase](https://github.com/reduxjs/redux/blob/v4.0.0/src/applyMiddleware.js) we can see that this enhanced dispatch function is a curried function where the middlewares are “composed” and then applied to our dispatch.  
+**Compose** here means that instead of having to write for example `f1(f2(f3(f4)))` we can simply write `compose(f1,f2,f3,f4)`.
+
+Note: This short summary and the code implementation below are based on my own research and on [this article](https://medium.com/@meagle/understanding-87566abcfb7a).
+
+```javascript title=Implementation of middleware support for our createStore function
+// store.js
+const compose = (...funcs) => x =>
+  funcs.reduceRight((composed, f) => f(composed), x);
+
+const createStore = (reducer, initialState, middlewares) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  if (typeof middlewares !== 'undefined') {
+    // return middlewares(createStore)(reducer, initialState);
+    const middlewareAPI = {
+      getState: () => state,
+      dispatch: action => dispatch(action),
+    };
+    const chain = middlewares.map(middleware => middleware(middlewareAPI));
+    const enhancedDispatch = compose(...chain)(dispatch);
+    return { state, dispatch: enhancedDispatch };
+  }
+
+  return { state, dispatch };
+};
+```
+
+We can now add a basic middleware to our `createStore` function. Here’s one that logs to the console any action that is dispatched:
+
+```javascript title=Example of a custom middleware used with our Redux reimplementation
+// store.js
+const customMiddleware = store => next => action => {
+  console.log('Action Triggered');
+  console.log(action);
+  next(action);
+};
+
+// ...
+
+const Provider = ({ children }) => {
+  const store = createStore(reducer, initialState, [customMiddleware]);
+  return <Store.Provider value={store}>{children}</Store.Provider>;
+};
+```
+
+## Conclusion
+
+Thanks to the Context API and the recently announced Hooks, we saw that it is now easy to rebuild Redux. Is it usable? Yes, as we saw in this post, we covered the main components of Redux (Store, connect, middlewares, etc) and use them in a small app. Can this replace `react-redux`? Probably not. Redux still has a lot more than what we covered in this article, like the Redux Devtools or the entire ecosystem of libraries that can enhance your app on top of Redux. While writing this post I’ve personally tried to add the `redux-logger` middleware to our example, it “worked” but I couldn’t make it print the correct “next state”(maybe because the `useReducer` hook is async since it’s based on `setState` ):
+
+<Tweet tweetLink="MaximeHeckel/status/1059632395316473857" />
+
+but as you can see in this tweet, maybe I was just a bit too ambitious.
+
+**Want to continue working on this project or just hack on top of it?** You can clone the repository containing the code featured in this article along with a basic application [here](https://github.com/MaximeHeckel/redux-hooks-context).
+
+**What to read next?**  
+If you want to read more about React or frontend development, you can check the following articles:
+
+- [**Asynchronous rendering with React**](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41 'https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41')[](https://medium.com/maxime-heckel/asynchronous-rendering-with-react-c323cda68f41)
+- [**Using Flow generics to type generic React components**](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8 'https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8')[](https://medium.com/maxime-heckel/using-flow-generics-to-type-generic-react-components-22dd642634d8)
+- [**React sub-components Part 2: Using the new Context API**](https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4 'https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4')[](https://medium.com/maxime-heckel/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4)

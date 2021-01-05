@@ -24,7 +24,13 @@ module.exports = {
   rules: {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'react/react-in-jsx-scope': 0,
     'react/prop-types': 0,
     'no-console': 'error',
+  },
+  settings: {
+    react: {
+      version: 'latest',
+    },
   },
 };

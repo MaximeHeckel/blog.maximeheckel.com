@@ -9,7 +9,7 @@ describe('SEO: Verify meta tag integrity', () => {
     const metaTags = text.match(META_RE) || [];
     const canonicalTag = text.match(CANONICAL_RE) || [];
 
-    expect(metaTags).to.have.length(18);
+    expect(metaTags).to.have.length(20);
     expect(canonicalTag).to.have.length(1);
     cy.wrap(metaTags).snapshot();
     cy.wrap(canonicalTag).snapshot();
@@ -22,8 +22,9 @@ describe('SEO: Verify meta tag integrity', () => {
     const metaTags = text.match(META_RE) || [];
     const canonicalTag = text.match(CANONICAL_RE) || [];
 
-    expect(metaTags).to.have.length(19);
+    expect(metaTags).to.have.length(21);
     expect(canonicalTag).to.have.length(1);
+
     cy.wrap(metaTags).snapshot();
     cy.wrap(canonicalTag).snapshot();
   });

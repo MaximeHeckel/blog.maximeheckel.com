@@ -1,5 +1,7 @@
 [build]
-  publish = "public"
+  command   = "yarn add playwright@1.8.0 && yarn build"
+  functions = "out_functions"
+  publish   = "out_publish"
 
 [[plugins]]
-  package = "netlify-plugin-gatsby-cache"
+  package = "netlify-plugin-cache-nextjs"

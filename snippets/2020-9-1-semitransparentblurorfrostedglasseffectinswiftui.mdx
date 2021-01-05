@@ -1,9 +1,9 @@
 ---
 title: Semi transparent blur or frosted glass effect in SwiftUI
 language: swift
-created: 2020-09-01T23:09:32.183Z
+date: '2020-09-01T23:09:32.183Z'
 slug: 2020-9-1-semitransparentblurorfrostedglasseffectinswiftui
-snippetImage: './img/2020-9-1-semitransparentblurorfrostedglasseffectinswiftui.png'
+snippetImage: '/static/images/2020-9-1-semitransparentblurorfrostedglasseffectinswiftui.png'
 type: snippet
 ---
 
@@ -21,9 +21,8 @@ struct ContentView: View {
         ZStack {
             Circle().fill(Color.orange).frame(width: 150, height: 150)
             Blur(effect: UIBlurEffect(style: .light))
-            
+
         }.background(Color.white).frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 ```
-  

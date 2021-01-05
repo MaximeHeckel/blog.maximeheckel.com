@@ -34,9 +34,7 @@ describe('Landing Tests', () => {
     cy.visit('/');
     localStorage.setItem('mode', 'dark');
     cy.get('[data-testid="darkmode"]').should('exist');
-    cy.get('[data-testid="darkmode-switch"]')
-      .should('be.visible')
-      .click();
+    cy.get('[data-testid="darkmode-switch"]').should('be.visible').click();
     cy.get('[data-testid="lightmode"]').should('exist');
     cy.wait(500).then(() => {
       expect(localStorage.getItem('mode')).to.eq('light');

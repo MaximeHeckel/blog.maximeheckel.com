@@ -15,6 +15,7 @@ module.exports = {
     'Blog',
     'iOS',
     'native',
+    'serverless',
   ],
   title: "Maxime Heckel's Blog",
   titleAlt: 'Maxime Heckel | Blog',
@@ -24,7 +25,7 @@ module.exports = {
   siteUrl: 'https://blog.maximeheckel.com/', // url + pathPrefix
   siteLanguage: 'en', // Language Tag on <html> element
   logo: 'src/static/logo/logo.png',
-  // banner: 'src/static/logo/banner.png',
+  image: 'https://blog.maximeheckel.com/static/og/main-og-image.png',
   favicon: 'static/favicon.png', // Manifest favicon generation
   shortName: 'MaximeHeckel', // Shortname for manifest, must be shorter than 12 characters
   author: 'Maxime Heckel', // Author for schemaORGJSONLD
