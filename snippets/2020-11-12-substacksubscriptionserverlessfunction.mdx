@@ -1,15 +1,15 @@
 ---
 title: Substack subscription serverless function
 language: typescript
-created: 2020-11-12T23:17:26.245Z
+date: '2020-11-12T23:17:26.245Z'
 slug: 2020-11-12-substacksubscriptionserverlessfunction
-snippetImage: './img/2020-11-12-substacksubscriptionserverlessfunction.png'
+snippetImage: '/static/images/2020-11-12-substacksubscriptionserverlessfunction.png'
 type: snippet
 ---
 
 ```typescript snippet
-import { NowRequest, NowResponse } from "@now/node";
-import axios from "axios";
+import { NowRequest, NowResponse } from '@now/node';
+import axios from 'axios';
 
 /**
  * This pulls the subscription URL defined as an environment variable
@@ -26,11 +26,11 @@ export const subscribe = async (url: string, email: string) => {
   try {
     const res = await axios.post(`${url}/api/v1/free`, {
       first_url: `${url}/subscribe`,
-      first_referrer: "",
+      first_referrer: '',
       current_url: `${url}/subscribe`,
-      current_referrer: "",
-      referral_code: "",
-      source: "subscribe_page",
+      current_referrer: '',
+      referral_code: '',
+      source: 'subscribe_page',
       email,
     });
     console.log(`${res.status} subscribed ${email} to ${subscriptionURL}`);
@@ -56,10 +56,8 @@ const handler = async (
     return res.status(500).json({ error });
   }
 
-  return res.status(200).json({ response: "subscribed!" });
+  return res.status(200).json({ response: 'subscribed!' });
 };
 
 export default handler;
-
 ```
-  

@@ -1,0 +1,452 @@
+---
+title: 'My first failed SwiftUI project'
+subtitle: A reflection on my experience building my first SwiftUI app, what I learned, the challenges I faced, and the reasons that made me not release it.
+date: '2021-01-19T08:00:00.000Z'
+categories: []
+keywords:
+  [
+    'swiftui',
+    'app',
+    'XCode',
+    'first app',
+    'frontend',
+    'development',
+    'failed',
+    'project',
+    'UX',
+    'developer experience',
+  ]
+slug: first-failed-swiftui-project
+type: 'blogPost'
+featured: false
+---
+
+What a better way to start 2021 than reflecting on one of my main goals for 2020: **learning SwiftUI and building my first app**.
+
+While I was, and still am, just a beginner in the iOS development world, I felt that the best way to learn would be to build an app from scratch. I had this idea of a simple yet beautiful weather app, which seemed pretty straightforward to build. However, **a lot of things didn't go as planned** 😅. Whether it was lack of planning, too high expectations, or just the developer experience itself, **the closer I was getting to finishing this project, the less confident I became about my app being worth releasing on the App Store**. So we can call this project a failure if you want, but I'm nonetheless still pretty proud of what I ended up building!
+
+Thus I felt a lookback at this whole experience would be an interesting topic for a blog post. **Let's take a look at my first SwiftUI app**, what I built, some of the challenges I faced that made me learn a lot, and why I failed to finalize this project.
+
+<Callout variant="info">
+
+I also wrote a take on how I felt about SwiftUI as a frontend developer, and how easy it is for anyone with React experience to get started with it!
+
+If you're interested, you can read [Going native: SwiftUI from the perspective of a React developer](/posts/swiftui-as-react-developer/).
+
+</Callout>
+
+<div style={{margin: "50px auto 0px auto", maxWidth: "250px"}}>
+
+![Sunshine's App Icon](/static/images/sunshine-icon.svg)
+
+</div>
+
+## Introducing Sunshine
+
+I built Sunshine, my weather app, during the Summer and Fall of 2020. If you're following me on Twitter, you might have seen quite a few screenshots, video recordings showcasing how the app evolved throughout its development. For those who did not get the chance to see them, here is a little screen recording for you, showcasing what I built:
+
+<VideoPlayer
+  poster="/static/posters/sunshine-poster.png"
+  src="https://d2xl4m2ghaywko.cloudfront.net/sunshine-demo.mp4 "
+  controls={['play-large', 'play', 'progress', 'current-time', 'fullscreen']}
+  width={349}
+/>
+<br />
+
+My goal was to build a **simple and beautiful weather app**, with "home-made" assets that would animate on the screen based on the weather at a given location.
+
+What makes it unique compared to other apps was the asset I built (sun, clouds, rain), the focus on the UX, and the little animations sprinkled across the interface. Although challenging, I tried to stand by these principles from [the prototyping phase](https://twitter.com/MaximeHeckel/status/1302712443039371265) and throughout the development of this app.
+
+The app has three main screens, each of them having a simple role yet featuring little details for a polished look:
+
+### Main Screen
+
+The main screen features the name of the location, the date, and one of the most complex SwiftUI View I built for this app: the **Weather Card**.
+
+!["Screenshot of Sunshine showcasing the main screen with the weather card. The weather card displays the weather at a given location, here Tokyo and Perth, with the temperature conditions and metrics such as wind speed or humidity, as well as a graph displaying the position of the sun.](/static/images/weather-card.svg)
+
+This card is central to the UX. It displays all the information about the current weather conditions at a glance such as:
+
+- Temperature
+- Weather description
+- Other metrics: wind speed, humidity, etc.
+- The sun's position throughout the day
+- Sunrise and sunset time
+- An animated representation of the weather: the sun rising, clouds sliding from the sides of the card, etc
+
+The color of the card also adapts based on both the weather conditions and the time of the day. You will get a blue gradient at midday and a more orange pastel gradient at dawn, a more grayish color when the weather is cloudy, etc.
+
+### Forecast Panel
+
+Sliding the bottom panel up reveals the **Forecast Panel**. I felt it was a good idea to hide the complexity of this panel away from the main screen while still keeping the user "in context" within the main screen when it's displayed.
+
+![Screenshot of Sunshine's forecast panel. It showcases the 2 section: the first one displays the weather forecast at the given location for the next 6 hours, the second one for the next 7 days.](/static/images/forecast-panel.svg)
+
+On this screen you can see both:
+
+- The hourly forecast for the next 6 hours
+- The daily forecast for the next 7 days
+
+Each card will display the temperature, and the weather conditions are reflected through the combination of an icon and a background gradient, just like the weather card on the main screen.
+
+### Settings Panel
+
+Tapping the menu icon on the top left corner brings the **Settings Panel**. This is where you can manage some settings and also the list of locations.
+
+![Screenshot of Sunshine's settings panel. It showcases the 2 main section: the first one displays the list of locations the user has added the second one is the settings tab that lets the user choose between different units to display the temperature and the wind speed.](/static/images/settings-panel.svg)
+
+While the Sunshine feels somewhat simple from what we've just seen, it presented its own set of challenges and setbacks during the development... which was great! 🎉 These challenges allowed me to learn so much more than I would have had by solely focusing on mini-projects around a specific aspect of SwiftUI, so if you ask me now, all that frustration was worth it!
+
+## Challenges, setbacks, and what I learned along the way
+
+Building a whole SwiftUI app from scratch can feel a bit overwhelming. I mostly proceeded as I'd usually do on any complex project: **one feature at a time, baby steps, breaking down any problem into smaller achievable tasks**.
+
+There were, however, a few problems that showed up along the development of particularly challenging features. Here's the list of interesting ones I handpicked:
+
+### TabView with PageTabViewStyle
+
+I used the following code snippet to implement a simple TabView with pages that could be swiped left/right:
+
+```swift title=Initial implementation of TabView with PageTabViewStyle used in Sunshine
+import SwiftUI
+
+struct MainView: View {
+    var city: String
+
+    var body: some View {
+        VStack {
+            Text("\(city)")
+        }.onAppear {
+            print("Appear!")
+            print("Call API to fetch weather data")
+            fetchWeatherData(city)
+        }
+    }
+}
+
+struct ContentView: View {
+    @State private var selected = 0
+    var body: some View {
+        VStack {
+            TabView(selection: $selected) {
+                MainView(city: "New York").tag(0)
+                MainView(city: "San Francisco").tag(1)
+            }
+            .tabViewStyle(PageTabViewStyle())
+        }
+    }
+}
+```
+
+In my case, I wanted this TabView component to do the following:
+
+- each "page" would show the weather at a given location
+- swiping to another page would show the weather to the previous/following location
+- when done swiping, i.e. the index of the current page displayed changes, I'd use the `onAppear` modifier to detect that the page is visible and make an API call to fetch the weather data of the location currently in view.
+
+The entire app was architected around these few lines and the idea of pages, and it worked... **until iOS 14.2** 🤦‍♂️. If you copy the code above and try it out today, you'll see the `onAppear` **being called multiple times instead of just once!** I reported this issue to the [SwiftUI community on Reddit](https://www.reddit.com/r/swift/comments/ju55rm/tabview_pagestyletabview_make_views_appear/) and it sadly looks like every iOS dev is kind of accustomed to this kind of things happening. This is not very reassuring I know..., and many developers share this frustration:
+
+> Upgrading OS, even minor, break your app? That's insane. Clicking a button doesn't work because my user upgrade iOS 13 to iOS 14. My app also crash because I use opacity of 0 when upgraded to BigSur. -- [Philip Young](https://twitter.com/philipyoungg/status/1345464323750076416), creator of [Session](stayinsession.com)
+
+As someone working primarily on the web, I'm not used **at all** to this kind of issues. This didn't even cross my mind that it could be a possibility when starting this project.
+
+The fix? Instead of handling whether a view within a TabView "appears", I'd move the state of the index in an "observable" and trigger my API call whenever a change in the index has been observed:
+
+```swift {8,24,38,42-47} title=Latest implementation of TabView with PageTabViewStyle used in Sunshine
+import SwiftUI
+
+class PageViewModel: ObservableObject {
+    /*
+      Every time selectTabIndex changes, it will notify the
+      consuming SwiftUI view which in return will update
+    */
+    @Published var selectTabIndex = 0
+}
+
+struct MainView: View {
+    var city: String
+
+    var body: some View {
+        VStack {
+            Text("\(city)")
+        }.onAppear {
+            print("Appear!")
+        }
+    }
+}
+
+struct ContentView: View {
+    @StateObject var vm = PageViewModel()
+
+   var cities: [String] {
+     return ["New York", "San Francisco"]
+   }
+
+    var body: some View {
+        return VStack {
+            /*
+              We keep track of the current tab index through vm.selectTabIndex.
+              Here we do a Two Way binding with $ because we're not only reading
+              the value of selectTabIndex, we're also updating it when the page
+              changes
+            */
+            TabView(selection: $vm.selectTabIndex) {
+                MainView(city: cities[0]).tag(0)
+                MainView(city: cities[1]).tag(1)
+            }
+            .onReceive(vm.$selectTabIndex, perform: { idx in
+                // Whenever selectTabIndex changes, the following will be executed
+                print("PageView :: body :: onReceive" + idx.description)
+                print("Call API to fetch weather data")
+                fetchWeatherData(cities[idx])
+            })
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+        }
+    }
+}
+```
+
+Because of this issue, the app ended up in an half broken state on iOS 14.2, and I had so much refactoring to do that **I ended up restarting the development of Sunshine almost from scratch** 😬.
+
+### Using MapKit to build a location service
+
+One of the things that can feel weird when one gets started with iOS development is knowing that SwiftUI is, to this day, still "incomplete". Many core APIs are still not available to SwiftUI and the only way to interact with those is to do it through UIKit. One of those API I had to work with was **MapKit**.
+
+<Callout variant="info">
+
+- **UIKit** is the predecessor of SwiftUI and it's still widely used. [UIKit Documentation](https://developer.apple.com/documentation/uikit)
+- **MapKit** is a set of tools and APIs for anything dealing with maps, imagery, location, and points of interest. [MapKit Documentation](https://developer.apple.com/documentation/mapkit)
+
+</Callout>
+
+Sunshine needed a simple "Location Service" to search for cities and getting their corresponding lat/long coordinates. For that, I needed to use MapKit, and that's where things got rather complicated:
+
+- Using anything MapKit related felt less "Swift" and I wasn't the most comfortable with UIKit
+- There were **very few MapKit related resources** or blog posts besides the Apple Documentation
+
+The hardest part was actually to know **the right keywords to search** for. What I needed to use was a combination of:
+
+- `MKSearchCompleter`: [a MapKit utility](https://developer.apple.com/documentation/mapkit/mklocalsearchcompleter) to output a list of locations based on a partial string: i.e. passing "New" would output, "New York", "New Jersey"
+- `MKLocalSearch`: [a MapKit utility](https://developer.apple.com/documentation/mapkit/mklocalsearch) with all the tools to do points of interest search: this is what I used to get the coordinates associated with a given MKSearchCompleter result.
+
+Knowing that these were the MapKit utility functions I needed to use to build my "Location Service" took a lot of time digging through the documentation. This can be a bit frustrating at the beginning, especially as a frontend developer where I'm used to "Google my way" through a problem or an unknown.
+
+In case anyone has to build that kind of "Location Service", you'll find the code just below. I added some comments to explain as much I could in a small format, but I might write a dedicated blog post about this in the future:
+
+```swift {12-15,24,46,55,59-69,72-75,77} title=Implementation of a Location Service to search for cities and get their coordinates
+import Foundation
+import SwiftUI
+import MapKit
+import Combine
+
+// The following allows us to get a list of locations based on a partial string
+class LocationSearchService: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
+    /*
+     By using ObservableObject we're letting know any consummer of the LocationSearchService
+     of any updates in searchQuery or completions (i.e. whenever we get results).
+    */
+    // Here we store the search query that the user types in the search bar
+    @Published var searchQuery = ""
+    // Here we store the completions which are the results of the search
+    @Published var completions: [MKLocalSearchCompletion] = []
+
+    var completer: MKLocalSearchCompleter
+    var cancellable: AnyCancellable?
+
+    override init() {
+        completer = MKLocalSearchCompleter()
+        super.init()
+        // Here we assign the search query to the MKLocalSearchCompleter
+        cancellable = $searchQuery.assign(to: \.queryFragment, on: self.completer)
+        completer.delegate = self
+        completer.resultTypes = .address
+    }
+
+    /*
+      Every MKLocalSearchCompleterDelegate let's you specify a completer function.
+      Here we use it to set the results to empty in case the search query is empty
+      or in case there's an uknown error
+    */
+    func completer(_ completer: MKLocalSearchCompleter, didFailWithError: Error) {
+        self.completions = []
+    }
+
+    /*
+      Every MKLocalSearchCompleterDelegate let's you specify a completerDidUpdateResults function.
+      Here we use it to update the "completions" array whenever results from the MapKit API are returned
+      for a given search query.
+
+      These results can be filtered at will, here I did not do any extra filtering to keep things simple.
+    */
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        self.completions = completer.results
+    }
+}
+
+extension MKLocalSearchCompletion: Identifiable {}
+
+// Example of LocationSearchService consummer
+
+struct ContentView: View {
+   @ObservedObject var locationSearchService: LocationSearchService
+
+    var body: some View {
+        // Typing in this field will update the search query property in the LocationSearchService
+        TextField("type something...", text: $locationSearchService.searchQuery)
+    }.onChange(of: locationSearchService.completions) {
+      /*
+         Since searchQuery is changed, the LocationSearchService will update
+         the completions array with results.
+
+         Here we'll perform the getCoordinatesLocation on the first element in
+         the list of results.
+      */
+      getCoordinatesLocation(locationSearchService.completions[0])
+    }
+
+    func getCoordinatesLocation(_ completion: MKLocalSearchCompletion) {
+        // We initiate a MKLocalSearch.Request with the completion passed as argument of the function
+        let searchRequest = MKLocalSearch.Request(completion: completion)
+        // We define and trigger the search
+        let search = MKLocalSearch(request: searchRequest)
+
+        search.start { response, error in
+            /*
+              In this callback we can get the response of the search request,
+              which contains the coordinates of the completion passed as arguments
+            */
+            guard let coordinates = response?.mapItems[0].placemark.coordinate else {
+                return
+            }
+
+            guard let name = response?.mapItems[0].name else {
+                return
+            }
+
+            print(name)
+            print(coordinates)
+
+            /*
+              In Sunshine, I'd save the name and the coordinates and used both
+              of these to retrieve the weather data of a given location
+            */
+        }
+    }
+}
+```
+
+### User Default vs Core Data
+
+SwiftUI provides a system called `UserDefaults` to store user preferences, very similar to `LocalStorage` on the web. It's simple and straightforward to integrate into an existing codebase:
+
+```swift title=Small example showcasing how to use UserDefaults
+let defaults = UserDefaults.standard
+defaults.set("celsius", forKey: "temperature")
+defaults.set("mph", forKey: "speed")
+```
+
+I planned on using `UserDefaults` to save some user preferences: which unit between Kelvin, Celsius, or Fahrenheit the user wanted to use to display the temperature and also the lists of "locations".
+
+That's where I hit a wall 🤕... I didn't carefully read the documentation about `UserDefaults`: **you can't save custom types to this system** (at least out of the box) and in my case my "locations" were defined as a custom type:
+
+```swift title=Location type used in Sunshine
+struct Location {
+    var name: String
+    var lat: Double
+    var lng: Double
+}
+```
+
+The only way to go forward was to use **CoreData**, another system that helps saving data that are defined with more complex types.
+However, integrating CoreData mid-way through a project seemed extremely complicated, so **I simply decided to restart a whole new XCode Project**, with CoreData enabled this time, and copy over the code 😅. Total lack of planning on my end.
+
+<Callout variant="info">
+
+I only learned a few days later that you could "kind of" [work around this issue](https://medium.com/flawless-app-stories/save-custom-objects-into-userdefaults-using-codable-in-swift-5-1-protocol-oriented-approach-ae36175180d8)
+
+</Callout>
+
+## Failing to materialize the project
+
+The screenshots and video recordings from the first part and the details I gave about the problems I faced and eventually solved in the second part might leave you wondering why the app didn't end up being released.
+
+The answer to that is that **I simply stopped working on it**. I have a few reasons why, and this part focuses on the main ones.
+
+### I bit more than I could chew
+
+Let's start with the obvious one, that I realized half-way through the development of the app: **it was a bit too ambitious for a first project**. One could build a very simple weather app, but the vision I had for mine was a bit more complex and tricky. **I built lots of custom Views, had to integrate some UIKit utilities, make API calls, and tons of animations**.
+
+Maybe my first app should have been a bit simpler, like a single view app focused solely on UX (which initially was what I wanted to focus on the most anyway).
+
+<Callout variant="info">
+
+Some of my favorite apps created by people who, like me, learned SwiftUI in 2020 are super simple, and yet a pleasure to use every day:
+
+- [Calmaria](https://apps.apple.com/us/app/calmaria/id1523108871): is a minimal meditation, breathing, relaxation app. I love the UX and how it used transparency and blur. It was one of my main inspirations for Sunshine.
+- [Simple Ratio](https://apps.apple.com/us/app/simple-ratio/id1499370739): a super minimal app that helps me put the proper ratio of water/coffee beans when making pour-overs.
+
+**I love these apps for their simplicity and original UX**, and I feel this is the kind of apps that deep down I wanted to build. My next SwiftUI project will probably be something similar, **all I need is an idea** 😄.
+
+</Callout>
+
+### Commitment
+
+The "iOS 14.2 update incident" that broke my app left a bad taste in my mouth. **It made me reconsider the commitment that one must put in an iOS project**.
+
+<Callout variant="danger">
+
+This is perhaps the most important thing I learned while building Sunshine. If there's one main take away from this project, it's definitely this part.
+
+</Callout>
+
+**A simple iOS update can easily break your app**, especially SwiftUI-based, to a point where it can be completely unusable. The only way to avoid this as an iOS developer is to test your app on every iOS betas as soon as they get released. If I were to fully commit to this project **I'd be in a perpetual race with Apple's update cycle** and could not afford to miss an update at the risk of getting bad ratings or letting down my users.
+
+**This is not something I usually have to worry about when working on a web-based project.**
+
+On top of that **releasing a patch or a new version of an iOS app is significantly slower and more complex than patching your web app**: No third-party company reviews your website or SaaS when you update it. You just patch the issues, run your deploy scripts, and done! For iOS apps, you have to go through the App Store review process which can take a significant amount of time. **I did not take all of these elements into account when starting this project**.
+
+This is not a critic of the Apple Ecosystem, far from that. I'm pretty sure these drawbacks would have easily been minimized would my project be less complex.
+
+### The result did not meet expectations
+
+While Sunshine may look great on the video recordings and screenshots, in reality it's a different story.
+
+**The app ended up feeling sluggish at times**. Swiping pages randomly drops frames, even if I disable all the animations or hide complex views. There are a few memory leaks that I tried my best to track down. However, after weeks of investigation, and no progress made, I simply gave up.
+
+**Are the underlying reasons linked to SwiftUI itself? Or the way I use it?** I still have no way to know. SwiftUI is still in its infancy, and while Apple is extremely invested in it, it still feels it's not quite there yet in some specific areas at times.
+
+That last bit was quite discouraging after all this work. It is probably is **the main reason why I completely stopped working on Sunshine** and why it's stuck in an unfinished state. The result was simply not on a par with what I originally envisioned and wanted to release.
+
+On top of that, drawing my own assets was way more time consumming that I thought it would be. There were too many weather types to handle, and I was not able to provide a satisfying result for some of them with my current Figma skills.
+
+### Cost
+
+Probably the least important reason, but worth mentioning still. I used [Open Weather Map's One Call API](https://openweathermap.org/api/one-call-api) to provide accurate weather data. They have a decent free tier that's perfect for development. However, **I'd quickly exceed the limit of calls per hour/day if I were to release it**.
+
+The next tier is $40/month, which I can afford without a problem, the next one though is $180/month which made me think a bit more: **Was I serious enough about this project to start spending a significant amount of money to run it over time or was this just for fun?**
+
+## Conclusion
+
+<Callout variant="info">
+
+If you like Sunshine and want to deep dive a bit more into the project, you can [take a look at the codebase on Github](https://github.com/MaximeHeckel/sunshine-weather-app). I left some instructions to help you set it up.
+
+Some assets are missing, some others are not animated, and there might be 1 or 2 bugs here and there still 😅. It's in an unfinished state and I don't plan on maintaining it on the long run for now.
+
+Let me know if you come up with interesting hacks or ideas built on top of it!
+
+</Callout>
+
+Despite all the setbacks and the looming "doom" of this project, **I still had tons of fun!** I loved sharing my journey and my solutions to the little problems encountered along the way with all of you on Twitter. Seeing this app slowly take shape was incredibly satisfying. I feel confident that the lessons learned here will be tremendously helpful and guarantee the success of my future SwiftUI projects.
+
+This project also helped me realized how lucky we frontend/web developers are. **The speed at which we can develop an idea from a prototype to a product, the tooling, and the community we have is something to be cherished.**
+
+Nonetheless, I will still continue to build stuff with SwiftUI. My next project will probably be very simple, like the ones I mentioned in the previous part, or maybe just a series of bite-sized apps/experiments like [@jsngr](https://twitter.com/jsngr) does so well. This was my first failed SwiftUI project, it probably won't be the last. There's still a lot to learn and a lot of fun to have building stuff.
+
+**Want to checkout more of my SwiftUI related content?**
+
+- [Going native: SwiftUI from the perspective of a React developer](/posts/swiftui-as-react-developer/)
+- [Storing User Settings in a SwiftUI app using UserDefaults](/snippets/2020-11-27-storing-user-settings-swift/)
+- [Semi transparent blur or frosted glass effect in SwiftUI](/snippets/2020-9-1-semitransparentblurorfrostedglasseffectinswiftui/)
+- [Animate LinearGradient on state change in SwiftUI](/snippets/2020-8-23-animatelineargradientonstatechangeinswiftui/)
+- [SwiftUI TabView with PageTabViewStyle and full screen background colors](/snippets/2020-8-23-swiftuitabviewwithpagetabviewstyleandfullscreenbackgroundcolors/)

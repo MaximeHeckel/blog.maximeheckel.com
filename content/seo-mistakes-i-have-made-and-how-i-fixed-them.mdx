@@ -1,0 +1,461 @@
+---
+title: "SEO mistakes I've made and how I fixed them"
+subtitle: A look back at what I learned fixing my terrible SEO mistakes on my Gatsby websites
+date: '2020-10-13T08:00:00.000Z'
+categories: []
+keywords: ['seo', 'gatsby', 'jamstack', 'react', 'meta', 'canonical links', 'trailing slashes', 'netlify', 'blogging', 'devs']
+slug: seo-mistakes-i-have-made-and-how-i-fixed-them
+type: 'blogPost'
+featured: false
+---
+
+<SEOAnimation />
+
+From 0 to 90k impressions in about a year, following **S**earch **E**ngine **O**ptimization good practices was key to help to grow my blog and my audience. However, when I started it, **I made terrible mistakes** that some SEO literate people could almost qualify as self-sabotage.
+
+Thus, I want to dedicate this blog post **to look back at 3 issues** that caused me, and many others, countless headaches when dealing with SEO and Gatsby and **the steps I took to fix them**. I hope that this will help to fix some issues you might currently have on your awesome blog or portfolio without even being aware of them, kick-off your audience growth, and get discovered online 🚀.
+
+## Why SEO is so important?
+
+You might know very little about what SEO does behind the scenes. To me, at least, it looked like an obscure, inconsistent, pseudo-science that only marketing people could understand (spoiler alert, it still kind of is).
+However, after getting [@monicalent](https://twitter.com/monicalent)'s awesome course [bloggingfordevs](https://bloggingfordevs.com/), it made the inner workings and good practices related to SEO a bit clearer to me. To quote her from her first newsletter
+
+> SEO is a way of making sure that search engines can understand what your page is about, that it contains quality up-to-date information from an authoritative source, and will answer the question that the searcher had in mind.
+
+With good SEO, search engines can know what your content is about, discover all the blog posts you've written and, if you're lucky, catapult you to the top search result for a given set of keywords. Moreover, where **sharing my newest articles on Twitter and Reddit would just cause a spike in traffic for a few days**, **SEO helps you get a more consistent traffic** on your website, and for a longer time. The latter is what I was lacking for the longest time, despite having set up my Gatsby website and SEO component properly (or at least I thought so).
+
+Gatsby's documentation has an incredibly well-written section on [how to build an SEO component](https://www.gatsbyjs.com/tutorial/seo-and-social-sharing-cards-tutorial/) to help you get started. However, that alone wasn't enough to make my blog discoverable early on, as you can see in the chart below representing the number of daily impressions I got since starting this blog:
+
+```js render
+const { ResponsiveContainer, LineChart, Line, XAxis, Tooltip } = Recharts;
+
+const Wrapper = styled('div')`
+  @media (max-width: 700px) {
+    width: 350px;
+    height: 300px;
+  }
+
+  padding: 20px;
+  width: 600px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  alignitems: center;
+`;
+
+const TooltipWrapper = styled('div')`
+  padding: 10px;
+  width: 200px;
+  height: 75px;
+  font-size: 14px;
+  background-color: #FFFFFF;
+  color: black;
+  border-radius: 5px;
+`;
+
+const Chart = () => {
+  const data = [
+    { date: 1601942400000, impressions: 1141 },
+    { date: 1601424000000, impressions: 1078 },
+    { date: 1600905600000, impressions: 871 },
+    { date: 1600387200000, impressions: 583 },
+    { date: 1599868800000, impressions: 746 },
+    { date: 1599350400000, impressions: 990 },
+    { date: 1598832000000, impressions: 904 },
+    { date: 1598313600000, impressions: 702 },
+    { date: 1597795200000, impressions: 525 },
+    { date: 1597276800000, impressions: 552 },
+    { date: 1596758400000, impressions: 345 },
+    { date: 1596240000000, impressions: 329 },
+    { date: 1595721600000, impressions: 494 },
+    { date: 1595203200000, impressions: 542 },
+    { date: 1594684800000, impressions: 420 },
+    { date: 1594166400000, impressions: 444 },
+    { date: 1593648000000, impressions: 321 },
+    { date: 1593129600000, impressions: 179 },
+    { date: 1592611200000, impressions: 179 },
+    { date: 1592092800000, impressions: 309 },
+    { date: 1591574400000, impressions: 364 },
+    { date: 1591056000000, impressions: 282 },
+    { date: 1590537600000, impressions: 245 },
+    { date: 1590019200000, impressions: 169 },
+    { date: 1589500800000, impressions: 145 },
+    { date: 1588982400000, impressions: 136 },
+    { date: 1588464000000, impressions: 177 },
+    { date: 1587945600000, impressions: 155 },
+    { date: 1587427200000, impressions: 141 },
+    { date: 1586908800000, impressions: 177 },
+    { date: 1586390400000, impressions: 118 },
+    { date: 1585872000000, impressions: 47 },
+    { date: 1585353600000, impressions: 92 },
+    { date: 1584835200000, impressions: 118 },
+    { date: 1584316800000, impressions: 88 },
+    { date: 1583798400000, impressions: 105 },
+    { date: 1583280000000, impressions: 74 },
+    { date: 1582761600000, impressions: 37 },
+    { date: 1582243200000, impressions: 17 },
+    { date: 1581724800000, impressions: 23 },
+    { date: 1581206400000, impressions: 59 },
+    { date: 1580688000000, impressions: 44 },
+    { date: 1580169600000, impressions: 43 },
+    { date: 1579651200000, impressions: 52 },
+    { date: 1579132800000, impressions: 51 },
+    { date: 1578614400000, impressions: 16 },
+    { date: 1578096000000, impressions: 15 },
+    { date: 1577577600000, impressions: 28 },
+    { date: 1577059200000, impressions: 30 },
+    { date: 1576540800000, impressions: 44 },
+    { date: 1576022400000, impressions: 20 },
+    { date: 1575504000000, impressions: 21 },
+    { date: 1574985600000, impressions: 6 },
+    { date: 1574467200000, impressions: 19 },
+    { date: 1573948800000, impressions: 42 },
+    { date: 1573430400000, impressions: 34 },
+    { date: 1572912000000, impressions: 29 },
+    { date: 1572393600000, impressions: 49 },
+    { date: 1571875200000, impressions: 56 },
+    { date: 1571356800000, impressions: 11 },
+    { date: 1570838400000, impressions: 4 },
+    { date: 1570320000000, impressions: 18 },
+    { date: 1569801600000, impressions: 31 },
+    { date: 1569283200000, impressions: 10 },
+    { date: 1568764800000, impressions: 4 },
+    { date: 1568246400000, impressions: 1 },
+    { date: 1567728000000, impressions: 5 },
+    { date: 1567209600000, impressions: 11 },
+    { date: 1566691200000, impressions: 11 },
+    { date: 1566172800000, impressions: 0 },
+  ].reverse();
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active) {
+      return (
+        <TooltipWrapper>
+          <div>{`Date: ${new Date(label).getFullYear()}/${new Date(label).getMonth() + 1}/${new Date(label).getDate()}`}</div>
+          <div>{`Impressions: ${payload[0].value}`}</div>
+        </TooltipWrapper>
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <Wrapper>
+      <ResponsiveContainer>
+        <LineChart
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <Tooltip content={<CustomTooltip />} />
+          <XAxis
+            domain={['auto', 'auto']}
+            type="number"
+            dataKey="date"
+            interval="preserveStartEnd"
+            stroke="#949699"
+            tickFormatter={(date) => `${new Date(date).getFullYear()}/${new Date(date).getMonth() + 1}/${new Date(date).getDate()}`}
+          />
+          <Line
+            dot={false}
+            type="monotone"
+            dataKey="impressions"
+            stroke="#ff008c"
+            strokeWidth={2}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </Wrapper>
+  );
+};
+
+render(
+  <div>
+    <Chart />
+  </div>
+);
+```
+
+<figcaption>
+  Chart representing the number of impressions per day of this blog on Google
+  Search from August 2019 to the October 2020 (hover to see the data)
+</figcaption>
+<br />
+<br />
+
+For most of its first year, my blog was getting less than 50 daily impressions. **Today**, after fixing the issues I'm about to talk about, **I get over 1000 daily impressions and it's still growing!**
+Of course, SEO is not the only component here, I also created more content this year and choose a better way to promote them, but it is still a significant driver to the growth you can see above.
+
+## Trailing slashes chaos
+
+The blog you're reading this article on is built with Gatsby and hosted on Netlify. Sadly, using these two tools together without taking care of inconsistent trailing slash `/` at the end of your URLs can result in some undesirable outcomes.
+
+One of these outcomes was that I was seeing a lot of `301` redirects logged in my analytics as readers were navigating to my articles. On my blog, a link to one of my blog posts would typically look like this: `/posts/learning-in-public` but when a reader clicked on it Netlify would append a trailing slash at the end of it thus redirecting the user.
+
+That, my friends, is extremely bad for SEO. It impacted several unrelated areas of my website, such as:
+
+- **Opengraph images or Twitter cards not being rendered consistently**: readers would share a link sometimes with or without the trailing slash which would make it hard for some services to get the proper metadata and thus render a simple link instead of a proper preview card.
+- **Invalid URLs in sitemap**: my sitemap is generated automatically at build time with a Gatsby plugin based on the URLs and pages of my website. Since I did not have trailing slashes at the end of my URLs it would generate my sitemap without them which once uploaded to Google Search Console would result in tons of warnings about invalid URLs since Google referenced the ones with the trailing slashes.
+
+### How I fixed this
+
+I could have fixed this in two different ways:
+
+1. Disable the "Pretty URLs" option in Netlify's asset optimization settings. (see screenshot below)
+2. Add a trailing slash to all my URLs on my blog.
+
+![Image showcasing the asset optimizations options available in the Netlify project settings. Here you can see that I have the pretty URL option turned on which will add a trailing slash at the end of my URLs on this project.](/static/images/netlify-settings.png)
+
+As Google already referenced my blog posts with a trailing slash, I decided to go with option number 2.
+
+That change might look insignificant, but it resulted in a lot of weird issues suddenly disappearing. Additionally, it was essential for me to fix this before addressing the issue I'm just about to start talking about 😄!
+
+## Canonical links
+
+If you've been following me for a while, you might have started reading my content on [Medium](https://medium.com/@MaximeHeckel). I started blog.maximeheckel.com just about a year ago as of the time I'm writing these words. All the content on this site that dates back to before August 2019, was originally published on Medium.
+
+On top of that, I did not edit the articles when migrating them to this website, nor did I delete the Medium ones. This resulted in [duplicated content](https://moz.com/learn/seo/duplicate-content), which meant that my newly deployed blog was in competition with Medium on the same keyword, the same content, from the same author when it comes to ranking on Google.
+
+Thankfully there's a way to avoid this: **setting canonical URLs**. These URLs are placed in the `<head>` of your blog posts source code and designate that this post is the "original" post with that given content.
+
+There are 2 steps to add valid canonical URLs to your website:
+
+1. You need to add them to the `<head>` of your post. For example: `<link rel="canonical" href="https://blog.maximeheckel.com/posts/learning-in-public/" />`
+2. Head over to any third party platform you used in the past that has the content and add this canonical URL into the setting page of your post. I followed [this guide](https://help.medium.com/hc/en-us/articles/360033930293-Set-a-canonical-link) on Medium to update my old blog post.
+
+Of course, you cannot do the first step until you've fixed any potential trailing slashes issues you may have like the ones I shared just above.
+
+<Callout variant="danger">
+
+If like me you're a Gatsby user, you might be tempted to use [gatsby-plugin-canonical-urls](https://www.gatsbyjs.com/plugins/gatsby-plugin-canonical-urls/) which adds canonical URLs to your site's HTML pages at build time. 
+
+**I do not recommend this plugin** for complex setups.
+
+I tried it and it would consistently fail to put the proper URL, especially since my website as offline support it would sometimes write the offline fallback url in the `<head/>` of my HTML pages. 
+You'll be safer to add your canonical links programmatically in your own SEO component. See the code snippet below for an example. 
+
+</Callout>
+
+```js {48} title=Simplied version of the SEO component I built with support for canonical URLs 
+
+import { graphql, StaticQuery } from 'gatsby';
+import React from 'react';
+import Helmet from 'react-helmet';
+
+const query = graphql`
+  query SEO {
+    site {
+      siteMetadata {
+        defaultTitle: title
+        author
+        keywords
+        siteUrl: url
+        defaultDescription: description
+        twitter
+      }
+    }
+  }
+`;
+
+const SEO = ({ title, desc, image, pathname, date }) => (
+  <StaticQuery
+    query={query}
+    render={({
+      site: {
+        siteMetadata: {
+          author,
+          defaultTitle,
+          siteUrl,
+          keywords,
+          defaultDescription,
+          twitter,
+        },
+      },
+    }) => {
+      const seo = {
+        description: desc || defaultDescription,
+        image: `${siteUrl}${image}`,
+        date: date ? date : '',
+        title: title || defaultTitle,
+        url: `${siteUrl}/${pathname ? `posts/${pathname}` : ''}`,
+      };
+
+      return (
+        <Helmet title={seo.title} defer={false}>
+          <html lang="en" />
+          <meta name="description" content={seo.description} />
+          <meta name="image" content={seo.image} />
+          <link rel="canonical" href={seo.url} />
+          <meta property="og:url" content={seo.url} />
+          <meta property="og:type" content="article" />
+          <meta
+            name="keywords"
+            content={keywords && keywords.length > 0 ? keywords.join(`, `) : ''}
+          />
+          <meta property="og:title" content={seo.title} />
+          <meta property="og:description" content={seo.description} />
+          <meta property="og:image" content={seo.image} />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:creator" content={twitter} />
+          <meta name="twitter:site" content={twitter} />
+          <meta name="twitter:title" content={seo.title} />
+          <meta name="twitter:description" content={seo.description} />
+          <meta name="twitter:image" content={seo.image} />
+        </Helmet>
+      );
+    }}
+  />
+);
+
+```
+
+## Server-side rendering and missing meta tags
+
+In this part, we'll look at the one instance where Gatsby's server-side rendering mixed with my carelessness completely broke my SEO. By completely I mean all my custom SEO meta tags that I carefully put in my SEO component were gone from the server-side rendered version of the website making it almost invisible to any search engine.
+
+### How it happened
+
+This issue stemmed from what I would qualify as an **interrupted static HTML build**. 
+
+When building your Gatsby site the last steps of the build process involve building your production JS files and also generating the HTML for each page. If you're looking for more details you can check out [this section of the Gatsby documentation about the build process](https://www.gatsbyjs.com/docs/overview-of-the-gatsby-build-process/).
+
+However, I wrote a `ThemeProvider` that wrapped the whole application. Thus any component or page can know which theme (dark or light) is currently enabled and the colors to use. This component was added to the `gatsby-ssr` and `gatsby-browser` files.
+
+Under the hood, this `ThemeProvider` worked as follow:
+- the state of the theme (dark or light) was injected via a React Provider to the whole app, that's how I can allow users to toggle between each theme.
+- that same state was also saved in the local storage to make sure revisiting the website would keep the previous theme enabled. When a reader loads this blog, the ThemeProvider will check for the presence of a specific variable in `localStorage` before setting the theme accordingly.
+
+I dedicated a blog post for this: [Switching off the lights - Adding dark mode to your React app](/posts/switching-off-the-lights-adding-dark-mode-to-your-react-app-with-context-and-hooks-f41da6e07269/)
+and it actually contains the mistake that triggered the missing meta tags:
+
+- Getting the variable set to the current theme from local storage was done in a React `useEffect`. Thus, for a brief instant when loading or refreshing the website, the website would fallback to the default theme as the effect to set the proper theme was only ran after the server-rendered page was already served.
+- To avoid this issue, I added a small tweak to track whether the theme was fetched from local storage or not and  **render an empty div while the theme was being retrieved**.
+
+The code snippet below is an excerpt of my original implementation for the ThemeProvider of this blog.
+
+```js {3-11} title=Excerpt of my original ThemeProvider (where I made my dumb mistake)
+
+const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  const [themeState, setThemeState] = useDarkMode();
+  if (!themeState.hasThemeLoaded) {
+    /*
+      If the theme is not yet loaded we don't want to render
+      this is just a workaround to avoid having the app rendering
+      in light mode by default and then switch to dark mode while
+      getting the theme state from localStorage
+    */
+    return <div />;
+  }
+  const theme = themeState.dark ? theme('dark') : theme('light');
+  const toggle = () => {
+    // toogle function goes here
+  };
+  
+  // Once the theme is loaded, render the rest of the DOM
+  return (
+    <EmotionThemeProvider theme={theme}>
+      <ThemeContext.Provider
+        value={{
+          dark: themeState.dark,
+          toggle,
+        }}
+      >
+        {children}
+      </ThemeContext.Provider>
+    </EmotionThemeProvider>
+  );
+};
+
+```
+
+Rendering that empty div is what made my SEO meta tags disappear. **The static HTML build would only generate the tree up to that div** since the theme had no way to be set at build time, **and thus would skip all the rest of the DOM** which included my pages and components, as well as **the SEO component** 😱. 
+Since, the code of the SEO component was not being reached during that step of the build, the meta tags couldn't be injected in the static HTML.
+
+<Callout variant="info">
+
+Shoutout to [@chrisbiscardi](https://twitter.com/chrisbiscardi) for helping me debugging this one, he helped me a lot to go through the Gatsby build process and track down the origin of this error. It would have taken me way longer to solve this issue without his help.
+
+</Callout>
+
+
+Additionally, that kind of issue was hard to track because the tags were showing up when inspecting the page with the dev tools client-side, they were however completely absent from the source of the page (the one you can get by right-clicking on a web page and clicking on "View Page Source"). 
+
+Having SEO tags completely missing from the page source made SEO third-party services like [Twitter Card Validator](https://cards-dev.twitter.com/validator) simply unusable with my blog. My articles would only show up as basic links on social media. No cards, no preview, not even a title which is very bad when you try to grab the attention of your audience!
+
+<Callout variant="info">
+
+FYI, I have since changed my implementation of the `ThemeProvider` component of this blog which fixes this issue. You can find the updated version in [Fixing the "dark mode flash" issue on server-rendered websites](/posts/switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website/).
+
+</Callout>
+
+My SEO meta tags disappeared **second time** earlier this year in July 2020, after adding `gatsby-plugin-feed` and trying to make it work on my blog. **Once again, be extremely careful when adding Gatsby plugins that can write on the** `<head/>` **of your pages**. There might create some undesirable outcomes without even you knowing!
+
+### The long term solution
+
+As you can imagine, I was tired of these issues coming out of nowhere and didn't want to manually check every single change I'd make in the future to ensure meta tags would not be removed. To this problem, I brought a solution that I'd usually bring up at work: **I wrote an automated test**.
+
+```js title=My SEO tests that I run against every new build to ensure my SEO tags are intact
+
+const META_RE = /<meta\s[A-Za-z0-9="-:;!@\/\s]*/g;
+const CANONICAL_RE = /rel="canonical"\s[A-Za-z0-9="-:;!@\/\s]*/g;
+
+describe('SEO: Verify meta tag integrity', () => {
+  it('has all the meta tags and the expected canonical url set in the landing page head', async () => {
+    const res = await fetch('/');
+    const text = await res.text();
+
+    const metaTags = text.match(META_RE) || [];
+    const canonicalTag = text.match(CANONICAL_RE) || [];
+
+    expect(metaTags).to.have.length(16);
+    expect(canonicalTag).to.have.length(1);
+    cy.wrap(metaTags).snapshot();
+    cy.wrap(canonicalTag).snapshot();
+  });
+
+  it('has all the meta tags and the expected canonical url set in the blog post head', async () => {
+    const res = await fetch('/posts/how-to-build-first-eslint-rule');
+    const text = await res.text();
+
+    const metaTags = text.match(META_RE) || [];
+    const canonicalTag = text.match(CANONICAL_RE) || [];
+
+    expect(metaTags).to.have.length(19);
+    expect(canonicalTag).to.have.length(1);
+    cy.wrap(metaTags).snapshot();
+    cy.wrap(canonicalTag).snapshot();
+  });
+});
+
+```
+
+(Don't judge my regex skills 😅)
+
+The code snippet above is the test that I run with Cypress on **every PR** without exception. This test:
+
+- fetches the source code of the landing page and a blog post against the built version of the blog
+- looks at the text-based body of the request. That text-based result contains the HTML code for the entire page and thus should contain all the meta tags I set up in my SEO component.
+- compares the obtained string of meta tags to a snapshot. That snapshot contains the source of truth when it comes to the expected state of my meta tags
+
+<Callout variant="info">
+
+Cypress supports snapshot testing pretty much the same way Jest does! You just need to install the `@cypress/snapshot` package first and [follow these instructions to set it up](https://github.com/cypress-io/snapshot#use) before you can get snapshot capabilities in your integration and e2e tests.
+
+</Callout>
+
+## Conclusion
+
+In a nutshell:
+- **Be mindful of the consistency of your trailing slashes!** Inconsistencies can lead to poor ranking.
+- If you syndicate your content, **do not forget to add canonical URLs**. I was basically in competition with my own Medium posts up until late this year and missed on a lot more traffic and potential readers.
+- Do not blindly trust gatsby plugins! Especially the ones that inject things in the `<head>` of your pages. If misused, they can be pretty harmful without even you knowing.
+- **Check the page source of your website!** Inspecting via the dev tools is sometimes not enough to ensure the meta tags are properly injected in your site.
+- Make sure your meta tags can't be blocked from rendering because of a client side side effect when relying on SSR.
+- When in doubt: **Write tests!** I dedicated [a whole blog post about CI/CD](/posts/guide-to-cicd-for-frontend-developers/) where I showcase how great tests and a great CI/CD pipeline help me keep my peace of mind.
+
+If you want to go further into how to build an audience, and learn more about creating content and SEO, I would highly encourage you to follow [@monicalent](https://twitter.com/monicalent) on Twitter as well as her [Blogging For Devs course](https://bloggingfordevs.com/). She's an SEO expert and I learned more about efficient SEO techniques in a single newsletter than I would have otherwise!

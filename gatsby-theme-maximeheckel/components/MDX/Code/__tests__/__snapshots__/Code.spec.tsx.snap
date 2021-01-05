@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Code preToCodeBlock returns the proper set of props for our code block components if the children are of type <code> 1`] = `
+Object {
+  "className": "",
+  "codeString": "some code to render",
+  "language": "",
+  "mdxType": "code",
+  "metastring": "javascript",
+}
+`;

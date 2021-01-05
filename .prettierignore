@@ -2,3 +2,9 @@
 package.json
 package-lock.json
 public
+node_modules
+out_functions
+out_publish
+.next
+.github/actions/gh-action-snippetify/dist
+yarn.lock

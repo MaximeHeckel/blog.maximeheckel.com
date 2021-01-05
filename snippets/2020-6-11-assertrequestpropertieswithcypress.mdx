@@ -1,19 +1,19 @@
 ---
 title: Assert request properties with cypress
 language: js
-created: 2020-06-11T15:44:49.765Z
+date: '2020-06-11T15:44:49.765Z'
 slug: 2020-6-11-assertrequestpropertieswithcypress
-snippetImage: './img/2020-6-11-assertrequestpropertieswithcypress.png'
+snippetImage: '/static/images/2020-6-11-assertrequestpropertieswithcypress.png'
 type: snippet
 ---
 
 ```js snippet
-it("Calls the correct endpoint with the expected payload when clicking on submit", () => {
+it('Calls the correct endpoint with the expected payload when clicking on submit', () => {
   cy.server();
   cy.route({
-    url: "https://my-awesome-app.com/submit",
-    method: "POST",
-  }).as("submitPOST");
+    url: 'https://my-awesome-app.com/submit',
+    method: 'POST',
+  }).as('submitPOST');
 
   /**
    * Use a data-testid attribute toi target the element we want to click on
@@ -28,22 +28,26 @@ it("Calls the correct endpoint with the expected payload when clicking on submit
    * This will yield an object containing the HTTP request and response properties.
    *
    */
-  cy.wait("@submitPOST").should((req) => {
+  cy.wait('@submitPOST').should(req => {
     /**
      * You can run any kind of assertions against the request object
      */
-    expect(req.method).to.equal("POST");
+    expect(req.method).to.equal('POST');
     /**
      * You can check the type of any property
      */
-    expect(req.request.body).to.have.property("foo").and.be.a("array");
-    expect(req.request.body).to.have.property("hello").and.be.a("string");
+    expect(req.request.body)
+      .to.have.property('foo')
+      .and.be.a('array');
+    expect(req.request.body)
+      .to.have.property('hello')
+      .and.be.a('string');
 
     /**
      * You can run assertions on any fields
      */
-    expect(req.request.body.foo).to.have.members(["bar", "baz"]);
-    expect(req.request.body.hello).to.equal("world");
+    expect(req.request.body.foo).to.have.members(['bar', 'baz']);
+    expect(req.request.body.hello).to.equal('world');
   });
 
   /**
@@ -51,6 +55,4 @@ it("Calls the correct endpoint with the expected payload when clicking on submit
    */
   cy.get('[data-testid="foobar"]');
 });
-
 ```
-  

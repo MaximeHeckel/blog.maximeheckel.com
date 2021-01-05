@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Callout can render a Callout with variant danger 1`] = `
+.emotion-0 {
+  border-radius: 4px var(--border-radius-2) var(--border-radius-2) 4px;
+  border-left: 3px solid;
+  padding: 30px 30px;
+  margin-bottom: 25px;
+  background-color: var(--maximeheckel-colors-danger-emphasis);
+  border-color: var(--maximeheckel-colors-danger);
+  color: var(--maximeheckel-colors-typeface-0);
+}
+
+@media (max-width: 600px) {
+  .emotion-0 {
+    position: relative;
+    width: 100vw;
+    left: calc(-50vw + 50%);
+    border-radius: 0px;
+  }
+}
+
+.emotion-0 *:last-child {
+  margin-bottom: 0px;
+}
+
+<body>
+  <div>
+    <div
+      class="emotion-0 emotion-1"
+    >
+      Test
+    </div>
+  </div>
+</body>
+`;
+
+exports[`Callout can render a Callout with variant info 1`] = `
+.emotion-0 {
+  border-radius: 4px var(--border-radius-2) var(--border-radius-2) 4px;
+  border-left: 3px solid;
+  padding: 30px 30px;
+  margin-bottom: 25px;
+  background-color: var(--maximeheckel-colors-emphasis);
+  border-color: var(--maximeheckel-colors-brand);
+  color: var(--maximeheckel-colors-typeface-0);
+}
+
+@media (max-width: 600px) {
+  .emotion-0 {
+    position: relative;
+    width: 100vw;
+    left: calc(-50vw + 50%);
+    border-radius: 0px;
+  }
+}
+
+.emotion-0 *:last-child {
+  margin-bottom: 0px;
+}
+
+<body>
+  <div>
+    <div
+      class="emotion-0 emotion-1"
+    >
+      Test
+    </div>
+  </div>
+</body>
+`;

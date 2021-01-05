@@ -1,9 +1,9 @@
 ---
 title: SwiftUI TabView with PageTabViewStyle and full screen background colors
 language: swift
-created: 2020-08-23T00:16:40.408Z
+date: '2020-08-23T00:16:40.408Z'
 slug: 2020-8-23-swiftuitabviewwithpagetabviewstyleandfullscreenbackgroundcolors
-snippetImage: './img/2020-8-23-swiftuitabviewwithpagetabviewstyleandfullscreenbackgroundcolors.png'
+snippetImage: '/static/images/2020-8-23-swiftuitabviewwithpagetabviewstyleandfullscreenbackgroundcolors.png'
 type: snippet
 ---
 
@@ -12,9 +12,9 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selected = 0
-    
+
     private let colors: [Color] = [.blue, .white, .black]
-    
+
     var body: some View {
         ZStack {
             colors[selected].edgesIgnoringSafeArea(.all).animation(.easeIn)
@@ -28,8 +28,7 @@ struct ContentView: View {
         }.statusBar(hidden: true)
     }
 
-    
+
 }
 
 ```
-  

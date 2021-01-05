@@ -1,0 +1,106 @@
+---
+title: Running Golang tests with Jest
+subtitle: How to use the Jest platform to run Golang test
+date: '2018-01-10T17:00:17.216Z'
+categories: []
+keywords: []
+slug: running-golang-tests-with-jest-b5d8f3d43a7
+cover:
+type: 'blogPost'
+---
+
+For the last few months, I focused a lot on testing several projects in React, which led to me hearing a lot about [Jest](https://facebook.github.io/jest/): a zero configuration and instant feedback testing platform for JavaScript code. It’s the tool I was waiting for to help me appreciate the true value of testing my code, without it being a pain thanks to its great UX, watch mode feature, filename pattern filtering or the ability to only test modified files. However, since I’m usually working on a Golang + React stack, whenever I had to focus on Go code, it was always hard to get back to using `go test` after enjoying Jest and its features so much. Additionally this required context switching between the testing platforms of Javascript and Go.
+
+A few weeks ago, I got the privilege to hear about “Jest as a test platform” from one of the top contributor of the Jest project [Rogelio Guzman](https://medium.com/u/c69719c24c49) , and especially about **jest runners** and what they can achieve. For those who want a great introduction to what Jest is and what kind of problem it solves, I highly recommend you to check out [his talk from React Conf 2017](https://www.youtube.com/watch?v=NtjyeojAOBs&feature=youtu.be).
+
+The story behind jest runners inspired me and several days later, I wrote [**jest-runner-go**](https://github.com/MaximeHeckel/jest-runner-go)**, a jest runner that enables anyone to execute Golang tests using the Jest platform and its features.**
+
+## First, what are Jest runners?
+
+In a nutshell, Jest is composed of multiple packages that are each one responsible for a specific step in your test run lifecycle. Runners are the packages that focus on “running” tests. Jest provides an interface to plug your own runner on both the interface package, which is in charge of finding files, providing the UX and filtering, and the result reporting package, which basically manages the output of your tests.
+
+![Diagram representing the lifecycle of a test run with Jest including multiple Jest runners.](/static/images/1__tnK7Hzbq7cXG6r7TtIDIKA.jpeg)
+
+The ability to add custom runners is interesting in case you want to run other types of tests than the default ones supported by Jest. In the case of jest-runner-go, the runner will simply run `go test` against all Go tests files found by the Jest interface and parse the output in a way the Jest result reporting package can understand it and present the results in a more human readable way.
+
+## Using jest-runner-go with Jest
+
+Using Jest to test both the Golang backend and the React frontend of an app has brought me a certain peace of mind, especially when running the tests during CI: the output is consistent and clear across my stack when running my tests. Additionally I get features that are not available with `go tests` like a native watch mode or running tests with a specific pattern which makes the experience of running tests in Go better.
+
+To integrate jest-runner-go in your project, first run `yarn add jest jest-runner-go` then simply add the following to whichever Jest config you’re using, either `jest.config.js` or a specific config that will be passed with the `--config` flag when running Jest, or even the `package.json` of the project:
+
+```json {4} title=Jest config file
+"moduleFileExtensions": \[
+ "go"
+\],
+"runner": "jest-runner-go",
+"testMatch": \[
+ "\*\*/?(\*\_)test.go"
+\]
+```
+
+Then running `jest` or `jest --config my-go-test-config` will find all the files matching `_test.go`, execute `go test` against each of these files and finally parse the output produced by `go test` so Jest will get the required data to output.
+
+As mentioned before, most of my use cases for jest-runner-go along with the classic jest-runner include whenever one of my projects uses both Go and React. It’s possible to run the tests of both sides of the project in a single test run by using the `--projects` flag and pass multiple Jest configs. In the example below, I added the previous config to a config file called `gojest.config.js` and then used the following command in a small project generated with `create-react-app` that also includes some Go code with unit tests:
+
+```bash title=Running Jest with multiple Jest configs
+jest --projects jest.config.js gojest.config.js
+```
+
+which gives us the following output:
+
+[**Jest-runner-go** Recorded by maxime_asciinema.org](https://asciinema.org/a/9grFmeodfWDGbT88XLGJk5Gak 'https://asciinema.org/a/9grFmeodfWDGbT88XLGJk5Gak')[](https://asciinema.org/a/9grFmeodfWDGbT88XLGJk5Gak)
+
+## Other runners
+
+Other Jest runners have been written these last few months, the most notable ones that I’ve found or been introduced to so far are:
+
+- [jest-runner-eslint](https://github.com/jest-community/jest-runner-eslint)
+- [jest-runner-mocha](https://github.com/rogeliog/jest-runner-mocha)
+- [jest-runner-prettier](https://github.com/keplersj/jest-runner-prettier)
+- [pyjest](https://github.com/cpojer/pyjest)
+
+## What’s coming next?
+
+This article focused a lot on using jest-runner-go to run Go tests along with Javascript tests, but what if we want to use it to only test Go code?
+
+This case is a tricky one as many Go projects owners don’t want to have a dependency on Node to run their tests, as well as everything that comes with it: a `node_modules` folder, a `package.json` and a Jest config.
+
+That’s why I started working on **Gojest: a standalone binary to run Go tests using the Jest platform and jest-runner-go**. The project is compiled for Linux, macOS and Windows using [pkg](https://github.com/zeit/pkg) and is available [here](https://github.com/MaximeHeckel/gojest). This is purely experimental and is obviously not intended to be used in production given how new and not widely used the project and jest-runner-go currently are.
+
+If you want to get the latest version of Gojest you can either download the binaries from [the release page of the project](https://github.com/MaximeHeckel/gojest/releases) or install them using Docker by running the following:
+
+For macOS
+
+```shell title=Install command for gojest on macOS
+docker pull maximeheckel/gojest:latest &&
+id=$(docker create maximeheckel/gojest:latest) &&
+docker cp $id:/gojest-macos /usr/local/bin/gojest && (docker rm \$id >/dev/null)
+```
+
+For Linux
+
+```shell title=Install command for gojest on Linux
+docker pull maximeheckel/gojest:latest &&
+id=$(docker create maximeheckel/gojest:latest) &&
+docker cp $id:/gojest-linux /usr/local/bin/gojest && (docker rm \$id >/dev/null)
+```
+
+For Windows
+
+```shell title=Install command for gojest on Windows
+docker pull maximeheckel/gojest:latest &&
+id=$(docker create maximeheckel/gojest:latest) &&
+docker cp $id:/gojest-win.exe gojest.exe && (docker rm \$id >/dev/null)
+```
+
+Here’s an example of using Gojest to run unit tests in a Go project:
+
+[**Gojest running Docker tests** Recorded by MaximeHeckel_asciinema.org](https://asciinema.org/a/OQ8MQDGYNiQ2aqUECvGk061ZD 'https://asciinema.org/a/OQ8MQDGYNiQ2aqUECvGk061ZD')[](https://asciinema.org/a/OQ8MQDGYNiQ2aqUECvGk061ZD)
+
+I really hope to make jest-runner-go and Gojest stable enough to be used by the Go community in a decent timeframe. If you want to contribute or give feedback, both projects are available on Github at
+
+- [https://github.com/MaximeHeckel/jest-runner-go](https://github.com/MaximeHeckel/jest-runner-go)
+- [https://github.com/MaximeHeckel/gojest](https://github.com/MaximeHeckel/gojest)
+
+Pull requests are more than welcome.
