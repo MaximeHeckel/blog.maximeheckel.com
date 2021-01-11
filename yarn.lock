@@ -1746,17 +1746,10 @@
     core-js-pure "^3.0.0"
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3":
-  version "7.10.3"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.3.tgz#670d002655a7c366540c67f6fd3342cd09500364"
-  integrity sha512-RzGO0RLSdokm9Ipe/YD+7ww8X2Ro79qiXZF3HU9ljrM+qnJmH1Vqth+hbiQZy761LnMJTMitHDuKVYTk3k4dLw==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.4.3", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.4", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2", "@babel/runtime@^7.9.6":
-  version "7.9.6"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.9.6.tgz#a9102eb5cadedf3f31d08a9ecf294af7827ea29f"
-  integrity sha512-64AF1xY3OAkFHqOb9s4jpgk1Mm5vDZ4L3acHvAml+53nO1XbXLuDodsVpO4OIUsmemlUHMxNdYMNJmsvOwLrvQ==
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.12.5", "@babel/runtime@^7.4.3", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.4", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2", "@babel/runtime@^7.9.6":
+  version "7.12.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
+  integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -9076,21 +9069,21 @@ gatsby-graphiql-explorer@^0.4.5:
   dependencies:
     "@babel/runtime" "^7.10.2"
 
-gatsby-image@2.2.43:
-  version "2.2.43"
-  resolved "https://registry.yarnpkg.com/gatsby-image/-/gatsby-image-2.2.43.tgz#af6fd591fa4a08b6ddadf5f40220bc5066a8f317"
-  integrity sha512-21UpYpXXax8AkDH3cYOeS2P898VdMGEb5G5kG4BysEh3nWbxpTpnvtETYW8Ps+qfzZL+W604JrXqZQ32m/F3jA==
-  dependencies:
-    "@babel/runtime" "^7.7.6"
-    object-fit-images "^3.2.4"
-    prop-types "^15.7.2"
-
 gatsby-image@2.4.7:
   version "2.4.7"
   resolved "https://registry.yarnpkg.com/gatsby-image/-/gatsby-image-2.4.7.tgz#a8a867a11b1af36a377df551685b85a26e62c59d"
   integrity sha512-n9btEYLUDjpnJQBK4vSfjgVuwNhPcPwbQoz5pV7kRlB3r1k141ZaYgubM6hgsZxu47btjUKtLiThBJAQP2L9ow==
   dependencies:
     "@babel/runtime" "^7.10.2"
+    object-fit-images "^3.2.4"
+    prop-types "^15.7.2"
+
+gatsby-image@2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/gatsby-image/-/gatsby-image-2.9.0.tgz#2beecf109de1d2676a64f2aef3b5cf85cba2f9ea"
+  integrity sha512-PZu8PhjQwL6anlCYlm8bVVCypMYqoMT6knHZS8UVotSy1+DbKorDVOtFFEq936oelEjuV+bBx9KuLOh7MpH8Qw==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
     object-fit-images "^3.2.4"
     prop-types "^15.7.2"
 
