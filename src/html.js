@@ -11,6 +11,10 @@ export default function HTML(props) {
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
+        <meta
+          name="google-site-verification"
+          content="f11boUvGIzjbYwQVuaCieN-J4vcA_BxJuO_S54WPf-U"
+        />
         <link
           rel="webmention"
           href="https://webmention.io/blog.maximeheckel.com/webmention"
