@@ -15,7 +15,7 @@ const Wrapper = styled('div')<{ width?: number }>`
     margin: 0 auto;
     border-radius: var(--border-radius-2);
     background: unset;
-    width: ${p => `${p.width}px` || '100%'};
+    width: ${(p) => `${p.width}px` || '100%'};
   }
 
   .plyr__video-wrapper {
@@ -40,7 +40,11 @@ const VideoPlayer = (props: Props) => {
 
   React.useEffect(() => {
     if (poster) {
-      setCurrentPoster(getDisplayedPoster(poster, dark));
+      if (!poster.includes('.png')) {
+        setCurrentPoster(getDisplayedPoster(poster, dark));
+      } else {
+        setCurrentPoster(poster);
+      }
     }
   }, [dark]);
 
