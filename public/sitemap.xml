@@ -172,6 +172,12 @@
   </url>
 
   <url>
+    <loc>https://blog.maximeheckel.com/posts/first-failed-swiftui-project/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://blog.maximeheckel.com/posts/framer-motion-emotion/</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>

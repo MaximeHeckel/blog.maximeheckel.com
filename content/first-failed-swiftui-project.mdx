@@ -35,9 +35,14 @@ If you're interested, you can read [Going native: SwiftUI from the perspective o
 
 </Callout>
 
-<div style={{margin: "50px auto 0px auto", maxWidth: "250px"}}>
+<div style={{margin: "50px auto 75px auto", width: "250px", height: "250px"}}>
 
-![Sunshine's App Icon](/static/images/sunshine-icon.svg)
+<Image
+  src="/static/images/sunshine-icon.svg"
+  alt="Sunshine's App Icon"
+  height={250}
+  width={250}
+/>
 
 </div>
 
@@ -63,7 +68,13 @@ The app has three main screens, each of them having a simple role yet featuring 
 
 The main screen features the name of the location, the date, and one of the most complex SwiftUI View I built for this app: the **Weather Card**.
 
-!["Screenshot of Sunshine showcasing the main screen with the weather card. The weather card displays the weather at a given location, here Tokyo and Perth, with the temperature conditions and metrics such as wind speed or humidity, as well as a graph displaying the position of the sun.](/static/images/weather-card.svg)
+<Image
+  src="/static/images/weather-card.svg"
+  alt="Screenshot of Sunshine showcasing the main screen with the weather card. The weather card displays the weather at a given location, here Tokyo and Perth, with the temperature conditions and metrics such as wind speed or humidity, as well as a graph displaying the position of the sun."
+  layout="responsive"
+  width={700}
+  height={675}
+/>
 
 This card is central to the UX. It displays all the information about the current weather conditions at a glance such as:
 
@@ -80,7 +91,13 @@ The color of the card also adapts based on both the weather conditions and the t
 
 Sliding the bottom panel up reveals the **Forecast Panel**. I felt it was a good idea to hide the complexity of this panel away from the main screen while still keeping the user "in context" within the main screen when it's displayed.
 
-![Screenshot of Sunshine's forecast panel. It showcases the 2 section: the first one displays the weather forecast at the given location for the next 6 hours, the second one for the next 7 days.](/static/images/forecast-panel.svg)
+<Image
+  src="/static/images/forecast-panel.svg"
+  alt="Screenshot of Sunshine's forecast panel. It showcases the 2 section: the first one displays the weather forecast at the given location for the next 6 hours, the second one for the next 7 days."
+  layout="responsive"
+  width={700}
+  height={690}
+/>
 
 On this screen you can see both:
 
@@ -93,7 +110,13 @@ Each card will display the temperature, and the weather conditions are reflected
 
 Tapping the menu icon on the top left corner brings the **Settings Panel**. This is where you can manage some settings and also the list of locations.
 
-![Screenshot of Sunshine's settings panel. It showcases the 2 main section: the first one displays the list of locations the user has added the second one is the settings tab that lets the user choose between different units to display the temperature and the wind speed.](/static/images/settings-panel.svg)
+<Image
+  src="/static/images/settings-panel.svg"
+  alt="Screenshot of Sunshine's settings panel. It showcases the 2 main section: the first one displays the list of locations the user has added the second one is the settings tab that lets the user choose between different units to display the temperature and the wind speed."
+  layout="responsive"
+  width={700}
+  height={675}
+/>
 
 While the Sunshine feels somewhat simple from what we've just seen, it presented its own set of challenges and setbacks during the development... which was great! 🎉 These challenges allowed me to learn so much more than I would have had by solely focusing on mini-projects around a specific aspect of SwiftUI, so if you ask me now, all that frustration was worth it!
 

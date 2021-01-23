@@ -1,14 +1,18 @@
-import Image from 'next/image';
-import Button from '@theme/components/Button';
-import Pill from '@theme/components/Pill';
+// External
 import { Tweet } from 'mdx-embed';
 
+// Components
+import Button from '@theme/components/Button';
+import Pill from '@theme/components/Pill';
+
+// MDX only components
 import Callout from './Callout';
 import { Blockquote } from './Blockquote';
 import { Code, InlineCode } from './Code';
+import Image from './Image';
 import VideoPlayer from './VideoPlayer';
 
-// CUSTOM COMPONENTS
+// Custom components (used in blog posts)
 import AnimationTypes from './custom/FramerGuide/AnimationTypes';
 import ClipboardAnimationDetails from './custom/FramerGuide/ClipboardAnimationDetails';
 import Orchestration from './custom/FramerGuide/Orchestration';
