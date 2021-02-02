@@ -114,11 +114,10 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (active) {
     return (
       <TooltipWrapper>
-        <div>{`Time: ${new Date(label).getHours()}:${(new Date(
-          label
-        ).getMinutes() < 10
-          ? '0'
-          : '') + new Date(label).getMinutes()}`}</div>
+        <div>{`Time: ${new Date(label).getHours()}:${
+          (new Date(label).getMinutes() < 10 ? '0' : '') +
+          new Date(label).getMinutes()
+        }`}</div>
         <div>{`Impressions: ${payload[0].value}`}</div>
       </TooltipWrapper>
     );
@@ -163,7 +162,7 @@ const HeartRateWidget = () => {
 
   const lastEntry = healthData ? healthData[0] : { heartRate: [] };
 
-  const dataPoints = lastEntry.heartRate.map(entry => ({
+  const dataPoints = lastEntry.heartRate.map((entry) => ({
     value: entry.value,
     timestamp: new Date(entry.timestamp).getTime(),
   }));

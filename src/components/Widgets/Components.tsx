@@ -53,7 +53,6 @@ export const AnimationCardHeader = styled('div')`
   width: 100%;
   text-align: center;
   font-weight: 600;
-  // font-size: 18px;
 `;
 
 export const HighlightedValue = styled('div')`
@@ -78,7 +77,6 @@ export const Wrapper = styled('div')`
 
 export const Form = styled('form')`
   margin: 20px 0;
-  height: 50px;
   width: 70%;
   z-index: 1;
   display: flex;
