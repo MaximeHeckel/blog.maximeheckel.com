@@ -1,5 +1,16 @@
 import { posts } from '../../cache/data';
 
+/**
+ * TODO improve this implementation: use Levenshtein distance or any other search algorithm that
+ * could make this more scalable in the future:
+ * - support tags
+ * - support partial string
+ * - support sentences
+ * - support typos (?)
+ *
+ * This is good for now
+ */
+
 export default (req, res) => {
   const results = req.query.q
     ? posts.filter((post) => {

@@ -1,5 +1,6 @@
 :root {
   --base-hue: 222;
+  --base-saturation: 89;
 
   --base-gray: var(--base-hue), 8%;
   --palette-gray-00: var(--base-gray), 100%;
@@ -16,7 +17,7 @@
   --palette-gray-95: var(--base-gray), 10%;
   --palette-gray-100: var(--base-gray), 5%;
 
-  --base-blue: var(--base-hue), 89%;
+  --base-blue: var(--base-hue), calc(var(--base-saturation) * 1%);
   --palette-blue-10: var(--base-blue), 95%;
   --palette-blue-20: var(--base-blue), 85%;
   --palette-blue-30: var(--base-blue), 75%;

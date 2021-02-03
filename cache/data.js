@@ -1,5 +1,26 @@
 export const posts = [
   {
+    title: 'The Power of Composition with CSS Variables',
+    subtitle:
+      'How leveraging CSS variable composition and HSLA colors helped me build a more efficient way to theme my apps and rely less on CSS-in-JS.',
+    date: '2021-02-02T08:00:00.000Z',
+    categories: [],
+    keywords: [
+      'css',
+      'variables',
+      'hsla',
+      'colors',
+      'composition',
+      'theme',
+      'styles',
+      'frontend',
+      'apps',
+    ],
+    slug: 'the-power-of-composition-with-css-variables',
+    type: 'blogPost',
+    featured: false,
+  },
+  {
     title: 'My first failed SwiftUI project',
     subtitle:
       'A reflection on my experience building my first SwiftUI app, what I learned, the challenges I faced, and the reasons that made me not release it.',

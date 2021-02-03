@@ -413,7 +413,7 @@ const ShortcutKey = styled('span')`
   font-size: 14px;
   border-radius: var(--border-radius-1);
   padding: 8px 8px;
-  background: rgba(81, 132, 249, 0.15);
+  background: var(--maximeheckel-colors-emphasis);
   &:not(:last-child) {
     margin-right: 16px;
   }

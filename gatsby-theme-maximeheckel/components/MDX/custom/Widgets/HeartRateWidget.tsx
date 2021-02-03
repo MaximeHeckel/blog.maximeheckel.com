@@ -244,4 +244,4 @@ const HeartRateWidget = () => {
   );
 };
 
-export { HeartRateWidget };
+export default HeartRateWidget;

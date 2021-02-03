@@ -11,12 +11,9 @@ import { Blockquote } from './Blockquote';
 import { Code, InlineCode } from './Code';
 import Image from './Image';
 import VideoPlayer from './VideoPlayer';
+import { ListItem } from './MDX';
 
 // Custom components (used in blog posts)
-import AnimationTypes from './custom/FramerGuide/AnimationTypes';
-import ClipboardAnimationDetails from './custom/FramerGuide/ClipboardAnimationDetails';
-import Orchestration from './custom/FramerGuide/Orchestration';
-import HeartRateWidget from './custom/HeartRateWidget';
 import Card from './custom/Card';
 import {
   BranchPreview,
@@ -33,10 +30,24 @@ import {
 } from './custom/MicroAnimations/PreviewDeploy';
 import { SlidingWindow } from './custom/MicroAnimations/ReactSwift';
 
+// Widgets (used in blog post for interactive experiences)
+import {
+  AnimationTypes,
+  ClipboardAnimationDetails,
+  HeartRateWidget,
+  HSLAShowcase,
+  Orchestration,
+  PaletteGenerator,
+  ThemePicker,
+} from './custom/Widgets';
+
 const customComponents = {
   AnimationTypes,
   ClipboardAnimationDetails,
+  HSLAShowcase,
   Orchestration,
+  PaletteGenerator,
+  ThemePicker,
   HeartRateWidget,
   BranchPreview,
   CodeValidation,
@@ -57,6 +68,7 @@ export const MDXComponents = {
   Callout,
   Image,
   inlineCode: InlineCode,
+  li: ListItem,
   Pill,
   pre: Code,
   VideoPlayer,
