@@ -4,7 +4,15 @@ subtitle: >-
   Bringing a proper solution to dark mode flashing without an ugly hack.
 date: '2020-04-16T08:00:00.000Z'
 categories: []
-keywords: ['react', 'dark mode', 'server rendered', 'gatsby', 'css custom properties', 'theme']
+keywords:
+  [
+    'react',
+    'dark mode',
+    'server rendered',
+    'gatsby',
+    'css custom properties',
+    'theme',
+  ]
 slug: switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website
 type: 'blogPost'
 featured: false
@@ -24,35 +32,34 @@ Why does this issue show up? [@JoshWComeau](https://twitter.com/JoshWComeau) exp
 
 > "Dark Mode" is surprisingly tricky, especially in a server-rendered context (like with Gatsby or Next.js). The problem is that the HTML is generated long before it reaches the user's device, so there's no way to know which color theme the user prefers.
 
-To avoid this issue back when implementing it for the first time I did what I'd call an "ugly hack". I'd  avoid rendering the whole website until the theme to render was known, and in the meantime, I'd just render a simple `<div/>`:
+To avoid this issue back when implementing it for the first time I did what I'd call an "ugly hack". I'd avoid rendering the whole website until the theme to render was known, and in the meantime, I'd just render a simple `<div/>`:
 
 ```js title=Code snippet from my first dark mode article featuring the ugly hack to avoid "dark mode flash"
-  if (!themeState.hasThemeLoaded) {
-    /*
+if (!themeState.hasThemeLoaded) {
+  /*
       If the theme is not yet loaded we don't want to render
       this is just a workaround to avoid having the app rendering
       in light mode by default and then switch to dark mode while
       getting the theme state from localStorage
     */
-    return <div />;
-  }
-  const theme = themeState.dark ? theme('dark') : theme('light');
+  return <div />;
+}
+const theme = themeState.dark ? theme('dark') : theme('light');
 ```
 
 This ugly hack caused me some of the most frustrating problems I've had in a while, one of them even took me several days to figure out:
 
-<Tweet tweetLink="MaximeHeckel/status/1163877803583868928" />
+<StaticTweet id="1163877803583868928" />
 
 (Again thank you [@chrisbiscardi](https://twitter.com/chrisbiscardi) for taking the time to help me debug this)
 
 I then brought another solution to this problem: add a `display: hidden` CSS style to the main wrapper until the theme was loaded [as featured in this blog post](https://brianlovin.com/overthought/adding-dark-mode-with-next-js). It fixed my SEO issues, but I was still not satisfied with this fix.
 
-After reading Josh Comeau's blog post on using CSS variables along with  Emotion Styled Components, I decided to leverage these to fix the dark mode flashing issue once and for all (no hack this time!).
+After reading Josh Comeau's blog post on using CSS variables along with Emotion Styled Components, I decided to leverage these to fix the dark mode flashing issue once and for all (no hack this time!).
 
 ## Using CSS variables in my themes
 
 Originally I had my theme set to an object looking roughly like the following:
-
 
 ```js title=Original version of a theme including light and dark mode colors
 const theme = {
@@ -72,7 +79,6 @@ The cool thing I've learned recently is that it's possible to convert the hardco
 The first thing to do add these CSS variables in a [Emotion Global component](https://emotion.sh/docs/globals):
 
 ```js {8-9,13-14} title=Emotion global component with CSS Custom properties
-
 import { css, Global } from '@emotion/core';
 import React from 'react';
 
@@ -80,13 +86,13 @@ const GlobalStyles = () => (
   <Global
     styles={css`
       .theme-light {
-        --theme-colors-gray: #F8F8F9;
+        --theme-colors-gray: #f8f8f9;
         --theme-colors-black: #161617;
       }
 
       .theme-dark {
         --theme-colors-black: #161617;
-        --theme-colors-white: #FFFFFF;
+        --theme-colors-white: #ffffff;
       }
     `}
   />
@@ -123,6 +129,7 @@ If not already available in the `src` folder the `html.js` can be copied from th
 ```bash
 cp .cache/default-html.js src/html.js
 ```
+
 <Callout variant="info">
 
 Note: you can read more about custom `html.js` in the [Gatsby documentation](https://www.gatsbyjs.org/docs/custom-html/)
@@ -142,19 +149,16 @@ Shout out to [@_aquaductape_](https://twitter.com/_aquaductape_) for writing a f
 The following will have to be added to this file:
 
 ```js title=Javascript script that reads the local storage item with the key 'mode' to load the proper theme
-
-  (function() {
-    try {
-      var mode = localStorage.getItem('mode');
-      var supportDarkMode =
-        window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-      if (!mode && supportDarkMode)
-        document.body.classList.add('theme-dark');
-      if (!mode) return;
-      document.body.classList.add('theme-' + mode);
-    } catch (e) {}
-  })();
-
+(function () {
+  try {
+    var mode = localStorage.getItem('mode');
+    var supportDarkMode =
+      window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+    if (!mode && supportDarkMode) document.body.classList.add('theme-dark');
+    if (!mode) return;
+    document.body.classList.add('theme-' + mode);
+  } catch (e) {}
+})();
 ```
 
 This script does the following:
@@ -165,37 +169,29 @@ This script does the following:
 4. If there's simply no mode set in local storage we don't do anything, which will end up loading the default theme of our UI
 5. Otherwise, we add the class associated with the mode set in local storage to the body of the document
 
-
 We can add the script to the `html.js` file inside the `<body>` tag as follows:
 
 ```html {3-18} title=html.js file featuring our custom script
 ...
 <body {...props.bodyAttributes}>
-        <script
-          key="maximeheckel-theme"
-          dangerouslySetInnerHTML={{
-            __html: `(function() {
-			    try {
-			      var mode = localStorage.getItem('mode');
-			      var supportDarkMode =
-			        window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-			      if (!mode && supportDarkMode)
-			        document.body.classList.add('theme-dark');
-			      if (!mode) return;
-			      document.body.classList.add('theme-' + mode);
-			    } catch (e) {}
-			  })();`,
-          }}
-        />
-        {props.preBodyComponents}
-        <div
-          key={`body`}
-          id="___gatsby"
-          dangerouslySetInnerHTML={{ __html: props.body }}
-        />
-        {props.postBodyComponents}
-      </body>
-      ...
+  <script key="maximeheckel-theme" dangerouslySetInnerHTML={{ __html:
+  `(function() { try { var mode = localStorage.getItem('mode'); var
+  supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  === true; if (!mode && supportDarkMode)
+  document.body.classList.add('theme-dark'); if (!mode) return;
+  document.body.classList.add('theme-' + mode); } catch (e) {} })();`, }} />
+  {props.preBodyComponents}
+  <div
+    key="{`body`}"
+    id="___gatsby"
+    dangerouslySetInnerHTML="{{"
+    __html:
+    props.body
+    }}
+  />
+  {props.postBodyComponents}
+</body>
+...
 ```
 
 ## Updating the toggle function
@@ -205,32 +201,28 @@ There's one last update to be done: updating the toggle light/dark mode function
 In the example featured in the [first blog post](https://blog.maximeheckel.com/posts/switching-off-the-lights-adding-dark-mode-to-your-react-app-with-context-and-hooks-f41da6e07269#theme-provider) this is what the function looked like:
 
 ```js title=Original function to toggle between light and dark mode
-
 const toggle = () => {
   const dark = !themeState.dark;
   localStorage.setItem('dark', JSON.stringify(dark));
   setThemeState({ ...themeState, dark });
 };
-
 ```
 
 And this is what we need to add to make it work properly again:
 
 ```js title=Updated function to toggle between light and dark mode
-
 const toggle = () => {
   const dark = !themeState.dark;
-  if(dark) {
-	document.body.classList.remove('theme-light');
-	document.body.classList.add('theme-dark');
+  if (dark) {
+    document.body.classList.remove('theme-light');
+    document.body.classList.add('theme-dark');
   } else {
-  	document.body.classList.remove('theme-dark');
-	document.body.classList.add('theme-light');
+    document.body.classList.remove('theme-dark');
+    document.body.classList.add('theme-light');
   }
   localStorage.setItem('dark', JSON.stringify(dark));
   setThemeState({ ...themeState, dark });
 };
-
 ```
 
 ## Result
