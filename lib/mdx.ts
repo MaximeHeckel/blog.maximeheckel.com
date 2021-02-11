@@ -19,6 +19,9 @@ export const getFiles = async (type: PostType) => {
   return fs.readdirSync(path.join(root, typeToPath[type]));
 };
 
+// Regex to find all the custom static tweets in a MDX file
+const TWEET_RE = /<StaticTweet\sid="[0-9]+"\s\/>/g;
+
 export const getFileBySlug = async <T extends PostType>(
   type: T,
   slug: string
@@ -46,8 +49,30 @@ export const getFileBySlug = async <T extends PostType>(
   });
 
   if (type === PostType.BLOGPOST) {
+    // TODO: maybe we want to extract this in its own lib?
+    /**
+     * Find all occurrence of <StaticTweet id="NUMERIC_TWEET_ID"/>
+     * in the content of the MDX blog post
+     */
+    const tweetMatch = content.match(TWEET_RE);
+
+    /**
+     * For all occurrences / matches, extract the id portion of the
+     * string, i.e. anything matching the regex /[0-9]+/g
+     *
+     * tweetIDs then becomes an array of string where each string is
+     * the id of a tweet.
+     * These IDs are then passed to the getTweets function to be fetched from
+     * the Twitter API.
+     */
+    const tweetIDs = tweetMatch?.map((mdxTweet) => {
+      const id = mdxTweet.match(/[0-9]+/g)![0];
+      return id;
+    });
+
     const result = {
       mdxSource,
+      tweetIDs: tweetIDs || [],
       frontMatter: {
         readingTime: readingTime(content),
         ...data,

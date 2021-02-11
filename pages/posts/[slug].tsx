@@ -23,14 +23,23 @@ const Blog = ({ post, ogImage, tweets }: BlogProps) => {
     return <div>Loading...</div>;
   }
 
-  const MyTweet = ({ id }: { id: string }) => {
+  /**
+   * HACK:
+   * This is an "inline" MDX Component. It allows me to read the out-of-scope "tweets" object
+   * and then inject it with the tweet content at "hydration" time.
+   * Although it works it will still print a warning at compilation/build time:
+   *
+   * "Component StaticTweet was not imported, exported, or provided by MDXProvider as global scope"
+   */
+
+  const StaticTweet = ({ id }: { id: string }) => {
     return <Tweet tweet={tweets[id]} />;
   };
 
   const content = hydrate(post.mdxSource, {
     components: {
       ...MDXComponents,
-      MyTweet,
+      StaticTweet,
     },
   });
 
@@ -59,15 +68,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const post = await getFileBySlug(PostType.BLOGPOST, params!.slug as string);
-    const tweets = await getTweets(['1341062627221487616']);
 
-    //  console.log(tweets);
+    /**
+     * Get tweets from API
+     */
+    const tweets =
+      // TODO: write proper return types for getTweets
+      post.tweetIDs.length > 0 ? await getTweets(post.tweetIDs) : {};
+
     const ogImage = await getOgImage({
       title: post.frontMatter.title,
       background: post.frontMatter.colorFeatured,
       color: post.frontMatter.fontFeatured,
     });
-
     return { props: { post, ogImage, tweets } };
   } catch (error) {
     // eslint-disable-next-line

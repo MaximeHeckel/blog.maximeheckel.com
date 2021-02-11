@@ -24,6 +24,7 @@ export type FrontMatterPost = {
   frontMatter: Post & {
     readingTime: ReadingTime;
   };
+  tweetIDs: string[];
   mdxSource: string;
 };
 

@@ -1,7 +1,15 @@
 import { css } from '@emotion/react';
 import Image from 'next/image';
 
-const Tweet = ({ tweet }) => {
+// TODO: Convert to typescript
+const Tweet = (props) => {
+  const { tweet } = props;
+
+  // TODO: There's a race condition happening where the tweet might end up being undefined at first
+  if (!tweet) {
+    return null;
+  }
+
   const {
     author,
     media,
@@ -11,6 +19,11 @@ const Tweet = ({ tweet }) => {
     text,
     referenced_tweets,
   } = tweet;
+
+  /*
+   TODO: this is heavily inspired by https://github.com/leerob/leerob.io/blob/main/components/Tweet.js need to come up
+         need to come up with a more "custom style" matching the rest of the site.
+  */
 
   const authorUrl = `https://twitter.com/${author.username}`;
   const likeUrl = `https://twitter.com/intent/like?tweet_id=${id}`;
@@ -191,6 +204,7 @@ const Tweet = ({ tweet }) => {
           title={`Time Posted: ${createdAt.toUTCString()}`}
           dateTime={createdAt.toISOString()}
         >
+          {/* TODO: Format date */}
           {createdAt.toISOString()}
         </time>
       </a>

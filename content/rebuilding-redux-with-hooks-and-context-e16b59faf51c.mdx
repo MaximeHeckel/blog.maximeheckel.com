@@ -84,7 +84,7 @@ We now have all the elements for our implementation of Redux to work! Below you 
 import React, { useContext } from 'react';
 import { Store, Provider } from './store';
 
-const Data = props => {
+const Data = (props) => {
   const { state, dispatch } = useContext(Store);
   return <div>{props.data}</div>;
 };
@@ -139,7 +139,7 @@ const mapStateToProps = (state, props) => ({
   message: `${state.data} ${props.extra}`,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   get: () => dispatch({ type: 'FETCH_DATA', payload: 'Hello world!' }),
   reset: () => dispatch({ type: 'RESET_DATA', payload: 'null' }),
 });
@@ -154,11 +154,10 @@ Given the code above, our connect HoC must take 2 optional arguments: a `mapStat
 
 ```javascript {9-13} title=Implementation of the connect HoC from Redux based on the useContext hook
 // store.js
-const connect = (
-  mapStateToProps = () => {},
-  mapDispatchToProps = () => {}
-) => WrappedComponent => {
-  return props => {
+const connect = (mapStateToProps = () => {}, mapDispatchToProps = () => {}) => (
+  WrappedComponent
+) => {
+  return (props) => {
     const { dispatch, state } = useContext(Store);
     return (
       <WrappedComponent
@@ -186,7 +185,7 @@ Note: This short summary and the code implementation below are based on my own r
 
 ```javascript title=Implementation of middleware support for our createStore function
 // store.js
-const compose = (...funcs) => x =>
+const compose = (...funcs) => (x) =>
   funcs.reduceRight((composed, f) => f(composed), x);
 
 const createStore = (reducer, initialState, middlewares) => {
@@ -196,9 +195,9 @@ const createStore = (reducer, initialState, middlewares) => {
     // return middlewares(createStore)(reducer, initialState);
     const middlewareAPI = {
       getState: () => state,
-      dispatch: action => dispatch(action),
+      dispatch: (action) => dispatch(action),
     };
-    const chain = middlewares.map(middleware => middleware(middlewareAPI));
+    const chain = middlewares.map((middleware) => middleware(middlewareAPI));
     const enhancedDispatch = compose(...chain)(dispatch);
     return { state, dispatch: enhancedDispatch };
   }
@@ -211,7 +210,7 @@ We can now add a basic middleware to our `createStore` function. Here’s one th
 
 ```javascript title=Example of a custom middleware used with our Redux reimplementation
 // store.js
-const customMiddleware = store => next => action => {
+const customMiddleware = (store) => (next) => (action) => {
   console.log('Action Triggered');
   console.log(action);
   next(action);
@@ -229,7 +228,7 @@ const Provider = ({ children }) => {
 
 Thanks to the Context API and the recently announced Hooks, we saw that it is now easy to rebuild Redux. Is it usable? Yes, as we saw in this post, we covered the main components of Redux (Store, connect, middlewares, etc) and use them in a small app. Can this replace `react-redux`? Probably not. Redux still has a lot more than what we covered in this article, like the Redux Devtools or the entire ecosystem of libraries that can enhance your app on top of Redux. While writing this post I’ve personally tried to add the `redux-logger` middleware to our example, it “worked” but I couldn’t make it print the correct “next state”(maybe because the `useReducer` hook is async since it’s based on `setState` ):
 
-<Tweet tweetLink="MaximeHeckel/status/1059632395316473857" />
+<StaticTweet id="1059632395316473857" />
 
 but as you can see in this tweet, maybe I was just a bit too ambitious.
 
