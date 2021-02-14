@@ -9,6 +9,7 @@ import Layout from 'gatsby-theme-maximeheckel/src/layouts/index';
 import styled from '@emotion/styled';
 import React from 'react';
 import VisuallyHidden from 'gatsby-theme-maximeheckel/src/components/VisuallyHidden';
+import NewsletterForm from '../components/NewsletterForm';
 
 const MONTHS = [
   'Jan',
@@ -289,11 +290,18 @@ const IndexPage = ({ data }: Props) => {
                     margin-top: 100px;
                   `}
                 >
+                  <h2>Newsletter</h2>
+                  <NewsletterForm large />
+                </section>
+                <section
+                  css={css`
+                    margin-top: 100px;
+                  `}
+                >
                   <h2>Featured</h2>
                   <List
                     data-testid="featured-list"
                     css={css`
-                      padding-top: 30px;
                       display: grid;
                       grid-gap: 16px;
                     `}
@@ -374,7 +382,7 @@ const IndexPage = ({ data }: Props) => {
                     {data.allMdx.edges
                       .filter(({ node }) => node.frontmatter.type !== 'snippet')
                       .map(({ node }) => {
-                        let currentYear = new Date(
+                        const currentYear = new Date(
                           node.frontmatter.date
                         ).getFullYear();
                         let printYear;
@@ -441,7 +449,7 @@ const Glow = styled(motion.div)`
   height: 100%;
   -webkit-filter: blur(15px);
   filter: blur(15px);
-  border-radius: border-radius: var(--border-radius-2);
+  border-radius: var(--border-radius-2);
 `;
 
 const Card = styled(motion.div)`
@@ -465,7 +473,7 @@ const TitleWithBackground = styled('h2')<{ background: string }>`
   margin-bottom: 0px !important;
   letter-spacing: -0.02em;
   margin-block-end: 0px;
-  background: ${p => p.background};
+  background: ${(p) => p.background};
   background-clip: text;
   -webkit-background-clip: text;
   -moz-background-clip: text;
