@@ -2,6 +2,7 @@
 title: How to fix NPM link duplicate dependencies issues
 subtitle: Dealing with dependencies when developing a package and using it through npm link.
 date: '2020-03-31T08:00:00.000Z'
+updated: '2020-03-31T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -41,8 +42,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 const StyledButton = styled('button')`
-  background-color: ${props => props.theme.colors.blue};
-  border-color: ${props => props.theme.colors.black};
+  background-color: ${(props) => props.theme.colors.blue};
+  border-color: ${(props) => props.theme.colors.black};
 `;
 
 export { StyledButton };

@@ -2,8 +2,20 @@
 title: Generate screenshots of your code with a serverless function
 subtitle: Programmatic Carbon images generation from a simple API
 date: '2020-06-09T08:00:00.000Z'
+updated: '2020-06-09T08:00:00.000Z'
 categories: []
-keywords: ['vercel', 'serverless', 'function', 'headless', 'chrome', 'screenshot', 'carbon', 'code', 'snippet']
+keywords:
+  [
+    'vercel',
+    'serverless',
+    'function',
+    'headless',
+    'chrome',
+    'screenshot',
+    'carbon',
+    'code',
+    'snippet',
+  ]
 slug: creating-beautiful-screenshots-source-code-with-serverless-function
 featured: false
 colorFeatured: 'linear-gradient(135deg, rgba(241, 96, 138, 1) 10%, rgba(170, 104, 210, 0.6) 100%)'
@@ -35,8 +47,9 @@ Thus to automate the process of generating a code source image from this website
 ## Foundational work: sending the data and generating the URL
 
 The first step involved figuring out what kind of request I wanted to handle and I settled for the following patterns:
+
 - Sending **a file** over POST `curl -X POST -F data=@./path/to/file https://my-server-less-function.com/api/carbon`
-- Sending **a string** over POST `curl  -X POST -d "data=Y29uc29sZS5sb2coImhlbGxvIHdvcmxkIik=" https://my-server-less-function.com/api/carbon`
+- Sending **a string** over POST `curl -X POST -d "data=Y29uc29sZS5sb2coImhlbGxvIHdvcmxkIik=" https://my-server-less-function.com/api/carbon`
 
 This way I could either send a whole file or a string to the endpoint, and the cloud function could handle both cases. For this part, I used [formidable](https://www.npmjs.com/package/formidable) which provided an easy way to handle file upload for my serverless function.
 
@@ -46,63 +59,60 @@ To keep this article short, I'm not going to detail much this part since it's no
 
 </Callout>
 
-Once the data was received by the function, it needed to be "translate" to a valid  carbon URL. I wrote the following function `getCarbonUrl` to take care of that:
+Once the data was received by the function, it needed to be "translate" to a valid carbon URL. I wrote the following function `getCarbonUrl` to take care of that:
 
 ```js title=Implementation of getCarbonUrl
 const mapOptionstoCarbonQueryParams = {
-  backgroundColor: "bg",
-  dropShadow: "ds",
-  dropShadowBlur: "dsblur",
-  dropShadowOffsetY: "dsyoff",
-  exportSize: "es",
-  fontFamily: "fm",
-  fontSize: "fs",
-  language: "l",
-  lineHeight: "lh",
-  lineNumber: "ln",
-  paddingHorizontal: "ph",
-  paddingVertical: "pv",
-  theme: "t",
-  squaredImage: "si",
-  widthAdjustment: "wa",
-  windowControl: "wc",
-  watermark: "wm",
-  windowTheme: "wt",
+  backgroundColor: 'bg',
+  dropShadow: 'ds',
+  dropShadowBlur: 'dsblur',
+  dropShadowOffsetY: 'dsyoff',
+  exportSize: 'es',
+  fontFamily: 'fm',
+  fontSize: 'fs',
+  language: 'l',
+  lineHeight: 'lh',
+  lineNumber: 'ln',
+  paddingHorizontal: 'ph',
+  paddingVertical: 'pv',
+  theme: 't',
+  squaredImage: 'si',
+  widthAdjustment: 'wa',
+  windowControl: 'wc',
+  watermark: 'wm',
+  windowTheme: 'wt',
 };
 
-const BASE_URL = "https://carbon.now.sh";
+const BASE_URL = 'https://carbon.now.sh';
 
- const defaultQueryParams = {
-  bg: "#FFFFFF",
+const defaultQueryParams = {
+  bg: '#FFFFFF',
   ds: false,
-  dsblur: "50px",
-  dsyoff: "20px",
-  es: "2x",
-  fm: "Fira Code",
-  fs: "18px",
-  l: "auto",
-  lh: "110%",
+  dsblur: '50px',
+  dsyoff: '20px',
+  es: '2x',
+  fm: 'Fira Code',
+  fs: '18px',
+  l: 'auto',
+  lh: '110%',
   ln: false,
-  pv: "0",
-  ph: "0",
-  t: "material",
+  pv: '0',
+  ph: '0',
+  t: 'material',
   si: false,
   wa: true,
   wc: true,
-  wt: "none",
+  wt: 'none',
   wm: false,
 };
 
-const toCarbonQueryParam = (
-  options,
-) => {
+const toCarbonQueryParam = (options) => {
   const newObj = Object.keys(options).reduce((acc, curr) => {
     /**
      * Go through the options and map them with their corresponding
      * carbon query param key.
      */
-    const carbonConfigKey =
-      mapOptionstoCarbonQueryParams[curr];
+    const carbonConfigKey = mapOptionstoCarbonQueryParams[curr];
     if (!carbonConfigKey) {
       return acc;
     }
@@ -120,10 +130,7 @@ const toCarbonQueryParam = (
   return newObj;
 };
 
-export const getCarbonURL = (
-  source,
-  options,
-) => {
+export const getCarbonURL = (source, options) => {
   /**
    * Merge the default query params with the ones that we got
    * from the options object.
@@ -166,10 +173,10 @@ For this, I used [chrome-aws-lambda](https://github.com/alixaxel/chrome-aws-lamb
 This step also involves using [puppeteer-core](https://www.npmjs.com/package/puppeteer-core) to start the browser and take the screenshot:
 
 ```js title=Use chrome-aws-lambda and puppeteer-core to take a screenshot of a webpage
-import chrome from "chrome-aws-lambda";
-import puppeteer from "puppeteer-core";
+import chrome from 'chrome-aws-lambda';
+import puppeteer from 'puppeteer-core';
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NODE_ENV === 'development';
 
 /**
  * In order to have the function working in both windows and macOS
@@ -177,11 +184,11 @@ const isDev = process.env.NODE_ENV === "development";
  * both cases.
  */
 const exePath =
-  process.platform === "win32"
-    ? "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-    : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  process.platform === 'win32'
+    ? 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+    : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
-export const getOptions = async isDev => {
+export const getOptions = async (isDev) => {
   /**
    * If used in a dev environment, i.e. locally, use one of the local
    * executable path
@@ -203,7 +210,7 @@ export const getOptions = async isDev => {
   };
 };
 
-export const getScreenshot = async url => {
+export const getScreenshot = async (url) => {
   const options = await getOptions(isDev);
   const browser = await puppeteer.launch(options);
   const page = await browser.newPage();
@@ -221,16 +228,16 @@ export const getScreenshot = async url => {
   /**
    * Navigate to the url generated by getCarbonUrl
    */
-  await page.goto(url, { waitUntil: "load" });
+  await page.goto(url, { waitUntil: 'load' });
 
-  const exportContainer = await page.waitForSelector("#export-container");
+  const exportContainer = await page.waitForSelector('#export-container');
   const elementBounds = await exportContainer.boundingBox();
 
   if (!elementBounds)
-    throw new Error("Cannot get export container bounding box");
+    throw new Error('Cannot get export container bounding box');
 
   const buffer = await exportContainer.screenshot({
-    encoding: "binary",
+    encoding: 'binary',
     clip: {
       ...elementBounds,
       /**
@@ -258,10 +265,10 @@ In development, you'd need to use your local Chrome executable to run the functi
 Let's dive in the different steps that are featured in the code snippet above:
 
 1. Get the different options for puppeteer (we get the proper executable paths based on the environment)
-2. Start the headless chrome browser 
+2. Start the headless chrome browser
 3. Set the viewport. I set it to something big to make sure that the target is contained within the browser "window".
 4. Navigate to the URL we generated in the previous step
-5. Look for an HTML element with the id `export-container`, this is the div that contains our image. 
+5. Look for an HTML element with the id `export-container`, this is the div that contains our image.
 6. Get the `boundingBox` of the element ([see documentation for bounding box here](https://pptr.dev/#?product=Puppeteer&version=v3.1.0&show=api-elementhandleboundingbox)) which gave me the coordinates and the width/height of the target element.
 7. Pass the boundingBox fields as options of the screenshot function and take the screenshot. This eventually returns a binary buffer that can then be returned back as is, or converted to base64 string for instance.
 
@@ -287,6 +294,7 @@ Then, using the [Vercel CLI](https://vercel.com/docs/cli#getting-started) I coul
 - Deploy my function to prod using `vercel --prod`
 
 ## Try it out!
+
 You can try this serverless function using the following curl command:
 
 ```bash title=Sample curl command to call the serverless function
@@ -364,17 +372,17 @@ or here's a small playground where you can call it and get back a screenshot for
 
 If you want to deploy it on your own Vercel account, simply click the button bellow and follow the steps:
 
-<div style={{ display: 'flex', justifyContent: 'center'}}>
-    <a
-        style={{ textDecoration: 'none'}}
-        href="https://vercel.com/import/project?template=https://github.com/MaximeHeckel/carbonara"
-    >
-        <Button primary vercel>
-            Deploy to Vercel
-        </Button>
-    </a>
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+  <a
+    style={{ textDecoration: 'none' }}
+    href="https://vercel.com/import/project?template=https://github.com/MaximeHeckel/carbonara"
+  >
+    <Button primary vercel>
+      Deploy to Vercel
+    </Button>
+  </a>
 </div>
-<br/>
+<br />
 
 Otherwise, you can find all the code featured in this post in [this Github repository](https://github.com/MaximeHeckel/carbonara).
 
@@ -387,4 +395,4 @@ After reading all this you might be asking yourself: "But Maxime, what are you g
 - Enable a "screenshot" option for the code snippets in my blog posts so my readers could easily download code screenshots.
 - Many other ideas that I'm still working on right now!
 
-But, regardless of its usefulness or the number of use cases I could find for this serverless function, the most important is that I had a lot of fun building this and that I learned quite a few things. I'm now definitely sold on serverless and can't wait to come up with new ideas. 
+But, regardless of its usefulness or the number of use cases I could find for this serverless function, the most important is that I had a lot of fun building this and that I learned quite a few things. I'm now definitely sold on serverless and can't wait to come up with new ideas.

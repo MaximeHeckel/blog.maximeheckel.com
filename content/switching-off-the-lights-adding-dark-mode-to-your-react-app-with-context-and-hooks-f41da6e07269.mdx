@@ -5,6 +5,7 @@ subtitle: >-
   In this post, I’m going to share with you how I built dark mode support for a
   sample React app with Emotion themes.
 date: '2019-03-05T16:31:00.736Z'
+updated: '2019-03-05T16:31:00.736Z'
 categories: []
 keywords: []
 slug: switching-off-the-lights-adding-dark-mode-to-your-react-app-with-context-and-hooks-f41da6e07269
@@ -203,11 +204,11 @@ import styled from '@emotion/styled';
 import { useTheme } from './ThemeContext';
 
 const Wrapper = styled('div')`
-  background: ${props => props.theme.background};
+  background: ${(props) => props.theme.background};
   width: 100vw;
   height: 100vh;
   h1 {
-    color: ${props => props.theme.body};
+    color: ${(props) => props.theme.body};
   }
 `;
 

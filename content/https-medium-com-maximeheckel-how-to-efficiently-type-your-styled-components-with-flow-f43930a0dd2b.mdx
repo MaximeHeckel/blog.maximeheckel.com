@@ -4,6 +4,7 @@ subtitle: >-
   Adding Flow on top of styled components to avoid misusages before they hit
   production, and make developers’ and designers’ life easier.
 date: '2018-10-09T15:57:18.982Z'
+updated: '2018-10-09T15:57:18.982Z'
 categories: []
 keywords: []
 slug: https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b
@@ -28,7 +29,7 @@ Here’s the component that we’ll use as an example:
 import styled from 'react-emotion';
 
 const Title = styled('h1')(`
-  color: ${props => props.theme.colors[prop.color]}
+  color: ${(props) => props.theme.colors[prop.color]}
 `);
 
 export default Title;
@@ -115,7 +116,7 @@ type TitleProps = {
 };
 
 const Title: ComponentType<TitleProps> = styled('h1')(`
-  color: ${props => props.theme.colors[props.color]}
+  color: ${(props) => props.theme.colors[props.color]}
 `);
 
 export default Title;
@@ -164,7 +165,7 @@ type TitleProps = {
 };
 
 const Title: ComponentType<TitleProps> = styled('h1')(`
-  color: ${props => props.theme.colors[props.color]}
+  color: ${(props) => props.theme.colors[props.color]}
 `);
 
 export default Title;

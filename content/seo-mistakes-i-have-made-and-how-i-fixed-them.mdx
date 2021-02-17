@@ -2,8 +2,21 @@
 title: "SEO mistakes I've made and how I fixed them"
 subtitle: A look back at what I learned fixing my terrible SEO mistakes on my Gatsby websites
 date: '2020-10-13T08:00:00.000Z'
+updated: '2020-10-13T08:00:00.000Z'
 categories: []
-keywords: ['seo', 'gatsby', 'jamstack', 'react', 'meta', 'canonical links', 'trailing slashes', 'netlify', 'blogging', 'devs']
+keywords:
+  [
+    'seo',
+    'gatsby',
+    'jamstack',
+    'react',
+    'meta',
+    'canonical links',
+    'trailing slashes',
+    'netlify',
+    'blogging',
+    'devs',
+  ]
 slug: seo-mistakes-i-have-made-and-how-i-fixed-them
 type: 'blogPost'
 featured: false
@@ -48,7 +61,7 @@ const TooltipWrapper = styled('div')`
   width: 200px;
   height: 75px;
   font-size: 14px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: black;
   border-radius: 5px;
 `;
@@ -131,7 +144,9 @@ const Chart = () => {
     if (active) {
       return (
         <TooltipWrapper>
-          <div>{`Date: ${new Date(label).getFullYear()}/${new Date(label).getMonth() + 1}/${new Date(label).getDate()}`}</div>
+          <div>{`Date: ${new Date(label).getFullYear()}/${
+            new Date(label).getMonth() + 1
+          }/${new Date(label).getDate()}`}</div>
           <div>{`Impressions: ${payload[0].value}`}</div>
         </TooltipWrapper>
       );
@@ -159,7 +174,11 @@ const Chart = () => {
             dataKey="date"
             interval="preserveStartEnd"
             stroke="#949699"
-            tickFormatter={(date) => `${new Date(date).getFullYear()}/${new Date(date).getMonth() + 1}/${new Date(date).getDate()}`}
+            tickFormatter={(date) =>
+              `${new Date(date).getFullYear()}/${
+                new Date(date).getMonth() + 1
+              }/${new Date(date).getDate()}`
+            }
           />
           <Line
             dot={false}
@@ -232,17 +251,16 @@ Of course, you cannot do the first step until you've fixed any potential trailin
 
 <Callout variant="danger">
 
-If like me you're a Gatsby user, you might be tempted to use [gatsby-plugin-canonical-urls](https://www.gatsbyjs.com/plugins/gatsby-plugin-canonical-urls/) which adds canonical URLs to your site's HTML pages at build time. 
+If like me you're a Gatsby user, you might be tempted to use [gatsby-plugin-canonical-urls](https://www.gatsbyjs.com/plugins/gatsby-plugin-canonical-urls/) which adds canonical URLs to your site's HTML pages at build time.
 
 **I do not recommend this plugin** for complex setups.
 
-I tried it and it would consistently fail to put the proper URL, especially since my website as offline support it would sometimes write the offline fallback url in the `<head/>` of my HTML pages. 
-You'll be safer to add your canonical links programmatically in your own SEO component. See the code snippet below for an example. 
+I tried it and it would consistently fail to put the proper URL, especially since my website as offline support it would sometimes write the offline fallback url in the `<head/>` of my HTML pages.
+You'll be safer to add your canonical links programmatically in your own SEO component. See the code snippet below for an example.
 
 </Callout>
 
-```js {48} title=Simplied version of the SEO component I built with support for canonical URLs 
-
+```js {48} title=Simplied version of the SEO component I built with support for canonical URLs
 import { graphql, StaticQuery } from 'gatsby';
 import React from 'react';
 import Helmet from 'react-helmet';
@@ -311,7 +329,6 @@ const SEO = ({ title, desc, image, pathname, date }) => (
     }}
   />
 );
-
 ```
 
 ## Server-side rendering and missing meta tags
@@ -320,13 +337,14 @@ In this part, we'll look at the one instance where Gatsby's server-side renderin
 
 ### How it happened
 
-This issue stemmed from what I would qualify as an **interrupted static HTML build**. 
+This issue stemmed from what I would qualify as an **interrupted static HTML build**.
 
 When building your Gatsby site the last steps of the build process involve building your production JS files and also generating the HTML for each page. If you're looking for more details you can check out [this section of the Gatsby documentation about the build process](https://www.gatsbyjs.com/docs/overview-of-the-gatsby-build-process/).
 
 However, I wrote a `ThemeProvider` that wrapped the whole application. Thus any component or page can know which theme (dark or light) is currently enabled and the colors to use. This component was added to the `gatsby-ssr` and `gatsby-browser` files.
 
 Under the hood, this `ThemeProvider` worked as follow:
+
 - the state of the theme (dark or light) was injected via a React Provider to the whole app, that's how I can allow users to toggle between each theme.
 - that same state was also saved in the local storage to make sure revisiting the website would keep the previous theme enabled. When a reader loads this blog, the ThemeProvider will check for the presence of a specific variable in `localStorage` before setting the theme accordingly.
 
@@ -334,12 +352,11 @@ I dedicated a blog post for this: [Switching off the lights - Adding dark mode t
 and it actually contains the mistake that triggered the missing meta tags:
 
 - Getting the variable set to the current theme from local storage was done in a React `useEffect`. Thus, for a brief instant when loading or refreshing the website, the website would fallback to the default theme as the effect to set the proper theme was only ran after the server-rendered page was already served.
-- To avoid this issue, I added a small tweak to track whether the theme was fetched from local storage or not and  **render an empty div while the theme was being retrieved**.
+- To avoid this issue, I added a small tweak to track whether the theme was fetched from local storage or not and **render an empty div while the theme was being retrieved**.
 
 The code snippet below is an excerpt of my original implementation for the ThemeProvider of this blog.
 
 ```js {3-11} title=Excerpt of my original ThemeProvider (where I made my dumb mistake)
-
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [themeState, setThemeState] = useDarkMode();
   if (!themeState.hasThemeLoaded) {
@@ -355,7 +372,7 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const toggle = () => {
     // toogle function goes here
   };
-  
+
   // Once the theme is loaded, render the rest of the DOM
   return (
     <EmotionThemeProvider theme={theme}>
@@ -370,10 +387,9 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
     </EmotionThemeProvider>
   );
 };
-
 ```
 
-Rendering that empty div is what made my SEO meta tags disappear. **The static HTML build would only generate the tree up to that div** since the theme had no way to be set at build time, **and thus would skip all the rest of the DOM** which included my pages and components, as well as **the SEO component** 😱. 
+Rendering that empty div is what made my SEO meta tags disappear. **The static HTML build would only generate the tree up to that div** since the theme had no way to be set at build time, **and thus would skip all the rest of the DOM** which included my pages and components, as well as **the SEO component** 😱.
 Since, the code of the SEO component was not being reached during that step of the build, the meta tags couldn't be injected in the static HTML.
 
 <Callout variant="info">
@@ -382,8 +398,7 @@ Shoutout to [@chrisbiscardi](https://twitter.com/chrisbiscardi) for helping me d
 
 </Callout>
 
-
-Additionally, that kind of issue was hard to track because the tags were showing up when inspecting the page with the dev tools client-side, they were however completely absent from the source of the page (the one you can get by right-clicking on a web page and clicking on "View Page Source"). 
+Additionally, that kind of issue was hard to track because the tags were showing up when inspecting the page with the dev tools client-side, they were however completely absent from the source of the page (the one you can get by right-clicking on a web page and clicking on "View Page Source").
 
 Having SEO tags completely missing from the page source made SEO third-party services like [Twitter Card Validator](https://cards-dev.twitter.com/validator) simply unusable with my blog. My articles would only show up as basic links on social media. No cards, no preview, not even a title which is very bad when you try to grab the attention of your audience!
 
@@ -400,7 +415,6 @@ My SEO meta tags disappeared **second time** earlier this year in July 2020, aft
 As you can imagine, I was tired of these issues coming out of nowhere and didn't want to manually check every single change I'd make in the future to ensure meta tags would not be removed. To this problem, I brought a solution that I'd usually bring up at work: **I wrote an automated test**.
 
 ```js title=My SEO tests that I run against every new build to ensure my SEO tags are intact
-
 const META_RE = /<meta\s[A-Za-z0-9="-:;!@\/\s]*/g;
 const CANONICAL_RE = /rel="canonical"\s[A-Za-z0-9="-:;!@\/\s]*/g;
 
@@ -431,7 +445,6 @@ describe('SEO: Verify meta tag integrity', () => {
     cy.wrap(canonicalTag).snapshot();
   });
 });
-
 ```
 
 (Don't judge my regex skills 😅)
@@ -451,6 +464,7 @@ Cypress supports snapshot testing pretty much the same way Jest does! You just n
 ## Conclusion
 
 In a nutshell:
+
 - **Be mindful of the consistency of your trailing slashes!** Inconsistencies can lead to poor ranking.
 - If you syndicate your content, **do not forget to add canonical URLs**. I was basically in competition with my own Medium posts up until late this year and missed on a lot more traffic and potential readers.
 - Do not blindly trust gatsby plugins! Especially the ones that inject things in the `<head>` of your pages. If misused, they can be pretty harmful without even you knowing.

@@ -2,6 +2,7 @@
 title: 'React Lazy: a take on preloading views'
 subtitle: How to add preloading to your route based code split apps
 date: '2019-09-24T14:01:01.595Z'
+updated: '2019-09-24T14:01:01.595Z'
 categories: []
 keywords: ['react', 'react router', 'code split', 'preload', 'lazy', 'suspense']
 slug: preloading-views-with-react
@@ -42,7 +43,7 @@ ReactDOM.render(
   <Router>
     <React.Suspense fallback={'Loading'}>
       <Switch>
-        {routes.map(route => (
+        {routes.map((route) => (
           <Route
             key={route.path}
             exact={route.exact}
@@ -64,7 +65,7 @@ To preload the view we'll have to be able to call a `preload` method on our chun
 While such functionality is available out of the box in React Loadable, React Lazy doesn't seem to provide it and this is why we'll have to implement it from scratch with the following code:
 
 ```javascript {3} title=Implementation of ReactLazyPreload
-const ReactLazyPreload = importStatement => {
+const ReactLazyPreload = (importStatement) => {
   const Component = React.lazy(importStatement);
   Component.preload = importStatement;
   return Component;
@@ -100,7 +101,7 @@ Let's declare our `findComponentForRoute` function:
 import { matchPath } from 'react-router-dom';
 
 const findComponentForRoute = (path, routes) => {
-  const matchingRoute = routes.find(route =>
+  const matchingRoute = routes.find((route) =>
     matchPath(path, {
       path: route.path,
       exact: route.exact,
@@ -116,7 +117,7 @@ React Router comes with a pretty handy method called `matchPath` which for a giv
 Now that we have a way to find the component associalted to a given route, we can create a function to preload it:
 
 ```javascript {4-6} title=Implementation of preloadRouteComponent
-const preloadRouteComponent = path => {
+const preloadRouteComponent = (path) => {
   const component = findComponentForRoute(path, routes);
 
   if (component && component.preload) {

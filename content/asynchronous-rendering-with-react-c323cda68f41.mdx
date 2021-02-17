@@ -2,6 +2,7 @@
 title: Asynchronous rendering with React
 subtitle: How the new React Suspense API might reshape the way we build components
 date: '2018-11-06T16:52:30.887Z'
+updated: '2018-11-06T16:52:30.887Z'
 categories: []
 keywords: []
 slug: asynchronous-rendering-with-react-c323cda68f41
@@ -34,14 +35,14 @@ class ClassicAsync extends Component {
 
   componentDidMount() {
     fetch('https://jsonplaceholder.typicode.com/todos/')
-      .then(response => response.json())
-      .then(json => this.setState({ loading: false, data: json }));
+      .then((response) => response.json())
+      .then((json) => this.setState({ loading: false, data: json }));
   }
 
-  renderList = data => {
+  renderList = (data) => {
     return (
       <ul>
-        {data.map(item => (
+        {data.map((item) => (
           <li style={{ listStyle: 'none' }} key={item.id}>
             {item.title}
           </li>
@@ -79,7 +80,7 @@ const List = () => {
   const data = getData();
   return (
     <ul>
-      {data.map(item => (
+      {data.map((item) => (
         <li style={{ listStyle: 'none' }} key={item.id}>
           {item.title}
         </li>
@@ -109,7 +110,7 @@ Before diving in the details, let’s look at how the `Fetcher` function is impl
 import { unstable_createResource } from 'react-cache';
 
 const Fetcher = unstable_createResource(() =>
-  fetcher('https://jsonplaceholder.typicode.com/todos').then(r => r.json())
+  fetcher('https://jsonplaceholder.typicode.com/todos').then((r) => r.json())
 );
 ```
 
@@ -124,7 +125,7 @@ import React, { Suspense, Fragment } from 'react';
 import { unstable_createResource } from 'react-cache';
 
 const Fetcher = unstable_createResource(() =>
-  fetcher('https://jsonplaceholder.typicode.com/todos').then(r => r.json())
+  fetcher('https://jsonplaceholder.typicode.com/todos').then((r) => r.json())
 );
 
 const getDate = () => Fetcher.read();
@@ -133,7 +134,7 @@ const List = () => {
   const data = getData();
   return (
     <ul>
-      {data.map(item => (
+      {data.map((item) => (
         <li style={{ listStyle: 'none' }} key={item.id}>
           {item.title}
         </li>

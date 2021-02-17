@@ -2,6 +2,7 @@
 title: 'Data Fetching with NextJS: What I learned'
 subtitle: GetServerSideProps vs GetStaticProps vs GetStaticPaths.
 date: '2020-05-05T08:00:00.000Z'
+updated: '2020-05-05T08:00:00.000Z'
 categories: []
 keywords: ['nextJS', 'data fetching', 'api', 'javascript', 'typescript']
 slug: data-fetching-with-next-js
@@ -48,9 +49,9 @@ This function can be used to :
 as long as the data to be retrieved is not user-related or a specific entity linked to the client as, again, **this function will be triggered at build time**. It also means that each time the data changes, we would have to rebuild.
 
 ```tsx {27-33} title=Example showcasing a use case of getStaticProps for a sample /todos API
-import { NextPage, GetStaticProps } from "next";
-import Link from "next/link";
-import fetch from "node-fetch";
+import { NextPage, GetStaticProps } from 'next';
+import Link from 'next/link';
+import fetch from 'node-fetch';
 
 const TodosPage: NextPage<{
   todos: { title: string; userId: string; id: string; completed: boolean }[];
@@ -76,7 +77,7 @@ const TodosPage: NextPage<{
 
 export const getStaticProps: GetStaticProps = async () => {
   const todos = await fetch(
-    "https://jsonplaceholder.typicode.com/todos"
+    'https://jsonplaceholder.typicode.com/todos'
   ).then((response) => response.json());
 
   return {
@@ -85,8 +86,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default TodosPage;
-
 ```
+
 <Callout variant="danger">
 
 Note: To use `fetch` with NextJS SSR and SSG functions, we need to use node.fetch as these API calls will be done during build time or request time, hence on the server side which means we can't use `window.fetch`.
@@ -113,9 +114,9 @@ There's also another field called **fallback**, I haven't used it yet, the only 
 `getStaticPaths` can be used in conjunction with `getStaticProps`. The paths returned are then present in the "context" of the page, which can be read by the `getStaticProps` function. As an example, we could consider a static product page with a dynamic route representing a route to a given product:
 
 ```tsx {14-26,28} title=Example showcasing a use case of getStaticPaths for a sample /todos/:id API
-import { NextPage, GetStaticPaths, GetStaticProps } from "next";
-import Link from "next/link";
-import fetch from "node-fetch";
+import { NextPage, GetStaticPaths, GetStaticProps } from 'next';
+import Link from 'next/link';
+import fetch from 'node-fetch';
 
 const TodoPage: NextPage<{ title: string }> = (props) => {
   return (
@@ -128,7 +129,7 @@ const TodoPage: NextPage<{ title: string }> = (props) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const todos = await fetch(
-    "https://jsonplaceholder.typicode.com/todos"
+    'https://jsonplaceholder.typicode.com/todos'
   ).then((response) => response.json());
 
   const ids = todos.map((todo) => todo.id);
@@ -142,7 +143,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params: { id } }) => {
   const todos = await fetch(
-    "https://jsonplaceholder.typicode.com/todos"
+    'https://jsonplaceholder.typicode.com/todos'
   ).then((response) => response.json());
   const todo = todos.find((x) => x.id == id);
 
@@ -170,9 +171,9 @@ Sometimes static-side generation is not what we need. If we want to be able to f
 Like `getStaticProps`, this function is asynchronous and allows us to fetch some data and returns an object with a `props` field that will be passed down to a page. However, the main difference here is that `getServerSideProps` allows us **to pre-render a page on each request**, thus we can consider that this is a use case for **SSR**. This means that thanks to this function, I can go fetch some non-static data that is tied to a request.
 
 ```tsx {27-48} title=Example showcasing a use case of getServerSideProps for a sample /todos/:id API
-import { GetServerSideProps, NextPage } from "next";
-import ErrorPage from "next/error";
-import fetch from "node-fetch";
+import { GetServerSideProps, NextPage } from 'next';
+import ErrorPage from 'next/error';
+import fetch from 'node-fetch';
 
 interface Data {
   id: number;
@@ -240,11 +241,13 @@ I felt that one of the most confusing aspect of NextJS when having worked only o
 Thankfully, I'm a heavy [gatsbyJS](https://www.gatsbyjs.org/) user so I was already familiar with these concepts when I started learning about NextJS, hence, just in case I want to write a few word about it for anyone who might still be confused about pages vs components.
 
 The functions featured above only work on **pages**. Which means the following:
+
 - you can only use them in files under the `/pages` folder
 - they can't be used on components
 - components will have to rely on client-side fetching if we want them to fetch data.
 
 So when building your first NextJS app, you'll have to carefully architect your app and think about data beforehand and ask yourself:
+
 - what can and should be fetched at build time?
 - what can and should be server-rendered?
 - which components need to have access to data and do they need to trigger some client-side fetching.

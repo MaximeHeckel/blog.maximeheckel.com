@@ -2,8 +2,20 @@
 title: The physics behind spring animations
 subtitle: A deep dive into the inner workings of spring animations in Framer Motion.
 date: '2020-06-23T08:00:00.000Z'
+updated: '2020-06-29T08:00:00.000Z'
 categories: []
-keywords: ['spring animation', 'framer motion', 'physics', 'ui', 'ux', 'design', 'transition', 'physics', 'harmonic oscillator']
+keywords:
+  [
+    'spring animation',
+    'framer motion',
+    'physics',
+    'ui',
+    'ux',
+    'design',
+    'transition',
+    'physics',
+    'harmonic oscillator',
+  ]
 slug: the-physics-behind-spring-animations
 ---
 
@@ -30,27 +42,26 @@ When I was in college, we defined a Harmonic Oscillator as follows:
 The formula for such force is called Hooke's Law and it is defined as follows:
 
 ```
-F = -k*x 
+F = -k*x
 ```
 
 where `k` is a positive constant called **stiffness** which we can also write as:
 
 <Callout variant="danger">
 
-**force = negative stiffness * displacement**
+**force = negative stiffness \* displacement**
 
 </Callout>
 
 What that means is that:
 
 - if we pull the spring (i.e. x > 0 ) to a certain distance away from its equilibrium, it will start to move
-- if we don't pull  it, it won't move (i.e. x = 0)
-
+- if we don't pull it, it won't move (i.e. x = 0)
 
 However, maybe you might have heard at school or on one of the many science-focused Youtube channels on that force is the object's mass times its acceleration, which translates to the following formula:
 
 ```
-F = m*a  
+F = m*a
 ```
 
 where `m` is the **mass** and `a` is the **acceleration**.
@@ -69,11 +80,12 @@ a = -k *x / m
 
 <Callout variant="danger">
 
-**acceleration = negative stiffness * displacement / mass**
+**acceleration = negative stiffness \* displacement / mass**
 
 </Callout>
 
 We now have an equation from which we define the acceleration based on the displacement of our spring and the mass of the object attached to that spring. From the acceleration we can deduct the following:
+
 - the velocity of the object at any given time
 - the position of the object at any given time
 
@@ -85,7 +97,7 @@ v2 = v1 + a*t
 
 <Callout variant="danger">
 
-**velocity = old velocity + acceleration * time interval**
+**velocity = old velocity + acceleration \* time interval**
 
 </Callout>
 
@@ -97,7 +109,7 @@ p2 =  p1 + v*t
 
 <Callout variant="danger">
 
-**position = old position + velocity * time interval**
+**position = old position + velocity \* time interval**
 
 </Callout>
 
@@ -109,7 +121,6 @@ Now that we've done the math, you can see that by knowing the **mass** of the ob
 We can translate all the equations above in Javascript, and for a given displacement calculate all the positions of an object for 600 frames, i.e. 10 seconds:
 
 ```js title=Function that returns the positions of an object following the motion of a spring
-
 const loop = (stiffness, mass) => {
   /* Spring Length, set to 1 for simplicity */
   let springLength = 1;
@@ -148,26 +159,18 @@ const loop = (stiffness, mass) => {
    * positions is an array of number where each number
    * represents the position of the object in a spring
    * motion at a specific frame
-   * 
+   *
    * We use this array to plot all the position of the
    * object for 10 seconds.
    */
   return positions;
 };
-
 ```
-
 
 I built this small playground below with a graph representation of the positions that are returned by the function above a component animated by Framer Motion that has the same mass and stiffness. You can tune the mass and the stiffness with the range inputs above the graph and observe how each variable influences the animated component and the graph of positions.
 
 ```js render
-
-const {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-} = Recharts;
+const { ResponsiveContainer, LineChart, Line, XAxis } = Recharts;
 
 const loop = (stiffness, mass) => {
   /* Spring Length, set to 1 for simplicity */
@@ -247,7 +250,7 @@ const Chart = () => {
             min="1"
             max="10"
             value={mass}
-            onChange={e => setMass(e.target.value)}
+            onChange={(e) => setMass(e.target.value)}
           />
         </div>
         <div style={{ display: 'grid' }}>
@@ -258,7 +261,7 @@ const Chart = () => {
             min="1"
             max="500"
             value={stiffness}
-            onChange={e => setStiffness(e.target.value)}
+            onChange={(e) => setStiffness(e.target.value)}
           />
         </div>
       </form>
@@ -325,15 +328,12 @@ render(
     <Chart />
   </div>
 );
-
 ```
-
 
 ## Taking damping into account
 
 While observing the visualization above, you might have wondered why is the spring animation never-ending as opposed to the ones you might have tried yourself with Framer Motion. That is because the math formulas we used to generate the position of the object were not taking into account friction and heat. If we want to obtain a spring animation that feels natural, we should see the movement of the object slowing down as time passes to eventually stop moving.
 That is where the **damping** comes into the picture. You might have seen this term when looking at the documentation of Framer Motion and wondered what it meant or does to the resulting spring animation, here's how we will define it:
-
 
 > Damping is the force that slows down and eventually stops an oscillation by dissipating energy
 
@@ -342,19 +342,20 @@ Its formula is:
 ```
 Fd = -d * v
 ```
+
 where `d` is the damping ratio and `v` the velocity
 
 <Callout variant="danger">
 
-**damping Force = negative damping * velocity**
+**damping Force = negative damping \* velocity**
 
 </Callout>
 
-Taking damping into account will bring some changes to the acceleration formula we established in the first part. 
-We know that 
+Taking damping into account will bring some changes to the acceleration formula we established in the first part.
+We know that
 
 ```
-F = m*a  
+F = m*a
 ```
 
 However, F here is equal to the spring force and the damping force, instead of just the spring force, thus:
@@ -496,7 +497,7 @@ const Chart = () => {
             min="1"
             max="10"
             value={mass}
-            onChange={e => setMass(e.target.value)}
+            onChange={(e) => setMass(e.target.value)}
           />
         </div>
         <div style={{ display: 'grid' }}>
@@ -507,7 +508,7 @@ const Chart = () => {
             min="1"
             max="500"
             value={stiffness}
-            onChange={e => setStiffness(e.target.value)}
+            onChange={(e) => setStiffness(e.target.value)}
           />
         </div>
         <div style={{ display: 'grid' }}>
@@ -519,7 +520,7 @@ const Chart = () => {
             max="5"
             step="0.1"
             value={damping}
-            onChange={e => setDamping(e.target.value)}
+            onChange={(e) => setDamping(e.target.value)}
           />
         </div>
       </form>
@@ -582,7 +583,6 @@ const Chart = () => {
 };
 
 render(<Chart />);
-
 ```
 
 As you can see we now have a spring animation that eventually stops due to damping **dissipating the energy out of the system**. The chart above showcases this by **converging towards a final "resting position"**. By increasing the damping slider to a high value you can observe that the object subject to spring animation tends to converge to the "resting position" way faster than for a lower damping value.
@@ -592,12 +592,12 @@ As you can see we now have a spring animation that eventually stops due to dampi
 By default, Framer Motion sets the stiffness of the spring animation to **100**, the damping to **10**, and the mass to **1** [according to the docs](https://www.framer.com/api/motion/types/#spring). Below, I wrote an animated `Button` component that is closer to a real-life example that you might want to implement in your UI projects. Now that you know what **mass**, **stiffness** and **damping** you can try to fine-tune your spring animation.
 
 ```js live
-
 const Example = () => {
   return (
     <motion.button
       style={{
-        background: 'linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)',
+        background:
+          'linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)',
         color: 'white',
         height: '50px',
         width: '200px',
@@ -619,7 +619,6 @@ const Example = () => {
 };
 
 render(<Example />);
-
 ```
 
 <Callout variant="info">

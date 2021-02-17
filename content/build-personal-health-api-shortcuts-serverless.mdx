@@ -2,8 +2,24 @@
 title: 'Using Shortcuts and serverless to build a personal Apple Health API'
 subtitle: Take ownership of your Apple Watch health data with a only few lines of code.
 date: '2020-11-02T08:00:00.000Z'
+updated: '2020-11-02T08:00:00.000Z'
 categories: []
-keywords: ['health', 'shortcut', 'apple', 'serverless', 'fauna', 'faunadb', 'graphql', 'data', 'heart rate', 'api', 'query', 'mutation', 'vercel']
+keywords:
+  [
+    'health',
+    'shortcut',
+    'apple',
+    'serverless',
+    'fauna',
+    'faunadb',
+    'graphql',
+    'data',
+    'heart rate',
+    'api',
+    'query',
+    'mutation',
+    'vercel',
+  ]
 slug: build-personal-health-api-shortcuts-serverless
 type: 'blogPost'
 colorFeatured: 'linear-gradient(90deg,#859EF5 0%,#ffbdd8 100%)'
@@ -11,15 +27,14 @@ fontFeatured: '#000000'
 featured: true
 ---
 
-
 I've been an Apple Watch owner for a couple of years now, and the ability to get a detailed report about diverse aspects of my health has always been its most interesting feature to me. However, having that data trapped in the Apple ecosystem is a bit of a bummer. I've always wanted to build my own Health Dashboard, like the one you can see on [http://aprilzero.com/](http://aprilzero.com/) and [Gyroscope](https://gyrosco.pe)'s, but custom made. The only issue blocking me was the lack of an API that could allow me to query the data that's been recorded by my watch. Moreover, it seems like I'm also far from being the only one in this situation. A lot of people on reddit or Apple support keep asking whether that API exists or not.
 
-Well, good news if you're in this situation as well, I recently figured out a way to build a personal Apple Health API! 
+Well, good news if you're in this situation as well, I recently figured out a way to build a personal Apple Health API!
 In this article, I'm going to show you how, by using a combination of [Apple Shortcuts](https://support.apple.com/guide/shortcuts/welcome/ios) and serverless functions, you can implement a way **to transfer recorded Apple Watch health samples to a Fauna database** and, in return, get **a fully-fledged GraphQL API**.
 
 <HeartRateWidget />
 
-<br/>
+<br />
 
 **That same API is what is powering this little widget above**, showcasing my recorded heart rate throughout the day. How cool is that? The chart will automatically refresh every now and then (I'm still finalizing this project) so if you're lucky, you might even catch a live update!
 
@@ -27,11 +42,12 @@ In this article, I'm going to show you how, by using a combination of [Apple Sho
 
 ## Context and plan
 
-Back in 2016-2017, I built a "working" personal health API. I relied on a custom iOS app that would read my Apple Health data and run in the background to send the data. 
+Back in 2016-2017, I built a "working" personal health API. I relied on a custom iOS app that would read my Apple Health data and run in the background to send the data.
 
 <Callout variant="info">
 
 If you're interested to take a look at my previous take at a personal Apple Health API, the codebase is still available on my Github:
+
 - https://github.com/MaximeHeckel/healthpulse
 - https://github.com/MaximeHeckel/health-dashboard
 
@@ -40,6 +56,7 @@ It's always nice to look back at some old code and the progress one makes over t
 </Callout>
 
 This implementation, although pretty legitimate, had its flaws:
+
 - it needed a server running 24/7 to be available to receive the data and write it to the database. However, the data would only be pushed maybe twice to three times a day.
 - the iOS app I build with React Native was pretty limited. For example, Apple doesn't let you run specific actions within your app on a schedule. You have no real control over what your app will do while in the background. Additionally, the HealthKit package I was using was really limited and did not allow me to read most of the data entries I was interested in, and on top of that, the package was pretty much left unmaintained thus ending up breaking my app.
 
@@ -50,6 +67,7 @@ Thus, with these elements, I came out with the following plan that can allow us 
 ![Diagram showcasing the different elements of this project described below](/static/images/shortcut-health-plan.png)
 
 Here's the flow:
+
 1. When running, our shortcut will read the daily measurements (heart rate, steps, blood oxygen, activity, ...), and send a POST request to the serverless function
 2. The serverless function, hosted on [Vercel](https://vercel.com/), will receive that data, sanitize it, and then send a GraphQL mutation to [FaunaDB](https://fauna.com/) (I'll get into why I chose FaunaDB later in the article)
 3. On FaunaDB, we'll store each daily entry in its own document. If the entry doesn't exist, we'll create a document for it. If it does exist, we'll update the existing entry with the new data
@@ -65,6 +83,7 @@ As Apple Shortcuts can only be implemented in the Shortcuts app, and are purely 
 ![Screenshots of the Shortcuts app editor showcasing the different steps executed when running the shortcut described below](/static/images/shortcut.png)
 
 The first step consists of **finding health samples of a given type**. For this example, we'll get both the heart rate, and the number of steps (see the first two screenshots). You can see that the options available to you in the "Find Health Sample" action may vary depending on which metric you're trying to read, you can tune these at will, the ones showcased above are the options I wanted for my specific setup:
+
 - Heart Rate measurements are not grouped and are sorted by start date
 - Steps measurements are grouped by hour, I want to have an entry for hours where no steps are recorded, and I want it sorted by start date as well
 
@@ -79,7 +98,7 @@ For both the Heart and Steps dictionaries, we'll have to manually set the fields
 
 ![Screenshot of the heart rate and steps dictionaries used in the body of the HTTP POST request of our shortcut](/static/images/dictionaries.png)
 
-In the `values` field, we set the values of the sample. In `timestamps` we set the start dates of that same sample. 
+In the `values` field, we set the values of the sample. In `timestamps` we set the start dates of that same sample.
 
 </Callout>
 
@@ -144,20 +163,21 @@ I do not want to spend too much time in this article detailing how to set up a f
 2. Run `yarn init` to initiate the repository
 3. Create an `/api` folder and a `health.js` file within this folder. This is the file where we'll write our function.
 4. Install the `vercel` package with `yarn add -D vercel`
-4. Add the following script in your `package.json`: `  "start": "vercel dev"`.
+5. Add the following script in your `package.json`: ` "start": "vercel dev"`.
 
 If you need more details here's a [direct link to the documentation on how to get started with serverless functions on Vercel](https://vercel.com/docs/serverless-functions/introduction).
 
 </Callout>
 
 Our function will have 2 main tasks:
+
 - **sanitize the data** coming from the shortcut. Given the output of the shortcut that we looked at in the previous part, there's some cleanup to do
 - **send the data** to a database (that will be detailed in the next part)
 
-Below is the code I wrote as an initial example in `/api/health.js`, that will sanitize the health data from the shortcut, and log all the entries. I added some comments in the code to detail some of the steps I wrote. 
+Below is the code I wrote as an initial example in `/api/health.js`, that will sanitize the health data from the shortcut, and log all the entries. I added some comments in the code to detail some of the steps I wrote.
 
 ```ts {18-28,45,50-54,60-61,79} title=Serverless function handling and formatting the data coming from our shortcut
-import { NowRequest, NowResponse } from "@now/node";
+import { NowRequest, NowResponse } from '@now/node';
 
 /**
  * Format the sample to a more friendly data structure
@@ -176,13 +196,13 @@ const formathealthSample = (entry: {
 
   const formattedSample = values
     // split the string by \n to obtain an array of values
-    .split("\n")
+    .split('\n')
     // [Edge case] filter out any potential empty strings, these happen when a new day starts and no values have been yet recorded
-    .filter((item) => item !== "")
+    .filter((item) => item !== '')
     .map((item, index) => {
       return {
         value: parseInt(item, 10),
-        timestamp: new Date(timestamps.split("\n")[index]).toISOString(),
+        timestamp: new Date(timestamps.split('\n')[index]).toISOString(),
       };
     });
 
@@ -191,7 +211,7 @@ const formathealthSample = (entry: {
 
 /**
  * The handler of serverless function
- * @param {NowRequest} req 
+ * @param {NowRequest} req
  * @param {NowResponse} res
  */
 const handler = async (
@@ -221,7 +241,7 @@ const handler = async (
 
   /**
    * Variable "today" is a date set based on the device date at midninight
-   * This will be used as way to timestamp our documents in the database 
+   * This will be used as way to timestamp our documents in the database
    */
   const today = new Date(`${deviceDate}T00:00:00.000Z`);
 
@@ -235,11 +255,10 @@ const handler = async (
 
   // Write data to database here...
 
-  return res.status(200).json({ response: "OK" });
+  return res.status(200).json({ response: 'OK' });
 };
 
 export default handler;
-
 ```
 
 Then, we can run our function locally with `yarn start`, and trigger our Apple shortcut from our iOS device. Once the shortcut is done running, we should see the health entries that were recorded from your Apple Watch logged in our terminal 🎉!
@@ -256,7 +275,7 @@ Now that we have a basic serverless function that can read and format the data s
 
 <Callout variant="info">
 
-**This part is purely optional**. You could store your data any way you want, on any service. I'm now going to solely detail how I proceeded on my end, which may or may not be the most optimal way. 
+**This part is purely optional**. You could store your data any way you want, on any service. I'm now going to solely detail how I proceeded on my end, which may or may not be the most optimal way.
 
 Again, I wanted to have this hack up and running fast because I love iterating on ideas so I can share them with all of you quicker 😄
 
@@ -267,6 +286,7 @@ In this part, we'll tackle **storing the data**, and **building an API** for any
 ### Why Fauna?
 
 When building the first prototype of my Apple Health API I wanted to:
+
 - Have a hosted database. I did not want to have to manage a cluster with a custom instance of Postgres or MySQL or any other type of database.
 - Have something available in a matter of seconds,
 - Have a service with complete support for GraphQL so I did not have to build a series of API endpoints.
@@ -321,16 +341,16 @@ type Mutation {
   addEntry(entries: [EntryInput]): [Entry]
     @resolver(name: "add_entry", paginated: false)
 }
-
 ```
 
 Let's look at some of the most important elements of this schema:
+
 - we are able to put each health sample for a given day in the same object called `Entry`, and query all entries
 - we are able to add one or several entries to the database, via a mutation. In this case, I declared the `addEntry` mutation with a **custom resolver** (I'll get to that part very soon).
 - each Entry would also have a `date` field representing the date of the entry. This would allow me to query by date with the `entryByDate` query.
 - each health sample would be of type `Item` containing a `value` and a `timestamp` field. This would allow my clients to draw time-based charts for a set of samples.
 
-Now, the great thing with Fauna is that **we simply have to upload this schema to their Dashboard**, under the GraphQL section, and **it will take care of creating the functions, indexes, and collections for us!** 
+Now, the great thing with Fauna is that **we simply have to upload this schema to their Dashboard**, under the GraphQL section, and **it will take care of creating the functions, indexes, and collections for us!**
 
 Once uploaded we can start querying data right away! We won't get anything back though, as our database is still empty, but we can still validate that everything works well. Below is an example query you can run, based on the schema we just uploaded:
 
@@ -352,7 +372,7 @@ This is because we're going to implement a custom function, or resolver, called 
 <Callout variant="info">
 
 As stated in the GraphQL related documentation of Fauna:
-"the FaunaDB GraphQL API automatically creates the necessary classes and indexes to support the schema". 
+"the FaunaDB GraphQL API automatically creates the necessary classes and indexes to support the schema".
 
 However, it only creates very basic functions that should cover most use cases. In our case, we have something that requires a behavior that's a little bit more specific, thus the need to implement a custom function.
 
@@ -361,72 +381,71 @@ You can learn more about resolvers [here](https://docs.fauna.com/fauna/current/a
 </Callout>
 
 We don't want to create one entry in the database every time our shortcut runs, **we want instead to create one entry per day and update that entry as the day goes by**, thus we want our resolver to:
+
 - Create a new document in the `Entry` collection if an entry of the date specified in the mutation does not yet exist.
 - Update the document with a date matching the one specified in the mutation.
 
 Implementing custom functions in FaunaDB requires us to use their custom FQL language. It took me a lot of digging through [the FQL docs](https://docs.fauna.com/fauna/current/api/fql/) to make my `add_entry` function work, however, detailing the full implementation and how custom FQL functions work would deserve its own article (maybe my next article? Let me know if you'd like to learn more about that!). Instead, I'll give the following code snippet containing a commented version of my code which should help you understand most of the key elements:
 
-
 ```js {13-32} title=Custom FQL resolver for our GraphQL mutation
 Query(
   // In FQL, every function is a "Lambda": https://docs.fauna.com/fauna/current/api/fql/functions/lambda?lang=javascript
   Lambda(
-    ["entries"],
+    ['entries'],
     // Map through all entries
     Map(
-      Var("entries"),
+      Var('entries'),
       // For a given entry ...
       Lambda(
-        "X",
+        'X',
         // Check whether and entry for the current day already exists
         If(
           // Check there's a match between the date of one of the "entries by date" indexes and the date included with this entry
-          IsEmpty(Match(Index("entryByDate"), Select("date", Var("X")))),
+          IsEmpty(Match(Index('entryByDate'), Select('date', Var('X')))),
           // If there's no match, create a new document in the "Entry" collection
-          Create(Collection("Entry"), { data: Var("X") }),
+          Create(Collection('Entry'), { data: Var('X') }),
           // If there's a match, get that document and override it's content with the content included with this entry
           Update(
             Select(
               0,
               Select(
-                "data",
+                'data',
                 Map(
                   Paginate(
-                    Match(Index("entryByDate"), Select("date", Var("X")))
+                    Match(Index('entryByDate'), Select('date', Var('X')))
                   ),
-                  Lambda("X", Select("ref", Get(Var("X"))))
+                  Lambda('X', Select('ref', Get(Var('X'))))
                 )
               )
             ),
-            { data: Var("X") }
+            { data: Var('X') }
           )
         )
       )
     )
   )
-)
+);
 ```
-
 
 ### Writing data to Fauna from our serverless function
 
 Now that we have our GraphQL schema defined, and our custom resolver implemented, there's one last thing we need to do: updating our serverless function.
 
 We have to **add a single mutation query to our function** code to allow it **to write the health data on Fauna**. Before writing this last piece of code, however, there's a couple of things to do:
+
 1. We need to **generate a secret key on Fauna** that will be used by our function to securely authenticate with our database. There's a step by step guide on how to do so in this [dedicated documentation page about FaunaDB and Vercel](https://docs.fauna.com/fauna/current/integrations/vercel.html). (you just need to look at step 3). Once you have the key, copy it and put it on the side, we'll need it in just a sec.
 2. **Install a GraphQL client for our serverless function.** You can pretty much use any client you want here. On my end, I used [graphql-request](https://www.npmjs.com/package/graphql-request).
 
 Once done, we can add the code to our function to
+
 - **initiate our GraphQL client** using the key we just generated
 - **send a mutation request** to our Fauna database which will write the health data we gathered from the shortcut.
 
 ```ts {5,10-14,37-63} title=Updated serverless function including the GraphQL mutation
+import { NowRequest, NowResponse, NowRequestBody } from '@now/node';
+import { GraphQLClient, gql } from 'graphql-request';
 
-import { NowRequest, NowResponse, NowRequestBody } from "@now/node";
-import { GraphQLClient, gql } from "graphql-request";
-
-
-const URI = "https://graphql.fauna.com/graphql";
+const URI = 'https://graphql.fauna.com/graphql';
 
 /**
  * Initiate the GraphQL client
@@ -441,14 +460,14 @@ const graphQLClient = new GraphQLClient(URI, {
 
 /**
  * The handler of serverless function
- * @param {NowRequest} req 
+ * @param {NowRequest} req
  * @param {NowResponse} res
  */
 const handler = async (
   req: NowRequest,
   res: NowResponse
 ): Promise<NowResponse> => {
-  //... 
+  //...
 
   const entry = {
     heartRate: formattedHeartData,
@@ -479,18 +498,17 @@ const handler = async (
       entries: [entry],
     });
     console.info(
-      "Successfully transfered heart rate and steps data to database"
+      'Successfully transfered heart rate and steps data to database'
     );
   } catch (error) {
     console.error(error);
     return res.status(500).json({ response: error.response.errors[0].message });
   }
 
-  return res.status(200).json({ response: "OK" });
+  return res.status(200).json({ response: 'OK' });
 };
 
 export default handler;
-
 ```
 
 The plan we established in the first part of this post is now fully implemented 🎉! We can now run the shortcut from our phone, and after a few seconds, we should see some data populated in our `Entry` collection on Fauna:
@@ -502,14 +520,15 @@ The plan we established in the first part of this post is now fully implemented 
 We now have a fully working pipeline to write our Apple Watch recorded health data to a database thanks to Shortcuts and serverless, and also a GraphQL API to read that data from any client we want!
 
 Here are some of the next steps you can take a look at:
-1. Deploying the serverless function to Vercel 
+
+1. Deploying the serverless function to Vercel
 2. Set the shortcut to run as an automation in the Shortcuts app. I set mine to run every 2 hours. This can be done through the Shortcuts app on iOS, in the Automation tab.
 3. Add more health sample and extend the GraphQL schema!
 4. Hack! You can now leverage that GraphQL API and build anything you want 🙌
 
 <Callout variant="info">
 
-There's one limitation to this project that sadly I couldn't get around. 
+There's one limitation to this project that sadly I couldn't get around.
 
 **The shortcut cannot run in the background while the phone is locked**. **Apple Health data (or HealthKit data) can only be read while the phone is unlocked**.
 Thus, when my shortcut runs, it will send a notification asking me to run it, which makes me unlock my phone anyways.
@@ -523,5 +542,5 @@ Do not commit your Fauna key with the code of your function! It's preferable to 
 
 </Callout>
 
-I hope you liked this mini side-project, and hope it inspired you to build amazing things (and also that this article was not too dense 😅). I was quite impressed that this setup was made possible with **just a few lines of code and amazing services like Vercel and Fauna**. 
-This is also my first time experimenting with Apple Shortcuts, I can't wait to find new use cases for them, and of course, share them with you all! 
+I hope you liked this mini side-project, and hope it inspired you to build amazing things (and also that this article was not too dense 😅). I was quite impressed that this setup was made possible with **just a few lines of code and amazing services like Vercel and Fauna**.
+This is also my first time experimenting with Apple Shortcuts, I can't wait to find new use cases for them, and of course, share them with you all!

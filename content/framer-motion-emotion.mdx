@@ -2,8 +2,17 @@
 title: How to use Framer Motion with Emotion styled-components
 subtitle: Framer Motion x Emotion → animated styled-components
 date: '2020-05-12T08:00:00.000Z'
+updated: '2020-05-12T08:00:00.000Z'
 categories: []
-keywords: ['framer motion', 'emotion', 'styled-components', 'animation', 'javascript', 'react']
+keywords:
+  [
+    'framer motion',
+    'emotion',
+    'styled-components',
+    'animation',
+    'javascript',
+    'react',
+  ]
 cover: '/static/images/pawel-czerwinski-Hu6kULsI5dM-unsplash.jpg'
 slug: framer-motion-emotion
 ---
@@ -12,7 +21,7 @@ slug: framer-motion-emotion
 
 I recently took the time to check out [Framer Motion](https://www.framer.com/motion/), the current most popular React library for animating components. I've never been good at building smooth efficient transition, and even now I still have a lot to learn, but it's been surprisingly easy to transition some of the components powering this blog to use Framer Motion instead of CSS animations.
 
-The projects I usually work on, however, rely heavily on styled-components built with Emotion, which allows me to write both animations and transitions with CSS syntax. 
+The projects I usually work on, however, rely heavily on styled-components built with Emotion, which allows me to write both animations and transitions with CSS syntax.
 When converting these same animations to Framer Motion, I found myself wrapping my existing styled-components in a `motion.div` component and migrate any animation code to this element. Little to say, it was tedious work, and I also wasn't satisfied with the resulting code:
 
 ```js live
@@ -29,7 +38,7 @@ const StyledButton = styled('div')`
   outline: none;
   padding: 0 30px;
   border-radius: 4px;
-  background-color:#5184f9;
+  background-color: #5184f9;
   color: white;
   min-width: 150px;
 `;
@@ -40,12 +49,9 @@ render(
     transition={{ duration: 0.5 }}
     style={{ background: 'transparent', border: 'none' }}
   >
-    <StyledButton>
-      Hello There
-    </StyledButton>
+    <StyledButton>Hello There</StyledButton>
   </motion.button>
 );
-
 ```
 
 <Callout variant="info">
@@ -78,10 +84,7 @@ const StyledButton = styled(motion.button)`
 `;
 
 render(
-  <StyledButton
-    whileHover={{ scale: 0.85 }}
-    transition={{ duration: 0.5 }}
-  >
+  <StyledButton whileHover={{ scale: 0.85 }} transition={{ duration: 0.5 }}>
     Hello There
   </StyledButton>
 );

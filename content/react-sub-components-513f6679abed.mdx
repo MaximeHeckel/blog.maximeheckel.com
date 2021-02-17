@@ -4,6 +4,7 @@ subtitle: >-
   Making flexible, easily testable and reusable views in React without ending in
   “markup hell”
 date: '2018-02-26T21:02:23.156Z'
+updated: '2018-02-26T21:02:23.156Z'
 categories: []
 keywords: []
 slug: react-sub-components-513f6679abed
@@ -98,7 +99,7 @@ const findByType = (children, component) => {
   /* This is the array of result since Article can have multiple times the same sub-component */
   const type = [component.displayName] || [component.name];
   /* We can store the actual name of the component through the displayName or name property of our sub-component */
-  React.Children.forEach(children, child => {
+  React.Children.forEach(children, (child) => {
     const childType =
       child && child.type && (child.type.displayName || child.type.name);
     if (type.includes(childType)) {
@@ -215,7 +216,7 @@ class Article extends Component<Props> {
 
     return (
       <ul className={css.articlemetadata}>
-        {metadata.props.children.map(child => {
+        {metadata.props.children.map((child) => {
           return <li className={css.item}>{child}</li>;
         })}
       </ul>

@@ -4,6 +4,7 @@ subtitle: >-
   Further simplifying the sub-component pattern using contexts to make flexible,
   easily testable and reusable React components
 date: '2018-04-16T17:08:40.154Z'
+updated: '2018-04-16T17:08:40.154Z'
 categories: []
 keywords: []
 slug: react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4
@@ -69,7 +70,7 @@ const Title = () => {
 };
 
 // This is our main Article components, which is a provider of the Article Context
-const Article = props => {
+const Article = (props) => {
   return (
     <ArticleContext.Provider {...props}>
       {props.children}
@@ -217,7 +218,7 @@ const Content = () => {
 };
 
 // This is our main Article components, which is a provider of the Article Context
-const Article = props => {
+const Article = (props) => {
   return (
     <ArticleContext.Provider {...props}>
       {props.children}

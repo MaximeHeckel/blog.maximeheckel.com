@@ -2,8 +2,19 @@
 title: 'Guide to creating animations that spark joy with Framer Motion'
 subtitle: An interactive guide introducing everything I've learned about Framer Motion through fun examples and little case studies of animations I built.
 date: '2020-12-15T08:00:00.000Z'
+updated: '2020-12-19T08:00:00.000Z'
 categories: []
-keywords: ['framer motion', 'animation', 'frontend', 'ui', 'ux', 'design', 'transition', 'react']
+keywords:
+  [
+    'framer motion',
+    'animation',
+    'frontend',
+    'ui',
+    'ux',
+    'design',
+    'transition',
+    'react',
+  ]
 slug: guide-animations-spark-joy-framer-motion
 type: 'blogPost'
 colorFeatured: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)'
@@ -13,9 +24,9 @@ featured: true
 
 Over the past few months, Framer Motion went from being a fun tool I played with on the side to a core element of my frontend projects when it comes to adding a layer of interaction to my UIs. I went **from knowing almost nothing about animations and transitions**, to being able [to orchestrate more complex animations](https://twitter.com/MaximeHeckel/status/1327647479521701889?s=20) involving lots of elements.
 
-I've shared a lot of the animation work I sprinkled throughout my blog on Twitter, and a lot of you have asked me to share more code snippets. Thus I felt it was time for a little write-up! 
+I've shared a lot of the animation work I sprinkled throughout my blog on Twitter, and a lot of you have asked me to share more code snippets. Thus I felt it was time for a little write-up!
 
-In this post, you'll find **a condensed guide containing everything I've learned when it comes to Framer Motion**, the key concepts of animation, and how to use this library to create animations that spark joy **through some interactive examples and widgets**. 
+In this post, you'll find **a condensed guide containing everything I've learned when it comes to Framer Motion**, the key concepts of animation, and how to use this library to create animations that spark joy **through some interactive examples and widgets**.
 
 <Callout variant='info'>
 
@@ -38,6 +49,7 @@ First, let's take a look at the **main elements that define an animation**. When
 In the case of Framer motion, the library gives us a `motion` component which takes 3 properties (props) that let us define an answer to the 3 questions above:
 
 - `initial`: the state of our element at mount time.
+
 ```js
   <motion.div
     ...
@@ -48,7 +60,9 @@ In the case of Framer motion, the library gives us a `motion` component which ta
     ...
   />
 ```
+
 - `animate`: the state in which our element will be at the end of the animation.
+
 ```js
   <motion.div
     ...
@@ -59,7 +73,9 @@ In the case of Framer motion, the library gives us a `motion` component which ta
     ...
   />
 ```
+
 - `transition`: how our element goes from the initial state to the target state. This is where we can define which transition type we want to define, delays, or repetitions of the same transition.
+
 ```js
   <motion.div
     ...
@@ -71,7 +87,7 @@ In the case of Framer motion, the library gives us a `motion` component which ta
   />
 ```
 
-There are many types of transitions available in Framer Motion so I added this **little comparative visualization** below for you to see the little nuances between some of the main types and tweak their respective options: 
+There are many types of transitions available in Framer Motion so I added this **little comparative visualization** below for you to see the little nuances between some of the main types and tweak their respective options:
 
 <AnimationTypes />
 
@@ -86,26 +102,27 @@ Good to know:
 👉 Only one of `animate` or any of the gesture props is **required** to define an animated Framer Motion component.
 
 👉 The library provides smart defaults for `initial` and `transition` when they are not defined. It will even adapt the transition type (spring, tween, ease) based on which property you set in your `animate` prop!
+
 </Callout>
 
 Now that we went through the basics, let's take a look at our first examples! Below you will find a series of animated components that you can edit and tweak at will. As for what to tweak, the following list contains a few interesting points that you can check out:
+
 - **remove the **`transition` **prop from the first component** (Example1). Notice that this translation animation went from an `ease` type to a `spring` type. This comes from the "smart defaults" we just mentioned.
 - combine animations in Example2: **change the second animation from a simple rotation to a rotation and a translation**.
 
 I added hints in the comments of the code to guide you. 😄
 
 ```js live
-
 const Example1 = () => {
   return (
-    <div style={{marginBottom: "50px"}}>
+    <div style={{ marginBottom: '50px' }}>
       <p>Example 1</p>
       <motion.div
         style={{
-          background: "linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)",
-          height: "100px",
-          width: "100px",
-          borderRadius: "10px",
+          background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
+          height: '100px',
+          width: '100px',
+          borderRadius: '10px',
         }}
         /**
           Below, the initial and animation field are set to declare a translation
@@ -128,10 +145,10 @@ const Example1 = () => {
           a when reaching its target state, like a spring!
         **/
         transition={{
-          type: "tween",
-          ease: "easeInOut",
+          type: 'tween',
+          ease: 'easeInOut',
           repeat: Infinity,
-          repeatType: "reverse",
+          repeatType: 'reverse',
           repeatDelay: 1,
           duration: 2,
         }}
@@ -142,14 +159,14 @@ const Example1 = () => {
 
 const Example2 = () => {
   return (
-    <div style={{ marginBottom: "50px" }}>
+    <div style={{ marginBottom: '50px' }}>
       <p>Example 2</p>
       <motion.div
         style={{
-          background: "linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)",
-          height: "100px",
-          width: "100px",
-          borderRadius: "10px",
+          background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
+          height: '100px',
+          width: '100px',
+          borderRadius: '10px',
         }}
         /**
           Combining animations in Framer Motion is very easy!
@@ -174,10 +191,10 @@ const Example2 = () => {
           // x: 100
         }}
         transition={{
-          type: "tween",
-          ease: "easeInOut",
+          type: 'tween',
+          ease: 'easeInOut',
           repeat: Infinity,
-          repeatType: "reverse",
+          repeatType: 'reverse',
           repeatDelay: 1,
           duration: 2,
         }}
@@ -187,15 +204,13 @@ const Example2 = () => {
 };
 
 const Examples = () => (
-    <div>
-      <Example1/>
-      <Example2/>
-    </div>
-)
-
+  <div>
+    <Example1 />
+    <Example2 />
+  </div>
+);
 
 render(<Examples />);
-
 ```
 
 <Callout variant="info">
@@ -206,16 +221,16 @@ Want to go a bit further before jumping into the next part? Here's a link to the
 
 ## Using variants
 
-Now that we've seen and tweaked our first Framer Motion based components, you might notice that, in the case of complex animations, things can quickly get messy.  Defining everything inline can lead to your motion components being fairly hard to read but also a bit repetitive.
+Now that we've seen and tweaked our first Framer Motion based components, you might notice that, in the case of complex animations, things can quickly get messy. Defining everything inline can lead to your motion components being fairly hard to read but also a bit repetitive.
 
 This is why one of my favorite features of Framer Motion is the ability to define animations in a declarative way through **variants**.
 
-**Variants are sets that have predefined animation objects**, the kind of object we passed in the examples above in the `animation` prop. 
+**Variants are sets that have predefined animation objects**, the kind of object we passed in the examples above in the `animation` prop.
 
 The following is an example showcasing how you can leverage variants. Notice how we declared a set of variants within the `buttonVariants` object and how the respective keys of these variants are referenced in the motion component:
 
 ```js {4-14,18-21} title=Using variants with the motion component
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
 const AnimatedButton = () => {
   const buttonVariants = {
@@ -243,21 +258,20 @@ const AnimatedButton = () => {
 };
 ```
 
-After seeing these variants the first time, like me, you might be wondering *"wait, if everything is predefined, how can I make my animations based on some dynamic property?"* 
+After seeing these variants the first time, like me, you might be wondering _"wait, if everything is predefined, how can I make my animations based on some dynamic property?"_
 
-Well, don't you worry! Framer Motion lets you also define variants as **functions**. Each variant as a function can **take one argument** and **return and animation object**. That argument has to be passed in the `custom` prop of your motion component. 
-The example below showcases an example of variant as function, the hover variant will return a different object whether the button is clicked or not. The state of the button `isClicked` is passed in the `custom` prop of the motion component. 
-
+Well, don't you worry! Framer Motion lets you also define variants as **functions**. Each variant as a function can **take one argument** and **return and animation object**. That argument has to be passed in the `custom` prop of your motion component.
+The example below showcases an example of variant as function, the hover variant will return a different object whether the button is clicked or not. The state of the button `isClicked` is passed in the `custom` prop of the motion component.
 
 ```js {5-9,26} title=Using variants and the custom prop with the motion component
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
 const AnimatedButton = () => {
   const buttonVariants = {
     // any variant declared as a function will inherit the `custom prop` as argument
     hover: (clicked) => ({
       // once clicked the button will not scale on hover anymore
-      scale: clicked ? 1 : 1.5, 
+      scale: clicked ? 1 : 1.5,
     }),
     pressed: {
       scale: 0.5,
@@ -267,7 +281,7 @@ const AnimatedButton = () => {
     },
   };
 
-  const [clicked, setClicked] = React.useState(false)
+  const [clicked, setClicked] = React.useState(false);
 
   return (
     <motion.button
@@ -285,14 +299,14 @@ const AnimatedButton = () => {
 ```
 
 Now that we know what variants are, let's try to work with them in the following playground. Let's try to:
+
 - make the first button scale on hover (for now, it only rotates).
-- make the button not scale back to its original size if it's been clicked on. 
-Hint: you can use the `custom` prop we just mentioned above 💡.
+- make the button not scale back to its original size if it's been clicked on.
+  Hint: you can use the `custom` prop we just mentioned above 💡.
 
 Like in the first part, I left comments in the code to guide you!
 
 ```js live
-
 const Example = () => {
   const [isClicked, setIsClicked] = React.useState(false);
 
@@ -358,15 +372,15 @@ const Example = () => {
   return (
     <motion.button
       style={{
-        background: "linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)",
-        color: "black",
-        border: "none",
-        height: "50px",
-        width: "200px",
-        borderRadius: "10px",
-        cursor: isClicked ? "default" : "pointer",
-        outline: "none",
-        boxShadow: "6px 4px 12px -6px rgba(0,24,40,0.25)",
+        background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
+        color: 'black',
+        border: 'none',
+        height: '50px',
+        width: '200px',
+        borderRadius: '10px',
+        cursor: isClicked ? 'default' : 'pointer',
+        outline: 'none',
+        boxShadow: '6px 4px 12px -6px rgba(0,24,40,0.25)',
       }}
       aria-label="Click Me!"
       title="Click Me!"
@@ -388,7 +402,7 @@ const Example = () => {
        * e.g. whileHover="hover"
        */
       variants={buttonVariants}
-      animate={isClicked ? "clicked" : "notClicked"}
+      animate={isClicked ? 'clicked' : 'notClicked'}
       whileHover="hover"
       whileTap="pressed"
       /**
@@ -402,35 +416,34 @@ const Example = () => {
         duration,
       }}
     >
-      {isClicked ? "Clicked!" : "Click Me!"}
+      {isClicked ? 'Clicked!' : 'Click Me!'}
     </motion.button>
   );
 };
 
 render(<Example />);
-
 ```
 
 ## Advanced animations using Motion Values
 
 At this point, we know how to use the key features of Framer Motion to start building our own animations:
+
 - we know the main elements that define an animation ✅
 - we know how to use variants to define animations in a declarative way ✅
 
 With those newly acquired skills, we can now look at on more concept that will allow us to build more advanced animations: **Motion Values**.
-In this part we will **learn what are Motion Values** and how to use them and also **looked at a practical example to illustrate this concept**: my own "Copy To Clipboard" button! 
+In this part we will **learn what are Motion Values** and how to use them and also **looked at a practical example to illustrate this concept**: my own "Copy To Clipboard" button!
 
 ### Motion Values
 
-A MotionValue is an internal value to the Framer Motion library that **"tracks the state and the velocity of an animating value"**. 
+A MotionValue is an internal value to the Framer Motion library that **"tracks the state and the velocity of an animating value"**.
 For more complex animation we may want to **create our own MotionValue** (quote from the [docs](https://www.framer.com/api/motion/motionvalue/#usemotionvalue)), and then **add them as inline style** to a given component. To define a MotionValue, we need to use the `useMotionValue` hook.
 
 A MotionValue can be practical when you want **to have one animation depending on another one**. For example, we may want to tie together the scale and the opacity of a component in such a way that, once the component reaches half of its targeted scale, the opacity should be equal to 100%.
 
-To handle that kind of use case, Framer Motion gives us a second hook: `useTransform` that transforms an input MotionValue to another MotionValue through a function. The example below showcases how you can use these 2 hooks together: 
+To handle that kind of use case, Framer Motion gives us a second hook: `useTransform` that transforms an input MotionValue to another MotionValue through a function. The example below showcases how you can use these 2 hooks together:
 
-```js live 
-
+```js live
 const Example = () => {
   const blockVariants = {
     initial: {
@@ -443,15 +456,15 @@ const Example = () => {
 
   const rotate = useMotionValue(0);
   /**
-   * Here we tie together the value of "scale" to the value 
+   * Here we tie together the value of "scale" to the value
    * of "rotate"
    * The scale will increase along the rotation, from 0
-   * until the rotation reaches 270 degrees ([0, 270]) 
+   * until the rotation reaches 270 degrees ([0, 270])
    * where the scale property will be equal to 1 ([0, 1]).
-   * The scale will stop increasing while the rotation 
+   * The scale will stop increasing while the rotation
    * finishes its transition
-   * 
-   * You can try to modify the values below, and see how it 
+   *
+   * You can try to modify the values below, and see how it
    * impacts the resulting transition.
    */
   const scale = useTransform(rotate, [0, 270], [0, 1]);
@@ -459,10 +472,10 @@ const Example = () => {
   return (
     <motion.div
       style={{
-        background: "linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)",
-        height: "100px",
-        width: "100px",
-        borderRadius: "10px",
+        background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
+        height: '100px',
+        width: '100px',
+        borderRadius: '10px',
         rotate,
         scale,
       }}
@@ -470,15 +483,14 @@ const Example = () => {
       initial="initial"
       animate="target"
       transition={{
-        ease: "easeInOut",
+        ease: 'easeInOut',
         duration: 4,
       }}
     />
   );
 };
 
-render(<Example/>);
-
+render(<Example />);
 ```
 
 ### Dissecting the "Copy To Clipboard" animation
@@ -511,7 +523,7 @@ When the pathLength reaches **half of its targeted value**, the opacity is at **
 
 </Callout>
 
-Here's the code for the full implementation of this component: 
+Here's the code for the full implementation of this component:
 
 ```js title=Full implementation of the Copy To Clipboard button animation
 import React from 'react';
@@ -599,7 +611,9 @@ const CopyToClipboardButton = () => {
 ```
 
 It might seem dense at first, but you'll notice that **it is composed of elements that we've seen individually in the previous sections and examples**:
+
 - **variants** for the clipboard SVG and the checkmark SVG
+
 ```js
 const clipboardIconVariants = {
   clicked: { opacity: 0 },
@@ -611,7 +625,9 @@ const checkmarkIconVariants = {
   unclicked: { pathLength: 0 },
 };
 ```
+
 - `useMotionValue` and `useTransform` to intertwine the opacity and pathLength values together
+
 ```js
 const pathLength = useMotionValue(0);
 const opacity = useTransform(pathLength, [0, 0.5], [0, 1]);
@@ -620,17 +636,19 @@ const opacity = useTransform(pathLength, [0, 0.5], [0, 1]);
 ## Orchestration
 
 For this last part, we will focus on how to orchestrate animations, especially with the two types of orchestration I used the most when building animations:
+
 - **Delays and repetitions**: "move to point A, then 2 seconds later move to point B then repeat"
 - **Parent-Children**: "parent appears first, then the children one after the other at 1-second interval"
 
 ### Delays and repetition
 
-This is perhaps the first type of orchestration you'll naturally think about when starting to experiment with more complex animations. Framer Motion lets you not only delay when an animation should kick-off but also 
+This is perhaps the first type of orchestration you'll naturally think about when starting to experiment with more complex animations. Framer Motion lets you not only delay when an animation should kick-off but also
 delay any repetition of that same animation if needed.
 
 I used delays and repetitions to orchestrate some of the micro-animations you can see in my [Guide to CI/CD for frontend developers](/posts/guide-to-cicd-for-frontend-developers/) which were the first fairly complex animated components I implemented.
 
 A few orchestration patterns have already been showcased in some of the previous examples out of necessity, but here's a more detailed example for you to play with:
+
 - you can try to **change the repeat type** from `mirror` to `loop` and observe the subtle change of repetition type.
 - make the animation **repeat indefinitely** instead of just 3 times.
 - make the **initial delay 2s and every repeat delay 1s**, you should observe the animation pausing between each repetition.
@@ -649,28 +667,28 @@ const Example = () => {
   return (
     <motion.div
       style={{
-        background: "linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)",
-        height: "100px",
-        width: "100px",
-        borderRadius: "50%",
+        background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
+        height: '100px',
+        width: '100px',
+        borderRadius: '50%',
       }}
       variants={blockVariants}
       initial="initial"
       animate="target"
       transition={{
-        ease: "easeInOut",
+        ease: 'easeInOut',
         duration: 0.7,
         delay: 1,
         repeat: 3,
         // repeat: Infinity,
-        repeatType: "mirror",
+        repeatType: 'mirror',
         repeatDelay: 0,
       }}
     />
   );
 };
 
-render(<Example/>)
+render(<Example />);
 ```
 
 ### Parent-Children
@@ -680,144 +698,135 @@ A more advanced pattern for orchestration that I recently discovered is what I n
 Framer Motion gives us the `delayChildren` option for our transition object to do just that:
 
 ```js {7-11} title=Using delayChildren in a transition
-  const boxVariants = {
-    out: {
-      y: 600,
+const boxVariants = {
+  out: {
+    y: 600,
+  },
+  in: {
+    y: 0,
+    transition: {
+      duration: 0.6,
+      // Both children will appear 1.2s AFTER the parent has appeared
+      delayChildren: 1.2,
     },
-    in: {
-      y: 0,
-      transition: {
-        duration: 0.6,
-        // Both children will appear 1.2s AFTER the parent has appeared
-        delayChildren: 1.2,
-      },
-    },
-  };
+  },
+};
 
-  const iconVariants = {
-    out: {
-      x: -600,
-    },
-    in: {
-      x: 0,
-    },
-  };
+const iconVariants = {
+  out: {
+    x: -600,
+  },
+  in: {
+    x: 0,
+  },
+};
 
-  return (
-    <motion.div variants={boxVariants} initial="out" animate="in">
-      <motion.span
-        role="img"
-        aria-labelledby="magic wand"
-        variants={iconVariants}
-      >
-        🪄
-      </motion.span>
-      <motion.span
-        role="img"
-        aria-labelledby="sparkles"
-        variants={iconVariants}
-      >
-        ✨
-      </motion.span>
-    </motion.div>
-  );
+return (
+  <motion.div variants={boxVariants} initial="out" animate="in">
+    <motion.span
+      role="img"
+      aria-labelledby="magic wand"
+      variants={iconVariants}
+    >
+      🪄
+    </motion.span>
+    <motion.span role="img" aria-labelledby="sparkles" variants={iconVariants}>
+      ✨
+    </motion.span>
+  </motion.div>
+);
 ```
 
 On top of that, what if we wanted to not only delay the children as a group but also delay each child based on its siblings, such as, make them appear 1s after their previous sibling appeared. Well, we're in luck, because there's an easy way to do that with the `staggerChildren`
 
 ```js {7-13} title=Using delayChildren and staggerChildren in a transition
-  const boxVariants = {
-    out: {
-      y: 600,
+const boxVariants = {
+  out: {
+    y: 600,
+  },
+  in: {
+    y: 0,
+    transition: {
+      duration: 0.6,
+      // The first child will appear AFTER the parrent has appeared on the screen
+      delayChildren: 1.2,
+      // The next sibling will appear 0.5s after the previous one
+      staggerChildren: 0.5,
     },
-    in: {
-      y: 0,
-      transition: {
-        duration: 0.6,
-        // The first child will appear AFTER the parrent has appeared on the screen
-        delayChildren: 1.2,
-        // The next sibling will appear 0.5s after the previous one
-        staggerChildren: 0.5,
-      },
-    },
-  };
+  },
+};
 
-  const iconVariants = {
-    out: {
-      x: -600,
-    },
-    in: {
-      x: 0,
-    },
-  };
+const iconVariants = {
+  out: {
+    x: -600,
+  },
+  in: {
+    x: 0,
+  },
+};
 
-  return (
-    <motion.div variants={boxVariants} initial="out" animate="in">
-      <motion.span
-        role="img"
-        aria-labelledby="magic wand"
-        variants={iconVariants}
-      >
-        🚀
-      </motion.span>
-      <motion.span
-        role="img"
-        aria-labelledby="sparkles"
-        variants={iconVariants}
-      >
-        ✨
-      </motion.span>
-    </motion.div>
-  );
+return (
+  <motion.div variants={boxVariants} initial="out" animate="in">
+    <motion.span
+      role="img"
+      aria-labelledby="magic wand"
+      variants={iconVariants}
+    >
+      🚀
+    </motion.span>
+    <motion.span role="img" aria-labelledby="sparkles" variants={iconVariants}>
+      ✨
+    </motion.span>
+  </motion.div>
+);
 ```
 
-What these 2 options exactly do might seem confusing at first. I wished I had some visual examples to really get a grasp on how they worked when I got started. I hope the following visualization will do just that! 
+What these 2 options exactly do might seem confusing at first. I wished I had some visual examples to really get a grasp on how they worked when I got started. I hope the following visualization will do just that!
 
 In the widget below, you can tweak the values of `beforeChildren` and `staggeredChildren` and see how the resulting transition.
 
-<Orchestration/>
+<Orchestration />
 
 I used this type of orchestration to power the list of people who've shared or liked my articles that you can see at the end of each blog post. It's a component that quite a few people like, so I thought I could use it as a little example for you to interact and have fun with:
 
 ```js live
-
 const Example = () => {
   const replies = [
     {
-        id: "1",
-        photo: "🐶",
+      id: '1',
+      photo: '🐶',
     },
     {
-        id: "2",
-        photo: "🐱",
+      id: '2',
+      photo: '🐱',
     },
     {
-        id: "3",
-        photo: "🐰",
+      id: '3',
+      photo: '🐰',
     },
     {
-        id: "4",
-        photo: "🐭",
+      id: '4',
+      photo: '🐭',
     },
     {
-        id: "5",
-        photo: "🐹",
+      id: '5',
+      photo: '🐹',
     },
     {
-        id: "6",
-        photo: "🦊",
+      id: '6',
+      photo: '🦊',
     },
     {
-        id: "7",
-        photo: "🐻",
+      id: '7',
+      photo: '🐻',
     },
     {
-        id: "8",
-        photo: "🐼",
+      id: '8',
+      photo: '🐼',
     },
     {
-        id: "9",
-        photo: "🐨",
+      id: '9',
+      photo: '🐨',
     },
   ];
 
@@ -825,7 +834,7 @@ const Example = () => {
     visible: {
       opacity: 1,
       transition: {
-        // delayChildren: 1.5,  
+        // delayChildren: 1.5,
         staggerChildren: 0.1,
       },
     },
@@ -840,60 +849,59 @@ const Example = () => {
   };
 
   return (
-  <>
-    <h4>Already {replies.length} furry friends liked this post!</h4>
-    <motion.ul
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        marginLeft: "0px",
-        marginBottom: "8px",
-        marginTop: "15px",
-      }}
-      initial="hidden"
-      animate="visible"
-      variants={list}
-    >
-      {replies.map((reply) => (
-        <motion.li
-          style={{
-            listStyle: "none",
-            marginRight: "-10px",
-          }}
-          key={reply.id}
-          data-testid={reply.id}
-          variants={item}
-          whileHover={{
-            // scale: 1.2,
-            marginRight: "5px",
-            transition: { ease: "easeOut" },
-          }}
-        >
-          <div
+    <>
+      <h4>Already {replies.length} furry friends liked this post!</h4>
+      <motion.ul
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          marginLeft: '0px',
+          marginBottom: '8px',
+          marginTop: '15px',
+        }}
+        initial="hidden"
+        animate="visible"
+        variants={list}
+      >
+        {replies.map((reply) => (
+          <motion.li
             style={{
-              background: "linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)",
-              height: "50px",
-              width: "50px",
-              borderRadius: "50%",
-              border: "3px solid #4C79DF",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              fontSize: "38px",
+              listStyle: 'none',
+              marginRight: '-10px',
+            }}
+            key={reply.id}
+            data-testid={reply.id}
+            variants={item}
+            whileHover={{
+              // scale: 1.2,
+              marginRight: '5px',
+              transition: { ease: 'easeOut' },
             }}
           >
-            <span role="img">{reply.photo}</span>
-          </div>
-        </motion.li>
-      ))}
-    </motion.ul> 
-  </>
+            <div
+              style={{
+                background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
+                height: '50px',
+                width: '50px',
+                borderRadius: '50%',
+                border: '3px solid #4C79DF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                fontSize: '38px',
+              }}
+            >
+              <span role="img">{reply.photo}</span>
+            </div>
+          </motion.li>
+        ))}
+      </motion.ul>
+    </>
   );
 };
 
 render(<Example />);
-
 ```
 
 ## Conclusion

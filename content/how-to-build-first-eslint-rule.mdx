@@ -2,6 +2,7 @@
 title: 'How I built my first custom ESLint rule'
 subtitle: A guide to get started with AST (Abstract Syntax Tree) and custom built ESLint plugins
 date: '2019-11-19T14:01:01.595Z'
+updated: '2019-11-19T14:01:01.595Z'
 categories: []
 keywords:
   ['eslint', 'rule', 'testing', 'AST', 'javascript', 'ui', 'linting', 'syntax']
@@ -90,7 +91,7 @@ module.exports = {
           '"yup.validateSync()" is found but is not preceded "CHECK &&"',
       },
     },
-    create: function(context) {
+    create: function (context) {
       return {
         // AST goes here
         // see next part
@@ -157,6 +158,7 @@ For this part, let's first go to AST explorer and write our statement to see how
   "sourceType": "module"
 }
 ```
+
 <Callout variant="info">
 
 Note: You can check the resulting tree yourself [here](https://astexplorer.net/#/gist/dc0def03c26658b1bfa5d8743f9a9f91/058b77edfa0710fd3a697cc85c2513fee191ee7d).

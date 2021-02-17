@@ -2,8 +2,20 @@
 title: 'Going native: SwiftUI from the perspective of a React developer'
 subtitle: Approaching native iOS development with a React developer mindset
 date: '2020-09-16T08:00:00.000Z'
+updated: '2020-09-16T08:00:00.000Z'
 categories: []
-keywords: ['swiftui', 'swift', 'react', 'reactive', 'iOS', 'frontend', 'developer', 'native', 'web']
+keywords:
+  [
+    'swiftui',
+    'swift',
+    'react',
+    'reactive',
+    'iOS',
+    'frontend',
+    'developer',
+    'native',
+    'web',
+  ]
 slug: swiftui-as-react-developer
 type: 'blogPost'
 featured: false
@@ -30,14 +42,14 @@ In the diagram below, you can see a code snippet featuring a basic SwiftUI view 
 
 ### View
 
-This is the protocol or type that represents anything dealing with the user interface. They are to SwiftUI what components are to React if you will. 
+This is the protocol or type that represents anything dealing with the user interface. They are to SwiftUI what components are to React if you will.
 
 <Callout variant="info">
 
 To declare a custom SwiftUI view like the one in the diagram above you need to do two things:
 
 1. Declare a struct that conforms to the View protocol. This means that **the type of our struct satisfies the requirements of the view protocol**.
-2. That requirement that needs to be satisfied is the following: the struct must have a body property of type `some View`. 
+2. That requirement that needs to be satisfied is the following: the struct must have a body property of type `some View`.
 
 That body property **can contain anything from a single primitive view** (the views that the SwiftUI framework provides by default) **to complex nested views**.
 
@@ -86,6 +98,7 @@ As stated in the previous part, SwiftUI provides a set of primitive views, like 
 <Callout variant="info">
 
 ** What do view modifiers do? **
+
 - they then make a copy of the view they are added to.
 - they return the "modified version" of that view.
 
@@ -98,7 +111,7 @@ Some basic modifiers include: `.font()`, `.backgroundColor()`, or `.padding()` t
 Something that is worth noting for the future, but not essential for understanding this blog post, is that **the ordering of modifiers matters!**
 Applying a `.background()` modifier before `.padding()` will not give the same outcome as applying it after `.padding()`.
 
-You can find a great example of this effect in this [beginners' guide to view modifiers in SwiftUI](https://www.calincrist.com/blog/2020-05-02-beginners-guide-to-view-modifiers-swiftui/). 
+You can find a great example of this effect in this [beginners' guide to view modifiers in SwiftUI](https://www.calincrist.com/blog/2020-05-02-beginners-guide-to-view-modifiers-swiftui/).
 
 </Callout>
 
@@ -143,7 +156,7 @@ struct ViewWrapperWithTitle<Content: View>: View {
         VStack {
             Text("Test")
             content
-        } 
+        }
     }
 }
 
@@ -213,7 +226,7 @@ const App = () => {
 
 We saw earlier that SwiftUI can do one-way binding just like React through properties. Well, SwiftUI can also do **two-way binding** thanks to a property wrapper: `@Bindings`!
 
-```swift title=Example of a bound property in SwiftUI 
+```swift title=Example of a bound property in SwiftUI
 
 struct ShowRectangle: View {
     @Binding var isShown: Bool
@@ -251,37 +264,42 @@ If instead of `@Binding` we were to use a simple state, we wouldn't be able to r
   width={349}
 />
 
-
 ## Basic state management
 
 We just saw our first use case for a property wrapper in a SwiftUI view with `@Bindings`. Another very useful property wrapper that definitely speaks to many React developers is `@State`.
 We saw an example of the use of `@State` in the first part, but I want to use this part to give a bit more details about what it does, and also what it can't do.
 
-When declaring a variable with a `@State` property wrapper, **we're telling SwiftUI to "watch" this variable and to "re-render" the user interface on any change**. 
+When declaring a variable with a `@State` property wrapper, **we're telling SwiftUI to "watch" this variable and to "re-render" the user interface on any change**.
 
 <figure>
-    <img style={{marginBottom: "0px"}} src="/static/images/diagramswiftuistatemanagement.svg" alt="Diagram showcasing how a view re renders in SwiftUI following a state change"/>
-    <figcaption>Diagram showcasing how a view "re-renders" in SwiftUI following a state change. This cycle is very similar to the one we're familiar with React.</figcaption>
+  <img
+    style={{ marginBottom: '0px' }}
+    src="/static/images/diagramswiftuistatemanagement.svg"
+    alt="Diagram showcasing how a view re renders in SwiftUI following a state change"
+  />
+  <figcaption>
+    Diagram showcasing how a view "re-renders" in SwiftUI following a state
+    change. This cycle is very similar to the one we're familiar with React.
+  </figcaption>
 </figure>
 
 This is very similar to using the kind of re-rendering flow we're used to with React, and when comparing a similar feature, the code between SwiftUI and React looks extremely familiar:
 
 ```js title=Basic state management in React unsing the useState hook
-
 import React from 'react';
 
 const App = () => {
-    const [enabled, setEnabled] = React.useState(false);
+  const [enabled, setEnabled] = React.useState(false);
 
-    return (
-        <>
-            <p>{enabled ? 'Enabled!': 'Not enabled.'}</p>
-            <Button onClick={() => setEnabled(prevState => !prevState)}>Click</Button>
-        </>
-    )
-}
-
-
+  return (
+    <>
+      <p>{enabled ? 'Enabled!' : 'Not enabled.'}</p>
+      <Button onClick={() => setEnabled((prevState) => !prevState)}>
+        Click
+      </Button>
+    </>
+  );
+};
 ```
 
 ```js title=Basic state management in SwiftUI unsing the @State property wrapper
@@ -309,7 +327,6 @@ However, unlike React, where your state can technically take pretty complex obje
   width={349}
 />
 
-
 ```swift title=Code Snippet of the example featured above:
 class User {
     var username = "@MaximeHeckel"
@@ -322,14 +339,14 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Text("User here is a class, the text above does not change when we edit the content of the text field :(").padding()
-            
+
         Form {
             Text("Your Twitter username is \(user.username).")
             TextField("Twitter username", text: $user.username)
-            
+
         }
             Text("Here it works because we use a basic string in a @State property wrapper").padding()
-           
+
             Form {
                 Text("Your Twitter username is \(username).")
                 TextField("Twitter username", text: $username)
@@ -341,7 +358,6 @@ struct ContentView: View {
 
 Other property wrappers exist to fix this behavior, however, I'll write about these more complex use-cases in an upcoming blog post entirely dedicated to state management in SwiftUI. This one is only meant to cover the basics to get you started! If in the meantime, you're curious to know why `@State` doesn't work of classes, you can check [this article from Paul Hudson on Hacking With Swift which covers this subject](https://www.hackingwithswift.com/books/ios-swiftui/why-state-only-works-with-structs).
 
-
 ## Handling side effects
 
 Finally, let's talk about side effects. Despite being a very complex piece of React, we've all used the `useEffect` hook at some point. Whether it's to set a state after an API call or execute a function when a dependency is updated, `useEffect` is a key part in every recent React app.
@@ -350,21 +366,19 @@ SwiftUI on the other hand, doesn't have an umbrella functionality to manage side
 Below is an example of a component and a view triggering functions on mount and unmount in both React and SwiftUI:
 
 ```js title=Component using the useEffect hook in React to trigger functions on mount and unmount
-
-import React from 'react'
+import React from 'react';
 
 const App = () => {
-    React.useEffect(() => {
-    console.log("hello!");
+  React.useEffect(() => {
+    console.log('hello!');
 
     return () => {
-      console.log("goodbye");
+      console.log('goodbye');
     };
   }, []);
 
-  return <div/>;
-}
-
+  return <div />;
+};
 ```
 
 ```swift title=View using .appear and .disappear modifier in SwiftUI to trigger functions on mount and unmount
