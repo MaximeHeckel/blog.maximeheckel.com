@@ -1,3 +1,5 @@
+import { css } from '@emotion/react';
+import dynamic from 'next/dynamic';
 import React from 'react';
 import siteConfig from 'config/site';
 import Layout from '@theme/layouts';
@@ -7,10 +9,14 @@ import { WebmentionCount } from '@theme/components/Webmentions';
 import Flex from '@theme/components/Flex';
 import { MONTHS } from '@theme/constants';
 import { MDXBody } from '@theme/components/MDX/MDX';
-import ProgressBar from '@theme/components/ProgressBar';
+import Pill from '@theme/components/Pill';
+
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
 
+const ProgressBar = dynamic(() => import('@theme/components/ProgressBar'), {
+  ssr: false,
+});
 interface Props {
   children: React.ReactNode;
   frontMatter: Post & { readingTime: ReadingTime };
@@ -18,9 +24,18 @@ interface Props {
 }
 
 const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
-  const { date, slug, subtitle, title, readingTime, cover } = frontMatter;
+  const {
+    date,
+    updated,
+    slug,
+    subtitle,
+    title,
+    readingTime,
+    cover,
+  } = frontMatter;
   const progressBarTarget = React.useRef<HTMLDivElement>(null);
   const parsedDate = new Date(Date.parse(date));
+  const parsedLastUpdated = new Date(Date.parse(updated));
   const path = `/posts/${slug}/`;
   const postUrl = `${siteConfig.url}${path}`;
 
@@ -40,13 +55,19 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
           image={ogImage}
           path={path}
           date={date}
+          updated={updated}
         />
         <Hero id="top">
           <Hero.Title className="p-name" data-testid={`project-title-${title}`}>
             {title}
           </Hero.Title>
           <Hero.Info>
-            <Flex wrap="wrap">
+            <Flex
+              css={css`
+                margin-bottom: 16px;
+              `}
+              wrap="wrap"
+            >
               {date ? (
                 <p>
                   {MONTHS[parsedDate.getMonth()]} {parsedDate.getDate()}{' '}
@@ -56,8 +77,16 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
               {readingTime.text ? <p> / {readingTime.text} / </p> : null}
               <WebmentionCount target={postUrl} />
             </Flex>
+            {updated ? (
+              <Pill
+                color="var(--maximeheckel-colors-emphasis)"
+                text={`Last Updated ${MONTHS[parsedLastUpdated.getMonth()]} 
+              ${parsedLastUpdated.getDate()} 
+              ${parsedLastUpdated.getFullYear()}`}
+              />
+            ) : null}
           </Hero.Info>
-          <ProgressBar target={progressBarTarget} />
+          <ProgressBar id={slug} target={progressBarTarget} />
           {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
         </Hero>
         <MDXBody ref={progressBarTarget}>{children}</MDXBody>

@@ -4,6 +4,7 @@ export const posts = [
     subtitle:
       'How leveraging CSS variable composition and HSLA colors helped me build a more efficient way to theme my apps and rely less on CSS-in-JS.',
     date: '2021-02-02T08:00:00.000Z',
+    updated: '2021-02-04T08:00:00.000Z',
     categories: [],
     keywords: [
       'css',
@@ -25,6 +26,7 @@ export const posts = [
     subtitle:
       'A reflection on my experience building my first SwiftUI app, what I learned, the challenges I faced, and the reasons that made me not release it.',
     date: '2021-01-19T08:00:00.000Z',
+    updated: '2021-01-25T08:00:00.000Z',
     categories: [],
     keywords: [
       'swiftui',
@@ -47,6 +49,7 @@ export const posts = [
     subtitle:
       "An interactive guide introducing everything I've learned about Framer Motion through fun examples and little case studies of animations I built.",
     date: '2020-12-15T08:00:00.000Z',
+    updated: '2020-12-19T08:00:00.000Z',
     categories: [],
     keywords: [
       'framer motion',
@@ -70,6 +73,7 @@ export const posts = [
     subtitle:
       'Take ownership of your Apple Watch health data with a only few lines of code.',
     date: '2020-11-02T08:00:00.000Z',
+    updated: '2020-11-02T08:00:00.000Z',
     categories: [],
     keywords: [
       'health',
@@ -97,6 +101,7 @@ export const posts = [
     subtitle:
       'A look back at what I learned fixing my terrible SEO mistakes on my Gatsby websites',
     date: '2020-10-13T08:00:00.000Z',
+    updated: '2020-10-13T08:00:00.000Z',
     categories: [],
     keywords: [
       'seo',
@@ -119,6 +124,7 @@ export const posts = [
     subtitle:
       'Approaching native iOS development with a React developer mindset',
     date: '2020-09-16T08:00:00.000Z',
+    updated: '2020-09-16T08:00:00.000Z',
     categories: [],
     keywords: [
       'swiftui',
@@ -142,6 +148,7 @@ export const posts = [
     subtitle:
       "Do you want to increase your team's development velocity and collaboration? Preview Deployments are one of the key pieces for that, and this post details how to implement your own serverless deployment service based on Google Cloud Run.",
     date: '2020-08-25T08:00:00.000Z',
+    updated: '2020-08-25T08:00:00.000Z',
     categories: [],
     keywords: [
       'preview',
@@ -168,6 +175,7 @@ export const posts = [
     subtitle:
       'How to ship your app faster, more reliably and make your team unstoppable with good testing practices and automation.',
     date: '2020-07-28T08:00:00.000Z',
+    updated: '2020-08-12T08:00:00.000Z',
     categories: [],
     keywords: [
       'tests',
@@ -194,6 +202,7 @@ export const posts = [
       'Immigrating to the US: My path from non-immigrant to permanent resident',
     subtitle: 'US immigration explained for American citizens by an immigrant.',
     date: '2020-06-26T08:00:00.000Z',
+    updated: '2020-06-29T08:00:00.000Z',
     categories: [],
     keywords: [
       'immigration',
@@ -221,6 +230,7 @@ export const posts = [
     subtitle:
       'A deep dive into the inner workings of spring animations in Framer Motion.',
     date: '2020-06-23T08:00:00.000Z',
+    updated: '2020-06-29T08:00:00.000Z',
     categories: [],
     keywords: [
       'spring animation',
@@ -239,6 +249,7 @@ export const posts = [
     title: 'Generate screenshots of your code with a serverless function',
     subtitle: 'Programmatic Carbon images generation from a simple API',
     date: '2020-06-09T08:00:00.000Z',
+    updated: '2020-06-09T08:00:00.000Z',
     categories: [],
     keywords: [
       'vercel',
@@ -261,6 +272,7 @@ export const posts = [
     title: 'How to use Framer Motion with Emotion styled-components',
     subtitle: 'Framer Motion x Emotion → animated styled-components',
     date: '2020-05-12T08:00:00.000Z',
+    updated: '2020-05-12T08:00:00.000Z',
     categories: [],
     keywords: [
       'framer motion',
@@ -277,6 +289,7 @@ export const posts = [
     title: 'Data Fetching with NextJS: What I learned',
     subtitle: 'GetServerSideProps vs GetStaticProps vs GetStaticPaths.',
     date: '2020-05-05T08:00:00.000Z',
+    updated: '2020-05-05T08:00:00.000Z',
     categories: [],
     keywords: ['nextJS', 'data fetching', 'api', 'javascript', 'typescript'],
     slug: 'data-fetching-with-next-js',
@@ -290,6 +303,7 @@ export const posts = [
     subtitle:
       "Here's an up to date list of what I'm currently learning and what I plan to learn.",
     date: '2020-04-21T08:00:00.000Z',
+    updated: '2021-01-02T08:00:00.000Z',
     categories: [],
     keywords: [],
     slug: 'learning-in-public',
@@ -304,6 +318,7 @@ export const posts = [
     subtitle:
       'Bringing a proper solution to dark mode flashing without an ugly hack.',
     date: '2020-04-16T08:00:00.000Z',
+    updated: '2020-04-16T08:00:00.000Z',
     categories: [],
     keywords: [
       'react',
@@ -325,6 +340,7 @@ export const posts = [
     subtitle:
       'Dealing with dependencies when developing a package and using it through npm link.',
     date: '2020-03-31T08:00:00.000Z',
+    updated: '2020-03-31T08:00:00.000Z',
     categories: [],
     keywords: [
       'npm',
@@ -345,6 +361,7 @@ export const posts = [
     title: 'Running scheduled cross-browser end-to-end tests on Github CI',
     subtitle: 'Github actions + Cypress + cross-browser testing = 🚀',
     date: '2020-03-10T08:00:00.000Z',
+    updated: '2020-03-10T08:00:00.000Z',
     categories: [],
     keywords: [
       'cicd',
@@ -363,6 +380,7 @@ export const posts = [
     subtitle:
       'A guide to get started with AST (Abstract Syntax Tree) and custom built ESLint plugins',
     date: '2019-11-19T14:01:01.595Z',
+    updated: '2019-11-19T14:01:01.595Z',
     categories: [],
     keywords: [
       'eslint',
@@ -385,6 +403,7 @@ export const posts = [
     title: 'React Lazy: a take on preloading views',
     subtitle: 'How to add preloading to your route based code split apps',
     date: '2019-09-24T14:01:01.595Z',
+    updated: '2019-09-24T14:01:01.595Z',
     categories: [],
     keywords: [
       'react',
@@ -402,6 +421,7 @@ export const posts = [
     subtitle:
       'Make sure your UI projects follow accessibility standards before deploying to production',
     date: '2019-07-09T14:01:01.595Z',
+    updated: '2019-07-09T14:01:01.595Z',
     categories: [],
     keywords: [],
     slug: 'automated-ui-accessibility-testing-with-cypress-cc2e38231241',
@@ -412,6 +432,7 @@ export const posts = [
     title: 'Building a GraphQL wrapper for the Docker API',
     subtitle: 'From REST calls to powerful queries',
     date: '2019-05-28T14:17:39.673Z',
+    updated: '2019-05-28T14:17:39.673Z',
     categories: [],
     keywords: [],
     slug: 'building-a-graphql-wrapper-for-the-docker-api-2109f2b9c202',
@@ -423,6 +444,7 @@ export const posts = [
     subtitle:
       'In this post, I’m going to share with you how I built dark mode support for a sample React app with Emotion themes.',
     date: '2019-03-05T16:31:00.736Z',
+    updated: '2019-03-05T16:31:00.736Z',
     categories: [],
     keywords: [],
     slug:
@@ -435,6 +457,7 @@ export const posts = [
     subtitle:
       'A step by step guide to get Typescript, tslint and Prettier working on any existing Gatsby project.',
     date: '2019-02-05T15:01:00.698Z',
+    updated: '2019-02-05T15:01:00.698Z',
     categories: [],
     keywords: [],
     slug: 'getting-started-with-typescript-on-gatsby-8544b47c1d27',
@@ -446,6 +469,7 @@ export const posts = [
     subtitle:
       'A simple global state management package based on React constructs',
     date: '2018-12-04T16:31:51.793Z',
+    updated: '2018-12-04T16:31:51.793Z',
     categories: [],
     keywords: [],
     slug: 'rebuilding-redux-with-hooks-and-context-e16b59faf51c',
@@ -457,6 +481,7 @@ export const posts = [
     subtitle:
       'How the new React Suspense API might reshape the way we build components',
     date: '2018-11-06T16:52:30.887Z',
+    updated: '2018-11-06T16:52:30.887Z',
     categories: [],
     keywords: [],
     slug: 'asynchronous-rendering-with-react-c323cda68f41',
@@ -467,6 +492,7 @@ export const posts = [
     title: 'Using Flow generics to type generic React components',
     subtitle: 'How Flow generics help typing complex multi-purpose components',
     date: '2018-10-16T16:07:39.169Z',
+    updated: '2018-10-16T16:07:39.169Z',
     categories: [],
     keywords: [],
     slug: 'using-flow-generics-to-type-generic-react-components-22dd642634d8',
@@ -478,6 +504,7 @@ export const posts = [
     subtitle:
       'Adding Flow on top of styled components to avoid misusages before they hit production, and make developers’ and designers’ life easier.',
     date: '2018-10-09T15:57:18.982Z',
+    updated: '2018-10-09T15:57:18.982Z',
     categories: [],
     keywords: [],
     slug:
@@ -490,6 +517,7 @@ export const posts = [
     subtitle:
       'How I deployed, published, scaled and setup SSL certificates for my personal projects',
     date: '2018-06-19T17:33:16.682Z',
+    updated: '2018-06-19T17:33:16.682Z',
     categories: [],
     keywords: [],
     slug: 'how-i-got-started-with-kubernetes-on-gke-5f829eca98bc',
@@ -501,6 +529,7 @@ export const posts = [
     subtitle:
       'Adding more control to the sub-component pattern with Flow types',
     date: '2018-05-01T16:17:42.023Z',
+    updated: '2018-05-01T16:17:42.023Z',
     categories: [],
     keywords: [],
     slug:
@@ -513,6 +542,7 @@ export const posts = [
     subtitle:
       'Further simplifying the sub-component pattern using contexts to make flexible, easily testable and reusable React components',
     date: '2018-04-16T17:08:40.154Z',
+    updated: '2018-04-16T17:08:40.154Z',
     categories: [],
     keywords: [],
     slug: 'react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4',
@@ -524,6 +554,7 @@ export const posts = [
     subtitle:
       'Making flexible, easily testable and reusable views in React without ending in “markup hell”',
     date: '2018-02-26T21:02:23.156Z',
+    updated: '2018-02-26T21:02:23.156Z',
     categories: [],
     keywords: [],
     slug: 'react-sub-components-513f6679abed',
@@ -534,6 +565,7 @@ export const posts = [
     title: 'Running Golang tests with Jest',
     subtitle: 'How to use the Jest platform to run Golang test',
     date: '2018-01-10T17:00:17.216Z',
+    updated: '2018-01-10T17:00:17.216Z',
     categories: [],
     keywords: [],
     slug: 'running-golang-tests-with-jest-b5d8f3d43a7',

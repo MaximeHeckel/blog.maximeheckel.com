@@ -8,15 +8,15 @@ interface Props {
   path?: string;
   title?: string;
   date?: string;
+  updated?: string;
 }
 
-const Seo = ({ title, desc, image, path, date }: Props) => {
+const Seo = ({ title, desc, image, path, date, updated }: Props) => {
   const {
     title: configTitle,
     description: configDescription,
     image: configImage,
     url,
-    keywords,
     author,
     twitter,
   } = siteConfig;
@@ -26,11 +26,12 @@ const Seo = ({ title, desc, image, path, date }: Props) => {
     image: `${url}${image}` || configImage,
     title: `${title} - ${configTitle}` || configTitle,
     url: `${url}${path || ''}`,
-    date: date ? date : '',
-    keywords,
+    date: date || '',
+    updated: updated || date || '',
   };
 
   const formattedDate = new Date(seo.date).toISOString();
+  const formattedUpdatedDate = new Date(seo.updated).toISOString();
   const featuredImage = {
     url: seo.image,
     alt: seo.title,
@@ -46,6 +47,7 @@ const Seo = ({ title, desc, image, path, date }: Props) => {
           type: 'article',
           article: {
             publishedTime: formattedDate,
+            modifiedTime: formattedUpdatedDate,
           },
           url: seo.url,
           title: seo.title,

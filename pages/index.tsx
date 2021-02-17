@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { MONTHS } from '@theme/constants';
 import Button from '@theme/components/Button';
+import NewsletterForm from '@theme/components/NewsletterForm';
 import VisuallyHidden from '@theme/components/VisuallyHidden';
 import Layout from '@theme/layouts';
 import styled from '@emotion/styled';
@@ -205,11 +206,18 @@ const IndexPage = (props: Props) => {
                 margin-top: 100px;
               `}
             >
+              <h2>Newsletter</h2>
+              <NewsletterForm large />
+            </section>
+            <section
+              css={css`
+                margin-top: 100px;
+              `}
+            >
               <h2>Featured</h2>
               <List
                 data-testid="featured-list"
                 css={css`
-                  padding-top: 30px;
                   display: grid;
                   grid-gap: 16px;
                 `}

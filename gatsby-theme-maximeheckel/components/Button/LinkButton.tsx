@@ -26,10 +26,12 @@ const LinkButton = styled(motion.button)`
   &:focus-visible {
     outline: 2px solid var(--maximeheckel-colors-brand);
     background-color: var(--maximeheckel-colors-foreground);
+    box-shadow: var(--maximeheckel-shadow-2);
   }
 
   &:hover {
     background-color: var(--maximeheckel-colors-foreground);
+    box-shadow: var(--maximeheckel-shadow-2);
   }
 `;
 

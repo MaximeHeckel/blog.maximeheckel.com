@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { WebmentionReplies } from '@theme/components/Webmentions';
+import NewsletterForm from '@theme/components/NewsletterForm';
 
 const ColoredBlockWrapper = styled('div')`
   background: var(--maximeheckel-colors-emphasis);
@@ -47,6 +48,7 @@ const Signature: React.FC<{ title: string; url: string }> = ({
           Maxime
         </p>
       </div>
+      <NewsletterForm />
     </ColoredBlockWrapper>
   );
 };

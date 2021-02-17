@@ -93,8 +93,7 @@ const LightDarkSwitcher = () => {
     >
       <LinkButton
         data-testid="darkmode-switch"
-        aria-labelledby="lightDarkSwitcherTooltip"
-        aria-describedby="lightDarkSwitcherDesc"
+        aria-describedby="lightDarkSwitcherTooltip"
         onClick={() => {
           theme.toggleDark();
         }}
@@ -252,9 +251,6 @@ const LightDarkSwitcher = () => {
             }}
           />
         </motion.svg>
-        <VisuallyHidden as="p" id="lightDarkSwitcherDesc">
-          Toggles between light and dark mode.
-        </VisuallyHidden>
       </LinkButton>
       <motion.span
         id="lightDarkSwitcherTooltip"
@@ -284,6 +280,9 @@ const LightDarkSwitcher = () => {
         role="tooltip"
       >
         {theme.dark ? 'Activate light mode' : 'Activate dark mode'}
+        <VisuallyHidden as="p">
+          Toggles between light and dark mode.
+        </VisuallyHidden>
       </motion.span>
     </motion.div>
   );

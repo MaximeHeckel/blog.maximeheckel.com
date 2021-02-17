@@ -11,6 +11,7 @@ export type Post = {
   colorFeatured?: string;
   cover?: string;
   date: string;
+  updated: string;
   featured?: boolean;
   fontFeatured?: string;
   keywords?: string[];
