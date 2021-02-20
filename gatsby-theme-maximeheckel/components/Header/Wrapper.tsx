@@ -61,7 +61,7 @@ const HeaderWrapper = styled(motion.div)<StyledHeaderWrapperProps>`
   }
 
   transition: background 0.5s;
-  background: var(--maximeheckel-colors-body);
+  background-color: var(--maximeheckel-colors-body);
   width: 100%;
   border-top: 6px solid var(--maximeheckel-colors-brand);
   position: ${(props) => (props.sticky ? 'fixed' : 'inherit')};

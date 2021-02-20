@@ -128,14 +128,10 @@ interface Props {
 
 const WebmentionReplies = ({ title, url }: Props) => {
   const [ref, inView] = useInView();
-  const [page, setPage] = React.useState(0);
+  const [page /*, setPage*/] = React.useState(0);
   const [fetchState, setFetchState] = React.useState('fetching');
 
-  const mergeReplies = (oldReplies: Reply[], newReplies: Reply[]) => [
-    ...oldReplies,
-    ...newReplies,
-  ];
-  const [replies, setReplies] = React.useReducer(mergeReplies, []);
+  const [replies, setReplies] = React.useState<Reply[]>([]);
   const perPage = 500;
   const text = `${title} by @MaximeHeckel ${url}`;
 
@@ -146,7 +142,7 @@ const WebmentionReplies = ({ title, url }: Props) => {
       ).then((response) => (response.json ? response.json() : response)),
     [page, url]
   );
-  const incrementPage = () => setPage((previousPage) => previousPage + 1);
+  // const incrementPage = () => setPage((previousPage) => previousPage + 1);
   //   const fetchMore = () =>
   //     getMentions()
   //       .then((newReplies) => {
@@ -159,14 +155,12 @@ const WebmentionReplies = ({ title, url }: Props) => {
   //       .then(incrementPage);
 
   React.useEffect(() => {
-    getMentions()
-      .then((newReplies) => {
-        setReplies(newReplies.links);
-        setFetchState('done');
-      })
-      .then(incrementPage);
+    getMentions().then((newReplies) => {
+      setReplies(newReplies.links);
+      setFetchState('done');
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [url]);
 
   if (fetchState === 'fetching') {
     return <p data-testid="fetching">Fetching Replies...</p>;

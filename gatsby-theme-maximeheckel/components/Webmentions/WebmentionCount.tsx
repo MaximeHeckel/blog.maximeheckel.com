@@ -20,20 +20,10 @@ const fetchCounts = async (target: string) =>
 const WebmentionCount = ({ target }: { target: string }) => {
   const [counts, setCounts] = React.useState(initialCounts);
 
-  // Get counts on `target` change.
   React.useEffect(() => {
     async function getCounts() {
       const responseCounts = await fetchCounts(target);
-      setCounts((previousCounts) => {
-        return {
-          ...previousCounts,
-          ...responseCounts,
-          type: {
-            ...previousCounts.type,
-            ...responseCounts.type,
-          },
-        };
-      });
+      setCounts(responseCounts);
     }
 
     getCounts();

@@ -1,6 +1,6 @@
 import { cleanup, render } from '@testing-library/react';
 import React from 'react';
-import SearchBox from '../';
+import SearchBox from '..';
 
 afterEach(() => {
   cleanup();

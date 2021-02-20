@@ -6,11 +6,12 @@ import AnchorLink from 'react-anchor-link-smooth-scroll';
 import Scrollspy from 'react-scrollspy';
 
 interface ReadingProgressProps {
+  id: string;
   target: React.MutableRefObject<HTMLDivElement | null>;
   slim?: boolean;
 }
 
-const ReadingProgress: React.FC<ReadingProgressProps> = ({ target, slim }) => {
+const ReadingProgress = ({ id, target, slim }: ReadingProgressProps) => {
   const shouldReduceMotion = useReducedMotion();
   const { scrollYProgress } = useViewportScroll();
   const [readingProgress, setReadingProgress] = React.useState(0);
@@ -21,7 +22,7 @@ const ReadingProgress: React.FC<ReadingProgressProps> = ({ target, slim }) => {
   const shouldShowTableOfContent = readingProgress > 7 && readingProgress < 100;
   const shouldHideProgressBar = readingProgress >= 99;
 
-  const scrollListener = () => {
+  const scrollListener = React.useCallback(() => {
     if (!target || !target.current) {
       return;
     }
@@ -43,24 +44,28 @@ const ReadingProgress: React.FC<ReadingProgressProps> = ({ target, slim }) => {
     }
 
     setReadingProgress((windowScrollTop / totalHeight) * 100);
-  };
+  }, [target]);
 
   React.useEffect(() => {
-    const titles = document.querySelectorAll('h2');
-    const idArrays = Array.prototype.slice
-      .call(titles)
-      .map((title) => ({ id: title.id, title: title.innerText })) as Array<{
-      id: string;
-      title: string;
-    }>;
-    setIds(idArrays);
-  }, []);
+    /**
+     * Working around some Server Side Rendering quirks :) (don't judge)
+     */
+    setTimeout(() => {
+      const titles = document.querySelectorAll('h2');
+      const idArrays = Array.prototype.slice
+        .call(titles)
+        .map((title) => ({ id: title.id, title: title.innerText })) as Array<{
+        id: string;
+        title: string;
+      }>;
+      setIds(idArrays);
+    }, 500);
+  }, [id]);
 
   React.useEffect(() => {
     window.addEventListener('scroll', scrollListener);
     return () => window.removeEventListener('scroll', scrollListener);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [scrollListener]);
 
   const progressBarWrapperVariants = {
     hide: {
@@ -79,7 +84,7 @@ const ReadingProgress: React.FC<ReadingProgressProps> = ({ target, slim }) => {
   };
 
   return (
-    <Wrapper slim={slim} showTableOfContents={shouldShowTableOfContent}>
+    <Wrapper id={id} slim={slim} showTableOfContents={shouldShowTableOfContent}>
       <ProgressBarWrapper
         initial="hide"
         variants={progressBarWrapperVariants}
