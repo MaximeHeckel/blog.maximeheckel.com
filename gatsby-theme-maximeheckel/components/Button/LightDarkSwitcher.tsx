@@ -93,7 +93,7 @@ const LightDarkSwitcher = () => {
     >
       <LinkButton
         data-testid="darkmode-switch"
-        aria-describedby="lightDarkSwitcherTooltip"
+        aria-labelledby="lightDarkSwitcherTooltip"
         onClick={() => {
           theme.toggleDark();
         }}

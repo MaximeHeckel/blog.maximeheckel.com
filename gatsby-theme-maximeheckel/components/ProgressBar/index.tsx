@@ -48,7 +48,10 @@ const ReadingProgress = ({ id, target, slim }: ReadingProgressProps) => {
 
   React.useEffect(() => {
     /**
-     * Working around some Server Side Rendering quirks :) (don't judge)
+     * Working around some race condition quirks :) (don't judge)
+     */
+    /**
+     * TODO @MaximeHeckel: see if there's a better way through a remark plugin to do this
      */
     setTimeout(() => {
       const titles = document.querySelectorAll('h2');

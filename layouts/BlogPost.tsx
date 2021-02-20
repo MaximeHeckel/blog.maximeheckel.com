@@ -9,7 +9,7 @@ import { WebmentionCount } from '@theme/components/Webmentions';
 import Flex from '@theme/components/Flex';
 import { MONTHS } from '@theme/constants';
 import { MDXBody } from '@theme/components/MDX/MDX';
-import Pill from '@theme/components/Pill';
+import Pill, { PillVariant } from '@theme/components/Pill';
 
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
@@ -78,12 +78,10 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
               <WebmentionCount target={postUrl} />
             </Flex>
             {updated ? (
-              <Pill
-                color="var(--maximeheckel-colors-emphasis)"
-                text={`Last Updated ${MONTHS[parsedLastUpdated.getMonth()]} 
-              ${parsedLastUpdated.getDate()} 
-              ${parsedLastUpdated.getFullYear()}`}
-              />
+              <Pill variant={PillVariant.INFO}>
+                Last Updated {MONTHS[parsedLastUpdated.getMonth()]}{' '}
+                {parsedLastUpdated.getDate()} {parsedLastUpdated.getFullYear()}
+              </Pill>
             ) : null}
           </Hero.Info>
           <ProgressBar id={slug} target={progressBarTarget} />

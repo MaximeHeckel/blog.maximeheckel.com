@@ -36,7 +36,7 @@ const prettier = require('prettier');
       }, [])
       .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
 
-    console.info(`\nCached ${posts.length} ${type} elements`);
+    console.info(`\rCached ${posts.length} ${type} elements`);
     return posts;
   }
 

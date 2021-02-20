@@ -69,7 +69,7 @@ const HeaderWrapper = styled(motion.div)<StyledHeaderWrapperProps>`
   ${(props) =>
     props.slim
       ? `box-shadow: var(--maximeheckel-shadow-1); backdrop-filter: blur(6px); opacity: 0.88;`
-      : ''}
+      : 'box-shadow: none;'}
 `;
 
 /**

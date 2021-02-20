@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
   trailingSlash: true,
   target: 'serverless',

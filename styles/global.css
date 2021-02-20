@@ -35,6 +35,28 @@
   --palette-red-40: var(--base-red), 65%;
   --palette-red-50: var(--base-red), 55%;
 
+  --base-orange: 42, 97%;
+  --palette-orange-10: var(--base-orange), 95%;
+  --palette-orange-20: var(--base-orange), 85%;
+  --palette-orange-30: var(--base-orange), 75%;
+  --palette-orange-40: var(--base-orange), 65%;
+  --palette-orange-50: var(--base-orange), 55%;
+  --palette-orange-60: var(--base-orange), 45%;
+  --palette-orange-70: var(--base-orange), 35%;
+  --palette-orange-80: var(--base-orange), 25%;
+  --palette-orange-90: var(--base-orange), 15%;
+
+  --base-green: 112, 53%;
+  --palette-green-10: var(--base-green), 95%;
+  --palette-green-20: var(--base-green), 85%;
+  --palette-green-30: var(--base-green), 75%;
+  --palette-green-40: var(--base-green), 65%;
+  --palette-green-50: var(--base-green), 55%;
+  --palette-green-60: var(--base-green), 45%;
+  --palette-green-70: var(--base-green), 35%;
+  --palette-green-80: var(--base-green), 25%;
+  --palette-green-90: var(--base-green), 15%;
+
   --border-radius-1: 8px;
   --border-radius-2: 16px;
 }
@@ -46,6 +68,10 @@
   --maximeheckel-colors-foreground: hsla(var(--palette-gray-10), 45%);
   --maximeheckel-colors-danger: hsla(var(--palette-red-40), 100%);
   --maximeheckel-colors-danger-emphasis: hsla(var(--palette-red-40), 8%);
+  --maximeheckel-colors-warning: hsla(var(--palette-orange-50), 100%);
+  --maximeheckel-colors-warning-emphasis: hsla(var(--palette-orange-50), 8%);
+  --maximeheckel-colors-success: hsla(var(--palette-green-50), 100%);
+  --maximeheckel-colors-success-emphasis: hsla(var(--palette-green-50), 8%);
   --maximeheckel-colors-typeface-0: hsla(var(--palette-gray-90), 100%);
   --maximeheckel-colors-typeface-1: hsla(var(--palette-gray-70), 100%);
   --maximeheckel-colors-typeface-2: hsla(var(--palette-gray-60), 100%);
@@ -61,6 +87,10 @@
   --maximeheckel-colors-foreground: hsla(var(--palette-gray-100), 55%);
   --maximeheckel-colors-danger: hsla(var(--palette-red-30), 100%);
   --maximeheckel-colors-danger-emphasis: hsla(var(--palette-red-30), 8%);
+  --maximeheckel-colors-warning: hsla(var(--palette-orange-40), 100%);
+  --maximeheckel-colors-warning-emphasis: hsla(var(--palette-orange-40), 8%);
+  --maximeheckel-colors-success: hsla(var(--palette-green-40), 100%);
+  --maximeheckel-colors-success-emphasis: hsla(var(--palette-green-40), 8%);
   --maximeheckel-colors-typeface-0: hsla(var(--palette-gray-00), 100%);
   --maximeheckel-colors-typeface-1: hsla(var(--palette-gray-20), 100%);
   --maximeheckel-colors-typeface-2: hsla(var(--palette-gray-40), 100%);

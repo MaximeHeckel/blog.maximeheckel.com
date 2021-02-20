@@ -4,7 +4,7 @@ import Layout from '@theme/layouts';
 import Seo from '@theme/components/Seo';
 import { MONTHS } from '@theme/constants';
 import Flex from '@theme/components/Flex';
-import Pill from '@theme/components/Pill';
+import Pill, { PillVariant } from '@theme/components/Pill';
 import { MDXBody } from '@theme/components/MDX/MDX';
 import { Snippet } from 'types/post';
 
@@ -42,9 +42,9 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
               Created {MONTHS[parsedDate.getMonth()]} {parsedDate.getDate()}{' '}
               {parsedDate.getFullYear()}
             </p>
-            <Pill color="#5184f9" text={language.toUpperCase()} />
+            <Pill variant={PillVariant.INFO}>{language.toUpperCase()}</Pill>
           </Flex>
-          <FixMargin id="foo">
+          <FixMargin>
             <MDXBody ref={progressBarTarget} maxWidth={880}>
               {children}
             </MDXBody>
