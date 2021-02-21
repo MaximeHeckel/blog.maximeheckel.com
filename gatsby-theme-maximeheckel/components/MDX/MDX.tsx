@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 type MDXBody = {
   children: React.ReactNode;
-  ref: React.MutableRefObject<HTMLDivElement | null>;
+  ref?: React.MutableRefObject<HTMLDivElement | null>;
   maxWidth?: number;
 };
 
@@ -41,7 +41,7 @@ export const ListItem = (props: HTMLLIElement) => {
   );
 };
 
-export const MDXBody = styled.div<MDXBody>`
+const MDXBody = styled.div<MDXBody>`
   margin: 0 auto;
   max-width: ${(p) => `${p.maxWidth || 700}px`};
   padding: 20px 0px 20px 0px;
@@ -121,3 +121,5 @@ export const MDXBody = styled.div<MDXBody>`
     margin: 0 auto;
   }
 `;
+
+export default MDXBody;

@@ -3,7 +3,7 @@ import matter from 'gray-matter';
 import path from 'path';
 import readingTime from 'reading-time';
 import renderToString from 'next-mdx-remote/render-to-string';
-import { MDXComponents } from '@theme/components/MDX/MDXComponents';
+import MDXComponents from '@theme/components/MDX/MDXComponents';
 import { FrontMatterPostType, PostByType, PostType } from 'types/post';
 import { remarkSectionize } from './remark-sectionize-fork';
 import { remarkFigure } from './remark-figure';

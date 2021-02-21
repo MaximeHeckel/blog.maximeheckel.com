@@ -1,6 +1,8 @@
-import React from 'react';
 import styled from '@emotion/styled';
+import React from 'react';
+import Plyr from 'plyr-react';
 import { useTheme } from '@theme/context/ThemeContext';
+import 'plyr-react/dist/plyr.css';
 
 interface Props {
   poster?: string;
@@ -11,6 +13,8 @@ interface Props {
 }
 
 const Wrapper = styled('div')<{ width?: number }>`
+  height: 756px;
+
   .plyr {
     margin: 0 auto;
     border-radius: var(--border-radius-2);
@@ -46,29 +50,23 @@ const VideoPlayer = (props: Props) => {
         setCurrentPoster(poster);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dark]);
+  }, [dark, poster]);
 
-  const config = JSON.stringify({
+  const config = {
     controls: controls || [],
     loop: { active: loop || false },
-  });
+  };
 
   return (
     <Wrapper width={width}>
-      <video
-        id="videoplayer-maximeheckel"
-        data-poster={currentPoster}
-        data-plyr-config={config}
-        poster={currentPoster}
-        style={{ margin: '0 auto', width }}
-      >
-        <source src={src} type="video/mp4" />
-        <p>
-          Your browser doesn&rsquo;t support HTML5 video. Here is a{' '}
-          <a href={src}>link to the video</a> instead.
-        </p>
-      </video>
+      <Plyr
+        source={{
+          type: 'video',
+          sources: [{ src }],
+          poster: currentPoster,
+        }}
+        options={config}
+      />
     </Wrapper>
   );
 };

@@ -1,47 +1,17 @@
 import { AnimatePresence } from 'framer-motion';
 import Mousetrap from 'mousetrap';
+import dynamic from 'next/dynamic';
 import React from 'react';
-import { Logo } from './Logo';
-import { Navigation } from './Navigation';
-import { Title } from './Title';
-import { Wrapper } from './Wrapper';
 import Flex from '../Flex';
 import { useTheme } from '../../context/ThemeContext';
 import MHLogo from '../Logo';
-import Search from '../Search';
 import { CommandCenterButton, LightDarkSwitcher } from '../Button';
+import { MainHeaderProps } from './types';
+import Header from './Header';
 
-interface HeaderProps {
-  sticky?: boolean;
-  collapsableOnScroll?: boolean;
-}
-class Header extends React.Component<HeaderProps> {
-  public static Wrapper = Wrapper;
-  public static Logo = Logo;
-  public static Title = Title;
-  public static Navigation = Navigation;
+const Search = dynamic(() => import('../Search'));
 
-  render() {
-    const { children, collapsableOnScroll, sticky } = this.props;
-
-    return (
-      <Wrapper collapsableOnScroll={collapsableOnScroll} sticky={sticky}>
-        {children}
-      </Wrapper>
-    );
-  }
-}
-
-export interface MainHeaderProps {
-  sticky?: boolean;
-  collapsableOnScroll?: boolean;
-  title?: string;
-  rss?: boolean;
-  search?: boolean;
-  themeSwitcher?: boolean;
-}
-
-const DefaultHeader: React.FC<MainHeaderProps> = (props) => {
+const MainHeader: React.FC<MainHeaderProps> = (props) => {
   const [showSearch, setShowSearch] = React.useState(false);
   const theme = useTheme();
 
@@ -118,5 +88,4 @@ const DefaultHeader: React.FC<MainHeaderProps> = (props) => {
     </>
   );
 };
-export default Header;
-export { DefaultHeader, Logo, Navigation, Title, Wrapper };
+export default MainHeader;

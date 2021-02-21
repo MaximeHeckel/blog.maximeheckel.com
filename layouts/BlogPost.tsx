@@ -2,15 +2,14 @@ import { css } from '@emotion/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import siteConfig from 'config/site';
+import { MONTHS } from '@theme/constants';
 import Layout from '@theme/layouts';
 import Seo from '@theme/components/Seo';
 import Hero from '@theme/components/Hero';
-import { WebmentionCount } from '@theme/components/Webmentions';
+import WebmentionCount from '@theme/components/Webmentions/WebmentionCount';
 import Flex from '@theme/components/Flex';
-import { MONTHS } from '@theme/constants';
-import { MDXBody } from '@theme/components/MDX/MDX';
+import MDXBody from '@theme/components/MDX/MDX';
 import Pill, { PillVariant } from '@theme/components/Pill';
-
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
 

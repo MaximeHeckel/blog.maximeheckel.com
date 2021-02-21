@@ -481,4 +481,4 @@ const NewsletterForm = (props: Props) => {
   );
 };
 
-export { NewsletterForm };
+export default NewsletterForm;

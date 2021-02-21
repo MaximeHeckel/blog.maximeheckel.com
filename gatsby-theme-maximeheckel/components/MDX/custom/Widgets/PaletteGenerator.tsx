@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import React from 'react';
+import InlineCode from '@theme/components/MDX/InlineCode';
 import {
   AnimationCard,
   AnimationCardContent,
   Form,
   HighlightedValue,
 } from './Components';
-import { InlineCode } from '../../Code';
 
 const lightness = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10];
 
@@ -75,22 +75,6 @@ const PaletteGenerator = () => {
           </div>
         </Form>
       </AnimationCardContent>
-      {/* <CodeBlock
-        metastring=""
-        language="css"
-        codeString={`--base-color: ${hue}, ${saturation}% // Partial value assigned to a CSS variable 
-// Each color uses this variable when defining its HSLA color
-color-10: hsla(var(--base-color), 10%, 100%); 
-color-20: hsla(var(--base-color), 20%, 100%);
-color-30: hsla(var(--base-color), 30%, 100%);
-color-40: hsla(var(--base-color), 40%, 100%);
-color-50: hsla(var(--base-color), 50%, 100%);
-color-60: hsla(var(--base-color), 60%, 100%);
-color-70: hsla(var(--base-color), 70%, 100%);
-color-80: hsla(var(--base-color), 80%, 100%);
-color-90: hsla(var(--base-color), 90%, 100%);
-color-100: hsla(var(--base-color), 100%, 100%);`}
-      /> */}
     </AnimationCard>
   );
 };

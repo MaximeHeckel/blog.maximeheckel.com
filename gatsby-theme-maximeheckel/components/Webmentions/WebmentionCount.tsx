@@ -64,4 +64,4 @@ const CountWrapper = styled(Flex)`
   }
 `;
 
-export { WebmentionCount };
+export default WebmentionCount;

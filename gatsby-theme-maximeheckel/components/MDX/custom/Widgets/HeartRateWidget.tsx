@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
 import { useTheme } from '@theme/context/ThemeContext';
 import styled from '@emotion/styled';
+import { motion } from 'framer-motion';
 import { GraphQLClient, gql } from 'graphql-request';
 import React from 'react';
 import {
@@ -231,10 +231,12 @@ const HeartRateWidget = () => {
               axisLine={false}
             />
             <Tooltip
+              // @ts-ignore
               content={(props: {
-                active: boolean;
+                active: boolean | undefined;
                 payload: Array<{ value: number }>;
                 label: string;
+                // @ts-ignore
               }) => <CustomTooltip {...props} />}
             />
           </AreaChart>

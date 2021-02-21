@@ -5,7 +5,7 @@ import React from 'react';
 import getOgImage from 'lib/generate-opengraph-images';
 import BlogLayout from 'layouts/BlogPost';
 import { getFileBySlug, getFiles } from 'lib/mdx';
-import { MDXComponents } from '@theme/components/MDX/MDXComponents';
+import MDXComponents from '@theme/components/MDX/MDXComponents';
 import Tweet from '@theme/components/Tweet';
 import { FrontMatterPost, PostType } from 'types/post';
 import { getTweets } from 'lib/tweets';
@@ -32,6 +32,7 @@ const Blog = ({ post, ogImage, tweets }: BlogProps) => {
    * "Component StaticTweet was not imported, exported, or provided by MDXProvider as global scope"
    */
 
+  // @ts-ignore
   const StaticTweet = ({ id }: { id: string }) => {
     return <Tweet tweet={tweets[id]} />;
   };

@@ -6,7 +6,7 @@ import {
   Form,
   HighlightedValue,
 } from './Components';
-import { InlineCode } from '../../Code';
+import InlineCode from '../../InlineCode';
 
 const HSLAShowcase = () => {
   const [hue, setHue] = React.useState(222);

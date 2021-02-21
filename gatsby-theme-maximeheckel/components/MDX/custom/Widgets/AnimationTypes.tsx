@@ -1,5 +1,5 @@
 import { useTheme } from '@theme/context/ThemeContext';
-import { CodeBlock } from '@theme/components/MDX/Code';
+import CodeBlock from '@theme/components/MDX/Code/CodeBlock';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';

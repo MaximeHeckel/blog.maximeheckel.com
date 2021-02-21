@@ -1,6 +1,6 @@
-import React from 'react';
 import styled from '@emotion/styled';
-import { WebmentionReplies } from '@theme/components/Webmentions';
+import React from 'react';
+import WebmentionReplies from '@theme/components/Webmentions/WebmentionReplies';
 import NewsletterForm from '@theme/components/NewsletterForm';
 
 const ColoredBlockWrapper = styled('div')`

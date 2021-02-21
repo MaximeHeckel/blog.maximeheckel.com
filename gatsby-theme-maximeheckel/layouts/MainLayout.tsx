@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
+import dynamic from 'next/dynamic';
 import React from 'react';
 import Footer from '../components/Footer';
-import { DefaultHeader, MainHeaderProps } from '../components/Header';
 import { useTheme } from '../context/ThemeContext';
-import 'plyr/dist/plyr.css';
+import { MainHeaderProps } from '../components/Header/types';
 
+const MainHeader = dynamic(() => import('../components/Header'));
 interface LayoutProps {
   footer?: boolean;
   header?: boolean;
@@ -15,28 +16,13 @@ const Layout: React.FC<LayoutProps> = (props) => {
   const { header, footer, headerProps, ...rest } = props;
   const theme = useTheme();
 
-  React.useEffect(() => {
-    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-      const Plyr = require('plyr');
-      Array.from(document.querySelectorAll('#videoplayer-maximeheckel')).map(
-        (p) => new Plyr(p)
-      );
-    }
-  });
-
   return (
     <Wrapper
       tabIndex={-1}
       data-testid={theme.dark ? 'darkmode' : 'lightmode'}
       {...rest}
     >
-      {header ? (
-        <DefaultHeader
-          // title={site.title}
-          themeSwitcher={true}
-          {...headerProps}
-        />
-      ) : null}
+      {header ? <MainHeader themeSwitcher={true} {...headerProps} /> : null}
       <Content>{props.children}</Content>
       {footer ? <Footer /> : null}
     </Wrapper>

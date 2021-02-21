@@ -5,7 +5,7 @@ import Seo from '@theme/components/Seo';
 import { MONTHS } from '@theme/constants';
 import Flex from '@theme/components/Flex';
 import Pill, { PillVariant } from '@theme/components/Pill';
-import { MDXBody } from '@theme/components/MDX/MDX';
+import MDXBody from '@theme/components/MDX/MDX';
 import { Snippet } from 'types/post';
 
 interface Props {
@@ -15,7 +15,6 @@ interface Props {
 
 const SnippetLayout = ({ children, frontMatter }: Props) => {
   const { date, slug, title, description, language } = frontMatter;
-  const progressBarTarget = React.createRef<HTMLDivElement>();
   const path = `/snippets/${slug}/`;
   const image = `/static/snippets/${slug}.png`;
 
@@ -45,9 +44,7 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
             <Pill variant={PillVariant.INFO}>{language.toUpperCase()}</Pill>
           </Flex>
           <FixMargin>
-            <MDXBody ref={progressBarTarget} maxWidth={880}>
-              {children}
-            </MDXBody>
+            <MDXBody maxWidth={880}>{children}</MDXBody>
           </FixMargin>
         </FixPadding>
       </article>

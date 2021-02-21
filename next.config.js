@@ -1,6 +1,8 @@
-const webpack = require('webpack');
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
 
-module.exports = {
+module.exports = withBundleAnalyzer({
   trailingSlash: true,
   target: 'serverless',
   images: {
@@ -17,4 +19,4 @@ module.exports = {
 
     return config;
   },
-};
+});

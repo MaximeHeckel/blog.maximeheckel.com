@@ -1,6 +1,3 @@
-// External
-import { Tweet } from 'mdx-embed';
-
 // Components
 import Button from '@theme/components/Button';
 import Pill from '@theme/components/Pill';
@@ -8,7 +5,8 @@ import Pill from '@theme/components/Pill';
 // MDX only components
 import Callout from './Callout';
 import { Blockquote } from './Blockquote';
-import { Code, InlineCode } from './Code';
+import InlineCode from './InlineCode';
+import Code from './Code';
 import Image from './Image';
 import VideoPlayer from './VideoPlayer';
 import { ListItem } from './MDX';
@@ -31,15 +29,13 @@ import {
 import { SlidingWindow } from './custom/MicroAnimations/ReactSwift';
 
 // Widgets (used in blog post for interactive experiences)
-import {
-  AnimationTypes,
-  ClipboardAnimationDetails,
-  HeartRateWidget,
-  HSLAShowcase,
-  Orchestration,
-  PaletteGenerator,
-  ThemePicker,
-} from './custom/Widgets';
+import ClipboardAnimationDetails from './custom/Widgets/ClipboardAnimationDetails';
+import Orchestration from './custom/Widgets/Orchestration';
+import ThemePicker from './custom/Widgets/ThemePicker';
+import HeartRateWidget from './custom/Widgets/HeartRateWidget';
+import HSLAShowcase from './custom/Widgets/HSLAShowcase';
+import PaletteGenerator from './custom/Widgets/PaletteGenerator';
+import AnimationTypes from './custom/Widgets/AnimationTypes';
 
 const customComponents = {
   AnimationTypes,
@@ -62,7 +58,7 @@ const customComponents = {
   SlidingWindow,
 };
 
-export const MDXComponents = {
+const MDXComponents = {
   Button,
   blockquote: Blockquote,
   Callout,
@@ -72,6 +68,7 @@ export const MDXComponents = {
   Pill,
   pre: Code,
   VideoPlayer,
-  Tweet,
   ...customComponents,
 };
+
+export default MDXComponents;

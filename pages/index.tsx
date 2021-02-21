@@ -1,14 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import React from 'react';
 import { MONTHS } from '@theme/constants';
 import Button from '@theme/components/Button';
 import NewsletterForm from '@theme/components/NewsletterForm';
 import VisuallyHidden from '@theme/components/VisuallyHidden';
 import Layout from '@theme/layouts';
-import styled from '@emotion/styled';
-import React from 'react';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';
 
@@ -91,36 +91,33 @@ const WavingHand = () => (
   </motion.div>
 );
 
+let year = 0;
+
+const cardVariants = {
+  hover: {
+    scale: 1.05,
+  },
+  initial: {
+    scale: 1,
+  },
+};
+
+const glowVariants = {
+  hover: {
+    opacity: 0.8,
+  },
+  initial: {
+    scale: 1.05,
+    opacity: 0,
+  },
+};
+
 const IndexPage = (props: Props) => {
   const { posts } = props;
-  let year = 0;
-
-  const cardVariants = {
-    hover: {
-      scale: 1.05,
-    },
-    initial: {
-      scale: 1,
-    },
-  };
-
-  const glowVariants = {
-    hover: {
-      opacity: 0.8,
-    },
-    initial: {
-      scale: 1.05,
-      opacity: 0,
-    },
-  };
 
   return (
     <>
-      <Layout
-        footer={true}
-        header={true}
-        headerProps={{ search: true, rss: true }}
-      >
+      <Layout footer={true} header={true} headerProps={{ search: true }}>
         <main>
           <div
             css={css`
