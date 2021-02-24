@@ -10,6 +10,7 @@ import { CopyToClipboardButton } from '../../Button';
 import { useTheme } from '../../../context/ThemeContext';
 import { CodeBlockProps } from './types';
 import { prismDark, prismLight } from './styles';
+import { calculateLinesToHighlight, hasTitle } from './utils';
 
 // @ts-ignore
 (typeof global !== 'undefined' ? global : window).Prism = Prism;
@@ -18,35 +19,6 @@ import { prismDark, prismLight } from './styles';
  * This imports the syntax highlighting style for the Swift language
  */
 require('prismjs/components/prism-swift');
-
-const RE = /{([\d,-]+)}/;
-
-export const calculateLinesToHighlight = (metastring: string | null) => {
-  if (!metastring || !RE.test(metastring)) {
-    return () => false;
-  } else {
-    const lineNumbers = RE.exec(metastring)![1]
-      .split(',')
-      .map((v) => v.split('-').map((val) => parseInt(val, 10)));
-    return (index: number) => {
-      const lineNumber = index + 1;
-      const inRange = lineNumbers.some(([start, end]) =>
-        end ? lineNumber >= start && lineNumber <= end : lineNumber === start
-      );
-      return inRange;
-    };
-  }
-};
-
-const RETitle = /title=[A-Za-z](.+)/;
-
-export const hasTitle = (metastring: string | null) => {
-  if (!metastring || !RETitle.test(metastring)) {
-    return '';
-  } else {
-    return RETitle.exec(metastring)![0].split('title=')[1];
-  }
-};
 
 const CodeBlock: React.FC<CodeBlockProps> = (props) => {
   const { codeString, language, metastring } = props;

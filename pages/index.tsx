@@ -116,77 +116,76 @@ const IndexPage = (props: Props) => {
   const { posts } = props;
 
   return (
-    <>
-      <Layout footer={true} header={true} headerProps={{ search: true }}>
-        <main>
-          <div
-            css={css`
-              margin-top: 100px;
-              padding-bottom: 10px;
-            `}
-          >
-            <br />
-            <h1>
-              Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
-              <span
-                css={css`
-                  color: var(--maximeheckel-colors-typeface-2);
-                `}
-              >
-                Here, I share through my writing my experience as a frontend
-                engineer and everything I'm learning about on React, Typescript,
-                SwiftUI, Serverless, and testing.
-              </span>
-            </h1>
-            <div
+    <Layout footer={true} header={true} headerProps={{ search: true }}>
+      <main>
+        <div
+          css={css`
+            margin-top: 100px;
+            padding-bottom: 10px;
+          `}
+        >
+          <br />
+          <h1>
+            Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
+            <span
               css={css`
-                display: flex;
-                justify-content: space-between;
-                width: 310px;
+                color: var(--maximeheckel-colors-typeface-2);
               `}
             >
-              <a
-                href="https://maximeheckel.com"
-                style={{ textDecoration: 'none' }}
-                tabIndex={-1}
-              >
-                <Button tertiary>
-                  <span
-                    css={css`
-                      padding-right: 8px;
-                    `}
-                  >
-                    About me
-                  </span>
-                  <ExternalIcon />
-                </Button>
-                <VisuallyHidden as="p">
-                  Link redirects to my portfolio https://maximeheckel.com.
-                </VisuallyHidden>
-              </a>
-              <a
-                href="https://twitter.com/MaximeHeckel"
-                style={{ textDecoration: 'none' }}
-                tabIndex={-1}
-              >
-                <Button tertiary>
-                  <span
-                    css={css`
-                      padding-right: 8px;
-                    `}
-                  >
-                    {' '}
-                    @MaximeHeckel
-                  </span>
-                  <TwitterIcon />
-                </Button>
-                <VisuallyHidden as="p">
-                  Link redirects to my Twitter profile page
-                  https://twitter.com/MaximeHeckel.
-                </VisuallyHidden>
-              </a>
-            </div>
-            {/* <div
+              Here, I share through my writing my experience as a frontend
+              engineer and everything I'm learning about on React, Typescript,
+              SwiftUI, Serverless, and testing.
+            </span>
+          </h1>
+          <div
+            css={css`
+              display: flex;
+              justify-content: space-between;
+              width: 310px;
+            `}
+          >
+            <a
+              href="https://maximeheckel.com"
+              style={{ textDecoration: 'none' }}
+              tabIndex={-1}
+            >
+              <Button tertiary>
+                <span
+                  css={css`
+                    padding-right: 8px;
+                  `}
+                >
+                  About me
+                </span>
+                <ExternalIcon />
+              </Button>
+              <VisuallyHidden as="p">
+                Link redirects to my portfolio https://maximeheckel.com.
+              </VisuallyHidden>
+            </a>
+            <a
+              href="https://twitter.com/MaximeHeckel"
+              style={{ textDecoration: 'none' }}
+              tabIndex={-1}
+            >
+              <Button tertiary>
+                <span
+                  css={css`
+                    padding-right: 8px;
+                  `}
+                >
+                  {' '}
+                  @MaximeHeckel
+                </span>
+                <TwitterIcon />
+              </Button>
+              <VisuallyHidden as="p">
+                Link redirects to my Twitter profile page
+                https://twitter.com/MaximeHeckel.
+              </VisuallyHidden>
+            </a>
+          </div>
+          {/* <div
               css={css`
                 position: relative;
                 width: 100%;
@@ -198,142 +197,138 @@ const IndexPage = (props: Props) => {
                 layout="fill"
               />
             </div> */}
-            <section
+          <section
+            css={css`
+              margin-top: 100px;
+            `}
+          >
+            <h2>Newsletter</h2>
+            <NewsletterForm large />
+          </section>
+          <section
+            css={css`
+              margin-top: 100px;
+            `}
+          >
+            <h2>Featured</h2>
+            <List
+              data-testid="featured-list"
               css={css`
-                margin-top: 100px;
+                display: grid;
+                grid-gap: 16px;
               `}
             >
-              <h2>Newsletter</h2>
-              <NewsletterForm large />
-            </section>
-            <section
-              css={css`
-                margin-top: 100px;
-              `}
-            >
-              <h2>Featured</h2>
-              <List
-                data-testid="featured-list"
-                css={css`
-                  display: grid;
-                  grid-gap: 16px;
-                `}
-              >
-                {posts
-                  .filter((post) => post.featured)
-                  .map((post) => {
-                    return (
-                      <motion.li
-                        css={css`
-                          position: relative;
-                          margin-left: -10px;
-                        `}
-                        key={post.slug}
-                        data-testid="featured-article-item"
-                        initial="initial"
-                        whileHover="hover"
-                      >
-                        <Link href={`/posts/${post.slug}/`}>
-                          <a style={{ textDecoration: `none` }}>
-                            <Glow
-                              css={css`
-                                background: ${post.colorFeatured};
-                              `}
-                              variants={glowVariants}
-                              transition={{
-                                type: 'tween',
-                                ease: 'easeOut',
-                                // delay: 0.15,
-                                duration: 0.4,
-                              }}
-                            />
-                            <div
-                              css={css`
-                                height: 95%;
-                                width: 105%;
-                                position: absolute;
-                                border-radius: var(--border-radius-2);
-                                top: 50%;
-                                left: 50%;
-                                background: var(--maximeheckel-colors-body);
-                                transform: translateY(-50%) translateX(-50%);
-                                filter: blur(20px);
-                                transition: 0.5s;
-                              `}
-                            />
-                            <Card
-                              variants={cardVariants}
-                              transition={{
-                                type: 'tween',
-                                ease: 'easeOut',
-                                // delay: 0.15,
-                                duration: 0.4,
-                              }}
-                            >
-                              <TitleWithBackground
-                                background={post.colorFeatured!}
-                              >
-                                {post.title}
-                              </TitleWithBackground>
-                              <p>{post.subtitle}</p>
-                            </Card>
-                          </a>
-                        </Link>
-                      </motion.li>
-                    );
-                  })}
-              </List>
-            </section>
-            <section
-              css={css`
-                margin-top: 100px;
-              `}
-            >
-              <h2>All articles</h2>
-              <List data-testid="article-list">
-                {posts.map((post) => {
-                  const currentYear = new Date(post.date).getFullYear();
-                  let printYear;
-
-                  if (currentYear !== year) {
-                    printYear = true;
-                    year = currentYear;
-                  } else {
-                    printYear = false;
-                  }
-
+              {posts
+                .filter((post) => post.featured)
+                .map((post) => {
                   return (
-                    <li key={post.slug} data-testid="article-item">
-                      {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
+                    <motion.li
+                      css={css`
+                        position: relative;
+                        margin-left: -10px;
+                      `}
+                      key={post.slug}
+                      data-testid="featured-article-item"
+                      initial="initial"
+                      whileHover="hover"
+                    >
                       <Link href={`/posts/${post.slug}/`}>
                         <a style={{ textDecoration: `none` }}>
-                          <Block data-testid="article-link">
-                            <DateBlock>
-                              {format(
-                                new Date(Date.parse(post.date)),
-                                'MMM dd'
-                              )}
-                            </DateBlock>
-                            <TitleBlock>{post.title}</TitleBlock>
-                          </Block>
+                          <Glow
+                            css={css`
+                              background: ${post.colorFeatured};
+                            `}
+                            variants={glowVariants}
+                            transition={{
+                              type: 'tween',
+                              ease: 'easeOut',
+                              // delay: 0.15,
+                              duration: 0.4,
+                            }}
+                          />
+                          <div
+                            css={css`
+                              height: 95%;
+                              width: 105%;
+                              position: absolute;
+                              border-radius: var(--border-radius-2);
+                              top: 50%;
+                              left: 50%;
+                              background: var(--maximeheckel-colors-body);
+                              transform: translateY(-50%) translateX(-50%);
+                              filter: blur(20px);
+                              transition: 0.5s;
+                            `}
+                          />
+                          <Card
+                            variants={cardVariants}
+                            transition={{
+                              type: 'tween',
+                              ease: 'easeOut',
+                              // delay: 0.15,
+                              duration: 0.4,
+                            }}
+                          >
+                            <TitleWithBackground
+                              background={post.colorFeatured!}
+                            >
+                              {post.title}
+                            </TitleWithBackground>
+                            <p>{post.subtitle}</p>
+                          </Card>
                         </a>
                       </Link>
-                    </li>
+                    </motion.li>
                   );
                 })}
-              </List>
-            </section>
+            </List>
+          </section>
+          <section
+            css={css`
+              margin-top: 100px;
+            `}
+          >
+            <h2>All articles</h2>
+            <List data-testid="article-list">
+              {posts.map((post) => {
+                const currentYear = new Date(post.date).getFullYear();
+                let printYear;
 
-            <Card>
-              <h3>#BlackLivesMatter</h3>
-              <a href="https://blacklivesmatters.carrd.co/">
-                Click here to find out how you can help.
-              </a>
-            </Card>
-          </div>
-        </main>
-      </Layout>
-    </>
+                if (currentYear !== year) {
+                  printYear = true;
+                  year = currentYear;
+                } else {
+                  printYear = false;
+                }
+
+                return (
+                  <li key={post.slug} data-testid="article-item">
+                    {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
+                    <Link href={`/posts/${post.slug}/`}>
+                      <a style={{ textDecoration: `none` }}>
+                        <Block data-testid="article-link">
+                          <DateBlock>
+                            {format(new Date(Date.parse(post.date)), 'MMM dd')}
+                          </DateBlock>
+                          <TitleBlock>{post.title}</TitleBlock>
+                        </Block>
+                      </a>
+                    </Link>
+                  </li>
+                );
+              })}
+            </List>
+          </section>
+
+          <Card>
+            <h3>#BlackLivesMatter</h3>
+            <a href="https://blacklivesmatters.carrd.co/">
+              Click here to find out how you can help.
+            </a>
+          </Card>
+        </div>
+      </main>
+    </Layout>
   );
 };
 

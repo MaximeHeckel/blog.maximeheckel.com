@@ -1,6 +1,6 @@
 import { cleanup, render, waitFor } from '@testing-library/react';
 import React from 'react';
-import { WebmentionCount } from '../WebmentionCount';
+import WebmentionCount from '../WebmentionCount';
 
 beforeEach(() => {
   global.fetch = jest.fn().mockImplementation(() => {

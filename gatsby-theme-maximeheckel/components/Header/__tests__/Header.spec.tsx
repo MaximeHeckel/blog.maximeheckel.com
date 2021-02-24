@@ -1,15 +1,18 @@
-import { cleanup, fireEvent, render } from '@testing-library/react';
+import preloadAll from 'jest-next-dynamic';
+import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
-import { DefaultHeader } from '../';
-import { ThemeContext } from '../../../context/ThemeContext';
+import { ThemeContext } from '@theme/context/ThemeContext';
+import MainHeader from '../';
+
+beforeAll(async () => {
+  await preloadAll();
+});
 
 describe('Header', () => {
-  afterEach(cleanup);
-
   it('renders the header without the site title or the post title or theme switcher', () => {
     const { queryByTestId } = render(
       <ThemeContext.Provider value={{ dark: false, toggleDark: () => null }}>
-        <DefaultHeader />
+        <MainHeader />
       </ThemeContext.Provider>
     );
     expect(queryByTestId('header-title')).toBeNull();
@@ -19,7 +22,7 @@ describe('Header', () => {
   it('renders the header with a title', () => {
     const { queryByTestId } = render(
       <ThemeContext.Provider value={{ dark: false, toggleDark: () => null }}>
-        <DefaultHeader title="Maxime Heckel" />
+        <MainHeader title="Maxime Heckel" />
       </ThemeContext.Provider>
     );
     expect(queryByTestId('header-title')).toBeDefined();
@@ -29,7 +32,7 @@ describe('Header', () => {
   it('renders the header with the theme switcher', () => {
     const { queryByTestId, getByTestId } = render(
       <ThemeContext.Provider value={{ dark: false, toggleDark: () => null }}>
-        <DefaultHeader themeSwitcher={true} />
+        <MainHeader themeSwitcher={true} />
       </ThemeContext.Provider>
     );
 
@@ -44,7 +47,7 @@ describe('Header', () => {
       <ThemeContext.Provider
         value={{ dark: false, toggleDark: mockToggleDark }}
       >
-        <DefaultHeader themeSwitcher />
+        <MainHeader themeSwitcher />
       </ThemeContext.Provider>
     );
     fireEvent.click(getByTestId('darkmode-switch'));

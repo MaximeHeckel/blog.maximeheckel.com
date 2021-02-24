@@ -1,7 +1,13 @@
 /* eslint-disable react/no-unescaped-entities */
+import preloadAll from 'jest-next-dynamic';
 import { cleanup, render } from '@testing-library/react';
 import React from 'react';
-import { Code, calculateLinesToHighlight, hasTitle, preToCodeBlock } from '../';
+import Code from '../';
+import { preToCodeBlock, calculateLinesToHighlight, hasTitle } from '../utils';
+
+beforeAll(async () => {
+  await preloadAll();
+});
 
 afterEach(() => {
   cleanup();
@@ -88,7 +94,7 @@ describe('Code', () => {
   });
 
   it('Renders a Codeblock with title and line highlight when the proper preProps are passed', () => {
-    const { container, getAllByTestId, debug } = render(
+    const { container, getAllByTestId } = render(
       <Code>
         <div metastring="javascript {1-3} title=test" mdxType="code">
           {`some code to render
@@ -107,8 +113,8 @@ describe('Code', () => {
     expect(container.querySelector('button')).toBeInTheDocument();
   });
 
-  it('Renders a <pre> when there are no proper preProps passed', () => {
-    const { container } = render(
+  it('Renders null when there are no proper preProps passed', () => {
+    const { container, queryByText } = render(
       <Code>
         <div metastring="javascript">var hello="world"</div>
       </Code>
@@ -116,8 +122,7 @@ describe('Code', () => {
 
     expect(container.querySelector('pre')).toBeDefined();
     expect(container.querySelector('pre[class="prism-code"]')).toBeNull();
-    expect(container.querySelector('pre').firstElementChild).toHaveTextContent(
-      'var hello="world"'
-    );
+    expect(container.querySelector('pre'));
+    expect(queryByText('var hello="world"')).not.toBeInTheDocument();
   });
 });

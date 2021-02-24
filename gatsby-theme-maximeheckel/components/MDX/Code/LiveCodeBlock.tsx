@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-
 import {
   motion,
   useAnimation,
@@ -15,7 +14,7 @@ import Button from '@theme/components/Button';
 import { fullWidthSnipperStyle, prismDark, prismLight } from './styles';
 import { CodeBlockProps, CodeSnippetWrapperProps } from './types';
 
-const LiveCodeBlock: React.FC<CodeBlockProps> = (props) => {
+const LiveCodeBlock = (props: CodeBlockProps) => {
   const { codeString, live, render } = props;
 
   const { dark } = useTheme();
