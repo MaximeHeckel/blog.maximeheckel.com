@@ -104,10 +104,6 @@
   color: var(--maximeheckel-colors-brand);
 }
 
-article {
-  scroll-behavior: smooth;
-}
-
 body {
   background: var(--maximeheckel-colors-body);
   text-rendering: optimizeLegibility;

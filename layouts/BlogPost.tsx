@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
+import { format } from 'date-fns';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import siteConfig from 'config/site';
-import { MONTHS } from '@theme/constants';
 import Layout from '@theme/layouts';
 import Seo from '@theme/components/Seo';
 import Hero from '@theme/components/Hero';
@@ -16,6 +16,31 @@ import Signature from './Signature';
 const ProgressBar = dynamic(() => import('@theme/components/ProgressBar'), {
   ssr: false,
 });
+
+interface WebmentionBlogDataProps {
+  date: string;
+  postUrl: string;
+  subtitle?: string;
+}
+
+const WebmentionBlogData = (props: WebmentionBlogDataProps) => {
+  const { date, postUrl, subtitle } = props;
+
+  return (
+    <>
+      <time
+        className="hidden dt-published"
+        itemProp="datepublished"
+        dateTime={date}
+      >
+        {new Date(date).toISOString().replace('Z', '') + '+01:00'}
+      </time>
+      <a className="hidden u-url" href={postUrl} />
+      {subtitle && <p className="hidden p-summary e-content">{subtitle}</p>}
+    </>
+  );
+};
+
 interface Props {
   children: React.ReactNode;
   frontMatter: Post & { readingTime: ReadingTime };
@@ -33,8 +58,6 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
     cover,
   } = frontMatter;
   const progressBarTarget = React.useRef<HTMLDivElement>(null);
-  const parsedDate = new Date(Date.parse(date));
-  const parsedLastUpdated = new Date(Date.parse(updated));
   const path = `/posts/${slug}/`;
   const postUrl = `${siteConfig.url}${path}`;
 
@@ -67,36 +90,21 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
               `}
               wrap="wrap"
             >
-              {date ? (
-                <p>
-                  {MONTHS[parsedDate.getMonth()]} {parsedDate.getDate()}{' '}
-                  {parsedDate.getFullYear()}
-                </p>
-              ) : null}
-              {readingTime.text ? <p> / {readingTime.text} / </p> : null}
+              <p>{format(new Date(Date.parse(date)), 'MMM dd yyyy')}</p>
+              <p> / {readingTime.text} / </p>
               <WebmentionCount target={postUrl} />
             </Flex>
-            {updated ? (
-              <Pill variant={PillVariant.INFO}>
-                Last Updated {MONTHS[parsedLastUpdated.getMonth()]}{' '}
-                {parsedLastUpdated.getDate()} {parsedLastUpdated.getFullYear()}
-              </Pill>
-            ) : null}
+            <Pill variant={PillVariant.INFO}>
+              Last Updated{' '}
+              {format(new Date(Date.parse(updated)), 'MMM dd yyyy')}
+            </Pill>
           </Hero.Info>
-          <ProgressBar id={slug} target={progressBarTarget} />
           {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
         </Hero>
+        <ProgressBar id={slug} target={progressBarTarget} />
         <MDXBody ref={progressBarTarget}>{children}</MDXBody>
         <Signature title={title} url={postUrl} />
-        <time
-          className="hidden dt-published"
-          itemProp="datepublished"
-          dateTime={date}
-        >
-          {new Date(date).toISOString().replace('Z', '') + '+01:00'}
-        </time>
-        <a className="hidden u-url" href={`${siteConfig.url}/posts/${slug}`} />
-        {subtitle && <p className="hidden p-summary e-content">{subtitle}</p>}
+        <WebmentionBlogData date={date} postUrl={postUrl} subtitle={subtitle} />
       </article>
     </Layout>
   );

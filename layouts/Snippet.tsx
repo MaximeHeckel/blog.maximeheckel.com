@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
+import { format } from 'date-fns';
 import React from 'react';
 import Layout from '@theme/layouts';
 import Seo from '@theme/components/Seo';
-import { MONTHS } from '@theme/constants';
 import Flex from '@theme/components/Flex';
 import Pill, { PillVariant } from '@theme/components/Pill';
 import MDXBody from '@theme/components/MDX/MDX';
@@ -22,8 +22,6 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
     search: true,
   };
 
-  const parsedDate = new Date(date);
-
   return (
     <Layout footer={false} header={true} headerProps={headerProps}>
       <article className="h-entry">
@@ -37,10 +35,7 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
         <FixPadding>
           <h2>{title}</h2>
           <Flex>
-            <p>
-              Created {MONTHS[parsedDate.getMonth()]} {parsedDate.getDate()}{' '}
-              {parsedDate.getFullYear()}
-            </p>
+            <p>Created {format(new Date(Date.parse(date)), 'MMM dd yyyy')}</p>
             <Pill variant={PillVariant.INFO}>{language.toUpperCase()}</Pill>
           </Flex>
           <FixMargin>

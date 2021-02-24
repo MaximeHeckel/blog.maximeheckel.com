@@ -1,7 +1,5 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-// @ts-ignore
-import AnchorLink from 'react-anchor-link-smooth-scroll';
 import styled from '@emotion/styled';
 import { HeaderContext } from './Context';
 
@@ -68,9 +66,17 @@ export const Title: React.FC<HeaderTitleProps> = (props) => {
               transition={{ ease: 'easeInOut', duration: 0.5 }}
             >
               <h3>
-                <AnchorLink offset="150" href="#top">
+                <a
+                  href="#top"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    document
+                      .getElementById('top')
+                      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                >
                   {props.children}
-                </AnchorLink>
+                </a>
               </h3>
             </motion.div>
           ) : null}

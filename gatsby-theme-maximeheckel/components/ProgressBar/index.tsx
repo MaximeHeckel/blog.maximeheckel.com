@@ -1,9 +1,7 @@
 import styled from '@emotion/styled';
+import useScrollSpy from '@theme/hooks/useScrollSpy';
 import { useReducedMotion, motion, useViewportScroll } from 'framer-motion';
 import React from 'react';
-// @ts-ignore
-import AnchorLink from 'react-anchor-link-smooth-scroll';
-import Scrollspy from 'react-scrollspy';
 
 interface ReadingProgressProps {
   id: string;
@@ -46,6 +44,23 @@ const ReadingProgress = ({ id, target, slim }: ReadingProgressProps) => {
     setReadingProgress((windowScrollTop / totalHeight) * 100);
   }, [target]);
 
+  const handleLinkClick = (event: React.MouseEvent, id: string) => {
+    event.preventDefault();
+
+    const offset = 150;
+
+    const element = document.getElementById(id)!;
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth',
+    });
+  };
+
   React.useEffect(() => {
     /**
      * Working around some race condition quirks :) (don't judge)
@@ -86,6 +101,11 @@ const ReadingProgress = ({ id, target, slim }: ReadingProgressProps) => {
     }),
   };
 
+  const [currentActiveIndex] = useScrollSpy(
+    ids.map((item) => `${item.id}-section`),
+    250
+  );
+
   return (
     <Wrapper id={id} slim={slim} showTableOfContents={shouldShowTableOfContent}>
       <ProgressBarWrapper
@@ -102,28 +122,30 @@ const ReadingProgress = ({ id, target, slim }: ReadingProgressProps) => {
         />
       </ProgressBarWrapper>
       {ids.length > 0 ? (
-        <Scrollspy
-          items={ids.map((item) => `${item.id}-section`)}
-          currentClassName="isCurrent"
-          offset={-175}
-        >
-          {ids.map((item) => {
+        <ul>
+          {ids.map((item, index) => {
             return (
               <motion.li
                 initial="hide"
+                className={currentActiveIndex === index ? 'isCurrent' : ''}
                 variants={variants}
                 animate="show"
                 transition={{ type: 'spring' }}
                 key={item.id}
                 custom={shouldShowTableOfContent}
               >
-                <AnchorLink offset="150" href={`#${item.id}`}>
+                <a
+                  href={`#${item.id}`}
+                  onClick={(event) =>
+                    handleLinkClick(event, `${item.id}-section`)
+                  }
+                >
                   {item.title}
-                </AnchorLink>
+                </a>
               </motion.li>
             );
           })}
-        </Scrollspy>
+        </ul>
       ) : null}
     </Wrapper>
   );

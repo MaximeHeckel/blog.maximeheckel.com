@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import React from 'react';
-import { MONTHS } from '@theme/constants';
 import Button from '@theme/components/Button';
 import NewsletterForm from '@theme/components/NewsletterForm';
 import VisuallyHidden from '@theme/components/VisuallyHidden';
@@ -309,9 +309,10 @@ const IndexPage = (props: Props) => {
                         <a style={{ textDecoration: `none` }}>
                           <Block data-testid="article-link">
                             <DateBlock>
-                              {`${
-                                MONTHS[new Date(post.date).getMonth()]
-                              } ${new Date(post.date).getDate()}`}
+                              {format(
+                                new Date(Date.parse(post.date)),
+                                'MMM dd'
+                              )}
                             </DateBlock>
                             <TitleBlock>{post.title}</TitleBlock>
                           </Block>
