@@ -9,6 +9,8 @@ interface ReadingProgressProps {
   slim?: boolean;
 }
 
+const OFFSET = 120;
+
 const ReadingProgress = ({ id, target, slim }: ReadingProgressProps) => {
   const shouldReduceMotion = useReducedMotion();
   const { scrollYProgress } = useViewportScroll();
@@ -47,13 +49,11 @@ const ReadingProgress = ({ id, target, slim }: ReadingProgressProps) => {
   const handleLinkClick = (event: React.MouseEvent, id: string) => {
     event.preventDefault();
 
-    const offset = 150;
-
     const element = document.getElementById(id)!;
     const bodyRect = document.body.getBoundingClientRect().top;
     const elementRect = element.getBoundingClientRect().top;
     const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - offset;
+    const offsetPosition = elementPosition - OFFSET;
 
     window.scrollTo({
       top: offsetPosition,
@@ -102,8 +102,10 @@ const ReadingProgress = ({ id, target, slim }: ReadingProgressProps) => {
   };
 
   const [currentActiveIndex] = useScrollSpy(
-    ids.map((item) => `${item.id}-section`),
-    250
+    ids.map(
+      (item) => document.querySelector(`section[id="${item.id}-section"]`)!
+    ),
+    OFFSET
   );
 
   return (

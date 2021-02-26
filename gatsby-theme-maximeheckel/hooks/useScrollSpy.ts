@@ -1,35 +1,76 @@
 import React from 'react';
 
-const useScrollSpy = (sections: string[], offset: number) => {
+// const isInView = (element: any, offset: number = 0) => {
+//   const rect = element.getBoundingClientRect();
+
+//   const scrollTop =
+//     document.documentElement.scrollTop || document.body.scrollTop;
+
+//   const scrollBottom = scrollTop + window.innerHeight;
+
+//   const elemTop = rect.top + scrollTop;
+//   const elemBottom = elemTop + element.offsetHeight;
+
+//   const isVisible =
+//     elemTop < scrollBottom - offset && elemBottom > scrollTop + offset;
+//   return isVisible;
+// };
+
+// const handleScroll = React.useCallback(() => {
+//   const indexOfSectionToHighlight = sections.findIndex(
+//     (section) =>
+
+//     isInView(document.querySelector(`[id="${section}"]`), offset)
+//   );
+//   setCurrentActiveSectionIndex(-1);
+// }, [offset, sections]);
+
+const useScrollSpy = (
+  elements: Element[],
+  offset: number
+): [number, Element[]] => {
   const [
     currentActiveSectionIndex,
     setCurrentActiveSectionIndex,
   ] = React.useState(-1);
 
+  // this is just a shortcut for some other usecase I may have
   const scrolledSections =
     currentActiveSectionIndex >= 0
-      ? sections.slice(0, currentActiveSectionIndex + 1)
+      ? elements.slice(0, currentActiveSectionIndex + 1)
       : [];
 
-  const handleScroll = React.useCallback(() => {
-    let sectionToHighlight = currentActiveSectionIndex;
-
-    for (let index = 0; index < sections.length; index++) {
-      const section = document.querySelector(`[id="${sections[index]}"]`)!;
-      if (section.getBoundingClientRect().top - offset < 0) {
-        sectionToHighlight = index;
-        continue;
-      }
-      break;
-    }
-
-    setCurrentActiveSectionIndex(sectionToHighlight);
-  }, [offset, sections, currentActiveSectionIndex]);
+  const observer = React.useRef<IntersectionObserver>();
 
   React.useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sections, offset, handleScroll]);
+    if (observer.current) {
+      observer.current.disconnect();
+    }
+
+    observer.current = new IntersectionObserver(
+      (entries) => {
+        // find the index of the section that is currently intersecting
+        const indexOfSectionToHighlight = entries.findIndex((entry) => {
+          return entry.intersectionRatio > 0;
+        });
+
+        // set this index to the state
+        setCurrentActiveSectionIndex(indexOfSectionToHighlight);
+      },
+      {
+        root: null,
+        // use this option to handle custom offset
+        rootMargin: `-${offset}px 0px 0px 0px`,
+      }
+    );
+
+    const { current: currentObserver } = observer;
+
+    // observe all the elements passed as argument of the hook
+    elements.forEach((element) => currentObserver.observe(element));
+
+    return () => currentObserver.disconnect();
+  }, [elements, offset]);
 
   return [currentActiveSectionIndex, scrolledSections];
 };
