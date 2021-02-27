@@ -4,7 +4,7 @@ import Logo from '../Logo';
 
 const HR = styled.hr`
   height: 2px;
-  background: var(--maximeheckel-colors-typeface-0);
+  background: hsl(var(--palette-gray-20));
 `;
 
 const FooterBlock = styled.div`

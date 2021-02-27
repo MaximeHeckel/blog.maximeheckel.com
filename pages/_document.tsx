@@ -14,6 +14,13 @@ class MyDocument extends Document {
             crossOrigin="anonymous"
           />
           <link
+            rel="preload"
+            href="/fonts/fira-code.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+          <link
             href="/static/favicons/apple-touch-icon.png"
             rel="apple-touch-icon"
             sizes="180x180"
@@ -59,7 +66,7 @@ class MyDocument extends Document {
           <meta charSet="utf-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         </Head>
-        <body>
+        <body className="maximeheckel-light">
           <script
             key="maximeheckel-theme"
             dangerouslySetInnerHTML={{

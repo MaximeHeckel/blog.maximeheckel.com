@@ -13,9 +13,12 @@ import Pill, { PillVariant } from '@theme/components/Pill';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
 
-const ProgressBar = dynamic(() => import('@theme/components/ProgressBar'), {
-  ssr: false,
-});
+const TableOfContent = dynamic(
+  () => import('@theme/components/TableOfContent'),
+  {
+    ssr: false,
+  }
+);
 
 interface WebmentionBlogDataProps {
   date: string;
@@ -57,7 +60,6 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
     readingTime,
     cover,
   } = frontMatter;
-  const progressBarTarget = React.useRef<HTMLDivElement>(null);
   const path = `/posts/${slug}/`;
   const postUrl = `${siteConfig.url}${path}`;
 
@@ -67,6 +69,27 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
     collapsableOnScroll: true,
     search: true,
   };
+
+  const [ids, setIds] = React.useState<Array<{ id: string; title: string }>>(
+    []
+  );
+
+  React.useEffect(() => {
+    /**
+     * Working around some race condition quirks :) (don't judge)
+     * TODO @MaximeHeckel: see if there's a better way through a remark plugin to do this
+     */
+    setTimeout(() => {
+      const titles = document.querySelectorAll('h2');
+      const idArrays = Array.prototype.slice
+        .call(titles)
+        .map((title) => ({ id: title.id, title: title.innerText })) as Array<{
+        id: string;
+        title: string;
+      }>;
+      setIds(idArrays);
+    }, 500);
+  }, [slug]);
 
   return (
     <Layout footer={true} header={true} headerProps={headerProps}>
@@ -101,8 +124,8 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
           </Hero.Info>
           {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
         </Hero>
-        <ProgressBar id={slug} target={progressBarTarget} />
-        <MDXBody ref={progressBarTarget}>{children}</MDXBody>
+        <TableOfContent ids={ids} />
+        <MDXBody>{children}</MDXBody>
         <Signature title={title} url={postUrl} />
         <WebmentionBlogData date={date} postUrl={postUrl} subtitle={subtitle} />
       </article>

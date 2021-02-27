@@ -1,2 +1,1 @@
-import { Flex } from './Flex';
-export default Flex;
+export { Flex as default } from './Flex';

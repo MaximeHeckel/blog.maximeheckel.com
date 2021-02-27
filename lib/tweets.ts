@@ -1,6 +1,7 @@
 import qs from 'qs';
+import { RawTweetType, TransformedTweet, TweetData } from '../types/tweet';
 
-export const getTweets = async (ids) => {
+export const getTweets = async (ids: string[]) => {
   const queryParams = qs.stringify({
     ids: ids.join(','),
     expansions:
@@ -21,41 +22,45 @@ export const getTweets = async (ids) => {
     }
   );
 
-  const tweets = await response.json();
+  const tweets = (await response.json()) as RawTweetType;
 
-  const getAuthorInfo = (author_id) => {
-    return tweets.includes.users.find((user) => user.id === author_id);
+  const getAuthorInfo = (author_id: string) => {
+    return tweets.includes.users.find((user) => user.id === author_id)!;
   };
 
-  const getReferencedTweets = (mainTweet) => {
+  const getReferencedTweets = (mainTweet: TweetData) => {
     return (
       mainTweet?.referenced_tweets?.map((referencedTweet) => {
         const fullReferencedTweet = tweets.includes.tweets.find(
           (tweet) => tweet.id === referencedTweet.id
-        );
+        )!;
 
         return {
+          ...fullReferencedTweet,
           type: referencedTweet.type,
           author: getAuthorInfo(fullReferencedTweet.author_id),
-          ...fullReferencedTweet,
         };
       }) || []
     );
   };
 
-  return tweets.data.reduce((allTweets, tweet) => {
-    const tweetWithAuthor = {
-      ...tweet,
-      media:
-        tweet?.attachments?.media_keys.map((key) =>
-          tweets.includes.media.find((media) => media.media_key === key)
-        ) || [],
-      referenced_tweets: getReferencedTweets(tweet),
-      author: getAuthorInfo(tweet.author_id),
-    };
+  return tweets.data.reduce(
+    (allTweets: Record<string, TransformedTweet>, tweet: TweetData) => {
+      const tweetWithAuthor = {
+        ...tweet,
+        media:
+          tweet?.attachments?.media_keys.map((key) =>
+            tweets.includes.media.find((media) => media.media_key === key)
+          ) || [],
+        referenced_tweets: getReferencedTweets(tweet),
+        author: getAuthorInfo(tweet.author_id),
+      };
 
-    allTweets[tweet.id] = tweetWithAuthor;
+      // @ts-ignore @MaximeHeckel: somehow media types are conflicting
+      allTweets[tweet.id] = tweetWithAuthor;
 
-    return allTweets;
-  }, {});
+      return allTweets;
+    },
+    {} as Record<string, TransformedTweet>
+  );
 };

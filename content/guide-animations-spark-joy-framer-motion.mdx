@@ -892,7 +892,9 @@ const Example = () => {
                 fontSize: '38px',
               }}
             >
-              <span role="img">{reply.photo}</span>
+              <span role="img" style={{ paddingRight: 0 }}>
+                {reply.photo}
+              </span>
             </div>
           </motion.li>
         ))}

@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import Flex from '../Flex';
 import { useTheme } from '../../context/ThemeContext';
-import MHLogo from '../Logo';
+import Logo from '../Logo';
 import { CommandCenterButton, LightDarkSwitcher } from '../Button';
 import { MainHeaderProps } from './types';
 import Header from './Header';
@@ -69,7 +69,7 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
             alt="Maxime Heckel's Blog logo"
             aria-label="Maxime Heckel's Blog"
           >
-            <MHLogo />
+            <Logo />
           </Header.Logo>
           <Header.Title>{props.title}</Header.Title>
         </Flex>
