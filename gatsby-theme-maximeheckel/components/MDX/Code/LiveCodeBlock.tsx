@@ -148,6 +148,7 @@ const StyledPreviewWrapper = styled('div')<{
 
 const StyledErrorWrapper = styled('div')`
   color: var(--maximeheckel-colors-typeface-1);
+  max-width: 300px;
 
   pre {
     padding: 15px;

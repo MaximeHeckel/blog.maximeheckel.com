@@ -113,13 +113,13 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
               `}
               wrap="wrap"
             >
-              <p>{format(new Date(Date.parse(date)), 'MMM dd yyyy')}</p>
+              <p>{format(new Date(Date.parse(date)), 'MMMM d, yyyy')}</p>
               <p> / {readingTime.text} / </p>
               <WebmentionCount target={postUrl} />
             </Flex>
             <Pill variant={PillVariant.INFO}>
               Last Updated{' '}
-              {format(new Date(Date.parse(updated)), 'MMM dd yyyy')}
+              {format(new Date(Date.parse(updated)), 'MMMM d, yyyy')}
             </Pill>
           </Hero.Info>
           {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
