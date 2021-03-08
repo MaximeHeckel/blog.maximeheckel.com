@@ -1,3 +1,5 @@
+import dynamic from 'next/dynamic';
+
 // Components
 import Button from '@theme/components/Button';
 import Pill from '@theme/components/Pill';
@@ -36,6 +38,16 @@ import HeartRateWidget from './custom/Widgets/HeartRateWidget';
 import HSLAShowcase from './custom/Widgets/HSLAShowcase';
 import PaletteGenerator from './custom/Widgets/PaletteGenerator';
 import AnimationTypes from './custom/Widgets/AnimationTypes';
+import HighlightSection from './custom/Widgets/HighlightSection';
+
+const ScrollSpyWidget = dynamic(
+  () => import('./custom/Widgets/ScrollSpyWidget'),
+  {
+    ssr: false,
+    // eslint-disable-next-line react/display-name
+    loading: () => <div style={{ width: '100%', height: '705px' }} />,
+  }
+);
 
 const customComponents = {
   AnimationTypes,
@@ -56,6 +68,8 @@ const customComponents = {
   DockerBuild,
   PreviewDeploy,
   SlidingWindow,
+  ScrollSpyWidget,
+  HighlightSection,
 };
 
 const MDXComponents = {

@@ -1,0 +1,687 @@
+---
+title: 'Scrollspy demystified'
+subtitle: A deep dive into how the inner workings of a Scrollspy, Intersection Observers, and how to integrate it with Markdown-based static sites without the need of third party libraries.
+date: '2021-03-09T08:00:00.000Z'
+updated: '2021-03-09T08:00:00.000Z'
+categories: []
+keywords:
+  [
+    'scrollspy',
+    'intersection',
+    'observers',
+    'table of content',
+    'hook',
+    'DOM',
+    'javascript',
+    'react',
+    'markdown',
+    'mdx',
+    'nextjs',
+    'gatsby',
+  ]
+slug: scrollspy-demystified
+type: 'blogPost'
+featured: false
+---
+
+
+Many of you have emailed or DM'ed me asking about how I implemented **my table of content component**, the little list of titles you'll see appear on the left gutter once you scroll a bit more down, and how I manage to highlight in that list the title of the current paragraph in view.
+Well, _by popular demand_, I finally took the time to write about this specific piece of code, and also use this as an opportunity to deep dive into the inner workings of the main trick behind it named...
+
+✨**Scrollspy**✨
+
+In this article, we'll analyze together an elegant way to **implement a Scrollspy**, how to abstract it with **a Hook for your React project**, and finally, I'll add some tips at the end on how you can **integrate it with a markdown or MDX based blog** to build a little table of content component similar to mine.
+
+<Callout variant="info">
+
+My deepest apologies to anyone who tried to read the implementation of my `TableOfContent` component that's currently being used here, it's far from my best work 😅.
+I hope this blog post will make up for the time lost trying to decipher my code.
+
+I also took some time to refactor it and have it not rely on any 3rd party package and will link/feature some of the code at the end of this article.
+
+</Callout>
+
+## It's all about knowing what's intersecting the viewport
+
+Scrollspy is a "technique" that's used to **keep track of the content of the user's viewport and highlight the corresponding navigation item**.
+
+There are many ways to implement a Scrollspy, some of them are very complicated and involve a lot of maths. But you know me, I always prefer simple yet elegant solutions when it comes to tackling UI-related problems; it's just more satisfying that way ✨. In this case, that elegant solution is called the **Intersection Observer API**.
+
+### What is the Intersection Observer API?
+
+In a nutshell, it's a little tool that you can use in your Javascript frontend code to detect whether a given DOM Node intersects with the document's viewport or another parent element.
+
+<Callout variant="info">
+
+👉 I'll introduce some of the basic concepts and how to use the Intersection Observer API in this blog post. However, if you'd like to read more details about it I encourage you to take a look at the corresponding [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API).
+
+</Callout>
+
+### How can it be used in the context of a Scrollspy?
+
+As mentioned above, the aim of a Scrollspy is being able to keep track of what's currently "in view" for the user, thus **what's intersecting with the viewport**. In this blog post right now, if your window is big enough to display the table of content, you should see that the title _It's all about knowing what's intersecting the viewport_ being **highlighted** since its corresponding part is currently "in view". This is because the DOM element wrapping this first part is currently "intersecting" with our viewport, and also because I built my table of content component to highlight the title corresponding to whichever section is intersecting.
+
+Sounds pretty straightforward so far right? Well, it because that's pretty much all there is behind this kind of implementation of a Scrollspy. However, there can be more nuances such as:
+
+1. What if 2 elements intersect at the same time? Should we highlight both corresponding titles?
+2. How to take into account something like a fixed header?
+
+Regarding the first question, the implementation I introduce here only considers that one section can be highlighted at a time, thus **the first section to intersect will be the one highlighted**.
+
+To answer the second one, we're lucky: the Intersection Observer API allows us to pass a `rootMargin` option. **This option adds margins around the root element/the viewport, before computing whether a section is intersecting or not**.
+
+For example, adding a rootMargin of `"-100px 0px 0px 0px"` will add a margin top for our viewport of `-100px` thus making the intersection of a given element end 100px "earlier".
+
+To help visualize these 2 nuances listed above, I built **this little widget below**:
+
+- The mini browser lets you scroll a mock web page with different sections.
+- Each section will be _highlighted_ whenever it _intersects_ with the viewport using the Intersection Observer API.
+- You can modify the "offset" or `rootMargin` by adding some negative `margin-top` to see the intersection between the section and the viewport start/end earlier the more offset you add.
+- You can modify the height of the sections to see how the first section in view is always the one being highlighted.
+
+<ScrollSpyWidget />
+
+### Why use this rather than a scroll event and detecting if the element's scroll position fits in the viewport?
+
+Well, there are 2 main reasons behind that:
+
+1. **Performance**: **scroll event listeners run on the main thread whereas Intersection Observers do not**. Thus using scroll events to continuously keep track of the current section in view is less performant and you'd probably end up needing to add some kind of throttling mechanism. [@AggArvanitakis](https://twitter.com/AggArvanitakis) covers this in-depth in [his blog post comparing both Intersection Observers and Scroll event performance](https://itnext.io/1v1-scroll-listener-vs-intersection-observers-469a26ab9eb6).
+2. Finding if an element's scroll position fits within the viewport requires ~~a bit of~~ **maths** and I didn't like it 🤢. You can see by yourself with the code snippet below which is way harder to parse than what we're about to see.
+
+```ts title=Implementation of isInView, a function that returns true if an element is in view
+const isInView = (element: Element, offset: number = 0) => {
+  const rect = element.getBoundingClientRect();
+
+  const scrollTop =
+    document.documentElement.scrollTop || document.body.scrollTop;
+
+  const scrollBottom = scrollTop + window.innerHeight;
+
+  const elemTop = rect.top + scrollTop;
+  const elemBottom = elemTop + element.offsetHeight;
+
+  const isVisible =
+    elemTop < scrollBottom - offset && elemBottom > scrollTop + offset;
+  return isVisible;
+};
+```
+
+## Abstracting the implementation in a React Hook
+
+Now that we've taken a look at how we can leverage the Intersection Observer API to implement a Scrollspy, **let's abstract all the implementation details in a little React Hook** so it can be easily used in any current or future project.
+
+<Callout variant="danger">
+
+The implementation I'm going to introduce here is very opinionated towards making this work solely for the use-case of a Scrollspy.
+It can be abstracted/implemented in many different ways that are more or less opinionated but for this article, **I'm keeping this close to our main topic on purpose**.
+
+Of course, do reach out if you have a better implementation 😄 I'm always looking for new patterns or ways to build stuff!
+
+</Callout>
+
+### First steps with Intersection Observers
+
+Let's take a look at the code necessary to instantiate a new Intersection Observer in Javascript and have it _observe_ a set of elements:
+
+```ts {1,10} title=Basic usage of the Intersection Observers API
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    console.log(entry.isIntersecting); // returns true if this entry is intersecting with the viewport
+    console.log(entry.intersectionRatio); // returns a number between 0 and 1 representing the ratio of the element intersecting with the viewport
+  });
+});
+
+const targetElements = document.querySelectorAll('section');
+
+observer.observe(targetElements);
+```
+
+As you can see, there're 2 main things to do to get started:
+
+1. Create the Intersection Observer and pass a callback function to it. That callback takes 2 arguments `entries` and `observer` but we only need to use the first one in our use-case. `Entries` is an array of objects where **each object describes the intersection of one of the elements that we're observing**.
+2. Start observing 🔍! For that, we need to create an array of elements to observe and call `observer.observe(...)`.
+
+<Callout variant="info">
+
+Once you're done "observing" one of the target elements or the whole set you can either call:
+
+- `observer.unobserve(...)` to stop observing a specific element
+- `observer.disconnect()` to stop the Intersection Observer completely.
+
+</Callout>
+
+That's it! You now know how to use the Intersection Observer API to observe how a set of elements intersects with the viewport 🎉!
+
+### Building an efficient Hook
+
+I'm sure there are many ways to abstract this but building an efficient Hook and avoid instantiating Intersection Observers all over the place can be pretty challenging.
+
+First, we need to **create our Intersection Observer** as we did above and wrap it in a `useRef` Hook. This way we can keep track of the state of any intersection across rerenders and also if we were to update our Intersection Observer, we would not trigger a rerender.
+
+The second key step for our Hook implementation is to know when we should start observing. For that, we can use `useEffect` so we can start observing as soon as the component using our Hook mounts:
+
+```ts {2,5-8,16} title=First iteration of our useScrollspy Hook
+const useScrollspy = (elements: Element[]): [number] => {
+  const observer = React.useRef<IntersectionObserver>(
+    new IntersectionObserver((entries) => {
+      // find the index of the section that is currently intersecting
+      const indexOfElementIntersecting = entries.findIndex((entry) => {
+        // if intersection > 0 it means entry is intersecting with the view port
+        return entry.intersectionRatio > 0;
+      });
+
+      // TODO store the value of indexOfElementIntersecting
+    })
+  );
+
+  React.useEffect(() => {
+    // observe all the elements passed as argument of the hook
+    elements.forEach((element) => observer.current.observe(element));
+
+    // disconnect the observer once the component unmounts;
+    return () => observer.current.disconnect();
+  }, [elements]);
+
+  // TODO return the index of the element in the elements array that is currently intersecting
+  return [0];
+};
+```
+
+This works perfectly, but a few things could go wrong:
+
+1. accessing `current` directly as we do here to observe and disconnect our Intersection Observer is not safe. The `current` we access on mount is not guaranteed to be the same when unmounting (remember, we can update the ref without triggering a rerender).
+2. if we were to change the target elements our effect will run again and we'll start keeping track of the new elements which is great! But... we didn't stop keeping track of the older elements (since we didn't unmount). Thus to avoid this scenario from breaking our app, the best thing to do is to check for any existing Intersection Observers currently instantiated and disconnect them every time our effect runs:
+
+```ts {15,17} title=Improved version of our useScrollspy Hook handling unwanted side effect
+const useScrollspy = (elements: Element[]): [number] => {
+  const observer = React.useRef<IntersectionObserver>(
+    new IntersectionObserver((entries) => {
+      // find the index of the section that is currently intersecting
+      const indexOfElementIntersecting = entries.findIndex((entry) => {
+        // if intersection > 0 it means entry is intersecting with the view port
+        return entry.intersectionRatio > 0;
+      });
+
+      // TODO store the value of indexOfElementIntersecting
+    })
+  );
+
+  React.useEffect(() => {
+    const { current: ourObserver } = observer;
+    // disconnect any previously instanciated observers
+    ourObserver.disconnect();
+
+    // observe all the elements passed as argument of the hook
+    elements.forEach((element) => ourObserver.observe(element));
+
+    // disconnect the observer once the component unmounts;
+    return () => ourObserver.disconnect();
+  }, [elements]);
+
+  // TODO return the index of the element in the elements array that is currently intersecting
+  return [];
+};
+```
+
+Great, we're almost there! The last step now is to set what to return! For simplicity here, we're only going to **return the index of the target currently intersecting with the viewport**.
+
+For that, we can initiate a new state to keep track of the index of the target currently intersecting, and set that state accordingly in the callback of our Intersection Observer:
+
+```ts {2-5,16,33} title=Implementation of useScrollspy returning the index of the current target intersecting
+const useScrollspy = (elements: Element[]): [number] => {
+  const [
+    currentIntersectingElementIndex,
+    setCurrentIntersectingElementIndex,
+  ] = React.useState(-1);
+
+  const observer = React.useRef<IntersectionObserver>(
+    new IntersectionObserver((entries) => {
+      // find the index of the section that is currently intersecting
+      const indexOfElementIntersecting = entries.findIndex((entry) => {
+        // if intersection > 0 it means entry is intersecting with the view port
+        return entry.intersectionRatio > 0;
+      });
+
+      // store the value of indexOfElementIntersecting
+      setCurrentIntersectingElementIndex(indexOfElementIntersecting);
+    })
+  );
+
+  React.useEffect(() => {
+    const { current: ourObserver } = observer;
+    // disconnect any previously instanciated observers
+    ourObserver.disconnect();
+
+    // observe all the elements passed as argument of the hook
+    elements.forEach((element) => ourObserver.observe(element));
+
+    // disconnect the observer once the component unmounts;
+    return () => ourObserver.disconnect();
+  }, [elements]);
+
+  // return the index of the element in the elements array that is currently intersecting
+  return [currentIntersectingElementIndex];
+};
+```
+
+A few things to note here:
+
+- using `findIndex` will return **the index of the first target intersecting**.
+- we set this index in a local state in that hook. Even though we may be calling set state over and over in that callback it will not impact performance since most of the time we'll be setting the same value that is already in the state.
+
+### Handling offsets and custom settings
+
+Our Hook is now almost operational! One last thing to take into account is to have the ability to pass a custom root element and a custom root margin:
+
+- we need the first one so I can set a custom parent element that is not the main viewport, like for the playground below 😛 (it might also come in handy for you in the future)
+- we need the second one to allow our ScrollSpy to handle offset such as a header as we saw in the widget in the first part of this blog post.
+
+Here's how I abstracted them:
+
+```ts {3-5,13,27-31} title=Implementation of useScrollspy with options
+const useScrollspy = (
+  elements: Element[],
+  options?: {
+    offset?: number;
+    root?: Element;
+  }
+): [number] => {
+  const [
+    currentIntersectingElementIndex,
+    setCurrentIntersectingElementIndex,
+  ] = React.useState(-1);
+
+  const rootMargin = `-${(options && options.offset) || 0}px 0px 0px 0px`;
+
+  const observer = React.useRef<IntersectionObserver>(
+    new IntersectionObserver(
+      (entries) => {
+        // find the index of the section that is currently intersecting
+        const indexOfElementIntersecting = entries.findIndex((entry) => {
+          // if intersection > 0 it means entry is intersecting with the view port
+          return entry.intersectionRatio > 0;
+        });
+
+        // store the value of indexOfElementIntersecting
+        setCurrentIntersectingElementIndex(indexOfElementIntersecting);
+      },
+      {
+        root: (options && options.root) || null,
+        // use this option to handle custom offset
+        rootMargin,
+      }
+    )
+  );
+
+  // ....
+};
+```
+
+However, we now have a little problem: **changing those options won't update our Intersection Observer** 😱!
+But don't worry, working around this problem does not require too many changes:
+
+- Instead of creating our ref with our Intersection Observer, we simply set it as `null` first
+- Then, after disconnecting any pre-existing Intersection Oservers, we create a new one with the current set of options and point the current value of the ref to it.
+- We make sure to pass the options in the dependency array of our `useEffect` Hook so any change in options will disconnect the old observer and create a new one with the latest set of options.
+
+```ts {15,22} title=Final implementation of useScrollspy
+const useScrollspy = (
+  elements: Element[],
+  options?: {
+    offset?: number;
+    root?: Element;
+  }
+): [number, Element[], number[]] => {
+  const [
+    currentIntersectingElementIndex,
+    setCurrentIntersectingElementIndex,
+  ] = React.useState(-1);
+
+  const rootMargin = `-${(options && options.offset) || 0}px 0px 0px 0px`;
+
+  const observer = React.useRef<IntersectionObserver>();
+
+  React.useEffect(() => {
+    if (observer.current) {
+      observer.current.disconnect();
+    }
+
+    observer.current = new IntersectionObserver(
+      (entries) => {
+        // find the index of the section that is currently intersecting
+        const indexOfElementIntersecting = entries.findIndex((entry) => {
+          // if intersection > 0 it means entry is intersecting with the view port
+          return entry.intersectionRatio > 0;
+        });
+
+        // store the value of indexOfElementIntersecting
+        setCurrentIntersectingElementIndex(indexOfElementIntersecting);
+      },
+      {
+        root: (options && options.root) || null,
+        // use this option to handle custom offset
+        rootMargin,
+      }
+    );
+
+    const { current: ourObserver } = observer;
+
+    // observe all the elements passed as argument of the hook
+    elements.forEach((element) =>
+      element ? ourObserver.observe(element) : null
+    );
+
+    return () => ourObserver.disconnect();
+  }, [elements, options, rootMargin]);
+
+  return [currentIntersectingElementIndex];
+};
+```
+
+It's now time to try out our new shiny Hook! Below you will find a playground containing the implementation of `useScrollspy` used to highlight the title of the corresponding section in view! (just like my table of content component)
+
+To see our Hook in action you can:
+
+- scroll up and down the scrollable section in the playground and see the table of content component highlighting the proper title
+- try to modify the offset option
+- try to add or remove sections and see the Scrollspy updating accordingly.
+
+```js live
+const Wrapper = styled('div')`
+  display: flex;
+  width: 300px;
+`;
+
+const Content = styled('div')`
+  height: 500px;
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: hsla(var(--palette-gray-30), 0.2);
+    border-radius: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: var(--maximeheckel-colors-typeface-2);
+  }
+`;
+
+const TableOfContent = styled('div')`
+  width: 100px;
+`;
+
+const List = styled('ul')`
+  position: absolute;
+`;
+
+const Section = styled('section')`
+  height: 500px;
+  width: 175px;
+  background: var(--maximeheckel-colors-body);
+`;
+
+const useScrollspy = (elements, options) => {
+  const [
+    currentIntersectingElementIndex,
+    setCurrentIntersectingElementIndex,
+  ] = React.useState(-1);
+
+  const rootMargin = `-${(options && options.offset) || 0}px 0px 0px 0px`;
+
+  const observer = React.useRef();
+
+  React.useEffect(() => {
+    if (observer.current) {
+      observer.current.disconnect();
+    }
+
+    observer.current = new IntersectionObserver(
+      (entries) => {
+        // find the index of the section that is currently intersecting
+        const indexOfElementIntersecting = entries.findIndex((entry) => {
+          return entry.intersectionRatio > 0;
+        });
+
+        // set this index to the state
+        setCurrentIntersectingElementIndex(indexOfElementIntersecting);
+      },
+      {
+        root: (options && options.root) || null,
+        // use this option to handle custom offset
+        rootMargin,
+      }
+    );
+
+    const { current: currentObserver } = observer;
+
+    // observe all the elements passed as argument of the hook
+    elements.forEach((element) =>
+      element ? currentObserver.observe(element) : null
+    );
+
+    return () => currentObserver.disconnect();
+  }, [elements, options, rootMargin]);
+
+  return [currentIntersectingElementIndex];
+};
+
+const Article = () => {
+  const ids = ['part1', 'part2', 'part3'];
+  const [elements, setElements] = React.useState([]);
+  const [currentActiveIndex] = useScrollspy(elements, {
+    root: document.querySelector('#demo-root'),
+    offset: 20,
+  });
+
+  /**
+   You can ignore this, it's only here so it plays nicely with SSR :)
+  */
+  React.useEffect(() => {
+    const widgetElements = ids.map((item) =>
+      document.querySelector(`section[id="${item}"]`)
+    );
+
+    setElements(widgetElements);
+  }, []);
+
+  return (
+    <Wrapper>
+      <TableOfContent>
+        <List>
+          {ids.map((id, index) => (
+            <li
+              key={id}
+              style={{
+                color:
+                  currentActiveIndex === index
+                    ? 'var(--maximeheckel-colors-brand)'
+                    : '',
+              }}
+            >
+              Part {index + 1}
+            </li>
+          ))}
+        </List>
+      </TableOfContent>
+      <Content id="demo-root">
+        {ids.map((id, index) => (
+          <Section key={id} id={id}>
+            <div>Part {index + 1}</div>
+            Some Content
+          </Section>
+        ))}
+      </Content>
+    </Wrapper>
+  );
+};
+
+const Example = () => {
+  /**
+   You can ignore this, it's only here so it plays nicely with SSR :)
+  */
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  return <Article />;
+};
+
+render(<Example />);
+```
+
+## Markdown and MDX integration
+
+We did it! 🎉 We now know how to implement a Scrollspy using Intersection Observer in a React Hook and how to leverage the output of the Hook to highlight the title of the current section "in-view"!
+
+However, we only know how to do this for an arbitrary set of sections in a document. **How shall we handle use-cases, like a blog post layout for instance, where we don't know the content/section we'll have to track?**
+
+<Callout variant="info">
+
+👉 _This part is optional!_
+If you want to know how I worked around this issue in the specific use-case of a Markdown/MDX-based blog.
+
+</Callout>
+
+I was facing this challenge myself not long ago. Each post of my blog is an individual Markdown/MDX file with raw text and maybe a bit of markup. I didn't want to hardcode the sections that my Scrollspy needed to track for each blog post:
+
+- It would be one extra thing to think about before releasing a new article.
+- I'd have to remember to update the set of sections _every time_ I'd update a blog post.
+
+### My solution to this: sectionize my content with remark plugins
+
+If you've built a Markdown/MDX-based blog before you've probably heard about [remark](https://github.com/remarkjs/remark). It's a little **markdown processor** that has a lot of plugins to automate some transformations in your markdown/MDX files.
+
+I'm using remark here to automatically "sectionize" my Markdown/MDX posts with the help of 2 plugins:
+
+- `remark-slug`: This plugin parses your markdown file to find any `h1`, `h2`, `h3` element you may have in your markdown, "slugifies" the text within that element, and adds it as an id.
+- a modified version of `remark-sectionize`: This plugin parses your markdown and will sectionize each part by wrapping both titles and the corresponding content under them in a `<section/>` tag. You can find [the original implementation here](https://github.com/jake-low/remark-sectionize/blob/master/index.js). My version is slightly different as not only it will sectionize but it will also add an `id` tag to the section:
+
+```js {13-16} title=Modified version of remark-sectionize
+// This snippet only contains the code I modified from remark-sectionize
+
+function sectionize(node, ancestors) {
+  const id = node.data.id;
+  // some other code from remark-sectionize
+
+  const section = {
+    type: 'section',
+    depth: depth,
+    children: between,
+    data: {
+      hName: 'section',
+      // I only added the following to append ids to the section element
+      hProperties: {
+        id: `${id}-section`,
+      },
+    },
+  };
+
+  // some other code from remark-sectionize
+}
+```
+
+I then added both plugins in my Markdown processor pipeline and _magic_ 🪄 the output generated was exactly what was needed:
+
+```markdown
+// Markdown Input
+
+## My awesome content
+
+Some code, some text
+
+// DOM output
+
+<section id="my-awesome-content-section">
+  <h2 id="my-awesome-content">My awesome content</h2>
+  <p>Some code, some text</p>
+</section>
+```
+
+By clicking on the checkbox below, you can highlight the `<section/>` tags from this blog post, thus visualizing how I sectionize with this method my own blog posts. Try to scroll up and down the post and see how the table of content updates depending on which section is in view!
+
+<HighlightSection />
+
+<Callout variant="info">
+
+Here's a great detailed tutorial about [custom remark plugins with Gatsby](https://www.gatsbyjs.com/tutorial/remark-plugin-tutorial/)
+
+In my case, I implemented this in NextJS you can check out the related code here 👉 [MDX tools for blog.maximeheckel.com Next](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/next/lib/mdx.ts)
+
+</Callout>
+
+### Wiring up everything
+
+Now it was time to wire everything up. The last thing I needed was to get the ids of the sections and pass them to the Hook. There were multiple ways I could have proceeded:
+
+- Doing it at build time: use some regex magic to get all those ids and pass them in the frontmatter of my markdown, complex but reliable.
+- Doing it at render time: on mount query all `<section/>` elements in the document, get the ids and set them in a local state, easy but hacky.
+
+For now I chose the second option:
+
+```ts title=Example of usage of useScrollspy in an Markdown/MDX based blog post layout
+const BlogPost = () => {
+  const [ids, setIds] = React.useState<Array<{ id: string; title: string }>>(
+    []
+  );
+
+  React.useEffect(() => {
+    const titles = document.querySelectorAll('h2');
+    const idArrays = Array.prototype.slice
+      .call(titles)
+      .map((title) => ({ id: title.id, title: title.innerText })) as Array<{
+      id: string;
+      title: string;
+    }>;
+    setIds(idArrays);
+  }, [slug]);
+
+  /**
+   * Get the index of the current active section that needs
+   * to have its corresponding title highlighted in the
+   * table of content
+   */
+  const [currentActiveIndex] = useScrollspy(
+    ids.map(
+      (item) => document.querySelector(`section[id="${item.id}-section"]`)!
+    ),
+    { offset: YOUROFFSET }
+  );
+
+  // Render blog post and table of content
+};
+```
+
+<Callout variant="info">
+
+<details>
+<summary style={{ display: 'revert' }} markdown="span">
+  <i>But Maxime, I want to build the same table of content as you did</i>
+</summary>
+
+Today is your lucky day! I refactored the whole implementation so it's easier and more accessible: [TableOfContent.tsx](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/next/gatsby-theme-maximeheckel/components/TableOfContent/TableOfContent.tsx)
+
+Note: This code is for my upcoming NextJS based blog. It's not deployed/available to the public just yet. I still have 1 or 2 hacks in there to workaround weird race conditions due to server-side rendering/next router, I'll fix those in the future.
+
+</details>
+<br/>
+<details>
+<summary style={{ display: 'revert' }} markdown="span">
+  <i>What about the progress bar next to your table of content? I want the same as you!</i>
+</summary>
+
+Same! I refactored it as well and isolated it so it's easier to read: [ProgressBar.tsx](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/next/gatsby-theme-maximeheckel/components/TableOfContent/ProgressBar.tsx)
+Keep an eye on it, I still have some cleanup to do.
+
+</details>
+
+</Callout>
+
+I hope this blog post brought some light on what a Scrollspy is, Intersection Observers, and also how I implemented my table of content components that so many of you seem to like so much (thank you all for the overall compliments on my blog by the way, I _really_ appreciate them 😄).
+
+If you have any questions, suggestions, or if something in my codebase isn't clear enough, do not hesitate to reach out! I'm always looking for ways to improve the way I write React components and set a good example for other frontend developers.

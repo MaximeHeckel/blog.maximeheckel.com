@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Sat, 27 Feb 2021 23:40:35 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 10 Mar 2021 01:51:34 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Scrollspy demystified]]></title>
+            <description><![CDATA[A deep dive into how the inner workings of a Scrollspy, Intersection Observers, and how to integrate it with Markdown-based static sites without the need of third party libraries.]]></description>
+            <link>https://blog.maximeheckel.com/posts/scrollspy-demystified</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/scrollspy-demystified</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 09 Mar 2021 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[The Power of Composition with CSS Variables]]></title>
             <description><![CDATA[How leveraging CSS variable composition and HSLA colors helped me build a more efficient way to theme my apps and rely less on CSS-in-JS.]]></description>

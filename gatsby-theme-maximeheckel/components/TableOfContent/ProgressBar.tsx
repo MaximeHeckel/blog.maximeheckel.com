@@ -17,7 +17,9 @@ const ProgressBar = ({ progress }: { progress: number }) => {
     hide: {
       opacity: shouldReduceMotion ? 1 : 0,
     },
-    show: { opacity: shouldReduceMotion ? 1 : visibility ? 0.7 : 0 },
+    show: (visibility: boolean) => ({
+      opacity: shouldReduceMotion ? 1 : visibility ? 0.7 : 0,
+    }),
   };
 
   React.useEffect(() => setVisibility(progress >= 0.07 && progress <= 0.95), [

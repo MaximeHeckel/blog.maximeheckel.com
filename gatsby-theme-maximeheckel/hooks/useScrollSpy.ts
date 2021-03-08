@@ -27,12 +27,21 @@ import React from 'react';
 
 const useScrollSpy = (
   elements: Element[],
-  offset: number
-): [number, Element[]] => {
+  options?: {
+    offset?: number;
+    root?: Element;
+  }
+): [number, Element[], number[]] => {
   const [
     currentActiveSectionIndex,
     setCurrentActiveSectionIndex,
   ] = React.useState(-1);
+  const [
+    currentIntersectionRatios,
+    setCurrentIntersectionRatios,
+  ] = React.useState<number[]>([]);
+
+  const rootMargin = `-${(options && options.offset) || 0}px 0px 0px 0px`;
 
   // this is just a shortcut for some other usecase I may have
   const scrolledSections =
@@ -54,25 +63,36 @@ const useScrollSpy = (
           return entry.intersectionRatio > 0;
         });
 
+        const intersectionRatios = entries.map((entry) => {
+          return entry.intersectionRatio;
+        });
+
         // set this index to the state
+        setCurrentIntersectionRatios(intersectionRatios);
         setCurrentActiveSectionIndex(indexOfSectionToHighlight);
       },
       {
-        root: null,
+        root: (options && options.root) || null,
         // use this option to handle custom offset
-        rootMargin: `-${offset}px 0px 0px 0px`,
+        rootMargin,
       }
     );
 
     const { current: currentObserver } = observer;
 
     // observe all the elements passed as argument of the hook
-    elements.forEach((element) => currentObserver.observe(element));
+    elements.forEach((element) =>
+      element ? currentObserver.observe(element) : null
+    );
 
     return () => currentObserver.disconnect();
-  }, [elements, offset]);
+  }, [elements, options, rootMargin]);
 
-  return [currentActiveSectionIndex, scrolledSections];
+  return [
+    currentActiveSectionIndex,
+    scrolledSections,
+    currentIntersectionRatios,
+  ];
 };
 
 export default useScrollSpy;

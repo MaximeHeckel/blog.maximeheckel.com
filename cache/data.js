@@ -1,5 +1,30 @@
 export const posts = [
   {
+    title: 'Scrollspy demystified',
+    subtitle:
+      'A deep dive into how the inner workings of a Scrollspy, Intersection Observers, and how to integrate it with Markdown-based static sites without the need of third party libraries.',
+    date: '2021-03-09T08:00:00.000Z',
+    updated: '2021-03-09T08:00:00.000Z',
+    categories: [],
+    keywords: [
+      'scrollspy',
+      'intersection',
+      'observers',
+      'table of content',
+      'hook',
+      'DOM',
+      'javascript',
+      'react',
+      'markdown',
+      'mdx',
+      'nextjs',
+      'gatsby',
+    ],
+    slug: 'scrollspy-demystified',
+    type: 'blogPost',
+    featured: false,
+  },
+  {
     title: 'The Power of Composition with CSS Variables',
     subtitle:
       'How leveraging CSS variable composition and HSLA colors helped me build a more efficient way to theme my apps and rely less on CSS-in-JS.',

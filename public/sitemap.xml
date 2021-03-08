@@ -300,6 +300,12 @@
   </url>
 
   <url>
+    <loc>https://blog.maximeheckel.com/posts/scrollspy-demystified/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc
       >https://blog.maximeheckel.com/posts/seo-mistakes-i-have-made-and-how-i-fixed-them/</loc
     >
