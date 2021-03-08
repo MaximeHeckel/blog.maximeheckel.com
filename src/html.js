@@ -25,7 +25,7 @@ export default function HTML(props) {
         />
         {props.headComponents}
       </head>
-      <body {...props.bodyAttributes}>
+      <body {...props.bodyAttributes} className="maximeheckel-light">
         <script
           key="maximeheckel-theme"
           dangerouslySetInnerHTML={{
