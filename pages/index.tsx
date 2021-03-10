@@ -9,64 +9,13 @@ import Button from '@theme/components/Button';
 import NewsletterForm from '@theme/components/NewsletterForm';
 import VisuallyHidden from '@theme/components/VisuallyHidden';
 import Layout from '@theme/layouts';
+import { ExternalIcon, TwitterIcon } from '@theme/components/Icons';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';
 
 interface Props {
   posts: Post[];
 }
-
-const TwitterIcon = () => (
-  <svg
-    width="22"
-    height="22"
-    viewBox="0 0 25 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    stroke="var(--maximeheckel-colors-typeface-2)"
-  >
-    <path
-      d="M23.8618 2.9995C22.9042 3.67497 21.8439 4.19161 20.7218 4.5295C20.1196 3.83701 19.3192 3.34619 18.4289 3.12342C17.5386 2.90066 16.6013 2.95669 15.7439 3.28395C14.8865 3.61121 14.1503 4.1939 13.6348 4.95321C13.1193 5.71253 12.8495 6.61183 12.8618 7.5295V8.5295C11.1044 8.57506 9.36309 8.18531 7.79283 7.39494C6.22256 6.60458 4.87213 5.43813 3.86182 3.9995C3.86182 3.9995 -0.138184 12.9995 8.86182 16.9995C6.80234 18.3975 4.34897 19.0984 1.86182 18.9995C10.8618 23.9995 21.7818 18.8949 21.7818 7.39494C21.7809 7.1164 21.8341 6.94309 21.7818 6.6695C22.8024 5.66299 23.5226 4.39221 23.8618 2.9995Z"
-      stroke="var(--maximeheckel-colors-brand)"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const ExternalIcon = () => (
-  <svg
-    width="22"
-    height="22"
-    viewBox="0 0 25 25"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    stroke="var(--maximeheckel-colors-typeface-2)"
-  >
-    <path
-      d="M18.4282 13.5736V19.5736C18.4282 20.104 18.2175 20.6127 17.8424 20.9878C17.4674 21.3629 16.9587 21.5736 16.4282 21.5736H5.42822C4.89779 21.5736 4.38908 21.3629 4.01401 20.9878C3.63894 20.6127 3.42822 20.104 3.42822 19.5736V8.57361C3.42822 8.04318 3.63894 7.53447 4.01401 7.15939C4.38908 6.78432 4.89779 6.57361 5.42822 6.57361H11.4282"
-      stroke="var(--maximeheckel-colors-brand)"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M15.4282 3.57361H21.4282V9.57361"
-      stroke="var(--maximeheckel-colors-brand)"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M10.4282 14.5736L21.4282 3.57361"
-      stroke="var(--maximeheckel-colors-brand)"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 const WavingHand = () => (
   <motion.div
@@ -157,7 +106,7 @@ const IndexPage = (props: Props) => {
                 >
                   About me
                 </span>
-                <ExternalIcon />
+                <ExternalIcon stroke="var(--maximeheckel-colors-brand)" />
               </Button>
               <VisuallyHidden as="p">
                 Link redirects to my portfolio https://maximeheckel.com.
@@ -177,7 +126,7 @@ const IndexPage = (props: Props) => {
                   {' '}
                   @MaximeHeckel
                 </span>
-                <TwitterIcon />
+                <TwitterIcon stroke="var(--maximeheckel-colors-brand)" />
               </Button>
               <VisuallyHidden as="p">
                 Link redirects to my Twitter profile page

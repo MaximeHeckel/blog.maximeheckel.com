@@ -24,7 +24,6 @@ type: 'blogPost'
 featured: false
 ---
 
-
 Many of you have emailed or DM'ed me asking about how I implemented **my table of content component**, the little list of titles you'll see appear on the left gutter once you scroll a bit more down, and how I manage to highlight in that list the title of the current paragraph in view.
 Well, _by popular demand_, I finally took the time to write about this specific piece of code, and also use this as an opportunity to deep dive into the inner workings of the main trick behind it named...
 
@@ -664,7 +663,7 @@ const BlogPost = () => {
   <i>But Maxime, I want to build the same table of content as you did</i>
 </summary>
 
-Today is your lucky day! I refactored the whole implementation so it's easier and more accessible: [TableOfContent.tsx](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/next/gatsby-theme-maximeheckel/components/TableOfContent/TableOfContent.tsx)
+Today is your lucky day! I refactored the whole implementation so it's easier and more accessible: [TableOfContent.tsx](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/27074d0d3c390dff3aa50c1cdf96944b98bd72e0/gatsby-theme-maximeheckel/components/TableOfContent/TableOfContent.tsx)
 
 Note: This code is for my upcoming NextJS based blog. It's not deployed/available to the public just yet. I still have 1 or 2 hacks in there to workaround weird race conditions due to server-side rendering/next router, I'll fix those in the future.
 
@@ -675,7 +674,7 @@ Note: This code is for my upcoming NextJS based blog. It's not deployed/availabl
   <i>What about the progress bar next to your table of content? I want the same as you!</i>
 </summary>
 
-Same! I refactored it as well and isolated it so it's easier to read: [ProgressBar.tsx](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/next/gatsby-theme-maximeheckel/components/TableOfContent/ProgressBar.tsx)
+Same! I refactored it as well and isolated it so it's easier to read: [ProgressBar.tsx](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/27074d0d3c390dff3aa50c1cdf96944b98bd72e0/gatsby-theme-maximeheckel/components/TableOfContent/ProgressBar.tsx)
 Keep an eye on it, I still have some cleanup to do.
 
 </details>
