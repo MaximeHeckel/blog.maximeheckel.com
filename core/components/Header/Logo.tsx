@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import Tooltip from '../Tooltip';
 
 export interface HeaderLogoProps {
   ['aria-label']: string;
@@ -18,8 +19,10 @@ export const Logo: React.FC<HeaderLogoProps> = (props) => {
     : null;
 
   return (
-    <Link href="/" aria-label="Go back to article list">
-      <a title="Go back to article list">{child}</a>
-    </Link>
+    <Tooltip id="hometooltip" tooltipText="Go back to article list">
+      <Link href="/" aria-label="Home" aria-describedby="hometooltip">
+        <a title="Home">{child}</a>
+      </Link>
+    </Tooltip>
   );
 };
