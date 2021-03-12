@@ -255,7 +255,7 @@ export const posts = [
     subtitle:
       'A deep dive into the inner workings of spring animations in Framer Motion.',
     date: '2020-06-23T08:00:00.000Z',
-    updated: '2020-06-29T08:00:00.000Z',
+    updated: '2021-03-11T08:00:00.000Z',
     categories: [],
     keywords: [
       'spring animation',

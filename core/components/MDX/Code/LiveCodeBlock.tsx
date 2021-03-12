@@ -8,7 +8,6 @@ import {
 import { PrismTheme } from 'prism-react-renderer';
 import React from 'react';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
-import * as Recharts from 'recharts';
 import { useTheme } from '@theme/context/ThemeContext';
 import Button from '@theme/components/Button';
 import { fullWidthSnipperStyle, prismDark, prismLight } from './styles';
@@ -28,7 +27,6 @@ const LiveCodeBlock = (props: CodeBlockProps) => {
     styled: injectedStyled,
     Button,
     React,
-    Recharts: { ...Recharts },
   };
 
   const baseTheme = dark ? prismDark : prismLight;

@@ -3,16 +3,9 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { GraphQLClient, gql } from 'graphql-request';
 import React from 'react';
-import {
-  AreaChart,
-  XAxis,
-  YAxis,
-  Area,
-  ResponsiveContainer,
-  Tooltip,
-  CartesianGrid,
-} from 'recharts';
 import { useQuery } from 'react-query';
+import LineChart from '@theme/components/Charts/LineChart';
+import { ParentSize } from '@visx/responsive';
 
 const GraphTitle = styled('p')`
   font-size: 14px;
@@ -34,7 +27,6 @@ const GraphtHeader = styled('div')`
   border-top-right-radius: 4px;
   min-height: 45px;
   padding: 15px 14px;
-  margin-bottom: 30px;
 `;
 
 const GraphWidget = styled('div')`
@@ -46,17 +38,11 @@ const GraphWidget = styled('div')`
 
 const GraphWrapper = styled('div')`
   width: 100%;
-  min-height: 300px;
   height: 300px;
   background: var(--maximeheckel-colors-foreground);
   border-radius: var(--border-radius-2);
   padding: 0px 0px 10px 0px;
   overflow: hidden;
-
-  
-  // .recharts-wrapper .recharts-cartesian-grid-horizontal line:last-child {
-  //   display: none;
-  }
 `;
 
 const endpoint = 'https://graphql.fauna.com/graphql';
@@ -100,40 +86,6 @@ function useData() {
   );
 }
 
-const TooltipWrapper = styled('div')`
-  padding: 10px;
-  width: 200px;
-  height: 75px;
-  font-size: 14px;
-  background-color: #ffffff;
-  color: black;
-  border-radius: 5px;
-`;
-
-const CustomTooltip = ({
-  active,
-  payload,
-  label,
-}: {
-  active: boolean;
-  payload: Array<{ value: number }>;
-  label: string;
-}) => {
-  if (active) {
-    return (
-      <TooltipWrapper>
-        <div>{`Time: ${new Date(label).getHours()}:${
-          (new Date(label).getMinutes() < 10 ? '0' : '') +
-          new Date(label).getMinutes()
-        }`}</div>
-        <div>{`Impressions: ${payload[0].value}`}</div>
-      </TooltipWrapper>
-    );
-  }
-
-  return null;
-};
-
 const Heart = ({ bpm }: { bpm: number }) => {
   return (
     <motion.svg
@@ -172,8 +124,8 @@ const HeartRateWidget = () => {
 
   const dataPoints = lastEntry.heartRate.map(
     (entry: { value: number; timestamp: number }) => ({
-      value: entry.value,
-      timestamp: new Date(entry.timestamp).getTime(),
+      y: entry.value,
+      x: new Date(entry.timestamp).getTime(),
     })
   );
 
@@ -187,60 +139,22 @@ const HeartRateWidget = () => {
         <GraphTitle>Heart Rate</GraphTitle>
         {dataPoints.length !== 0 ? (
           <GraphWidget>
-            Last entry: {dataPoints[0].value} bpm
-            <Heart bpm={dataPoints[0].value} />
+            Last entry: {dataPoints[0].y} bpm
+            <Heart bpm={dataPoints[0].y} />
           </GraphWidget>
         ) : null}
       </GraphtHeader>
       {isFetching && dataPoints.length === 0 ? null : (
-        <ResponsiveContainer width="101%" height="75%">
-          <AreaChart data={dataPoints}>
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke={dark ? '#151617' : '#dce6f3'}
-              vertical={false}
+        <ParentSize>
+          {({ width }) => (
+            <LineChart
+              width={width}
+              height={240}
+              data={dataPoints}
+              unit="bpm"
             />
-            <defs>
-              <linearGradient id="hr" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="20%" stopColor="#ff008c" stopOpacity={0.6} />
-                <stop offset="99%" stopColor="#ff008c" stopOpacity={0.1} />
-              </linearGradient>
-            </defs>
-            <XAxis
-              hide={true}
-              dataKey="timestamp"
-              domain={['dataMin', 'dataMax']}
-              type="number"
-            />
-            <Area
-              dot={false}
-              dataKey="value"
-              fillOpacity={1}
-              fill="url(#hr)"
-              stroke="#ff008c"
-              strokeWidth={2}
-            />
-            <YAxis
-              padding={{ top: 20, bottom: 0 }}
-              width={40}
-              domain={['dataMin-5', 'dataMax + 5']}
-              stroke="rgb(148, 150, 153, 0.7)"
-              tickLine={{ stroke: dark ? '#151617' : '#dce6f3' }}
-              tickMargin={10}
-              tick={{ fontSize: 12 }}
-              axisLine={false}
-            />
-            <Tooltip
-              // @ts-ignore
-              content={(props: {
-                active: boolean | undefined;
-                payload: Array<{ value: number }>;
-                label: string;
-                // @ts-ignore
-              }) => <CustomTooltip {...props} />}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+          )}
+        </ParentSize>
       )}
     </GraphWrapper>
   );

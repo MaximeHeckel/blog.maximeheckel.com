@@ -39,6 +39,8 @@ import HSLAShowcase from './custom/Widgets/HSLAShowcase';
 import PaletteGenerator from './custom/Widgets/PaletteGenerator';
 import AnimationTypes from './custom/Widgets/AnimationTypes';
 import HighlightSection from './custom/Widgets/HighlightSection';
+import SEOStats from './custom/Widgets/SEOStats';
+import SpringPhysics from './custom/Widgets/SpringPhysics';
 
 const ScrollSpyWidget = dynamic(
   () => import('./custom/Widgets/ScrollSpyWidget'),
@@ -69,6 +71,8 @@ const customComponents = {
   PreviewDeploy,
   SlidingWindow,
   ScrollSpyWidget,
+  SEOStats,
+  SpringPhysics,
   HighlightSection,
 };
 
