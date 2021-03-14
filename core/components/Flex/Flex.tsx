@@ -11,11 +11,7 @@ const Flex = styled.div<{
   flex-wrap: ${(p) => p.wrap || 'nowrap'};
   flex-direction: ${(p) => p.direction || 'row'};
   justify-content: ${(p) => p.justifyContent || 'flex-start'};
-
-  > * {
-    margin-right: 5px;
-    margin-bottom: 0px;
-  }
+  gap: 5px;
 `;
 
 export { Flex };

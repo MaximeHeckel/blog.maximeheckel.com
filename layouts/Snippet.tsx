@@ -1,12 +1,14 @@
-import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { format } from 'date-fns';
 import React from 'react';
-import Layout from '@theme/layouts';
+import Layout from '@theme/layout';
 import Seo from '@theme/components/Seo';
 import Flex from '@theme/components/Flex';
 import Pill, { PillVariant } from '@theme/components/Pill';
 import MDXBody from '@theme/components/MDX/MDX';
 import { Snippet } from 'types/post';
+import Grid from '@theme/components/Grid';
+import Hero from '@theme/components/Hero';
 
 interface Props {
   children: React.ReactNode;
@@ -24,41 +26,51 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
 
   return (
     <Layout footer={false} header={true} headerProps={headerProps}>
+      <Seo
+        title={title}
+        image={image}
+        desc={description}
+        path={path}
+        date={date}
+      />
       <article className="h-entry">
-        <Seo
-          title={title}
-          image={image}
-          desc={description}
-          path={path}
-          date={date}
-        />
-        <FixPadding>
-          <h2>{title}</h2>
-          <Flex>
-            <p>Created {format(new Date(Date.parse(date)), 'MMM dd yyyy')}</p>
-            <Pill variant={PillVariant.INFO}>{language.toUpperCase()}</Pill>
-          </Flex>
-          <FixMargin>
-            <MDXBody maxWidth={880}>{children}</MDXBody>
-          </FixMargin>
-        </FixPadding>
+        <Grid
+          columns="var(--layout-medium)"
+          columnGap={20}
+          css={css`
+            padding-top: 32px;
+
+            > * {
+              grid-column: 2;
+            }
+          `}
+        >
+          <Hero
+            id="top"
+            css={css`
+              padding-top: 0px;
+            `}
+          >
+            <Hero.Title
+              className="p-name"
+              data-testid={`project-title-${title}`}
+            >
+              {title}
+            </Hero.Title>
+            <Hero.Info>
+              <Flex justifyContent="space-between">
+                <p>
+                  Created {format(new Date(Date.parse(date)), 'MMM dd yyyy')}
+                </p>
+                <Pill variant={PillVariant.INFO}>{language.toUpperCase()}</Pill>
+              </Flex>
+            </Hero.Info>
+          </Hero>
+          <MDXBody layout="medium">{children}</MDXBody>
+        </Grid>
       </article>
     </Layout>
   );
 };
 
 export default SnippetLayout;
-
-const FixMargin = styled('div')`
-  margin-top: -30px;
-`;
-
-const FixPadding = styled('div')`
-  padding-top: 35px;
-
-  p {
-    color: var(--maximeheckel-colors-typeface-2);
-    font-size: 14px;
-    font-weight: 500;
-  }
-`;

@@ -2,10 +2,8 @@ import styled from '@emotion/styled';
 
 export const TransitionGridWrapper = styled('div')`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 20px;
-  width: 100vw;
-  padding: 0 150px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 32px;
 
   @media (max-width: 950px) {
     padding: 0;
@@ -30,7 +28,7 @@ export const AnimationCard = styled('div')`
   margin: 30px 0px;
 
   .snippet {
-    margin: 0px;
+    margin: 0px auto;
   }
 
   pre {
@@ -69,10 +67,14 @@ export const HighlightedValue = styled('div')`
 `;
 
 export const Wrapper = styled('div')`
-  max-width: 900px;
-  position: relative;
-  width: 80vw;
-  left: calc(-50vw + 50%);
+  margin: 16px 0px;
+
+  @media (min-width: 1100px) {
+    position: relative;
+    max-width: 900px;
+    width: calc(100% + 200px);
+    margin: 16px -100px;
+  }
 `;
 
 export const Form = styled('form')`

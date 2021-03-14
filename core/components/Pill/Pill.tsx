@@ -24,8 +24,7 @@ const PillWrapper = styled('span')<PillProps & { dark: boolean }>`
       p.variant === PillVariant.INFO
         ? `
           background: var(--maximeheckel-colors-emphasis);
-          color: var(--maximeheckel-colors-brand);
-          border: 1px solid var(--maximeheckel-colors-brand);`
+          color: var(--maximeheckel-colors-brand);`
         : ''
     }
   
@@ -33,8 +32,7 @@ const PillWrapper = styled('span')<PillProps & { dark: boolean }>`
       p.variant === PillVariant.SUCCESS
         ? `
           background: var(--maximeheckel-colors-success-emphasis);
-          color: var(--maximeheckel-colors-success);
-          border: 1px solid var(--maximeheckel-colors-success);`
+          color: var(--maximeheckel-colors-success);`
         : ''
     }
   
@@ -42,8 +40,7 @@ const PillWrapper = styled('span')<PillProps & { dark: boolean }>`
       p.variant === PillVariant.WARNING
         ? `
           background: var(--maximeheckel-colors-warning-emphasis);
-          color: var(--maximeheckel-colors-warning);
-          border: 1px solid var(--maximeheckel-colors-warning);`
+          color: var(--maximeheckel-colors-warning);`
         : ''
     }
   
@@ -51,8 +48,7 @@ const PillWrapper = styled('span')<PillProps & { dark: boolean }>`
       p.variant === PillVariant.DANGER
         ? `
           background: var(--maximeheckel-colors-danger-emphasis);
-          color: var(--maximeheckel-colors-danger);
-          border: 1px solid var(--maximeheckel-colors-danger);`
+          color: var(--maximeheckel-colors-danger);`
         : ''
     }
     `
@@ -61,8 +57,7 @@ const PillWrapper = styled('span')<PillProps & { dark: boolean }>`
         p.variant === PillVariant.INFO
           ? `
             background: var(--maximeheckel-colors-emphasis);
-            color: var(--maximeheckel-colors-brand);
-            border: 1px solid var(--maximeheckel-colors-brand);`
+            color: var(--maximeheckel-colors-brand);`
           : ''
       }
     
@@ -70,8 +65,7 @@ const PillWrapper = styled('span')<PillProps & { dark: boolean }>`
         p.variant === PillVariant.SUCCESS
           ? `
             background: var(--maximeheckel-colors-success-emphasis);
-            color: hsl(var(--palette-green-80));
-            border: 1px solid var(--maximeheckel-colors-success);`
+            color: hsl(var(--palette-green-80));`
           : ''
       }
     
@@ -79,8 +73,7 @@ const PillWrapper = styled('span')<PillProps & { dark: boolean }>`
         p.variant === PillVariant.WARNING
           ? `
             background: var(--maximeheckel-colors-warning-emphasis);
-            color: hsl(var(--palette-orange-80));
-            border: 1px solid var(--maximeheckel-colors-warning);`
+            color: hsl(var(--palette-orange-80));`
           : ''
       }
     
@@ -88,8 +81,7 @@ const PillWrapper = styled('span')<PillProps & { dark: boolean }>`
         p.variant === PillVariant.DANGER
           ? `
             background: var(--maximeheckel-colors-danger-emphasis);
-            color: var(--maximeheckel-colors-danger);
-            border: 1px solid var(--maximeheckel-colors-danger);`
+            color: var(--maximeheckel-colors-danger);`
           : ''
       }
       `}

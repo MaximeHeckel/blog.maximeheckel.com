@@ -4,7 +4,7 @@ export const posts = [
     subtitle:
       'A deep dive into how the inner workings of a Scrollspy, Intersection Observers, and how to integrate it with Markdown-based static sites without the need of third party libraries.',
     date: '2021-03-09T08:00:00.000Z',
-    updated: '2021-03-09T08:00:00.000Z',
+    updated: '2021-03-15T08:00:00.000Z',
     categories: [],
     keywords: [
       'scrollspy',

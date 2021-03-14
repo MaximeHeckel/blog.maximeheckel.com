@@ -1,11 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-type MDXBody = {
-  children: React.ReactNode;
-  maxWidth?: number;
-};
-
 const ArrowSVG = () => (
   <svg
     width="16"
@@ -40,10 +35,19 @@ export const ListItem = (props: HTMLLIElement) => {
   );
 };
 
-const MDXBody = styled('div')<MDXBody>`
-  margin: 0 auto;
-  max-width: ${(p) => `${p.maxWidth || 700}px`};
-  padding: 20px 0px 20px 0px;
+const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
+  padding: 20px 0px;
+  grid-column: 2;
+
+  display: grid;
+  grid-template-columns: ${(p) =>
+    p.layout === 'medium' ? 'var(--layout-medium)' : 'var(--layout-small)'};
+  grid-column-gap: ${(p) => (p.layout === 'medium' ? '0px' : '20px')};
+
+  > * {
+    grid-column: 2;
+  }
+
   color: var(--maximeheckel-colors-typeface-1);
 
   figcaption {
@@ -118,6 +122,15 @@ const MDXBody = styled('div')<MDXBody>`
 
   twitter-widget {
     margin: 0 auto;
+  }
+
+  section {
+    display: grid;
+    grid-template-columns: var(--layout-small);
+
+    > * {
+      grid-column: 2;
+    }
   }
 `;
 

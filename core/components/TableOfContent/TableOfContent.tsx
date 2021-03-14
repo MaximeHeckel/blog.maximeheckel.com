@@ -68,7 +68,7 @@ interface TableOfContentProps {
  * This offset is meant for the smooth scrolling and
  * Scrollspy to take into account the header height
  */
-const OFFSET = 120;
+const OFFSET = 150;
 
 const TableOfContent = ({ ids }: TableOfContentProps) => {
   const shouldReduceMotion = useReducedMotion();
@@ -108,7 +108,7 @@ const TableOfContent = ({ ids }: TableOfContentProps) => {
     const bodyRect = document.body.getBoundingClientRect().top;
     const elementRect = element.getBoundingClientRect().top;
     const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - OFFSET;
+    const offsetPosition = elementPosition - 50;
 
     /**
      * Note @MaximeHeckel: This doesn't work on Safari :(

@@ -1,30 +1,29 @@
 ---
 title: Waving Hand Animation with Framer Motion
 language: js
-date: "2020-07-03T15:40:13.306Z"
+date: '2020-07-03T15:40:13.306Z'
 slug: 2020-7-3-waving-hand-animation-framer-motion
 snippetImage: '/static/images/2020-7-3-waving-hand-animation-framer-motion.png'
 type: snippet
 ---
-<div style={{maxWidth: '700px', margin: '0 auto'}}>
 
 ```js live
 const WavingHand = () => (
   <motion.div
     style={{
-      marginBottom: "-20px",
-      marginRight: "-45px",
-      paddingBottom: "20px",
-      paddingRight: "45px",
-      display: "inline-block",
+      marginBottom: '-20px',
+      marginRight: '-45px',
+      paddingBottom: '20px',
+      paddingRight: '45px',
+      display: 'inline-block',
     }}
     animate={{ rotate: 20 }}
     transition={{
       yoyo: Infinity,
       from: 0,
       duration: 0.2,
-      ease: "easeInOut",
-      type: "tween",
+      ease: 'easeInOut',
+      type: 'tween',
     }}
   >
     👋
@@ -38,8 +37,4 @@ const Hi = () => (
 );
 
 render(<Hi />);
-
 ```
-
-</div>
-  

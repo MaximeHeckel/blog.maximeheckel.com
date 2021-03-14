@@ -57,8 +57,43 @@
   --palette-green-80: var(--base-green), 25%;
   --palette-green-90: var(--base-green), 15%;
 
+
+  --base-pink: 330, 81%;
+  --palette-pink-10: var(--base-pink), 90%;
+  --palette-pink-20: var(--base-pink), 80%;
+  --palette-pink-30: var(--base-pink), 70%;
+  --palette-pink-40: var(--base-pink), 60%;
+  --palette-pink-50: var(--base-pink), 50%;
+  --palette-pink-60: var(--base-pink), 40%;
+
+  --base-cyan: 176, 80%;
+  --palette-cyan-10: var(--base-cyan), 90%;
+  --palette-cyan-20: var(--base-cyan), 80%;
+  --palette-cyan-30: var(--base-cyan), 70%;
+  --palette-cyan-40: var(--base-cyan), 60%;
+  --palette-cyan-50: var(--base-cyan), 50%;
+  --palette-cyan-60: var(--base-cyan), 30%;
+
+  --base-indigo: 234, 89%;
+  --palette-indigo-10: var(--base-indigo), 90%;
+  --palette-indigo-20: var(--base-indigo), 80%;
+  --palette-indigo-30: var(--base-indigo), 70%;
+  --palette-indigo-40: var(--base-indigo), 60%;
+  --palette-indigo-50: var(--base-indigo), 50%;
+  --palette-indigo-60: var(--base-indigo), 40%;
+  --palette-indigo-70: var(--base-indigo), 30%;
+  --palette-indigo-80: var(--base-indigo), 20%;
+  
   --border-radius-1: 8px;
   --border-radius-2: 16px;
+
+  --gutter: 1fr;
+  --max-width-medium: 880px;
+  --max-width-small: 700px;
+  --layout-medium: var(--gutter) minmax(auto, var(--max-width-medium))
+    var(--gutter);
+  --layout-small: var(--gutter) minmax(auto, var(--max-width-small))
+    var(--gutter);
 }
 
 .maximeheckel-light {
@@ -78,6 +113,14 @@
   --maximeheckel-shadow-1: 0 0px 12px -6px rgba(0, 24, 40, 0.3);
   --maximeheckel-shadow-2: 0 0px 15px -6px rgba(0, 24, 40, 0.4);
   --maximeheckel-shadow-3: 0 0px 20px -6px rgba(0, 24, 40, 0.5);
+
+  --token-comment: var(--maximeheckel-colors-typeface-2);
+  --token-selector: hsl(var(--palette-indigo-40));
+  --token-symbol: hsl(var(--palette-blue-60));
+  --token-operator: hsl(var(--palette-orange-80));
+  --token-keyworkd: hsl(var(--palette-blue-60));
+  --token-function: hsl(var(--palette-pink-60));
+  --token-punctuation: hsl(var(--palette-indigo-60));
 }
 
 .maximeheckel-dark {
@@ -87,16 +130,24 @@
   --maximeheckel-colors-foreground: hsla(var(--palette-gray-100), 55%);
   --maximeheckel-colors-danger: hsla(var(--palette-red-30), 100%);
   --maximeheckel-colors-danger-emphasis: hsla(var(--palette-red-30), 8%);
-  --maximeheckel-colors-warning: hsla(var(--palette-orange-40), 100%);
-  --maximeheckel-colors-warning-emphasis: hsla(var(--palette-orange-40), 8%);
-  --maximeheckel-colors-success: hsla(var(--palette-green-40), 100%);
-  --maximeheckel-colors-success-emphasis: hsla(var(--palette-green-40), 8%);
+  --maximeheckel-colors-warning: hsla(var(--palette-orange-50), 100%);
+  --maximeheckel-colors-warning-emphasis: hsla(var(--palette-orange-50), 8%);
+  --maximeheckel-colors-success: hsla(var(--palette-green-50), 100%);
+  --maximeheckel-colors-success-emphasis: hsla(var(--palette-green-50), 8%);
   --maximeheckel-colors-typeface-0: hsla(var(--palette-gray-00), 100%);
   --maximeheckel-colors-typeface-1: hsla(var(--palette-gray-20), 100%);
   --maximeheckel-colors-typeface-2: hsla(var(--palette-gray-40), 100%);
   --maximeheckel-shadow-1: 0 0px 20px -6px rgba(0, 0, 0, 0.7);
   --maximeheckel-shadow-2: 0 0px 25px -6px rgba(0, 0, 0, 0.8);
   --maximeheckel-shadow-3: 0 0px 30px -6px rgba(0, 0, 0, 0.9);
+
+  --token-comment: var(--maximeheckel-colors-typeface-2);
+  --token-selector: hsl(var(--palette-indigo-20));
+  --token-symbol: hsl(var(--palette-blue-40));
+  --token-operator: hsl(var(--palette-orange-40));
+  --token-keyworkd: hsl(var(--palette-blue-40));
+  --token-function: hsl(var(--palette-pink-40));
+  --token-punctuation: hsl(var(--palette-indigo-20));
 }
 
 ::selection {
@@ -108,7 +159,7 @@ body {
   background: var(--maximeheckel-colors-body);
   text-rendering: optimizeLegibility;
   --plyr-color-main: var(--maximeheckel-colors-brand);
-  margin: 0px;
+  margin: 0;
 }
 
 a {
@@ -128,10 +179,73 @@ a {
   color: var(--maximeheckel-colors-brand) !important;
 }
 
-.twitter-tweet-mdx-embed {
-  display: flex;
-  justify-content: center;
+pre,
+textarea.npm__react-simple-code-editor__textarea {
+  background-color: var(--maximeheckel-colors-foreground) !important;
+  font-family: Fira Code !important;
+  font-size: 14px !important;
+  line-height: 26px !important;
 }
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--token-comment);
+}
+
+
+.token.punctuation {
+  color: var(--token-punctuation);
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: var(--token-symbol);
+}
+
+.token.selector,
+.token.attr-name,
+.token.char,
+.token.builtin,
+.token.number,
+.token.string,
+.token.inserted {
+  font-weight: bold;
+  color: var(--token-selector);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css
+.style {
+  color: var(--token-operator);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+ color: var(--token-keyworkd);
+}
+
+.token.function,
+.token.maybe-class-name,
+.token.class-name {
+  color: var(--token-function);
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: var(--token-operator);
+}
+
 
 span[aria-hidden='true'] {
   display: none;

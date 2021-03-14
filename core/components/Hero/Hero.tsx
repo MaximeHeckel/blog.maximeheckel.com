@@ -13,11 +13,18 @@ const HeroImg: React.FC<HeroImgProps> = (props) => (
       border-radius: var(--border-radius-2);
       width: 100%;
       height: 375px;
-      max-width: 100%;
-      max-height: 375px;
       overflow: hidden;
       margin: 32px auto;
       position: relative;
+
+      @media (max-width: 700px) {
+        border-radius: 0px;
+        width: 100vw;
+        height: 250px;
+        left: 50%;
+        right: 50%;
+        margin: 32px -50vw;
+      }
     `}
   >
     <Image
@@ -35,6 +42,7 @@ const HeroInfo = styled.div`
     color: var(--maximeheckel-colors-typeface-2);
     font-size: 14px;
     font-weight: 500;
+    margin-bottom: 0px;
   }
 `;
 
@@ -45,27 +53,29 @@ const HeroSubtitle = styled.h3`
 const HeroTitle = styled.h1``;
 
 const HeroWrapper = styled.div`
-  @media (max-width: 700px) {
-    padding: 150px 0px 30px 0px;
-  }
-
-  margin: 0 auto;
-  max-width: 700px;
   align-items: center;
   color: var(--maximeheckel-colors-typeface-0);
+  grid-column: 2;
   padding-top: 248px;
+
+  @media (max-width: 700px) {
+    padding-top: 150px;
+  }
 `;
 
-class Hero extends React.Component<{ id?: string; style?: object }> {
+class Hero extends React.Component<{
+  id?: string;
+  className?: string;
+}> {
   public static Img = HeroImg;
   public static Info = HeroInfo;
   public static Subtitle = HeroSubtitle;
   public static Title = HeroTitle;
 
   render() {
-    const { id, children, style } = this.props;
+    const { id, children, className } = this.props;
     return (
-      <HeroWrapper data-testid="hero" id={id} style={style}>
+      <HeroWrapper data-testid="hero" id={id} className={className}>
         {children}
       </HeroWrapper>
     );

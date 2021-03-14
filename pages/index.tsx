@@ -8,10 +8,11 @@ import React from 'react';
 import Button from '@theme/components/Button';
 import NewsletterForm from '@theme/components/NewsletterForm';
 import VisuallyHidden from '@theme/components/VisuallyHidden';
-import Layout from '@theme/layouts';
+import Layout from '@theme/layout';
 import { ExternalIcon, TwitterIcon } from '@theme/components/Icons';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';
+import Grid from '@theme/components/Grid';
 
 interface Props {
   posts: Post[];
@@ -66,14 +67,18 @@ const IndexPage = (props: Props) => {
 
   return (
     <Layout footer={true} header={true} headerProps={{ search: true }}>
-      <main>
-        <div
-          css={css`
-            margin-top: 100px;
-            padding-bottom: 10px;
-          `}
-        >
-          <br />
+      <Grid
+        columns="var(--layout-medium)"
+        columnGap={20}
+        rowGap={100}
+        css={css`
+          margin-top: 128px;
+          > * {
+            grid-column: 2;
+          }
+        `}
+      >
+        <div>
           <h1>
             Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
             <span
@@ -134,149 +139,117 @@ const IndexPage = (props: Props) => {
               </VisuallyHidden>
             </a>
           </div>
-          {/* <div
-              css={css`
-                position: relative;
-                width: 100%;
-                height: 300px;
-              `}
-            >
-              <Image
-                src="/static/images/pawel-czerwinski-Hu6kULsI5dM-unsplash.jpg"
-                layout="fill"
-              />
-            </div> */}
-          <section
-            css={css`
-              margin-top: 100px;
-            `}
-          >
-            <h2>Newsletter</h2>
-            <NewsletterForm large />
-          </section>
-          <section
-            css={css`
-              margin-top: 100px;
-            `}
-          >
-            <h2>Featured</h2>
-            <List
-              data-testid="featured-list"
-              css={css`
-                display: grid;
-                grid-gap: 16px;
-              `}
-            >
-              {posts
-                .filter((post) => post.featured)
-                .map((post) => {
-                  return (
-                    <motion.li
-                      css={css`
-                        position: relative;
-                        margin-left: -10px;
-                      `}
-                      key={post.slug}
-                      data-testid="featured-article-item"
-                      initial="initial"
-                      whileHover="hover"
-                    >
-                      <Link href={`/posts/${post.slug}/`}>
-                        <a style={{ textDecoration: `none` }}>
-                          <Glow
-                            css={css`
-                              background: ${post.colorFeatured};
-                            `}
-                            variants={glowVariants}
-                            transition={{
-                              type: 'tween',
-                              ease: 'easeOut',
-                              // delay: 0.15,
-                              duration: 0.4,
-                            }}
-                          />
-                          <div
-                            css={css`
-                              height: 95%;
-                              width: 105%;
-                              position: absolute;
-                              border-radius: var(--border-radius-2);
-                              top: 50%;
-                              left: 50%;
-                              background: var(--maximeheckel-colors-body);
-                              transform: translateY(-50%) translateX(-50%);
-                              filter: blur(20px);
-                              transition: 0.5s;
-                            `}
-                          />
-                          <Card
-                            variants={cardVariants}
-                            transition={{
-                              type: 'tween',
-                              ease: 'easeOut',
-                              // delay: 0.15,
-                              duration: 0.4,
-                            }}
-                          >
-                            <TitleWithBackground
-                              background={post.colorFeatured!}
-                            >
-                              {post.title}
-                            </TitleWithBackground>
-                            <p>{post.subtitle}</p>
-                          </Card>
-                        </a>
-                      </Link>
-                    </motion.li>
-                  );
-                })}
-            </List>
-          </section>
-          <section
-            css={css`
-              margin-top: 100px;
-            `}
-          >
-            <h2>All articles</h2>
-            <List data-testid="article-list">
-              {posts.map((post) => {
-                const currentYear = new Date(post.date).getFullYear();
-                let printYear;
-
-                if (currentYear !== year) {
-                  printYear = true;
-                  year = currentYear;
-                } else {
-                  printYear = false;
-                }
-
+        </div>
+        <section>
+          <h2>Newsletter</h2>
+          <NewsletterForm large />
+        </section>
+        <section>
+          <h2>Featured</h2>
+          <List as="ul" data-testid="featured-list" rowGap={16}>
+            {posts
+              .filter((post) => post.featured)
+              .map((post) => {
                 return (
-                  <li key={post.slug} data-testid="article-item">
-                    {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
+                  <motion.li
+                    css={css`
+                      position: relative;
+                      margin-left: -10px;
+                    `}
+                    key={post.slug}
+                    data-testid="featured-article-item"
+                    initial="initial"
+                    whileHover="hover"
+                  >
                     <Link href={`/posts/${post.slug}/`}>
                       <a style={{ textDecoration: `none` }}>
-                        <Block data-testid="article-link">
-                          <DateBlock>
-                            {format(new Date(Date.parse(post.date)), 'MMM dd')}
-                          </DateBlock>
-                          <TitleBlock>{post.title}</TitleBlock>
-                        </Block>
+                        <Glow
+                          css={css`
+                            background: ${post.colorFeatured};
+                          `}
+                          variants={glowVariants}
+                          transition={{
+                            type: 'tween',
+                            ease: 'easeOut',
+                            // delay: 0.15,
+                            duration: 0.4,
+                          }}
+                        />
+                        <div
+                          css={css`
+                            height: 95%;
+                            width: 105%;
+                            position: absolute;
+                            border-radius: var(--border-radius-2);
+                            top: 50%;
+                            left: 50%;
+                            background: var(--maximeheckel-colors-body);
+                            transform: translateY(-50%) translateX(-50%);
+                            filter: blur(20px);
+                            transition: 0.5s;
+                          `}
+                        />
+                        <Card
+                          variants={cardVariants}
+                          transition={{
+                            type: 'tween',
+                            ease: 'easeOut',
+                            // delay: 0.15,
+                            duration: 0.4,
+                          }}
+                        >
+                          <TitleWithBackground background={post.colorFeatured!}>
+                            {post.title}
+                          </TitleWithBackground>
+                          <p>{post.subtitle}</p>
+                        </Card>
                       </a>
                     </Link>
-                  </li>
+                  </motion.li>
                 );
               })}
-            </List>
-          </section>
+          </List>
+        </section>
+        <section>
+          <h2>All articles</h2>
+          <List as="ul" data-testid="article-list" rowGap={4}>
+            {posts.map((post) => {
+              const currentYear = new Date(post.date).getFullYear();
+              let printYear;
 
+              if (currentYear !== year) {
+                printYear = true;
+                year = currentYear;
+              } else {
+                printYear = false;
+              }
+
+              return (
+                <li key={post.slug} data-testid="article-item">
+                  {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
+                  <Link href={`/posts/${post.slug}/`}>
+                    <a style={{ textDecoration: `none` }}>
+                      <Block data-testid="article-link">
+                        <DateBlock>
+                          {format(new Date(Date.parse(post.date)), 'MMM dd')}
+                        </DateBlock>
+                        <TitleBlock>{post.title}</TitleBlock>
+                      </Block>
+                    </a>
+                  </Link>
+                </li>
+              );
+            })}
+          </List>
+          <br />
           <Card>
             <h3>#BlackLivesMatter</h3>
             <a href="https://blacklivesmatters.carrd.co/">
               Click here to find out how you can help.
             </a>
           </Card>
-        </div>
-      </main>
+        </section>
+      </Grid>
     </Layout>
   );
 };
@@ -345,10 +318,6 @@ const Block = styled('div')`
   color: var(--maximeheckel-colors-typeface-0);
   transition: background-color 0.25s, box-shadow 0.25s, color 0.25s;
 
-  div:first-of-type {
-    margin-right: 40px;
-  }
-
   &:hover {
     background-color: var(--maximeheckel-colors-foreground);
     box-shadow: var(--maximeheckel-shadow-1);
@@ -366,14 +335,16 @@ const DateBlock = styled('div')`
   font-weight: 500;
   color: var(--maximeheckel-colors-typeface-2);
   min-width: 50px;
+  margin-right: 32px;
 `;
 
 const TitleBlock = styled('div')`
   font-weight: 500;
 `;
 
-const List = styled('ul')`
+const List = styled(Grid)`
   margin-left: 0px;
+  margin-bottom: 0px;
 
   li {
     list-style: none;
@@ -381,7 +352,6 @@ const List = styled('ul')`
 
   h3 {
     color: var(--maximeheckel-colors-typeface-0);
-    margin-bottom: 10px;
   }
 `;
 

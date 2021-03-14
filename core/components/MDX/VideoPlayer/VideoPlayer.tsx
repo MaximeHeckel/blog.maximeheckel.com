@@ -14,6 +14,7 @@ interface Props {
 
 const Wrapper = styled('div')<{ width?: number }>`
   height: 756px;
+  margin-bottom: 32px;
 
   .plyr {
     margin: 0 auto;

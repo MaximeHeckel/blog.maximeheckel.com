@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import Grid from '../Grid';
 import Logo from '../Logo';
 
 const HR = styled.hr`
@@ -15,16 +16,10 @@ const FooterBlock = styled.div`
 `;
 
 const FooterWrapper = styled.div`
-  @media (max-width: 700px) {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
   padding-top: 30px;
-  padding-left: 70px;
-  padding-right: 70px;
-  max-width: 1020px;
+  width: 100%;
   margin-top: 30px;
+  grid-column: 2;
   color: var(--maximeheckel-colors-typeface-0);
   font-size: 14px;
   margin: 0 auto;
@@ -41,13 +36,16 @@ const FooterContent = styled.div`
 
 const Footer: React.FC<{}> = () => (
   <FooterBlock data-testid="footer">
-    <FooterWrapper>
-      <HR />
-      <FooterContent>
-        <div>© {new Date().getFullYear()} Maxime Heckel —— SF/NY</div>
-        <Logo alt="Maxime Heckel's logo" size={40} />
-      </FooterContent>
-    </FooterWrapper>
+    <Grid columns="var(--layout-medium)" columnGap={20}>
+      <FooterWrapper>
+        <HR />
+
+        <FooterContent>
+          <div>© {new Date().getFullYear()} Maxime Heckel —— SF/NY</div>
+          <Logo alt="Maxime Heckel's logo" size={40} />
+        </FooterContent>
+      </FooterWrapper>
+    </Grid>
   </FooterBlock>
 );
 

@@ -6,9 +6,17 @@ const StyledBlockquote = styled('blockquote')`
   margin: 30px 0px;
   color: var(--maximeheckel-colors-typeface-0);
   font-style: italic;
-  position: relative;
+
+  /**
+   * Make it fullbleed! 
+   */
   width: 100vw;
-  left: calc(-50vw + 50%);
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+
   padding-top: 40px;
   padding-bottom: 40px;
   background: var(--maximeheckel-colors-emphasis);

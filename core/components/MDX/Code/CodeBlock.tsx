@@ -1,15 +1,8 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import Highlight, {
-  Prism,
-  defaultProps,
-  PrismTheme,
-} from 'prism-react-renderer';
+import Highlight, { Prism, defaultProps } from 'prism-react-renderer';
 import React from 'react';
 import { CopyToClipboardButton } from '../../Button';
-import { useTheme } from '../../../context/ThemeContext';
 import { CodeBlockProps } from './types';
-import { prismDark, prismLight } from './styles';
 import { calculateLinesToHighlight, hasTitle } from './utils';
 
 // @ts-ignore
@@ -23,43 +16,22 @@ require('prismjs/components/prism-swift');
 const CodeBlock: React.FC<CodeBlockProps> = (props) => {
   const { codeString, language, metastring } = props;
 
-  const { dark } = useTheme();
-
-  const baseTheme = dark ? prismDark : prismLight;
-
-  const customTheme = {
-    ...baseTheme,
-    plain: {
-      ...baseTheme.plain,
-      fontFamily: 'Fira Code',
-      fontSize: '14px',
-    },
-  } as PrismTheme;
-
   const shouldHighlightLine = calculateLinesToHighlight(metastring);
   const title = hasTitle(metastring);
+
   return (
     <CodeSnippetWrapper className="snippet">
       {title ? (
-        <CodeSnippetHeader
-          css={{
-            backgroundColor: customTheme.plain.backgroundColor,
-            borderBottom: `1px solid ${
-              dark
-                ? 'hsla(var(--palette-gray-90), 100%)'
-                : 'hsla(var(--palette-gray-20), 100%)'
-            }`,
-          }}
-        >
+        <CodeSnippetHeader>
           <CodeSnippetTitle data-testid="codesnippet-title">
             {title}
           </CodeSnippetTitle>
-          <CopyToClipboardButton text={codeString} />
+          <CopyToClipboardButton title={title} text={codeString} />
         </CodeSnippetHeader>
       ) : null}
       <Highlight
         {...defaultProps}
-        theme={customTheme}
+        theme={{ plain: {}, styles: [] }}
         code={codeString}
         language={language}
       >
@@ -109,7 +81,7 @@ const CodeBlock: React.FC<CodeBlockProps> = (props) => {
 
 export default CodeBlock;
 
-const Pre = styled.pre<{ title?: string }>`
+const Pre = styled('pre')<{ title?: string }>`
   text-align: left;
   padding: 8px 0px;
   overflow: auto;
@@ -125,7 +97,7 @@ const Pre = styled.pre<{ title?: string }>`
     `}
 `;
 
-const Line = styled.div`
+const Line = styled('div')`
   display: table;
   border-collapse: collapse;
   padding: 0px 14px;
@@ -140,14 +112,15 @@ const Line = styled.div`
   }
 `;
 
-const LineNo = styled.div`
+const LineNo = styled('div')`
   width: 45px;
   padding: 0 12px;
   user-select: none;
-  opacity: 0.5;
+  opacity: 1;
+  color: var(--maximeheckel-colors-typeface-2);
 `;
 
-const LineContent = styled.span`
+const LineContent = styled('span')`
   display: table-cell;
   width: 100%;
 `;
@@ -170,24 +143,28 @@ const CodeSnippetHeader = styled('div')`
   align-items: center;
   border-top-left-radius: var(--border-radius-2);
   border-top-right-radius: var(--border-radius-2);
-  min-height: 45px;
+  min-height: 50px;
   padding: 0px 14px;
-`;
-
-const fullWidthSnipperStyle = () => css`
-  position: relative;
-  width: 100vw;
-  left: calc(-50vw + 50%);
-  border-radius: 0px;
-  max-width: 1100px;
+  background-color: var(--maximeheckel-colors-foreground);
+  border-bottom: 1px solid var(--maximeheckel-colors-emphasis);
 `;
 
 const CodeSnippetWrapper = styled('div')`
-  @media (max-width: 600px) {
-    ${fullWidthSnipperStyle}
+  @media (max-width: 750px) {
+    /**
+     * Make it fullbleed! 
+     */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
   }
   width: 100%;
   border-radius: var(--border-radius-2);
-  margin: 40px 0px;
   position: relative;
+  box-shadow: var(--maximeheckel-shadow-1);
+  border: 1px solid var(--maximeheckel-colors-emphasis);
+  margin-bottom: 32px;
 `;

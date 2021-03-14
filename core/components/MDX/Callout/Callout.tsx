@@ -28,17 +28,28 @@ const variantColors = {
 };
 
 const StyledCallout = styled('div')<{ variant: VARIANT }>`
-  @media (max-width: 600px) {
-    position: relative;
+  @media (max-width: 700px) {
+    /**
+     * Make it fullbleed! 
+     */
     width: 100vw;
-    left: calc(-50vw + 50%);
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+
     border-radius: 0px;
+  }
+
+  code {
+    background: none;
   }
 
   border-radius: 4px var(--border-radius-2) var(--border-radius-2) 4px;
   border-left: 3px solid;
   padding: 30px 30px;
-  margin-bottom: 25px;
+  margin: 25px 0px;
 
   *:last-child {
     margin-bottom: 0px;

@@ -8,15 +8,11 @@ import {
 import { PrismTheme } from 'prism-react-renderer';
 import React from 'react';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
-import { useTheme } from '@theme/context/ThemeContext';
 import Button from '@theme/components/Button';
-import { fullWidthSnipperStyle, prismDark, prismLight } from './styles';
 import { CodeBlockProps, CodeSnippetWrapperProps } from './types';
 
 const LiveCodeBlock = (props: CodeBlockProps) => {
   const { codeString, live, render } = props;
-
-  const { dark } = useTheme();
   const injectedStyled = require('@emotion/styled').default;
 
   const scope = {
@@ -29,19 +25,9 @@ const LiveCodeBlock = (props: CodeBlockProps) => {
     React,
   };
 
-  const baseTheme = dark ? prismDark : prismLight;
-
   const customTheme = {
-    ...baseTheme,
-    plain: {
-      ...baseTheme.plain,
-      fontFamily: 'Fira Code',
-      fontSize: '14px',
-      lineHeight: '26px',
-      overflowWrap: 'normal',
-      position: 'relative',
-      overflow: 'auto',
-    },
+    styles: [],
+    plain: {},
   } as PrismTheme;
 
   if (live) {
@@ -52,7 +38,7 @@ const LiveCodeBlock = (props: CodeBlockProps) => {
         scope={scope}
         noInline={true}
       >
-        <StyledLiveCodeWrapper fullWidth>
+        <StyledLiveCodeWrapper>
           <StyledPreviewWrapper height={600} withEditor={true}>
             <LivePreview />
             <StyledErrorWrapper>
@@ -83,29 +69,34 @@ const LiveCodeBlock = (props: CodeBlockProps) => {
 };
 
 const StyledLiveCodeWrapper = styled('div')<CodeSnippetWrapperProps>`
+  position: relative;
+
   @media (max-width: 750px) {
     display: block;
   }
 
   @media (max-width: 1100px) {
-    ${(p) => (p.fullWidth ? fullWidthSnipperStyle : '')}
+    /**
+     * Make it fullbleed! 
+     */
+    width: 100vw;
+
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
   }
 
-  @media (min-width: 1101px) {
-    ${(p) =>
-      p.fullWidth
-        ? `
-          width: 1100px;
-          transform: translateX(-200px);
-  `
-        : ''}
+  @media (min-width: 1100px) {
+    position: relative;
+    width: calc(100% + 400px);
+    margin: 0px -200px 32px -200px;
   }
 
   backdrop-filter: blur(6px);
   border-radius: var(--border-radius-2);
   display: flex;
   align-items: center;
-  margin: 40px 0px;
 `;
 
 const StyledEditorWrapper = styled('div')`

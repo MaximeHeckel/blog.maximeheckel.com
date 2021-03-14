@@ -548,7 +548,7 @@ const Separator = styled('li')`
 
 const SearchResults = styled(motion.ul)`
   @media (max-width: 700px) {
-    max-height: 385px;
+    max-height: 450px;
   }
 
   max-height: ${MAX_HEIGHT}px;

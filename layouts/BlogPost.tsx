@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import siteConfig from 'config/site';
-import Layout from '@theme/layouts';
+import Layout from '@theme/layout';
 import Seo from '@theme/components/Seo';
 import Hero from '@theme/components/Hero';
 import WebmentionCount from '@theme/components/Webmentions/WebmentionCount';
@@ -12,6 +12,7 @@ import MDXBody from '@theme/components/MDX/MDX';
 import Pill, { PillVariant } from '@theme/components/Pill';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
+import Grid from '@theme/components/Grid';
 
 const TableOfContent = dynamic(
   () => import('@theme/components/TableOfContent'),
@@ -93,37 +94,42 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
 
   return (
     <Layout footer={true} header={true} headerProps={headerProps}>
+      <Seo
+        title={`${title}`}
+        desc={subtitle}
+        image={ogImage}
+        path={path}
+        date={date}
+        updated={updated}
+      />
       <article className="h-entry">
-        <Seo
-          title={`${title}`}
-          desc={subtitle}
-          image={ogImage}
-          path={path}
-          date={date}
-          updated={updated}
-        />
-        <Hero id="top">
-          <Hero.Title className="p-name" data-testid={`project-title-${title}`}>
-            {title}
-          </Hero.Title>
-          <Hero.Info>
-            <Flex
-              css={css`
-                margin-bottom: 16px;
-              `}
-              wrap="wrap"
+        <Grid columns="var(--layout-small)" columnGap={20}>
+          <Hero id="top">
+            <Hero.Title
+              className="p-name"
+              data-testid={`project-title-${title}`}
             >
-              <p>{format(new Date(Date.parse(date)), 'MMMM d, yyyy')}</p>
-              <p> / {readingTime.text} / </p>
-              <WebmentionCount target={postUrl} />
-            </Flex>
-            <Pill variant={PillVariant.INFO}>
-              Last Updated{' '}
-              {format(new Date(Date.parse(updated)), 'MMMM d, yyyy')}
-            </Pill>
-          </Hero.Info>
-          {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
-        </Hero>
+              {title}
+            </Hero.Title>
+            <Hero.Info>
+              <Flex
+                css={css`
+                  margin-bottom: 16px;
+                `}
+                wrap="wrap"
+              >
+                <p>{format(new Date(Date.parse(date)), 'MMMM d, yyyy')}</p>
+                <p> / {readingTime.text} / </p>
+                <WebmentionCount target={postUrl} />
+              </Flex>
+              <Pill variant={PillVariant.INFO}>
+                Last Updated{' '}
+                {format(new Date(Date.parse(updated)), 'MMMM d, yyyy')}
+              </Pill>
+            </Hero.Info>
+            {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
+          </Hero>
+        </Grid>
         <TableOfContent ids={ids} />
         <MDXBody>{children}</MDXBody>
         <Signature title={title} url={postUrl} />

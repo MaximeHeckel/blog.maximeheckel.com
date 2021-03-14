@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { motion, useAnimation } from 'framer-motion';
 import React from 'react';
+// import ReactDOM from 'react-dom';
 import VisuallyHidden from '../VisuallyHidden';
 
 interface Props {
@@ -16,10 +17,40 @@ const Tooltip: React.FC<Props> = (props) => {
 
   const tooltipRef = React.useRef<HTMLSpanElement>(null);
 
+  function handlePosition(tooltipRef: React.RefObject<HTMLSpanElement>) {
+    const { current } = tooltipRef!;
+
+    if (current) {
+      const tooltipRect = current.getBoundingClientRect();
+      if (tooltipRect.x < 0) {
+        current.style.left = '0';
+        current.style.right = 'auto';
+        current.style.transform = `translateX(${-tooltipRect.x + 15}px)`;
+      } else if (tooltipRect.x > window.outerWidth) {
+        current.style.left = 'auto';
+        current.style.right = '0';
+        current.style.transform = `translateX(${
+          window.outerWidth - tooltipRect.x - 15
+        }px)`;
+      }
+    }
+  }
+
+  function resetPosition(tooltipRef: React.RefObject<HTMLSpanElement>) {
+    const { current } = tooltipRef!;
+
+    if (current) {
+      current.style.removeProperty('left');
+      current.style.removeProperty('right');
+      current.style.removeProperty('transform');
+    }
+  }
+
   function showTooltip() {
     if (tooltipRef.current) {
       tooltipRef.current.setAttribute('aria-hidden', 'false');
       controls.start('hover');
+      handlePosition(tooltipRef);
     }
   }
 
@@ -27,6 +58,7 @@ const Tooltip: React.FC<Props> = (props) => {
     if (tooltipRef.current) {
       tooltipRef.current.setAttribute('aria-hidden', 'true');
       controls.start('idle');
+      resetPosition(tooltipRef);
     }
   }
 
@@ -65,6 +97,7 @@ const Tooltip: React.FC<Props> = (props) => {
       }}
     >
       {children}
+      {/* {ReactDOM.createPortal( */}
       <motion.span
         id={id}
         aria-hidden={true}
@@ -97,6 +130,8 @@ const Tooltip: React.FC<Props> = (props) => {
           <VisuallyHidden as="p">{tooltipVisuallyHiddenText}</VisuallyHidden>
         ) : null}
       </motion.span>
+      {/* ,document.body
+      )} */}
     </motion.div>
   );
 };

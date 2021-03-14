@@ -3,7 +3,10 @@ import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
 import Tooltip from '../Tooltip';
 
-export const CopyToClipboardButton = (props: { text: string }) => {
+export const CopyToClipboardButton = (props: {
+  text: string;
+  title?: string;
+}) => {
   const duration = 0.4;
   const svgVariants = {
     hover: (isChecked: boolean) => ({
@@ -53,8 +56,12 @@ export const CopyToClipboardButton = (props: { text: string }) => {
     }
   }, [isChecked]);
 
+  const randomID = `copytoclipboard-tooltip-${
+    Math.floor(Math.random() * 1000) + 1
+  }`;
+
   return (
-    <Tooltip id="copytoclipboard-tooltip" tooltipText="Copy to clipboard">
+    <Tooltip id={randomID} tooltipText="Copy to clipboard">
       <button
         css={css`
           background: transparent;
@@ -73,9 +80,7 @@ export const CopyToClipboardButton = (props: { text: string }) => {
             outline: 2px solid var(--maximeheckel-colors-brand);
           }
         `}
-        // aria-label="Copy to clipboard"
-        aria-describedby="copytoclipboard-tooltip"
-        title="Copy to clipboard"
+        aria-labelledby={randomID}
         disabled={isChecked}
         onClick={() => {
           copyToClipboard(props.text);

@@ -21,6 +21,7 @@ const LogoWrapper = styled('div')<LogoWrapperProps>`
 
   height: ${(props) => props.size}px;
   width: ${(props) => props.size}px;
+  margin-left: 10px;
   svg {
     height: ${(props) => props.size}px;
     width: ${(props) => props.size}px;

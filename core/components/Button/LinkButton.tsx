@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 const LinkButton = styled(motion.button)`
   border-radius: var(--border-radius-1);
-  width: 44px;
+  width: 40px;
   height: 40px;
   cursor: pointer;
   border: none;
