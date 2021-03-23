@@ -111,7 +111,7 @@ const NewsletterForm = (props: Props) => {
             <p>
               Subscribe to{' '}
               <a href="https://buttondown.email/MaximeHeckel">my newsletter</a>{' '}
-              to receive a monthly diggest containing:
+              to receive a monthly digest containing:
             </p>
             <ul>
               <li>
