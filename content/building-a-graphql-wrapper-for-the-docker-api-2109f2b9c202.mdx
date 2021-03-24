@@ -32,7 +32,13 @@ If you want to follow along with this article with more details about the code I
 
 The first step consists of being able to communicate with the Docker engine’s API through our GraphQL server. We want it to kind of act as a proxy between our client and Docker Engine, i.e. translate the GraphQL queries given by a client to rest calls, and send the results back. I recommend [this article](https://www.prisma.io/blog/how-to-wrap-a-rest-api-with-graphql-8bf3fb17547d) about such use of GraphQL, it’s written by Prisma, and it’s a great starting point for anyone who is not really familiar with GraphQL.
 
-![Illustration showcasing GraphQL as a layer between our client and the docker engine mapping queries to REST requests](/static/images/1__41pElREgzejX1F91uIqDNg.png)
+<Image
+  src="/static/images/1__41pElREgzejX1F91uIqDNg.png"
+  alt="Illustration showcasing GraphQL as a layer between our client and the docker engine mapping queries to REST requests"
+  layout="responsive"
+  width={700}
+  height={416}
+/>
 
 Considering we have a Docker engine running locally, we can access the API through the Docker daemon which uses the UNIX socket `unix:///var/run/docker.sock` . Knowing that, we can start building the first pieces of our server:
 

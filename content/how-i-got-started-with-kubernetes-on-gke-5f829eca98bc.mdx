@@ -30,7 +30,13 @@ where `CLUSTER` is the name of the cluster and`ZONE` the zone we’ve picked up 
 
 After this, in our Docker for Mac menu, we should be able to see the name of our cluster in the context list under “Kubernetes”:
 
-![Kubernetes contexts list menu in Docker for Mac](/static/images/1__QGmeP4rJQSm1YF38684yWw.png)
+<Image
+  src="/static/images/1__QGmeP4rJQSm1YF38684yWw.png"
+  alt="Kubernetes contexts list menu in Docker for Mac"
+  layout="responsive"
+  width={700}
+  height={439}
+/>
 
 If we click on it, all of the following Kubernetes commands we execute will be run against our GKE cluster. For example, if we try running `kubectl get pods`, we should see that we have no resources on this cluster (yet).
 
@@ -94,7 +100,13 @@ Let’s save the above file on our machine and deploy these workloads by running
 
 By listing the services we should end up with an output similar to this:
 
-![List of Kubernetes services](/static/images/1__0hgHhzjFzrrN__mOY1jqopQ.png)
+<Image
+  src="/static/images/1__0hgHhzjFzrrN__mOY1jqopQ.png"
+  alt="List of Kubernetes services"
+  layout="responsive"
+  width={700}
+  height={217}
+/>
 
 We can see that **the port** `8000` **of our service is mapped to the port** `**31508**` **of one of our node in our cluster**, however GKE nodes are not externally accessible by default, so our website service is not (yet) accessible from the Internet. This is where **Ingresses** comes into the picture.
 
@@ -116,7 +128,13 @@ spec:
 
 If we run `kubectl apply -f ingress.yml`, we create a rule to route all external HTTP traffic hitting our Ingress external IP to our website. If we wait a few minutes, we’ll see that running `kubectl get ingress` will output a list containing `main-ingress` with an external IP:
 
-![List of Kubernetes ingresses](/static/images/1__Z6__gkS9RooYBK96__s5u0__A.png)
+<Image
+  src="/static/images/1__Z6__gkS9RooYBK96__s5u0__A.png"
+  alt="List of Kubernetes ingresses"
+  layout="responsive"
+  width={700}
+  height={297}
+/>
 
 Accessing the external IP from your browser should show you the main NGINX page! **We just deployed, exposed and published our first Kubernetes workload!**
 
@@ -216,7 +234,13 @@ spec:
 
 Running `kubectl apply -f certificates.yml` will submit the request to Let’s Encrypt and create a TLS secret for our NGINX Ingress Controller to use. We can check the logs of the kube-cert-manager Pod with `kubectl logs -f nameofyourcertmanagerpodpod` during the request, and if everything goes well, we should see logs like this:
 
-![Logs from the cert-manager Pod](/static/images/1__F3186t6LGQIg5ujjh75a0g.png)
+<Image
+  src="/static/images/1__F3186t6LGQIg5ujjh75a0g.png"
+  alt="Logs from the cert-manager Pod"
+  layout="responsive"
+  width={700}
+  height={233}
+/>
 
 After a few minutes we should have, as shown in the logs above, a secret titled `myawesomedomain.com` on our cluster. Let’s run `kubectl get secrets` to ensure it’s there before continuing. Finally, we can now edit our `ingress.yml` file as such to include our certificate:
 

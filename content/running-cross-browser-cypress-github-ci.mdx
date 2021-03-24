@@ -29,7 +29,13 @@ I also always wanted to make sure the personal projects I work on run well on ev
 
 Before running an automated CI task, we have to ensure that our existing end-to-end tests run locally. If you update Cypress to its latest version (`4.0.2` as I'm writing these words) and have Chrome, Firefox, and Microsoft Edge installed on your machine, you might notice a little dropdown on the top right of the Cypress window when running `cypress open`, giving you a list of browser to run your tests on:
 
-![Screenshot showcasing the Cypress GUI with the browser selection dropdown expanded.](/static/images/cypress-cross-browser.png)
+<Image
+  src="/static/images/cypress-cross-browser.png"
+  alt="Screenshot showcasing the Cypress GUI with the browser selection dropdown expanded."
+  layout="responsive"
+  width={700}
+  height={460}
+/>
 
 We can now run these tests and check if everything passes before going to the next steps.
 
@@ -82,7 +88,13 @@ When the scheduled time is reached, this Github workflow will get triggered with
 
 For the last two steps, we use the `cypress-io/github-action@v1` which allows running Cypress in Github workflows with little to almost no configuration required besides setting the browser on which we want to run the tests (see L20 and L28). However, we have to specify that we want to use the `cypress/browsers` (see L11-12) Docker image for this workflow, as in its default setting, it seems that Github CI doesn't include Firefox.
 
-![Screenshot showcasing a successful Github CI run including our scheduled cross-browser tests on Chrome and Firefox](/static/images/cypress-cross-browser-run.png)
+<Image
+  src="/static/images/cypress-cross-browser-run.png"
+  alt="Screenshot showcasing a successful Github CI run including our scheduled cross-browser tests on Chrome and Firefox"
+  layout="responsive"
+  width={700}
+  height={386}
+/>
 
 Now that this new automated weekly task is implemented we can ensure our projects run as expected and guarantee the best user experience regardless of which browser is being used 🎉!
 

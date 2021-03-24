@@ -5,6 +5,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withBundleAnalyzer({
   trailingSlash: true,
   target: 'serverless',
+  // future: {
+  //   webpack5: true,
+  // },
   images: {
     domains: [
       'pbs.twimg.com', // Twitter Profile Picture

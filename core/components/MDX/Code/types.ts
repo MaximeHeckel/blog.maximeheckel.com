@@ -26,3 +26,10 @@ export interface CodeBlockProps {
   live?: boolean;
   render?: boolean;
 }
+
+export interface HighlightedCodeTextProps {
+  title?: string;
+  codeString: string;
+  language: Language;
+  highlightLine?: (index: number) => boolean;
+}

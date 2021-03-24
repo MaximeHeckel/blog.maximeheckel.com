@@ -583,7 +583,6 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'react-sub-components-513f6679abed',
-    cover: '/static/images/1__whvWjXy__9DHnu5o6gWbpzQ.jpeg',
     type: 'blogPost',
   },
   {

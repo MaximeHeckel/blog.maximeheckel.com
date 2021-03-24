@@ -62,7 +62,13 @@ Even more bizarre, if we try to use the published version of "myLib" instead of 
 
 We know that the "production" setup (the one where we used the published version of "myLib") works: the theme is declared and passed through a React Context in "myApp" and is accessible in "myLib" as the components of this package are imported within that same context.
 
-![Schema representing a styled component "StyledButton" from myLib rendered within the Emotion Theme Provider of myApp](/static/images/setup-schema-npm-dep.png)
+<Image
+  src="/static/images/setup-schema-npm-dep.png"
+  alt="Schema representing a styled component 'StyledButton' from myLib rendered within the Emotion Theme Provider of myApp"
+  layout="responsive"
+  width={700}
+  height={530}
+/>
 
 ```javascript title=Corresponding code snippet from myApp rendering StyledButton
 import React from 'react';

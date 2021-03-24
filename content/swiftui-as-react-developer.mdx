@@ -38,7 +38,13 @@ Indeed, having experience working with "Reactive" libraries/frameworks and types
 Before jumping into the core of the subject, I'd like to dedicate this first part to look at the key elements that compose a SwiftUI view. Not only knowing what **property wrappers**, **view** and, **view modifiers** are and the difference between them is essential to get started with SwiftUI, it will also be necessary for some of the things I'm going to talk about in this article.
 In the diagram below, you can see a code snippet featuring a basic SwiftUI view with a view modifier and a property wrapper. I annotated the elements to help you identify them, and also so you can come back later to it if you need a refresher 😊!
 
-![Diagram showcasing the main elements composing a SwiftUI view: View, Property Wrapper and modifier](/static/images/diagramswiftuiview.svg)
+<Image
+  src="/static/images/diagramswiftuiview.png"
+  alt="Diagram showcasing the main elements composing a SwiftUI view: View, Property Wrapper and modifier"
+  layout="responsive"
+  width={700}
+  height={367}
+/>
 
 ### View
 
@@ -271,17 +277,13 @@ We saw an example of the use of `@State` in the first part, but I want to use th
 
 When declaring a variable with a `@State` property wrapper, **we're telling SwiftUI to "watch" this variable and to "re-render" the user interface on any change**.
 
-<figure>
-  <img
-    style={{ marginBottom: '0px' }}
-    src="/static/images/diagramswiftuistatemanagement.svg"
-    alt="Diagram showcasing how a view re renders in SwiftUI following a state change"
-  />
-  <figcaption>
-    Diagram showcasing how a view "re-renders" in SwiftUI following a state
-    change. This cycle is very similar to the one we're familiar with React.
-  </figcaption>
-</figure>
+<Image
+  src="/static/images/diagramswiftuistatemanagement.png"
+  alt="Diagram showcasing how a view re renders in SwiftUI following a state change"
+  layout="responsive"
+  width={700}
+  height={299}
+/>
 
 This is very similar to using the kind of re-rendering flow we're used to with React, and when comparing a similar feature, the code between SwiftUI and React looks extremely familiar:
 

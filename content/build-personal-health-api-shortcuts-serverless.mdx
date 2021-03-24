@@ -64,7 +64,13 @@ Today, though, we can address these 2 flaws pretty easily. For one, we can repla
 
 Thus, with these elements, I came out with the following plan that can allow us to build a Apple Health API powered with a shortcut and a serverless function:
 
-![Diagram showcasing the different elements of this project described below](/static/images/shortcut-health-plan.png)
+<Image
+  src="/static/images/shortcut-health-plan.png"
+  alt="Diagram showcasing the different elements of this project described below"
+  layout="responsive"
+  width={700}
+  height={377}
+/>
 
 Here's the flow:
 
@@ -80,7 +86,13 @@ Now that we've established a plan, let's execute it 🚀!
 Shortcuts are at the core of our plan. The one we're going to build is the centerpiece that allows us to **extract our health data out of the Apple ecosystem**.
 As Apple Shortcuts can only be implemented in the Shortcuts app, and are purely visual, I'll share screenshots of each key steps, and describe them.
 
-![Screenshots of the Shortcuts app editor showcasing the different steps executed when running the shortcut described below](/static/images/shortcut.png)
+<Image
+  src="/static/images/shortcut.png"
+  alt="Screenshots of the Shortcuts app editor showcasing the different steps executed when running the shortcut described below"
+  layout="responsive"
+  width={700}
+  height={493}
+/>
 
 The first step consists of **finding health samples of a given type**. For this example, we'll get both the heart rate, and the number of steps (see the first two screenshots). You can see that the options available to you in the "Find Health Sample" action may vary depending on which metric you're trying to read, you can tune these at will, the ones showcased above are the options I wanted for my specific setup:
 
@@ -96,7 +108,13 @@ Regarding the body, we'll send an object of type JSON, with a `date` field conta
 
 For both the Heart and Steps dictionaries, we'll have to manually set the fields. Here's how these dictionaries look like on my end (you can of course adjust those based on your needs):
 
-![Screenshot of the heart rate and steps dictionaries used in the body of the HTTP POST request of our shortcut](/static/images/dictionaries.png)
+<Image
+  src="/static/images/dictionaries.png"
+  alt="Screenshot of the heart rate and steps dictionaries used in the body of the HTTP POST request of our shortcut"
+  layout="responsive"
+  width={637}
+  height={313}
+/>
 
 In the `values` field, we set the values of the sample. In `timestamps` we set the start dates of that same sample.
 
@@ -354,7 +372,13 @@ Now, the great thing with Fauna is that **we simply have to upload this schema t
 
 Once uploaded we can start querying data right away! We won't get anything back though, as our database is still empty, but we can still validate that everything works well. Below is an example query you can run, based on the schema we just uploaded:
 
-![Screenshot of FaunaDB GraphQL playground with a query to get all our entries](/static/images/fauna-graphql-query.png)
+<Image
+  src="/static/images/fauna-graphql-query.png"
+  alt="Screenshot of FaunaDB GraphQL playground with a query to get all our entries"
+  layout="responsive"
+  width={700}
+  height={390}
+/>
 
 ### Custom resolver
 
@@ -513,7 +537,13 @@ export default handler;
 
 The plan we established in the first part of this post is now fully implemented 🎉! We can now run the shortcut from our phone, and after a few seconds, we should see some data populated in our `Entry` collection on Fauna:
 
-![Screenshot of the Entry collection on my Fauna dashboard, populated with documents containing some of the health samples I sent with my shortcut](/static/images/fauna-entry-collection.png)
+<Image
+  src="/static/images/fauna-entry-collection.png"
+  alt="Screenshot of the Entry collection on my Fauna dashboard, populated with documents containing some of the health samples I sent with my shortcut"
+  layout="responsive"
+  width={700}
+  height={390}
+/>
 
 ## Next Steps
 

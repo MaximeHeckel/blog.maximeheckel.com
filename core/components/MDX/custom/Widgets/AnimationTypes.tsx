@@ -1,5 +1,4 @@
-import { useTheme } from '@theme/context/ThemeContext';
-// import CodeBlock from '@theme/components/MDX/Code/CodeBlock';
+import { HighlightedCodeText } from '@theme/components/MDX/Code/CodeBlock';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -16,7 +15,6 @@ import { useDebounce } from './utils';
 
 const AnimationTypes = () => {
   const [ref, inView] = useInView();
-  const { dark } = useTheme();
   const [tweenAnimation, setTweenAnimation] = React.useState('easeInOut');
   const [mass, setMass] = React.useState(3);
   const [damping, setDamping] = React.useState(1);
@@ -40,49 +38,43 @@ const AnimationTypes = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedVelocity]);
 
-  // const springCodeString = `<motion.div
-  //   ...
-  //   transition={{
-  //     type: 'spring',
-  //     stiffness: ${stiffness},
-  //     mass: ${mass},
-  //     damping: ${damping},
-  //   }}
-  // />
-  // `;
+  const springCodeString = `<motion.div
+    ...
+    transition={{
+      type: 'spring',
+      stiffness: ${stiffness},
+      mass: ${mass},
+      damping: ${damping},
+    }}
+  />
+  `;
 
-  // const tweenCodeString = `<motion.div
-  // ...
-  // transition={{
-  //   type: 'tween',
-  //   ease: '${tweenAnimation}',
-  //   duration: 2,
-  //   ...
-  // }}
-  // />
-  // `;
+  const tweenCodeString = `<motion.div
+  ...
+  transition={{
+    type: 'tween',
+    ease: '${tweenAnimation}',
+    duration: 2,
+    ...
+  }}
+  />
+  `;
 
-  // const inertiaCodeString = `<motion.div
-  //   ...
-  //   transition={{
-  //     type: 'inertia',
-  //     velocity: ${velocity},
-  //   }}
-  // />
+  const inertiaCodeString = `<motion.div
+    ...
+    transition={{
+      type: 'inertia',
+      velocity: ${velocity},
+    }}
+  />
 
-  // `;
+  `;
 
   return (
     <Wrapper ref={ref}>
       <TransitionGridWrapper>
         <AnimationCard>
-          <AnimationCardHeader
-            css={{
-              borderBottom: `1px solid ${dark ? '#151617' : '#dce6f3'}`,
-            }}
-          >
-            Spring
-          </AnimationCardHeader>
+          <AnimationCardHeader>Spring</AnimationCardHeader>
           <AnimationCardContent>
             <Form>
               <div style={{ display: 'grid' }}>
@@ -155,21 +147,14 @@ const AnimationTypes = () => {
               }}
             />
           </AnimationCardContent>
-          {/* <CodeBlock
+          <HighlightedCodeText
             codeString={springCodeString}
             language="javascript"
-            metastring=""
-          /> */}
+          />
         </AnimationCard>
 
         <AnimationCard>
-          <AnimationCardHeader
-            css={{
-              borderBottom: `1px solid ${dark ? '#151617' : '#dce6f3'}`,
-            }}
-          >
-            Tween
-          </AnimationCardHeader>
+          <AnimationCardHeader>Tween</AnimationCardHeader>
           <AnimationCardContent>
             <Form>
               <div style={{ display: 'grid' }}>
@@ -225,20 +210,13 @@ const AnimationTypes = () => {
               }}
             />
           </AnimationCardContent>
-          {/* <CodeBlock
+          <HighlightedCodeText
             codeString={tweenCodeString}
             language="javascript"
-            metastring=""
-          /> */}
+          />
         </AnimationCard>
         <AnimationCard>
-          <AnimationCardHeader
-            css={{
-              borderBottom: `1px solid ${dark ? '#151617' : '#dce6f3'}`,
-            }}
-          >
-            Inertia
-          </AnimationCardHeader>
+          <AnimationCardHeader>Inertia</AnimationCardHeader>
           <AnimationCardContent>
             <Form>
               <div style={{ display: 'grid' }}>
@@ -284,11 +262,10 @@ const AnimationTypes = () => {
               }}
             />
           </AnimationCardContent>
-          {/* <CodeBlock
+          <HighlightedCodeText
             codeString={inertiaCodeString}
             language="javascript"
-            metastring=""
-          /> */}
+          />
         </AnimationCard>
       </TransitionGridWrapper>
     </Wrapper>

@@ -20,7 +20,13 @@ The story behind jest runners inspired me and several days later, I wrote [**jes
 
 In a nutshell, Jest is composed of multiple packages that are each one responsible for a specific step in your test run lifecycle. Runners are the packages that focus on “running” tests. Jest provides an interface to plug your own runner on both the interface package, which is in charge of finding files, providing the UX and filtering, and the result reporting package, which basically manages the output of your tests.
 
-![Diagram representing the lifecycle of a test run with Jest including multiple Jest runners.](/static/images/1__tnK7Hzbq7cXG6r7TtIDIKA.jpeg)
+<Image
+  src="/static/images/1__tnK7Hzbq7cXG6r7TtIDIKA.jpeg"
+  alt="Diagram representing the lifecycle of a test run with Jest including multiple Jest runners."
+  layout="responsive"
+  width={700}
+  height={273}
+/>
 
 The ability to add custom runners is interesting in case you want to run other types of tests than the default ones supported by Jest. In the case of jest-runner-go, the runner will simply run `go test` against all Go tests files found by the Jest interface and parse the output in a way the Jest result reporting package can understand it and present the results in a more human readable way.
 

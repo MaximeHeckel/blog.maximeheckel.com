@@ -100,23 +100,47 @@ Now that we’re done writing our first test, it’s time to give it a try!
 To run the test we wrote above, let’s run `yarn test` . As explained in the first part, this will start our UI project, and start Cypress once the UI is available.  
 We should then see the Cypress GUI with a list of tests, one of them being the accessibility test we just wrote:
 
-![Gif showcasing the test script described in the first part](/static/images/1____lNKDG4Df1xEBhWQDlTnBg.gif)
+<Image
+  src="/static/images/1____lNKDG4Df1xEBhWQDlTnBg.gif"
+  alt="Gif showcasing the test script described in the first part"
+  layout="responsive"
+  width={700}
+  height={407}
+/>
 
 We can then click on the `accessibility.spec.js` test which will start the test run and output results.
 
 If like me you ran this test against the create-react-app basic UI you should see a result similar to the following:
 
-![Cypress output with one accessibility issues](/static/images/1__wb7XX__RaUKDRawdVBCu9xQ.png)
+<Image
+  src="/static/images/1__wb7XX__RaUKDRawdVBCu9xQ.png"
+  alt="Cypress output with one accessibility issues"
+  layout="responsive"
+  width={700}
+  height={336}
+/>
 
 Our test detected one accessibility violation. This output though doesn’t give many details sadly. To know exactly what the issue is, we’ll have to open the chrome console and click on the field labeled with `A11Y ERROR!bypass on 1 Node` to have more information:
 
-![Accessibility violation failure summary for our first cypress test run](/static/images/1__FpWJmUGcyX1t3g__OUSr__yw.png)
+<Image
+  src="/static/images/1__FpWJmUGcyX1t3g__OUSr__yw.png"
+  alt="Accessibility violation failure summary for our first cypress test run"
+  layout="responsive"
+  width={700}
+  height={479}
+/>
 
 The output from the console gives us a failure summary with the following message: “Fix any of the following: No valid skip link found Page does not have a header Page does not have a landmark region”. By clicking on the help URL provided by the test output, we can get some documentation on the issue itself, and also a path to fixing it. In this case we simply need to add the following attribute to the main div wrapping our app: `role="main"`.
 
 After the change, running cypress again should result in a passing test:
 
-![Successful cypress accessibility test run](/static/images/1__zS7P6cLOuHEeeBQpJyYXUA.png)
+<Image
+  src="/static/images/1__zS7P6cLOuHEeeBQpJyYXUA.png"
+  alt="Successful cypress accessibility test run"
+  layout="responsive"
+  width={700}
+  height={336}
+/>
 
 ## Other examples
 
@@ -133,12 +157,24 @@ const A11Y_OPTIONS = {
 
 We should see two new moderate accessibility violations:
 
-![Accessibility test run showcasing two moderate accessibility issues](/static/images/1__HQn____ccDyHh7dQU4f65BIg.png)
+<Image
+  src="/static/images/1__HQn____ccDyHh7dQU4f65BIg.png"
+  alt="Accessibility test run showcasing two moderate accessibility issues"
+  layout="responsive"
+  width={700}
+  height={479}
+/>
 
 As we can see with this example, the more rules add to our accessibility test, the more issues we’re surfacing thus the “accessibility test coverage” we get.  
 I tried quite a few combinations to see how much issues cypress could surface, and I was quite impressed by the result. For instance, we can try adding a button to the UI with some white label on a cyan background and enable the `wcag2aa` set of rules in our options. Doing this and running the test will surface color contrast issues as you can see in the screenshot below:
 
-![Accessibility test run showcasing one contrast issues on the button with cyan background and white label](/static/images/1____56yiC68TRURMinyTsquuQ.png)
+<Image
+  src="/static/images/1____56yiC68TRURMinyTsquuQ.png"
+  alt="Accessibility test run showcasing one contrast issues on the button with cyan background and white label"
+  layout="responsive"
+  width={700}
+  height={278}
+/>
 
 ## Conclusion
 

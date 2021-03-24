@@ -3,7 +3,7 @@ import NextImage from 'next/image';
 const Image = (props: any) => {
   return (
     <figure>
-      <NextImage {...props} />
+      <NextImage {...props} quality={50} />
       <figcaption>{props.alt}</figcaption>
     </figure>
   );

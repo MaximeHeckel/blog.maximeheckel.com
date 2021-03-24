@@ -71,9 +71,9 @@ export const Wrapper = styled('div')`
 
   @media (min-width: 1100px) {
     position: relative;
-    max-width: 900px;
-    width: calc(100% + 200px);
-    margin: 16px -100px;
+    max-width: 1000px;
+    width: calc(100% + 300px);
+    margin: 16px -150px;
   }
 `;
 

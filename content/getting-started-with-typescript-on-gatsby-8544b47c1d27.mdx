@@ -108,11 +108,23 @@ If you’re using VSCode, Sublime or pretty much any modern code editor, a plugi
 Now that the setup is complete, we’re ready to start writing some typescript. Running `yarn develop` at the root of your Gatsby project should work and let you view your website as before.  
 Thanks to **gatsby-plugin-tslint**, we should now be able to see all the tslint warnings and errors in the terminal. Despite these, we are still able to view our Gatsby project in our browser. This is great because it lets us migrate our existing codebase to typescript piece by piece or as we need.
 
-![Here we can see VSCode highlighting the tslint issues as well as the gatsby cli showing the warnings in the terminal](/static/images/1__tIDz__0NDFheenbNkbMG35w.png)
+<Image
+  src="/static/images/1__tIDz__0NDFheenbNkbMG35w.png"
+  alt="Here we can see VSCode highlighting the tslint issues as well as the gatsby cli showing the warnings in the terminal"
+  layout="responsive"
+  width={700}
+  height={471}
+/>
 
 We can now start transitioning our code from Javascript to Typescript. To convert a file to Typescript, simply change the extension `.jsx` to `.tsx` or `.js` to `.ts` (and do not forget to update the reference of any `.js` or `.jsx` files to `.ts` or `.tsx` in your `gatsby-node.js` and `gatsby-config.js`). Then we can write types and interfaces and fix type issues one by one. After converting our entire codebase, we might have one issue remaining: **some of the npm packages that we’re using might not come with a type definition**. For those, we’ll have to declare these types ourselves in our project.
 
-![This screenshot shows VSCode highlighting the missing type declaration of a module](/static/images/1__w8E5swN7JC2E7__ww2xSPhg.png)
+<Image
+  src="/static/images/1__w8E5swN7JC2E7__ww2xSPhg.png"
+  alt="This screenshot shows VSCode highlighting the missing type declaration of a module"
+  layout="responsive"
+  width={700}
+  height={374}
+/>
 
 ## Custom type definition for third-party packages
 

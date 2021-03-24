@@ -272,7 +272,13 @@ Let's dive in the different steps that are featured in the code snippet above:
 6. Get the `boundingBox` of the element ([see documentation for bounding box here](https://pptr.dev/#?product=Puppeteer&version=v3.1.0&show=api-elementhandleboundingbox)) which gave me the coordinates and the width/height of the target element.
 7. Pass the boundingBox fields as options of the screenshot function and take the screenshot. This eventually returns a binary buffer that can then be returned back as is, or converted to base64 string for instance.
 
-![Screenshot showcasing the export-container div highlighted in Chrome and Chrome Dev Tools](/static/images/export-container-carbon.png)
+<Image
+  src="/static/images/export-container-carbon.png"
+  alt="Screenshot showcasing the export-container div highlighted in Chrome and Chrome Dev Tools"
+  layout="responsive"
+  width={700}
+  height={430}
+/>
 
 ## Deploying on Vercel with Now
 
@@ -372,7 +378,9 @@ or here's a small playground where you can call it and get back a screenshot for
 
 If you want to deploy it on your own Vercel account, simply click the button bellow and follow the steps:
 
-<div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
+<div
+  style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}
+>
   <a
     style={{ textDecoration: 'none' }}
     href="https://vercel.com/import/project?template=https://github.com/MaximeHeckel/carbonara"

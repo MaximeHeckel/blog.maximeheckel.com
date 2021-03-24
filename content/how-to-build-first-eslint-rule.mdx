@@ -167,7 +167,13 @@ Note: You can check the resulting tree yourself [here](https://astexplorer.net/#
 
 To write our rule, we can start by highlighting `yup.validateSync()`. We see from the AST tree that this expression is a `CallExpression`:
 
-![Here we're highlighting the yup.validateSync() expression to see its AST equivalent](/static/images/ast-explorer.png)
+<Image
+  src="/static/images/ast-explorer.png"
+  alt="Here we're highlighting the yup.validateSync() expression to see its AST equivalent"
+  layout="responsive"
+  width={700}
+  height={498}
+/>
 
 We'll first need ESLint to find that specific node with the object name `yup` and a property name `validateSync` in a `CallExpression`. If found, we can check one of the parents of that node to see if `CHECK &&` is present. Hence, we can start by writing the following code:
 

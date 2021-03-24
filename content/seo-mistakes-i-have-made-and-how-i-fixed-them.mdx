@@ -41,7 +41,7 @@ Gatsby's documentation has an incredibly well-written section on [how to build a
 
 <SEOStats />
 
-<figcaption>
+<figcaption style={{ marginBottom: '32px' }}>
   Chart representing the number of impressions per day of this blog on Google
   Search from August 2019 to the October 2020 (hover to see the data)
 </figcaption>
@@ -69,7 +69,13 @@ I could have fixed this in two different ways:
 1. Disable the "Pretty URLs" option in Netlify's asset optimization settings. (see screenshot below)
 2. Add a trailing slash to all my URLs on my blog.
 
-![Image showcasing the asset optimizations options available in the Netlify project settings. Here you can see that I have the pretty URL option turned on which will add a trailing slash at the end of my URLs on this project.](/static/images/netlify-settings.png)
+<Image
+  src="/static/images/netlify-settings.png"
+  alt="Image showcasing the asset optimizations options available in the Netlify project settings. Here you can see that I have the pretty URL option turned on which will add a trailing slash at the end of my URLs on this project."
+  layout="responsive"
+  width={700}
+  height={459}
+/>
 
 As Google already referenced my blog posts with a trailing slash, I decided to go with option number 2.
 

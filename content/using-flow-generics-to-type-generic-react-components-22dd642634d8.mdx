@@ -67,7 +67,13 @@ class Resource1List extends React.Component {
 
 This is the moment when I ran into the main problem. Given the way I typed this component, running Flow against the code in the example above outputs an error:
 
-![Flow error output with the first iteration of the “Props” Flow type for ResourceList](/static/images/1__K4q47RYFJGlAz0nkpY32hw.png)
+<Image
+  src="/static/images/1__K4q47RYFJGlAz0nkpY32hw.png"
+  alt="Flow error output with the first iteration of the “Props” Flow type for ResourceList"
+  layout="responsive"
+  width={700}
+  height={448}
+/>
 
 In the Resource types we declared above ( `Resource1`, `Resource2` , …), you can see that the key of the “id” field of each Resource doesn’t match. Thus, whenever we will use this component and write an `onItemClick` function for a resource, Flow will give you an error telling us the properties of the other resources are missing.
 
@@ -96,6 +102,12 @@ type Props = Resource1Props | Resource2Props;
 
 Running Flow with this type should output the following:
 
-![Flow output with no errors thanks to the new ResourceList “Props” Flow type!](/static/images/1__tQs3TltRtn__sntDOaUxdLg.png)
+<Image
+  src="/static/images/1__tQs3TltRtn__sntDOaUxdLg.png"
+  alt="Flow output with no errors thanks to the new ResourceList “Props” Flow type!"
+  layout="responsive"
+  width={700}
+  height={245}
+/>
 
 We have now typed our generic list component properly thanks to Flow. We can see that using generics not only brings flexibility to our type, but also will help in the future when we want to scale up the usage of this component, so it can be used with even more resources.

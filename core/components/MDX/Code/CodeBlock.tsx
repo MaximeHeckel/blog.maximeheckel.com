@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Highlight, { Prism, defaultProps } from 'prism-react-renderer';
 import React from 'react';
 import { CopyToClipboardButton } from '../../Button';
-import { CodeBlockProps } from './types';
+import { CodeBlockProps, HighlightedCodeTextProps } from './types';
 import { calculateLinesToHighlight, hasTitle } from './utils';
 
 // @ts-ignore
@@ -13,10 +13,66 @@ import { calculateLinesToHighlight, hasTitle } from './utils';
  */
 require('prismjs/components/prism-swift');
 
+export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
+  const { title, codeString, language, highlightLine } = props;
+
+  return (
+    <Highlight
+      {...defaultProps}
+      theme={{ plain: {}, styles: [] }}
+      code={codeString}
+      language={language}
+    >
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <>
+          <Pre title={title} className={className} style={style}>
+            {tokens.map((line, index) => {
+              const { className: lineClassName } = getLineProps({
+                className:
+                  highlightLine && highlightLine(index) ? 'highlight-line' : '',
+                key: index,
+                line,
+              });
+
+              return (
+                <Line
+                  data-testid={
+                    highlightLine && highlightLine(index)
+                      ? 'highlight-line'
+                      : 'line'
+                  }
+                  key={index}
+                  className={lineClassName}
+                >
+                  <LineNo data-testid="number-line">{index + 1}</LineNo>
+                  <LineContent>
+                    {line.map((token, key) => {
+                      return (
+                        <span
+                          data-testid="content-line"
+                          key={key}
+                          {...getTokenProps({
+                            key,
+                            token,
+                          })}
+                        />
+                      );
+                    })}
+                  </LineContent>
+                </Line>
+              );
+            })}
+          </Pre>
+        </>
+      )}
+    </Highlight>
+  );
+};
+
 const CodeBlock: React.FC<CodeBlockProps> = (props) => {
   const { codeString, language, metastring } = props;
 
-  const shouldHighlightLine = calculateLinesToHighlight(metastring);
+  const highlightLineFn = calculateLinesToHighlight(metastring);
   const title = hasTitle(metastring);
 
   return (
@@ -29,52 +85,12 @@ const CodeBlock: React.FC<CodeBlockProps> = (props) => {
           <CopyToClipboardButton title={title} text={codeString} />
         </CodeSnippetHeader>
       ) : null}
-      <Highlight
-        {...defaultProps}
-        theme={{ plain: {}, styles: [] }}
-        code={codeString}
+      <HighlightedCodeText
+        title={title}
+        codeString={codeString}
         language={language}
-      >
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <>
-            <Pre title={title} className={className} style={style}>
-              {tokens.map((line, index) => {
-                const { className: lineClassName } = getLineProps({
-                  className: shouldHighlightLine(index) ? 'highlight-line' : '',
-                  key: index,
-                  line,
-                });
-
-                return (
-                  <Line
-                    data-testid={
-                      shouldHighlightLine(index) ? 'highlight-line' : 'line'
-                    }
-                    key={index}
-                    className={lineClassName}
-                  >
-                    <LineNo data-testid="number-line">{index + 1}</LineNo>
-                    <LineContent>
-                      {line.map((token, key) => {
-                        return (
-                          <span
-                            data-testid="content-line"
-                            key={key}
-                            {...getTokenProps({
-                              key,
-                              token,
-                            })}
-                          />
-                        );
-                      })}
-                    </LineContent>
-                  </Line>
-                );
-              })}
-            </Pre>
-          </>
-        )}
-      </Highlight>
+        highlightLine={highlightLineFn}
+      />
     </CodeSnippetWrapper>
   );
 };
