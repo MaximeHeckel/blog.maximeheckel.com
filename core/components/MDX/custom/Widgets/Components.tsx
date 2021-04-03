@@ -50,6 +50,7 @@ export const AnimationCardHeader = styled('div')`
   padding: 15px 14px;
   width: 100%;
   text-align: center;
+  font-size: 16px;
   font-weight: 600;
 `;
 

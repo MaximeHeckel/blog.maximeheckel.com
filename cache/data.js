@@ -1,5 +1,29 @@
 export const posts = [
   {
+    title: 'Advanced animation patterns with Framer Motion',
+    subtitle:
+      "A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns",
+    date: '2021-04-15T08:00:00.000Z',
+    updated: '2021-04-15T08:00:00.000Z',
+    categories: [],
+    keywords: [
+      'framer motion',
+      'animation',
+      'frontend',
+      'ui',
+      'ux',
+      'design',
+      'transition',
+      'react',
+      'layout',
+    ],
+    slug: 'advanced-animation-patterns-with-framer-motion',
+    type: 'blogPost',
+    colorFeatured: 'linear-gradient(104.01deg, #9BEBEB 5.51%, #0FA6E9 98.93%)',
+    fontFeatured: '#000000',
+    featured: true,
+  },
+  {
     title: 'Scrollspy demystified',
     subtitle:
       'A deep dive into how the inner workings of a Scrollspy, Intersection Observers, and how to integrate it with Markdown-based static sites without the need of third party libraries.',

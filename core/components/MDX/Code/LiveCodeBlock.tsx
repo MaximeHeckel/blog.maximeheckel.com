@@ -4,11 +4,15 @@ import {
   useAnimation,
   useMotionValue,
   useTransform,
+  AnimatePresence,
+  AnimateSharedLayout,
 } from 'framer-motion';
 import { PrismTheme } from 'prism-react-renderer';
 import React from 'react';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';
 import Button from '@theme/components/Button';
+import { LinkButton } from '@theme/components/Button/LinkButton';
+import Pill from '@theme/components/Pill';
 import { CodeBlockProps, CodeSnippetWrapperProps } from './types';
 
 const LiveCodeBlock = (props: CodeBlockProps) => {
@@ -17,11 +21,15 @@ const LiveCodeBlock = (props: CodeBlockProps) => {
 
   const scope = {
     motion,
+    AnimatePresence,
+    AnimateSharedLayout,
     useAnimation,
     useMotionValue,
     useTransform,
     styled: injectedStyled,
     Button,
+    LinkButton,
+    Pill,
     React,
   };
 
