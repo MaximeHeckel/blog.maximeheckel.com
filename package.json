@@ -34,7 +34,7 @@
     "gatsby-plugin-feed": "^2.5.7",
     "gatsby-plugin-lunr": "^1.5.2",
     "gatsby-plugin-manifest": "2.3.3",
-    "gatsby-plugin-mdx": "^1.2.6",
+    "gatsby-plugin-mdx": "^2.2.0",
     "gatsby-plugin-offline": "^2.2.9",
     "gatsby-plugin-printer": "1.0.8",
     "gatsby-plugin-react-helmet": "^3.1.3",
