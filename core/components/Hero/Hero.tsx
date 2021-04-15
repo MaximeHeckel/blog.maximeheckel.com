@@ -32,6 +32,7 @@ const HeroImg: React.FC<HeroImgProps> = (props) => (
       src={props.src}
       alt="cover"
       layout="fill"
+      objectFit="cover"
       priority
     />
   </div>
