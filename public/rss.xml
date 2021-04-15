@@ -9,16 +9,16 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Thu, 15 Apr 2021 02:31:08 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 15 Apr 2021 03:50:37 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
         <item>
             <title><![CDATA[Advanced animation patterns with Framer Motion]]></title>
-            <description><![CDATA[A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns]]></description>
+            <description><![CDATA[A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns through curated examples and interactive playgrounds.]]></description>
             <link>https://blog.maximeheckel.com/posts/advanced-animation-patterns-with-framer-motion</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/advanced-animation-patterns-with-framer-motion</guid>
             <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Thu, 15 Apr 2021 08:00:00 GMT</pubDate>
+            <pubDate>Tue, 20 Apr 2021 08:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Scrollspy demystified]]></title>

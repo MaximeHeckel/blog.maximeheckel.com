@@ -35,7 +35,8 @@ const SearchBar = styled('div')<{ dark?: boolean }>`
   background: ${(p) => (p.dark ? '#0C0F12' : 'rgba(0, 0, 0, 0.05)')};
   border-radius: 6px;
   height: 28px;
-  width: 250px;
+  min-width: 150px;
+  width: 50%;
 `;
 
 const TrafficLights = styled('div')`
@@ -71,7 +72,7 @@ const ScrollSpyWidget = () => {
   const [offset, setOffset] = React.useState(50);
   const [height, setHeight] = React.useState(200);
 
-  const [index, , intersectionRatios] = useScrollSpy(elements, {
+  const [index] = useScrollSpy(elements, {
     root: document.querySelector('#widgetRoot')!,
     offset,
   });
@@ -194,14 +195,6 @@ const ScrollSpyWidget = () => {
                   <div>
                     This section {index === idIndex ? 'is' : 'is not'}{' '}
                     intersecting
-                  </div>
-                  <div>
-                    Intersection Ratio:{' '}
-                    <HighlightedValue>
-                      {intersectionRatios && intersectionRatios[idIndex]
-                        ? intersectionRatios[idIndex].toFixed(3)
-                        : '0.000'}
-                    </HighlightedValue>
                   </div>
                 </Section>
               </div>

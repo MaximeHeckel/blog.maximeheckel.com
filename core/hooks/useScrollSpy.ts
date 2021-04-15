@@ -31,15 +31,11 @@ const useScrollSpy = (
     offset?: number;
     root?: Element;
   }
-): [number, Element[], number[]] => {
+): [number, Element[]] => {
   const [
     currentActiveSectionIndex,
     setCurrentActiveSectionIndex,
   ] = React.useState(-1);
-  const [
-    currentIntersectionRatios,
-    setCurrentIntersectionRatios,
-  ] = React.useState<number[]>([]);
 
   const rootMargin = `-${(options && options.offset) || 0}px 0px 0px 0px`;
 
@@ -63,12 +59,6 @@ const useScrollSpy = (
           return entry.intersectionRatio > 0;
         });
 
-        const intersectionRatios = entries.map((entry) => {
-          return entry.intersectionRatio;
-        });
-
-        // set this index to the state
-        setCurrentIntersectionRatios(intersectionRatios);
         setCurrentActiveSectionIndex(indexOfSectionToHighlight);
       },
       {
@@ -88,11 +78,7 @@ const useScrollSpy = (
     return () => currentObserver.disconnect();
   }, [elements, options, rootMargin]);
 
-  return [
-    currentActiveSectionIndex,
-    scrolledSections,
-    currentIntersectionRatios,
-  ];
+  return [currentActiveSectionIndex, scrolledSections];
 };
 
 export default useScrollSpy;

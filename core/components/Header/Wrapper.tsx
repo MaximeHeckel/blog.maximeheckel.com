@@ -72,7 +72,7 @@ interface StyledHeaderWrapperProps {
 
 const HeaderWrapper = styled(motion.div)<StyledHeaderWrapperProps>`
   @media (max-width: 700px) {
-    height: 80px !important;
+    height: 70px !important;
     box-shadow: ${(props) =>
       props.sticky ? 'var(--maximeheckel-shadow-1)' : 'none'};
   }

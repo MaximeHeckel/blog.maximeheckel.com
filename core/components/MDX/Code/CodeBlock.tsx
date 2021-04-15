@@ -176,6 +176,7 @@ const CodeSnippetWrapper = styled('div')`
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
+    border-radius: 0px;
   }
   width: 100%;
   border-radius: var(--border-radius-2);

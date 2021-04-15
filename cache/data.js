@@ -2,9 +2,9 @@ export const posts = [
   {
     title: 'Advanced animation patterns with Framer Motion',
     subtitle:
-      "A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns",
-    date: '2021-04-15T08:00:00.000Z',
-    updated: '2021-04-15T08:00:00.000Z',
+      "A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns through curated examples and interactive playgrounds.",
+    date: '2021-04-20T08:00:00.000Z',
+    updated: '2021-04-20T08:00:00.000Z',
     categories: [],
     keywords: [
       'framer motion',

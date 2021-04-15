@@ -132,6 +132,7 @@ const StyledPreviewWrapper = styled('div')<{
   align-items: center;
   justify-content: center;
   background-color: var(--maximeheckel-colors-emphasis);
+  overflow: hidden;
   ${(p) =>
     p.withEditor
       ? `
