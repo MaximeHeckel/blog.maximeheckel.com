@@ -522,7 +522,7 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'rebuilding-redux-with-hooks-and-context-e16b59faf51c',
-    cover: '/static/images/ivan-bandura-afc6MW6DK1U-unsplash.jpg',
+    cover: '/static/images/kayle-kaupanger-rN9dNkEYYrg-unsplash.jpg',
     type: 'blogPost',
   },
   {
@@ -570,7 +570,6 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'how-i-got-started-with-kubernetes-on-gke-5f829eca98bc',
-    cover: '/static/images/frank-eiffert-G9gHtroxnaI-unsplash.jpg',
     type: 'blogPost',
   },
   {

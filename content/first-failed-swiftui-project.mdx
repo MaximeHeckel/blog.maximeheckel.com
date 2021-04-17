@@ -170,7 +170,7 @@ In my case, I wanted this TabView component to do the following:
 
 The entire app was architected around these few lines and the idea of pages, and it worked... **until iOS 14.2** 🤦‍♂️. If you copy the code above and try it out today, you'll see the `onAppear` **being called multiple times instead of just once!** I reported this issue to the [SwiftUI community on Reddit](https://www.reddit.com/r/swift/comments/ju55rm/tabview_pagestyletabview_make_views_appear/) and it sadly looks like every iOS dev is kind of accustomed to this kind of things happening. This is not very reassuring I know..., and many developers share this frustration:
 
-> Upgrading OS, even minor, break your app? That's insane. Clicking a button doesn't work because my user upgrade iOS 13 to iOS 14. My app also crash because I use opacity of 0 when upgraded to BigSur. -- [Philip Young](https://twitter.com/philipyoungg/status/1345464323750076416), creator of [Session](stayinsession.com)
+> Upgrading OS, even minor, break your app? That's insane. Clicking a button doesn't work because my user upgrade iOS 13 to iOS 14. My app also crash because I use opacity of 0 when upgraded to BigSur. -- [Philip Young](https://twitter.com/philipyoungg/status/1345464323750076416), creator of [Session](https://stayinsession.com)
 
 As someone working primarily on the web, I'm not used **at all** to this kind of issues. This didn't even cross my mind that it could be a possibility when starting this project.
 
