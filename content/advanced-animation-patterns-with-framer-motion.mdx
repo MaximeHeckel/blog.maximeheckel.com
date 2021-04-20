@@ -1,0 +1,834 @@
+---
+title: 'Advanced animation patterns with Framer Motion'
+subtitle: A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns through curated examples and interactive playgrounds.
+date: '2021-04-20T08:00:00.000Z'
+updated: '2021-04-20T08:00:00.000Z'
+categories: []
+keywords:
+  [
+    'framer motion',
+    'animation',
+    'frontend',
+    'ui',
+    'ux',
+    'design',
+    'transition',
+    'react',
+    'layout',
+  ]
+slug: advanced-animation-patterns-with-framer-motion
+type: 'blogPost'
+colorFeatured: 'linear-gradient(104.01deg, #9BEBEB 5.51%, #0FA6E9 98.93%)'
+fontFeatured: '#000000'
+featured: true
+---
+
+import FramerMotionPropagation from '../src/components/Widgets/FramerMotionPropagation';
+import FramerMotionAnimatePresence from '../src/components/Widgets/FramerMotionAnimatePresence';
+import FramerMotionAnimationLayout from '../src/components/Widgets/FramerMotionAnimationLayout';
+
+I got **✨a lot✨** of positive feedback from my [Guide to creating animations that spark joy with Framer Motion](/posts/guide-animations-spark-joy-framer-motion/), and it's undeniable that this library has piqued many developers' interests in the world of web-based animations.
+
+While I introduced in this previous post many of the foundational pieces that compose an animation, and how one can orchestrate multiple transitions very easily with Framer Motion, **I did not touch upon many of the more advanced features that this library provides**.
+
+Ever wondered how to propagate animations throughout several components or to orchestrate complex layout transitions? Well, this article will tell you all about these advanced patterns and show you some of the great things one can accomplish with Framer Motion!
+
+<Callout variant="info">
+
+Like the [original blog post](/posts/guide-animations-spark-joy-framer-motion/), this article contains a series of interactive widgets and playgrounds with preset examples to allow you to apply the Framer Motion concepts we're about to see **without the need to set up anything**!
+
+Let me know what you think about these examples, and whether they were helpful. Your feedback is super important and will help me do better for my future blog posts 😄!
+
+</Callout>
+
+## Propagation
+
+One of the first advanced patterns I got to encounter when I tried to add some micro-interactions with Framer Motion on my projects is **propagation**. I quickly learned that it's possible to propagate **changes of variants** from a **parent motion component to any child motion component**. However, this got me confused at the beginning because it broke some of the mental models I originally had when it comes to defining animations.
+
+Remember in [my previous blog post](/posts/guide-animations-spark-joy-framer-motion/) when we learned that every Framer Motion Animation needed 3 properties (props) `initial`, `animate`, `transition`, to define a transition/animation? Well, for this pattern **that's not entirely true**.
+
+Framer Motion allows variants to "flow down" through **every motion child component** as long as these motion components do not have an `animate` prop defined. **Only the parent motion component**, in this case, **defines the** `animate` **prop**. The children themselves only define the behavior they intent to have for those variants.
+
+A great example where I used propagation on this blog is the "Featured" section on the home page of this blog. When you hover it, the individual cards "glow" and this effect is made possible by this pattern. To explain what really is happening under the hood, I built this little widget below where I reproduced this effect:
+
+<FramerMotionPropagation />
+
+You can see that hovering (or tapping if you're on mobile) the card or even the label above it triggers the glow effect. _What kind of sorcery is this?!_
+By clicking on the "perspective" button, you can see what happens under the hood:
+
+1. There's an "invisible" motion layer covering the card and the label. This layer holds the `whileHover` prop which sets the variant "hover"
+2. The "glow" itself is a motion component as well, however, the only thing it defines is its own `variants` object with a `hover` key.
+
+Thus when hovering this invisible layer, we toggle the "hover" variant and any child motion component having this variant define in their `variants` prop will detect this change and toggle the corresponding behavior.
+
+```js {2-9,13,17} title=Example of propagation pattern with Framer Motion
+const CardWithGlow = () => {
+  const glowVariants = {
+    initial: {
+      opacity: 0
+    },
+    hover: {
+      opacity: 1
+    }
+  }
+
+  return (
+    // Parent sets the initial and whileHover variant keys
+    <motion.div initial="initial" whileHover="hover">
+      {/* child motion component sets variants that match the keys set by the parent to animate accordingly */}
+      <motion.div variants={glowVariants} className="glow"/>
+      <Card>
+        <div>Some text on the card/div>
+      </Card>
+    </motion.div>
+  )
+}
+```
+
+<Callout variant="info">
+
+You can check out the full code of a similar example by navigating to the [Card with glow effect on hover snippet](/snippets/2020-12-26-cardwithgloweffectonhover/) page.
+
+</Callout>
+
+Now let's apply what we learned about the propagation mechanism of Framer Motion! In the playground below you'll find a motion component with a "hover" animation. When hovering it, a little icon will show up on the right end side of that component. You can try to:
+
+- **Modify the variant key** used in the motion component wrapping the button and see that now that it defers from what's being set by the parent component, the animation does not trigger and the button is not visible on hover.
+- **Set an**`animate` **prop on the motion component that wraps the button** and see that it now animates on its own and does not consume the variant set by the parent on hover.
+
+```js live
+const ListItem = styled(motion.li)`
+  width: 100%;
+  min-width: 300px;
+  background: var(--maximeheckel-colors-foreground);
+  box-shadow: var(--maximeheckel-shadow-1);
+  border-radius: var(--border-radius-1);
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin-bottom: 0px;
+`;
+
+const InfoBox = styled('div')`
+  width: 50%;
+`;
+
+const ARTICLES = [
+  {
+    category: 'swift',
+    title: 'Intro to SwiftUI',
+    description: 'An article with some SwitftUI basics',
+    id: 1,
+  },
+];
+
+const Item = (props) => {
+  const { article } = props;
+
+  const readButtonVariants = {
+    hover: {
+      opacity: 1,
+    },
+    // Uncomment the variant below and comment the variant above and notice the button will not show up on hover
+    /*  hoverme: {
+        opacity: 1,
+      },
+    */
+    initial: {
+      opacity: 0,
+    },
+    magic: {
+      rotate: 360,
+      opacity: 1,
+    },
+  };
+
+  return (
+    <ListItem layout initial="initial" whileHover="hover">
+      <InfoBox>{article.title}</InfoBox>
+      <motion.div
+        // Uncomment me and notice the button now rotates and is always visible
+        // animate="magic"
+        variants={readButtonVariants}
+        transition={{ duration: 0.25 }}
+      >
+        <LinkButton
+          aria-label="read article"
+          title="Read article"
+          onClick={(e) => e.preventDefault()}
+        >
+          &#8594;
+        </LinkButton>
+      </motion.div>
+    </ListItem>
+  );
+};
+
+render(<Item article={ARTICLES[0]} />);
+```
+
+## Animate components when they are unmounting
+
+So far, we've only seen examples of animation being triggered either on mount or following some specific events like hover or tap. But **what about triggering an animation right before a component unmounts?** Some sort of "exit" transition?
+
+Well, in this second part, we'll take a look at the Framer Motion feature that addresses this use case and also the one that impressed me the most: `AnimatePresence`!
+
+I tried to implement some kind of exit animations before learning about `AnimatePresence`, but it was hacky and always required extra code to set a proper "transitional" state (like `isClosing`, `isOpening`) and toggle the corresponding animation of that state. As you can imagine, it was very error-prone.
+
+```js title=A very hacky way to implement an exist animation without AnimatePresence
+/**
+This is mostly pseudo code, do not do this!
+It's not good practice
+**/
+
+const MagicComponent = () => {
+  const [hidden, setHidden] = React.useState(false);
+  const [hidding, setHidding] = React.useState(false);
+
+  const variants = {
+    animate: (hidding) => ({
+      opacity: hidding ? 0 : 1,
+    })
+    initial: {
+      opacity: 1
+    },
+  }
+
+  const hideButton = () => {
+    setHidding(true);
+    setTimeout(() => setHidden(true), 1500);
+  }
+
+  return (
+    <motion.button
+      initial="initial"
+      animate="animate"
+      variants={variants}
+      onClick={hideButton}
+      custom={hidding}
+    >
+      Click to hide
+    </motion.button>
+  )
+}
+```
+
+On the other hand, `AnimatePresence` is extremely well thought of and easy to use. By simply wrapping any motion component in an `AnimatePresence` component, you'll have the ability to set an `exit` prop!
+
+```js {5,15} title=Example of use case for AnimatePresence
+const MagicComponent = () => {
+  const [hidden, setHidden] = React.useState(false);
+
+  return (
+    <AnimatePresence>
+      {!hidden && (
+        <motion.button
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setHidden(true)}
+        >
+          Click to hide
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
+};
+```
+
+In the interactive widget below, I showcase 2 versions of the same component:
+
+- the one on the left is not wrapped in `AnimatePresence`
+- the second one, however, is wrapped
+
+That's the only difference code-wise. But as you can see the difference is pretty striking!
+
+<FramerMotionAnimatePresence />
+
+<br />
+<br />
+
+<Callout variant="danger">
+
+👉 **Something I discovered while writing this article**
+
+To set the proper direction of the transition, left or right, depending on which button is pressed, I set a state while the user hovers the button which will change the direction of the transition accordingly (not the best implementation I know but it works 😄)
+Despite this working perfectly on the example on the right, the one that uses `AnimatePresence`, you may have noticed that on the example on the left, the transition kicks in just by hovering one of the buttons.
+
+It seems that `AnimatePresence` keeps track of which motion component is rendered at a given time and throughout state changes.
+
+I still need to investigate the inner workings of Framer Motion for that, but, despite it being a surprise to me, this behavior makes sense given the use case.
+
+</Callout>
+
+We now have a new awesome tool to use to make our transitions even better! It's time it a try in the playground below:
+
+- Try to remove the `AnimatePresence` component. Notice how this makes Framer Motion skip the animation specified in the `exit` prop.
+- Try to modify the animation defined in the `exit` prop. For example, you could make the whole component scale from 1 to 0 while it exit. (I already added the proper animation objects commented in the code below 😄)
+
+```js live
+const List = styled(motion.ul)`
+  padding: 16px;
+  width: 350px;
+  background: var(--maximeheckel-colors-background);
+  box-shadow: var(--maximeheckel-shadow-2);
+  border-radius: var(--border-radius-1);
+  display: grid;
+  gap: 16px;
+`;
+
+const ListItem = styled(motion.li)`
+  background: var(--maximeheckel-colors-foreground);
+  box-shadow: var(--maximeheckel-shadow-1);
+  border-radius: var(--border-radius-1);
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin-bottom: 0px;
+`;
+
+const InfoBox = styled('div')`
+  width: 50%;
+`;
+
+const FilterWrapper = styled('div')`
+  margin-bottom: 16px;
+  input {
+    margin-right: 4px;
+  }
+  label {
+    margin-right: 4px;
+  }
+`;
+
+const ARTICLES = [
+  {
+    category: 'swift',
+    title: 'Intro to SwiftUI',
+    description: 'An article with some SwitftUI basics',
+    id: 1,
+  },
+  {
+    category: 'js',
+    title: 'Awesome React stuff',
+    description: 'My best React tips!',
+    id: 2,
+  },
+  {
+    category: 'js',
+    title: 'Styled components magic',
+    description: 'Get to know ways to use styled components',
+    id: 3,
+  },
+  {
+    category: 'ts',
+    title: 'A guide to Typescript',
+    description: 'Type your React components!',
+    id: 4,
+  },
+];
+
+const categoryToVariant = {
+  js: 'warning',
+  ts: 'info',
+  swift: 'danger',
+};
+
+const Item = (props) => {
+  const { article, showCategory } = props;
+
+  const readButtonVariants = {
+    hover: {
+      opacity: 1,
+    },
+    initial: {
+      opacity: 0,
+    },
+  };
+
+  return (
+    <ListItem initial="initial" whileHover="hover">
+      <InfoBox>{article.title}</InfoBox>
+      {/* Try to remove/comment the AnimatePresence component below! */}
+      <AnimatePresence>
+        {showCategory && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            // initial={{ opacity: 0, scale: 1}}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            // exit={{ opacity: 0, scale: 0, }}
+          >
+            <Pill variant={categoryToVariant[article.category]}>
+              {article.category}
+            </Pill>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <motion.div variants={readButtonVariants} transition={{ duration: 0.25 }}>
+        <LinkButton
+          aria-label="read article"
+          title="Read article"
+          onClick={(e) => e.preventDefault()}
+        >
+          &#8594;
+        </LinkButton>
+      </motion.div>
+    </ListItem>
+  );
+};
+
+const Component = () => {
+  const [showCategory, setShowCategory] = React.useState(false);
+
+  return (
+    <>
+      <FilterWrapper>
+        <div>
+          <input
+            type="checkbox"
+            id="showCategory"
+            checked={showCategory}
+            onChange={() => setShowCategory((prev) => !prev)}
+          />
+          <label htmlFor="showCategory">Show Category</label>
+        </div>
+      </FilterWrapper>
+      <List>
+        {ARTICLES.map((article) => (
+          <Item
+            key={article.id}
+            article={article}
+            showCategory={showCategory}
+          />
+        ))}
+      </List>
+    </>
+  );
+};
+
+render(<Component />);
+```
+
+## Layout animations
+
+We now know how to:
+
+- propagate animations throughout a set of motion components
+- add an `exit` transition to a component so it can unmount gracefully
+
+Those advanced patterns should give us the ability to craft some pretty slick transitions right? Well, wait until you hear more about how Framer Motion can handle **layout animations**!
+
+### What is a "layout animation"?
+
+A layout animation is any animation touching layout related properties such as:
+
+- position properties
+- flex or grid properties
+- width or height
+- sorting elements
+
+But to give you a little bit more of an idea of what I'm talking about here, let's try to take a look at the playground below that showcases 2 versions of the same component:
+
+- the first one animates `justify-content` property between `flex-start` and `flex-end` by simply using the patterns we only know so far: setting this property in the `animation` prop
+- the second one uses a new prop: `layout`. It's here set to true to tell Framer Motion that a "layout related property", and thus by extension the layout of the component, will change between rerenders. The properties themselves are simply defined in CSS as any developer would do normally when not using Framer Motion.
+
+```js live
+const SwitchWrapper1 = styled(motion.div)`
+  width: 50px;
+  height: 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+`;
+
+const SwitchHandle1 = styled(motion.div)`
+  background: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+`;
+
+// Attempt at a Switch motion component without layout animation: It simply does not work
+const Switch1 = () => {
+  const [active, setActive] = React.useState(false);
+
+  const switchVariants = {
+    initial: {
+      backgroundColor: '#111',
+    },
+    animate: (active) => ({
+      backgroundColor: active ? '#f90566' : '#111',
+      justifyContent: active ? 'flex-end' : 'flex-start',
+    }),
+  };
+
+  return (
+    <SwitchWrapper1
+      initial="initial"
+      animate="animate"
+      onClick={() => setActive((prev) => !prev)}
+      variants={switchVariants}
+      custom={active}
+    >
+      <SwitchHandle1 />
+    </SwitchWrapper1>
+  );
+};
+
+const SwitchWrapper2 = styled('div')`
+  width: 50px;
+  height: 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  background: #111;
+  justify-content: flex-start;
+
+  &[data-isactive='true'] {
+    background: #f90566;
+    justify-content: flex-end;
+  }
+`;
+
+const SwitchHandle2 = styled(motion.div)`
+  background: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+`;
+
+// Simpler version of the Switch motion component using layout animation
+const Switch2 = () => {
+  const [active, setActive] = React.useState(false);
+
+  return (
+    <SwitchWrapper2
+      data-isactive={active}
+      onClick={() => setActive((prev) => !prev)}
+    >
+      <SwitchHandle2 layout />
+    </SwitchWrapper2>
+  );
+};
+
+const Component = () => (
+  <div style={{ maxWidth: '300px' }}>
+    Switch 1: Attempt at animating justify-content in a Framer Motion animation
+    object.
+    <Switch1 />
+    <br />
+    Switch 2: Animating justify-content using layout animation and the layout prop.
+    <Switch2 />
+  </div>
+);
+
+render(<Component />);
+```
+
+We can observe multiple things here:
+
+1. The first example does not work, it looks here that Framer Motion can't transition between `justify-content` properties the same way you'd transition an opacity from 0 to 1 gracefully.
+2. The second component however transitions as expected between the `flex-start` and `flex-end` property. By setting `layout` to true in the motion component, Framer Motion can transition the component's `justify-content` property smoothly.
+3. Another advantage of the second component: it does not have as much of a "hard dependency" with Framer Motion as the first one. We could simply replace the `motion.div` with a simple `div` and the component itself would still work
+
+<Callout variant="info">
+
+I plan on revisiting some of the animations implemented on this blog and maybe convert them to proper `layout` animations to simplify the code. I'm pretty sure my `Header` and `Search` component could benefit from it since their animations are centered around layout/height changes.
+
+</Callout>
+
+### Shared Layout Animation
+
+So we now know what layout animations are and how to leverage those for some specific use cases. However, if we try some complex examples like nesting several of those layout animations, you will notice some _ weird behavior_. Those can end up out of sync make elements overlap during a transition and that's not a desirable output. Thankfully the `AnimateSharedLayout` component is here to save the day ✨!
+
+But first, what do I mean by "weird behavior" exactly? Let's take a look at the little example below to see what's happening when `AnimateSharedLayout` is absent and present:
+
+<FramerMotionAnimationLayout />
+
+By clicking on the `+` button you will make items appear on the card. The card's height will adjust based on the element gracefully thanks to the `layout` prop that is set in both the card and items components. However, you may notice that:
+
+- when not using `AnimateSharedLayout`, **the item appears AND slides down** as the layout animation of the card is still happening
+- but when using `AnimateSharedLayout`, **the item appears already in its final position**, despite the layout animation of the card still being in progress
+
+This change is very subtle but it makes our animations look so much better! The only difference between those 2 transitions in the example above is the use of `AnimateSharedLayout` and we're lucky because just like `AnimatePresence` it's very easy to use:
+
+```js {8,26} title=Example showcasing how simple it is to use AnimateSharedLayout
+const MagicWidgetComponent = () => {
+  return (
+    /*
+     The only thing to do when wanting to "share" a layout animation
+     is to wrap the desired motion components in <AnimateSharedLayout>
+     component! That's it!
+    */
+    <AnimateSharedLayout>
+      <CardWrapper layout initial={{ borderRadius: 25 }}>
+        <motion.p layout>
+          You have {items.length} {items.length === 1 ? 'pet' : 'pets'}
+        </motion.p>
+        <Grid as="ul" columns="repeat(auto-fill, minmax(50px, 1fr))" gap="8px">
+          {items.map((item) => (
+            <Circle
+              key={item.id}
+              layout
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              {item.photo}
+            </Circle>
+          ))}
+        </Grid>
+      </CardWrapper>
+    </AnimateSharedLayout>
+  );
+};
+```
+
+That's right! The only thing to do is to wrap the set of layout animations we want to keep in sync in a `AnimateSharedLayout` component. That's it!
+
+It's now time to give a try at what we just learned! This last example compiles all the previous playgrounds together to create this list component with filters. This component contains:
+
+- Some layout animations to transition the items on the lists when their sorting changes.
+- `AnimateSharedLayout` to gracefully resize the list when an item expands on hover revealing more details.
+
+You can try to:
+
+- comment out `AnimateSharedLayout` and notice the subtle differences when a layout animation is triggered.
+- try to add the `layout` prop on the `motion.div` component surrounding the title and see it gracefully adjusting when the item's height changes after clicking on it.
+
+```js live
+const List = styled(motion.ul)`
+  padding: 16px;
+  width: 350px;
+  background: var(--maximeheckel-colors-background);
+  box-shadow: var(--maximeheckel-shadow-2);
+  border-radius: var(--border-radius-1);
+  display: grid;
+  gap: 16px;
+`;
+
+const ListItem = styled(motion.li)`
+  background: var(--maximeheckel-colors-foreground);
+  box-shadow: var(--maximeheckel-shadow-1);
+  border-radius: var(--border-radius-1);
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin-bottom: 0px;
+`;
+
+const InfoBox = styled('div')`
+  width: 50%;
+`;
+
+const FilterWrapper = styled('div')`
+  margin-bottom: 16px;
+  input {
+    margin-right: 4px;
+  }
+  label {
+    margin-right: 4px;
+  }
+`;
+
+const ARTICLES = [
+  {
+    category: 'swift',
+    title: 'Intro to SwiftUI',
+    description: 'An article with some SwitftUI basics',
+    id: 1,
+  },
+  {
+    category: 'js',
+    title: 'Awesome React stuff',
+    description: 'My best React tips!',
+    id: 2,
+  },
+  {
+    category: 'js',
+    title: 'Styled components magic',
+    description: 'Get to know ways to use styled components',
+    id: 3,
+  },
+  {
+    category: 'ts',
+    title: 'A guide to Typescript',
+    description: 'Type your React components!',
+    id: 4,
+  },
+];
+
+const categoryToVariant = {
+  js: 'warning',
+  ts: 'info',
+  swift: 'danger',
+};
+
+const Item = (props) => {
+  const { article, showCategory } = props;
+
+  const [expand, setExpand] = React.useState(false);
+
+  const toggleExpand = () => setExpand((prev) => !prev);
+
+  const readButtonVariants = {
+    hover: {
+      opacity: 1,
+    },
+    initial: {
+      opacity: 0,
+    },
+  };
+
+  return (
+    <ListItem
+      layout
+      initial="initial"
+      whileHover="hover"
+      onClick={toggleExpand}
+    >
+      <InfoBox>
+        {/* 
+          Try to add the "layout" prop to this motion component
+          and notice how it now gracefully moves as the list 
+          item expands
+        */}
+        <motion.div>{article.title}</motion.div>
+        <AnimatePresence>
+          {expand && (
+            <motion.div
+              style={{ fontSize: '12px' }}
+              layout
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {article.description}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </InfoBox>
+      <AnimatePresence>
+        {showCategory && (
+          <motion.div
+            layout
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <Pill variant={categoryToVariant[article.category]}>
+              {article.category}
+            </Pill>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <motion.div variants={readButtonVariants} transition={{ duration: 0.25 }}>
+        <LinkButton
+          aria-label="read article"
+          title="Read article"
+          onClick={(e) => e.preventDefault()}
+        >
+          &#8594;
+        </LinkButton>
+      </motion.div>
+    </ListItem>
+  );
+};
+
+const Component = () => {
+  const [showCategory, setShowCategory] = React.useState(false);
+  const [sortBy, setSortBy] = React.useState('title');
+
+  const onSortChange = (event) => setSortBy(event.target.value);
+
+  const articlesToRender = ARTICLES.sort((a, b) => {
+    const itemA = a[sortBy].toLowerCase();
+    const itemB = b[sortBy].toLowerCase();
+
+    if (itemA < itemB) {
+      return -1;
+    }
+    if (itemA > itemB) {
+      return 1;
+    }
+    return 0;
+  });
+
+  return (
+    <>
+      <FilterWrapper>
+        <div>
+          <input
+            type="checkbox"
+            id="showCategory2"
+            checked={showCategory}
+            onChange={() => setShowCategory((prev) => !prev)}
+          />
+          <label htmlFor="showCategory2">Show Category</label>
+        </div>
+        <div>
+          Sort by:{' '}
+          <input
+            type="radio"
+            id="title"
+            name="sort"
+            value="title"
+            checked={sortBy === 'title'}
+            onChange={onSortChange}
+          />
+          <label htmlFor="title">Title</label>
+          <input
+            type="radio"
+            id="category"
+            name="sort"
+            value="category"
+            checked={sortBy === 'category'}
+            onChange={onSortChange}
+          />
+          <label htmlFor="category">Category</label>
+        </div>
+      </FilterWrapper>
+      {/*
+        Try to remove AnimateSharedLayout and notice
+        the subtle differences when a layout animation 
+        is triggered
+      */}
+      <AnimateSharedLayout>
+        <List layout>
+          {articlesToRender.map((article) => (
+            <Item
+              key={article.id}
+              article={article}
+              showCategory={showCategory}
+            />
+          ))}
+        </List>
+      </AnimateSharedLayout>
+    </>
+  );
+};
+
+render(<Component />);
+```
+
+## Conclusion
+
+Congrats, you are now a Framer Motion expert 🎉! From **propagating animations to orchestrating complex layout animations**, we just went through some of the most advanced patterns that the library provides.
+We saw how **well designed** some of the tools provided are, and how **easy** it is thanks to those to implement complex transitions that would usually require either much more code or end up having a lot more undesirable side effects.
+
+I really hope the examples provided in this blog post helped illustrate concepts that would otherwise be too hard to describe by text and that, most importantly, were fun for you to play with. As usual, do not hesitate to send me feedback on my writing, code, or examples, I'm always striving to improve this blog!
+
+**Did you come up with some cool animations after going through this guide?**
+
+Don't hesitate to send me a message showcasing your creations!
+
+**Want to see more examples?**
+
+The [Framer Motion documentation](https://www.framer.com/api/motion/animate-shared-layout/) has tons of those to play with on Codepen.
+
+If you want to dig a bit deeper, below is the list of links to check out the implementations of the widgets featured in this article:

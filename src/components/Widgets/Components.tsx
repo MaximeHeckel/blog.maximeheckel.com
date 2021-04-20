@@ -2,15 +2,11 @@ import styled from '@emotion/styled';
 
 export const TransitionGridWrapper = styled('div')`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 20px;
-  width: 100vw;
-  padding: 0 150px;
-
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 32px;
   @media (max-width: 950px) {
     padding: 0;
   }
-
   > div {
     width: 100%;
     max-width: 400px;
