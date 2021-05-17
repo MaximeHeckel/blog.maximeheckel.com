@@ -331,7 +331,7 @@ export const posts = [
       'javascript',
       'react',
     ],
-    cover: '/static/images/pawel-czerwinski-Hu6kULsI5dM-unsplash.jpg',
+    cover: 'blog/pawel-czerwinski-Hu6kULsI5dM-unsplash_mq11os.jpg',
     slug: 'framer-motion-emotion',
   },
   {
@@ -356,7 +356,7 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'learning-in-public',
-    cover: '/static/images/beatriz-perez-moya-XN4T2PVUUgk-unsplash.jpg',
+    cover: 'blog/beatriz-perez-moya-XN4T2PVUUgk-unsplash_gvbfbf.jpg',
     type: 'blogPost',
     featured: false,
     colorFeatured: '#F8F9FD',
@@ -442,7 +442,7 @@ export const posts = [
       'syntax',
     ],
     slug: 'how-to-build-first-eslint-rule',
-    cover: '/static/images/tim-gouw-_U-x3_FYxfI-unsplash.jpg',
+    cover: 'blog/tim-gouw-_U-x3_FYxfI-unsplash_lcaasp.jpg',
     type: 'blogPost',
     featured: false,
     colorFeatured: '#222838',
@@ -474,7 +474,7 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'automated-ui-accessibility-testing-with-cypress-cc2e38231241',
-    cover: '/static/images/1__giARXrzkOlrUWO7Kbh__Wag.jpeg',
+    cover: 'blog/1__giARXrzkOlrUWO7Kbh__Wag_vv1z0x.jpg',
     type: 'blogPost',
   },
   {
@@ -485,7 +485,7 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'building-a-graphql-wrapper-for-the-docker-api-2109f2b9c202',
-    cover: '/static/images/1__iLiODjb0hFjNooC364a__1w.jpeg',
+    cover: 'blog/1__iLiODjb0hFjNooC364a__1w_dhburp.jpg',
     type: 'blogPost',
   },
   {
@@ -498,7 +498,7 @@ export const posts = [
     keywords: [],
     slug:
       'switching-off-the-lights-adding-dark-mode-to-your-react-app-with-context-and-hooks-f41da6e07269',
-    cover: '/static/images/1__opibt__PLUhicWYsyKhBtIQ.jpeg',
+    cover: 'blog/1__opibt__PLUhicWYsyKhBtIQ_vm3xmk.jpg',
     type: 'blogPost',
   },
   {
@@ -510,7 +510,7 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'getting-started-with-typescript-on-gatsby-8544b47c1d27',
-    cover: '/static/images/1__w6a1MKTNTtsrijt8HbHO__g.png',
+    cover: 'blog/1__w6a1MKTNTtsrijt8HbHO__g_yp656k.png',
     type: 'blogPost',
   },
   {
@@ -522,7 +522,7 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'rebuilding-redux-with-hooks-and-context-e16b59faf51c',
-    cover: '/static/images/kayle-kaupanger-rN9dNkEYYrg-unsplash.jpg',
+    cover: 'blog/kayle-kaupanger-rN9dNkEYYrg-unsplash_bx6dew.jpg',
     type: 'blogPost',
   },
   {
@@ -534,7 +534,7 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'asynchronous-rendering-with-react-c323cda68f41',
-    cover: '/static/images/stephen-walker-onIXxjH56AA-unsplash.jpg',
+    cover: 'blog/stephen-walker-onIXxjH56AA-unsplash_flvha9.jpg',
     type: 'blogPost',
   },
   {
@@ -545,7 +545,6 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'using-flow-generics-to-type-generic-react-components-22dd642634d8',
-    cover: null,
     type: 'blogPost',
   },
   {
@@ -558,7 +557,7 @@ export const posts = [
     keywords: [],
     slug:
       'https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b',
-    cover: '/static/images/iker-urteaga-TL5Vy1IM-uA-unsplash.jpg',
+    cover: 'blog/iker-urteaga-TL5Vy1IM-uA-unsplash_vgt04o.jpg',
     type: 'blogPost',
   },
   {
@@ -582,7 +581,6 @@ export const posts = [
     keywords: [],
     slug:
       'react-sub-components-part-3-whitelisting-sub-components-with-flow-b04f9bcf80c2',
-    cover: null,
     type: 'blogPost',
   },
   {
@@ -594,7 +592,6 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4',
-    cover: null,
     type: 'blogPost',
   },
   {
@@ -616,7 +613,6 @@ export const posts = [
     categories: [],
     keywords: [],
     slug: 'running-golang-tests-with-jest-b5d8f3d43a7',
-    cover: null,
     type: 'blogPost',
   },
   {

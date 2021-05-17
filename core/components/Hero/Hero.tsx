@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { loader } from 'lib/next-image-loader';
 import Image from 'next/image';
 import React from 'react';
 interface HeroImgProps {
@@ -33,6 +34,7 @@ const HeroImg: React.FC<HeroImgProps> = (props) => (
       alt="cover"
       layout="fill"
       objectFit="cover"
+      loader={loader}
       priority
     />
   </div>

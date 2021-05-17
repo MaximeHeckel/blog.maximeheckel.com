@@ -67,6 +67,7 @@ class MyDocument extends Document {
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         </Head>
         <body className="maximeheckel-light">
+          <script src="/static/scripts/clean-sw.js" />
           <script
             key="maximeheckel-theme"
             dangerouslySetInnerHTML={{

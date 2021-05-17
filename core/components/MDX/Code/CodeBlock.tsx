@@ -179,6 +179,7 @@ const CodeSnippetWrapper = styled('div')`
     border-radius: 0px;
   }
   width: 100%;
+  max-width: 700px;
   border-radius: var(--border-radius-2);
   position: relative;
   box-shadow: var(--maximeheckel-shadow-1);

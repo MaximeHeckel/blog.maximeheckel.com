@@ -6,7 +6,6 @@ updated: '2018-05-01T16:17:42.023Z'
 categories: []
 keywords: []
 slug: react-sub-components-part-3-whitelisting-sub-components-with-flow-b04f9bcf80c2
-cover:
 type: 'blogPost'
 ---
 
@@ -53,13 +52,7 @@ property children:
  • Or div [1] is incompatible with typeof Content [4].
 ```
 
-<Image
-  src="/static/images/1__HqiRL5mQ6tRCONrSivQ5cQ.gif"
-  alt="Gif showing that running flow with a non valid sub-component fails"
-  layout="responsive"
-  width={700}
-  height={400}
-/>
+![Gif showing that running flow with a non valid sub-component fails](/static/images/1__HqiRL5mQ6tRCONrSivQ5cQ.gif)
 
 As you can see, Flow is aware of the type of our sub-components (and of any children of `Article` ), and reports that `div` is not compatible with one of these types.
 

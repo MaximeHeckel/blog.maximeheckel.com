@@ -8,7 +8,7 @@ updated: '2019-07-09T14:01:01.595Z'
 categories: []
 keywords: []
 slug: automated-ui-accessibility-testing-with-cypress-cc2e38231241
-cover: '/static/images/1__giARXrzkOlrUWO7Kbh__Wag.jpeg'
+cover: 'blog/1__giARXrzkOlrUWO7Kbh__Wag_vv1z0x.jpg'
 type: 'blogPost'
 ---
 
@@ -100,20 +100,14 @@ Now that we’re done writing our first test, it’s time to give it a try!
 To run the test we wrote above, let’s run `yarn test` . As explained in the first part, this will start our UI project, and start Cypress once the UI is available.  
 We should then see the Cypress GUI with a list of tests, one of them being the accessibility test we just wrote:
 
-<Image
-  src="/static/images/1____lNKDG4Df1xEBhWQDlTnBg.gif"
-  alt="Gif showcasing the test script described in the first part"
-  layout="responsive"
-  width={700}
-  height={407}
-/>
+![Gif showcasing the test script described in the first part](/static/images/1____lNKDG4Df1xEBhWQDlTnBg.gif)
 
 We can then click on the `accessibility.spec.js` test which will start the test run and output results.
 
 If like me you ran this test against the create-react-app basic UI you should see a result similar to the following:
 
 <Image
-  src="/static/images/1__wb7XX__RaUKDRawdVBCu9xQ.png"
+  src="blog/1__wb7XX__RaUKDRawdVBCu9xQ_awfnhn.png"
   alt="Cypress output with one accessibility issues"
   layout="responsive"
   width={700}
@@ -123,7 +117,7 @@ If like me you ran this test against the create-react-app basic UI you should se
 Our test detected one accessibility violation. This output though doesn’t give many details sadly. To know exactly what the issue is, we’ll have to open the chrome console and click on the field labeled with `A11Y ERROR!bypass on 1 Node` to have more information:
 
 <Image
-  src="/static/images/1__FpWJmUGcyX1t3g__OUSr__yw.png"
+  src="blog/1__FpWJmUGcyX1t3g__OUSr__yw_zmzq9h.png"
   alt="Accessibility violation failure summary for our first cypress test run"
   layout="responsive"
   width={700}
@@ -135,7 +129,7 @@ The output from the console gives us a failure summary with the following messag
 After the change, running cypress again should result in a passing test:
 
 <Image
-  src="/static/images/1__zS7P6cLOuHEeeBQpJyYXUA.png"
+  src="blog/1__zS7P6cLOuHEeeBQpJyYXUA_n48tqh.png"
   alt="Successful cypress accessibility test run"
   layout="responsive"
   width={700}
@@ -158,7 +152,7 @@ const A11Y_OPTIONS = {
 We should see two new moderate accessibility violations:
 
 <Image
-  src="/static/images/1__HQn____ccDyHh7dQU4f65BIg.png"
+  src="blog/1__HQn____ccDyHh7dQU4f65BIg_bv9zyo.png"
   alt="Accessibility test run showcasing two moderate accessibility issues"
   layout="responsive"
   width={700}
@@ -169,7 +163,7 @@ As we can see with this example, the more rules add to our accessibility test, t
 I tried quite a few combinations to see how much issues cypress could surface, and I was quite impressed by the result. For instance, we can try adding a button to the UI with some white label on a cyan background and enable the `wcag2aa` set of rules in our options. Doing this and running the test will surface color contrast issues as you can see in the screenshot below:
 
 <Image
-  src="/static/images/1____56yiC68TRURMinyTsquuQ.png"
+  src="blog/1____56yiC68TRURMinyTsquuQ_dpbbeo.png"
   alt="Accessibility test run showcasing one contrast issues on the button with cyan background and white label"
   layout="responsive"
   width={700}

@@ -6,7 +6,6 @@ updated: '2018-10-16T16:07:39.169Z'
 categories: []
 keywords: []
 slug: using-flow-generics-to-type-generic-react-components-22dd642634d8
-cover:
 type: 'blogPost'
 ---
 
@@ -68,7 +67,7 @@ class Resource1List extends React.Component {
 This is the moment when I ran into the main problem. Given the way I typed this component, running Flow against the code in the example above outputs an error:
 
 <Image
-  src="/static/images/1__K4q47RYFJGlAz0nkpY32hw.png"
+  src="blog/1__K4q47RYFJGlAz0nkpY32hw_osy0no.png"
   alt="Flow error output with the first iteration of the “Props” Flow type for ResourceList"
   layout="responsive"
   width={700}
@@ -103,7 +102,7 @@ type Props = Resource1Props | Resource2Props;
 Running Flow with this type should output the following:
 
 <Image
-  src="/static/images/1__tQs3TltRtn__sntDOaUxdLg.png"
+  src="blog/1__tQs3TltRtn__sntDOaUxdLg_i5wixf.png"
   alt="Flow output with no errors thanks to the new ResourceList “Props” Flow type!"
   layout="responsive"
   width={700}

@@ -30,7 +30,7 @@ where `CLUSTER` is the name of the cluster and`ZONE` the zone we’ve picked up 
 After this, in our Docker for Mac menu, we should be able to see the name of our cluster in the context list under “Kubernetes”:
 
 <Image
-  src="/static/images/1__QGmeP4rJQSm1YF38684yWw.png"
+  src="blog/1__QGmeP4rJQSm1YF38684yWw_vo9bam.png"
   alt="Kubernetes contexts list menu in Docker for Mac"
   layout="responsive"
   width={700}
@@ -100,7 +100,7 @@ Let’s save the above file on our machine and deploy these workloads by running
 By listing the services we should end up with an output similar to this:
 
 <Image
-  src="/static/images/1__0hgHhzjFzrrN__mOY1jqopQ.png"
+  src="blog/1__0hgHhzjFzrrN__mOY1jqopQ_hsr2pp.png"
   alt="List of Kubernetes services"
   layout="responsive"
   width={700}
@@ -128,7 +128,7 @@ spec:
 If we run `kubectl apply -f ingress.yml`, we create a rule to route all external HTTP traffic hitting our Ingress external IP to our website. If we wait a few minutes, we’ll see that running `kubectl get ingress` will output a list containing `main-ingress` with an external IP:
 
 <Image
-  src="/static/images/1__Z6__gkS9RooYBK96__s5u0__A.png"
+  src="blog/1__Z6__gkS9RooYBK96__s5u0__A_hjk82t.png"
   alt="List of Kubernetes ingresses"
   layout="responsive"
   width={700}
@@ -234,7 +234,7 @@ spec:
 Running `kubectl apply -f certificates.yml` will submit the request to Let’s Encrypt and create a TLS secret for our NGINX Ingress Controller to use. We can check the logs of the kube-cert-manager Pod with `kubectl logs -f nameofyourcertmanagerpodpod` during the request, and if everything goes well, we should see logs like this:
 
 <Image
-  src="/static/images/1__F3186t6LGQIg5ujjh75a0g.png"
+  src="blog/1__F3186t6LGQIg5ujjh75a0g_dczsga.png"
   alt="Logs from the cert-manager Pod"
   layout="responsive"
   width={700}
