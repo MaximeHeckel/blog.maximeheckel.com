@@ -27,10 +27,6 @@ export const AnimationCard = styled('div')`
   box-shadow: var(--maximeheckel-shadow-2);
   margin: 30px 0px;
 
-  .snippet {
-    margin: 0px auto;
-  }
-
   pre {
     background-color: transparent !important;
   }

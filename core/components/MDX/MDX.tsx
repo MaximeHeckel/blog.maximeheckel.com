@@ -123,15 +123,6 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
   twitter-widget {
     margin: 0 auto;
   }
-
-  section {
-    display: grid;
-    grid-template-columns: var(--layout-small);
-
-    > * {
-      grid-column: 2;
-    }
-  }
 `;
 
 export default MDXBody;

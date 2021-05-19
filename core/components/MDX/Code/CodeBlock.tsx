@@ -76,7 +76,7 @@ const CodeBlock: React.FC<CodeBlockProps> = (props) => {
   const title = hasTitle(metastring);
 
   return (
-    <CodeSnippetWrapper className="snippet">
+    <CodeSnippetWrapper>
       {title ? (
         <CodeSnippetHeader>
           <CodeSnippetTitle data-testid="codesnippet-title">
@@ -168,7 +168,7 @@ const CodeSnippetHeader = styled('div')`
 const CodeSnippetWrapper = styled('div')`
   @media (max-width: 750px) {
     /**
-     * Make it fullbleed! 
+     * Make it fullbleed!
      */
     width: 100vw;
     position: relative;
@@ -178,10 +178,7 @@ const CodeSnippetWrapper = styled('div')`
     margin-right: -50vw;
     border-radius: 0px;
   }
-  width: 100%;
-  max-width: 700px;
   border-radius: var(--border-radius-2);
-  position: relative;
   box-shadow: var(--maximeheckel-shadow-1);
   border: 1px solid var(--maximeheckel-colors-emphasis);
   margin-bottom: 32px;

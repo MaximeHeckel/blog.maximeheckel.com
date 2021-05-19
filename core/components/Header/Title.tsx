@@ -5,7 +5,7 @@ import { HeaderContext } from './Context';
 
 export const TitleWrapper = styled.div`
   overflow: hidden;
-  margin-left: 30px;
+  margin-left: 40px;
 
   h3 {
     margin-bottom: 0px;
