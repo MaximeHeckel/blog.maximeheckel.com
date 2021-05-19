@@ -1,21 +1,15 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import FocusTrap from 'focus-trap-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import useDebouncedValue from '../../hooks/useDebouncedValue';
 import { useTheme } from '../../context/ThemeContext';
-import VisuallyHidden from '../VisuallyHidden';
-import {
-  ContactIcon,
-  EnterIcon,
-  PortfolioIcon,
-  RSSIcon,
-  TwitterIcon,
-} from '../Icons';
+import { EnterIcon } from '../Icons';
+import { CommandCenterStatic } from './CommandCenterStatic';
 
 const MAX_HEIGHT = 455;
 
@@ -79,13 +73,11 @@ function useIndexItem<T>(
   return [items[index], previousItem, nextItem, setIndex];
 }
 
-const Search: React.FC<Props> = (props) => {
+const Search = (props: Props) => {
   const { onClose } = props;
   const router = useRouter();
 
-  const [mounted, setMounted] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
-  const [prevHeight, setPrevHeight] = React.useState(0);
   const [results, setResults] = React.useState<Result[]>([]);
   const [searchQuery, setSearchQuery] = React.useState('');
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 250);
@@ -116,14 +108,14 @@ const Search: React.FC<Props> = (props) => {
 
   const handleKey = React.useCallback(
     (event: KeyboardEvent) => {
-      if (mounted && debouncedSearchQuery !== '') {
+      if (debouncedSearchQuery !== '') {
         switch (event.key) {
           case 'Enter':
             const href = `/${
               selectedResult.type === 'snippet' ? 'snippets' : 'posts'
             }/${selectedResult.slug}/`;
             router.push(href).then(() => window.scrollTo(0, 0));
-            onClose();
+            setTimeout(onClose, 600);
             break;
           case 'ArrowUp':
             event.preventDefault();
@@ -138,7 +130,6 @@ const Search: React.FC<Props> = (props) => {
       }
     },
     [
-      mounted,
       debouncedSearchQuery,
       selectedResult,
       router,
@@ -167,7 +158,6 @@ const Search: React.FC<Props> = (props) => {
         .then((res) => res.json())
         .then((res) => {
           setResults(res.results);
-          setPrevHeight(Math.min(res.results.length * 65, MAX_HEIGHT));
           setLoading(false);
         });
     }
@@ -175,19 +165,8 @@ const Search: React.FC<Props> = (props) => {
     if (debouncedSearchQuery === '') {
       setResults([]);
       setLoading(false);
-
-      if (mounted) {
-        setPrevHeight(MAX_HEIGHT);
-      }
     }
-  }, [debouncedSearchQuery, mounted]);
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setMounted(true);
-      setPrevHeight(MAX_HEIGHT);
-    }, 400);
-  }, [mounted]);
+  }, [debouncedSearchQuery]);
 
   React.useEffect(() => {
     window.addEventListener('keydown', handleKey);
@@ -210,7 +189,7 @@ const Search: React.FC<Props> = (props) => {
   return ReactDOM.createPortal(
     <FocusTrap>
       <aside>
-        <SearchOverlay
+        <Overlay
           initial={{
             backgroundColor: dark ? 'rgba(0,0,0,0)' : 'rgba(241, 243, 247, 0)',
           }}
@@ -232,219 +211,111 @@ const Search: React.FC<Props> = (props) => {
           // All elements required to operate the dialog are descendants of the element that has role dialog.
           role="dialog"
         >
-          <SearchWrapper
+          <SearchBox
             initial={{ scale: 0.8, opacity: 0, x: '-50%' }}
-            animate={{ scale: 1, opacity: 1, x: '-50%' }}
+            animate={{ scale: 1, opacity: 1 }}
             exit={{
               scale: 0.5,
               opacity: 0,
-              x: '-50%',
               transition: { duration: 0.15, delay: 0.1 },
             }}
             transition={{
               ease: 'easeOut',
               duration: 0.2,
             }}
-            data-testid="search"
-            ref={SearchRef}
           >
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              css={css`
-                border-bottom: ${debouncedSearchQuery
-                  ? `1px solid ${
-                      dark
-                        ? 'hsla(var(--palette-gray-100), 100%)'
-                        : 'hsla(var(--palette-gray-10), 100%)'
-                    }`
-                  : 'none'};
-              `}
-            >
-              <input
-                ref={inputRef}
-                autoComplete="off"
-                type="search"
-                placeholder="Type keywords to search blog posts..."
-                data-testid="search-input"
-                id="search-input"
-                name="search"
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                }}
-                value={searchQuery}
-              />
-              <div
+            <FormWrapper data-testid="search" ref={SearchRef}>
+              <form
+                onSubmit={(e) => e.preventDefault()}
                 css={css`
-                  width: 120px;
-                  color: var(--maximeheckel-colors-typeface-2);
-                  opacity: 0.8;
-              }
+                  border-bottom: ${debouncedSearchQuery
+                    ? `1px solid ${
+                        dark
+                          ? 'hsla(var(--palette-gray-100), 100%)'
+                          : 'hsla(var(--palette-gray-10), 100%)'
+                      }`
+                    : 'none'};
                 `}
               >
-                {debouncedSearchQuery !== '' && !loading
-                  ? `${results.length} results`
-                  : null}
-              </div>
-            </form>
-            <AnimatePresence>
-              {mounted ? (
-                <>
-                  {debouncedSearchQuery !== '' && results.length >= 0 ? (
-                    <SearchResults
-                      initial={{ height: prevHeight }}
-                      animate={{
-                        height: results.length * 65,
-                      }}
-                      exit={{ height: 0 }}
-                      transition={{
-                        ease: 'easeInOut',
-                        duration: 0.3,
-                      }}
+                <input
+                  ref={inputRef}
+                  autoComplete="off"
+                  type="search"
+                  placeholder="Type keywords to search blog posts..."
+                  data-testid="search-input"
+                  id="search-input"
+                  name="search"
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                  }}
+                  value={searchQuery}
+                />
+                <div
+                  css={css`
+                    width: 120px;
+                    color: var(--maximeheckel-colors-typeface-2);
+                    font-size: 14px;
+                    font-weight: 500;
+                    opacity: 0.8;
+                  `}
+                >
+                  {debouncedSearchQuery !== '' && !loading
+                    ? `${results.length} results`
+                    : null}
+                </div>
+              </form>
+            </FormWrapper>
+            {debouncedSearchQuery !== '' ? (
+              <SearchResults
+                height={
+                  results.length * 65 >= MAX_HEIGHT
+                    ? MAX_HEIGHT
+                    : results.length * 65
+                }
+              >
+                {results.map((result, index) => (
+                  <Result
+                    data-testid="search-result"
+                    key={result.slug}
+                    id={result.slug}
+                    selected={selectedResult === result}
+                    onPointerEnter={() => handlePointer(index)}
+                  >
+                    <Link
+                      href={`/${
+                        result.type === 'snippet' ? 'snippets' : 'posts'
+                      }/${result.slug}`}
                     >
-                      {results.length > 0
-                        ? results.map((result, index) => {
-                            return (
-                              <Result
-                                data-testid="search-result"
-                                key={result.slug}
-                                id={result.slug}
-                                selected={selectedResult === result}
-                                onPointerEnter={() => handlePointer(index)}
-                              >
-                                <Link
-                                  href={`/${
-                                    result.type === 'snippet'
-                                      ? 'snippets'
-                                      : 'posts'
-                                  }/${result.slug}`}
-                                >
-                                  <a onClick={onClose}>{result.title}</a>
-                                </Link>
+                      <a onClick={() => setTimeout(onClose, 600)}>
+                        {result.title}
+                      </a>
+                    </Link>
+                    <div
+                      css={css`
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-left: 16px;
+                        height: 40px;
+                        width: 40px;
+                        background-color: var(--maximeheckel-colors-emphasis);
+                        border-radius: var(--border-radius-1);
 
-                                <div
-                                  css={css`
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    margin-left: 16px;
-                                    height: 40px;
-                                    width: 40px;
-                                    background-color: var(
-                                      --maximeheckel-colors-emphasis
-                                    );
-                                    border-radius: var(--border-radius-1);
-
-                                    path {
-                                      stroke: var(--maximeheckel-colors-brand);
-                                    }
-                                  `}
-                                >
-                                  <EnterIcon />
-                                </div>
-                              </Result>
-                            );
-                          })
-                        : null}
-                    </SearchResults>
-                  ) : null}
-                  {debouncedSearchQuery === '' ? (
-                    <SearchResults
-                      initial={{ height: prevHeight }}
-                      animate={{
-                        height: 450,
-                      }}
-                      exit={{ height: 0 }}
-                      transition={{
-                        ease: 'easeInOut',
-                        duration: 0.3,
-                      }}
+                        path {
+                          stroke: var(--maximeheckel-colors-brand);
+                        }
+                      `}
                     >
-                      <Separator>Shortcuts</Separator>
-                      <Item data-testid="shortcut" key="search-shortcut">
-                        <span>Command Center</span>
-                        <div>
-                          <ShortcutKey>ctrl</ShortcutKey>
-                          <ShortcutKey>k</ShortcutKey>
-                        </div>
-                      </Item>
-                      <Item data-testid="shortcut" key="theme-shortcut">
-                        <span>Switch Theme</span>
-                        <div>
-                          <ShortcutKey>ctrl</ShortcutKey>
-                          <ShortcutKey>t</ShortcutKey>
-                        </div>
-                      </Item>
-                      <Separator>Links</Separator>
-                      <Item data-testid="link" key="twitter-social-link">
-                        <a
-                          href="https://twitter.com/MaximeHeckel"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ textDecoration: `none` }}
-                        >
-                          <TwitterIcon stroke="var(--maximeheckel-colors-typeface-2)" />
-                          <span style={{ marginLeft: '15px' }}>Twitter</span>
-                          <VisuallyHidden as="p">
-                            Link redirects to my Twitter profile page
-                            https://twitter.com/MaximeHeckel.
-                          </VisuallyHidden>
-                        </a>
-                      </Item>
-                      <Item data-testid="link" key="email-link">
-                        <a
-                          href="mailto:hello@maximeheckel.com"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ textDecoration: `none` }}
-                        >
-                          <ContactIcon stroke="var(--maximeheckel-colors-typeface-2)" />
-                          <span style={{ marginLeft: '15px' }}>Contact</span>
-                          <VisuallyHidden as="p">
-                            Link opens your default mail client with my email
-                            address hello@maximeheckel.com prefilled.
-                          </VisuallyHidden>
-                        </a>
-                      </Item>
-                      <Item data-testid="link" key="maximeheckelcom-link">
-                        <a
-                          href="https://maximeheckel.com"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ textDecoration: `none` }}
-                        >
-                          <PortfolioIcon stroke="var(--maximeheckel-colors-typeface-2)" />
-                          <span style={{ marginLeft: '15px' }}>Work</span>
-                          <VisuallyHidden as="p">
-                            Link redirects to my portfolio
-                            https://maximeheckel.com.
-                          </VisuallyHidden>
-                        </a>
-                      </Item>
-                      <Item data-testid="link" key="rss-link">
-                        <Link
-                          href="/rss.xml"
-                          data-testid="rss-link"
-                          aria-label="RSS Feed"
-                        >
-                          <a
-                            title="RSS Feed"
-                            style={{ textDecoration: `none` }}
-                          >
-                            <RSSIcon stroke="var(--maximeheckel-colors-typeface-2)" />
-                            <span style={{ marginLeft: '15px' }}>RSS</span>
-                            <VisuallyHidden as="p">
-                              Link redirects to the rss.xml file.
-                            </VisuallyHidden>
-                          </a>
-                        </Link>
-                      </Item>
-                    </SearchResults>
-                  ) : null}
-                </>
-              ) : null}
-            </AnimatePresence>
-          </SearchWrapper>
-        </SearchOverlay>
+                      <EnterIcon />
+                    </div>
+                  </Result>
+                ))}
+              </SearchResults>
+            ) : (
+              <CommandCenterStatic />
+            )}
+          </SearchBox>
+        </Overlay>
       </aside>
     </FocusTrap>,
     document.body
@@ -453,26 +324,14 @@ const Search: React.FC<Props> = (props) => {
 
 export { Search };
 
-const ShortcutKey = styled('span')`
-  color: var(--maximeheckel-colors-brand);
-  font-size: 14px;
-  border-radius: var(--border-radius-1);
-  padding: 8px 8px;
-  background: var(--maximeheckel-colors-emphasis);
-  &:not(:last-child) {
-    margin-right: 16px;
-  }
-`;
-
-const Result = styled('li')<{ selected: boolean }>`
-  height: 65px;
+const Result = styled(motion.li)<{ selected: boolean }>`
   display: flex;
   align-items: center;
   margin-bottom: 0px;
-  position: relative;
   list-style: none;
   color: var(--maximeheckel-colors-typeface-1);
   padding: 10px 25px;
+  height: 65px;
 
   a {
     color: unset;
@@ -502,75 +361,39 @@ const Result = styled('li')<{ selected: boolean }>`
       : ''}
 `;
 
-const Item = styled('li')`
-  height: 65px;
-  margin-bottom: 0px;
-  transition: 0.25s;
-  list-style: none;
-  color: var(--maximeheckel-colors-typeface-1);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 25px;
-
-  a {
-    color: unset;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-  }
-
-  &:hover {
-    background-color: var(--maximeheckel-colors-foreground);
-    a {
-      color: var(--maximeheckel-colors-brand);
-    }
-
-    svg {
-      stroke: var(--maximeheckel-colors-brand);
-    }
-  }
-`;
-
-const Separator = styled('li')`
-  height: 30px;
-  width: 100%;
-  font-size: 14px;
-  background-color: var(--maximeheckel-colors-foreground);
-  color: var(--maximeheckel-colors-typeface-1);
-  display: flex;
-  align-items: center;
-  padding-left: 25px;
-  padding-right: 25px;
-  margin-bottom: 0;
-`;
-
-const SearchResults = styled(motion.ul)`
+const SearchResults = styled('ul')<{ height?: number }>`
   @media (max-width: 700px) {
     max-height: 450px;
   }
 
+  background: var(--maximeheckel-colors-body);
   max-height: ${MAX_HEIGHT}px;
+  height: ${(p) => p.height || 0}px;
   overflow: auto;
   margin: 0px;
+  transition: height 0.4s ease-out;
+  will-change: height;
 `;
 
-const SearchWrapper = styled(motion.div)<{}>`
+const SearchBox = styled(motion.div)`
+  position: fixed;
+  overflow: hidden;
+  width: 600px;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: var(--border-radius-2);
+  box-shadow: var(--maximeheckel-shadow-1);
+
   @media (max-width: 700px) {
     width: 100%;
     top: 0;
     border-radius: 0px;
   }
+`;
 
-  position: fixed;
-  overflow: hidden;
+const FormWrapper = styled('div')`
   background: var(--maximeheckel-colors-body);
-  width: 600px;
-  top: 20%;
-  left: 50%;
-  border-radius: var(--border-radius-2);
-  box-shadow: var(--maximeheckel-shadow-1);
 
   form {
     margin: 0px;
@@ -605,7 +428,7 @@ const SearchWrapper = styled(motion.div)<{}>`
   }
 `;
 
-const SearchOverlay = styled(motion.div)<{}>`
+const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
