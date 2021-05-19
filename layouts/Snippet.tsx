@@ -21,7 +21,10 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
   const image = `/static/snippets/${slug}.png`;
 
   const headerProps = {
+    title,
     search: true,
+    // sticky: true,
+    // collapsableOnScroll: true,
   };
 
   return (
@@ -38,8 +41,6 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
           columns="var(--layout-medium)"
           columnGap={20}
           css={css`
-            padding-top: 32px;
-
             > * {
               grid-column: 2;
             }
@@ -47,8 +48,14 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
         >
           <Hero
             id="top"
+            /**
+             * Override padding top for the snippet layout Hero
+             *
+             * TODO: Future Hero component of the Design System will have to handle
+             * different layout/different header types (stickly/fixed etc)
+             */
             css={css`
-              padding-top: 0px;
+              padding-top: 32px !important;
             `}
           >
             <Hero.Title

@@ -8,7 +8,7 @@ interface HeroImgProps {
   className: string;
 }
 
-const HeroImg: React.FC<HeroImgProps> = (props) => (
+const HeroImg = (props: HeroImgProps) => (
   <div
     css={css`
       border-radius: var(--border-radius-2);
