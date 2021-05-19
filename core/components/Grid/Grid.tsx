@@ -36,6 +36,7 @@ interface Props {
   justifyContent?: Alignements;
   justifyItems?: Alignements;
   className?: string;
+  'data-testid'?: string;
 }
 
 const StyledGrid = styled('div')<Props>`
@@ -81,6 +82,7 @@ const Grid = (props: Props) => {
   return (
     <StyledGrid
       as={as}
+      data-testid={props['data-testid']}
       className={className}
       gap={sanitizedGap}
       rowGap={sanitizedRowGap}

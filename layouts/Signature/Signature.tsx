@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import React from 'react';
 import WebmentionReplies from '@theme/components/Webmentions/WebmentionReplies';
 import NewsletterForm from '@theme/components/NewsletterForm';
 

@@ -10,7 +10,7 @@ describe('Header Tests', () => {
 
   it('Clicking on the Logo on the header redirects to the landing page', () => {
     cy.visit('/posts/how-to-build-first-eslint-rule');
-    cy.get('[title="Go back to article list"]').click();
+    cy.get('[title="Home"]').click();
     cy.url().should('include', '/');
   });
 });

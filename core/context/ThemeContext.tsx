@@ -1,5 +1,5 @@
 import Mousetrap from 'mousetrap';
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 enum Theme {
   LIGHT = 'light',

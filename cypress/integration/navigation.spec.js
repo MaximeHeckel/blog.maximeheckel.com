@@ -9,7 +9,7 @@ describe('Navigation Tests', () => {
   });
   it('It can go from an article to the landing page', () => {
     cy.visit('/posts/how-to-build-first-eslint-rule');
-    cy.get('[title="Go back to article list"]').click();
+    cy.get('[title="Home"]').click();
     cy.url().should('include', '/');
     cy.get('[data-testid="article-list"]').should('be.visible');
     cy.get('[data-testid="article-item"]').should('be.visible');
