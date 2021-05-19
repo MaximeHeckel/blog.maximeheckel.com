@@ -28,7 +28,6 @@ exports[`Pill Renders the Pill component with the danger variant 1`] = `
   user-select: none;
   background: var(--maximeheckel-colors-danger-emphasis);
   color: var(--maximeheckel-colors-danger);
-  border: 1px solid var(--maximeheckel-colors-danger);
 }
 
 <span
@@ -67,7 +66,6 @@ exports[`Pill Renders the Pill component with the info variant 1`] = `
   user-select: none;
   background: var(--maximeheckel-colors-emphasis);
   color: var(--maximeheckel-colors-brand);
-  border: 1px solid var(--maximeheckel-colors-brand);
 }
 
 <span
@@ -106,7 +104,6 @@ exports[`Pill Renders the Pill component with the success variant 1`] = `
   user-select: none;
   background: var(--maximeheckel-colors-success-emphasis);
   color: hsl(var(--palette-green-80));
-  border: 1px solid var(--maximeheckel-colors-success);
 }
 
 <span
@@ -145,7 +142,6 @@ exports[`Pill Renders the Pill component with the warning variant 1`] = `
   user-select: none;
   background: var(--maximeheckel-colors-warning-emphasis);
   color: hsl(var(--palette-orange-80));
-  border: 1px solid var(--maximeheckel-colors-warning);
 }
 
 <span

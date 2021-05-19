@@ -19,7 +19,7 @@ const LogoWrapper: React.FC<HeaderLogoProps> = (props) => {
     : null;
 
   return (
-    <Tooltip id="hometooltip" tooltipText="Go back to article list">
+    <Tooltip id="hometooltip" tooltipText="Home">
       <Link href="/" aria-label="Home" aria-describedby="hometooltip">
         <a title="Home">{child}</a>
       </Link>

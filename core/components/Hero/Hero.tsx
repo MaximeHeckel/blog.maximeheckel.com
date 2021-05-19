@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { loader } from 'lib/next-image-loader';
 import Image from 'next/image';
 import React from 'react';
+import { loader } from '../../../lib/next-image-loader';
 interface HeroImgProps {
   src: string;
   className: string;
