@@ -21,10 +21,7 @@ const ColoredBlockWrapper = styled('div')`
   }
 `;
 
-const Signature: React.FC<{ title: string; url: string }> = ({
-  title,
-  url,
-}) => {
+const Signature = ({ title, url }: { title: string; url: string }) => {
   return (
     <ColoredBlockWrapper data-testid="signature">
       <div>

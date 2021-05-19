@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import React from 'react';
 import Grid from '../Grid';
 import Logo from '../Logo';
 
@@ -34,7 +33,7 @@ const FooterContent = styled.div`
   align-items: center;
 `;
 
-const Footer: React.FC<{}> = () => (
+const Footer = () => (
   <FooterBlock data-testid="footer">
     <Grid columns="var(--layout-medium)" columnGap={20}>
       <FooterWrapper>

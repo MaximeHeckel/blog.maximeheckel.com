@@ -8,7 +8,7 @@ export interface HeaderLogoProps {
   style?: Record<string, string>;
 }
 
-export const Logo: React.FC<HeaderLogoProps> = (props) => {
+const LogoWrapper: React.FC<HeaderLogoProps> = (props) => {
   const child = props.children
     ? React.cloneElement(props.children as React.ReactElement<any>, {
         ...props,
@@ -26,3 +26,5 @@ export const Logo: React.FC<HeaderLogoProps> = (props) => {
     </Tooltip>
   );
 };
+
+export { LogoWrapper };

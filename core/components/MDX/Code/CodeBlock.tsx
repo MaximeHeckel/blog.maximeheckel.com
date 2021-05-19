@@ -69,7 +69,7 @@ export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
   );
 };
 
-const CodeBlock: React.FC<CodeBlockProps> = (props) => {
+const CodeBlock = (props: CodeBlockProps) => {
   const { codeString, language, metastring } = props;
 
   const highlightLineFn = calculateLinesToHighlight(metastring);

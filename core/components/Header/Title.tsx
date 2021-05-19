@@ -52,11 +52,12 @@ const variants = {
 export interface HeaderTitleProps {}
 
 export const Title: React.FC<HeaderTitleProps> = (props) => {
+  const { children } = props;
   const { collapsed, sticky } = React.useContext(HeaderContext);
 
   return (
     <TitleWrapper>
-      {props.children ? (
+      {children ? (
         <div data-testid="header-title">
           {sticky ? (
             <motion.div
@@ -75,7 +76,7 @@ export const Title: React.FC<HeaderTitleProps> = (props) => {
                       ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }}
                 >
-                  {props.children}
+                  {children}
                 </a>
               </h3>
             </motion.div>

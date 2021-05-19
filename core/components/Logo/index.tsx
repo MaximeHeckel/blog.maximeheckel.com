@@ -31,7 +31,7 @@ const LogoWrapper = styled('div')<LogoWrapperProps>`
   }
 `;
 
-const Logo: React.FC<LogoProp> = ({ alt, size }) => (
+const Logo = ({ alt, size }: LogoProp) => (
   <LogoWrapper size={size || 45}>
     <svg
       aria-label={alt}

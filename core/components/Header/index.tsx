@@ -11,7 +11,7 @@ import Header from './Header';
 
 const Search = dynamic(() => import('../Search'));
 
-const MainHeader: React.FC<MainHeaderProps> = (props) => {
+const MainHeader = (props: MainHeaderProps) => {
   const [showSearch, setShowSearch] = React.useState(false);
   const theme = useTheme();
 
@@ -65,12 +65,12 @@ const MainHeader: React.FC<MainHeaderProps> = (props) => {
         collapsableOnScroll={props.collapsableOnScroll}
       >
         <Flex>
-          <Header.Logo
+          <Header.LogoWrapper
             alt="Maxime Heckel's Blog logo"
             aria-label="Maxime Heckel's Blog"
           >
             <Logo />
-          </Header.Logo>
+          </Header.LogoWrapper>
           <Header.Title>{props.title}</Header.Title>
         </Flex>
         <Flex>

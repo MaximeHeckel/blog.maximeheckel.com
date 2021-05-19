@@ -6,7 +6,6 @@ import { preToCodeBlock } from './utils';
 const CodeBlock = dynamic(() => import('./CodeBlock'));
 const LiveCodeBlock = dynamic(() => import('./LiveCodeBlock'));
 
-// @ts-ignore
 const Code: React.FC<PrePropsType> = (preProps) => {
   const props = preToCodeBlock(preProps);
 

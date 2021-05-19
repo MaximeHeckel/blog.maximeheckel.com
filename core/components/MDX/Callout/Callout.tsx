@@ -10,9 +10,7 @@ interface Props {
   variant: VARIANT;
 }
 
-const Callout: React.FC<Props> = (props) => (
-  <StyledCallout {...props}>{props.children}</StyledCallout>
-);
+const Callout: React.FC<Props> = (props) => <StyledCallout {...props} />;
 
 const variantColors = {
   [VARIANT.DANGER]: `

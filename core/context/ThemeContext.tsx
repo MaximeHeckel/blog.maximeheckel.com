@@ -60,11 +60,12 @@ const useDarkMode = (): [Theme, (theme?: Theme) => void] => {
   return [themeState, setThemeStateEnhanced];
 };
 
-const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+const ThemeProvider: React.FC = (props) => {
+  const { children } = props;
   const [themeState, setThemeStateEnhanced] = useDarkMode();
-  const toggleDark = () => {
+  const toggleDark = React.useCallback(() => {
     setThemeStateEnhanced();
-  };
+  }, [setThemeStateEnhanced]);
 
   React.useEffect(() => {
     Mousetrap.bind(['ctrl+t'], () => toggleDark());
@@ -78,8 +79,7 @@ const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     return () => {
       Mousetrap.unbind(['ctrl+t']);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setThemeStateEnhanced, toggleDark]);
 
   return (
     <ThemeContext.Provider
