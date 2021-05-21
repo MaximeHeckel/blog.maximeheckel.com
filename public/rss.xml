@@ -9,7 +9,7 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Fri, 21 May 2021 12:51:35 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 21 May 2021 22:27:39 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
         <item>
@@ -225,7 +225,7 @@
             <pubDate>Tue, 21 Apr 2020 08:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Fixing the "dark mode flash" issue on server rendered websites]]></title>
+            <title><![CDATA[Fixing the dark mode flash issue on server rendered websites]]></title>
             <description><![CDATA[Bringing a proper solution to dark mode flashing without an ugly hack.]]></description>
             <link>https://blog.maximeheckel.com/posts/switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website</guid>

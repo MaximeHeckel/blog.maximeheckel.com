@@ -363,7 +363,7 @@ export const posts = [
     fontFeatured: '#000000',
   },
   {
-    title: 'Fixing the "dark mode flash" issue on server rendered websites',
+    title: 'Fixing the dark mode flash issue on server rendered websites',
     subtitle:
       'Bringing a proper solution to dark mode flashing without an ugly hack.',
     date: '2020-04-16T08:00:00.000Z',
