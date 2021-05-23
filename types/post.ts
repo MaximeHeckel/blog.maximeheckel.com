@@ -26,7 +26,7 @@ export type FrontMatterPost = {
     readingTime: ReadingTime;
   };
   tweetIDs: string[];
-  mdxSource: string;
+  mdxSource: any;
 };
 
 export type Snippet = {
@@ -41,7 +41,7 @@ export type Snippet = {
 
 export type FrontMatterSnippet = {
   frontMatter: Snippet;
-  mdxSource: string;
+  mdxSource: any;
 };
 
 export type PostByType<T> = T extends PostType.BLOGPOST ? Post : Snippet;

@@ -2,8 +2,7 @@ import fs from 'fs';
 import matter from 'gray-matter';
 import path from 'path';
 import readingTime from 'reading-time';
-import renderToString from 'next-mdx-remote/render-to-string';
-import MDXComponents from '@theme/components/MDX/MDXComponents';
+import { serialize } from 'next-mdx-remote/serialize';
 import { FrontMatterPostType, PostByType, PostType } from 'types/post';
 import { remarkSectionize } from './remark-sectionize-fork';
 import { remarkFigure } from './remark-figure';
@@ -36,8 +35,7 @@ export const getFileBySlug = async <T extends PostType>(
   const data = parsedFile.data;
   const content = parsedFile.content;
 
-  const mdxSource = await renderToString(content, {
-    components: MDXComponents,
+  const mdxSource = await serialize(content, {
     mdxOptions: {
       remarkPlugins: [
         require('remark-slug'),
@@ -82,10 +80,10 @@ export const getFileBySlug = async <T extends PostType>(
     return (result as unknown) as FrontMatterPostType<T>;
   }
 
-  return {
+  return ({
     mdxSource,
     frontMatter: data,
-  } as FrontMatterPostType<T>;
+  } as unknown) as FrontMatterPostType<T>;
 };
 
 export const getAllFilesFrontMatter = async <T extends PostType>(
