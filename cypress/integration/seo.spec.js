@@ -16,7 +16,7 @@ describe('SEO: Verify meta tag integrity', () => {
   });
 
   it('has all the meta tags and the expected canonical url set in the blog post head', async () => {
-    const res = await fetch('/posts/how-to-build-first-eslint-rule');
+    const res = await fetch('/posts/how-to-build-first-eslint-rule/');
     const text = await res.text();
 
     const metaTags = text.match(META_RE) || [];
