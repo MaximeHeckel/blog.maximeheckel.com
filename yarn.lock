@@ -2171,10 +2171,10 @@
     resolve-from "^5.0.0"
     rollup-pluginutils "^2.8.2"
 
-"@visx/bounds@1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@visx/bounds/-/bounds-1.6.1.tgz#fb9d303e04738378425dfc1fcf1a140b778cc77f"
-  integrity sha512-VR1vbLrNTtiuoYWb/TKjn3JeR6lpNE3MS/d6rXu8k4amQetyGE6YzDBM7AHqu6Jic9D1CvR+tyegsWblt3ZNFQ==
+"@visx/bounds@1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@visx/bounds/-/bounds-1.7.0.tgz#cc32aaa5aa8711771b93ec4149ff087225dc0684"
+  integrity sha512-ajF6PTgDoZTfwv5J0ZTx1miXY8lk3sGhMVqE3UsMubdTZBlOgeZMT4OmtTPtbCJTBTgw0FD0gd7X3gZ+3X9HgQ==
   dependencies:
     "@types/react" "*"
     "@types/react-dom" "*"
@@ -2261,17 +2261,17 @@
     lodash "^4.17.15"
     prop-types "^15.5.10"
 
-"@visx/tooltip@1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@visx/tooltip/-/tooltip-1.6.1.tgz#b7a7ae78f60e72b31bab9dd817c5ed519adc8d3a"
-  integrity sha512-tPYjycaY2D8H0e6Su2oQmVZD0O8K25ThNcv9lGBLa6VLWRwH5R7gdBJDChUzvcHpSandFGFPEbsKpAt7w27P4Q==
+"@visx/tooltip@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/@visx/tooltip/-/tooltip-1.7.2.tgz#facbf37d1e92ea8e8f19eaa229a69f278063659e"
+  integrity sha512-QCNLaOGpgZ6RnZjCIbEJtfbu8ZkSwDOXRy5SOUvcC5J9RiEwCi0DXF1JzT7ZPv3hkLU1KiSPaUFf5q/5LNHwLg==
   dependencies:
     "@types/classnames" "^2.2.9"
     "@types/react" "*"
-    "@visx/bounds" "1.6.1"
+    "@visx/bounds" "1.7.0"
     classnames "^2.2.5"
     prop-types "^15.5.10"
-    react-use-measure "^2.0.3"
+    react-use-measure "^2.0.4"
 
 "@wildpeaks/snapshot-dom@1.6.0":
   version "1.6.0"
@@ -8676,10 +8676,10 @@ react-simple-code-editor@^0.10.0:
   resolved "https://registry.yarnpkg.com/react-simple-code-editor/-/react-simple-code-editor-0.10.0.tgz#73e7ac550a928069715482aeb33ccba36efe2373"
   integrity sha512-bL5W5mAxSW6+cLwqqVWY47Silqgy2DKDTR4hDBrLrUqC5BXc29YVx17l2IZk5v36VcDEq1Bszu2oHm1qBwKqBA==
 
-react-use-measure@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/react-use-measure/-/react-use-measure-2.0.3.tgz#7b56ae3ca19ccf62326933678625a8ff6b3f90a3"
-  integrity sha512-57O8Os9MbgFEHuOHOXNdPmBHhXjCBIwtB3YxyrM/MgaX44a1o97Mu9YqiOA6cAF8kXIw4fO3XK0r2Taa4SqaqQ==
+react-use-measure@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-use-measure/-/react-use-measure-2.0.4.tgz#cb675b36eaeaf3681b94d5f5e08b2a1e081fedc9"
+  integrity sha512-7K2HIGaPMl3Q9ZQiEVjen3tRXl4UDda8LiTPy/QxP8dP2rl5gPBhf7mMH6MVjjRNv3loU7sNzey/ycPNnHVTxQ==
   dependencies:
     debounce "^1.2.0"
 
