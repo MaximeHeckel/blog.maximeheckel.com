@@ -45,7 +45,7 @@
     "gatsby-theme-maximeheckel": "1.2.2",
     "graphql-request": "3.3.0",
     "prop-types": "^15.7.2",
-    "react": "16.13.0",
+    "react": "16.14.0",
     "react-dom": "16.13.0",
     "react-intersection-observer": "^8.27.1",
     "react-query": "2.25.2",
