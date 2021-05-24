@@ -46,7 +46,7 @@ jobs:
           restore-keys: |
             cypress-binary-
       - name: Install Dependencies
-        if: steps.cache-dependencies.outputs.cache-hit != 'true' || steps.cache-cypress-binary.outputs.cache-hit != 'true'
+        if: steps.cache-dependencies.outputs.cache-hit != 'true' || steps.cache-cypress-binary.cache-hit != 'true'
         run: |
           yarn install --force --non-interactive
   lint-format:
@@ -159,14 +159,19 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Run build
         run: |
-          yarn add playwright@1.8.0 && yarn build
+          npx netlify build
         env:
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2
         with:
           name: build-output
-          path: .next
+          path: |
+            .next
+            out_functions
+            out_publish
           retention-days: 1
   e2e-tests-chrome:
     runs-on: ubuntu-latest
@@ -204,7 +209,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-output
-          path: .next
       - name: Run cypress
         uses: cypress-io/github-action@v2.10.1
         with:
@@ -248,7 +252,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-output
-          path: .next
       - name: Run cypress
         uses: cypress-io/github-action@v2.10.1
         with:
@@ -256,3 +259,38 @@ jobs:
           browser: firefox
           headless: true
           install: false
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [12]
+    needs: [e2e-tests-chrome, e2e-tests-firefox]
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Restore yarn dependencies
+        uses: actions/cache@v2
+        id: cache-dependencies # use this to check for `cache-hit` (`steps.cache-dependencies.cache-hit != 'true'`)
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-output
+      - name: Deploy to Netlify
+        id: deploy-netlify
+        run: |
+          npx netlify deploy -m '${{ github.head_ref }}' --alias 'Deploy Preview ${{ github.event.number }} ${{ github.event.pull_request.head.ref }}'
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
