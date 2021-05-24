@@ -13,12 +13,6 @@ interface SnippetProps {
 export default function Snippet({
   snippet: { mdxSource, frontMatter },
 }: SnippetProps) {
-  // const content = hydrate(mdxSource, {
-  //   components: {
-  //     pre: Code,
-  //   },
-  // });
-
   return (
     <SnippetLayout frontMatter={frontMatter}>
       <MDXRemote

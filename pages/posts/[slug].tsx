@@ -29,20 +29,10 @@ const Blog = ({ post, ogImage, tweets }: BlogProps) => {
    * and then inject it with the tweet content at "hydration" time.
    * Although it works it will still print a warning at compilation/build time:
    *
-   * "Component StaticTweet was not imported, exported, or provided by MDXProvider as global scope"
    */
-
-  // @ts-ignore
   const StaticTweet = ({ id }: { id: string }) => {
     return <Tweet tweet={tweets[id]} />;
   };
-
-  // const content = hydrate(post.mdxSource, {
-  //   components: {
-  //     ...MDXComponents,
-  //     StaticTweet,
-  //   },
-  // });
 
   return (
     <BlogLayout frontMatter={post.frontMatter} ogImage={ogImage}>

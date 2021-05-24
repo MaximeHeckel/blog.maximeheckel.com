@@ -1,3 +1,5 @@
+import { MDXRemoteSerializeResult } from 'next-mdx-remote';
+
 export enum PostType {
   SNIPPET = 'snippet',
   BLOGPOST = 'blogPost',
@@ -26,7 +28,7 @@ export type FrontMatterPost = {
     readingTime: ReadingTime;
   };
   tweetIDs: string[];
-  mdxSource: any;
+  mdxSource: MDXRemoteSerializeResult;
 };
 
 export type Snippet = {
@@ -41,7 +43,7 @@ export type Snippet = {
 
 export type FrontMatterSnippet = {
   frontMatter: Snippet;
-  mdxSource: any;
+  mdxSource: MDXRemoteSerializeResult;
 };
 
 export type PostByType<T> = T extends PostType.BLOGPOST ? Post : Snippet;
