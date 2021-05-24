@@ -44,7 +44,7 @@ jobs:
           path: ~/.cache/Cypress
           key: cypress-binary-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-cypress-
+            cypress-binary-
       - name: Install Dependencies
         if: steps.cache-dependencies.outputs.cache-hit != 'true' || steps.cache-cypress-binary.outputs.cache-hit != 'true'
         run: |
@@ -199,7 +199,7 @@ jobs:
           path: ~/.cache/Cypress
           key: cypress-binary-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-cypress-
+            cypress-binary-
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
@@ -243,7 +243,7 @@ jobs:
           path: ~/.cache/Cypress
           key: cypress-binary-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-cypress-
+            cypress-binary-
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
