@@ -35,7 +35,7 @@
     "@visx/shape": "1.6.1",
     "@visx/tooltip": "1.6.1",
     "critters": "0.0.6",
-    "d3-array": "2.12.0",
+    "d3-array": "2.12.1",
     "date-fns": "2.17.0",
     "focus-trap-react": "8.3.2",
     "framer-motion": "4.1.3",
