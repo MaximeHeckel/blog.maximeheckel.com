@@ -47,7 +47,7 @@
     "next": "10.2.1",
     "next-mdx-remote": "3.0.2",
     "next-seo": "4.17.0",
-    "playwright": "1.8.0",
+    "playwright": "1.11.1",
     "playwright-aws-lambda": "0.6.0",
     "playwright-core": "1.8.0",
     "plyr-react": "3.0.7",
