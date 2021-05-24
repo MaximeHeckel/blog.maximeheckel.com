@@ -2214,6 +2214,16 @@
     classnames "^2.2.5"
     prop-types "^15.6.2"
 
+"@visx/group@1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@visx/group/-/group-1.7.0.tgz#e0ef2efbe00ef05326215d65b3d8a2b114df4f35"
+  integrity sha512-rzSXtV0+MHUyK+rwhVSV4qaHdzGi3Me3PRFXJSIAKVfoJIZczOkudUOLy34WvSrRlVyoFvGL7k9U5g8wHyY3nw==
+  dependencies:
+    "@types/classnames" "^2.2.9"
+    "@types/react" "*"
+    classnames "^2.2.5"
+    prop-types "^15.6.2"
+
 "@visx/point@1.6.1":
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@visx/point/-/point-1.6.1.tgz#16e1039c40572349b04acba2f38010c06de5d84d"
