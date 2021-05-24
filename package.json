@@ -50,7 +50,7 @@
     "react-intersection-observer": "^8.27.1",
     "react-query": "2.25.2",
     "react-typography": "^0.16.18",
-    "recharts": "1.8.5",
+    "recharts": "2.0.9",
     "typography": "^0.16.18"
   },
   "devDependencies": {
