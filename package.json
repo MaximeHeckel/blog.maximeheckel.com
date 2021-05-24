@@ -48,7 +48,7 @@
     "react": "16.13.0",
     "react-dom": "16.13.0",
     "react-intersection-observer": "^8.27.1",
-    "react-query": "2.25.2",
+    "react-query": "3.16.0",
     "react-typography": "^0.16.18",
     "recharts": "1.8.5",
     "typography": "^0.16.18"
