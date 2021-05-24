@@ -1827,10 +1827,10 @@
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.11.tgz#2521cc86f69d15c5b90664e4829d84566052c1cf"
   integrity sha512-2koNhpWm3DgWRp5tpkiJ8JGc1xTn2q0l+jUNUE7oMKXUf5NpI9AIdC4kbjGNFBdHtcxBD18LAksoudAVhFKCjw==
 
-"@types/d3-array@2.9.0":
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/@types/d3-array/-/d3-array-2.9.0.tgz#fb6c3d7d7640259e68771cd90cc5db5ac1a1a012"
-  integrity sha512-sdBMGfNvLUkBypPMEhOcKcblTQfgHbqbYrUqRE31jOwdDHBJBxz4co2MDAq93S4Cp++phk4UiwoEg/1hK3xXAQ==
+"@types/d3-array@2.12.1":
+  version "2.12.1"
+  resolved "https://registry.yarnpkg.com/@types/d3-array/-/d3-array-2.12.1.tgz#bee6857b812f1ecfd5e6832fd67f617b667dd024"
+  integrity sha512-kVHqB3kfLpU0WYEmx5Y2hi3LRhUGIEIQXFdGazNNWQhyhzHx8xrgLtpAOKYzpfS3a+GjFMdKsI82QUH4q5dACQ==
 
 "@types/d3-color@^1":
   version "1.4.1"
