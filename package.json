@@ -33,7 +33,7 @@
     "gatsby-image": "2.2.43",
     "gatsby-plugin-feed": "^2.5.7",
     "gatsby-plugin-lunr": "^1.5.2",
-    "gatsby-plugin-manifest": "2.3.3",
+    "gatsby-plugin-manifest": "2.6.1",
     "gatsby-plugin-mdx": "^1.2.6",
     "gatsby-plugin-offline": "^2.2.9",
     "gatsby-plugin-printer": "1.0.8",
