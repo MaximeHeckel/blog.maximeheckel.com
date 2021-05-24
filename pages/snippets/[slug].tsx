@@ -1,10 +1,11 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
-import hydrate from 'next-mdx-remote/hydrate';
+import { MDXRemote } from 'next-mdx-remote';
 import React from 'react';
 import SnippetLayout from 'layouts/Snippet';
 import { getFileBySlug, getFiles } from 'lib/mdx';
 import Code from '@theme/components/MDX/Code';
 import { FrontMatterSnippet, PostType } from 'types/post';
+
 interface SnippetProps {
   snippet: FrontMatterSnippet;
 }
@@ -12,13 +13,22 @@ interface SnippetProps {
 export default function Snippet({
   snippet: { mdxSource, frontMatter },
 }: SnippetProps) {
-  const content = hydrate(mdxSource, {
-    components: {
-      pre: Code,
-    },
-  });
+  // const content = hydrate(mdxSource, {
+  //   components: {
+  //     pre: Code,
+  //   },
+  // });
 
-  return <SnippetLayout frontMatter={frontMatter}>{content}</SnippetLayout>;
+  return (
+    <SnippetLayout frontMatter={frontMatter}>
+      <MDXRemote
+        {...mdxSource}
+        components={{
+          pre: Code,
+        }}
+      />
+    </SnippetLayout>
+  );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

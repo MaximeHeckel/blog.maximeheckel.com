@@ -1,6 +1,6 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
-import hydrate from 'next-mdx-remote/hydrate';
+import { MDXRemote } from 'next-mdx-remote';
 import React from 'react';
 import getOgImage from 'lib/generate-opengraph-images';
 import BlogLayout from 'layouts/BlogPost';
@@ -37,16 +37,22 @@ const Blog = ({ post, ogImage, tweets }: BlogProps) => {
     return <Tweet tweet={tweets[id]} />;
   };
 
-  const content = hydrate(post.mdxSource, {
-    components: {
-      ...MDXComponents,
-      StaticTweet,
-    },
-  });
+  // const content = hydrate(post.mdxSource, {
+  //   components: {
+  //     ...MDXComponents,
+  //     StaticTweet,
+  //   },
+  // });
 
   return (
     <BlogLayout frontMatter={post.frontMatter} ogImage={ogImage}>
-      {content}
+      <MDXRemote
+        {...post.mdxSource}
+        components={{
+          ...MDXComponents,
+          StaticTweet,
+        }}
+      />
     </BlogLayout>
   );
 };

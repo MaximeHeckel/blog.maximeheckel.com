@@ -22,4 +22,4 @@
     microphone=(),
     geolocation=(),
     interest-cohort=()'''
-    Content-Security-Policy = "default-src 'self';  script-src 'self' 'unsafe-eval' 'unsafe-inline' *.youtube.com *.twitter.com; child-src *.youtube.com *.google.com *.twitter.com; style-src 'self' 'unsafe-inline' *.googleapis.com; img-src * blob: data:; media-src 'self' cdn.plyr.io d2xl4m2ghaywko.cloudfront.net; connect-src *; font-src 'self'"
+    Content-Security-Policy = "default-src 'self';  script-src 'self' 'unsafe-eval' 'unsafe-inline' *.youtube.com *.twitter.com *.netlify.app; child-src *.youtube.com *.google.com *.twitter.com *.netlify.app; style-src 'self' 'unsafe-inline' *.googleapis.com; img-src * blob: data:; media-src 'self' cdn.plyr.io d2xl4m2ghaywko.cloudfront.net; connect-src *; font-src 'self'"
