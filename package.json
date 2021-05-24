@@ -25,7 +25,7 @@
   "dependencies": {
     "@emotion/core": "^10.0.6",
     "@emotion/styled": "^10.0.6",
-    "@mdx-js/mdx": "^1.1.6",
+    "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.1.6",
     "@sindresorhus/slugify": "^0.11.0",
     "framer-motion": "3.1.1",
