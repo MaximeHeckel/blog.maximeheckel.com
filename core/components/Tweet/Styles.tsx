@@ -5,9 +5,8 @@ export const TweetWrapper = styled('div')`
   border-radius: var(--border-radius-2);
   background-color: var(--maximeheckel-colors-foreground);
   padding-top: 1rem;
-  padding-bottom: 2rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   width: 100%;

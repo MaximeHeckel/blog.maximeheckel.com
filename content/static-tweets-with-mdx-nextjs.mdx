@@ -1,0 +1,398 @@
+---
+title: 'Static Tweets with MDX and Next.js'
+subtitle: A solution to remove sluggish Twitter embed iframes and load the tweets in your blog posts at the speed of light.
+date: '2021-06-01T08:00:00.000Z'
+updated: '2021-06-01T08:00:00.000Z'
+categories: []
+keywords:
+  [
+    'tweet',
+    'static site generation',
+    'next.js',
+    'mdx',
+    'twitter',
+    'static tweet',
+    'core web vitals',
+    'cls',
+    'blog',
+  ]
+slug: static-tweets-with-mdx-nextjs
+type: 'blogPost'
+featured: false
+---
+
+While migrating my blog to Next.js, I took the opportunity to address the big performance pitfalls that were degrading the reader's experience in the previous version. With [Core Web Vitals becoming one of the biggest factors in search ranking](https://vercel.com/blog/core-web-vitals) in 2021, I needed to get my act together and finally find workarounds to these issues before they impact my overall traffic.
+
+One of those issues was embed tweets. I often find myself in need to quote or reference a tweet in my MDX blog posts. However, using the classic Twitter embed iframe is not the best solution for that: **they are slow to load and triggers a lot of Content Layout Shift** (CLS) which hurts the performance of my blog.
+
+<Callout variant="info">
+
+CLS (Content Layout Shift) is one of the key metrics to watch out for when it comes to Core Web Vitals.
+You can find more information about the other metrics [on Google's dedicated Core Web Vitals support page](https://support.google.com/webmasters/answer/9205520?hl=en).
+
+</Callout>
+
+Thankfully, by leveraging some of Next.js' key features, a bit of hacking, and also the awesome work from [Vercel's Head of DevRel Lee Robinson](https://twitter.com/leeerob), we can get around this problem and **have tweets in MDX based pages that do not require an iframe and load instantly** 🚀 like this one:
+
+<StaticTweet id="1392141438528458758" />
+
+Curious how it works? Let's take a look at the solution I managed to put together to solve this problem and some MDX/Next.js magic ✨.
+
+## Coming up with a plan
+
+The original inspiration for this solution comes from [@leerob](https://twitter.com/leeerob) himself: a few months ago he came up with a video titled [Rebuilding the Twitter Embed Widget!](https://www.youtube.com/watch?v=xZ9OzPQORtw) which covers the following:
+
+- what are the issues with the classic embed tweets?
+- how to leverage the Twitter API to fetch the content of tweets
+- how to build a `<Tweet />` component to display the content of a tweet with the output of the Twitter API
+- how to put these pieces together to display a **predefined list of tweets** in a Next.js page.
+
+<Callout variant="danger">
+
+I highly recommend you watch the video first before continuing:
+
+- it's short
+- Lee is awesome and explains his process better than I could
+
+Don't worry, I will link the code that I ended up using for my own implementation throughout this blog post (some aspects differ a little bit from the ones featured in the video) 😄.
+
+</Callout>
+
+However, after watching this video, one could indeed follow this method to get a predefined list of tweets to render on a dedicated route/page in a Next.js project, **but this still doesn't quite solve the problem for tweets in MDX-based pages** 🤔. Thus I came up with the following plan to address this gap:
+
+<Image
+  src="blog/diagramstatictweet_xljjrx.png"
+  alt="Diagram showcasing the process to extract the Static Tweets out of the MDX document and render them in a Next.js page"
+  layout="responsive"
+  height={458}
+  width={800}
+/>
+
+The core of this plan happens **at build time** when every page/article of the blog gets generated:
+
+1. When processing a given path, we get its corresponding MDX document content by reading a static .mdx file.
+2. Each MDX file can use/import React components. When it comes to handling tweets, I planned on using the following interface/component: `<StaticTweet id="abcdef123"/>` where the id prop contains the id of the tweet I want to render.
+3. Then, by using some regex magic (I'll detail the code later in this article) we can extract each `StaticTweet` component from the content of the MDX document, and finally get a list of tweet ids where each id represents a tweet we want to eventually render.
+4. This list of tweet ids is then returned in `getStaticProps` and used to fetch each tweet from the Twitter API and eventually get a map of tweet ids to tweet content (see first code snippet below). This map will help us find the content associated with each static tweet.
+5. Finally, the most "hacky" part of this implementation: rendering each tweet declared in the MDX document with the proper content (you'll see why it's "hacky" in the next part 😄).
+
+```js title=Sample map of tweet ids to tweet content
+const tweets = {
+  '1392141438528458758': {
+    created_at: '2021-05-11T15:35:58.000Z',
+    text:
+      "📨 just sent the latest issue of my newsletter!\n\nTopics for this one include\n- looking back at one year of learning in public⭐️\n- my writing process ✍️\n- what's coming up next on my blog!\n\nCurious but not yet subscribed? You can read it right here 👇\nhttps://t.co/xQRm1wrNQw",
+    id: '1392141438528458758',
+    public_metrics: {
+      retweet_count: 1,
+      reply_count: 0,
+      like_count: 6,
+      quote_count: 0,
+    },
+    author_id: '116762918',
+    media: [],
+    referenced_tweets: [],
+    author: {
+      profile_image_url:
+        'https://pbs.twimg.com/profile_images/813646702553010176/rOM8J8DC_normal.jpg',
+      verified: false,
+      id: '116762918',
+      url: 'https://t.co/CePDMvig2q',
+      name: 'Maxime',
+      protected: false,
+      username: 'MaximeHeckel',
+    },
+  },
+  '1386013361809281024': {
+    attachments: {
+      media_keys: ['3_1386013216527077377'],
+    },
+    created_at: '2021-04-24T17:45:10.000Z',
+    text:
+      "24h dans le volume d'une Fiat 500 avec trois amis et pourtant on se sent comme chez soi... à 400 km d'altitude ! Superbe performance technique et opérationelle de toutes les équipes qui nous ont entrainés et encadrés pour ce voyage 👏 https://t.co/kreeGnnLUM",
+    id: '1386013361809281024',
+    public_metrics: {
+      retweet_count: 8578,
+      reply_count: 959,
+      like_count: 101950,
+      quote_count: 627,
+    },
+    author_id: '437520768',
+    media: [
+      {
+        type: 'photo',
+        url: 'https://pbs.twimg.com/media/EzwbrVEX0AEdSDO.jpg',
+        width: 4096,
+        media_key: '3_1386013216527077377',
+        height: 2731,
+      },
+    ],
+    referenced_tweets: [],
+    author: {
+      profile_image_url:
+        'https://pbs.twimg.com/profile_images/1377261846827270149/iUn8fDU6_normal.jpg',
+      verified: true,
+      id: '437520768',
+      url: 'https://t.co/6gdcdKt160',
+      name: 'Thomas Pesquet',
+      protected: false,
+      username: 'Thom_astro',
+    },
+  },
+};
+```
+
+## The implementation: a mix of regex, static site generation, and a hack
+
+Now that we went through the plan, it's time to take a look at the implementation. There are 3 major pieces to implement:
+
+1. Using regex to find all the occurrences of `StaticTweet` and eventually get a list of tweet ids from the MDX document.
+2. In `getStaticProps`, i.e. during static site generation, use that list of tweet ids to fetch their corresponding tweets with the Twitter API and return the map of tweets to id so the Next.js page can use it as a prop.
+3. Define the StaticTweet component.
+
+### Extracting static tweets from an MDX document
+
+Our first step consists of getting the list of ids of tweets we want to later fetch during the "static site generation" step.
+For that, I took the easy path: **using regex to find each occurrence of **` StaticTweet` when reading the content of my MDX file.
+
+Most MDX + Next.js setups, including this blog, have a function dedicated to reading and parsing the content of MDX files/documents. One example of such function can be found in [Vercel's own tutorial to build an MDX-based blog with Next.JS](https://nextjs.org/blog/markdown#sharing-layout): `getDocBySlug`. It's in this function that we'll extract each `StaticTweet` and build the list of ids:
+
+```js {5,15-19,30-33,41} title=Extraction of each occurrence of StaticTweet
+import matter from 'gray-matter';
+import { serialize } from 'next-mdx-remote/serialize';
+
+// Regex to find all the custom static tweets in a MDX file
+const TWEET_RE = /<StaticTweet\sid="[0-9]+"\s\/>/g;
+
+const docsDirectory = join(process.cwd(), 'docs')
+
+export function getDocBySlug(slug) {
+    const realSlug = slug.replace(/\.md$/, '')
+    const fullPath = join(docsDirectory, `${realSlug}.md`)
+    const fileContents = fs.readFileSync(fullPath, 'utf8')
+    const { data, content } = matter(fileContents)
+
+    /**
+     * Find all occurrence of <StaticTweet id="NUMERIC_TWEET_ID"/>
+     * in the content of the MDX blog post
+     */
+    const tweetMatch = content.match(TWEET_RE);
+
+    /**
+     * For all occurrences / matches, extract the id portion of the
+     * string, i.e. anything matching the regex /[0-9]+/g
+     *
+     * tweetIDs then becomes an array of string where each string is
+     * the id of a tweet.
+     * These IDs are then passed to the getTweets function to be fetched from
+     * the Twitter API.
+     */
+    const tweetIDs = tweetMatch?.map((mdxTweet) => {
+        const id = mdxTweet.match(/[0-9]+/g)![0];
+        return id;
+    });
+
+    const mdxSource = await serialize(source)
+
+    return {
+        slug: realSlug,
+        frontMatter: data,
+        mdxSource,
+        tweetIDs: tweetIDs || []
+    }
+}
+```
+
+Here, we execute the following tasks:
+
+- extract each occurrence of `StaticTweet`
+- extract the value of the `id` prop
+- return the array of ids along with the content of the article
+
+<Callout variant="info">
+
+In case you're curious, here's [my full implementation](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/1d530ee6dee0ed27d98111b98163cb86172f4ca2/lib/mdx.ts#L51-L73) of getDocsBySlug that I use for this blog. I rely on [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) to both serialize and render my MDX components.
+
+</Callout>
+
+### Build a map of tweet ids to tweet content
+
+This step will be a bit easier since it mostly relies on [@leerob](https://twitter.com/leeerob)'s code to fetch tweets that he detailed in his video. You can find his implementation [on his blog's repository](https://github.com/leerob/leerob.io/blob/main/lib/twitter.js). [My implementation](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/e1a28b211ea521b8bb21de70d81697b5d3cb8bb7/lib/tweets.ts) is the same as his but with Typescript type definitions.
+
+At this stage, however, we still need to do some little edits in our `getStaticProps` function and Next.js page:
+
+- Get the tweet ids out of the `getDocBySlug`
+- Fetch the content associated with each tweet id
+- Return the map of tweet ids to tweet content
+- Read the map of ids tweet ids to tweet content in the Next.js page code.
+
+```js {15,24,31} title=Fetch the list of tweets and inject the content in the page
+import Image from 'next/image';
+import { MDXRemote } from 'next-mdx-remote';
+import { Heading, Text, Pre, Code } from '../components';
+
+const components = {
+  img: Image,
+  h1: Heading.H1,
+  h2: Heading.H2,
+  p: Text,
+  code: Pre,
+  inlineCode: Code,
+};
+
+export default function Post({ mdxSource, tweets }) {
+  console.log(tweets); // prints the map of tweet id to tweet content
+
+  return <MDXRemote {...mdxSource} components={components} />;
+}
+
+export async function getStaticProps({ params }) {
+  const { mdxSource, frontMatter, slug, tweetIDs } = getDocBySlug(params.slug);
+
+  // Fetch the tweet content of each tweet id
+  const tweets = tweetIDs.length > 0 ? await getTweets(tweetIDs) : {};
+
+  return {
+    props: {
+      frontMatter,
+      mdxSource,
+      slug,
+      tweets,
+    },
+  };
+}
+```
+
+### Define the StaticTweet component
+
+This is where the core of this implementation resides, and also where things get a bit hacky 😬.
+
+We can now, at build time, for a given path, get the content of all the tweets present in a corresponding MDX document. But now the main problem is: **how can we render that content?**
+
+It's at this stage that I kind of hit a wall, and had to resolve to use, what I'd call, "unconventional patterns" and here are the reasons why:
+
+- we can't override the interface of my MDX component. MDX makes us use the same interface between the definition of the component and how it's used in the MDX documents, i.e. in our case it takes one `id` prop, so it can only be defined with an `id` prop. Thus we can't simply define an MDX component for `StaticTweet` and call it a day.
+- our map of tweet ids to tweet content is **only** available at the "page" level, and thus can't be extracted out of that scope.
+
+One way to fix this is to **define the** `StaticTweet` **component inline**, i.e. inside the Next.js page, and **use the map returned by** `getStaticProps` in the definition of the component:
+
+```js {15-18,23-28} title=Definition of the StaticTweet component used in MDX documents
+import Image from 'next/image';
+import { MDXRemote } from 'next-mdx-remote';
+import { Heading, Text, Pre, Code, Tweet } from '../components';
+
+const components = {
+  img: Image,
+  h1: Heading.H1,
+  h2: Heading.H2,
+  p: Text,
+  code: Pre,
+  inlineCode: Code,
+};
+
+export default function Post({ mdxSource, tweets }) {
+  const StaticTweet = ({ id }) => {
+    // Use the tweets map that is present in the outer scope to get the content associated with the id passed as prop
+    return <Tweet tweet={tweets[id]} />;
+  };
+
+  return (
+    <MDXRemote
+      {...mdxSource}
+      components={{
+        // Append the newly defined StaticTweet component to the list of predefined MDX components
+        ...components,
+        StaticTweet,
+      }}
+    />
+  );
+}
+```
+
+Usually, I'd not define a React component this way and even less with external dependencies that are not passed as props, however in this case:
+
+- it's only to render static data, thus that map will never change after the static site generation
+- it's still a valid Javascript pattern: our `StaticTweet` component definition is inherently a Javascript function and thus has access to variables outside of its inner scope.
+
+So, it may sound a bit weird but it's not a red flag I promise 😄.
+
+<Callout variant="info">
+
+If you're curious about the `<Tweet/>` component implementation, you can check:
+
+- [Lee Robinson's original implementation's](https://github.com/leerob/leerob.io/blob/a0ccf9d8d38ea8ef2ff39ee807165c7f2b764520/components/Tweet.js) that uses Tailwind CSS (the one he showcases in his video)
+- [My implementation](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/e7b785a89bf3234ce6922f93831a37e066fcaa7b/core/components/Tweet/Tweet.tsx) which is based on Lee's but I redefined the styles myself (since I do not use Tailwind CSS)
+
+This component is what eventually renders the Tweet in the article itself. Lee did an awesome job handling all the use cases from handling pictures, to retweets and displaying other data such as likes and replies.
+
+</Callout>
+
+## The result
+
+We now have everything in place to render Static Tweets in our Next.js + MDX setup so let's take a look at a couple of examples to show what this implementation is capable of.
+
+In the MDX document powering this same blog post, I added the following `StaticTweets`:
+
+```markdown
+<StaticTweet id="1397739827706183686" />
+
+<StaticTweet id="1386013361809281024" />
+
+<StaticTweet id="1384267021991309314" />
+```
+
+The first one renders a standard tweet:
+
+<StaticTweet id="1397739827706183686" />
+
+The following one renders a tweet with images:
+
+<StaticTweet id="1386013361809281024" />
+
+<Callout variant="info">
+
+The component I use to render this tweet uses `next/image` to handle the images of a tweet, whether it's an image or the avatar. This helps me to lazy load images, i.e. only load them when the user reaches the Static Tweet in the viewport and avoid CLS once they appear on the screen (the Twitter API gives me the dimension of each image which I can then use in my `Image` component)
+
+You can find more info about `next/image` in [the Vercel documentation about Image optimization](https://nextjs.org/docs/basic-features/image-optimization)
+
+</Callout>
+
+Finally, the last one renders a "quote tweet":
+
+<StaticTweet id="1384267021991309314" />
+
+And the best thing about this implementation: the resulting will remain as fast no matter how many tweets you add in your MDX document!
+
+Pretty sweet right? ✨
+
+<Callout variant="danger">
+
+👉 One potential caveat: depending on which library you use to handle your MDX document (`@next/mdx`, `mdx-bundler`, ...) you _may_ see the following message at build time:
+
+```
+Component StaticTweet was not imported, exported, or provided
+by MDXProvider as global scope
+```
+
+This sadly comes from the fact that we're declaring the `StaticTweet` component "inline", i.e. within the function handling our page.
+
+However:
+
+- it does not seem to impact the resulting page (at least as far as I've experimented with it)
+- this message/issue does not occur if you rely on `next-mdx-remote` v3 and above
+
+</Callout>
+
+## Conclusion
+
+First of all, thank you [@leerob](https://twitter.com/leeerob) for the original inspiration for this implementation 🙌! This was yet another moment where I saw how Next.js and static site generation can shine.
+
+I hope you all liked this little extension of Lee's static tweets tutorial. Adding support for MDX-based pages while keeping the interface clean was no easy feat as you can see but the result is definitely worth the effort and hours of tinkering put into this.
+
+I'm still looking to improve the `<Tweet />` component as I'm writing these words. There are yet a few elements that remain to be tackled in my current implementation, such as:
+
+- figuring out a clean/secure way to parse links, right now they just render as text
+- providing a better way to render a grid of images, as of now some images might see their aspect ratio altered
+- parsing numbers, i.e. displaying `118k` instead of `118000` when it comes to likes, retweets, or replies
+
+It's not perfect but for now, it will do! I revisited previous blog posts that referenced tweets and replaced them with this new component to guarantee the best reading experience. If you have any suggestions or ideas on how I could further improve how tweets are rendered on my blog, as always, don't hesitate to reach out! I love hearing your feedback!
