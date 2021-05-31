@@ -45,7 +45,6 @@ const Tweet = (props: Props) => {
   const tweetUrl = `https://twitter.com/${author.username}/status/${id}`;
   const createdAt = new Date(created_at);
 
-  const formattedText = text.replace(/https:\/\/[\n\S]+/g, '');
   const quoteTweet =
     referenced_tweets && referenced_tweets.find((t) => t.type === 'quoted');
 
@@ -101,13 +100,14 @@ const Tweet = (props: Props) => {
           <TwitterLogo />
         </a>
       </div>
-      <Body>{formattedText}</Body>
+      <Body>{text}</Body>
       {media && media.length > 1 ? (
         <ImageGrid>
           {media.map((m) => (
             <Image
               key={m.media_key}
               alt={text}
+              layout="intrinsic"
               height={m.height}
               width={m.width}
               src={m.url}

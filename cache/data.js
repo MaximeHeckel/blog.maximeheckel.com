@@ -1,5 +1,17 @@
 export const posts = [
   {
+    title: 'Static Tweets with MDX and Next.js',
+    subtitle:
+      'A solution to remove sluggish Twitter embed iframes and load the tweets in your blog posts at the speed of light.',
+    date: '2021-06-01T08:00:00.000Z',
+    updated: '2021-06-01T08:00:00.000Z',
+    categories: [],
+    keywords: [],
+    slug: 'static-tweets-with-mdx-nextjs',
+    type: 'blogPost',
+    featured: false,
+  },
+  {
     title: 'Advanced animation patterns with Framer Motion',
     subtitle:
       "A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns through curated examples and interactive playgrounds.",

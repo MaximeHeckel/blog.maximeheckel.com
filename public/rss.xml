@@ -13,6 +13,14 @@
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
         <item>
+            <title><![CDATA[Static Tweets with MDX and Next.js]]></title>
+            <description><![CDATA[A solution to remove sluggish Twitter embed iframes and load the tweets in your blog posts at the speed of light.]]></description>
+            <link>https://blog.maximeheckel.com/posts/static-tweets-with-mdx-nextjs</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/static-tweets-with-mdx-nextjs</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 01 Jun 2021 08:00:00 GMT</pubDate>
+        </item>
+        <item>
             <title><![CDATA[Advanced animation patterns with Framer Motion]]></title>
             <description><![CDATA[A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns through curated examples and interactive playgrounds.]]></description>
             <link>https://blog.maximeheckel.com/posts/advanced-animation-patterns-with-framer-motion</link>
