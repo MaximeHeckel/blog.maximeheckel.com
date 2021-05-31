@@ -63,5 +63,5 @@ export const SingleImageWrapper = styled('div')`
 export const ActionIcons = styled('a')`
   display: flex;
   align-items: center;
-  margin-right: 2rem;
+  margin-right: 0.75rem;
 `;

@@ -17,7 +17,7 @@ export const TwitterLogo = () => (
 export const ReplyIcon = () => (
   <svg
     css={css`
-      margin-right: 1rem;
+      margin-right: 0.2rem;
     `}
     width="24"
     height="24"
@@ -35,7 +35,7 @@ export const ReplyIcon = () => (
 export const RetweetIcon = () => (
   <svg
     css={css`
-      margin-right: 1rem;
+      margin-right: 0.2rem;
     `}
     width="24"
     height="24"
@@ -53,7 +53,7 @@ export const RetweetIcon = () => (
 export const LikeIcon = () => (
   <svg
     css={css`
-      margin-right: 1rem;
+      margin-right: 0.2rem;
     `}
     width="24"
     height="24"
