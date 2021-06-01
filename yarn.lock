@@ -1569,10 +1569,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@netlify/cache-utils@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@netlify/cache-utils/-/cache-utils-1.0.2.tgz#bda441aec231a48b92aeb009c39fdc1de47970f1"
-  integrity sha512-5eB8PpX4UaJsgVWwV+TSuGyzi/rysCqTSZzVVJVDSVr0sQa574N6LmLWuYl0WJluSTWeYtUUlATLeP838FaZfQ==
+"@netlify/cache-utils@1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@netlify/cache-utils/-/cache-utils-1.0.7.tgz#edbb2fbf15882f7fbcd51ca74b74779cadaa56f8"
+  integrity sha512-yrdrnQkzg/qMovoFYwQ24UVt/OyHtP+t0KpQFd7eBl6gnuuGGgxFocaFFv6eKpMVwzHTsOwx/y9B/FcC3/6cfA==
   dependencies:
     array-flat-polyfill "^1.0.1"
     cpy "^8.1.0"
@@ -7471,12 +7471,12 @@ nested-error-stacks@^2.0.0, nested-error-stacks@^2.1.0:
   resolved "https://registry.yarnpkg.com/nested-error-stacks/-/nested-error-stacks-2.1.0.tgz#0fbdcf3e13fe4994781280524f8b96b0cdff9c61"
   integrity sha512-AO81vsIO1k1sM4Zrd6Hu7regmJN1NSiAja10gc4bX3F0wd+9rQmcuHQaHVQCYIEC8iFXnE+mavh23GOt7wBgug==
 
-netlify-plugin-cache-nextjs@1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/netlify-plugin-cache-nextjs/-/netlify-plugin-cache-nextjs-1.5.2.tgz#3c206debc76b8cf19536ea8bde855f5d8a52ee5b"
-  integrity sha512-pOtc+ZsZmXFSz3db8OfaOr+5HTQNIxPUTDEC4mI2g0ikTv3pXMjYrd0J1GJ0fU6KfJlbZqSXbqi4bbA6QArp0A==
+netlify-plugin-cache-nextjs@1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/netlify-plugin-cache-nextjs/-/netlify-plugin-cache-nextjs-1.6.1.tgz#fb8aed8454efb6be936315c969fb9d18c751cf62"
+  integrity sha512-UCxxpMgCuH/ZFenj/Y+GY2MGBQTqCNuEKNngYrKXUE3KkkHgE4ufTckhgv6nxjzIOJK2d+BQY/CwDClp2DLftA==
   dependencies:
-    "@netlify/cache-utils" "1.0.2"
+    "@netlify/cache-utils" "1.0.7"
 
 next-mdx-remote@3.0.2:
   version "3.0.2"
