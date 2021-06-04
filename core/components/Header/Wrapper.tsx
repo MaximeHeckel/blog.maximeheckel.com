@@ -42,10 +42,11 @@ export const Wrapper: React.FC<HeaderWrapperProps> = (props) => {
         `}
       >
         <div
-          css={css`
-            height: 6px;
-            background-color: var(--maximeheckel-colors-brand);
-          `}
+        //   css={css`
+        //     height: 6px;
+        //     background-color: var(--maximeheckel-colors-brand);
+        //   `}
+        // />
         />
         <HeaderWrapper
           sticky={props.sticky}
