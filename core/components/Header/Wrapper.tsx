@@ -85,10 +85,6 @@ const HeaderWrapper = styled(motion.div)<StyledHeaderWrapperProps>`
       : 'box-shadow: none;'}
 `;
 
-/**
- *  backdrop-filter: blur(6px); opacity: 0.88;
- */
-
 const HeaderContent = styled('div')`
   grid-column: 2;
   height: inherit;
