@@ -1,33 +1,13 @@
-import { posts } from '../../cache/data';
-
-/**
- * TODO improve this implementation: use Levenshtein distance or any other search algorithm that
- * could make this more scalable in the future:
- * - support tags
- * - support partial string
- * - support sentences
- * - support typos (?)
- *
- * This is good for now
- */
+import lunr from 'lunr';
+import search from '../../cache/search.json';
 
 export default (req, res) => {
-  const results = req.query.q
-    ? posts.filter((post) => {
-        if (post.type === 'snippet') {
-          return (
-            post.title.toLowerCase().includes(req.query.q) ||
-            req.query.q.includes(post.type)
-          );
-        }
+  const index = lunr.Index.load(search.index);
+  const store = search.store;
 
-        return (
-          post.title.toLowerCase().includes(req.query.q) ||
-          post.subtitle.toLowerCase().includes(req.query.q) ||
-          post.keywords.includes(req.query.q)
-        );
-      })
-    : [];
+  const refs = index.search(req.query.q);
+  const results = refs.map(({ ref }) => store[ref]);
+
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ results }));

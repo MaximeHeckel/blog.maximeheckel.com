@@ -16,7 +16,7 @@ module.exports = withBundleAnalyzer({
   webpack: (config, { dev, isServer }) => {
     if (isServer) {
       require('./scripts/generate-sitemap');
-      require('./scripts/generate-cache');
+      require('./scripts/generate-index');
       require('./scripts/generate-rss');
     }
 

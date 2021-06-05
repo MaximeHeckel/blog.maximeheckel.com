@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 const prettier = require('prettier');
+const lunr = require('lunr');
 
 (async () => {
   const root = process.cwd();
@@ -35,19 +36,27 @@ const prettier = require('prettier');
         ];
       }, [])
       .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
-
-    console.info(`\rCached ${posts.length} ${type} elements`);
     return posts;
   }
 
-  const content = JSON.stringify([...getPosts('blog'), ...getPosts('snippet')]);
+  const documents = [...getPosts('blog'), ...getPosts('snippet')];
 
-  const fileContent = `export const posts = ${content}`;
+  const index = lunr(function () {
+    this.field('title');
+    this.field('subtitle');
+    this.field('keywords');
+    this.field('type');
+    this.ref('slug');
 
-  const formatted = prettier.format(fileContent, {
-    ...prettierConfig,
-    parser: 'babel',
+    documents.forEach(function (doc) {
+      this.add(doc);
+    }, this);
   });
+
+  const store = documents.reduce((acc, { slug, subtitle, title, type }) => {
+    acc[slug] = { title, subtitle, slug, type };
+    return acc;
+  }, {});
 
   try {
     fs.readdirSync('cache');
@@ -55,9 +64,13 @@ const prettier = require('prettier');
     fs.mkdirSync('cache');
   }
 
-  fs.writeFile('cache/data.js', formatted, (error) => {
-    if (error) {
-      return console.error(error);
+  fs.writeFile(
+    'cache/search.json',
+    JSON.stringify({ index, store }),
+    (error) => {
+      if (error) {
+        return console.error(error);
+      }
     }
-  });
+  );
 })();

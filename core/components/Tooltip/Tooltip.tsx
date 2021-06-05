@@ -69,7 +69,7 @@ const Tooltip: React.FC<Props> = (props) => {
       opacity: 1,
     },
     idle: {
-      scale: 0.97,
+      scale: 0.95,
       y: 10,
       opacity: 0,
     },
