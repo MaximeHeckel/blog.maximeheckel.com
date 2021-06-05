@@ -64,14 +64,12 @@ const Tooltip: React.FC<Props> = (props) => {
 
   const tipVariants = {
     hover: {
-      rotate: 0,
       scale: 1,
       y: 6,
       opacity: 1,
     },
     idle: {
-      rotate: -8,
-      scale: 0.97,
+      scale: 0.95,
       y: 10,
       opacity: 0,
     },

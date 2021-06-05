@@ -23,13 +23,6 @@ const Blog = ({ post, ogImage, tweets }: BlogProps) => {
     return <div>Loading...</div>;
   }
 
-  /**
-   * HACK:
-   * This is an "inline" MDX Component. It allows me to read the out-of-scope "tweets" object
-   * and then inject it with the tweet content at "hydration" time.
-   * Although it works it will still print a warning at compilation/build time:
-   *
-   */
   const StaticTweet = ({ id }: { id: string }) => {
     return <Tweet tweet={tweets[id]} />;
   };

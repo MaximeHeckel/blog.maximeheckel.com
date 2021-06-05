@@ -296,8 +296,8 @@ const Search = (props: Props) => {
                         align-items: center;
                         justify-content: center;
                         margin-left: 16px;
-                        height: 40px;
-                        width: 40px;
+                        height: 35px;
+                        width: 35px;
                         background-color: var(--maximeheckel-colors-emphasis);
                         border-radius: var(--border-radius-1);
 
