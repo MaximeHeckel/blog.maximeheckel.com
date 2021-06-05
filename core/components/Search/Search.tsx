@@ -420,6 +420,22 @@ const FormWrapper = styled('div')`
       color: var(--maximeheckel-colors-typeface-1);
     }
 
+    -webkit-appearance: textfield;
+    outline-offset: -2px;
+
+    ::-webkit-search-cancel-button,
+    ::-webkit-search-decoration {
+      -webkit-appearance: none;
+    }
+    ::-webkit-input-placeholder {
+      color: inherit;
+      opacity: 0.54;
+    }
+    ::-webkit-file-upload-button {
+      -webkit-appearance: button;
+      font: inherit;
+    }
+
     ::-webkit-autofill {
       background: transparent;
       color: var(--maximeheckel-colors-typeface-0);

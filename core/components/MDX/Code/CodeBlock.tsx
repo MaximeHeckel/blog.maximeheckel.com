@@ -98,6 +98,8 @@ const CodeBlock = (props: CodeBlockProps) => {
 export default CodeBlock;
 
 const Pre = styled('pre')<{ title?: string }>`
+  margin-top: 0;
+  margin-bottom: 0;
   text-align: left;
   padding: 8px 0px;
   overflow: auto;

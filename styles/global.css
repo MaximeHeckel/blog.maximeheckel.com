@@ -166,6 +166,7 @@ a {
   text-decoration: underline;
 }
 
+[hidden],
 .hidden {
   display: none;
 }
@@ -178,6 +179,16 @@ a {
   color: var(--maximeheckel-colors-brand) !important;
 }
 
+code {
+  font-family: Fira Code;
+  font-size: 0.85rem;
+  line-height: 1.45rem;
+}
+
+/**
+  The following properties are set to !important to override react-simple-code-editor
+  default inline styles
+**/
 pre,
 textarea.npm__react-simple-code-editor__textarea {
   background-color: var(--maximeheckel-colors-foreground) !important;
@@ -214,7 +225,6 @@ textarea.npm__react-simple-code-editor__textarea {
 .token.number,
 .token.string,
 .token.inserted {
-  font-weight: bold;
   color: var(--token-selector);
 }
 
