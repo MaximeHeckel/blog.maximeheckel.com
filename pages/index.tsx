@@ -66,13 +66,13 @@ const IndexPage = (props: Props) => {
   const { posts } = props;
 
   return (
-    <Layout footer={true} header={true} headerProps={{ search: true }}>
+    <Layout footer header headerProps={{ search: true }}>
       <Grid
         columns="var(--layout-medium)"
         columnGap={20}
         rowGap={100}
         css={css`
-          margin-top: 128px;
+          padding-top: 128px;
           > * {
             grid-column: 2;
           }

@@ -24,7 +24,7 @@ const ArrowSVG = () => (
   </svg>
 );
 // TODO This should be in its own folder/file
-export const ListItem = (props: HTMLLIElement) => {
+export const ListItem: React.FC<HTMLLIElement> = (props) => {
   return (
     <li>
       <span>

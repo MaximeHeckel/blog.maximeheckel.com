@@ -55,14 +55,12 @@ export const EnterIcon = (props: SVGAttributes<SVGElement>) => (
   >
     <path
       d="M9.08862 10.6855L4.08862 15.6855L9.08862 20.6855"
-      stroke="black"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M20.0886 4.68555V11.6855C20.0886 12.7464 19.6672 13.7638 18.917 14.514C18.1669 15.2641 17.1495 15.6855 16.0886 15.6855H4.08862"
-      stroke="black"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
