@@ -26,12 +26,14 @@ const Seo = ({ title, desc, image, path, date, updated }: Props) => {
     image: `${url}${image}` || configImage,
     title: `${title} - ${configTitle}` || configTitle,
     url: `${url}${path || ''}`,
-    date: date || '',
-    updated: updated || date || '',
+    date: date,
+    updated: updated || date,
   };
 
-  const formattedDate = new Date(seo.date).toISOString();
-  const formattedUpdatedDate = new Date(seo.updated).toISOString();
+  const formattedDate = seo.date ? new Date(seo.date).toISOString() : '';
+  const formattedUpdatedDate = seo.updated
+    ? new Date(seo.updated).toISOString()
+    : '';
   const featuredImage = {
     url: seo.image,
     alt: seo.title,

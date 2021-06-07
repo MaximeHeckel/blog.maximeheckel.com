@@ -8,6 +8,12 @@
   xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
 >
   <url>
+    <loc>https://blog.maximeheckel.com/design/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://blog.maximeheckel.com/</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>

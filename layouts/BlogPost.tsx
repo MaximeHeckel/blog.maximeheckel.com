@@ -95,7 +95,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
   return (
     <Layout footer={true} header={true} headerProps={headerProps}>
       <Seo
-        title={`${title}`}
+        title={title}
         desc={subtitle}
         image={ogImage}
         path={path}
