@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { format } from 'date-fns';
-import dynamic from 'next/dynamic';
 import React from 'react';
 import siteConfig from 'config/site';
 import Layout from '@theme/layout';
@@ -13,13 +12,7 @@ import Pill, { PillVariant } from '@theme/components/Pill';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
 import Grid from '@theme/components/Grid';
-
-const TableOfContent = dynamic(
-  () => import('@theme/components/TableOfContent'),
-  {
-    ssr: false,
-  }
-);
+import TableOfContent from '@theme/components/TableOfContent';
 
 interface WebmentionBlogDataProps {
   date: string;

@@ -21,7 +21,7 @@ module.exports = {
         "<meta property=\"og:image:width\" content=\"1280\"/",
         "<meta property=\"og:image:height\" content=\"720\"/",
         "<meta property=\"og:locale\" content=\"en",
-        "<meta name=\"next-head-count\" content=\"19\"/"
+        "<meta name=\"next-head-count\" content=\"20\"/"
       ],
       "2": [
         "rel=\"canonical\" href=\"https://blog.maximeheckel.com\"/"
@@ -50,7 +50,7 @@ module.exports = {
         "<meta property=\"og:description\" content=\"A guide to get started with AST (Abstract Syntax Tree) and custom built ESLint plugins\"/",
         "<meta property=\"og:image\" content=\"https://blog.maximeheckel.com/static/og/a06f6570e006693f9f47eb524ebd3457.png\"/",
         "<meta property=\"og:image:alt\" content=\"How I built my first custom ESLint rule - Maxime Heckel&#x27;s Blog\"/",
-        "<meta name=\"next-head-count\" content=\"23\"/"
+        "<meta name=\"next-head-count\" content=\"24\"/"
       ],
       "2": [
         "rel=\"canonical\" href=\"https://blog.maximeheckel.com/posts/how-to-build-first-eslint-rule/\"/"
