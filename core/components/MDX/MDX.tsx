@@ -87,6 +87,7 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
   ul {
     margin-left: 0px;
     li {
+      word-break: break-all;
       list-style: none;
       display: flex;
       span {
