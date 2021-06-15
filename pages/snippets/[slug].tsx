@@ -1,6 +1,5 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { MDXRemote } from 'next-mdx-remote';
-import React from 'react';
 import SnippetLayout from 'layouts/Snippet';
 import { getFileBySlug, getFiles } from 'lib/mdx';
 import Code from '@theme/components/MDX/Code';

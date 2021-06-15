@@ -81,7 +81,7 @@ const Window = styled('div')`
   height: 300px;
 `;
 
-const SlidingWindow = () => {
+export const SlidingWindow = () => {
   const [ref, inView] = useInView();
   const duration = 4;
   const loop = Infinity;
@@ -406,5 +406,3 @@ const SlidingWindow = () => {
     </Window>
   );
 };
-
-export { SlidingWindow };

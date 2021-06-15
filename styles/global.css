@@ -157,7 +157,6 @@
 body {
   background: var(--maximeheckel-colors-body);
   text-rendering: optimizeLegibility;
-  --plyr-color-main: var(--maximeheckel-colors-brand);
   margin: 0;
 }
 
