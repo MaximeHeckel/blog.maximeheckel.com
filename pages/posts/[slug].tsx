@@ -1,14 +1,13 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import { MDXRemote } from 'next-mdx-remote';
-import React from 'react';
-import getOgImage from 'lib/generate-opengraph-images';
 import BlogLayout from 'layouts/BlogPost';
+import getOgImage from 'lib/generate-opengraph-images';
+import { getTweets } from 'lib/tweets';
 import { getFileBySlug, getFiles } from 'lib/mdx';
 import MDXComponents from '@theme/components/MDX/MDXComponents';
 import Tweet from '@theme/components/Tweet';
 import { FrontMatterPost, PostType } from 'types/post';
-import { getTweets } from 'lib/tweets';
 
 interface BlogProps {
   post?: FrontMatterPost;

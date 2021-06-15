@@ -51,7 +51,6 @@
     "playwright": "1.8.0",
     "playwright-aws-lambda": "0.6.0",
     "playwright-core": "1.8.0",
-    "plyr-react": "3.0.7",
     "prism-react-renderer": "^1.1.1",
     "prismjs": "^1.23.0",
     "qs": "6.9.4",

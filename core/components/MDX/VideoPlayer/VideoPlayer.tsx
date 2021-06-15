@@ -1,29 +1,22 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import Plyr from 'plyr-react';
 import { useTheme } from '@theme/context/ThemeContext';
-import 'plyr-react/dist/plyr.css';
 
 interface Props {
   poster?: string;
-  controls?: string[];
+  controls?: boolean;
   loop?: boolean;
   width?: number;
+  height?: number;
   src: string;
 }
 
-const Wrapper = styled('div')<{ width?: number }>`
-  height: 720px;
+const Wrapper = styled('div')`
   margin-bottom: 32px;
+  display: flex;
 
-  .plyr {
+  video {
     margin: 0 auto;
-    border-radius: var(--border-radius-2);
-    background: unset;
-    width: ${(p) => `${p.width}px` || '100%'};
-  }
-
-  .plyr__video-wrapper {
     background: var(--maximeheckel-colors-emphasis);
   }
 `;
@@ -37,7 +30,7 @@ const getDisplayedPoster = (poster: string, dark: boolean) => {
 };
 
 const VideoPlayer = (props: Props) => {
-  const { controls, loop, width, poster, src } = props;
+  const { controls, loop, width, height, poster, src } = props;
   const { dark } = useTheme();
   const [currentPoster, setCurrentPoster] = React.useState<string | undefined>(
     undefined
@@ -53,21 +46,17 @@ const VideoPlayer = (props: Props) => {
     }
   }, [dark, poster]);
 
-  const config = {
-    controls: controls || [],
-    loop: { active: loop || false },
-  };
-
   return (
-    <Wrapper width={width}>
-      <Plyr
-        source={{
-          type: 'video',
-          sources: [{ src }],
-          poster: currentPoster,
-        }}
-        options={config}
-      />
+    <Wrapper>
+      <video
+        poster={currentPoster}
+        width={width}
+        height={height}
+        controls={controls}
+        loop={loop || false}
+      >
+        <source src={src} type="video/mp4" />
+      </video>
     </Wrapper>
   );
 };

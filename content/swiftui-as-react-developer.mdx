@@ -266,8 +266,9 @@ If instead of `@Binding` we were to use a simple state, we wouldn't be able to r
 <VideoPlayer
   poster="swiftui_binding_example"
   src="https://d2xl4m2ghaywko.cloudfront.net/swiftui-bindings-example.mp4 "
-  controls={['play-large', 'play', 'progress', 'current-time', 'fullscreen']}
+  controls={true}
   width={330}
+  height={720}
 />
 
 ## Basic state management
@@ -325,8 +326,9 @@ However, unlike React, where your state can technically take pretty complex obje
 <VideoPlayer
   poster="swiftui_state_management"
   src="https://d2xl4m2ghaywko.cloudfront.net/swiftui-state-management-1.mp4"
-  controls={['play-large', 'play', 'progress', 'current-time', 'fullscreen']}
+  controls={true}
   width={330}
+  height={720}
 />
 
 ```swift title=Code Snippet of the example featured above:
