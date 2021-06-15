@@ -368,11 +368,7 @@ Pretty sweet right? ✨
 <Callout variant="danger">
 
 👉 One potential caveat: depending on which library you use to handle your MDX document (`@next/mdx`, `mdx-bundler`, ...) you _may_ see the following message at build time:
-
-```
-Component StaticTweet was not imported, exported, or provided
-by MDXProvider as global scope
-```
+`Component StaticTweet was not imported, exported, or provided by MDXProvider as global scope`
 
 This sadly comes from the fact that we're declaring the `StaticTweet` component "inline", i.e. within the function handling our page.
 

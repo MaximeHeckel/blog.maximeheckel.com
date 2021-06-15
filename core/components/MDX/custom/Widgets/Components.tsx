@@ -51,7 +51,7 @@ export const AnimationCardHeader = styled('div')`
 `;
 
 export const HighlightedValue = styled('div')`
-  border-radius: 4px;
+  border-radius: var(--border-radius-0);
   background-color: var(--maximeheckel-colors-emphasis);
   color: var(--maximeheckel-colors-brand);
   border: 1px solid var(--maximeheckel-colors-brand);
@@ -97,7 +97,7 @@ export const Form = styled('form')`
     background-color: var(--maximeheckel-colors-emphasis);
     color: var(--maximeheckel-colors-brand);
     height: 30px;
-    border-radius: 4px;
+    border-radius: var(--border-radius-0);
     padding: 5px;
   }
 `;

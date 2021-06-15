@@ -50,6 +50,10 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
 
   color: var(--maximeheckel-colors-typeface-1);
 
+  figure {
+    margin-bottom: 2.25rem;
+  }
+
   figcaption {
     font-size: 14px;
     text-align: left;
@@ -118,7 +122,7 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
 
   a {
     color: var(--maximeheckel-colors-brand);
-    word-break: break-all;
+    word-break: break-word;
   }
 
   twitter-widget {

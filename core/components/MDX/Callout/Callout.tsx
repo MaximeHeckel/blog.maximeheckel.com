@@ -44,10 +44,10 @@ const StyledCallout = styled('div')<{ variant: VARIANT }>`
     background: none;
   }
 
-  border-radius: 4px var(--border-radius-2) var(--border-radius-2) 4px;
+  border-radius: var(--border-radius-0);
   border-left: 3px solid;
   padding: 30px 30px;
-  margin: 25px 0px;
+  margin-bottom: 2.25rem;
 
   *:last-child {
     margin-bottom: 0px;

@@ -17,4 +17,5 @@ const InlineCodeWrapper = styled('code')`
   padding-right: 6px;
   font-size: 16px;
   font-weight: 400 !important;
+  word-break: break-word;
 `;

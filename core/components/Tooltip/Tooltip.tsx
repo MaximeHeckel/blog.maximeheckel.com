@@ -108,7 +108,7 @@ const Tooltip: React.FC<Props> = (props) => {
           color: hsla(var(--palette-gray-00));
           background: hsla(var(--palette-gray-80));
           box-shadow: var(--maximeheckel-shadow-2);
-          border-radius: 4px;
+          border-radius: var(--border-radius-0);
           position: absolute;
           right: 0;
           bottom: -60%;

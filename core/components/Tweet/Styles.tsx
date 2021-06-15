@@ -14,6 +14,20 @@ export const TweetWrapper = styled('div')`
   border: solid 1px var(--maximeheckel-colors-emphasis);
   box-shadow: var(--maximeheckel-shadow-2);
 
+  @media (max-width: 700px) {
+    /**
+     * Make it fullbleed! 
+     */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+
+    border-radius: 0px;
+  }
+
   a {
     text-decoration: none;
     color: var(--maximeheckel-colors-typeface-2);
@@ -63,5 +77,5 @@ export const SingleImageWrapper = styled('div')`
 export const ActionIcons = styled('a')`
   display: flex;
   align-items: center;
-  margin-right: 0.75rem;
+  margin-right: 1rem;
 `;

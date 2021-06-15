@@ -49,7 +49,7 @@ const getX = (d: { x: number; y: number }) => d.x;
 const getY = (d: { x: number; y: number }) => d.y;
 
 const height = 200;
-const width = 350;
+const width = 320;
 
 const SpringPhysics = (props: { withDamping?: boolean }) => {
   const { withDamping = false } = props;

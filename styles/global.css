@@ -83,6 +83,7 @@
   --palette-indigo-70: var(--base-indigo), 30%;
   --palette-indigo-80: var(--base-indigo), 20%;
 
+  --border-radius-0: 4px;
   --border-radius-1: 8px;
   --border-radius-2: 16px;
 
