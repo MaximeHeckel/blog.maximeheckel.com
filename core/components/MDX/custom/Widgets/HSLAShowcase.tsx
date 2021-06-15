@@ -28,6 +28,10 @@ const HSLAShowcase = () => {
             display: flex;
             justify-content: space-evenly;
             width: 350px;
+
+            @media (max-width: 700px) {
+              width: 100%;
+            }
           `}
         >
           <div

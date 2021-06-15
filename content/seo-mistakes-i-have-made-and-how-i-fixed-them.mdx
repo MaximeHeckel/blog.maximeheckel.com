@@ -89,8 +89,15 @@ Thankfully there's a way to avoid this: **setting canonical URLs**. These URLs a
 
 There are 2 steps to add valid canonical URLs to your website:
 
-1. You need to add them to the `<head>` of your post. For example: `<link rel="canonical" href="https://blog.maximeheckel.com/posts/learning-in-public/" />`
+1. You need to add them to the `<head>` of your post. See example below
 2. Head over to any third party platform you used in the past that has the content and add this canonical URL into the setting page of your post. I followed [this guide](https://help.medium.com/hc/en-us/articles/360033930293-Set-a-canonical-link) on Medium to update my old blog post.
+
+```html title=Example of canonical URL
+<link
+  rel="canonical"
+  href="https://blog.maximeheckel.com/posts/learning-in-public/"
+/>
+```
 
 Of course, you cannot do the first step until you've fixed any potential trailing slashes issues you may have like the ones I shared just above.
 

@@ -87,7 +87,6 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
   ul {
     margin-left: 0px;
     li {
-      word-break: break-all;
       list-style: none;
       display: flex;
       span {
@@ -119,6 +118,7 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
 
   a {
     color: var(--maximeheckel-colors-brand);
+    word-break: break-all;
   }
 
   twitter-widget {
