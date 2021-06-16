@@ -43,6 +43,7 @@ const GraphWrapper = styled('div')`
   border-radius: var(--border-radius-2);
   padding: 0px 0px 10px 0px;
   overflow: hidden;
+  margin-bottom: 2.25rem;
 `;
 
 const endpoint = 'https://graphql.fauna.com/graphql';

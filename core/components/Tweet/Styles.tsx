@@ -30,7 +30,7 @@ export const TweetWrapper = styled('div')`
 
   a {
     text-decoration: none;
-    color: var(--maximeheckel-colors-typeface-2);
+    color: var(--maximeheckel-colors-typeface-2) !important;
   }
 `;
 

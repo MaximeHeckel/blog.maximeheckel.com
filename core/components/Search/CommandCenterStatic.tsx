@@ -35,7 +35,7 @@ const CommandCenterStatic = () => (
       </div>
     </Item>
     <Separator>Navigation</Separator>
-    <Item data-testid="navigation" key="design-navigation">
+    <Item data-testid="navigation" key="home-navigation">
       <Link href="/">
         <a>
           <ArrowIcon stroke="var(--maximeheckel-colors-typeface-2)" />
