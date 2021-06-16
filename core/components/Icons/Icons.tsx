@@ -19,6 +19,31 @@ export const TwitterIcon = (props: SVGAttributes<SVGElement>) => (
   </svg>
 );
 
+export const ArrowIcon = (props: SVGAttributes<SVGElement>) => (
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 25 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    stroke="black"
+    {...props}
+  >
+    <path
+      d="M5 12H19"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M14.0829 6.42532L19 12L14.0829 17.5747"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export const ExternalIcon = (props: SVGAttributes<SVGElement>) => (
   <svg
     width="25"
