@@ -63,6 +63,7 @@ const MainHeader = (props: MainHeaderProps) => {
       <Header
         sticky={props.sticky}
         collapsableOnScroll={props.collapsableOnScroll}
+        progress={props.progress}
       >
         <Flex>
           <Header.LogoWrapper

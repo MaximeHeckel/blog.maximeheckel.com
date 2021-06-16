@@ -7,6 +7,10 @@ const ProgressBarWrapper = styled(motion.div)`
   max-height: 425px;
   width: 2px;
   background-color: hsla(var(--palette-gray-20), 0.3);
+
+  @media (max-width: 700px) {
+    display: none;
+  }
 `;
 
 const ProgressBar = ({ progress }: { progress: number }) => {

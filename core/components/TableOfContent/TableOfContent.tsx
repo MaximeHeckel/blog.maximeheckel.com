@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
+import useProgress from '@theme/hooks/useProgress';
 import useScrollSpy from '@theme/hooks/useScrollSpy';
-import { useReducedMotion, motion, useViewportScroll } from 'framer-motion';
+import { useReducedMotion, motion } from 'framer-motion';
 import React from 'react';
 import ProgressBar from './ProgressBar';
 
@@ -72,8 +73,7 @@ const OFFSET = 150;
 
 const TableOfContent = ({ ids }: TableOfContentProps) => {
   const shouldReduceMotion = useReducedMotion();
-  const [readingProgress, setReadingProgress] = React.useState(0);
-  const { scrollYProgress } = useViewportScroll();
+  const readingProgress = useProgress();
 
   /**
    * Only show the table of content between 7% and 95%
@@ -119,18 +119,6 @@ const TableOfContent = ({ ids }: TableOfContentProps) => {
       behavior: 'smooth',
     });
   };
-
-  React.useEffect(
-    () =>
-      /**
-       * Use Framer Motion's useViewportScroll to get the current scroll
-       * position in the viewport and save it in the state
-       */
-      scrollYProgress.onChange((latest: number) => {
-        setReadingProgress(parseFloat(latest.toFixed(2)));
-      }),
-    [scrollYProgress]
-  );
 
   /**
    * Get the index of the current active section that needs
