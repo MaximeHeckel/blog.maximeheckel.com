@@ -1,12 +1,8 @@
 import { css } from '@emotion/react';
-import React from 'react';
+import Card from '@theme/components/Card';
 import InlineCode from '@theme/components/MDX/InlineCode';
-import {
-  AnimationCard,
-  AnimationCardContent,
-  Form,
-  HighlightedValue,
-} from './Components';
+import React from 'react';
+import { AnimationCardContent, Form, HighlightedValue } from './Components';
 
 const lightness = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10];
 
@@ -17,7 +13,12 @@ const PaletteGenerator = () => {
   const cssVariable = `--base-color: ${hue}, ${saturation}`;
 
   return (
-    <AnimationCard>
+    <Card
+      depth={1}
+      css={css`
+        margin-bottom: 2.25rem;
+      `}
+    >
       <AnimationCardContent>
         <div
           css={css`
@@ -75,7 +76,7 @@ const PaletteGenerator = () => {
           </div>
         </Form>
       </AnimationCardContent>
-    </AnimationCard>
+    </Card>
   );
 };
 

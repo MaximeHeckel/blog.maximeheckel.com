@@ -1,7 +1,7 @@
-import preloadAll from 'jest-next-dynamic';
-import { fireEvent, render } from '@testing-library/react';
-import React from 'react';
 import { ThemeContext } from '@theme/context/ThemeContext';
+import { fireEvent, render } from '@testing-library/react';
+import preloadAll from 'jest-next-dynamic';
+import React from 'react';
 import MainHeader from '../';
 
 beforeAll(async () => {

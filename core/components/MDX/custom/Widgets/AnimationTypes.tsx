@@ -1,11 +1,10 @@
+import Card from '@theme/components/Card';
 import { HighlightedCodeText } from '@theme/components/MDX/Code/CodeBlock';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import {
-  AnimationCard,
   AnimationCardContent,
-  AnimationCardHeader,
   Form,
   HighlightedValue,
   TransitionGridWrapper,
@@ -73,8 +72,8 @@ const AnimationTypes = () => {
   return (
     <Wrapper ref={ref}>
       <TransitionGridWrapper>
-        <AnimationCard>
-          <AnimationCardHeader>Spring</AnimationCardHeader>
+        <Card glass depth={1}>
+          <Card.Header>Spring</Card.Header>
           <AnimationCardContent>
             <Form>
               <div style={{ display: 'grid' }}>
@@ -151,10 +150,10 @@ const AnimationTypes = () => {
             codeString={springCodeString}
             language="javascript"
           />
-        </AnimationCard>
+        </Card>
 
-        <AnimationCard>
-          <AnimationCardHeader>Tween</AnimationCardHeader>
+        <Card glass depth={1}>
+          <Card.Header>Tween</Card.Header>
           <AnimationCardContent>
             <Form>
               <div style={{ display: 'grid' }}>
@@ -214,9 +213,9 @@ const AnimationTypes = () => {
             codeString={tweenCodeString}
             language="javascript"
           />
-        </AnimationCard>
-        <AnimationCard>
-          <AnimationCardHeader>Inertia</AnimationCardHeader>
+        </Card>
+        <Card glass depth={1}>
+          <Card.Header>Inertia</Card.Header>
           <AnimationCardContent>
             <Form>
               <div style={{ display: 'grid' }}>
@@ -266,7 +265,7 @@ const AnimationTypes = () => {
             codeString={inertiaCodeString}
             language="javascript"
           />
-        </AnimationCard>
+        </Card>
       </TransitionGridWrapper>
     </Wrapper>
   );

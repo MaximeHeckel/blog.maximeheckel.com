@@ -1,11 +1,7 @@
+import Card from '@theme/components/Card';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
-import {
-  AnimationCard,
-  AnimationCardContent,
-  Form,
-  HighlightedValue,
-} from './Components';
+import { AnimationCardContent, Form, HighlightedValue } from './Components';
 
 const ClipboardAnimationDetails = () => {
   const clipboardIconVariants = {
@@ -53,10 +49,10 @@ const ClipboardAnimationDetails = () => {
   );
 
   return (
-    <AnimationCard
+    <Card
+      depth={1}
       css={{
-        width: '100%',
-        maxWidth: '700px',
+        marginBottom: '30px',
       }}
     >
       <AnimationCardContent
@@ -146,7 +142,7 @@ const ClipboardAnimationDetails = () => {
           />
         </Form>
       </AnimationCardContent>
-    </AnimationCard>
+    </Card>
   );
 };
 

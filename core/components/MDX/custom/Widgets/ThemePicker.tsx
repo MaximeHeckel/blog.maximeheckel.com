@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import Card from '@theme/components/Card';
 import { motion } from 'framer-motion';
-import { AnimationCard, AnimationCardContent } from './Components';
+import { AnimationCardContent } from './Components';
 
 const setVariableToGlobalStyles = (variable: string, value: string) =>
   document.documentElement.style.setProperty(variable, value);
@@ -23,7 +24,7 @@ const ButtonWrapper = styled('div')`
   flex-direction: column;
   align-items: center;
   font-size: 25px;
-  margin-bottom: 30px;
+  margin-bottom: 2.25rem;
 `;
 
 const ThemePicker = () => {
@@ -37,7 +38,12 @@ const ThemePicker = () => {
   };
 
   return (
-    <AnimationCard>
+    <Card
+      depth={1}
+      css={css`
+        margin-bottom: 2.25rem;
+      `}
+    >
       <AnimationCardContent>
         <div
           css={css`
@@ -169,7 +175,7 @@ const ThemePicker = () => {
           Reset
         </ButtonWrapper>
       </AnimationCardContent>
-    </AnimationCard>
+    </Card>
   );
 };
 

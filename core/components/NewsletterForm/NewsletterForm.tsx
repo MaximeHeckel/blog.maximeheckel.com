@@ -2,12 +2,11 @@ import { css } from '@emotion/react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
 import { useMutation } from 'react-query';
+import Card from '@theme/components/Card';
 import { NewsletterHeader } from './Icons';
 import {
-  NewsletterWrapper,
   NewsLetterForm,
   NewsletterFormContent,
-  NewsLetterFormWrapper,
   NewsLetterInput,
   NewsLetterSubmitButton,
   VisuallyHidden,
@@ -94,56 +93,61 @@ const NewsletterForm = (props: Props) => {
   }, [isError]);
 
   return (
-    <NewsletterWrapper>
-      {large ? <NewsletterHeader /> : null}
-
-      <NewsletterFormContent withOffset={large}>
-        {large ? (
-          <h3>
-            Get a behind the scenes look at what I&apos;m currently learning,
-            exploring, and creating.
-          </h3>
-        ) : (
-          <h3>Subscribe to my newsletter</h3>
-        )}
-        {large ? (
-          <>
+    <div
+      css={css`
+        margin-left: -10px;
+      `}
+    >
+      <Card depth={0}>
+        {large ? <NewsletterHeader /> : null}
+        <NewsletterFormContent withOffset={large}>
+          {large ? (
+            <h3>
+              Get a behind the scenes look at what I&apos;m currently learning,
+              exploring, and creating.
+            </h3>
+          ) : (
+            <h3>Subscribe to my newsletter</h3>
+          )}
+          {large ? (
+            <>
+              <p>
+                Subscribe to{' '}
+                <a href="https://buttondown.email/MaximeHeckel">
+                  my newsletter
+                </a>{' '}
+                to receive a monthly digest containing:
+              </p>
+              <ul>
+                <li>
+                  <p>
+                    Deep dives into some of my{' '}
+                    <span>ideas and secret projects</span> that will inspire you
+                    👨‍💻
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <span>Exclusive previews of upcoming articles</span> on
+                    frontent development, React, and SwiftUI 🤫
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Some of my <span>favorite resources and tips</span> on
+                    frontend development or anything I&apos;m currently
+                    interested in to further expand your skillset as a developer
+                    📝
+                  </p>
+                </li>
+              </ul>
+            </>
+          ) : (
             <p>
-              Subscribe to{' '}
-              <a href="https://buttondown.email/MaximeHeckel">my newsletter</a>{' '}
-              to receive a monthly digest containing:
+              Get email from me about my ideas, frontend development resources
+              and tips as well as exclusive previews of upcoming articles.
             </p>
-            <ul>
-              <li>
-                <p>
-                  Deep dives into some of my{' '}
-                  <span>ideas and secret projects</span> that will inspire you
-                  👨‍💻
-                </p>
-              </li>
-              <li>
-                <p>
-                  <span>Exclusive previews of upcoming articles</span> on
-                  frontent development, React, and SwiftUI 🤫
-                </p>
-              </li>
-              <li>
-                <p>
-                  Some of my <span>favorite resources and tips</span> on
-                  frontend development or anything I&apos;m currently interested
-                  in to further expand your skillset as a developer 📝
-                </p>
-              </li>
-            </ul>
-          </>
-        ) : (
-          <p>
-            Get email from me about my ideas, frontend development resources and
-            tips as well as exclusive previews of upcoming articles.
-          </p>
-        )}
-
-        <NewsLetterFormWrapper>
+          )}
           <NewsLetterForm
             animate={isChecked ? 'checked' : 'unchecked'}
             variants={formVariant}
@@ -235,41 +239,41 @@ const NewsletterForm = (props: Props) => {
               </motion.div>
             </NewsLetterSubmitButton>
           </NewsLetterForm>
-        </NewsLetterFormWrapper>
-        {error ? (
-          // @ts-ignore
-          error.message.includes('already subscribed') ? (
-            <ErrorMessage>
-              Looks like you already subscribed! If you think this is a mistake
-              you can still subscribe by heading directly to my{' '}
-              <a href="https://buttondown.email/MaximeHeckel">
-                Buttondown publication
-              </a>
-              .
-            </ErrorMessage>
-          ) : (
-            <ErrorMessage>
-              😬 woops! We just hit a snag here, but don&apos;t worry! You can
-              still subscribe by heading directly to my{' '}
-              <a href="https://buttondown.email/MaximeHeckel">
-                Buttondown publication
-              </a>
-              .
-            </ErrorMessage>
-          )
-        ) : null}
-        {isSuccess ? (
-          <p
-            css={css`
-              margin-top: 16px;
-              text-align: center;
-            `}
-          >
-            (You will receive a confirmation email in a few seconds)
-          </p>
-        ) : null}
-      </NewsletterFormContent>
-    </NewsletterWrapper>
+          {error ? (
+            // @ts-ignore
+            error.message.includes('already subscribed') ? (
+              <ErrorMessage>
+                Looks like you already subscribed! If you think this is a
+                mistake you can still subscribe by heading directly to my{' '}
+                <a href="https://buttondown.email/MaximeHeckel">
+                  Buttondown publication
+                </a>
+                .
+              </ErrorMessage>
+            ) : (
+              <ErrorMessage>
+                😬 woops! We just hit a snag here, but don&apos;t worry! You can
+                still subscribe by heading directly to my{' '}
+                <a href="https://buttondown.email/MaximeHeckel">
+                  Buttondown publication
+                </a>
+                .
+              </ErrorMessage>
+            )
+          ) : null}
+          {isSuccess ? (
+            <p
+              css={css`
+                margin-top: 16px;
+                text-align: center;
+              `}
+            >
+              (You will receive a confirmation email in a few seconds)
+            </p>
+          ) : null}
+        </NewsletterFormContent>
+      </Card>
+    </div>
   );
 };
 

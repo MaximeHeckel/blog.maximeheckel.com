@@ -1,11 +1,7 @@
 import { css } from '@emotion/react';
+import Card from '@theme/components/Card';
 import React from 'react';
-import {
-  AnimationCard,
-  AnimationCardContent,
-  Form,
-  HighlightedValue,
-} from './Components';
+import { AnimationCardContent, Form, HighlightedValue } from './Components';
 import InlineCode from '../../InlineCode';
 
 const HSLAShowcase = () => {
@@ -17,7 +13,12 @@ const HSLAShowcase = () => {
   const cssBackgroundColor = `background-color: hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha}%)`;
 
   return (
-    <AnimationCard>
+    <Card
+      depth={1}
+      css={css`
+        margin-bottom: 2.25rem;
+      `}
+    >
       <AnimationCardContent
         css={css`
           height: 500px;
@@ -218,7 +219,7 @@ const HSLAShowcase = () => {
           </div>
         </Form>
       </AnimationCardContent>
-    </AnimationCard>
+    </Card>
   );
 };
 

@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 
 // Components
 import Button from '@theme/components/Button';
+import Card from '@theme/components/Card';
 import Pill from '@theme/components/Pill';
 
 // MDX only components
@@ -12,9 +13,6 @@ import Code from './Code';
 import Image from './Image';
 import VideoPlayer from './VideoPlayer';
 import { ListItem } from './MDX';
-
-// Custom components (used in blog posts)
-import Card from './custom/Card';
 
 const BranchPreview = dynamic<{}>(() =>
   import('./custom/MicroAnimations/CICD').then((module) => module.BranchPreview)
@@ -109,6 +107,7 @@ const customComponents = {
   IntegrationTest,
   UnitTest,
   Card,
+  CardBody: Card.Body,
   SEOAnimation,
   DockerBuild,
   PreviewDeploy,

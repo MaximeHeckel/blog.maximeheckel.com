@@ -1,15 +1,11 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import Card from '@theme/components/Card';
 import { useTheme } from '@theme/context/ThemeContext';
 import useScrollSpy from '@theme/hooks/useScrollSpy';
 import React from 'react';
 import InlineCode from '../../InlineCode';
-import {
-  AnimationCard,
-  AnimationCardContent,
-  Form,
-  HighlightedValue,
-} from './Components';
+import { AnimationCardContent, Form, HighlightedValue } from './Components';
 
 const BrowserWindow = styled('div')<{ dark?: boolean }>`
   border-radius: var(--border-radius-1);
@@ -213,7 +209,12 @@ const ScrollSpyWidget = () => {
           </div>
         </div>
       </BrowserWindow>
-      <AnimationCard>
+      <Card
+        depth={1}
+        css={css`
+          margin: 30px 0px;
+        `}
+      >
         <AnimationCardContent
           css={css`
             height: 250px;
@@ -255,7 +256,7 @@ const ScrollSpyWidget = () => {
             </div>
           </Form>
         </AnimationCardContent>
-      </AnimationCard>
+      </Card>
     </>
   );
 };
