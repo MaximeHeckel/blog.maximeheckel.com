@@ -2,12 +2,11 @@ import { css } from '@emotion/react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
 import { useMutation } from 'react-query';
+import Card from '@theme/components/Card';
 import { NewsletterHeader } from './Icons';
 import {
-  NewsletterWrapper,
   NewsLetterForm,
   NewsletterFormContent,
-  NewsLetterFormWrapper,
   NewsLetterInput,
   NewsLetterSubmitButton,
   VisuallyHidden,
@@ -94,7 +93,7 @@ const NewsletterForm = (props: Props) => {
   }, [isError]);
 
   return (
-    <NewsletterWrapper>
+    <Card>
       {large ? <NewsletterHeader /> : null}
 
       <NewsletterFormContent withOffset={large}>
@@ -142,100 +141,97 @@ const NewsletterForm = (props: Props) => {
             tips as well as exclusive previews of upcoming articles.
           </p>
         )}
-
-        <NewsLetterFormWrapper>
-          <NewsLetterForm
+        <NewsLetterForm
+          animate={isChecked ? 'checked' : 'unchecked'}
+          variants={formVariant}
+          transition={{
+            ease: 'easeOut',
+            duration: 0.3,
+          }}
+          onSubmit={async (event) => {
+            event.preventDefault();
+            try {
+              await subscribe({ email });
+              setIsChecked(true);
+            } catch (e) {}
+          }}
+        >
+          <NewsLetterInput
             animate={isChecked ? 'checked' : 'unchecked'}
-            variants={formVariant}
+            variants={inputVariant}
             transition={{
               ease: 'easeOut',
               duration: 0.3,
             }}
-            onSubmit={async (event) => {
-              event.preventDefault();
-              try {
-                await subscribe({ email });
-                setIsChecked(true);
-              } catch (e) {}
+            disabled={isChecked || isLoading}
+            name="email"
+            type="email"
+            id="emailInput"
+            placeholder="Your email"
+            autoComplete="off"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
+          />
+          <VisuallyHidden>
+            <label htmlFor="emailInput">Your email address</label>
+          </VisuallyHidden>
+          <NewsLetterSubmitButton
+            initial={false}
+            animate={isChecked ? 'checked' : 'unchecked'}
+            variants={buttonVariant}
+            whileHover="hover"
+            whileTap="press"
+            transition={{
+              type: 'spring',
+              stiffness: 200,
+              mass: 1,
+              damping: 8,
             }}
+            disabled={isChecked || isLoading}
+            custom={isChecked}
+            type="submit"
+            aria-label="Subscribe to my newsletter"
+            title="Subscribe to my newsletter"
           >
-            <NewsLetterInput
-              animate={isChecked ? 'checked' : 'unchecked'}
-              variants={inputVariant}
-              transition={{
-                ease: 'easeOut',
-                duration: 0.3,
-              }}
-              disabled={isChecked || isLoading}
-              name="email"
-              type="email"
-              id="emailInput"
-              placeholder="Your email"
-              autoComplete="off"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-            />
-            <VisuallyHidden>
-              <label htmlFor="emailInput">Your email address</label>
-            </VisuallyHidden>
-            <NewsLetterSubmitButton
+            <motion.div
               initial={false}
               animate={isChecked ? 'checked' : 'unchecked'}
-              variants={buttonVariant}
-              whileHover="hover"
-              whileTap="press"
+              variants={textOutVariant}
               transition={{
-                type: 'spring',
-                stiffness: 200,
-                mass: 1,
-                damping: 8,
+                duration: 0.7,
               }}
-              disabled={isChecked || isLoading}
-              custom={isChecked}
-              type="submit"
-              aria-label="Subscribe to my newsletter"
-              title="Subscribe to my newsletter"
+              style={{ opacity }}
             >
-              <motion.div
-                initial={false}
-                animate={isChecked ? 'checked' : 'unchecked'}
-                variants={textOutVariant}
-                transition={{
-                  duration: 0.7,
-                }}
-                style={{ opacity }}
-              >
-                {isLoading ? 'Loading...' : 'Sign me up!'}
-              </motion.div>
-              <motion.svg
-                initial="unchecked"
-                animate={isChecked ? 'checked' : 'unchecked'}
-                variants={checkVariant}
-                height="28"
-                viewBox="0 0 20 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <motion.path
-                  d="M1.8492 7.39712L7.39362 12.3822L18.0874 1.36591"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ pathLength }}
-                />
-              </motion.svg>
-              <motion.div
-                initial="unchecked"
-                animate={isChecked ? 'checked' : 'unchecked'}
-                variants={textInVariant}
-                style={{ marginLeft: '8px', opacity: opacityTextIn }}
-              >
-                Done! 🎉
-              </motion.div>
-            </NewsLetterSubmitButton>
-          </NewsLetterForm>
-        </NewsLetterFormWrapper>
+              {isLoading ? 'Loading...' : 'Sign me up!'}
+            </motion.div>
+            <motion.svg
+              initial="unchecked"
+              animate={isChecked ? 'checked' : 'unchecked'}
+              variants={checkVariant}
+              height="28"
+              viewBox="0 0 20 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <motion.path
+                d="M1.8492 7.39712L7.39362 12.3822L18.0874 1.36591"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ pathLength }}
+              />
+            </motion.svg>
+            <motion.div
+              initial="unchecked"
+              animate={isChecked ? 'checked' : 'unchecked'}
+              variants={textInVariant}
+              style={{ marginLeft: '8px', opacity: opacityTextIn }}
+            >
+              Done! 🎉
+            </motion.div>
+          </NewsLetterSubmitButton>
+        </NewsLetterForm>
         {error ? (
           // @ts-ignore
           error.message.includes('already subscribed') ? (
@@ -269,7 +265,7 @@ const NewsletterForm = (props: Props) => {
           </p>
         ) : null}
       </NewsletterFormContent>
-    </NewsletterWrapper>
+    </Card>
   );
 };
 

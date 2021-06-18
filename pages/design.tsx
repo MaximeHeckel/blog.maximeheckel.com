@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Button from '@theme/components/Button';
 import { LinkButton } from '@theme/components/Button/LinkButton';
+import Card from '@theme/components/Card';
 import Grid from '@theme/components/Grid';
 import {
   ArrowIcon,
@@ -78,6 +79,46 @@ export default function Design(props: {
           <h1>Components / Design System</h1>
           <HR />
         </div>
+        <section>
+          <h2>Card</h2>
+          <Grid rowGap={30}>
+            <Card>
+              <Card.Body>Basic Card</Card.Body>
+            </Card>
+
+            <Card title="Title for the card">
+              <Card.Body>Card with Title</Card.Body>
+            </Card>
+
+            <Card>
+              <Card.Header>Some Custom Header</Card.Header>
+              <Card.Body>Card With Custom Header</Card.Body>
+            </Card>
+
+            <Card>
+              <div
+                css={css`
+                  padding: 40px;
+                `}
+              >
+                Card With custom Body
+              </div>
+            </Card>
+            <Card depth={0}>
+              <Card.Body>Basic Card depth 0</Card.Body>
+            </Card>
+            <Card depth={1}>
+              <Card.Body>Basic Card depth 1</Card.Body>
+            </Card>
+            <Card depth={2}>
+              <Card.Body>Basic Card depth 2</Card.Body>
+            </Card>
+
+            <Card depth={3}>
+              <Card.Body>Basic Card depth 3</Card.Body>
+            </Card>
+          </Grid>
+        </section>
         <section id="logo">
           <h2>Logo</h2>
           <Logo />

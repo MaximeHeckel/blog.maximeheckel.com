@@ -2,16 +2,17 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { format } from 'date-fns';
-import { motion } from 'framer-motion';
+import { motion, MotionProps } from 'framer-motion';
 import Link from 'next/link';
 import Button from '@theme/components/Button';
+import Grid from '@theme/components/Grid';
+import Card from '@theme/components/Card';
+import { ExternalIcon, TwitterIcon } from '@theme/components/Icons';
 import NewsletterForm from '@theme/components/NewsletterForm';
 import VisuallyHidden from '@theme/components/VisuallyHidden';
 import Layout from '@theme/layout';
-import { ExternalIcon, TwitterIcon } from '@theme/components/Icons';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';
-import Grid from '@theme/components/Grid';
 
 interface Props {
   posts: Post[];
@@ -188,7 +189,8 @@ const IndexPage = (props: Props) => {
                             transition: 0.5s;
                           `}
                         />
-                        <Card
+                        <Card<MotionProps>
+                          as={motion.div}
                           variants={cardVariants}
                           transition={{
                             type: 'tween',
@@ -197,10 +199,21 @@ const IndexPage = (props: Props) => {
                             duration: 0.4,
                           }}
                         >
-                          <TitleWithBackground background={post.colorFeatured!}>
-                            {post.title}
-                          </TitleWithBackground>
-                          <p>{post.subtitle}</p>
+                          <Card.Body>
+                            <TitleWithBackground
+                              background={post.colorFeatured!}
+                            >
+                              {post.title}
+                            </TitleWithBackground>
+                            <p
+                              css={css`
+                                color: var(--maximeheckel-colors-typeface-1);
+                                margin-top: 1em;
+                              `}
+                            >
+                              {post.subtitle}
+                            </p>
+                          </Card.Body>
                         </Card>
                       </a>
                     </Link>
@@ -242,10 +255,12 @@ const IndexPage = (props: Props) => {
           </List>
           <br />
           <Card>
-            <h3>#BlackLivesMatter</h3>
-            <a href="https://blacklivesmatters.carrd.co/">
-              Click here to find out how you can help.
-            </a>
+            <Card.Body>
+              <h3>#BlackLivesMatter</h3>
+              <a href="https://blacklivesmatters.carrd.co/">
+                Click here to find out how you can help.
+              </a>
+            </Card.Body>
           </Card>
         </section>
       </Grid>
@@ -268,22 +283,6 @@ const Glow = styled(motion.div)`
   -webkit-filter: blur(15px);
   filter: blur(15px);
   border-radius: border-radius: var(--border-radius-2);
-`;
-
-const Card = styled(motion.div)`
-  border-radius: var(--border-radius-2);
-  margin-bottom: 0px;
-  overflow: hidden;
-  position: relative;
-  background: var(--maximeheckel-colors-foreground);
-  box-shadow: var(--maximeheckel-shadow-1);
-  position: relative;
-  padding: 36px 24px;
-
-  p {
-    color: var(--maximeheckel-colors-typeface-1);
-    margin-top: 1em;
-  }
 `;
 
 const TitleWithBackground = styled('h2')<{ background: string }>`
