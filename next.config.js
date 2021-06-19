@@ -5,9 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withBundleAnalyzer({
   trailingSlash: true,
   target: 'serverless',
-  // future: {
-  //   webpack5: true,
-  // },
+  webpack5: true,
   images: {
     domains: [
       'pbs.twimg.com', // Twitter Images
@@ -18,6 +16,7 @@ module.exports = withBundleAnalyzer({
       require('./scripts/generate-sitemap');
       require('./scripts/generate-index');
       require('./scripts/generate-rss');
+      require('./scripts/generate-opengraph-images');
     }
 
     return config;
