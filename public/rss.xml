@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Mon, 28 Jun 2021 02:23:43 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 28 Jun 2021 02:49:42 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Migrating to Next.js]]></title>
+            <description><![CDATA[Some thoughts on my experience using Gatsby for my blog and migrating it to Next.js, and why this was the right call for me going forward.]]></description>
+            <link>https://blog.maximeheckel.com/posts/migrating-to-nextjs</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/migrating-to-nextjs</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 29 Jun 2021 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Static Tweets with MDX and Next.js]]></title>
             <description><![CDATA[A solution to remove sluggish Twitter embed iframes and load the tweets in your blog posts at the speed of light.]]></description>
