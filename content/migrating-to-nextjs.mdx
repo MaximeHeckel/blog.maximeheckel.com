@@ -1,0 +1,352 @@
+---
+title: 'Migrating to Next.js'
+subtitle: Some thoughts on my experience using Gatsby for my blog and migrating it to Next.js, and why this was the right call for me going forward.
+date: '2021-06-29T08:00:00.000Z'
+updated: '2021-06-29T08:00:00.000Z'
+categories: []
+keywords: []
+slug: migrating-to-nextjs
+type: 'blogPost'
+featured: false
+---
+
+Last year, I gave myself the objective of [learning Next.js](https://blog.maximeheckel.com/posts/learning-in-public/) as it was getting more and more popular among the people I followed on Twitter and was adopted by many companies as their main frontend framework. The focus of the Next.js team on **Developer eXperience (DX) and simplicity** was striking the first time I tried it, **especially compared to Gatsby** which, back then, powered this blog and started to feel very cumbersome at times.
+
+Thus in January, I told myself **I'd migrate over my entire blog and its content over to Next.js** and see if I could leverage its simplicity to make the experience of maintaining and expanding this blog easier and less time-consuming.
+
+As this migration is now a success 🎉 I wanted to dedicate this blog post to go through some of the thoughts I gathered throughout this process, and also the experience I had with both frameworks, to maybe help you choose what's best for your own setup.
+
+<Callout variant="info">
+
+I want to emphasize the fact that what I'm going to write about here is purely based on **personal experience and frustrations**.
+
+My aim is not to delegitimize the value of one framework over the other 😄. They both have their flaws, advantages, and use-cases where they shine the most.
+
+</Callout>
+
+## Farewell Gatsby
+
+After over a year and a half of building this site with Gatsby, it was time to say goodbye. However, this doesn't mean I don't appreciate Gatsby any more, far from that. I feel Gatsby was a great way to enter the "technical blog-sphere" and gave me all the tools to build a successful and compelling blog:
+
+- **I had no idea what I was doing** when I started this blog 🐶 (still the case but a bit less now).
+- I didn't know anything about SEO, and **the plugin system was a gold mine that helped me follow best practices** without any knowledge required.
+- **It introduced me to MDX** which is now an essential part of my stack and gave me the ability to build interactive components into my blog posts. The setup for MDX on Gatsby was incredibly _easy_!
+
+So, _"what drove you off Maxime?"_ you may ask. Well here are a couple of points that started to become more and more obvious as my time with Gatsby went by.
+
+<Callout variant="info">
+
+Worth mentioning, all of my experience was on Gatsby `v2`. Some of the points I'm mentioning below _might_ have been fixed in `v3`. I'm not 100% sure as I did not proceed to try and update to the latest version, mostly due to lack of time.
+
+</Callout>
+
+### Over-engineered
+
+Something that originally caught my attention with Gatsby was [its use of GraphQL](https://www.gatsbyjs.com/docs/graphql/). It became more of a curiosity over time honestly. While I'm sure it makes sense for many sites at scale (e-commerce, bigger and more complex publications), at least to me the GraphQL felt like an extra level of complexity that felt unnecessary.
+
+The more I iterated on my blog, the more the technical choice of GraphQL felt unjustified (for my use-case at least), building data sources felt way more complicated than it should have been:
+
+```js title=Excerpt of my gatsby-config.js and gatsby-node files
+// As you can see it's a lot of lines of code for such a simple use case
+
+// gatsby-config.js
+module.exports = () => {
+  return {
+    plugins: [
+      {
+        resolve: 'gatsby-plugin-mdx',
+        options: {
+          extensions: ['.mdx', '.md'],
+          defaultLayouts: {
+            default: require.resolve('./src/templates/BlogPost.tsx'),
+          },
+        },
+      },
+      {
+        resolve: `gatsby-source-filesystem`,
+        options: {
+          name: `posts`,
+          path: `${__dirname}/content/`,
+        },
+      },
+    ],
+  };
+};
+
+// gatsby-node.js
+
+exports.createPages = ({ graphql, actions }) => {
+  const { createPage } = actions;
+  return new Promise((resolve, reject) => {
+    resolve(
+      graphql(
+        `
+          {
+            allMdx {
+              edges {
+                node {
+                  id
+                  timeToRead
+                  frontmatter {
+                    slug
+                    title
+                    subtitle
+                    date
+                    type
+                    cover {...}
+                  }
+                  parent {
+                    ... on File {
+                      absolutePath
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `
+      ).then((result) => {
+        // Create blog posts pages.
+        result.data.allMdx.edges.forEach(({ node }) => {
+          return createPage({
+            path: `/posts/${node.frontmatter.slug}`,
+            component: node.parent.absolutePath,
+            context: {
+              timeToRead: node.timeToRead,
+              cover: node.frontmatter.cover,
+              tableOfContents: node.tableOfContents,
+            },
+          });
+        });
+      })
+    );
+  });
+};
+```
+
+Another example that felt weird is that it was suggest that something as simple as my website config (a simple JS object) needed to be queried via GraphQL:
+
+```js title=Excerpt of my site config and its corresponding query
+/**
+    Why couldn't I simply import this file directly where needed? 
+    The GraphQL feels like a lot of overhead for such a simple use case
+**/
+
+export const pageQuery = graphql`
+  query IndexPageQuery {
+    site {
+      siteMetadata {
+        title
+        shortName
+        author
+        keywords
+        siteUrl
+        description
+        twitter
+      }
+    }
+  }
+`;
+```
+
+That feeling grew stronger when I wanted to add some simple functionalities, like generating a sitemap. The only way to have those working within the Gatsby Build pipeline was to leverage that GraphQL layer which I barely understood the inner workings of it. **This made my entire setup rely on plugins** to let me iterate fast on this website.
+
+On top of that, it seems that **the company behind Gatsby keeps releasing abstraction layers** to address the plugin issues, and then new abstraction layers on top of that to solve the problems created by the previous one. During my short time using Gatsby, it went from promoting plugins to themes to recipes which was overwhelming.
+
+[This thread](https://twitter.com/tesseralis/status/1401294359568343045) from [@tesseralis](https://twitter.com/tesseralis) illustrates well how I feel about some of the technical choices that were made.
+
+<StaticTweet id="1401294360642146306" />
+
+### The plugin ecosystem is a double edge sword
+
+As helpful as it seemed at the beginning, it became clear over time that delegating some of the core functionalities of my blog to plugins was not such a good idea after all:
+
+- A lot of plugins depended on each other, like `gatsby-plugin-sharp`, `gatsby-image`, or any related plugins I was using for image optimization/processing. They needed to be updated altogether, and many times I found myself spending lots of time trying to find the right combination of versions to avoid breaking my setup.
+- I was relying on a lot of plugins for **canonical URLs** and **SEO** in general. These would often break or change their behavior after an update without any warning, or collide with one another. All my meta tags were erased one time because I added a plugin to my list **in the wrong order** without noticing it. Twitter Cards, Opengrah Images, ... all gone for several days 😱 not ideal when you try to build a proper SEO strategy.
+- More plugins meant more `node_modules` which meant also longer install and build time. Over time it added up to quite a bit
+
+<Callout variant="info">
+
+I wrote extensively about my SEO-related mistakes and incidents in [SEO mistakes I've made and how I fixed them](https://blog.maximeheckel.com/posts/seo-mistakes-i-have-made-and-how-i-fixed-them/) in case you want to read scary SEO stories 👻
+
+</Callout>
+
+Moreover, as the community grew, so did the number of plugins! This is a positive thing, don't get me wrong. But just try to search for `RSS` in the [Gatsby Plugins website](https://www.gatsbyjs.com/plugins?=RSS). **There are 22 plugins** (as I'm writing these words) **doing more or less the same thing** but each of them in a slightly different way. One would need to do a lot of digging to find which one is the "official"/"recommended" one to use which is not ideal. I'm pretty sure a little bit of curation in the plugin section would go a long way.
+
+As a result, I was pouring hours of personal time maintaining, fixing, and expanding this site. Over time I grew tired of working with Gatsby's technical choices and started spending a lot of time working around them, thus making using Gatsby itself less and less justifiable.
+
+## The migration
+
+This migration to Next.js was the opportunity for me to accomplish the following:
+
+- Learn a bit more about Next.js on a more complex project.
+- Strive for simplicity! No GraphQL or over-engineered tech, it's just a blog. No theme, few plugins, a minimum amount of dependencies.
+- Focus on performance. Address any pitfalls and make sure my blog was ready for the rollout of Core Web Vitals
+
+<Callout variant="info">
+
+I wrote about one of those performance issues: my overreliance on `iframes` for Twitter Embeds which I solved by [building my own "Static Tweet" component](https://blog.maximeheckel.com/posts/static-tweets-with-mdx-nextjs/).
+
+</Callout>
+
+### The process
+
+**I like to treat my blog like a product**, so I wanted to conduct this migration as seriously as possible, without negatively impacting the reading experience or my traffic. Thus I established a little process to ensure that this effort would be successful:
+
+1. Reimplement my pages and the "MDX article pipeline", i.e. getting my article and their custom widgets/components to render, generate sitemap, OpenGraph images, and RSS feed.
+2. **Migrating over all my React components** from my Gatsby Theme onto the repository of the blog.
+3. **Cleaning up my dependencies**. Some pieces relied on packages that seemed a bit overkill, like Scrollspy, table of content, etc...
+4. **Test, test, and test**, especially anything related to SEO!
+
+Thankfully, **I built a sturdy automated CI/CD pipeline** in the past that assisted me along the way making sure I was not breaking anything unknowingly. (Thank you Maxime from 2020 🙏)
+
+Once a satisfying result was achieved, I started a slow rollout of the blog throughout a week. For that, I used Netlify's "split branch" feature. I deployed 2 branches (`main` for the Gatsby version, `next` for the Next.js version) under the same project, and slowly redirected the traffic to the new version, or falling back to the old one if issues were to occur.
+
+<Image
+  src="blog/netlify-split-test.jpg"
+  alt="Screenshot of the Netlify Split Test feature used here while releasing the new Next.js version of my blog"
+  layout="responsive"
+  width={700}
+  height={283}
+/>
+
+This gave me great peace of mind, knowing that whatever would happen, I'd always have the "legacy" version available if I ever needed to roll back my blog in the short term.
+It was while executing this process that I was able to see Next.js shine, but also noticed some of its caveats, specifically for certain aspects of my use case.
+
+### Where it shined
+
+Next.js is **incredibly fast** and **easy to iterate with**. I have never worked this fast on my blog:
+
+- Adding new data sources felt incredibly easy compared to Gatsby as I could pretty much load my MDX documents the way that fit my use-case.
+- The configuration required is light, well documented, and compatible with any package I was familiar with for basic React projects.
+
+While Gatsby felt like building a blog with pre-build LEGO pieces, Next.js on the other hand was the total opposite. The framework is **very unopinionated** and there are very few "plugins" per se as most of the community seems to implement their own pieces/scripts that fit exactly their setup.
+
+Want to generate your `sitemap` at build time? You need to build your own script. What about generating OpenGraph images? Same, build your own!
+
+This can seem like a huge trade-off, but I actually like this aspect of Next.js:
+
+- **I write these scripts for myself now**. They don't need to be perfect or fit some specific requirements from the framework, i.e. no need for GraphQL for such an easy use case, which felt liberating. On top of that, it's a lot of fun! (at least to me 😛)
+- I can use _any_ library I want to assist me. No need to build or add an unnecessary plugins with additional dependencies to get the desired output.
+
+<Callout variant="info">
+
+[@JoshWComeau](https://twitter.com/JoshWComeau) dedicated an article about his Next.js blog setup where he showcases [his process when it comes to writing these custom scripts](https://www.joshwcomeau.com/blog/how-i-built-my-blog/#build-helpers)
+
+</Callout>
+
+The most important take here is that I finally feel in control of my blog. **No more black boxes!** 🙌
+
+### Caveats
+
+As liberating as it may feel at first, there were still some caveats about not having all these pre-built tools that I was used to with my previous setup.
+
+**Gatsby has a better MDX support**, at least as I'm writing these words. I struggled to find the _right_ library to get a similar MDX experience on Next.js as the official `next/mdx` library was lacking a few things I needed. This was a bit worrying at first as MDX is at the core of my blog and I wanted to continue using it the way I was accustomed to.
+
+I opted for `next-mdx-remote`, however, it came with one particular tradeoff:
+
+- it required me to put _all_ my MDX components in context of _all MDX files_. This means this article technically _knows_ about the widgets I wrote in my Framer Motion blog posts for instance. Before I could have discrete import statements in my MDX files, this is not an option anymore.
+- this increased the bundle size of my blog posts, at scale in the long run this might be a problem. However, it looks like **lazy loading** those component is a good workaround to this issue.
+
+```js {3-11} title=Lazy Loading MDX components with Next.js and next-mdx-remote
+import dynamic from 'next/dynamic';
+
+const FramerMotionPropagation = dynamic(() =>
+  import('./custom/Widgets/FramerMotionPropagation')
+);
+const FramerMotionAnimationLayout = dynamic(() =>
+  import('./custom/Widgets/FramerMotionAnimationLayout')
+);
+const FramerMotionAnimatePresence = dynamic(() =>
+  import('./custom/Widgets/FramerMotionAnimatePresence')
+);
+
+const MDXComponents = {
+  FramerMotionPropagation,
+  FramerMotionAnimationLayout,
+  FramerMotionAnimatePresence,
+};
+
+const Article = ({ post }) => {
+  return (
+    <BlogLayout>
+      <MDXRemote {...post.mdxSource} components={MDXComponents} />
+    </BlogLayout>
+  );
+};
+```
+
+<Callout variant="info">
+
+I also tried using `mdx-bundler` which seems super promising and doesn't have the issue described above. Sadly I couldn't make it work on my setup.
+
+</Callout>
+
+Image optimization also slowed me down. Vercel released `next/image` not long before I started the migration, but the way it worked was opposite from what I was used to with Gatsby: **Gatsby would optimize images at build time, while Next optimizes images on the fly**. This meant 3 things:
+
+1. I would get faster build time on Next.js 🚀
+2. I had to hardcode the height and width of **all** my images 😅.
+3. I needed to either use a 3rd party image service to host my images or host my blog on Vercel as at the time, Netlify did not support `next/image`.
+
+I did not want to risk doing both a framework migration AND a platform migration at the same time. I stayed on Netlify and patiently waited for a couple of weeks, but the resulting `next/image` support was not entirely satisfying to me.
+
+Thus I ended up opting for [Cloudinary](https://cloudinary.com) to host my images. Below you'll find the `Image` component I use in my MDX file to lazy load my images:
+
+```js title=My next/image loader and component
+import NextImage from 'next/image';
+
+const loader = ({ src, width, quality }) => {
+  return `https://res.cloudinary.com/abcdefg123/image/upload/f_auto,w_${width},q_${
+    quality || 75
+  }/${src}`;
+};
+
+const Image = (props) => {
+  return (
+    <figure>
+      <NextImage {...props} loader={loader} quality={50} />
+      <figcaption>{props.alt}</figcaption>
+    </figure>
+  );
+};
+
+export default Image;
+```
+
+```md title=How I use my next/image powered Image MDX component
+<Image
+  src="blog/netlify-split-test.jpg"
+  alt="Screenshot of the Netlify Split Test feature used here while releasing the new Next.js version of my blog"
+  layout="responsive"
+  width={700}
+  height={283}
+/>
+```
+
+This made me realize that there could be potential risks of using Next.js the way I do in the future:
+
+- By not hosting on Vercel, **I may have to wait to get some core features** that I need
+- The resulting **support of these features might not be as good** as they might be on Vercel and might force me to find workarounds.
+
+This is not a big deal right now, or even the case, but, it's something that is a possibility and that I need to keep in mind.
+
+## What's next?
+
+Overall, I'm glad I made the jump to Next.js, learned a lot, and feel that my blog has improved quite a bit, especially performance-wise. Now that the migration of my blog is over I can finally focus on some of the plans I have for it:
+
+- A dedicated **Learning In Public** section where you can track what I'm currently learning, and also find all the resources I'm using
+- A **Newsletter section** where you can read all the past issues of my newsletter
+- Focus on **performance improvements**. I'm striving to get perfect Core Web Vitals scores ✅ ✅ ✅
+
+On top of that, I'm currently migrating [my portfolio](https://maximeheckel.com) to Next.js as well, so there will probably be a few new things I'll experiment with there as well (mini-projects/experiences, updated case studies, ...).
+
+### TLDR
+
+- To me, Gatsby is a choice if you're getting started with building your blog for the first time without prior knowledge.
+- Plugins are a great way to abstract away some of the complexity but be wary of relying on them too much especially if you want some custom behavior over time.
+- By using a lot of plugins, keep in mind that this will increase install and build time. You will end up with lots of `node_modules`
+- Some of Gatsby's technology choices may feel over-engineered, especially if you're not a fan of GraphQL.
+- Next.js is simpler, unopinionated, and most importantly blasting fast!
+- You'll feel more in control of a Next.js project compared to a Gatsby project.
+- You'll have to build a lot of things from scratch to make your blog work, this can be both a good or a bad thing depending on what you want to achieve.
+- Once you figure out some of the little caveats I mentioned, you will have a great time with Next.js!
