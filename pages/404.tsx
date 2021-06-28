@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import React from 'react';
 import Grid from '@theme/components/Grid';
 import { DefaultSeo } from '@theme/components/Seo';
 import siteConfig from '../config/site';

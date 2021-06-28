@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import React from 'react';
 import Button from '@theme/components/Button';
 import NewsletterForm from '@theme/components/NewsletterForm';
 import VisuallyHidden from '@theme/components/VisuallyHidden';

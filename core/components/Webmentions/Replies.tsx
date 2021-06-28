@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
+// @ts-ignore
 import React from 'react';
 import { RepliesProps, Reply } from './types';
 

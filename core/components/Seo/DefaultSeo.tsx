@@ -7,7 +7,7 @@ interface Props {
 }
 
 const DefaultSeo = (props: Props) => (
-  <>
+  <React.Fragment>
     <NextDefaultSeo
       title={props.title || siteConfig.title}
       description={siteConfig.description}
@@ -42,7 +42,7 @@ const DefaultSeo = (props: Props) => (
       title={siteConfig.title}
       url={siteConfig.url}
     />
-  </>
+  </React.Fragment>
 );
 
 export { DefaultSeo };

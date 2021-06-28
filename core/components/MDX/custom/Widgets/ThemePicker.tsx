@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import React from 'react';
 import { AnimationCard, AnimationCardContent } from './Components';
 
 const setVariableToGlobalStyles = (variable: string, value: string) =>

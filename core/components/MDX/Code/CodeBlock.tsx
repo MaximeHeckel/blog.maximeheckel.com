@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import Highlight, { Prism, defaultProps } from 'prism-react-renderer';
-import React from 'react';
 import { CopyToClipboardButton } from '../../Button';
 import { CodeBlockProps, HighlightedCodeTextProps } from './types';
 import { calculateLinesToHighlight, hasTitle } from './utils';
@@ -24,46 +23,44 @@ export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
       language={language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <>
-          <Pre title={title} className={className} style={style}>
-            {tokens.map((line, index) => {
-              const { className: lineClassName } = getLineProps({
-                className:
-                  highlightLine && highlightLine(index) ? 'highlight-line' : '',
-                key: index,
-                line,
-              });
+        <Pre title={title} className={className} style={style}>
+          {tokens.map((line, index) => {
+            const { className: lineClassName } = getLineProps({
+              className:
+                highlightLine && highlightLine(index) ? 'highlight-line' : '',
+              key: index,
+              line,
+            });
 
-              return (
-                <Line
-                  data-testid={
-                    highlightLine && highlightLine(index)
-                      ? 'highlight-line'
-                      : 'line'
-                  }
-                  key={index}
-                  className={lineClassName}
-                >
-                  <LineNo data-testid="number-line">{index + 1}</LineNo>
-                  <LineContent>
-                    {line.map((token, key) => {
-                      return (
-                        <span
-                          data-testid="content-line"
-                          key={key}
-                          {...getTokenProps({
-                            key,
-                            token,
-                          })}
-                        />
-                      );
-                    })}
-                  </LineContent>
-                </Line>
-              );
-            })}
-          </Pre>
-        </>
+            return (
+              <Line
+                data-testid={
+                  highlightLine && highlightLine(index)
+                    ? 'highlight-line'
+                    : 'line'
+                }
+                key={index}
+                className={lineClassName}
+              >
+                <LineNo data-testid="number-line">{index + 1}</LineNo>
+                <LineContent>
+                  {line.map((token, key) => {
+                    return (
+                      <span
+                        data-testid="content-line"
+                        key={key}
+                        {...getTokenProps({
+                          key,
+                          token,
+                        })}
+                      />
+                    );
+                  })}
+                </LineContent>
+              </Line>
+            );
+          })}
+        </Pre>
       )}
     </Highlight>
   );
