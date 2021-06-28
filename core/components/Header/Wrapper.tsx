@@ -1,19 +1,17 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import useProgress from '@theme/hooks/useProgress';
 import { motion } from 'framer-motion';
 import React from 'react';
 import useScrollCounter from '../../hooks/useScrollCounter';
 import Grid from '../Grid';
 import { HeaderContext } from './Context';
+import { HeaderProps } from './types';
 
-export interface HeaderWrapperProps extends StyledHeaderWrapperProps {
-  collapsableOnScroll?: boolean;
-  collapseOffset?: number;
-}
-
-export const Wrapper: React.FC<HeaderWrapperProps> = (props) => {
-  const collapsed = useScrollCounter(props.collapseOffset || 150);
+export const Wrapper: React.FC<HeaderProps> = (props) => {
+  const collapsed = useScrollCounter(150);
   const shouldCollapse = props.collapsableOnScroll ? collapsed : false;
+  const readingProgress = useProgress();
 
   const memoizedContextValue = React.useMemo(
     () => ({
@@ -60,6 +58,25 @@ export const Wrapper: React.FC<HeaderWrapperProps> = (props) => {
             <HeaderContent>{props.children}</HeaderContent>
           </Grid>
         </HeaderWrapper>
+
+        {props.progress ? (
+          <motion.div
+            css={css`
+              @media (min-width: 700px) {
+                display: none;
+              }
+              position: absolute;
+              bottom: 0px;
+            `}
+            style={{
+              transformOrigin: 'left',
+              scaleX: readingProgress,
+              height: '2px',
+              backgroundColor: 'var(--maximeheckel-colors-typeface-2)',
+              width: '100%',
+            }}
+          />
+        ) : null}
       </div>
     </HeaderContext.Provider>
   );
@@ -72,7 +89,7 @@ interface StyledHeaderWrapperProps {
 
 const HeaderWrapper = styled(motion.div)<StyledHeaderWrapperProps>`
   @media (max-width: 700px) {
-    height: 70px !important;
+    height: 65px !important;
     box-shadow: ${(props) =>
       props.sticky ? 'var(--maximeheckel-shadow-1)' : 'none'};
   }

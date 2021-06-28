@@ -10,10 +10,14 @@ class Header extends React.Component<HeaderProps> {
   public static Title = Title;
 
   render() {
-    const { children, collapsableOnScroll, sticky } = this.props;
+    const { children, collapsableOnScroll, sticky, progress } = this.props;
 
     return (
-      <Wrapper collapsableOnScroll={collapsableOnScroll} sticky={sticky}>
+      <Wrapper
+        collapsableOnScroll={collapsableOnScroll}
+        sticky={sticky}
+        progress={progress}
+      >
         {children}
       </Wrapper>
     );

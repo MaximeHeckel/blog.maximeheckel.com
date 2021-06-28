@@ -10,8 +10,7 @@ import useDebouncedValue from '../../hooks/useDebouncedValue';
 import { useTheme } from '../../context/ThemeContext';
 import { EnterIcon } from '../Icons';
 import { CommandCenterStatic } from './CommandCenterStatic';
-
-const MAX_HEIGHT = 455;
+import { HEIGHT, MAX_HEIGHT } from './constants';
 
 const toggleLockScroll = () => {
   document.documentElement.classList.toggle('lock-scroll');
@@ -268,9 +267,9 @@ const Search = (props: Props) => {
             {debouncedSearchQuery !== '' ? (
               <SearchResults
                 height={
-                  results.length * 65 >= MAX_HEIGHT
+                  results.length * HEIGHT >= MAX_HEIGHT
                     ? MAX_HEIGHT
-                    : results.length * 65
+                    : results.length * HEIGHT
                 }
               >
                 {results.map((result, index) => (
@@ -329,9 +328,11 @@ const Result = styled(motion.li)<{ selected: boolean }>`
   align-items: center;
   margin-bottom: 0px;
   list-style: none;
+  font-size: 0.875rem;
+  line-height: 24px;
   color: var(--maximeheckel-colors-typeface-1);
   padding: 10px 25px;
-  height: 65px;
+  height: ${HEIGHT}px;
 
   a {
     color: unset;
@@ -369,7 +370,7 @@ const SearchResults = styled('ul')<{ height?: number }>`
   background: var(--maximeheckel-colors-body);
   max-height: ${MAX_HEIGHT}px;
   height: ${(p) => p.height || 0}px;
-  overflow: auto;
+  overflow-y: scroll;
   margin: 0px;
   transition: height 0.4s ease-out;
   will-change: height;
@@ -406,7 +407,8 @@ const FormWrapper = styled('div')`
   input {
     background: transparent;
     border: none;
-    font-weight: 300;
+    font-size: 0.875rem;
+    font-weight: 400;
     height: 55px;
     padding: 0px 25px;
     width: 100%;

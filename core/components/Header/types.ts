@@ -1,6 +1,7 @@
 export interface HeaderProps {
   sticky?: boolean;
   collapsableOnScroll?: boolean;
+  progress?: boolean;
 }
 
 export interface MainHeaderProps {
@@ -9,4 +10,5 @@ export interface MainHeaderProps {
   title?: string;
   search?: boolean;
   themeSwitcher?: boolean;
+  progress?: boolean;
 }

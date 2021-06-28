@@ -1,34 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { ArrowIcon } from '../Icons';
 
-const ArrowSVG = () => (
-  <svg
-    width="16"
-    height="14"
-    viewBox="0 0 14 13"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M7.58212 2.40308L11.8248 6.64572L7.58212 10.8884"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M1.6137 6.5955H11.5132"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 // TODO This should be in its own folder/file
 export const ListItem: React.FC<HTMLLIElement> = (props) => {
   return (
     <li>
       <span>
-        <ArrowSVG />
+        <ArrowIcon stroke="var(--maximeheckel-colors-brand)" />
       </span>
       <div>{props.children}</div>
     </li>
@@ -94,13 +73,8 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
       list-style: none;
       display: flex;
       span {
-        display: inline-block;
-        padding-right: 16px;
-        padding-top: 2px;
-        transform: translateY(-2px);
-        svg {
-          stroke: var(--maximeheckel-colors-brand);
-        }
+        padding-right: 8px;
+        transform: translateY(4px);
       }
     }
   }
@@ -111,6 +85,10 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
     li {
       counter-increment: li;
       display: flex;
+
+      svg {
+        display: none;
+      }
 
       &:before {
         content: counters(li, '.') '. ';

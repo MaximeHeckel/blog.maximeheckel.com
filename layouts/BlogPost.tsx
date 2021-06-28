@@ -62,6 +62,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
     sticky: true,
     collapsableOnScroll: true,
     search: true,
+    progress: true,
   };
 
   const [ids, setIds] = React.useState<Array<{ id: string; title: string }>>(

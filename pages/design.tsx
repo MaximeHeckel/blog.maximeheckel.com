@@ -4,6 +4,7 @@ import Button from '@theme/components/Button';
 import { LinkButton } from '@theme/components/Button/LinkButton';
 import Grid from '@theme/components/Grid';
 import {
+  ArrowIcon,
   ContactIcon,
   EnterIcon,
   ExternalIcon,
@@ -134,7 +135,8 @@ export default function Design(props: {
           <RSSIcon stroke="var(--maximeheckel-colors-typeface-2)" />{' '}
           <ContactIcon stroke="var(--maximeheckel-colors-typeface-2)" />{' '}
           <EnterIcon stroke="var(--maximeheckel-colors-typeface-2)" />{' '}
-          <PortfolioIcon stroke="var(--maximeheckel-colors-typeface-2)" />
+          <PortfolioIcon stroke="var(--maximeheckel-colors-typeface-2)" />{' '}
+          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-2)" />
         </section>
         <section id="tooltip">
           <h2>Tooltip</h2>

@@ -1,13 +1,22 @@
-import VisuallyHidden from '../VisuallyHidden';
-import { ContactIcon, PortfolioIcon, RSSIcon, TwitterIcon } from '../Icons';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import VisuallyHidden from '../VisuallyHidden';
+import {
+  ArrowIcon,
+  ContactIcon,
+  PortfolioIcon,
+  RSSIcon,
+  TwitterIcon,
+} from '../Icons';
+import { MAX_HEIGHT, HEIGHT } from './constants';
 
 const CommandCenterStatic = () => (
   <div
     css={css`
       background-color: var(--maximeheckel-colors-body);
+      max-height: ${MAX_HEIGHT}px;
+      overflow-y: scroll;
     `}
   >
     <Separator>Shortcuts</Separator>
@@ -25,13 +34,29 @@ const CommandCenterStatic = () => (
         <ShortcutKey>t</ShortcutKey>
       </div>
     </Item>
+    <Separator>Navigation</Separator>
+    <Item data-testid="navigation" key="home-navigation">
+      <Link href="/">
+        <a>
+          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-2)" />
+          <span style={{ marginLeft: '20px' }}>Home</span>
+        </a>
+      </Link>
+    </Item>
+    <Item data-testid="navigation" key="design-navigation">
+      <Link href="/design/">
+        <a>
+          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-2)" />
+          <span style={{ marginLeft: '20px' }}>Design System</span>
+        </a>
+      </Link>
+    </Item>
     <Separator>Links</Separator>
     <Item data-testid="link" key="twitter-social-link">
       <a
         href="https://twitter.com/MaximeHeckel"
         target="_blank"
         rel="noopener noreferrer"
-        style={{ textDecoration: `none` }}
       >
         <TwitterIcon stroke="var(--maximeheckel-colors-typeface-2)" />
         <span style={{ marginLeft: '15px' }}>Twitter</span>
@@ -46,7 +71,6 @@ const CommandCenterStatic = () => (
         href="mailto:hello@maximeheckel.com"
         target="_blank"
         rel="noopener noreferrer"
-        style={{ textDecoration: `none` }}
       >
         <ContactIcon stroke="var(--maximeheckel-colors-typeface-2)" />
         <span style={{ marginLeft: '15px' }}>Contact</span>
@@ -61,7 +85,6 @@ const CommandCenterStatic = () => (
         href="https://maximeheckel.com"
         target="_blank"
         rel="noopener noreferrer"
-        style={{ textDecoration: `none` }}
       >
         <PortfolioIcon stroke="var(--maximeheckel-colors-typeface-2)" />
         <span style={{ marginLeft: '15px' }}>Work</span>
@@ -72,7 +95,7 @@ const CommandCenterStatic = () => (
     </Item>
     <Item data-testid="link" key="rss-link">
       <Link href="/rss.xml" data-testid="rss-link" aria-label="RSS Feed">
-        <a title="RSS Feed" style={{ textDecoration: `none` }}>
+        <a title="RSS Feed">
           <RSSIcon stroke="var(--maximeheckel-colors-typeface-2)" />
           <span style={{ marginLeft: '15px' }}>RSS</span>
           <VisuallyHidden as="p">
@@ -86,22 +109,23 @@ const CommandCenterStatic = () => (
 
 export { CommandCenterStatic };
 
-const ShortcutKey = styled('span')`
+const ShortcutKey = styled('kbd')`
   color: var(--maximeheckel-colors-brand);
   font-size: 14px;
-  border-radius: var(--border-radius-1);
-  padding: 8px 8px;
+  border-radius: var(--border-radius-0);
+  padding: 6px 6px;
   background: var(--maximeheckel-colors-emphasis);
   &:not(:last-child) {
-    margin-right: 16px;
+    margin-right: 12px;
   }
 `;
 
 const Item = styled('li')`
-  height: 65px;
+  height: ${HEIGHT}px;
   margin-bottom: 0px;
   transition: 0.25s;
   list-style: none;
+  font-size: 0.875rem;
   color: var(--maximeheckel-colors-typeface-1);
   display: flex;
   align-items: center;
@@ -111,9 +135,10 @@ const Item = styled('li')`
   a {
     color: unset;
     width: 100%;
-    height: 100%;
+    height: ${HEIGHT}px;
     display: flex;
     align-items: center;
+    text-decoration: none;
   }
 
   &:hover {
