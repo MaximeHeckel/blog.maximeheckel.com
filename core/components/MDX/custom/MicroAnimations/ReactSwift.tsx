@@ -1,6 +1,6 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
+import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const Box = styled(motion.div)`
@@ -89,7 +89,7 @@ export const SlidingWindow = () => {
   return (
     <Window ref={ref}>
       {inView ? (
-        <>
+        <React.Fragment>
           <div style={{ position: 'relative', height: '150px' }}>
             <Box
               style={{
@@ -401,7 +401,7 @@ export const SlidingWindow = () => {
               ></PopUp>
             </Box>
           </div>
-        </>
+        </React.Fragment>
       ) : null}
     </Window>
   );

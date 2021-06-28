@@ -1,5 +1,4 @@
 import { motion, useMotionValue } from 'framer-motion';
-import React from 'react';
 import Tooltip from '../Tooltip';
 import { LinkButton } from './LinkButton';
 

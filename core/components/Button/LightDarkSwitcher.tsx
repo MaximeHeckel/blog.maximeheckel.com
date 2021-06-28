@@ -1,5 +1,4 @@
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import React from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import Tooltip from '../Tooltip';
 import { LinkButton } from './LinkButton';

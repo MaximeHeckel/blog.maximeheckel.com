@@ -1,5 +1,5 @@
-import React from 'react';
 import { NextSeo, ArticleJsonLd } from 'next-seo';
+import React from 'react';
 import siteConfig from '../../../config/site';
 
 interface Props {
@@ -40,7 +40,7 @@ const Seo = ({ title, desc, image, path, date, updated }: Props) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <NextSeo
         title={seo.title}
         description={seo.description}
@@ -73,7 +73,7 @@ const Seo = ({ title, desc, image, path, date, updated }: Props) => {
         title={seo.title}
         url={seo.url}
       />
-    </>
+    </React.Fragment>
   );
 };
 

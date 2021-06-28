@@ -2,7 +2,6 @@ import { useTheme } from '@theme/context/ThemeContext';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { GraphQLClient, gql } from 'graphql-request';
-import React from 'react';
 import { useQuery } from 'react-query';
 import LineChart from '@theme/components/Charts/LineChart';
 import { ParentSize } from '@visx/responsive';

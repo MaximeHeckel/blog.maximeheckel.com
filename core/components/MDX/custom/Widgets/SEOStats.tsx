@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import LineChart from '@theme/components/Charts/LineChart';
 import { ParentSize } from '@visx/responsive';
-import React from 'react';
 
 const Wrapper = styled('div')`
   padding: 20px;
