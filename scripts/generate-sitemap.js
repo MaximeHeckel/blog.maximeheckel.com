@@ -1,8 +1,12 @@
+/* eslint-disable no-console */
+const chalk = require('chalk');
 const fs = require('fs');
 const globby = require('globby');
 const prettier = require('prettier');
 
 (async () => {
+  console.info(chalk.cyan('info'), ` - Generating sitemap`);
+
   const prettierConfig = await prettier.resolveConfig('./.prettierrc');
   const pages = await globby([
     'pages/*.js',
