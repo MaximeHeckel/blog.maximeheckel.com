@@ -32,7 +32,7 @@
     "@visx/group": "1.6.1",
     "@visx/responsive": "1.6.1",
     "@visx/scale": "1.6.1",
-    "@visx/shape": "1.6.1",
+    "@visx/shape": "1.14.0",
     "@visx/tooltip": "1.6.1",
     "critters": "0.0.6",
     "d3-array": "2.12.0",
