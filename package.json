@@ -45,7 +45,7 @@
     "gray-matter": "4.0.2",
     "lunr": "2.3.9",
     "mousetrap": "1.6.5",
-    "next": "11.0.1-canary.2",
+    "next": "11.0.1",
     "next-mdx-remote": "3.0.2",
     "next-seo": "4.17.0",
     "playwright": "1.8.0",
