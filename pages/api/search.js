@@ -1,7 +1,7 @@
 import lunr from 'lunr';
 import search from '../../cache/search.json';
 
-export default (req, res) => {
+const searchEndpoint = (req, res) => {
   const index = lunr.Index.load(search.index);
   const store = search.store;
 
@@ -12,3 +12,5 @@ export default (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ results }));
 };
+
+export default searchEndpoint;
