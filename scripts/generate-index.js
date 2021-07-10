@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
@@ -6,6 +7,8 @@ const prettier = require('prettier');
 const lunr = require('lunr');
 
 (async () => {
+  console.info(chalk.cyan('info'), ` - Generating Lunr search index`);
+
   const root = process.cwd();
   const prettierConfig = await prettier.resolveConfig('./.prettierrc');
 
@@ -61,6 +64,11 @@ const lunr = require('lunr');
   try {
     fs.readdirSync('cache');
   } catch (error) {
+    console.error(
+      chalk.red('error'),
+      ` - An error occurred while generating the Lunr search index `
+    );
+    console.error(error);
     fs.mkdirSync('cache');
   }
 

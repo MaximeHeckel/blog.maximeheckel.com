@@ -5,20 +5,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withBundleAnalyzer({
   trailingSlash: true,
   target: 'serverless',
-  webpack5: true,
   images: {
     domains: [
-      'pbs.twimg.com', // Twitter Images
+      // Twitter Images
+      'pbs.twimg.com',
     ],
-  },
-  webpack: (config, { dev, isServer }) => {
-    if (isServer) {
-      require('./scripts/generate-sitemap');
-      require('./scripts/generate-index');
-      require('./scripts/generate-rss');
-      require('./scripts/generate-opengraph-images');
-    }
-
-    return config;
   },
 });
