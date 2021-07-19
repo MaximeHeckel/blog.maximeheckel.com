@@ -20,14 +20,14 @@ const CommandCenterStatic = () => (
     `}
   >
     <Separator>Shortcuts</Separator>
-    <Item data-testid="shortcut" key="search-shortcut">
+    <Item data-nohover data-testid="shortcut" key="search-shortcut">
       <span>Command Center</span>
       <div>
         <ShortcutKey>ctrl</ShortcutKey>
         <ShortcutKey>k</ShortcutKey>
       </div>
     </Item>
-    <Item data-testid="shortcut" key="theme-shortcut">
+    <Item data-nohover data-testid="shortcut" key="theme-shortcut">
       <span>Switch Theme</span>
       <div>
         <ShortcutKey>ctrl</ShortcutKey>
@@ -38,7 +38,7 @@ const CommandCenterStatic = () => (
     <Item data-testid="navigation" key="home-navigation">
       <Link href="/">
         <a>
-          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-2)" />
+          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
           <span style={{ marginLeft: '20px' }}>Home</span>
         </a>
       </Link>
@@ -46,7 +46,7 @@ const CommandCenterStatic = () => (
     <Item data-testid="navigation" key="design-navigation">
       <Link href="/design/">
         <a>
-          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-2)" />
+          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
           <span style={{ marginLeft: '20px' }}>Design System</span>
         </a>
       </Link>
@@ -58,7 +58,7 @@ const CommandCenterStatic = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <TwitterIcon stroke="var(--maximeheckel-colors-typeface-2)" />
+        <TwitterIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
         <span style={{ marginLeft: '15px' }}>Twitter</span>
         <VisuallyHidden as="p">
           Link redirects to my Twitter profile page
@@ -72,7 +72,7 @@ const CommandCenterStatic = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <ContactIcon stroke="var(--maximeheckel-colors-typeface-2)" />
+        <ContactIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
         <span style={{ marginLeft: '15px' }}>Contact</span>
         <VisuallyHidden as="p">
           Link opens your default mail client with my email address
@@ -86,7 +86,7 @@ const CommandCenterStatic = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <PortfolioIcon stroke="var(--maximeheckel-colors-typeface-2)" />
+        <PortfolioIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
         <span style={{ marginLeft: '15px' }}>Work</span>
         <VisuallyHidden as="p">
           Link redirects to my portfolio https://maximeheckel.com.
@@ -96,7 +96,7 @@ const CommandCenterStatic = () => (
     <Item data-testid="link" key="rss-link">
       <Link href="/rss.xml" data-testid="rss-link" aria-label="RSS Feed">
         <a title="RSS Feed">
-          <RSSIcon stroke="var(--maximeheckel-colors-typeface-2)" />
+          <RSSIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
           <span style={{ marginLeft: '15px' }}>RSS</span>
           <VisuallyHidden as="p">
             Link redirects to the rss.xml file.
@@ -126,11 +126,12 @@ const Item = styled('li')`
   transition: 0.25s;
   list-style: none;
   font-size: 0.875rem;
-  color: var(--maximeheckel-colors-typeface-1);
+  color: var(--maximeheckel-colors-typeface-secondary);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 25px;
+  user-select: none;
 
   a {
     color: unset;
@@ -142,7 +143,12 @@ const Item = styled('li')`
   }
 
   &:hover {
-    background-color: var(--maximeheckel-colors-foreground);
+    background-color: var(--maximeheckel-colors-emphasis);
+
+    &[data-nohover] {
+      background-color: inherit;
+    }
+
     a {
       color: var(--maximeheckel-colors-brand);
     }
@@ -158,7 +164,8 @@ const Separator = styled('li')`
   width: 100%;
   font-size: 14px;
   background-color: var(--maximeheckel-colors-foreground);
-  color: var(--maximeheckel-colors-typeface-1);
+  color: var(--maximeheckel-colors-typeface-tertiary);
+  font-weight: 500;
   display: flex;
   align-items: center;
   padding-left: 25px;

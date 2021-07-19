@@ -224,18 +224,7 @@ const Search = (props: Props) => {
             }}
           >
             <FormWrapper data-testid="search" ref={SearchRef}>
-              <form
-                onSubmit={(e) => e.preventDefault()}
-                css={css`
-                  border-bottom: ${debouncedSearchQuery
-                    ? `1px solid ${
-                        dark
-                          ? 'hsla(var(--palette-gray-100), 100%)'
-                          : 'hsla(var(--palette-gray-10), 100%)'
-                      }`
-                    : 'none'};
-                `}
-              >
+              <form onSubmit={(e) => e.preventDefault()}>
                 <input
                   ref={inputRef}
                   autoComplete="off"
@@ -252,7 +241,7 @@ const Search = (props: Props) => {
                 <div
                   css={css`
                     width: 120px;
-                    color: var(--maximeheckel-colors-typeface-2);
+                    color: var(--maximeheckel-colors-typeface-tertiary);
                     font-size: 14px;
                     font-weight: 500;
                     opacity: 0.8;
@@ -330,7 +319,7 @@ const Result = styled(motion.li)<{ selected: boolean }>`
   list-style: none;
   font-size: 0.875rem;
   line-height: 24px;
-  color: var(--maximeheckel-colors-typeface-1);
+  color: var(--maximeheckel-colors-typeface-secondary);
   padding: 10px 25px;
   height: ${HEIGHT}px;
 
@@ -385,6 +374,7 @@ const SearchBox = styled(motion.div)`
   transform: translateX(-50%);
   border-radius: var(--border-radius-2);
   box-shadow: var(--maximeheckel-shadow-1);
+  border: 1px solid var(--maximeheckel-border-color);
 
   @media (max-width: 700px) {
     width: 100%;
@@ -402,6 +392,7 @@ const FormWrapper = styled('div')`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px solid var(--maximeheckel-border-color);
   }
 
   input {
@@ -413,13 +404,13 @@ const FormWrapper = styled('div')`
     padding: 0px 25px;
     width: 100%;
     outline: none;
-    color: var(--maximeheckel-colors-typeface-0);
+    color: var(--maximeheckel-colors-typeface-primary);
     ::placeholder,
     ::-webkit-input-placeholder {
-      color: var(--maximeheckel-colors-typeface-1);
+      color: var(--maximeheckel-colors-typeface-secondary);
     }
     :-ms-input-placeholder {
-      color: var(--maximeheckel-colors-typeface-1);
+      color: var(--maximeheckel-colors-typeface-secondary);
     }
 
     -webkit-appearance: textfield;
@@ -440,7 +431,7 @@ const FormWrapper = styled('div')`
 
     ::-webkit-autofill {
       background: transparent;
-      color: var(--maximeheckel-colors-typeface-0);
+      color: var(--maximeheckel-colors-typeface-primary);
       font-size: 14px;
     }
   }

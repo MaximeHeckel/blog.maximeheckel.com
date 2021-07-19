@@ -96,6 +96,7 @@ const Tweet = (props: Props) => {
           href={authorUrl}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={`@${author.username}'s Twitter profile`}
         >
           <TwitterLogo />
         </a>

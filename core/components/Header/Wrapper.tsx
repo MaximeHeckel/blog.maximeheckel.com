@@ -72,7 +72,7 @@ export const Wrapper: React.FC<HeaderProps> = (props) => {
               transformOrigin: 'left',
               scaleX: readingProgress,
               height: '2px',
-              backgroundColor: 'var(--maximeheckel-colors-typeface-2)',
+              backgroundColor: 'var(--maximeheckel-colors-typeface-tertiary)',
               width: '100%',
             }}
           />

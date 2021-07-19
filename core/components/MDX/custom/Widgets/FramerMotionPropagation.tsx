@@ -15,21 +15,21 @@ const PerspectiveIcon = () => (
   >
     <path
       d="M12.0645 2.92166L2.06452 7.92166L12.0645 12.9217L22.0645 7.92166L12.0645 2.92166Z"
-      stroke="var(--maximeheckel-colors-typeface-2)"
+      stroke="var(--maximeheckel-colors-typeface-tertiary)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M2.06452 17.9217L12.0645 22.9217L22.0645 17.9217"
-      stroke="var(--maximeheckel-colors-typeface-2)"
+      stroke="var(--maximeheckel-colors-typeface-tertiary)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M2.06452 12.9217L12.0645 17.9217L22.0645 12.9217"
-      stroke="var(--maximeheckel-colors-typeface-2)"
+      stroke="var(--maximeheckel-colors-typeface-tertiary)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -96,7 +96,7 @@ const Card = styled('div')`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.65);
+  background: hsla(var(--palette-gray-05), 0.65);
   box-shadow: var(--maximeheckel-shadow-2);
   position: relative;
   height: 100%;

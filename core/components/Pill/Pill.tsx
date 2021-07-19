@@ -32,7 +32,7 @@ const PillWrapper = styled('span')<PillProps & { dark: boolean }>`
       p.variant === PillVariant.SUCCESS
         ? `
           background: var(--maximeheckel-colors-success-emphasis);
-          color: var(--maximeheckel-colors-success);`
+          color: hsla(var(--palette-green-45));`
         : ''
     }
   
@@ -40,7 +40,7 @@ const PillWrapper = styled('span')<PillProps & { dark: boolean }>`
       p.variant === PillVariant.WARNING
         ? `
           background: var(--maximeheckel-colors-warning-emphasis);
-          color: var(--maximeheckel-colors-warning);`
+          color: hsla(var(--palette-orange-45));`
         : ''
     }
   

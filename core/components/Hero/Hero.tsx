@@ -43,7 +43,7 @@ const HeroImg = (props: HeroImgProps) => (
 const HeroInfo = styled.div`
   margin-bottom: 30px;
   p {
-    color: var(--maximeheckel-colors-typeface-2);
+    color: var(--maximeheckel-colors-typeface-tertiary);
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 0px;
@@ -51,14 +51,14 @@ const HeroInfo = styled.div`
 `;
 
 const HeroSubtitle = styled.h3`
-  color: var(--maximeheckel-colors-typeface-2);
+  color: var(--maximeheckel-colors-typeface-tertiary);
 `;
 
 const HeroTitle = styled.h1``;
 
 const HeroWrapper = styled.div`
   align-items: center;
-  color: var(--maximeheckel-colors-typeface-0);
+  color: var(--maximeheckel-colors-typeface-primary);
   grid-column: 2;
   padding-top: 248px;
 

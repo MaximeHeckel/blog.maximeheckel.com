@@ -12,31 +12,53 @@ interface Props {
 
 const Tooltip: React.FC<Props> = (props) => {
   const { children, id, tooltipText, tooltipVisuallyHiddenText } = props;
+  const [dimensions, setDimensions] = React.useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
 
   const controls = useAnimation();
 
   const tooltipRef = React.useRef<HTMLSpanElement>(null);
 
-  function handlePosition(tooltipRef: React.RefObject<HTMLSpanElement>) {
-    const { current } = tooltipRef!;
-
-    if (current) {
-      const tooltipRect = current.getBoundingClientRect();
-      if (tooltipRect.x < 0) {
-        current.style.left = '0';
-        current.style.right = 'auto';
-        current.style.transform = `translateX(${-tooltipRect.x + 15}px)`;
-      } else if (tooltipRect.x > window.outerWidth) {
-        current.style.left = 'auto';
-        current.style.right = '0';
-        current.style.transform = `translateX(${
-          window.outerWidth - tooltipRect.x - 15
-        }px)`;
-      }
+  React.useEffect(() => {
+    function handleResize() {
+      setDimensions({
+        height: window.innerHeight,
+        width: window.innerWidth,
+      });
     }
-  }
 
-  function resetPosition(tooltipRef: React.RefObject<HTMLSpanElement>) {
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const handlePosition = React.useCallback(
+    (tooltipRef: React.RefObject<HTMLSpanElement>) => {
+      const { current } = tooltipRef!;
+
+      if (current) {
+        const tooltipRect = current.getBoundingClientRect();
+        if (tooltipRect.left < 0) {
+          current.style.left = '0';
+          current.style.right = 'auto';
+          current.style.transform = `translateX(${-tooltipRect.x - 40}px)`;
+        } else if (tooltipRect.right > dimensions.width) {
+          current.style.left = 'auto';
+          current.style.right = '0';
+          current.style.transform = `translateX(${
+            dimensions.width - tooltipRect.right + 40
+          }px)`;
+        }
+      }
+    },
+    [dimensions]
+  );
+
+  const resetPosition = (tooltipRef: React.RefObject<HTMLSpanElement>) => {
     const { current } = tooltipRef!;
 
     if (current) {
@@ -44,15 +66,15 @@ const Tooltip: React.FC<Props> = (props) => {
       current.style.removeProperty('right');
       current.style.removeProperty('transform');
     }
-  }
+  };
 
-  function showTooltip() {
+  const showTooltip = () => {
     if (tooltipRef.current) {
       tooltipRef.current.setAttribute('aria-hidden', 'false');
       controls.start('hover');
       handlePosition(tooltipRef);
     }
-  }
+  };
 
   function hideTooltip() {
     if (tooltipRef.current) {
@@ -106,11 +128,10 @@ const Tooltip: React.FC<Props> = (props) => {
         }}
         css={css`
           color: hsla(var(--palette-gray-00));
-          background: hsla(var(--palette-gray-80));
+          background: hsla(var(--palette-gray-75));
           box-shadow: var(--maximeheckel-shadow-2);
           border-radius: var(--border-radius-0);
           position: absolute;
-          right: 0;
           bottom: -60%;
           font-weight: 500;
           font-size: 14px;

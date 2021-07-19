@@ -24,7 +24,7 @@ const LogoWrapper = styled('div')<LogoWrapperProps>`
     height: ${(props) => props.size}px;
     width: ${(props) => props.size}px;
     fill: var(--maximeheckel-colors-body);
-    stroke: var(--maximeheckel-colors-typeface-0);
+    stroke: var(--maximeheckel-colors-typeface-primary);
     transition: 0.5s;
     will-change: stroke, fill;
   }

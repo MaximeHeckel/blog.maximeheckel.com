@@ -21,7 +21,6 @@ import InlineCode from '@theme/components/MDX/InlineCode';
 import MDXBody, { ListItem } from '@theme/components/MDX/MDX';
 import Pill, { PillVariant } from '@theme/components/Pill';
 import Seo from '@theme/components/Seo';
-import Tooltip from '@theme/components/Tooltip';
 import Tweet from '@theme/components/Tweet';
 import Layout from '@theme/layout';
 import { AnimatePresence } from 'framer-motion';
@@ -40,6 +39,10 @@ import { TransformedTweet } from 'types/tweet';
  * - See tooltip, why is it all the way to the right (maybe grid? maybe parent element?)
  */
 
+const Tooltip = dynamic(() => import('@theme/components/Tooltip'), {
+  ssr: false,
+});
+
 const Search = dynamic(() => import('@theme/components/Search'), {
   ssr: false,
 });
@@ -48,6 +51,8 @@ const HR = styled('hr')`
   height: 2px;
   width: 100%;
   background: hsl(var(--palette-gray-20));
+  border: none;
+  margin-bottom: 16px;
 `;
 
 const Label = styled('p')`
@@ -58,6 +63,17 @@ export default function Design(props: {
   tweets: Record<string, TransformedTweet>;
 }) {
   const [showSearch, setShowSearch] = React.useState(false);
+
+  const colorScaleNumbers = Array.from(Array(19).keys()).map((items) => {
+    const num = (items + 1) * 5;
+    if (num === 5) {
+      return `0${num}`;
+    }
+
+    return num.toString();
+  });
+
+  const palette = ['gray', 'blue', 'red', 'orange', 'green', 'pink', 'indigo'];
 
   return (
     <Layout footer>
@@ -75,12 +91,141 @@ export default function Design(props: {
         `}
       >
         <div>
-          <h1>Components / Design System</h1>
+          <h1
+            css={css`
+              margin-bottom: 0px;
+            `}
+          >
+            Components / Design System{' '}
+          </h1>
           <HR />
+          <Grid gap={12} columns="140px 50px">
+            <Pill variant={PillVariant.WARNING}>Work In Progress</Pill>
+            <Pill variant={PillVariant.INFO}>v1.0</Pill>
+          </Grid>
         </div>
         <section id="logo">
           <h2>Logo</h2>
           <Logo />
+        </section>
+        <section id="Colors">
+          <h2>Colors</h2>
+          <Grid gap={12}>
+            Brand:
+            <Tooltip id="brand" tooltipText="--brand">
+              <div
+                css={css`
+                  width: 44px;
+                  height: 44px;
+                  border-radius: 50%;
+                  background: var(--maximeheckel-colors-brand);
+                  border: 2px solid var(--maximeheckel-border-color);
+                `}
+              />
+            </Tooltip>
+            Background:
+            <Tooltip id="background" tooltipText="--background">
+              <div
+                css={css`
+                  width: 44px;
+                  height: 44px;
+                  border-radius: 50%;
+                  background: var(--maximeheckel-colors-background);
+                  border: 2px solid var(--maximeheckel-border-color);
+                `}
+              />
+            </Tooltip>
+            Foreground:
+            <Tooltip id="foreground" tooltipText="--foreground">
+              <div
+                css={css`
+                  width: 44px;
+                  height: 44px;
+                  border-radius: 50%;
+                  background: var(--maximeheckel-colors-foreground);
+                  border: 2px solid var(--maximeheckel-border-color);
+                `}
+              />
+            </Tooltip>
+            Typeface:
+            <Grid columns="repeat(3, 44px)" gap={12}>
+              <Tooltip id="typeface-primary" tooltipText="--typeface-primary">
+                <div
+                  css={css`
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 50%;
+                    background: var(--maximeheckel-colors-typeface-primary);
+                    border: 2px solid var(--maximeheckel-border-color);
+                  `}
+                />
+              </Tooltip>
+              <Tooltip
+                id="typeface-secondary"
+                tooltipText="--typeface-secondary"
+              >
+                <div
+                  css={css`
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 50%;
+                    background: var(--maximeheckel-colors-typeface-secondary);
+                    border: 2px solid var(--maximeheckel-border-color);
+                  `}
+                />
+              </Tooltip>
+              <Tooltip id="typeface-tertiary" tooltipText="--typeface-teriary">
+                <div
+                  css={css`
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 50%;
+                    background: var(--maximeheckel-colors-typeface-tertiary);
+                    border: 2px solid var(--maximeheckel-border-color);
+                  `}
+                />
+              </Tooltip>
+            </Grid>
+          </Grid>
+        </section>
+        <section id="Palette">
+          <h2>Palette</h2>
+          <div
+            css={css`
+              display: grid;
+              gap: 2rem;
+              grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+            `}
+          >
+            {palette.map((paletteItem) => (
+              <div
+                key={paletteItem}
+                css={css`
+                  display: grid;
+                  grid-template-columns: repeat(auto-fill, minmax(2rem, 1fr));
+                  margin-right: 12px;
+                `}
+              >
+                {colorScaleNumbers.map((shade) => (
+                  <Tooltip
+                    id={`${paletteItem}-${shade}`}
+                    key={`${paletteItem}-${shade}`}
+                    tooltipText={`--palette-${paletteItem}-${shade}`}
+                  >
+                    <div
+                      css={css`
+                        width: 44px;
+                        height: 44px;
+                        border-radius: 50%;
+                        background: hsl(var(--palette-${paletteItem}-${shade}));
+                        border: 2px solid var(--maximeheckel-border-color);
+                      `}
+                    />
+                  </Tooltip>
+                ))}
+              </div>
+            ))}
+          </div>
         </section>
         <section id="typography">
           <h2>Typography</h2>
@@ -130,13 +275,13 @@ export default function Design(props: {
         </section>
         <section id="icons">
           <h2>Icons</h2>
-          <TwitterIcon stroke="var(--maximeheckel-colors-typeface-2)" />{' '}
-          <ExternalIcon stroke="var(--maximeheckel-colors-typeface-2)" />{' '}
-          <RSSIcon stroke="var(--maximeheckel-colors-typeface-2)" />{' '}
-          <ContactIcon stroke="var(--maximeheckel-colors-typeface-2)" />{' '}
-          <EnterIcon stroke="var(--maximeheckel-colors-typeface-2)" />{' '}
-          <PortfolioIcon stroke="var(--maximeheckel-colors-typeface-2)" />{' '}
-          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-2)" />
+          <TwitterIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <ExternalIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <RSSIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <ContactIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <EnterIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <PortfolioIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />
         </section>
         <section id="tooltip">
           <h2>Tooltip</h2>
@@ -156,7 +301,7 @@ export default function Design(props: {
               `}
               aria-describedby="exampletooltip"
             >
-              <TwitterIcon stroke="var(--maximeheckel-colors-typeface-2)" />{' '}
+              <TwitterIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
               Hover Me!
             </div>
           </Tooltip>
@@ -207,7 +352,7 @@ export default function Design(props: {
             <div>
               <Label>Icon Button</Label>
               <LinkButton>
-                <TwitterIcon stroke="var(--maximeheckel-colors-typeface-2)" />
+                <TwitterIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />
               </LinkButton>
             </div>
           </Grid>

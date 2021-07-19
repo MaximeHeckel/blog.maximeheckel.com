@@ -45,7 +45,7 @@ const Wrapper = styled('div')<WrapperProps>`
       a {
         ${(p) =>
           !p.showTableOfContents ? `cursor: none;  pointer-events: none;` : ''}
-        color: var(--maximeheckel-colors-typeface-2);
+        color: var(--maximeheckel-colors-typeface-tertiary);
         text-decoration: none;
       }
 

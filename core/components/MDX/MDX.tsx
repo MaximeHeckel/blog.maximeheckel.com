@@ -6,7 +6,7 @@ import { ArrowIcon } from '../Icons';
 export const ListItem: React.FC<HTMLLIElement> = (props) => {
   return (
     <li>
-      <span>
+      <span data-arrow>
         <ArrowIcon stroke="var(--maximeheckel-colors-brand)" />
       </span>
       <div>{props.children}</div>
@@ -27,7 +27,7 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
     grid-column: 2;
   }
 
-  color: var(--maximeheckel-colors-typeface-1);
+  color: var(--maximeheckel-colors-typeface-secondary);
 
   figure {
     margin-bottom: 2.25rem;
@@ -38,33 +38,23 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
     text-align: left;
     line-height: 1.5;
     font-weight: 500;
-    color: var(--maximeheckel-colors-typeface-2);
+    color: var(--maximeheckel-colors-typeface-tertiary);
     padding-top: 10px;
   }
 
-  h1 {
-    color: var(--maximeheckel-colors-typeface-0);
-  }
-
   h2 {
-    color: var(--maximeheckel-colors-typeface-0);
     margin-top: 2em;
   }
 
   h3 {
-    color: var(--maximeheckel-colors-typeface-0);
     margin-top: 2em;
-  }
-
-  strong {
-    color: var(--maximeheckel-colors-typeface-0);
   }
 
   hr {
     height: 2px;
     width: 40%;
     margin: 50px auto;
-    background-color: var(--maximeheckel-colors-typeface-0);
+    background-color: var(--maximeheckel-colors-typeface-primary);
   }
 
   ul {
@@ -72,7 +62,7 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
     li {
       list-style: none;
       display: flex;
-      span {
+      span[data-arrow] {
         padding-right: 8px;
         transform: translateY(4px);
       }

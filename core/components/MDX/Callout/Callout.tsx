@@ -16,12 +16,12 @@ const variantColors = {
   [VARIANT.DANGER]: `
     background-color: var(--maximeheckel-colors-danger-emphasis);
     border-color: var(--maximeheckel-colors-danger);
-    color: var(--maximeheckel-colors-typeface-0);
+    color: var(--maximeheckel-colors-typeface-primary);
     `,
   [VARIANT.INFO]: `
     background-color: var(--maximeheckel-colors-emphasis);
     border-color: var(--maximeheckel-colors-brand);
-    color: var(--maximeheckel-colors-typeface-0);
+    color: var(--maximeheckel-colors-typeface-primary);
   `,
 };
 
