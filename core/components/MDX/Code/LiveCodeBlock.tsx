@@ -145,7 +145,7 @@ const StyledPreviewWrapper = styled('div')<{
 `;
 
 const StyledErrorWrapper = styled('div')`
-  color: var(--maximeheckel-colors-typeface-1);
+  color: var(--maximeheckel-colors-typeface-secondary);
   max-width: 300px;
 
   pre {

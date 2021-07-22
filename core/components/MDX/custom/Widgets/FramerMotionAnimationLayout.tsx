@@ -67,14 +67,14 @@ const ClearIcon = () => (
   >
     <path
       d="M15 9L9 15"
-      stroke="var(--maximeheckel-colors-typeface-2)"
+      stroke="var(--maximeheckel-colors-typeface-tertiary)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M9 9L15 15"
-      stroke="var(--maximeheckel-colors-typeface-2)"
+      stroke="var(--maximeheckel-colors-typeface-tertiary)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -92,14 +92,14 @@ const AddIcon = () => (
   >
     <path
       d="M12.5154 8.91113V16.9111"
-      stroke="var(--maximeheckel-colors-typeface-2)"
+      stroke="var(--maximeheckel-colors-typeface-tertiary)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M8.51541 12.9111H16.5154"
-      stroke="var(--maximeheckel-colors-typeface-2)"
+      stroke="var(--maximeheckel-colors-typeface-tertiary)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

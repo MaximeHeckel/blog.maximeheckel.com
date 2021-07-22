@@ -5,7 +5,7 @@ exports[`Blockquote can render a Blockquote 1`] = `
   -webkit-transition: 0.5s;
   transition: 0.5s;
   margin: 30px 0px;
-  color: var(--maximeheckel-colors-typeface-0);
+  color: var(--maximeheckel-colors-typeface-primary);
   font-style: italic;
   width: 100vw;
   position: relative;

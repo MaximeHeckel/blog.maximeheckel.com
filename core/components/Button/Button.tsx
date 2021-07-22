@@ -58,7 +58,7 @@ const StyledButton = styled(motion.button)<ButtonProps>`
           display: flex;
           align-item: center;
           color: var(--maximeheckel-colors-body);
-          background-color: var(--maximeheckel-colors-typeface-0);
+          background-color: var(--maximeheckel-colors-typeface-primary);
         `
       : ''
   }
@@ -68,7 +68,7 @@ const StyledButton = styled(motion.button)<ButtonProps>`
       ? `
       cursor: not-allowed;
       opacity: 0.5;
-      background-color: var(--maximeheckel-colors-typeface-1);
+      background-color: var(--maximeheckel-colors-typeface-secondary);
       color: #000000;
       &:hover {
         transform: none;
@@ -102,8 +102,8 @@ const StyledButton = styled(motion.button)<ButtonProps>`
       ? `
       cursor: not-allowed;
       opacity: 0.5;
-      color: var(--maximeheckel-colors-typeface-1);
-      border-color: var(--maximeheckel-colors-typeface-1);
+      color: var(--maximeheckel-colors-typeface-secondary);
+      border-color: var(--maximeheckel-colors-typeface-secondary);
       &:hover {
         transform: none;
       }
@@ -158,9 +158,9 @@ const StyledButton = styled(motion.button)<ButtonProps>`
           ? `
               opacity: 0.5;
               cursor: not-allowed;
-              color: var(--maximeheckel-colors-typeface-1);
+              color: var(--maximeheckel-colors-typeface-secondary);
               ::after { 
-                background-color: var(--maximeheckel-colors-typeface-1);
+                background-color: var(--maximeheckel-colors-typeface-secondary);
               }
             `
           : ''

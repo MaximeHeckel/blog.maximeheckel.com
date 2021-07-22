@@ -33,6 +33,6 @@ const Wrapper = styled.div`
   display: flex;
   height: calc(100vh);
   align-items: center;
-  color: var(--maximeheckel-colors-typeface-0);
+  color: var(--maximeheckel-colors-typeface-primary);
   grid-column: 2;
 `;

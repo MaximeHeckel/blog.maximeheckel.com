@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const TweetWrapper = styled('div')`
-  color: var(--maximeheckel-colors-typeface-0);
+  color: var(--maximeheckel-colors-typeface-primary);
   border-radius: var(--border-radius-2);
   background-color: var(--maximeheckel-colors-foreground);
   padding-top: 1rem;
@@ -11,8 +11,8 @@ export const TweetWrapper = styled('div')`
   padding-right: 1.5rem;
   width: 100%;
 
-  border: solid 1px var(--maximeheckel-colors-emphasis);
-  box-shadow: var(--maximeheckel-shadow-2);
+  border: solid 1px var(--maximeheckel-border-color);
+  box-shadow: var(--maximeheckel-shadow-1);
 
   @media (max-width: 700px) {
     /**
@@ -30,7 +30,7 @@ export const TweetWrapper = styled('div')`
 
   a {
     text-decoration: none;
-    color: var(--maximeheckel-colors-typeface-2) !important;
+    color: var(--maximeheckel-colors-typeface-tertiary) !important;
   }
 `;
 
@@ -49,7 +49,7 @@ export const Name = styled('a')`
     display: flex;
     align-items: center;
     font-weight: 700;
-    color: var(--maximeheckel-colors-typeface-0);
+    color: var(--maximeheckel-colors-typeface-primary);
   }
 `;
 

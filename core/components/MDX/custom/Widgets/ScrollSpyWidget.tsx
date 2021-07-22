@@ -59,7 +59,7 @@ const Section = styled('section')<{ intersecting?: boolean }>`
   gap: 20px;
   justify-content: center;
   align-items: center;
-  color: var(--maximeheckel-colors-typeface-0);
+  color: var(--maximeheckel-colors-typeface-primary);
   border-radius: var(--border-radius-2);
   border: 1px solid var(--maximeheckel-colors-emphasis);
   box-shadow: var(--maximeheckel-shadow-2);
@@ -169,7 +169,7 @@ const ScrollSpyWidget = () => {
 
               ::-webkit-scrollbar-thumb {
                 border-radius: 8px;
-                background-color: var(--maximeheckel-colors-typeface-2);
+                background-color: var(--maximeheckel-colors-typeface-tertiary);
               }
               padding: 0px 20px;
             `}
@@ -207,7 +207,7 @@ const ScrollSpyWidget = () => {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                color: var(--maximeheckel-colors-typeface-0);
+                color: var(--maximeheckel-colors-typeface-primary);
               `}
             />
           </div>

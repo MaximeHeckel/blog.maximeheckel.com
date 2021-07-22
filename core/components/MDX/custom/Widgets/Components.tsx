@@ -12,19 +12,21 @@ export const TransitionGridWrapper = styled('div')`
   > div {
     width: 100%;
     max-width: 400px;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
   }
 `;
 
 export const AnimationCard = styled('div')`
   background: var(--maximeheckel-colors-foreground);
-  color: var(--maximeheckel-colors-typeface-1);
+  color: var(--maximeheckel-colors-typeface-secondary);
   font-weight: 500;
   backdrop-filter: blur(6px);
   border-radius: var(--border-radius-2);
   margin: 0 auto;
   overflow: hidden;
-  box-shadow: var(--maximeheckel-shadow-2);
+  box-shadow: var(--maximeheckel-shadow-1);
+  border: 1px solid var(--maximeheckel-border-color);
   margin: 30px 0px;
 
   pre {

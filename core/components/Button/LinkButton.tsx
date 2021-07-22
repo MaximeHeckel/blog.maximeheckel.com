@@ -13,7 +13,7 @@ const LinkButton = styled(motion.button)`
   align-items: center;
   justify-content: center;
   padding: 0px;
-  color: var(--maximeheckel-colors-typeface-2);
+  color: var(--maximeheckel-colors-typeface-tertiary);
 
   > * {
     margin-left: auto;

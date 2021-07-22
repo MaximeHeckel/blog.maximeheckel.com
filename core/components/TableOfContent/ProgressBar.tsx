@@ -43,7 +43,7 @@ const ProgressBar = ({ progress }: { progress: number }) => {
           transformOrigin: 'top',
           scaleY: progress,
           width: '2px',
-          backgroundColor: 'var(--maximeheckel-colors-typeface-2)',
+          backgroundColor: 'var(--maximeheckel-colors-typeface-tertiary)',
           height: '100%',
         }}
         data-testid="progress-bar"

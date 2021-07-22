@@ -45,7 +45,7 @@ html {
   box-sizing: inherit;
 }
 body {
-  color: var(--maximeheckel-colors-typeface-0);
+  color: var(--maximeheckel-colors-typeface-primary);
   font-family: 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
@@ -70,7 +70,7 @@ h1 {
   padding-right: 0;
   padding-top: 0;
   margin-bottom: 1.45rem;
-  color: inherit;
+  color: var(--maximeheckel-colors-typeface-primary);
   font-family: 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
@@ -88,7 +88,7 @@ h2 {
   padding-right: 0;
   padding-top: 0;
   margin-bottom: 1.45rem;
-  color: inherit;
+  color: var(--maximeheckel-colors-typeface-primary);
   font-family: 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
@@ -106,7 +106,7 @@ h3 {
   padding-right: 0;
   padding-top: 0;
   margin-bottom: 1.45rem;
-  color: inherit;
+  color: var(--maximeheckel-colors-typeface-primary);
   font-family: 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
@@ -124,11 +124,11 @@ h4 {
   padding-right: 0;
   padding-top: 0;
   margin-bottom: 1.45rem;
-  color: inherit;
+  color: var(--maximeheckel-colors-typeface-primary);
   font-family: 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
-  font-weight: bold;
+  font-weight: 600;
   text-rendering: optimizeLegibility;
   font-size: 1rem;
   line-height: 2;
@@ -142,11 +142,11 @@ h5 {
   padding-right: 0;
   padding-top: 0;
   margin-bottom: 1.45rem;
-  color: inherit;
+  color: var(--maximeheckel-colors-typeface-primary);
   font-family: 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
-  font-weight: bold;
+  font-weight: 600;
   text-rendering: optimizeLegibility;
   font-size: 0.87055rem;
   line-height: 1.1;
@@ -160,11 +160,11 @@ h6 {
   padding-right: 0;
   padding-top: 0;
   margin-bottom: 1.45rem;
-  color: inherit;
+  color: var(--maximeheckel-colors-typeface-primary);
   font-family: 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
-  font-weight: bold;
+  font-weight: 600;
   text-rendering: optimizeLegibility;
   font-size: 0.81225rem;
   line-height: 1.1;
@@ -205,11 +205,13 @@ p {
   line-height: 1.9;
   letter-spacing: 0.3px;
 }
+strong {
+  color: var(--maximeheckel-colors-typeface-primary);
+  font-weight: 600;
+}
 kbd {
   font-size: 0.75rem;
-  font-family: 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI',
-    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
+  font-family: inherit;
 }
 figure {
   margin-left: 0;

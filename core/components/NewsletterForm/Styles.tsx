@@ -3,9 +3,10 @@ import { motion } from 'framer-motion';
 
 export const NewsletterWrapper = styled('div')`
   margin-left: -10px;
-  background: var(--maximeheckel-colors-foreground);
-  box-shadow: var(--maximeheckel-shadow-1);
+  background: var(--maximeheckel-card-background-color);
+  // box-shadow: var(--maximeheckel-shadow-1);
   border-radius: var(--border-radius-2);
+  border: 1px solid var(--maximeheckel-border-color);
   overflow: hidden;
   position: relative;
   > svg {
@@ -16,13 +17,7 @@ export const NewsletterWrapper = styled('div')`
 
   path,
   rect {
-    stroke: var(--maximeheckel-colors-typeface-0);
-  }
-
-  span {
-    padding: 6px 0px 7px 0px;
-    color: var(--maximeheckel-colors-brand);
-    background: var(--maximeheckel-colors-emphasis);
+    stroke: var(--maximeheckel-colors-typeface-primary);
   }
 
   @media (max-width: 700px) {
@@ -37,13 +32,20 @@ export const NewsletterFormContent = styled('div')<{ withOffset?: boolean }>`
   padding: ${(p) => (p.withOffset ? '150px 48px 48px 48px' : '36px 24px')};
   h3 {
     max-width: 600px;
-    color: var(--maximeheckel-colors-typeface-0);
+    color: var(--maximeheckel-colors-typeface-primary);
   }
   p {
-    color: var(--maximeheckel-colors-typeface-1);
-    font-weight: 500;
+    color: var(--maximeheckel-colors-typeface-secondary);
     margin-bottom: 0px;
   }
+
+  span {
+    padding: 6px 0px 7px 0px;
+    color: var(--maximeheckel-colors-brand);
+    background: var(--maximeheckel-colors-emphasis);
+    font-weight: 500;
+  }
+
   @media (max-width: 700px) {
     padding: ${(p) => (p.withOffset ? '150px 0px 30px 20px;' : '24px 4px')};
   }
@@ -71,7 +73,6 @@ export const NewsLetterForm = styled(motion.form)`
   border-radius: var(--border-radius-1);
   margin: 45px auto 0px auto;
   width: 100%;
-  background: var(--maximeheckel-colors-body);
 `;
 
 export const NewsLetterInput = styled(motion.input)`
@@ -79,14 +80,39 @@ export const NewsLetterInput = styled(motion.input)`
   height: 50px;
   outline: none;
   background-color: transparent;
-  color: var(--maximeheckel-colors-typeface-1);
+  color: var(--maximeheckel-colors-typeface-primary);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.3px;
   padding: 0px 16px;
   border: none;
   box-shadow: none;
   will-change: width;
+
+  ::placeholder,
+  ::-webkit-input-placeholder {
+    color: var(--maximeheckel-colors-typeface-secondary);
+  }
+  :-ms-input-placeholder {
+    color: var(--maximeheckel-colors-typeface-secondary);
+  }
+
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+
+  ::-webkit-search-cancel-button,
+  ::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+  ::-webkit-input-placeholder {
+    color: inherit;
+    opacity: 0.54;
+  }
+  ::-webkit-file-upload-button {
+    -webkit-appearance: button;
+    font: inherit;
+  }
+
   @media (max-width: 700px) {
     font-size: 16px;
   }

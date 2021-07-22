@@ -132,7 +132,7 @@ const LineNo = styled('div')`
   padding: 0 12px;
   user-select: none;
   opacity: 1;
-  color: var(--maximeheckel-colors-typeface-2);
+  color: var(--maximeheckel-colors-typeface-tertiary);
 `;
 
 const LineContent = styled('span')`
@@ -143,7 +143,7 @@ const LineContent = styled('span')`
 const CodeSnippetTitle = styled('p')`
   font-size: 14px;
   margin-bottom: 0px;
-  color: var(--maximeheckel-colors-typeface-2);
+  color: var(--maximeheckel-colors-typeface-primary);
   font-weight: 500;
 `;
 
@@ -160,8 +160,8 @@ const CodeSnippetHeader = styled('div')`
   border-top-right-radius: var(--border-radius-2);
   min-height: 50px;
   padding: 0px 14px;
-  background-color: var(--maximeheckel-colors-foreground);
-  border-bottom: 1px solid var(--maximeheckel-colors-emphasis);
+  background-color: var(--code-snippet-background);
+  border-bottom: 1px solid var(--maximeheckel-border-color);
 `;
 
 const CodeSnippetWrapper = styled('div')`
@@ -179,6 +179,6 @@ const CodeSnippetWrapper = styled('div')`
   }
   border-radius: var(--border-radius-2);
   box-shadow: var(--maximeheckel-shadow-1);
-  border: 1px solid var(--maximeheckel-colors-emphasis);
+  border: 1px solid var(--maximeheckel-border-color);
   margin-bottom: 32px;
 `;

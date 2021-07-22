@@ -12,7 +12,7 @@ export const TitleWrapper = styled.div`
   }
 
   a {
-    color: var(--maximeheckel-colors-typeface-0);
+    color: var(--maximeheckel-colors-typeface-primary);
     display: block;
     text-decoration: none;
     overflow: hidden;

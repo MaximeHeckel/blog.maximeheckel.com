@@ -82,7 +82,7 @@ const IndexPage = (props: Props) => {
             Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
             <span
               css={css`
-                color: var(--maximeheckel-colors-typeface-2);
+                color: var(--maximeheckel-colors-typeface-secondary);
               `}
             >
               Here, I share through my writing my experience as a frontend
@@ -275,19 +275,19 @@ const Card = styled(motion.div)`
   margin-bottom: 0px;
   overflow: hidden;
   position: relative;
-  background: var(--maximeheckel-colors-foreground);
+  background: var(--maximeheckel-card-background-color);
   box-shadow: var(--maximeheckel-shadow-1);
   position: relative;
   padding: 36px 24px;
 
   p {
-    color: var(--maximeheckel-colors-typeface-1);
+    color: var(--maximeheckel-colors-typeface-secondary);
     margin-top: 1em;
   }
 `;
 
 const TitleWithBackground = styled('h2')<{ background: string }>`
-  color: var(--maximeheckel-colors-typeface-0);
+  color: var(--maximeheckel-colors-typeface-primary);
   margin-bottom: 0px !important;
   letter-spacing: -0.02em;
   margin-block-end: 0px;
@@ -314,7 +314,7 @@ const Block = styled('div')`
   height: 60px;
   box-shadow: none;
 
-  color: var(--maximeheckel-colors-typeface-0);
+  color: var(--maximeheckel-colors-typeface-primary);
   transition: background-color 0.25s, box-shadow 0.25s, color 0.25s;
 
   &:hover {
@@ -332,7 +332,7 @@ const YearBlock = styled('div')`
 const DateBlock = styled('div')`
   font-size: 14px;
   font-weight: 500;
-  color: var(--maximeheckel-colors-typeface-2);
+  color: var(--maximeheckel-colors-typeface-tertiary);
   min-width: 50px;
   margin-right: 32px;
 `;
@@ -350,7 +350,7 @@ const List = styled(Grid)`
   }
 
   h3 {
-    color: var(--maximeheckel-colors-typeface-0);
+    color: var(--maximeheckel-colors-typeface-primary);
   }
 `;
 

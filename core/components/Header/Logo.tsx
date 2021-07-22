@@ -1,6 +1,10 @@
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React from 'react';
-import Tooltip from '../Tooltip';
+
+const Tooltip = dynamic(() => import('@theme/components/Tooltip'), {
+  ssr: false,
+});
 
 export interface HeaderLogoProps {
   ['aria-label']: string;

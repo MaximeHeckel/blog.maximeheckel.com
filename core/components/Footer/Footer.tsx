@@ -3,8 +3,10 @@ import Grid from '../Grid';
 import Logo from '../Logo';
 
 const HR = styled.hr`
-  height: 2px;
+  height: 1px;
+  width: 100%;
   background: hsl(var(--palette-gray-20));
+  border: none;
 `;
 
 const FooterBlock = styled.div`
@@ -19,8 +21,12 @@ const FooterWrapper = styled.div`
   width: 100%;
   margin-top: 30px;
   grid-column: 2;
-  color: var(--maximeheckel-colors-typeface-0);
+  color: var(--maximeheckel-colors-typeface-primary);
+  font-weight: 500;
   font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
   margin: 0 auto;
   a {
     color: inherit;
@@ -31,6 +37,7 @@ const FooterContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 48px;
 `;
 
 const Footer = () => (
@@ -38,10 +45,9 @@ const Footer = () => (
     <Grid columns="var(--layout-medium)" columnGap={20}>
       <FooterWrapper>
         <HR />
-
         <FooterContent>
           <div>© {new Date().getFullYear()} Maxime Heckel —— SF/NY</div>
-          <Logo alt="Maxime Heckel's logo" size={40} />
+          <Logo alt="Maxime Heckel's logo" size={35} />
         </FooterContent>
       </FooterWrapper>
     </Grid>

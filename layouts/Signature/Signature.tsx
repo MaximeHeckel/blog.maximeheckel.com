@@ -4,7 +4,7 @@ import NewsletterForm from '@theme/components/NewsletterForm';
 
 const ColoredBlockWrapper = styled('div')`
   background: var(--maximeheckel-colors-emphasis);
-  color: var(--maximeheckel-colors-typeface-0);
+  color: var(--maximeheckel-colors-typeface-primary);
   padding-bottom: 50px;
   padding-top: 50px;
   width: 100%;
