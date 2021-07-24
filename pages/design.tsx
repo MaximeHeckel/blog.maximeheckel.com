@@ -21,6 +21,7 @@ import InlineCode from '@theme/components/MDX/InlineCode';
 import MDXBody, { ListItem } from '@theme/components/MDX/MDX';
 import Pill, { PillVariant } from '@theme/components/Pill';
 import Seo from '@theme/components/Seo';
+import Tooltip from '@theme/components/Tooltip';
 import Tweet from '@theme/components/Tweet';
 import Layout from '@theme/layout';
 import { AnimatePresence } from 'framer-motion';
@@ -38,10 +39,6 @@ import { TransformedTweet } from 'types/tweet';
  * - Small Responsive issue with Live Code Block on medium size screen
  * - See tooltip, why is it all the way to the right (maybe grid? maybe parent element?)
  */
-
-const Tooltip = dynamic(() => import('@theme/components/Tooltip'), {
-  ssr: false,
-});
 
 const Search = dynamic(() => import('@theme/components/Search'), {
   ssr: false,

@@ -1,11 +1,7 @@
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import dynamic from 'next/dynamic';
+import Tooltip from '@theme/components/Tooltip';
 import { useTheme } from '../../context/ThemeContext';
 import { LinkButton } from './LinkButton';
-
-const Tooltip = dynamic(() => import('@theme/components/Tooltip'), {
-  ssr: false,
-});
 
 const LightDarkSwitcher = () => {
   const theme = useTheme();

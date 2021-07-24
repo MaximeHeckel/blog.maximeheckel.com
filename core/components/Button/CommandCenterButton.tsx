@@ -1,10 +1,6 @@
 import { motion, useMotionValue } from 'framer-motion';
-import dynamic from 'next/dynamic';
+import Tooltip from '@theme/components/Tooltip';
 import { LinkButton } from './LinkButton';
-
-const Tooltip = dynamic(() => import('@theme/components/Tooltip'), {
-  ssr: false,
-});
 
 interface Props {
   onClick: () => void;

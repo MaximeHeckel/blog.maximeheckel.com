@@ -13,8 +13,8 @@ interface Props {
 const Tooltip: React.FC<Props> = (props) => {
   const { children, id, tooltipText, tooltipVisuallyHiddenText } = props;
   const [dimensions, setDimensions] = React.useState({
-    height: window.innerHeight,
-    width: window.innerWidth,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
   });
 
   const controls = useAnimation();
