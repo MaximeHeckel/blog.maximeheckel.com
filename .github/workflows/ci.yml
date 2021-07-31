@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-      - next
     paths:
       - '**.js'
       - '**.jsx'
@@ -30,12 +29,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: Cache yarn dependencies
         uses: actions/cache@v2
-        id: cache-dependencies # use this to check for `cache-hit` (`steps.cache-dependencies.cache-hit != 'true'`)
+        id: cache-dependencies
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -66,12 +62,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: Restore yarn dependencies
         uses: actions/cache@v2
-        id: cache-dependencies # use this to check for `cache-hit` (`steps.cache-dependencies.cache-hit != 'true'`)
+        id: cache-dependencies
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -96,12 +89,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: Restore yarn dependencies
         uses: actions/cache@v2
-        id: cache-dependencies # use this to check for `cache-hit` (`steps.cache-dependencies.cache-hit != 'true'`)
+        id: cache-dependencies
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -123,12 +113,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: Restore yarn dependencies
         uses: actions/cache@v2
-        id: cache-dependencies # use this to check for `cache-hit` (`steps.cache-dependencies.cache-hit != 'true'`)
+        id: cache-dependencies
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -150,12 +137,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: Restore yarn dependencies
         uses: actions/cache@v2
-        id: cache-dependencies # use this to check for `cache-hit` (`steps.cache-dependencies.cache-hit != 'true'`)
+        id: cache-dependencies
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -185,12 +169,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: Restore yarn dependencies
         uses: actions/cache@v2
-        id: cache-dependencies # use this to check for `cache-hit` (`steps.cache-dependencies.cache-hit != 'true'`)
+        id: cache-dependencies
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -229,12 +210,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: Restore yarn dependencies
         uses: actions/cache@v2
-        id: cache-dependencies # use this to check for `cache-hit` (`steps.cache-dependencies.cache-hit != 'true'`)
+        id: cache-dependencies
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
