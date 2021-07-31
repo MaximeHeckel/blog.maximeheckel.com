@@ -1,0 +1,425 @@
+---
+title: 'Building the perfect GitHub CI workflow for your frontend team'
+subtitle: "A guide with some of the best Github CI tips I could find to the power best CI pipeline for your frontend team's needs."
+date: '2021-08-03T08:00:00.000Z'
+updated: '2021-08-03T08:00:00.000Z'
+categories: []
+keywords:
+  [
+    'tests',
+    'release',
+    'continuous integration continuous delivery',
+    'end-to-end testing',
+    'e2e',
+    'unit-testing',
+    'pipeline',
+    'lint',
+    'workflow',
+    'cache',
+    'job',
+    'GitHub',
+    'CI',
+  ]
+slug: building-perfect-github-action-frontend-teams
+type: 'blogPost'
+featured: true
+colorFeatured: 'linear-gradient(90deg,#8cb1ff 0%,#abe8ff 100%)'
+---
+
+You've probably noticed if you've been following me for a while that I'm a ✨ big fan ✨ of automation. [I wrote about automated CI/CD a year ago](/posts/guide-to-cicd-for-frontend-developers/) and also talked a lot about the concepts surrounding this subject, but never really touched upon the tools I use for my CI jobs and how I use them. One such tool that has really worked for me, especially as a frontend engineer, is **GitHub CI**.
+
+For over a year now, it's been my service of choice for automated CI/CD pipelines. The `workflow` syntax is easy to get started with, and has an extended set of features to help you _craft_ your CI experience the way you and your team may want it.
+
+However, even after a year, **there still is a lot that I'm learning** about this tool every day. When I got started with it, there was no set rule on how to properly architect your workflows, and there's a lot of tips, tricks I discovered along the way to build what I would qualify as "the perfect GitHub CI workflow" (at least to my eyes 😄). **This article aims to gather those tips and good practices** I've been using for personal projects and at work and show you how you can use all of those in **a single workflow to power the CI/CD pipeline of your frontend team**.
+
+## What would constitute a "good" GitHub CI workflow?
+
+I'm going to throw my best "engineer response" at this question: **it depends!** Your team might have specific needs or objectives that would make some of my tips not as useful to you as they could be. However, for this article, we need some guidelines that I think would be universal when it comes to building efficient GitHub workflows, such as:
+
+- **cost-saving**: bring the "build minutes" down to the lowest possible value to not have a massive bill at the end of the month.
+- **efficient**: your team's time is precious, the workflow should be as fast as possible, but also fast to fail if something were to go wrong
+- **well-architected**: each step has a purpose, and might depend on other steps. This also means not running "useless steps".
+
+<Callout variant="info">
+
+When I started building my first GitHub workflows, I failed to meet those self-established guidelines. My workflows were inefficient wasted a lot of human time, compute time, and money. Some of the most critical mistakes I made were:
+
+- Running jobs in separate workflows, thus having no control over how they should run, and no ability to make them depend on other workflows' state.
+- Running expensive tasks multiple times. If two jobs needed the build output of my app, I'd build it twice 🤦‍♂️.
+
+</Callout>
+
+Now that we've established those guidelines, let's take a look at one of the most important tips of this article.
+
+## One workflow to rule them all
+
+Let's consider a typical set of tasks a frontend team would run on every PR:
+
+1. Lint
+2. Formatting
+3. Type checking
+4. Unit test
+5. Build
+6. End-to-end tests, maybe on different browsers
+
+Running those in separate workflows might look like the most straightforward way to architect those tasks. However, if something as simple as the `lint` task fails, there's no way you can stop your expensive tasks like `build` or your end-to-end tests from running. And that, my friends, is not very efficient.
+
+**Workflows run in parallel, and there's no way for them to interact with one another**. Thus, you can't cancel a workflow due to another workflow's failed state. You're stuck running all the workflows in every PR.
+
+To address this, I chose to **combine all my workflows into one**. All the tasks that were independent workflows before became part of the same unique workflow, but this time, as **jobs**.
+
+<Callout variant="info">
+
+A workflow is made up of one or many **jobs**. By default, jobs are **run in parallel**, but can be run in sequence by using the proper set of options (more on that later). A job let's you define a "task" through a series of **steps**.
+
+You can find more about GitHub CI jobs on the [dedicated section about jobs in the documentation](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobs).
+
+</Callout>
+
+```yml title=Excerpt of a Github CI workflow job.
+# In this example, lint-format is a job among many others in a bigger GitHub workflow.
+# This job has 3 steps: Checking out the code, running the lint command, and running the formatting command.
+
+jobs:
+  lint-format:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+      node: [12]
+    steps:
+      - name: Checkout Commit
+      uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+      - name: Run lint
+      run: |
+        yarn lint
+      - name: Run prettier
+      run: |
+        yarn format
+```
+
+The cool thing about jobs is that you can **run them sequentially or parallel** as you please! GitHub provides a handy keyword called `needs` that lets you set one or several jobs as dependencies, thus preventing a given job to start unless the dependent jobs have successfully run. This allows us to:
+
+- **Fail the workflow fast**. If a key job fails, the workflow is marked as failed on your PR as soon as possible
+- **Avoid running useless expensive tasks** on a "doomed to fail" workflow run
+
+```yml {7,22,37,42} title=Example of jobs running in parallel and sequentially
+# In this workflow excerpt, the type-check and unit-test jobs run in parallel whereas the
+# build job "needs" these 2 jobs to be successful to be kicked off.
+# Thus, if any of type-check or unit-test were to fail, the build job will not start and the
+# whole workflow will be marked as "failed".
+
+jobs:
+  type-check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+      node: [12]
+    steps:
+      - name: Checkout Commit
+      uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+      - name: Check types
+      run: |
+        yarn type-check
+  unit-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+      node: [12]
+    steps:
+      - name: Checkout Commit
+      uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+      - name: Run test
+      run: |
+        yarn test
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+      node: [12]
+    needs: [type-check, unit-test]
+    steps:
+      - name: Checkout Commit
+      uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+      - name: Run build
+      run: |
+        yarn build
+```
+
+You may be wondering: _what job should be run in parallel and what job needs to be run sequentially?_ **That will depend on the needs of your team.**
+
+On my end, I tend to **parallelize unit testing, linting, and type-checking** for example. These steps are generally fast and inexpensive to run thus I do not feel they need to depend on each other in most cases. However, I'd require a job such as **build** to only run if those three jobs above are successful, i.e. run it sequentially.
+
+The screenshot below features the GitHub Workflow powering the CI for this blog. Yours will probably end up sharing some similarities:
+
+<Image
+  src="blog/github-workflow-success.png"
+  alt="Screenshot of a successful Github workflow run showcasing each jobs and their dependencies with one another."
+  layout="responsive"
+  width={700}
+  height={350}
+/>
+
+<Image
+  src="blog/github-workflow-fail.png"
+  alt="Screenshot of a failed Github workflow run. Notice how failing the 'build' job did not triggered the two parallel e2e jobs as they were dependent on this job to be successful."
+  layout="responsive"
+  width={700}
+  height={350}
+/>
+
+As you can see, by combining all our workflows into one, and carefully choosing which job to parallelize or run sequentially, we end up having better visibility on how our CI pipeline functions and the dependencies between each of its steps.
+
+## Sharing is caring
+
+Now that all the CI steps are combined into one single workflow, the main challenge is to find out how we can make them as efficient as possible by **sharing critical job outputs**.
+
+However, it's not very obvious from the get-go how one can share job outputs with other jobs on GitHub CI. There are two ways that I found to be "efficient":
+
+1. **leveraging caching** with `actions/cache`
+2. **uploading/downloading artifacts** using respectively `actions/upload-artifact` and `actions/download-artifact`
+
+The first one is "great" but only for tasks that are repetitive and have outputs that do not change much over time like **installing NPM dependencies**.
+
+<Callout variant="info">
+
+Caching dependencies is perhaps the first optimization trick that many teams chose to tackle. GitHub already wrote extensively about that [in their own documentation](https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows#example-using-the-cache-action).
+
+However, the only thing I do differently compared to the examples featured in the documentation is caching the `node_modules` folder rather than the yarn/npm cache folder. This drastically speeds up the `install` step of my CI.
+
+</Callout>
+
+```yml {16-23,28,38,49-56} title=Example of sharing npm dependencies through multiple GitHub CI jobs
+jobs:
+  # As its name stands for, this jobs will install the npm dependencies and cache them
+  # unless they have been cached in a previous workflow run and remained unchanged.
+  install-cache:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12]
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2
+        id: cache-dependencies
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install Dependencies
+        # Check for `cache-hit` (`steps.cache-dependencies.cache-hit != 'true'`)
+        # If there's a cache hit, we skip this step (the dependencies are already available)
+        # If there's no cache hit, we run "yarn install"
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: |
+          yarn install --force --non-interactive
+  # This job requires some dependencies to be installed to run. Thus we'll restore
+  # the dependencies that have been previously cached and use them here.
+  type-check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [12]
+    needs: install-cache
+    steps:
+      - name: Checkout Commit
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      # Here we use actions/cache again but this time only to restore the dependencies
+      # At this stage of the workflow we're sure that the dependencies have been installed and cached
+      # either on this same run, or on a previous CI run. Thus we can skip trying to run "yarn install".
+      - name: Restore yarn dependencies
+        uses: actions/cache@v2
+        id: cache-dependencies
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Check types
+        run: |
+          yarn type-check
+```
+
+Using artifacts, however, is what made a significant difference in the efficiency of my GitHub CI workflows.
+
+For example, if you have 2 jobs that respectively run your e2e tests on firefox and chrome, you do not want to build your frontend twice as this could significantly increase the number of "billable minutes" for your CI run. The optimal solution here would consist of having a `build` job before your end-to-end tests running **only once** and then **share the build artifacts** with your `chrome-end-to-end` and `firefox-end-to-end` jobs.
+
+<Callout variant="info">
+
+This kind of optimization can have a dramatic impact on your CI builds. At a company I worked at, doing these same improvements of sharing your build artifacts before **4 instances** of parallel end-to-end test runs **reduced our GitHub CI billable minutes by over 50%!**
+
+</Callout>
+
+To achieve this, we need to leverage `actions/upload-artifact` and `actions/download-artifact`:
+
+- once the build is successful, use `actions/upload-artifact` to upload your build artifacts
+- then use `action/download-artifact` on any jobs you want to pull that build output and use it
+
+It's important to note that this trick only works because **we're running every single CI step in the same workflow**. You can only download artifacts in a workflow that were uploaded during the same workflow run.
+
+```yml {13-20,23,27-33,41,45-49} title=Uploading and downloading artifacts to share the build output
+# This example showcases how you can share the build output of a "build" job with two following jobs that need
+# the output to run their respective tasks.
+
+jobs:
+  build:
+    ...
+    steps:
+      ...
+      - name: Run build
+        run: |
+          yarn build
+      # This step in the build job will upload the build output generated by the previous step
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          # Give a unique name to your artifacts so they can be easily retrieved
+          name: build-output
+          # This example is based of a Next.JS build output, thus the .next path.
+          # The path might need to be changed based on your build settings or the framework your team is using.
+          path: .next
+  e2e-tests-chrome:
+    ...
+    needs: build
+    steps:
+      ...
+      # Here we restore the build output generated in the previous job by downloading the artifact we uploaded
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-output
+          # Specify the path in which you wish to place your artiface.
+          # Here I restore them in the .next folder since it's necessary to run the next start command later on
+          path: .next
+      - name: Run cypress
+        uses: cypress-io/github-action@v2.10.1
+        with:
+          start: next start
+          browser: chrome
+  e2e-tests-firefox:
+    ...
+    needs: build
+    steps:
+      ...
+      # Here we restore the same build output as we did in the e2e-tests-chrome job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-output
+          path: .next
+      - name: Run cypress
+        uses: cypress-io/github-action@v2.10.1
+        with:
+          start: next start
+          browser: firefox
+```
+
+<Callout variant="danger">
+
+Be mindful about your usage of GitHub CI artifacts! Uploading and storing artifacts is part of the monthly bill and you need to make sure to not overlook how much storage you use to avoid any surprise.
+
+👉 You'll find the GitHub CI billing tiers [here](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#included-storage-and-minutes) with more details.
+
+Below is an example of how you can use the `retention-days` option to help you delete outdated artifacts as early as possible, i.e. after 1 day.
+
+</Callout>
+
+```yml {14} title=Setting the retention days option when uploading artifacts
+jobs:
+  build:
+    ...
+    steps:
+      ...
+      - name: Run build
+        run: |
+          yarn build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-output
+          path: .next
+          retention-days: 1
+```
+
+## "You are terminated"
+
+My last tip, and perhaps my favorite due to its simplicity is **terminating duplicate workflow runs**.
+
+It happens to me very often: I'm done with a current branch and decide to push my code and open a PR, thus triggering a workflow run. Then a few seconds later noticed I forgot to run that one `console.log` or made a typo somewhere and need to push an extra change, thus **triggering yet another workflow run**.
+
+By default, there's nothing that will stop the first workflow to run, it will continue until it's finished, thus wasting precious billing minutes that could have had a better use.
+
+To prevent such a thing from happening, GitHub [recently introduced](https://github.blog/changelog/2021-04-19-github-actions-limit-workflow-run-or-job-concurrency/) the notion of **workflow concurrency**.
+
+With the `concurrency` keyword you can create a **concurrency group** for your workflow (or a job). This will mark any workflow run from that same concurrency group as "pending" if any run is currently in progress. You can also decide to **cancel any in-progress workflow of the same concurrency group** whenever a new workflow is added to the queue.
+
+```yml {8-13} title=Example of GitHub workflow using concurrency groups
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  # Here the group is defined by the head_ref of the PR
+  group: ${{ github.head_ref }}
+  # Here we specify that we'll cancel any "in progress" workflow of the same group. Thus if we push, ammend a commit and push
+  # again the previous workflow will be cancelled, thus saving us github action build minutes and avoid any conflicts
+  cancel-in-progress: true
+
+jobs:
+  install-cache:
+  ...
+```
+
+Doing this at the workflow level will ensure that any old or outdated workflows that are in progress will get canceled when we push a new change and triggering a new workflow thus saving your team's precious time and money.
+
+<Callout variant="info">
+
+There are many other use cases where concurrency can shine, the one I'm showcasing here is only one among many. You can read more about concurrency and concurrency groups in [their dedicated section in the GitHub workflow syntax documentation](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#concurrency).
+
+</Callout>
+
+## Conclusion
+
+So now that we went through all the tips to build the perfect Github CI workflow to power the CI needs of a frontend team, let's take a look at how they hold up against the guidelines we've established earlier:
+
+**Is it cost-saving?**
+Yes! We made sure to share the output of expensive steps such as `build` and to cache repetitive steps that we would have needed to run throughout the workflow like installing our dependencies.
+
+**Is it efficient?**
+More efficient than running every job in a separate workflow for sure! Not only we are parallelizing independent jobs like `e2e-tests-firefox` and `e2e-tests-chrome`, we're also making sure to cancel any duplicate workflows thanks to the use of **concurrency groups**.
+
+**Is it well architected?**
+As we saw in the screenshot showcased earlier in this blog post, it's now easy to visualize all the steps and their dependencies. Combining every task into one workflow and architecting those jobs using the `needs` keyword made the whole CI pipeline way easier to understand.
+
+Need a full example? Don't you worry, I got you covered 🙌! You can find my Github CI workflow featuring all the tips and examples of this article on [the GitHub repository of this blog](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/b07c07f5854e2f192f0086681640bc5552277636/.github/workflows/ci.yml). It's fairly dense and long, thus why I did not directly integrate it here directly as it might have been distracting.
+
+I hope some of the tips I introduced in this blog post will help you and your team perfect your own GitHub workflows and thus achieve a fast and reliable CI pipeline for your favorite frontend projects! Are there any other tips that you wish I had introduced in this article? Other GitHub CI secrets that empowered your team worth mentioning? **As always, do not hesitate to reach out!** I'd love learn more about what worked for you and test them out to further improve this article!
