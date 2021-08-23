@@ -3,7 +3,8 @@ import React from 'react';
 
 const StyledBlockquote = styled('blockquote')`
   transition: 0.5s;
-  margin: 30px 0px;
+  margin-top: 0px;
+  margin-bottom: 2.25rem;
   color: var(--maximeheckel-colors-typeface-primary);
   font-style: italic;
 

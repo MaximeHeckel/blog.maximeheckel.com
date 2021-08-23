@@ -72,13 +72,15 @@ Linting and formatting are essential to keep your codebase **consistent** and�
 - you do not want to bring confusion on how to write a given piece of code in your app when you onboard a new team member
 - you do not want to have to document multiple ways of doing the same thing
 
-<Card title="Tools I use">
+<Card title="Tools I use" style={{marginBottom: "2.25rem"}}>
+<CardBody>
 
 For this step, I want my tools to be fast and reliable. It should only take **a few seconds **to lint and format my codebase. As a frontend engineer, I use
 
 - **[ESlint](https://eslint.org/)** for linting, it comes with a set of rules to write proper Javascript, and these rules can be customized to your own team's fit. Additionally, should you need something more specific, you can build your own ESLint rules, [I wrote about it here](https://blog.maximeheckel.com/posts/how-to-build-first-eslint-rule), it's an interesting exercise that involves Abstract Syntax Tree (AST).
 - **[Prettier](https://prettier.io/)** for formatting. It became the defacto formatting tool for Javascript developers within the last few years. I set it up in my project and editor in a way that saving a file will format it automatically for me.
 
+</CardBody>
 </Card>
 
 As said above, this step must be super fast. So fast that you can execute this step as a [pre-commit hook](https://githooks.com/) (an arbitrary script that runs on every commit. I like using **[husky](https://www.npmjs.com/package/husky)** to set these up) as it will ensure that the code is formatted and readable **before** it's up for review by your teammates.
@@ -97,7 +99,8 @@ The aim here is to test each part of your app as "units" or isolated components.
 
 I like unit tests a lot because they act as a sanity check for your project to make sure its individual pieces work as intended **over time**, in a very efficient way (fast, reliable).
 
-<Card title="Tools I use">
+<Card title="Tools I use" style={{marginBottom: "2.25rem"}}>
+<CardBody>
 
 As frontend developers, you might have probably heard about **[Jest](https://jestjs.io/)**. It's the most popular Javascript testing framework and has been for a few years now. Jest is the testing tool I always install first in my Javascript projects. To run tests on my React apps, for example, I use it in combination with:
 
@@ -107,6 +110,7 @@ As frontend developers, you might have probably heard about **[Jest](https://je
 
 The @testing-library maintainers also provided a ton of other packages that will help you test your app no matter the framework (Svelte, VueJS, etc).
 
+</CardBody>
 </Card>
 
 Below, you will find code snippets showcasing some test suites that are meant to illustrate how I usually write tests in different situations.
@@ -346,13 +350,15 @@ With integration tests, I like testing groups of components, functionalities tog
 
 I could go on and on with different examples but this is roughly the main use-cases I usually focus on validating when writing integration tests. I try to validate all the possible paths that a group of components, a form, or a view can take.
 
-<Card title="Tools I use">
+<Card title="Tools I use" style={{marginBottom: "2.25rem"}}>
+<CardBody>
 
 When it comes to integration tests I'm split between using two different tools, sometimes within the same project.
 
 - **Jest**: You can write pretty advanced integration tests with Jest, `@testing-library/react`, and all the cool tools we've mentioned before. I recently started using [msw](https://github.com/mswjs/msw) to mock the APIs that the views I'm testing are depending on different.
 - **[Cypress](https://www.cypress.io/)**: It comes with a neat way to [write fixtures and mock API endpoints](https://docs.cypress.io/api/commands/fixture.html) and thus run some integration tests. I mainly use it to validate some browser-related behaviors like: are the proper query parameters passed to the URL? Can I load a view in a specific state by adding this set of parameters to the URL? Is a specific set of values set in local storage or not?
 
+</CardBody>
 </Card>
 
 ```js title=Sample React app that fetches posts and handles different states
@@ -551,10 +557,12 @@ End to End tests have multiple pros and cons:
 <br />
 <br />
 
-<Card title="Tools I use">
+<Card title="Tools I use" style={{marginBottom: "2.25rem"}}>
+<CardBody>
 
 If you haven't introduced e2e tests in your team just yet, I'd highly recommend **[Cypress](https://www.cypress.io/) ** as a starting point. The Cypress team has built the most accessible way to write e2e tests to my eyes and also has the best documentation and community support.
 
+</CardBody>
 </Card>
 
 Rather than showcasing some code snippets, I'd like to share with you some of my tips that I keep using for writing e2e tests:
@@ -573,7 +581,8 @@ Nothing is more efficient than sitting in front of your computer and using your 
 - [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci): This is a suite of tools to help you audit performance, accessibility, and whether your app follows best practices. I use this tool to essentially **hold the line and ensure things do not get worse over time**. It allows you to put together "performance and accessibility budgets" and thresholds. It will fail in case your score goes below the targetted budget. This probably deserves an entire article on its own, but in the meantime you can check their documentation that contains sample Github Workflows and easily integrate it into your CI/CD pipeline.
 - [Cypress Axe](https://github.com/avanslaars/cypress-axe): This package works on top of Cypress and allows you to run a series of accessibility focused test suite. It helped me find some more complex accessibility issues that Lighthouse CI would skip. I wrote [a blog post about Cypress Axe last year](https://blog.maximeheckel.com/posts/automated-ui-accessibility-testing-with-cypress-cc2e38231241), and invite you to check it out if you want to learn more about it.
 
-<Card title="Tools I use">
+<Card title="Tools I use" style={{marginBottom: "2.25rem"}}>
+<CardBody>
 
 I also use a couple of chrome extensions to track and find new accessibility issues:
 
@@ -582,6 +591,7 @@ I also use a couple of chrome extensions to track and find new accessibility iss
 
 These, however, are purely used outside of my CI/CD pipeline, but I figured they were perhaps worth mentioning in this context.
 
+</CardBody>
 </Card>
 
 ## Automation: When and how to run my tests and release

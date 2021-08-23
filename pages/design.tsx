@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Button from '@theme/components/Button';
 import { LinkButton } from '@theme/components/Button/LinkButton';
+import Card from '@theme/components/Card';
 import Grid from '@theme/components/Grid';
 import {
   ArrowIcon,
@@ -37,7 +38,6 @@ import { TransformedTweet } from 'types/tweet';
  * - Polish interface for lists => should be in global.css if possible?
  * - VARIANT callout should be renamed "CalloutVariant"
  * - Small Responsive issue with Live Code Block on medium size screen
- * - See tooltip, why is it all the way to the right (maybe grid? maybe parent element?)
  */
 
 const Search = dynamic(() => import('@theme/components/Search'), {
@@ -269,6 +269,46 @@ export default function Design(props: {
               <li>Third</li>
             </ol>
           </MDXBody>
+        </section>
+        <section id="cards">
+          <h2>Card</h2>
+          <Grid rowGap={30}>
+            <Card>
+              <Card.Body>Basic Card</Card.Body>
+            </Card>
+
+            <Card title="Title for the card">
+              <Card.Body>Card with Title</Card.Body>
+            </Card>
+
+            <Card>
+              <Card.Header>Some Custom Header</Card.Header>
+              <Card.Body>Card With Custom Header</Card.Body>
+            </Card>
+
+            <Card>
+              <div
+                css={css`
+                  padding: 40px;
+                `}
+              >
+                Card With custom Body
+              </div>
+            </Card>
+            <Card depth={0}>
+              <Card.Body>Basic Card depth 0</Card.Body>
+            </Card>
+            <Card depth={1}>
+              <Card.Body>Basic Card depth 1</Card.Body>
+            </Card>
+            <Card depth={2}>
+              <Card.Body>Basic Card depth 2</Card.Body>
+            </Card>
+
+            <Card depth={3}>
+              <Card.Body>Basic Card depth 3</Card.Body>
+            </Card>
+          </Grid>
         </section>
         <section id="icons">
           <h2>Icons</h2>

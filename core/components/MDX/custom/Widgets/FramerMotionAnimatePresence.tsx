@@ -1,15 +1,11 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { LinkButton } from '@theme/components/Button/LinkButton';
+import DesignSystemCard from '@theme/components/Card';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import InlineCode from '../../InlineCode';
-import {
-  AnimationCard,
-  AnimationCardContent,
-  AnimationCardHeader,
-  TransitionGridWrapper,
-} from './Components';
+import { AnimationCardContent, TransitionGridWrapper } from './Components';
 
 const CardWrapper = styled('div')`
   height: 300px;
@@ -141,22 +137,36 @@ const ContentDemo = (props: Props) => {
 const FramerMotionAnimatePresence = () => {
   return (
     <TransitionGridWrapper>
-      <AnimationCard>
-        <AnimationCardHeader>
-          Without <InlineCode>AnimatePresence</InlineCode>
-        </AnimationCardHeader>
+      <DesignSystemCard
+        depth={1}
+        css={css`
+          margin-bottom: 2.25rem;
+        `}
+      >
+        <DesignSystemCard.Header>
+          <div>
+            Without <InlineCode>AnimatePresence</InlineCode>
+          </div>
+        </DesignSystemCard.Header>
         <AnimationCardContent>
           <ContentDemo />
         </AnimationCardContent>
-      </AnimationCard>
-      <AnimationCard>
-        <AnimationCardHeader>
-          With <InlineCode>AnimatePresence</InlineCode>
-        </AnimationCardHeader>
+      </DesignSystemCard>
+      <DesignSystemCard
+        depth={1}
+        css={css`
+          margin-bottom: 2.25rem;
+        `}
+      >
+        <DesignSystemCard.Header>
+          <div>
+            With <InlineCode>AnimatePresence</InlineCode>
+          </div>
+        </DesignSystemCard.Header>
         <AnimationCardContent>
           <ContentDemo withAnimatePresence />
         </AnimationCardContent>
-      </AnimationCard>
+      </DesignSystemCard>
     </TransitionGridWrapper>
   );
 };

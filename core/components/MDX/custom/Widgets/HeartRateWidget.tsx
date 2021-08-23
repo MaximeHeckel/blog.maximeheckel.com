@@ -1,48 +1,16 @@
-import { useTheme } from '@theme/context/ThemeContext';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { GraphQLClient, gql } from 'graphql-request';
 import { useQuery } from 'react-query';
 import LineChart from '@theme/components/Charts/LineChart';
 import { ParentSize } from '@visx/responsive';
+import Card from '@theme/components/Card';
+import { css } from '@emotion/react';
 
-const GraphTitle = styled('p')`
+const GraphLabel = styled('div')`
   font-size: 14px;
   margin-bottom: 0px;
-  color: #949699;
   font-weight: 500;
-`;
-
-const GraphtHeader = styled('div')`
-  @media (max-width: 500px) {
-    border-radius: 0px;
-    padding: 0px 8px;
-  }
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  min-height: 45px;
-  padding: 15px 14px;
-`;
-
-const GraphWidget = styled('div')`
-  font-size: 14px;
-  margin-bottom: 0px;
-  color: #949699;
-  font-weight: 500;
-`;
-
-const GraphWrapper = styled('div')`
-  width: 100%;
-  height: 300px;
-  background: var(--maximeheckel-colors-foreground);
-  border-radius: var(--border-radius-2);
-  padding: 0px 0px 10px 0px;
-  overflow: hidden;
-  margin-bottom: 2.25rem;
 `;
 
 const endpoint = 'https://graphql.fauna.com/graphql';
@@ -118,7 +86,6 @@ const Heart = ({ bpm }: { bpm: number }) => {
 
 const HeartRateWidget = () => {
   const { data: healthData, isFetching } = useData();
-  const { dark } = useTheme();
 
   const lastEntry = healthData ? healthData[0] : { heartRate: [] };
 
@@ -130,33 +97,33 @@ const HeartRateWidget = () => {
   );
 
   return (
-    <GraphWrapper>
-      <GraphtHeader
-        css={{
-          borderBottom: `1px solid ${dark ? '#151617' : '#dce6f3'}`,
-        }}
-      >
-        <GraphTitle>Heart Rate</GraphTitle>
+    <Card
+      css={css`
+        margin-bottom: 2.25rem;
+      `}
+    >
+      <Card.Header>
+        <GraphLabel>Heart Rate</GraphLabel>
         {dataPoints.length !== 0 ? (
-          <GraphWidget>
+          <GraphLabel>
             Last entry: {dataPoints[0].y} bpm
             <Heart bpm={dataPoints[0].y} />
-          </GraphWidget>
+          </GraphLabel>
         ) : null}
-      </GraphtHeader>
+      </Card.Header>
       {isFetching && dataPoints.length === 0 ? null : (
         <ParentSize>
           {({ width }) => (
             <LineChart
               width={width}
-              height={240}
+              height={220}
               data={dataPoints}
               unit="bpm"
             />
           )}
         </ParentSize>
       )}
-    </GraphWrapper>
+    </Card>
   );
 };
 

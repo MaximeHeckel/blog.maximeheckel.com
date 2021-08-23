@@ -1,9 +1,10 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { LinkButton } from '@theme/components/Button/LinkButton';
+import DesignSystemCard from '@theme/components/Card';
 import { motion } from 'framer-motion';
 import React from 'react';
-import { AnimationCard, AnimationCardContent } from './Components';
+import { AnimationCardContent } from './Components';
 
 const PerspectiveIcon = () => (
   <svg
@@ -238,11 +239,16 @@ const CardWithGlow = () => {
 
 const FramerMotionPropagation = () => {
   return (
-    <AnimationCard>
+    <DesignSystemCard
+      depth={0}
+      css={css`
+        margin-bottom: 2.25rem;
+      `}
+    >
       <AnimationCardContent>
         <CardWithGlow />
       </AnimationCardContent>
-    </AnimationCard>
+    </DesignSystemCard>
   );
 };
 

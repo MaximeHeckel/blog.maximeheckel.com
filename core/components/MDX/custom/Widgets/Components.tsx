@@ -17,23 +17,6 @@ export const TransitionGridWrapper = styled('div')`
   }
 `;
 
-export const AnimationCard = styled('div')`
-  background: var(--maximeheckel-colors-foreground);
-  color: var(--maximeheckel-colors-typeface-secondary);
-  font-weight: 500;
-  backdrop-filter: blur(6px);
-  border-radius: var(--border-radius-2);
-  margin: 0 auto;
-  overflow: hidden;
-  box-shadow: var(--maximeheckel-shadow-1);
-  border: 1px solid var(--maximeheckel-border-color);
-  margin: 30px 0px;
-
-  pre {
-    background-color: transparent !important;
-  }
-`;
-
 export const AnimationCardContent = styled('div')`
   display: flex;
   flex-direction: column;
@@ -41,15 +24,6 @@ export const AnimationCardContent = styled('div')`
   justify-content: space-around;
   height: 450px;
   padding: 12px 0px;
-`;
-
-export const AnimationCardHeader = styled('div')`
-  min-height: 45px;
-  padding: 15px 14px;
-  width: 100%;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
 `;
 
 export const HighlightedValue = styled('div')`
@@ -66,13 +40,13 @@ export const HighlightedValue = styled('div')`
 `;
 
 export const Wrapper = styled('div')`
-  margin: 16px 0px;
+  margin: 30px 0px;
 
   @media (min-width: 1100px) {
     position: relative;
     max-width: 1000px;
     width: calc(100% + 300px);
-    margin: 16px -150px;
+    margin: 30px -150px;
   }
 `;
 

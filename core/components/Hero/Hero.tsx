@@ -41,7 +41,7 @@ const HeroImg = (props: HeroImgProps) => (
 );
 
 const HeroInfo = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 2.25rem;
   p {
     color: var(--maximeheckel-colors-typeface-tertiary);
     font-size: 14px;

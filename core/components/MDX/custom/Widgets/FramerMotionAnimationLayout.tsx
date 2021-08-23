@@ -1,10 +1,11 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { LinkButton } from '@theme/components/Button/LinkButton';
+import Card from '@theme/components/Card';
 import Grid from '@theme/components/Grid';
 import { motion, AnimateSharedLayout } from 'framer-motion';
 import React from 'react';
-import { AnimationCard, AnimationCardContent } from './Components';
+import { AnimationCardContent } from './Components';
 
 let PETS = [
   {
@@ -145,7 +146,12 @@ const FramerMotionAnimationLayout = () => {
   const [layout, setLayout] = React.useState(false);
 
   return (
-    <AnimationCard>
+    <Card
+      depth={1}
+      css={css`
+        margin-bottom: 2.25rem;
+      `}
+    >
       <AnimationCardContent>
         <div
           css={css`
@@ -255,7 +261,7 @@ const FramerMotionAnimationLayout = () => {
           </LinkButton>
         </div>
       </AnimationCardContent>
-    </AnimationCard>
+    </Card>
   );
 };
 

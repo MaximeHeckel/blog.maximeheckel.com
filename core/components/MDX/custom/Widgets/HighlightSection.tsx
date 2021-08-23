@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
+import Card from '@theme/components/Card';
 import React from 'react';
 import InlineCode from '../../InlineCode';
-import { AnimationCard, AnimationCardContent } from './Components';
 
 const HighlightSection = () => {
   const [highlight, setHighlight] = React.useState(false);
@@ -31,12 +31,13 @@ const HighlightSection = () => {
   }, [highlight]);
 
   return (
-    <AnimationCard>
-      <AnimationCardContent
-        css={css`
-          height: 100px;
-        `}
-      >
+    <Card
+      depth={1}
+      css={css`
+        margin-bottom: 2.25rem;
+      `}
+    >
+      <Card.Body>
         <div>
           <input
             css={css`
@@ -54,8 +55,8 @@ const HighlightSection = () => {
             post
           </label>
         </div>
-      </AnimationCardContent>
-    </AnimationCard>
+      </Card.Body>
+    </Card>
   );
 };
 

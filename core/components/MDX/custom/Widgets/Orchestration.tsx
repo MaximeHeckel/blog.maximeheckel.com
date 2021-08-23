@@ -1,11 +1,7 @@
+import Card from '@theme/components/Card';
 import { motion } from 'framer-motion';
 import React from 'react';
-import {
-  AnimationCard,
-  AnimationCardContent,
-  Form,
-  HighlightedValue,
-} from './Components';
+import { AnimationCardContent, Form, HighlightedValue } from './Components';
 import { useDebounce } from './utils';
 
 const Orchestration = () => {
@@ -45,10 +41,10 @@ const Orchestration = () => {
   }, [debouncedDelay, debouncedStagger]);
 
   return (
-    <AnimationCard
+    <Card
+      depth={1}
       css={{
-        width: '100%',
-        maxWidth: '700px',
+        marginBottom: '30px',
       }}
     >
       <AnimationCardContent
@@ -130,7 +126,7 @@ const Orchestration = () => {
           </motion.span>
         </motion.div>
       </AnimationCardContent>
-    </AnimationCard>
+    </Card>
   );
 };
 

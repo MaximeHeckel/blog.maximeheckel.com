@@ -1,9 +1,11 @@
+import { css } from '@emotion/react';
+import Card from '@theme/components/Card';
 import { curveBasisOpen } from '@visx/curve';
 import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
 import { motion } from 'framer-motion';
 import React from 'react';
-import { AnimationCard, AnimationCardContent, Form } from './Components';
+import { AnimationCardContent, Form } from './Components';
 
 const loop = (stiffness: number, mass: number, damping: number) => {
   /* Spring Length, set to 1 for simplicity */
@@ -105,7 +107,12 @@ const SpringPhysics = (props: { withDamping?: boolean }) => {
   );
 
   return (
-    <AnimationCard>
+    <Card
+      depth={1}
+      css={css`
+        margin-bottom: 2.25rem;
+      `}
+    >
       <AnimationCardContent
         css={{
           height: 700,
@@ -208,7 +215,7 @@ const SpringPhysics = (props: { withDamping?: boolean }) => {
           />
         </div>
       </AnimationCardContent>
-    </AnimationCard>
+    </Card>
   );
 };
 
