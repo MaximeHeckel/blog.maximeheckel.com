@@ -20,6 +20,7 @@
     "generate:rss": "node ./scripts/generate-rss",
     "generate:sitemap": "node ./scripts/generate-sitemap",
     "lint": "eslint --ext=jsx,ts,tsx .",
+    "prebuild": "yarn generate:index && yarn generate:og && yarn generate:rss && yarn generate:sitemap",
     "start": "next start",
     "test": "is-ci \"test:coverage\" \"test:watch\"",
     "test:coverage": "jest --coverage",
