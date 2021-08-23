@@ -274,11 +274,13 @@ export default function Design(props: {
           <h2>Card</h2>
           <Grid rowGap={30}>
             <Card>
-              <Card.Body>Basic Card</Card.Body>
+              <Card.Body>Base Card</Card.Body>
             </Card>
 
             <Card title="Title for the card">
-              <Card.Body>Card with Title</Card.Body>
+              <Card.Body>
+                Card with <InlineCode>title</InlineCode> prop
+              </Card.Body>
             </Card>
 
             <Card>
@@ -290,23 +292,33 @@ export default function Design(props: {
               <div
                 css={css`
                   padding: 40px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
                 `}
               >
                 Card With custom Body
               </div>
             </Card>
             <Card depth={0}>
-              <Card.Body>Basic Card depth 0</Card.Body>
+              <Card.Body>
+                Card <InlineCode>depth={0}</InlineCode>
+              </Card.Body>
             </Card>
             <Card depth={1}>
-              <Card.Body>Basic Card depth 1</Card.Body>
+              <Card.Body>
+                Card <InlineCode>depth={1}</InlineCode>
+              </Card.Body>
             </Card>
             <Card depth={2}>
-              <Card.Body>Basic Card depth 2</Card.Body>
+              <Card.Body>
+                Card <InlineCode>depth={2}</InlineCode>
+              </Card.Body>
             </Card>
-
             <Card depth={3}>
-              <Card.Body>Basic Card depth 3</Card.Body>
+              <Card.Body>
+                Card <InlineCode>depth={3}</InlineCode>
+              </Card.Body>
             </Card>
           </Grid>
         </section>

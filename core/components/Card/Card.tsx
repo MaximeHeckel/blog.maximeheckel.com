@@ -10,9 +10,19 @@ function Card<T>(props: CardProps & CardComposition & T) {
     isHeaderElement(child)
   );
 
+  let header = null;
+
+  /**
+   * If no CardHeader children are present AND if a title has been specified as a prop
+   * create an instance of CardHeader with the title prop
+   */
+  if (!hasHeaderChildren && title) {
+    header = <CardHeader>{title}</CardHeader>;
+  }
+
   return (
     <CardWrapper as={Component} depth={depth} glass={glass} {...rest}>
-      {hasHeaderChildren || !title ? null : <CardHeader>{title}</CardHeader>}
+      {header}
       {children}
     </CardWrapper>
   );
