@@ -25,7 +25,7 @@ exports[`Flex renders Flex with direction prop 1`] = `
   -ms-flex-pack: start;
   -webkit-justify-content: flex-start;
   justify-content: flex-start;
-  gap: 5px;
+  gap: 4px;
 }
 
 <body>
@@ -65,7 +65,7 @@ exports[`Flex renders Flex with justifyContent prop 1`] = `
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  gap: 5px;
+  gap: 4px;
 }
 
 <body>
@@ -104,7 +104,7 @@ exports[`Flex renders Flex with wrap prop 1`] = `
   -ms-flex-pack: start;
   -webkit-justify-content: flex-start;
   justify-content: flex-start;
-  gap: 5px;
+  gap: 4px;
 }
 
 <body>

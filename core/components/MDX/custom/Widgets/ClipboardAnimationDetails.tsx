@@ -1,4 +1,7 @@
 import Card from '@theme/components/Card';
+import Grid from '@theme/components/Grid';
+import Label from '@theme/components/Label';
+import Range from '@theme/components/Range';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
 import { AnimationCardContent, Form, HighlightedValue } from './Components';
@@ -62,12 +65,18 @@ const ClipboardAnimationDetails = () => {
         }}
       >
         <div css={{ width: '70%', marginBotton: '20px' }}>
-          <div css={{ paddingBottom: '10px', display: 'grid' }}>
-            PathLength: <HighlightedValue>{pathLengthVal}</HighlightedValue>
-          </div>
-          <div css={{ paddingBottom: '10px', display: 'grid' }}>
-            Opacity: <HighlightedValue>{opacityVal}</HighlightedValue>
-          </div>
+          <Grid gap={12}>
+            <Label>
+              <Grid>
+                PathLength: <HighlightedValue>{pathLengthVal}</HighlightedValue>
+              </Grid>
+            </Label>
+            <Label>
+              <Grid>
+                Opacity: <HighlightedValue>{opacityVal}</HighlightedValue>
+              </Grid>
+            </Label>
+          </Grid>
         </div>
         <button
           css={{
@@ -128,17 +137,19 @@ const ClipboardAnimationDetails = () => {
           </svg>
         </button>
         <Form>
-          <label htmlFor="duration">
-            Duration: <HighlightedValue>{duration}</HighlightedValue>
-          </label>
-          <input
+          <Range
             id="duration"
-            type="range"
-            min="0.10"
-            max="5.00"
-            step="0.10"
+            label={
+              <span>
+                Duration: <HighlightedValue>{duration}</HighlightedValue>
+              </span>
+            }
+            aria-label="Duration"
+            min={0.1}
+            max={5.0}
+            step={0.1}
             value={duration}
-            onChange={(e) => setDuration(parseFloat(e.target.value))}
+            onChange={(value) => setDuration(value)}
           />
         </Form>
       </AnimationCardContent>

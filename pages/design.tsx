@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import Button from '@theme/components/Button';
 import { LinkButton } from '@theme/components/Button/LinkButton';
 import Card from '@theme/components/Card';
+import Checkbox from '@theme/components/Checkbox';
 import Grid from '@theme/components/Grid';
 import {
   ArrowIcon,
@@ -21,7 +22,10 @@ import LiveCodeBlock from '@theme/components/MDX/Code/LiveCodeBlock';
 import InlineCode from '@theme/components/MDX/InlineCode';
 import MDXBody, { ListItem } from '@theme/components/MDX/MDX';
 import Pill, { PillVariant } from '@theme/components/Pill';
+import Radio from '@theme/components/Radio';
+import Range from '@theme/components/Range';
 import Seo from '@theme/components/Seo';
+import Switch from '@theme/components/Switch';
 import Tooltip from '@theme/components/Tooltip';
 import Tweet from '@theme/components/Tweet';
 import Layout from '@theme/layout';
@@ -270,24 +274,152 @@ export default function Design(props: {
             </ol>
           </MDXBody>
         </section>
+        <section id="form-components">
+          <h2>Form Components</h2>
+          <Grid gap={12} columns="repeat(2, minmax(2rem, 1fr))">
+            <Checkbox aria-label="Checkbox" id="checkbox1" label="Checkbox" />
+            <Checkbox
+              aria-label="Checkbox"
+              id="checkbox3"
+              label="Checkbox"
+              disabled
+            />
+            <Checkbox
+              aria-label="Checkbox"
+              id="checkbox2"
+              label="Checkbox"
+              onChange={() => {}}
+              checked
+            />
+            <Checkbox
+              aria-label="Checkbox"
+              id="checkbox4"
+              label="Checkbox"
+              onChange={() => {}}
+              checked
+              disabled
+            />
+          </Grid>
+          <br />
+          <Grid gap={12} columns="repeat(2, minmax(2rem, 1fr))">
+            <Switch id="switch1" aria-label="Switch" label="Switch" />
+            <Switch id="switch2" aria-label="Switch" label="Switch" disabled />
+            <Switch
+              id="switch3"
+              aria-label="Switch"
+              label="Switch"
+              onChange={() => {}}
+              toggled
+            />
+            <Switch
+              id="switch4"
+              aria-label="Switch"
+              label="Switch"
+              disabled
+              onChange={() => {}}
+              toggled
+            />
+          </Grid>
+          <br />
+          <Grid gap={12} columns="repeat(2, minmax(2rem, 1fr))">
+            <Radio.Group
+              name="options"
+              direction="vertical"
+              onChange={() => {}}
+            >
+              <Radio.Item
+                id="option-1"
+                value="option1"
+                aria-label="Option 1"
+                label="Option 1"
+              />
+              <Radio.Item
+                id="option-2"
+                value="option2"
+                aria-label="Option 2"
+                label="Option 2"
+                checked
+              />
+            </Radio.Group>
+            <Radio.Group
+              name="options-disabled"
+              direction="vertical"
+              onChange={() => {}}
+            >
+              <Radio.Item
+                id="radio-3"
+                value="option3"
+                aria-label="Option 3"
+                label="Option 3"
+                disabled
+              />
+              <Radio.Item
+                id="radio-4"
+                value="option4"
+                aria-label="Option 4"
+                label="Option 4"
+                disabled
+                checked
+              />
+            </Radio.Group>
+            <Radio.Group
+              name="options-horizontal"
+              direction="horizontal"
+              onChange={() => {}}
+            >
+              <Radio.Item
+                id="option-5"
+                value="option5"
+                aria-label="Option 5"
+                label="Option 5"
+              />
+              <Radio.Item
+                id="option-6"
+                value="option6"
+                aria-label="Option 6"
+                label="Option 6"
+                checked
+              />
+            </Radio.Group>
+          </Grid>
+          <br />
+          <Grid gap={12} columns="repeat(2, minmax(2rem, 1fr))">
+            <Range
+              id="range-1"
+              aria-label="Range"
+              label="Range"
+              value={250}
+              min={0}
+              max={500}
+              onChange={() => {}}
+            />
+            <Range
+              id="range-2"
+              aria-label="Range"
+              label="Range"
+              value={250}
+              min={0}
+              max={500}
+              onChange={() => {}}
+              disabled
+            />
+          </Grid>
+        </section>
         <section id="cards">
           <h2>Card</h2>
           <Grid rowGap={30}>
             <Card>
               <Card.Body>Base Card</Card.Body>
             </Card>
-
             <Card title="Title for the card">
               <Card.Body>
                 Card with <InlineCode>title</InlineCode> prop
               </Card.Body>
             </Card>
-
             <Card>
               <Card.Header>Some Custom Header</Card.Header>
               <Card.Body>Card With Custom Header</Card.Body>
             </Card>
-
             <Card>
               <div
                 css={css`

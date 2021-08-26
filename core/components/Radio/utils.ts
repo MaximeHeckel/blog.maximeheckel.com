@@ -1,9 +1,8 @@
-import React from 'react';
 import { isElementOfType } from '../utils/isElementOfType';
-import { CardHeader } from './Styles';
+import RadioItem from './RadioItem';
 
-export function isHeaderElement(
+export function isRadioItemElement(
   child: React.ReactNode
 ): child is React.ReactElement<{ children: React.ReactNode }> {
-  return isElementOfType(child, CardHeader);
+  return isElementOfType(child, RadioItem);
 }
