@@ -7,6 +7,7 @@
   --palette-gray-02: var(--base-gray), 98%;
   --palette-gray-03: var(--base-gray), 97%;
   --palette-gray-05: var(--base-gray), 95%;
+  --palette-gray-07: var(--base-gray), 93%;
   --palette-gray-10: var(--base-gray), 90%;
   --palette-gray-15: var(--base-gray), 85%;
   --palette-gray-20: var(--base-gray), 80%;
@@ -27,6 +28,7 @@
   --palette-gray-90: var(--base-gray), 10%;
   --palette-gray-95: var(--base-gray), 5%;
   --palette-gray-98: var(--base-gray), 2%;
+  --palette-gray-100: var(--base-gray), 0%;
 
   /* Blue scale */
   --base-hue: 222;
@@ -199,6 +201,12 @@
   --maximeheckel-border-color: var(--maximeheckel-colors-emphasis);
   --maximeheckel-card-background-color: hsl(var(--palette-gray-03));
 
+  --maximeheckel-form-input-active: var(--maximeheckel-colors-brand);
+  --maximeheckel-form-input-background: hsl(var(--palette-gray-00));
+  --maximeheckel-form-input-disabled: hsl(var(--palette-gray-10));
+  --maximeheckel-form-input-focus: hsla(var(--palette-blue-15), 0.8);
+  --maximeheckel-form-input-border: hsl(var(--palette-blue-15));
+
   --code-snippet-background: hsla(var(--palette-gray-10), 0.2);
   --token-comment: hsl(var(--maximeheckel-colors-typeface-tertiary));
   --token-selector: hsl(var(--palette-indigo-50));
@@ -230,6 +238,12 @@
 
   --maximeheckel-border-color: hsl(var(--palette-gray-80));
   --maximeheckel-card-background-color: hsl(var(--palette-gray-88));
+
+  --maximeheckel-form-input-active: var(--maximeheckel-colors-brand);
+  --maximeheckel-form-input-background: hsl(var(--palette-gray-100));
+  --maximeheckel-form-input-disabled: hsl(var(--palette-gray-55));
+  --maximeheckel-form-input-focus: hsla(var(--palette-blue-15), 0.8);
+  --maximeheckel-form-input-border: hsl(var(--palette-blue-15));
 
   --code-snippet-background: hsla(var(--palette-gray-85), 0.5);
   --token-comment: hsl(var(--maximeheckel-colors-typeface-tertiary));

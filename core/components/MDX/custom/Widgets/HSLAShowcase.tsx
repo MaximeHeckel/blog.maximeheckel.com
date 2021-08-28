@@ -3,6 +3,7 @@ import Card from '@theme/components/Card';
 import React from 'react';
 import { AnimationCardContent, Form, HighlightedValue } from './Components';
 import InlineCode from '../../InlineCode';
+import Range from '@theme/components/Range';
 
 const HSLAShowcase = () => {
   const [hue, setHue] = React.useState(222);
@@ -21,7 +22,7 @@ const HSLAShowcase = () => {
     >
       <AnimationCardContent
         css={css`
-          height: 500px;
+          height: 700px;
         `}
       >
         <div
@@ -161,62 +162,62 @@ const HSLAShowcase = () => {
         </div>
         <InlineCode>{cssBackgroundColor}</InlineCode>
         <Form
-          css={css`
-            max-width: 250px;
-          `}
+        // css={css`
+        //   max-width: 250px;
+        // `}
         >
-          <div style={{ display: 'grid' }}>
-            <label htmlFor="hue1">
-              Hue: <HighlightedValue>{hue}</HighlightedValue>
-            </label>
-            <input
-              id="hue1"
-              type="range"
-              min="0"
-              max="359"
-              value={hue}
-              onChange={(e) => setHue(parseInt(e.target.value, 10))}
-            />
-          </div>
-          <div style={{ display: 'grid' }}>
-            <label htmlFor="saturation1">
-              Saturation: <HighlightedValue>{saturation}</HighlightedValue>
-            </label>
-            <input
-              id="saturation1"
-              type="range"
-              min="1"
-              max="100"
-              value={saturation}
-              onChange={(e) => setSaturation(parseInt(e.target.value, 10))}
-            />
-          </div>
-          <div style={{ display: 'grid' }}>
-            <label htmlFor="lightness">
-              Lightness: <HighlightedValue>{lightness}</HighlightedValue>
-            </label>
-            <input
-              id="lightness"
-              type="range"
-              min="0"
-              max="100"
-              value={lightness}
-              onChange={(e) => setLightness(parseInt(e.target.value, 10))}
-            />
-          </div>
-          <div style={{ display: 'grid' }}>
-            <label htmlFor="alpha">
-              Alpha: <HighlightedValue>{alpha}</HighlightedValue>
-            </label>
-            <input
-              id="alpha"
-              type="range"
-              min="0"
-              max="100"
-              value={alpha}
-              onChange={(e) => setAlpha(parseInt(e.target.value, 10))}
-            />
-          </div>
+          <Range
+            id="hue1"
+            label={
+              <span>
+                Hue: <HighlightedValue>{hue}</HighlightedValue>
+              </span>
+            }
+            aria-label="Hue"
+            min={0}
+            max={359}
+            value={hue}
+            onChange={(value) => setHue(value)}
+          />
+          <Range
+            id="saturation1"
+            label={
+              <span>
+                Saturation: <HighlightedValue>{saturation}</HighlightedValue>
+              </span>
+            }
+            aria-label="Saturation"
+            min={1}
+            max={100}
+            value={saturation}
+            onChange={(value) => setSaturation(value)}
+          />
+          <Range
+            id="lightness"
+            label={
+              <span>
+                Lightness: <HighlightedValue>{lightness}</HighlightedValue>
+              </span>
+            }
+            aria-label="Lightness"
+            min={0}
+            max={100}
+            value={lightness}
+            onChange={(value) => setLightness(value)}
+          />
+          <Range
+            id="alpha"
+            label={
+              <span>
+                Alpha: <HighlightedValue>{alpha}</HighlightedValue>
+              </span>
+            }
+            aria-label="Alpha"
+            min={0}
+            max={100}
+            value={alpha}
+            onChange={(value) => setAlpha(value)}
+          />
         </Form>
       </AnimationCardContent>
     </Card>

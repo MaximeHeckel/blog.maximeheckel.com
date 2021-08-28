@@ -22,7 +22,7 @@ export const AnimationCardContent = styled('div')`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  height: 450px;
+  height: 475px;
   padding: 12px 0px;
 `;
 
@@ -64,7 +64,7 @@ export const Form = styled('form')`
   }
 
   input {
-    margin-bottom: 8px;
+    margin-bottom: 24px;
   }
 
   select {

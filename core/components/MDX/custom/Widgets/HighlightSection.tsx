@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Card from '@theme/components/Card';
+import Switch from '@theme/components/Switch';
 import React from 'react';
 import InlineCode from '../../InlineCode';
 
@@ -38,23 +39,20 @@ const HighlightSection = () => {
       `}
     >
       <Card.Body>
-        <div>
-          <input
-            css={css`
-              margin-right: 8px;
-            `}
-            id="highlight"
-            type="checkbox"
-            checked={highlight}
-            onChange={() => {
-              setHighlight((prev) => !prev);
-            }}
-          />
-          <label htmlFor="highlight">
-            Highlight the <InlineCode>{'<section/>'}</InlineCode> tags of this
-            post
-          </label>
-        </div>
+        <Switch
+          aria-label="Highlight the section tags of this post"
+          toggled={highlight}
+          id="highlight"
+          label={
+            <div>
+              Highlight the <InlineCode>{'<section/>'}</InlineCode> tags of this
+              post
+            </div>
+          }
+          onChange={() => {
+            setHighlight((prev) => !prev);
+          }}
+        />
       </Card.Body>
     </Card>
   );

@@ -1,5 +1,7 @@
 import Card from '@theme/components/Card';
+import Label from '@theme/components/Label';
 import { HighlightedCodeText } from '@theme/components/MDX/Code/CodeBlock';
+import Range from '@theme/components/Range';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -67,6 +69,7 @@ const AnimationTypes = () => {
     }}
   />
 
+
   `;
 
   return (
@@ -76,46 +79,46 @@ const AnimationTypes = () => {
           <Card.Header>Spring</Card.Header>
           <AnimationCardContent>
             <Form>
-              <div style={{ display: 'grid' }}>
-                <label htmlFor="mass1">
-                  Mass: <HighlightedValue>{mass}</HighlightedValue>
-                </label>
-                <input
-                  id="mass1"
-                  type="range"
-                  min="1"
-                  max="10"
-                  value={mass}
-                  onChange={(e) => setMass(parseInt(e.target.value, 10))}
-                />
-              </div>
-              <div style={{ display: 'grid' }}>
-                <label htmlFor="stiffness1">
-                  Stiffness: <HighlightedValue>{stiffness}</HighlightedValue>
-                </label>
-                <input
-                  id="stiffness1"
-                  type="range"
-                  min="1"
-                  max="500"
-                  value={stiffness}
-                  onChange={(e) => setStiffness(parseInt(e.target.value, 10))}
-                />
-              </div>
-              <div style={{ display: 'grid' }}>
-                <label htmlFor="damping">
-                  Damping: <HighlightedValue>{damping}</HighlightedValue>
-                </label>
-                <input
-                  id="damping"
-                  type="range"
-                  min="0"
-                  max="5"
-                  step="0.10"
-                  value={damping}
-                  onChange={(e) => setDamping(parseInt(e.target.value, 10))}
-                />
-              </div>
+              <Range
+                id="mass1"
+                aria-label="Mass"
+                label={
+                  <span>
+                    Mass: <HighlightedValue>{mass}</HighlightedValue>
+                  </span>
+                }
+                min={1}
+                max={10}
+                value={mass}
+                onChange={(value) => setMass(value)}
+              />
+              <Range
+                id="stiffness1"
+                aria-label="Stiffness"
+                label={
+                  <span>
+                    Stiffness: <HighlightedValue>{stiffness}</HighlightedValue>
+                  </span>
+                }
+                min={1}
+                max={500}
+                value={stiffness}
+                onChange={(value) => setStiffness(value)}
+              />
+              <Range
+                id="damping"
+                aria-label="Damping"
+                label={
+                  <span>
+                    Damping: <HighlightedValue>{damping}</HighlightedValue>
+                  </span>
+                }
+                min={0}
+                max={5}
+                step="0.10"
+                value={damping}
+                onChange={(value) => setDamping(value)}
+              />
             </Form>
             <div />
             <motion.div
@@ -157,7 +160,7 @@ const AnimationTypes = () => {
           <AnimationCardContent>
             <Form>
               <div style={{ display: 'grid' }}>
-                <label htmlFor="tween-type">Ease</label>
+                <Label htmlFor="tween-type">Ease</Label>
                 <select
                   id="tween-type"
                   value={tweenAnimation}
@@ -219,16 +222,18 @@ const AnimationTypes = () => {
           <AnimationCardContent>
             <Form>
               <div style={{ display: 'grid' }}>
-                <label htmlFor="velocity">
-                  Velocity: <HighlightedValue>{velocity}</HighlightedValue>
-                </label>
-                <input
+                <Range
                   id="velocity"
-                  type="range"
-                  min="1"
-                  max="500"
+                  aria-label="Velocity"
+                  label={
+                    <span>
+                      Velocity: <HighlightedValue>{velocity}</HighlightedValue>
+                    </span>
+                  }
+                  min={1}
+                  max={500}
                   value={velocity}
-                  onChange={(e) => setVelocity(parseInt(e.target.value, 10))}
+                  onChange={(value) => setVelocity(value)}
                 />
               </div>
             </Form>

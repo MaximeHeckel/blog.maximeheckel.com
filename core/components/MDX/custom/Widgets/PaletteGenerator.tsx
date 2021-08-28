@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import Card from '@theme/components/Card';
 import InlineCode from '@theme/components/MDX/InlineCode';
+import Range from '@theme/components/Range';
 import React from 'react';
 import { AnimationCardContent, Form, HighlightedValue } from './Components';
 
@@ -43,37 +44,33 @@ const PaletteGenerator = () => {
           ))}
         </div>
         <InlineCode>{cssVariable}</InlineCode>
-        <Form
-          css={css`
-            max-width: 350px;
-          `}
-        >
-          <div style={{ display: 'grid' }}>
-            <label htmlFor="hue">
-              Hue: <HighlightedValue>{hue}</HighlightedValue>
-            </label>
-            <input
-              id="hue"
-              type="range"
-              min="0"
-              max="359"
-              value={hue}
-              onChange={(e) => setHue(parseInt(e.target.value, 10))}
-            />
-          </div>
-          <div style={{ display: 'grid' }}>
-            <label htmlFor="saturation">
-              Saturation: <HighlightedValue>{saturation}</HighlightedValue>
-            </label>
-            <input
-              id="saturation"
-              type="range"
-              min="1"
-              max="100"
-              value={saturation}
-              onChange={(e) => setSaturation(parseInt(e.target.value, 10))}
-            />
-          </div>
+        <Form>
+          <Range
+            id="hue"
+            label={
+              <span>
+                Hue: <HighlightedValue>{hue}</HighlightedValue>
+              </span>
+            }
+            aria-label="Hue"
+            min={0}
+            max={359}
+            value={hue}
+            onChange={(value) => setHue(value)}
+          />
+          <Range
+            id="saturation"
+            label={
+              <span>
+                Saturation: <HighlightedValue>{saturation}</HighlightedValue>
+              </span>
+            }
+            aria-label="Saturation"
+            min={1}
+            max={100}
+            value={saturation}
+            onChange={(value) => setSaturation(value)}
+          />
         </Form>
       </AnimationCardContent>
     </Card>

@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { LinkButton } from '@theme/components/Button/LinkButton';
 import Card from '@theme/components/Card';
+import Checkbox from '@theme/components/Checkbox';
 import Grid from '@theme/components/Grid';
 import { motion, AnimateSharedLayout } from 'framer-motion';
 import React from 'react';
@@ -218,16 +219,13 @@ const FramerMotionAnimationLayout = () => {
           )}
         </div>
         <div>
-          <input
-            id="layout"
-            type="checkbox"
-            css={css`
-              margin-right: 8px;
-            `}
+          <Checkbox
+            aria-label="Enable animating shared layouts"
             checked={layout}
+            id="layout"
+            label="Enable animating shared layouts"
             onChange={() => setLayout((prev) => !prev)}
           />
-          <label htmlFor="layout">Enable animating shared layouts</label>
         </div>
         <div
           css={css`

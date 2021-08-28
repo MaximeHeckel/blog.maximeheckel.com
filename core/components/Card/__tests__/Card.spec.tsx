@@ -1,5 +1,5 @@
 import preloadAll from 'jest-next-dynamic';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
 import Card from '../';
 

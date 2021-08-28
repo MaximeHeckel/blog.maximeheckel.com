@@ -1,4 +1,5 @@
 import Card from '@theme/components/Card';
+import Range from '@theme/components/Range';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { AnimationCardContent, Form, HighlightedValue } from './Components';
@@ -54,36 +55,37 @@ const Orchestration = () => {
         }}
       >
         <Form>
-          <div style={{ display: 'grid' }}>
-            <label htmlFor="delayChildren">
-              Delay Children:{' '}
-              <HighlightedValue>{delayChildren}</HighlightedValue>
-            </label>
-            <input
-              id="delayChildren"
-              type="range"
-              min="0"
-              max="5"
-              step="0.1"
-              value={delayChildren}
-              onChange={(e) => setDelayChildren(parseFloat(e.target.value))}
-            />
-          </div>
-          <div style={{ display: 'grid' }}>
-            <label htmlFor="staggerChildren">
-              Stagger Children:{' '}
-              <HighlightedValue>{staggerChildren}</HighlightedValue>
-            </label>
-            <input
-              id="staggerChildren"
-              type="range"
-              min="0"
-              max="5"
-              step="0.1"
-              value={staggerChildren}
-              onChange={(e) => setStaggerChildren(parseFloat(e.target.value))}
-            />
-          </div>
+          <Range
+            id="delayChildren"
+            label={
+              <span>
+                Delay Children:{' '}
+                <HighlightedValue>{delayChildren}</HighlightedValue>
+              </span>
+            }
+            aria-label="Delay Children"
+            min={0}
+            max={5}
+            step="0.1"
+            value={delayChildren}
+            onChange={(value) => setDelayChildren(value)}
+          />
+
+          <Range
+            id="staggerChildren"
+            label={
+              <span>
+                Stagger Children:{' '}
+                <HighlightedValue>{staggerChildren}</HighlightedValue>
+              </span>
+            }
+            aria-label="Stagger Children"
+            min={0}
+            max={5}
+            step="0.1"
+            value={staggerChildren}
+            onChange={(value) => setStaggerChildren(value)}
+          />
         </Form>
         <motion.div
           key={key}

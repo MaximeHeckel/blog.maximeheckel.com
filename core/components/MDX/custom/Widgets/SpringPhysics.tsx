@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Card from '@theme/components/Card';
+import Range from '@theme/components/Range';
 import { curveBasisOpen } from '@visx/curve';
 import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
@@ -121,7 +122,7 @@ const SpringPhysics = (props: { withDamping?: boolean }) => {
         <Form
           style={{
             margin: '20px 0',
-            height: '175px',
+            height: '190px',
             maxWidth: '400px',
             display: 'flex',
             flexDirection: 'column',
@@ -129,38 +130,39 @@ const SpringPhysics = (props: { withDamping?: boolean }) => {
           }}
         >
           <div style={{ display: 'grid' }}>
-            <label htmlFor="mass">Mass {mass}</label>
-            <input
-              id="mass"
-              type="range"
-              min="1"
-              max="10"
+            <Range
+              id={`mass-${withDamping}`}
+              aria-label="mass"
+              label={`Mass ${mass}`}
+              min={1}
+              max={10}
+              step="0.1"
               value={mass}
-              onChange={(e) => setMass(parseInt(e.target.value, 10))}
+              onChange={(value) => setMass(value)}
             />
           </div>
           <div style={{ display: 'grid' }}>
-            <label htmlFor="stiffness">Stiffness {stiffness}</label>
-            <input
-              id="stiffness"
-              type="range"
-              min="1"
-              max="500"
+            <Range
+              id={`stiffness-${withDamping}`}
+              aria-label="stiffness"
+              label={`Stiffness ${stiffness}`}
+              min={1}
+              max={500}
               value={stiffness}
-              onChange={(e) => setStiffness(parseInt(e.target.value, 10))}
+              onChange={(value) => setStiffness(value)}
             />
           </div>
           {withDamping ? (
             <div style={{ display: 'grid' }}>
-              <label htmlFor="damping">Damping {damping}</label>
-              <input
+              <Range
                 id="damping"
-                type="range"
-                min="0"
-                max="5"
+                label={`Damping ${damping}`}
+                aria-label="dambing"
+                min={0}
+                max={5}
                 step="0.1"
                 value={damping}
-                onChange={(e) => setDamping(parseInt(e.target.value, 10))}
+                onChange={(value) => setDamping(value)}
               />
             </div>
           ) : null}

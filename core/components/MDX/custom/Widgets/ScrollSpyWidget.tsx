@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Card from '@theme/components/Card';
+import Range from '@theme/components/Range';
 import { useTheme } from '@theme/context/ThemeContext';
 import useScrollSpy from '@theme/hooks/useScrollSpy';
 import React from 'react';
@@ -221,39 +222,35 @@ const ScrollSpyWidget = () => {
           `}
         >
           <Form>
-            <div
-              css={css`
-                display: grid;
-                margin-bottom: 32px;
-              `}
-            >
-              <label htmlFor="offset">
-                Offset: <HighlightedValue>{-offset}</HighlightedValue>
-              </label>
-              <input
-                id="offset"
-                type="range"
-                min="0"
-                max="400"
-                value={offset}
-                onChange={(e) => setOffset(parseInt(e.target.value, 10))}
-              />
-              <InlineCode>rootMargin: -{offset}px 0px 0px 0px</InlineCode>
-            </div>
-            <div css={{ display: 'grid' }}>
-              <label htmlFor="height">
-                Section Height: <HighlightedValue>{height}</HighlightedValue>
-              </label>
-              <input
-                id="height"
-                type="range"
-                step="10"
-                min="100"
-                max="500"
-                value={height}
-                onChange={(e) => setHeight(parseInt(e.target.value, 10))}
-              />
-            </div>
+            <Range
+              id="offset"
+              label={
+                <span>
+                  Offset: <HighlightedValue>{-offset}</HighlightedValue>
+                </span>
+              }
+              aria-label="Offset"
+              min={0}
+              max={400}
+              value={offset}
+              onChange={(value) => setOffset(value)}
+            />
+            <InlineCode>rootMargin: -{offset}px 0px 0px 0px</InlineCode>
+            <br />
+            <Range
+              id="height"
+              label={
+                <span>
+                  Section Height: <HighlightedValue>{height}</HighlightedValue>
+                </span>
+              }
+              aria-label="Section Height"
+              step="10"
+              min={100}
+              max={500}
+              value={height}
+              onChange={(value) => setHeight(value)}
+            />
           </Form>
         </AnimationCardContent>
       </Card>
