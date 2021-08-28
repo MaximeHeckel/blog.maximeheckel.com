@@ -36,7 +36,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
   const theme = useTheme();
 
   return (
-    <Wrapper tabIndex={-1} data-theme={theme.dark ? 'dark' : 'light'}>
+    <Wrapper data-theme={theme.dark ? 'dark' : 'light'}>
       {header ? <Header themeSwitcher={true} {...headerProps} /> : null}
       {children}
       {footer ? <Footer /> : null}
