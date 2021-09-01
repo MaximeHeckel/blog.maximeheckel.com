@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const StyledLabel = styled('label')`
-  font-size: 16px;
+  font-size: 14px;
   display: inline-block;
   cursor: pointer;
   color: var(--maximeheckel-colors-typeface-secondary);

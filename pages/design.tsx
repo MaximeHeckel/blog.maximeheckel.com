@@ -14,6 +14,7 @@ import {
   RSSIcon,
   TwitterIcon,
 } from '@theme/components/Icons';
+import TextInput from '@theme/components/TextInput';
 import Logo from '@theme/components/Logo';
 import Callout from '@theme/components/MDX/Callout';
 import { VARIANT } from '@theme/components/MDX/Callout/Callout';
@@ -64,15 +65,20 @@ export default function Design(props: {
   tweets: Record<string, TransformedTweet>;
 }) {
   const [showSearch, setShowSearch] = React.useState(false);
+  const [email, setEmail] = React.useState('');
 
-  const colorScaleNumbers = Array.from(Array(19).keys()).map((items) => {
-    const num = (items + 1) * 5;
-    if (num === 5) {
-      return `0${num}`;
-    }
+  const colorScaleNumbers = React.useMemo(
+    () =>
+      Array.from(Array(19).keys()).map((items) => {
+        const num = (items + 1) * 5;
+        if (num === 5) {
+          return `0${num}`;
+        }
 
-    return num.toString();
-  });
+        return num.toString();
+      }),
+    []
+  );
 
   const palette = ['gray', 'blue', 'red', 'orange', 'green', 'pink', 'indigo'];
 
@@ -276,6 +282,61 @@ export default function Design(props: {
         </section>
         <section id="form-components">
           <h2>Form Components</h2>
+          <Grid gap={24} columns="repeat(auto-fit, minmax(300px, 1fr))">
+            <TextInput
+              label="Name"
+              aria-label="Name"
+              id="name-input"
+              placeholder="Name"
+              onChange={() => {}}
+            />
+            <TextInput
+              label="Name"
+              aria-label="Name"
+              id="name-input-disabled"
+              placeholder="Name"
+              disabled
+              onChange={() => {}}
+              value="Maxime Heckel"
+            />
+
+            <TextInput
+              aria-label="Email"
+              id="email-input"
+              type="email"
+              placeholder="hello@maximeheckel.com"
+              onChange={(event) => setEmail(event.currentTarget.value)}
+              value={email}
+            />
+
+            <TextInput
+              aria-label="Email"
+              id="email-input-disabled"
+              type="email"
+              disabled
+              placeholder="hello@maximeheckel.com"
+              onChange={() => {}}
+              value="hello@maximeheckel.com"
+            />
+
+            <TextInput
+              aria-label="Password"
+              id="password-input"
+              type="password"
+              placeholder="Password"
+              onChange={() => {}}
+            />
+
+            <TextInput
+              aria-label="Password"
+              id="password-input-disabled"
+              type="password"
+              disabled
+              onChange={() => {}}
+              value="supersecretpassword"
+            />
+          </Grid>
+          <br />
           <Grid gap={12} columns="repeat(2, minmax(2rem, 1fr))">
             <Checkbox aria-label="Checkbox" id="checkbox1" label="Checkbox" />
             <Checkbox
