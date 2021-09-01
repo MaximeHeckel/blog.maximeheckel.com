@@ -15,7 +15,7 @@ export const StyledCheckbox = styled('input')`
   margin: 0;
   cursor: pointer;
 
-  border-radius: 7px;
+  border-radius: var(--border-radius-1);
   border: 1px solid var(--border-color, var(--maximeheckel-form-input-border));
   background: var(--background, var(--maximeheckel-form-input-background));
   transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;

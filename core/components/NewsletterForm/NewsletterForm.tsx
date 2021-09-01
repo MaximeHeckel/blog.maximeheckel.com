@@ -13,6 +13,7 @@ import {
   ErrorMessage,
 } from './Styles';
 import { subscribeCall } from './utils';
+// import TextInput from '../TextInput';
 
 const formVariant = {
   checked: {
@@ -95,7 +96,8 @@ const NewsletterForm = (props: Props) => {
   return (
     <div
       css={css`
-        margin-left: -10px;
+        margin-left: -8px;
+        margin-right: -8px;
       `}
     >
       <Card depth={0}>
@@ -148,6 +150,17 @@ const NewsletterForm = (props: Props) => {
               and tips as well as exclusive previews of upcoming articles.
             </p>
           )}
+
+          {/* <TextInput
+            aria-label="Email"
+            id="email-input"
+            type="email"
+            placeholder="your@email.com"
+            autoComplete="off"
+            value={email}
+            onChange={(event) => setEmail(event.currentTarget.value)}
+            required
+          /> */}
           <NewsLetterForm
             animate={isChecked ? 'checked' : 'unchecked'}
             variants={formVariant}

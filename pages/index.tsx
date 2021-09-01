@@ -154,7 +154,8 @@ const IndexPage = (props: Props) => {
                   <motion.li
                     css={css`
                       position: relative;
-                      margin-left: -10px;
+                      margin-left: -8px;
+                      margin-right: -8px;
                     `}
                     key={post.slug}
                     data-testid="featured-article-item"

@@ -23,7 +23,7 @@ export const NewsletterFormContent = styled(Card.Body)<{
   }
 
   @media (max-width: 700px) {
-    padding: ${(p) => (p.withOffset ? '150px 0px 30px 20px;' : '24px 4px')};
+    padding: ${(p) => (p.withOffset ? '150px 20px 30px 20px;' : '24px 20px')};
   }
   ul {
     margin-left: 18px;

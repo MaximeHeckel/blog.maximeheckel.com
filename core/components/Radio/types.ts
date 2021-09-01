@@ -18,7 +18,7 @@ export type RadioGroupProps = RadioContextType &
 export interface RadioItemProps
   extends Omit<
     React.HTMLProps<HTMLInputElement>,
-    'onChange' | 'label' | 'name' | 'as'
+    'onChange' | 'label' | 'name' | 'as' | 'type'
   > {
   label?: React.ReactNode;
   id: string;
