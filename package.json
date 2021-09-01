@@ -38,7 +38,7 @@
     "@visx/group": "1.6.1",
     "@visx/responsive": "1.6.1",
     "@visx/scale": "1.6.1",
-    "@visx/shape": "1.6.1",
+    "@visx/shape": "2.1.0",
     "@visx/tooltip": "1.6.1",
     "chalk": "4.1.1",
     "critters": "0.0.6",
