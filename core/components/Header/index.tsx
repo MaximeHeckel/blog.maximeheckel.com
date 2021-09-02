@@ -3,17 +3,19 @@ import Mousetrap from 'mousetrap';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import Flex from '../Flex';
-import { useTheme } from '../../context/ThemeContext';
 import Logo from '../Logo';
-import { CommandCenterButton, LightDarkSwitcher } from '../Button';
+
 import { MainHeaderProps } from './types';
 import Header from './Header';
 
+const CommandCenterButton = dynamic(
+  () => import('../Button/CommandCenterButton')
+);
+const LightDarkSwitcher = dynamic(() => import('../Button/LightDarkSwitcher'));
 const Search = dynamic(() => import('../Search'));
 
 const MainHeader = (props: MainHeaderProps) => {
   const [showSearch, setShowSearch] = React.useState(false);
-  const theme = useTheme();
 
   React.useEffect(() => {
     Mousetrap.bind(['ctrl+k'], () => setShowSearch((prevState) => !prevState));
@@ -74,16 +76,15 @@ const MainHeader = (props: MainHeaderProps) => {
           </Header.LogoWrapper>
           <Header.Title>{props.title}</Header.Title>
         </Flex>
-        <Flex>
+        <Flex gap={12}>
           {props.search ? (
             <CommandCenterButton
               isSearchShown={showSearch}
               onClick={() => setShowSearch(true)}
             />
           ) : null}
-          {props.themeSwitcher && Object.keys(theme).length > 0 ? (
-            <LightDarkSwitcher />
-          ) : null}
+
+          <LightDarkSwitcher />
         </Flex>
       </Header>
     </>

@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { motion } from 'framer-motion';
 import Card from '@theme/components/Card';
 
 export const NewsletterFormContent = styled(Card.Body)<{
@@ -38,103 +37,6 @@ export const NewsletterFormContent = styled(Card.Body)<{
     color: var(--maximeheckel-colors-brand);
     background: var(--maximeheckel-colors-emphasis);
   }
-`;
-
-export const NewsLetterForm = styled(motion.form)`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid var(--maximeheckel-colors-brand);
-  border-radius: var(--border-radius-1);
-  margin: 45px auto 0px auto;
-  width: 100%;
-`;
-
-export const NewsLetterInput = styled(motion.input)`
-  width: 65%;
-  height: 50px;
-  outline: none;
-  background-color: transparent;
-  color: var(--maximeheckel-colors-typeface-primary);
-  font-size: 18px;
-  font-weight: 400;
-  letter-spacing: 0.3px;
-  padding: 0px 16px;
-  border: none;
-  box-shadow: none;
-  will-change: width;
-
-  ::placeholder,
-  ::-webkit-input-placeholder {
-    color: var(--maximeheckel-colors-typeface-secondary);
-  }
-  :-ms-input-placeholder {
-    color: var(--maximeheckel-colors-typeface-secondary);
-  }
-
-  -webkit-appearance: textfield;
-  outline-offset: -2px;
-
-  ::-webkit-search-cancel-button,
-  ::-webkit-search-decoration {
-    -webkit-appearance: none;
-  }
-  ::-webkit-input-placeholder {
-    color: inherit;
-    opacity: 0.54;
-  }
-  ::-webkit-file-upload-button {
-    -webkit-appearance: button;
-    font: inherit;
-  }
-
-  @media (max-width: 700px) {
-    font-size: 16px;
-  }
-`;
-
-export const NewsLetterSubmitButton = styled(motion.button)`
-  width: 150px;
-  height: 50px;
-  background-color: var(--maximeheckel-colors-brand);
-  color: var(--maximeheckel-colors-body);
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  border-radius: var(--border-radius-1);
-  box-shadow: none;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-
-  &:disabled {
-    cursor: not-allowed;
-  }
-
-  path {
-    stroke: var(--maximeheckel-colors-body) !important;
-  }
-
-  @media (max-width: 700px) {
-    font-size: 16px;
-  }
-`;
-
-export const VisuallyHidden = styled('div')`
-  border: 0;
-  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-  clip; rect(1px, 1px, 1px, 1px);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
 `;
 
 export const ErrorMessage = styled('p')`

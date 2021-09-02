@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Highlight, { Prism, defaultProps } from 'prism-react-renderer';
-import { CopyToClipboardButton } from '../../Button';
+import CopyToClipboardButton from '../../Button/CopyToClipboardButton';
 import { CodeBlockProps, HighlightedCodeTextProps } from './types';
 import { calculateLinesToHighlight, hasTitle } from './utils';
 

@@ -1,8 +1,9 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { LinkButton } from '@theme/components/Button/LinkButton';
+import Button from '@theme/components/Button';
 import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
+import Flex from '@theme/components/Flex';
 import Grid from '@theme/components/Grid';
 import { motion, AnimateSharedLayout } from 'framer-motion';
 import React from 'react';
@@ -69,14 +70,14 @@ const ClearIcon = () => (
   >
     <path
       d="M15 9L9 15"
-      stroke="var(--maximeheckel-colors-typeface-tertiary)"
+      stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M9 9L15 15"
-      stroke="var(--maximeheckel-colors-typeface-tertiary)"
+      stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -94,14 +95,14 @@ const AddIcon = () => (
   >
     <path
       d="M12.5154 8.91113V16.9111"
-      stroke="var(--maximeheckel-colors-typeface-tertiary)"
+      stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M8.51541 12.9111H16.5154"
-      stroke="var(--maximeheckel-colors-typeface-tertiary)"
+      stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -227,15 +228,11 @@ const FramerMotionAnimationLayout = () => {
             onChange={() => setLayout((prev) => !prev)}
           />
         </div>
-        <div
-          css={css`
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          `}
-        >
-          <LinkButton
+        <Flex gap={12}>
+          <Button
             title="Add new pet!"
+            variant="icon"
+            icon={<AddIcon />}
             disabled={PETS.length === 0}
             onClick={() =>
               setItems((prev) => {
@@ -245,19 +242,17 @@ const FramerMotionAnimationLayout = () => {
                 return newState;
               })
             }
-          >
-            <AddIcon />
-          </LinkButton>
-          <LinkButton
+          />
+          <Button
             title="Clear pets list"
+            variant="icon"
+            icon={<ClearIcon />}
             onClick={() => {
               PETS = [...items, ...PETS];
               setItems([]);
             }}
-          >
-            <ClearIcon />
-          </LinkButton>
-        </div>
+          />
+        </Flex>
       </AnimationCardContent>
     </Card>
   );

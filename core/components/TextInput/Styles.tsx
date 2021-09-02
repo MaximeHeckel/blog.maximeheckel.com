@@ -18,6 +18,7 @@ export const StyledInput = styled('input')`
   border: 1px solid var(--border-color, var(--maximeheckel-form-input-border));
   background: var(--background, var(--maximeheckel-form-input-background));
   transition: border-color 0.3s, box-shadow 0.3s;
+
   &::placeholder {
     color: var(--maximeheckel-colors-typeface-tertiary);
     opacity: 0.5;
@@ -30,7 +31,7 @@ export const StyledInput = styled('input')`
   &:disabled {
     --background: var(--maximeheckel-form-input-disabled);
     cursor: not-allowed;
-    opacity: 0.8;
+    opacity: 0.65;
     & + label {
       cursor: not-allowed;
     }
@@ -53,6 +54,12 @@ export const StyledInputWrapper = styled('div')<{ type: TextInputTypes }>`
     transition: stroke 0.3s;
   }
 
+  input {
+    box-shadow: var(--shadow, none);
+  }
+
+  --shadow-hover-primary: 0 2px 20px -2px var(--maximeheckel-form-input-focus);
+
   &:hover {
     input {
       &:not(:disabled) {
@@ -60,6 +67,8 @@ export const StyledInputWrapper = styled('div')<{ type: TextInputTypes }>`
         & + svg {
           --icon-color: var(--maximeheckel-form-input-active);
         }
+
+        --shadow: var(--shadow-hover-primary);
 
         & + button {
           svg {
@@ -73,6 +82,7 @@ export const StyledInputWrapper = styled('div')<{ type: TextInputTypes }>`
   &:focus-within {
     --border-color: var(--maximeheckel-form-input-active);
     --icon-color: var(--maximeheckel-form-input-active);
+    --shadow: var(--shadow-hover-primary);
   }
 
   input {
@@ -106,7 +116,7 @@ svg {
   --at-sign-delay: 0s;
   --tick: 0;
   --tick-delay: 0.5s;
-  --icon-color: var(--maximeheckel-form-input-active);
+  --icon-color: hsl(var(--palette-green-65));
 }
 
 
@@ -131,7 +141,7 @@ svg {
     padding: 0px;
 
     &:focus-visible {
-      box-shadow: 0 0 0 2px var(--maximeheckel-form-input-focus);
+      box-shadow: 0 0 0 2px var(--maximeheckel-colors-brand);
     }
 
     &:disabled {

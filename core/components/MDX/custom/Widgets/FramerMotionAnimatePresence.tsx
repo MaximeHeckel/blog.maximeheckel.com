@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { LinkButton } from '@theme/components/Button/LinkButton';
+import Button from '@theme/components/Button';
 import DesignSystemCard from '@theme/components/Card';
+import Flex from '@theme/components/Flex';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import InlineCode from '../../InlineCode';
@@ -106,30 +107,25 @@ const ContentDemo = (props: Props) => {
           );
         })}
       </CardWrapper>
-      <div
-        css={css`
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        `}
-      >
-        <LinkButton
+      <Flex gap={12}>
+        <Button
           id="prev"
           aria-label="Previous"
+          variant="icon"
           onMouseEnter={() => setAboutToBeClicked('prev')}
           onClick={prev}
-        >
-          &#8592;
-        </LinkButton>
-        <LinkButton
+          icon={<div>&#8592;</div>}
+        />
+
+        <Button
           id="next"
           aria-label="Next"
+          variant="icon"
           onMouseEnter={() => setAboutToBeClicked('next')}
           onClick={next}
-        >
-          &#8594;
-        </LinkButton>
-      </div>
+          icon={<div>&#8594;</div>}
+        />
+      </Flex>
     </>
   );
 };

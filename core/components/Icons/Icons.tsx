@@ -7,7 +7,7 @@ export const TwitterIcon = (props: SVGAttributes<SVGElement>) => (
     viewBox="0 0 25 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    stroke="black"
+    stroke="currentColor"
     {...props}
   >
     <path
@@ -26,7 +26,7 @@ export const ArrowIcon = (props: SVGAttributes<SVGElement>) => (
     viewBox="0 0 25 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    stroke="black"
+    stroke="currentColor"
     {...props}
   >
     <path
@@ -51,7 +51,7 @@ export const ExternalIcon = (props: SVGAttributes<SVGElement>) => (
     viewBox="0 0 25 25"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    stroke="black"
+    stroke="currentColor"
     {...props}
   >
     <path
@@ -76,6 +76,7 @@ export const EnterIcon = (props: SVGAttributes<SVGElement>) => (
     viewBox="0 0 25 25"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    stroke="currentColor"
     {...props}
   >
     <path
@@ -103,6 +104,7 @@ export const MapIcon = (props: SVGAttributes<SVGElement>) => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    stroke="currentColor"
     {...props}
   >
     <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
@@ -118,6 +120,7 @@ export const RSSIcon = (props: SVGAttributes<SVGElement>) => (
     viewBox="0 0 25 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    stroke="currentColor"
     {...props}
   >
     <path
@@ -148,6 +151,7 @@ export const ContactIcon = (props: SVGAttributes<SVGElement>) => (
     viewBox="0 0 25 25"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
+    stroke="currentColor"
     {...props}
   >
     <path
@@ -172,6 +176,7 @@ export const PortfolioIcon = (props: SVGAttributes<SVGElement>) => (
     viewBox="0 0 25 24"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
+    stroke="currentColor"
     {...props}
   >
     <path

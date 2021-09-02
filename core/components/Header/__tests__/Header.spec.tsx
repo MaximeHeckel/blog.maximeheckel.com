@@ -16,28 +16,17 @@ describe('Header', () => {
       </ThemeContext.Provider>
     );
     expect(queryByTestId('header-title')).toBeNull();
-    expect(queryByTestId('darkmode-switch')).toBeNull();
+    expect(queryByTestId('darkmode-switch')).toBeInTheDocument();
   });
 
   it('renders the header with a title', () => {
-    const { queryByTestId } = render(
+    const { getByTestId, queryByTestId } = render(
       <ThemeContext.Provider value={{ dark: false, toggleDark: () => null }}>
         <MainHeader title="Maxime Heckel" />
       </ThemeContext.Provider>
     );
-    expect(queryByTestId('header-title')).toBeDefined();
-    expect(queryByTestId('darkmode-switch')).toBeNull();
-  });
-
-  it('renders the header with the theme switcher', () => {
-    const { queryByTestId, getByTestId } = render(
-      <ThemeContext.Provider value={{ dark: false, toggleDark: () => null }}>
-        <MainHeader themeSwitcher={true} />
-      </ThemeContext.Provider>
-    );
-
-    expect(queryByTestId('header-title')).toBeNull();
-    expect(getByTestId('darkmode-switch')).toBeDefined();
+    expect(queryByTestId('header-title')).toBeInTheDocument();
+    expect(getByTestId('darkmode-switch')).toBeInTheDocument();
   });
 
   it('clicking on the theme switcher calls the toggle dark function', () => {
@@ -47,7 +36,7 @@ describe('Header', () => {
       <ThemeContext.Provider
         value={{ dark: false, toggleDark: mockToggleDark }}
       >
-        <MainHeader themeSwitcher />
+        <MainHeader />
       </ThemeContext.Provider>
     );
     fireEvent.click(getByTestId('darkmode-switch'));

@@ -1,112 +1,270 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Button renders the primary button 1`] = `
+exports[`Button renders a basic button 1`] = `
 .emotion-0 {
-  height: 48px;
-  margin: 0;
-  border: none;
-  cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  font-weight: 500;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  outline: none;
+  cursor: pointer;
+  border: 0;
   font-size: 16px;
-  padding: 0 30px;
+  font-weight: 500;
+  height: 44px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 11px 16px;
+  -webkit-transition: background 0.2s,-webkit-transform 0.2s,color 0.2s,box-shadow 0.3s;
+  transition: background 0.2s,transform 0.2s,color 0.2s,box-shadow 0.3s;
   border-radius: var(--border-radius-1);
-  background-color: var(--maximeheckel-colors-brand);
-  color: hsla(var(--palette-gray-00), 100%);
-  min-width: 150px;
+  background: var(--background, white);
+  color: var(--color, black);
+  -webkit-transform: scale(var(--button-scale, 1)) translateZ(0);
+  -moz-transform: scale(var(--button-scale, 1)) translateZ(0);
+  -ms-transform: scale(var(--button-scale, 1)) translateZ(0);
+  transform: scale(var(--button-scale, 1)) translateZ(0);
+  box-shadow: var(--shadow, none);
+  opacity: var(--opacity, 1);
+  --shadow-hover-primary: 0 2px 40px -4px var(--maximeheckel-form-input-focus);
+  --background: var(--maximeheckel-colors-brand);
+  --color: hsl(var(--palette-gray-00));
 }
 
-.emotion-0:focus:not(:focus-visible) {
-  outline: 0;
+.emotion-0:active {
+  --button-scale: 0.95;
+}
+
+.emotion-0:disabled {
+  cursor: not-allowed;
+}
+
+.emotion-0:disabled {
+  --background: var(--maximeheckel-form-input-disabled);
+  --color: var(--maximeheckel-colors-typeface-tertiary);
+}
+
+.emotion-0:hover:not(:disabled) {
+  --shadow: var(--shadow-hover-primary);
 }
 
 .emotion-0:focus-visible {
-  outline: 2px solid var(--maximeheckel-colors-brand);
-  background-color: var(--maximeheckel-colors-foreground);
+  --shadow: var(--shadow-hover-primary);
 }
 
-<body>
-  <div>
-    <button
-      class="emotion-0 emotion-1"
-    >
-      Test
-    </button>
-  </div>
-</body>
+<button
+  class="emotion-0 emotion-1"
+>
+  Test
+</button>
 `;
 
-exports[`Button renders the secondary button 1`] = `
+exports[`Button renders a button with a startIcon 1`] = `
 .emotion-0 {
-  height: 48px;
-  margin: 0;
-  border: none;
-  cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  font-weight: 500;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  outline: none;
+  cursor: pointer;
+  border: 0;
   font-size: 16px;
-  padding: 0 30px;
+  font-weight: 500;
+  height: 44px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 11px 16px;
+  -webkit-transition: background 0.2s,-webkit-transform 0.2s,color 0.2s,box-shadow 0.3s;
+  transition: background 0.2s,transform 0.2s,color 0.2s,box-shadow 0.3s;
   border-radius: var(--border-radius-1);
-  background-color: transparent;
-  color: var(--maximeheckel-colors-brand);
-  border: 2px solid var(--maximeheckel-colors-brand);
-  min-width: 150px;
+  background: var(--background, white);
+  color: var(--color, black);
+  -webkit-transform: scale(var(--button-scale, 1)) translateZ(0);
+  -moz-transform: scale(var(--button-scale, 1)) translateZ(0);
+  -ms-transform: scale(var(--button-scale, 1)) translateZ(0);
+  transform: scale(var(--button-scale, 1)) translateZ(0);
+  box-shadow: var(--shadow, none);
+  opacity: var(--opacity, 1);
+  --shadow-hover-primary: 0 2px 40px -4px var(--maximeheckel-form-input-focus);
+  --background: var(--maximeheckel-colors-brand);
+  --color: hsl(var(--palette-gray-00));
 }
 
-.emotion-0:focus:not(:focus-visible) {
-  outline: 0;
+.emotion-0:active {
+  --button-scale: 0.95;
+}
+
+.emotion-0:disabled {
+  cursor: not-allowed;
+}
+
+.emotion-0:disabled {
+  --background: var(--maximeheckel-form-input-disabled);
+  --color: var(--maximeheckel-colors-typeface-tertiary);
+}
+
+.emotion-0:hover:not(:disabled) {
+  --shadow: var(--shadow-hover-primary);
 }
 
 .emotion-0:focus-visible {
-  outline: 2px solid var(--maximeheckel-colors-brand);
-  background-color: var(--maximeheckel-colors-foreground);
+  --shadow: var(--shadow-hover-primary);
 }
 
-<body>
-  <div>
-    <button
-      class="emotion-0 emotion-1"
-    >
-      Test
-    </button>
-  </div>
-</body>
+.emotion-2 {
+  margin-right: 8px;
+}
+
+<button
+  class="emotion-0 emotion-1"
+>
+  <span
+    class="emotion-2"
+  >
+    <svg
+      data-testid="icon"
+    />
+  </span>
+  Test
+</button>
 `;
 
-exports[`Button renders the tertiary button 1`] = `
+exports[`Button renders a button with an endIcon 1`] = `
 .emotion-0 {
-  height: 48px;
-  margin: 0;
-  border: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  outline: none;
   cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
+  border: 0;
+  font-size: 16px;
+  font-weight: 500;
+  height: 44px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 11px 16px;
+  -webkit-transition: background 0.2s,-webkit-transform 0.2s,color 0.2s,box-shadow 0.3s;
+  transition: background 0.2s,transform 0.2s,color 0.2s,box-shadow 0.3s;
+  border-radius: var(--border-radius-1);
+  background: var(--background, white);
+  color: var(--color, black);
+  -webkit-transform: scale(var(--button-scale, 1)) translateZ(0);
+  -moz-transform: scale(var(--button-scale, 1)) translateZ(0);
+  -ms-transform: scale(var(--button-scale, 1)) translateZ(0);
+  transform: scale(var(--button-scale, 1)) translateZ(0);
+  box-shadow: var(--shadow, none);
+  opacity: var(--opacity, 1);
+  --shadow-hover-primary: 0 2px 40px -4px var(--maximeheckel-form-input-focus);
+  --background: var(--maximeheckel-colors-brand);
+  --color: hsl(var(--palette-gray-00));
+}
+
+.emotion-0:active {
+  --button-scale: 0.95;
+}
+
+.emotion-0:disabled {
+  cursor: not-allowed;
+}
+
+.emotion-0:disabled {
+  --background: var(--maximeheckel-form-input-disabled);
+  --color: var(--maximeheckel-colors-typeface-tertiary);
+}
+
+.emotion-0:hover:not(:disabled) {
+  --shadow: var(--shadow-hover-primary);
+}
+
+.emotion-0:focus-visible {
+  --shadow: var(--shadow-hover-primary);
+}
+
+.emotion-2 {
+  margin-left: 8px;
+}
+
+<button
+  class="emotion-0 emotion-1"
+>
+  Test
+  <span
+    class="emotion-2"
+  >
+    <svg
+      data-testid="icon"
+    />
+  </span>
+</button>
+`;
+
+exports[`Button renders an icon button 1`] = `
+.emotion-0 {
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   -webkit-justify-content: center;
@@ -115,61 +273,86 @@ exports[`Button renders the tertiary button 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  position: relative;
-  font-weight: 500;
-  font-size: 16px;
-  padding: 0 30px;
+  outline: none;
+  cursor: pointer;
+  border: 0;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  -webkit-transition: color 0.3s ease,-webkit-transform 0.3s ease;
+  transition: color 0.3s ease,transform 0.3s ease;
   border-radius: var(--border-radius-1);
-  background-color: transparent;
-  color: var(--maximeheckel-colors-brand);
-  min-width: inherited;
-  padding: 0px;
-}
-
-.emotion-0:focus:not(:focus-visible) {
-  outline: 0;
-}
-
-.emotion-0:focus-visible {
-  outline: 2px solid var(--maximeheckel-colors-brand);
-  background-color: var(--maximeheckel-colors-foreground);
+  color: var(--color, var(--maximeheckel-colors-typeface-secondary));
+  -webkit-transform: scale(var(--button-content-scale, 1)) translateZ(0);
+  -moz-transform: scale(var(--button-content-scale, 1)) translateZ(0);
+  -ms-transform: scale(var(--button-content-scale, 1)) translateZ(0);
+  transform: scale(var(--button-content-scale, 1)) translateZ(0);
+  --shadow-hover-primary: 0 2px 40px -2px var(--maximeheckel-form-input-focus);
 }
 
 .emotion-0::after {
+  z-index: 0;
+  position: absolute;
   content: '';
   display: block;
-  position: absolute;
-  top: 96%;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: var(--maximeheckel-colors-brand);
-  -webkit-transform: scaleX(0);
-  -moz-transform: scaleX(0);
-  -ms-transform: scaleX(0);
-  transform: scaleX(0);
-  -webkit-transition: -webkit-transform 0.25s ease-in;
-  transition: transform 0.25s ease-in;
-  transform-origin: right center;
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  -webkit-transition: box-shadow 0.3s ease,border-color 0.2s,background 0.3s ease,-webkit-transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: box-shadow 0.3s ease,border-color 0.2s,background 0.3s ease,transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: var(--background, var(--maximeheckel-colors-foreground));
+  -webkit-transform: scale(var(--button-background-scale, 1)) translateZ(0);
+  -moz-transform: scale(var(--button-background-scale, 1)) translateZ(0);
+  -ms-transform: scale(var(--button-background-scale, 1)) translateZ(0);
+  transform: scale(var(--button-background-scale, 1)) translateZ(0);
+  border: 2px solid var(--border-color, var(--maximeheckel-colors-foreground));
+  border-radius: var(--corner, var(--border-radius-1));
+  box-shadow: var(--shadow, none);
 }
 
-.emotion-0:hover::after {
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  transform: scale(1);
-  transform-origin: left center;
+.emotion-0:disabled {
+  cursor: not-allowed;
+  --background: var(--maximeheckel-form-input-disabled);
+  --color: var(--maximeheckel-colors-typeface-tertiary);
 }
 
-<body>
-  <div>
-    <button
-      class="emotion-0 emotion-1"
-    >
-      Test
-    </button>
-  </div>
-</body>
+.emotion-0:hover:not(:disabled) {
+  --border-color: var(--maximeheckel-colors-brand);
+  --color: var(--maximeheckel-colors-brand);
+  --corner: calc(var(--border-radius-1) + 2px);
+  --button-background-scale: 0.92;
+  --shadow: var(--shadow-hover-primary);
+}
+
+.emotion-0:focus-visible:not(:disabled) {
+  --border-color: var(--maximeheckel-colors-brand);
+  --color: var(--maximeheckel-colors-brand);
+  --corner: calc(var(--border-radius-1) + 2px);
+  --button-background-scale: 0.92;
+  --shadow: var(--shadow-hover-primary);
+}
+
+.emotion-0:active {
+  --button-content-scale: 0.95;
+}
+
+.emotion-2 {
+  z-index: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+<button
+  class="emotion-0 emotion-1"
+>
+  <span
+    class="emotion-2"
+  >
+    <svg
+      data-testid="icon"
+    />
+  </span>
+</button>
 `;

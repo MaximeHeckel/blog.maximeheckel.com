@@ -12,29 +12,24 @@ export const StyledRange = styled('input')<{ fill: string }>`
   margin: 0;
 
   width: 100%;
-
   background: transparent;
 
   &::-moz-range-track {
     -moz-appearance: none;
     width: 100%;
     height: 4px;
-    opacity: var(--opacity, 1);
     border: none;
     border-radius: var(--border-radius-0);
     background: ${(p) => p.fill || 'transparent'};
-    transition: box-shadow 0.2s;
   }
 
   &::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     width: 100%;
     height: 4px;
-    opacity: var(--opacity, 1);
     border: none;
     border-radius: var(--border-radius-0);
     background: ${(p) => p.fill || 'transparent'};
-    transition: box-shadow 0.2s;
   }
 
   &::-moz-range-thumb {
@@ -47,8 +42,8 @@ export const StyledRange = styled('input')<{ fill: string }>`
     border: 1px solid var(--border-color, var(--maximeheckel-form-input-border));
     margin-top: -10px;
     cursor: grab;
-    box-shadow: var(--maximeheckel-shadow-2);
-    transition: background 0.3s, border-color 0.3s;
+    box-shadow: var(--shadow, var(--maximeheckel-shadow-2));
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
   }
 
   &::-webkit-slider-thumb {
@@ -61,8 +56,8 @@ export const StyledRange = styled('input')<{ fill: string }>`
     border: 1px solid var(--border-color, var(--maximeheckel-form-input-border));
     margin-top: -10px;
     cursor: grab;
-    box-shadow: var(--maximeheckel-shadow-2);
-    transition: background 0.3s, border-color 0.3s;
+    box-shadow: var(--shadow, var(--maximeheckel-shadow-2));
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
   }
 
   &:active {
@@ -87,21 +82,25 @@ export const StyledRange = styled('input')<{ fill: string }>`
     &:not(:disabled) {
       &::-moz-range-thumb {
         --border-color: var(--maximeheckel-form-input-active);
+        --shadow: 0 2px 20px 3px var(--maximeheckel-form-input-focus);
       }
 
       &::-webkit-slider-thumb {
         --border-color: var(--maximeheckel-form-input-active);
+        --shadow: 0 2px 20px 3px var(--maximeheckel-form-input-focus);
       }
     }
   }
 
-  &:focus {
-    &::-moz-range-track {
-      box-shadow: 0 0 0 2px var(--maximeheckel-form-input-focus);
+  &:focus-visible {
+    &::-moz-range-thumb {
+      --border-color: var(--maximeheckel-form-input-active);
+      --shadow: 0 2px 20px 3px var(--maximeheckel-form-input-focus);
     }
 
-    &::-webkit-slider-runnable-track {
-      box-shadow: 0 0 0 2px var(--maximeheckel-form-input-focus);
+    &::-webkit-slider-thumb {
+      --border-color: var(--maximeheckel-form-input-active);
+      --shadow: 0 2px 20px 3px var(--maximeheckel-form-input-focus);
     }
   }
 

@@ -3,16 +3,21 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { format } from 'date-fns';
 import { motion, MotionProps } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Button from '@theme/components/Button';
 import Grid from '@theme/components/Grid';
 import Card from '@theme/components/Card';
+import Flex from '@theme/components/Flex';
 import { ExternalIcon, TwitterIcon } from '@theme/components/Icons';
-import NewsletterForm from '@theme/components/NewsletterForm';
 import VisuallyHidden from '@theme/components/VisuallyHidden';
 import Layout from '@theme/layout';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';
+
+const NewsletterForm = dynamic(
+  () => import('@theme/components/NewsletterForm')
+);
 
 interface Props {
   posts: Post[];
@@ -91,11 +96,11 @@ const IndexPage = (props: Props) => {
               SwiftUI, Serverless, and testing.
             </span>
           </h1>
-          <div
+          <Flex
+            gap={8}
             css={css`
-              display: flex;
-              justify-content: space-between;
-              width: 310px;
+              margin-left: -12px;
+              margin-right: -12px;
             `}
           >
             <a
@@ -103,15 +108,8 @@ const IndexPage = (props: Props) => {
               style={{ textDecoration: 'none' }}
               tabIndex={-1}
             >
-              <Button tertiary>
-                <span
-                  css={css`
-                    padding-right: 8px;
-                  `}
-                >
-                  About me
-                </span>
-                <ExternalIcon stroke="var(--maximeheckel-colors-brand)" />
+              <Button variant="secondary" endIcon={<ExternalIcon />}>
+                About me
               </Button>
               <VisuallyHidden as="p">
                 Link redirects to my portfolio https://maximeheckel.com.
@@ -122,23 +120,15 @@ const IndexPage = (props: Props) => {
               style={{ textDecoration: 'none' }}
               tabIndex={-1}
             >
-              <Button tertiary>
-                <span
-                  css={css`
-                    padding-right: 8px;
-                  `}
-                >
-                  {' '}
-                  @MaximeHeckel
-                </span>
-                <TwitterIcon stroke="var(--maximeheckel-colors-brand)" />
+              <Button variant="secondary" endIcon={<TwitterIcon />}>
+                @MaximeHeckel
               </Button>
               <VisuallyHidden as="p">
                 Link redirects to my Twitter profile page
                 https://twitter.com/MaximeHeckel.
               </VisuallyHidden>
             </a>
-          </div>
+          </Flex>
         </div>
         <section>
           <h2>Newsletter</h2>
@@ -292,7 +282,7 @@ const Glow = styled(motion.div)`
   height: 100%;
   -webkit-filter: blur(15px);
   filter: blur(15px);
-  border-radius: border-radius: var(--border-radius-2);
+  border-radius: var(--border-radius-2);
 `;
 
 const TitleWithBackground = styled('h2')<{ background: string }>`

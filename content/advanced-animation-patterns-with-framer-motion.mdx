@@ -107,6 +107,13 @@ const ListItem = styled(motion.li)`
   margin-bottom: 0px;
 `;
 
+const Button = styled('button')`
+  background: transparent;
+  border: none;
+  shadow: none;
+  color: var(--maximeheckel-colors-typeface-tertiary);
+`;
+
 const InfoBox = styled('div')`
   width: 50%;
 `;
@@ -150,13 +157,13 @@ const Item = (props) => {
         variants={readButtonVariants}
         transition={{ duration: 0.25 }}
       >
-        <LinkButton
+        <Button
           aria-label="read article"
           title="Read article"
           onClick={(e) => e.preventDefault()}
         >
           &#8594;
-        </LinkButton>
+        </Button>
       </motion.div>
     </ListItem>
   );
@@ -283,6 +290,13 @@ const ListItem = styled(motion.li)`
   margin-bottom: 0px;
 `;
 
+const Button = styled('button')`
+  background: transparent;
+  border: none;
+  shadow: none;
+  color: var(--maximeheckel-colors-typeface-tertiary);
+`;
+
 const InfoBox = styled('div')`
   width: 50%;
 `;
@@ -362,13 +376,13 @@ const Item = (props) => {
         )}
       </AnimatePresence>
       <motion.div variants={readButtonVariants} transition={{ duration: 0.25 }}>
-        <LinkButton
+        <Button
           aria-label="read article"
           title="Read article"
           onClick={(e) => e.preventDefault()}
         >
           &#8594;
-        </LinkButton>
+        </Button>
       </motion.div>
     </ListItem>
   );
@@ -615,6 +629,13 @@ const ListItem = styled(motion.li)`
   margin-bottom: 0px;
 `;
 
+const Button = styled('button')`
+  background: transparent;
+  border: none;
+  shadow: none;
+  color: var(--maximeheckel-colors-typeface-tertiary);
+`;
+
 const InfoBox = styled('div')`
   width: 50%;
 `;
@@ -721,13 +742,13 @@ const Item = (props) => {
         )}
       </AnimatePresence>
       <motion.div variants={readButtonVariants} transition={{ duration: 0.25 }}>
-        <LinkButton
+        <Button
           aria-label="read article"
           title="Read article"
           onClick={(e) => e.preventDefault()}
         >
           &#8594;
-        </LinkButton>
+        </Button>
       </motion.div>
     </ListItem>
   );

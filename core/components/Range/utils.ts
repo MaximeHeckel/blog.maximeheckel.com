@@ -8,7 +8,7 @@ export function adjustSlider(
   const val = ((value - min) * 100) / (max - min);
 
   const fillLeft = 'var(--maximeheckel-form-input-active)';
-  const fillLeftDisabled = 'var(--maximeheckel-form-input-focus)';
+  const fillLeftDisabled = 'var(--maximeheckel-form-input-border)';
   const fillRight = 'var(--maximeheckel-form-input-disabled)';
 
   return `linear-gradient(to right, ${

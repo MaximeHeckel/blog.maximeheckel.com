@@ -39,7 +39,7 @@ const CommandCenterStatic = () => (
     <Item data-testid="navigation" key="home-navigation">
       <Link href="/">
         <a>
-          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
+          <ArrowIcon />
           <span style={{ marginLeft: '20px' }}>Home</span>
         </a>
       </Link>
@@ -47,7 +47,7 @@ const CommandCenterStatic = () => (
     <Item data-testid="navigation" key="design-navigation">
       <Link href="/design/">
         <a>
-          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
+          <ArrowIcon />
           <span style={{ marginLeft: '20px' }}>Design System</span>
         </a>
       </Link>
@@ -59,7 +59,7 @@ const CommandCenterStatic = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <TwitterIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
+        <TwitterIcon />
         <span style={{ marginLeft: '15px' }}>Twitter</span>
         <VisuallyHidden as="p">
           Link redirects to my Twitter profile page
@@ -73,7 +73,7 @@ const CommandCenterStatic = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <ContactIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
+        <ContactIcon />
         <span style={{ marginLeft: '15px' }}>Contact</span>
         <VisuallyHidden as="p">
           Link opens your default mail client with my email address
@@ -87,7 +87,7 @@ const CommandCenterStatic = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <MapIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
+        <MapIcon />
         <span style={{ marginLeft: '15px' }}>Roadmap</span>
         <VisuallyHidden as="p">
           Link redirects to a Figjam file where you can see the roadmap with my
@@ -101,7 +101,7 @@ const CommandCenterStatic = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <PortfolioIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
+        <PortfolioIcon />
         <span style={{ marginLeft: '15px' }}>Work</span>
         <VisuallyHidden as="p">
           Link redirects to my portfolio https://maximeheckel.com.
@@ -111,7 +111,7 @@ const CommandCenterStatic = () => (
     <Item data-testid="link" key="rss-link">
       <Link href="/rss.xml" data-testid="rss-link" aria-label="RSS Feed">
         <a title="RSS Feed">
-          <RSSIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
+          <RSSIcon />
           <span style={{ marginLeft: '15px' }}>RSS</span>
           <VisuallyHidden as="p">
             Link redirects to the rss.xml file.
