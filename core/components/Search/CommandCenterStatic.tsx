@@ -5,6 +5,7 @@ import VisuallyHidden from '../VisuallyHidden';
 import {
   ArrowIcon,
   ContactIcon,
+  MapIcon,
   PortfolioIcon,
   RSSIcon,
   TwitterIcon,
@@ -77,6 +78,20 @@ const CommandCenterStatic = () => (
         <VisuallyHidden as="p">
           Link opens your default mail client with my email address
           hello@maximeheckel.com prefilled.
+        </VisuallyHidden>
+      </a>
+    </Item>
+    <Item data-testid="link" key="roadmap-link">
+      <a
+        href="https://www.figma.com/file/uvkUCtxXs7Vvmj58sHh0TE/Maxime's-Public-Roadmap?node-id=0%3A1"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <MapIcon stroke="var(--maximeheckel-colors-typeface-secondary)" />
+        <span style={{ marginLeft: '15px' }}>Roadmap</span>
+        <VisuallyHidden as="p">
+          Link redirects to a Figjam file where you can see the roadmap with my
+          upcoming projects and ideas.
         </VisuallyHidden>
       </a>
     </Item>
