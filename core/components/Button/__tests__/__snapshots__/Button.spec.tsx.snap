@@ -19,8 +19,8 @@ exports[`Button renders the primary button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   position: relative;
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 16px;
   padding: 0 30px;
   border-radius: var(--border-radius-1);
   background-color: var(--maximeheckel-colors-brand);
@@ -67,8 +67,8 @@ exports[`Button renders the secondary button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   position: relative;
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 16px;
   padding: 0 30px;
   border-radius: var(--border-radius-1);
   background-color: transparent;
@@ -116,8 +116,8 @@ exports[`Button renders the tertiary button 1`] = `
   -ms-flex-align: center;
   align-items: center;
   position: relative;
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 16px;
   padding: 0 30px;
   border-radius: var(--border-radius-1);
   background-color: transparent;

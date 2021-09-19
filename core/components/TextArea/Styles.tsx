@@ -19,6 +19,7 @@ export const StyledTextArea = styled('textarea')<StyledTextAreaProps>`
   transition: border-color 0.3s, box-shadow 0.3s;
 
   resize: ${(p) => p.resize};
+  cursor: ${(p) => (p.readOnly ? 'default' : 'initial')};
 
   &::placeholder {
     color: var(--maximeheckel-colors-typeface-tertiary);

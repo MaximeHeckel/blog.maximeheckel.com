@@ -2,6 +2,7 @@ export type ResizeProperty = 'none' | 'vertical' | 'horizontal';
 
 export interface StyledTextAreaProps {
   resize?: ResizeProperty;
+  readOnly?: boolean;
 }
 
 export interface TextAreaProps

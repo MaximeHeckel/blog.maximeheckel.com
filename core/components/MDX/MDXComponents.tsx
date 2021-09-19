@@ -92,6 +92,10 @@ const ScrollSpyWidget = dynamic(
   }
 );
 
+const OpenAIPlayground = dynamic(
+  () => import('./custom/Widgets/OpenAIPlayground')
+);
+
 const customComponents = {
   AnimationTypes,
   ClipboardAnimationDetails,
@@ -119,6 +123,7 @@ const customComponents = {
   FramerMotionPropagation,
   FramerMotionAnimatePresence,
   FramerMotionAnimationLayout,
+  OpenAIPlayground,
 };
 
 const MDXComponents = {

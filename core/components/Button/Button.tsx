@@ -23,8 +23,8 @@ const StyledButton = styled(motion.button)<ButtonProps>`
   justify-content: center;
   align-items: center;
   position: relative;
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 16px;
   padding: 0 30px;
   border-radius: var(--border-radius-1);
 
