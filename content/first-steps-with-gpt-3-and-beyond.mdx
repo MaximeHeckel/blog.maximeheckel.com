@@ -262,7 +262,7 @@ It's no secret that [I'm a big fan of Next.js](/posts/migrating-to-nextjs/) and 
 For that I followed a few simple steps after creating my Next.js project:
 
 1. Install the [openai-api NPM package](https://www.npmjs.com/package/openai-api)
-2. Create an API endpoint file under `pages/api` called `openai.js`
+2. Create an API endpoint file under `pages/api` called `openai.ts`
 3. Write the code for my API endpoint (see the code below)
 
 <Callout variant="danger">
@@ -325,7 +325,7 @@ Our endpoint works, but nothing is blocking our users to potentially spam it con
 
 Lucky us, [@leerob](https://twitter.com/leeerob) added [an API routes rate-limiting example for Next.js](https://github.com/vercel/next.js/tree/canary/examples/api-routes-rate-limit) earlier this year.
 
-When it comes to the implementation itself, I took the `/utils/rate-limit.js` function that Lee wrote, made sure I understood it (very important!), and put it in my own project. From there, I just had to use that utility function in our endpoint code in `openai.js`. Here's my implementation where I chose to **rate-limit by IP address**:
+When it comes to the implementation itself, I took the `/utils/rate-limit.js` function that Lee wrote, made sure I understood it (very important!), and put it in my own project. From there, I just had to use that utility function in our endpoint code in `openai.ts`. Here's my implementation where I chose to **rate-limit by IP address**:
 
 ```js {5-7,9-12,30-34,54} title=Rate-limited OpenAI API endpoint
 import type { NextApiRequest, NextApiResponse } from 'next';
