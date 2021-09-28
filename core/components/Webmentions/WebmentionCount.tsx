@@ -47,8 +47,8 @@ const WebmentionCount = ({ target }: { target: string }) => {
           </p>
           <p data-testid="reposts">
             {' '}
-            {counts.type.repost || 0}
-            {' Reposts'}
+            {(counts.type.repost || 0) + (counts.type.mention || 0)}
+            {' Mentions'}
           </p>
         </>
       )}
