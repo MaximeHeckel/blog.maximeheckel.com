@@ -18,6 +18,8 @@ const Wrapper = styled('div')`
   video {
     margin: 0 auto;
     background: var(--maximeheckel-colors-emphasis);
+    max-width: 100%;
+    height: auto;
   }
 `;
 
