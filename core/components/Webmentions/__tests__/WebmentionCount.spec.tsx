@@ -33,7 +33,7 @@ describe('Webmention', () => {
       expect(getByTestId('reposts')).toBeDefined();
       expect(getByTestId('likes')).toHaveTextContent('50 Likes •');
       expect(getByTestId('replies')).toHaveTextContent('25 Replies •');
-      expect(getByTestId('reposts')).toHaveTextContent('25 Reposts');
+      expect(getByTestId('reposts')).toHaveTextContent('25 Mentions');
     });
   });
 });
