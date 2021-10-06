@@ -9,9 +9,25 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Thu, 22 Jul 2021 03:45:06 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 06 Oct 2021 01:22:38 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[First steps with GTP-3 for frontend developers]]></title>
+            <description><![CDATA[A beginners guide to OpenAI's API that eases frontend developers into the world of GPT-3 and gives all the tools needed to start building AI-powered Next.js apps.]]></description>
+            <link>https://blog.maximeheckel.com/posts/first-steps-with-gpt-3-and-beyond</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/first-steps-with-gpt-3-and-beyond</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 28 Sep 2021 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Building the perfect GitHub CI workflow for your frontend team]]></title>
+            <description><![CDATA[A guide with some of the best Github CI tips I could find to the power best CI pipeline for your frontend team's needs.]]></description>
+            <link>https://blog.maximeheckel.com/posts/building-perfect-github-action-frontend-teams</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/building-perfect-github-action-frontend-teams</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 03 Aug 2021 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Migrating to Next.js]]></title>
             <description><![CDATA[Some thoughts on my experience using Gatsby for my blog and migrating it to Next.js, and why this was the right call for me going forward.]]></description>

@@ -165,6 +165,14 @@
 
   <url>
     <loc
+      >https://blog.maximeheckel.com/posts/building-perfect-github-action-frontend-teams/</loc
+    >
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc
       >https://blog.maximeheckel.com/posts/creating-beautiful-screenshots-source-code-with-serverless-function/</loc
     >
     <changefreq>daily</changefreq>
@@ -187,6 +195,14 @@
 
   <url>
     <loc>https://blog.maximeheckel.com/posts/first-failed-swiftui-project/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc
+      >https://blog.maximeheckel.com/posts/first-steps-with-gpt-3-and-beyond/</loc
+    >
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
