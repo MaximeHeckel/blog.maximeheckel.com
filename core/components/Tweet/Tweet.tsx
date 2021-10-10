@@ -1,8 +1,8 @@
-import { css } from '@emotion/react';
+import Anchor from '@theme/components/Anchor';
+import Flex from '@theme/components/Flex';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { TransformedTweet } from 'types/tweet';
-import Anchor from '../Anchor';
 import { LikeIcon, ReplyIcon, RetweetIcon, TwitterLogo } from './Icons';
 import {
   TweetWrapper,
@@ -12,6 +12,7 @@ import {
   ImageGrid,
   SingleImageWrapper,
   ActionIcons,
+  singleImage,
 } from './Styles';
 
 interface Props {
@@ -51,32 +52,25 @@ const Tweet = (props: Props) => {
 
   return (
     <TweetWrapper>
-      <div
-        css={css`
-          display: flex;
-          align-items: center;
-        `}
-      >
-        <Avatar href={authorURL} target="_blank" rel="noopener noreferrer">
-          <Image
-            alt={author.username}
-            height={46}
-            width={46}
-            src={author.profile_image_url}
-            css={css`
-              border-radius: 50%;
-            `}
-          />
-        </Avatar>
-        <Name
-          href={authorURL}
-          className="author"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span title={author.name}>
-            {author.name}
-            {/* {author.verified ? (
+      <Flex alignItems="center" justifyContent="space-between">
+        <Flex alignItems="center">
+          <Avatar href={authorURL} target="_blank" rel="noopener noreferrer">
+            <Image
+              alt={author.username}
+              height={46}
+              width={46}
+              src={author.profile_image_url}
+            />
+          </Avatar>
+          <Name
+            href={authorURL}
+            className="author"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span title={author.name}>
+              {author.name}
+              {/* {author.verified ? (
               <svg
                 aria-label="Verified Account"
                 className="ml-1 text-blue-500 dark:text-white inline h-4 w-4"
@@ -87,13 +81,11 @@ const Tweet = (props: Props) => {
                 </g>
               </svg>
             ) : null} */}
-          </span>
-          <span title={`@${author.username}`}>@{author.username}</span>
-        </Name>
+            </span>
+            <span title={`@${author.username}`}>@{author.username}</span>
+          </Name>
+        </Flex>
         <a
-          css={css`
-            margin-left: auto;
-          `}
           href={tweetURL}
           target="_blank"
           rel="noopener noreferrer"
@@ -101,22 +93,26 @@ const Tweet = (props: Props) => {
         >
           <TwitterLogo />
         </a>
-      </div>
+      </Flex>
       <Body>{text}</Body>
       {media && media.length > 1 ? (
         <ImageGrid>
           {media.map((m) => (
-            <Image
+            <div
               key={m.media_key}
-              alt={text}
-              layout="intrinsic"
-              height={m.height}
-              width={m.width}
-              src={m.url}
-              css={css`
-                border-radius: var(--border-radius-1);
-              `}
-            />
+              style={{
+                borderRadius: 'var(--border-radius-1)',
+                overflow: 'hidden',
+              }}
+            >
+              <Image
+                alt={text}
+                layout="intrinsic"
+                height={m.height}
+                width={m.width}
+                src={m.url}
+              />
+            </div>
           ))}
         </ImageGrid>
       ) : null}
@@ -129,9 +125,7 @@ const Tweet = (props: Props) => {
               height={m.height}
               width={m.width}
               src={m.url}
-              css={css`
-                border-radius: 20px;
-              `}
+              className={singleImage()}
             />
           ))}
         </SingleImageWrapper>
@@ -150,11 +144,10 @@ const Tweet = (props: Props) => {
           {format(createdAt, 'h:mm a - MMM d, y')}
         </time>
       </Anchor>
-      <div
-        css={css`
-          display: flex;
-          margin-top: 1rem;
-        `}
+      <Flex
+        css={{
+          marginTop: '1rem',
+        }}
       >
         <ActionIcons href={replyURL} target="_blank" rel="noopener noreferrer">
           <ReplyIcon />
@@ -172,7 +165,7 @@ const Tweet = (props: Props) => {
           <LikeIcon />
           <span>{public_metrics.like_count}</span>
         </ActionIcons>
-      </div>
+      </Flex>
     </TweetWrapper>
   );
 };

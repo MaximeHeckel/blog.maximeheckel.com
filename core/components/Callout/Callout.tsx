@@ -14,14 +14,14 @@ const Callout: React.FC<CalloutProps> = (props) => {
   const icon = label ? null : getVariantIcon(variant);
 
   return (
-    <StyledCallout data-variant={variant} {...rest}>
+    <StyledCallout variant={variant} {...rest}>
       {icon ? (
-        <StyledCalloutIconWrapper data-variant={variant}>
+        <StyledCalloutIconWrapper variant={variant}>
           {icon}
         </StyledCalloutIconWrapper>
       ) : null}
       {label ? (
-        <StyledCalloutLabelWrapper data-variant={variant}>
+        <StyledCalloutLabelWrapper variant={variant}>
           {label}
         </StyledCalloutLabelWrapper>
       ) : null}

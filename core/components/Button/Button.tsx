@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import React from 'react';
 import { StyledButton, StyledIconButton } from './Styles';
 import { ButtonProps } from './types';
@@ -21,10 +20,10 @@ const Button = <T extends object>(
     return (
       <StyledIconButton variant={variant} as={Component} ref={ref} {...rest}>
         <span
-          css={css`
-            z-index: 1;
-            display: flex;
-          `}
+          css={{
+            zIndex: 1,
+            display: 'flex',
+          }}
         >
           {icon}
         </span>
@@ -36,9 +35,9 @@ const Button = <T extends object>(
     <StyledButton variant={variant} as={Component} ref={ref} {...rest}>
       {startIcon ? (
         <span
-          css={css`
-            margin-right: 8px;
-          `}
+          css={{
+            marginRight: '8px',
+          }}
         >
           {startIcon}
         </span>
@@ -46,9 +45,9 @@ const Button = <T extends object>(
       {children}
       {endIcon ? (
         <span
-          css={css`
-            margin-left: 8px;
-          `}
+          css={{
+            marginLeft: '8px',
+          }}
         >
           {endIcon}
         </span>

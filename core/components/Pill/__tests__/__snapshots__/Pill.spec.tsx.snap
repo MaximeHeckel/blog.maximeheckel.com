@@ -2,36 +2,8 @@
 
 exports[`Pill Renders the Pill component with the danger variant 1`] = `
 <DocumentFragment>
-  .emotion-0 {
-  font-size: 14px;
-  border-radius: var(--border-radius-1);
-  height: 28px;
-  display: -webkit-inline-box!important;
-  display: -webkit-inline-flex!important;
-  display: -ms-inline-flexbox!important;
-  display: inline-flex!important;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  padding: 5px 8px 5px 8px!important;
-  min-width: 40px;
-  font-weight: 500;
-  cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background: var(--maximeheckel-colors-danger-emphasis);
-  color: var(--maximeheckel-colors-danger);
-}
-
-<span
-    class="emotion-0 emotion-1"
+  <span
+    class="c-gIiHtB c-gIiHtB-cGyTej-variant-danger"
   >
     test
   </span>
@@ -40,36 +12,8 @@ exports[`Pill Renders the Pill component with the danger variant 1`] = `
 
 exports[`Pill Renders the Pill component with the info variant 1`] = `
 <DocumentFragment>
-  .emotion-0 {
-  font-size: 14px;
-  border-radius: var(--border-radius-1);
-  height: 28px;
-  display: -webkit-inline-box!important;
-  display: -webkit-inline-flex!important;
-  display: -ms-inline-flexbox!important;
-  display: inline-flex!important;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  padding: 5px 8px 5px 8px!important;
-  min-width: 40px;
-  font-weight: 500;
-  cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background: var(--maximeheckel-colors-emphasis);
-  color: var(--maximeheckel-colors-brand);
-}
-
-<span
-    class="emotion-0 emotion-1"
+  <span
+    class="c-gIiHtB c-gIiHtB-dGJyPl-variant-info"
   >
     test
   </span>
@@ -78,36 +22,8 @@ exports[`Pill Renders the Pill component with the info variant 1`] = `
 
 exports[`Pill Renders the Pill component with the success variant 1`] = `
 <DocumentFragment>
-  .emotion-0 {
-  font-size: 14px;
-  border-radius: var(--border-radius-1);
-  height: 28px;
-  display: -webkit-inline-box!important;
-  display: -webkit-inline-flex!important;
-  display: -ms-inline-flexbox!important;
-  display: inline-flex!important;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  padding: 5px 8px 5px 8px!important;
-  min-width: 40px;
-  font-weight: 500;
-  cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background: var(--maximeheckel-colors-success-emphasis);
-  color: hsl(var(--palette-green-80));
-}
-
-<span
-    class="emotion-0 emotion-1"
+  <span
+    class="c-gIiHtB c-gIiHtB-ypDbH-variant-success"
   >
     test
   </span>
@@ -116,36 +32,8 @@ exports[`Pill Renders the Pill component with the success variant 1`] = `
 
 exports[`Pill Renders the Pill component with the warning variant 1`] = `
 <DocumentFragment>
-  .emotion-0 {
-  font-size: 14px;
-  border-radius: var(--border-radius-1);
-  height: 28px;
-  display: -webkit-inline-box!important;
-  display: -webkit-inline-flex!important;
-  display: -ms-inline-flexbox!important;
-  display: inline-flex!important;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  padding: 5px 8px 5px 8px!important;
-  min-width: 40px;
-  font-weight: 500;
-  cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background: var(--maximeheckel-colors-warning-emphasis);
-  color: hsl(var(--palette-orange-80));
-}
-
-<span
-    class="emotion-0 emotion-1"
+  <span
+    class="c-gIiHtB c-gIiHtB-lghveN-variant-warning"
   >
     test
   </span>

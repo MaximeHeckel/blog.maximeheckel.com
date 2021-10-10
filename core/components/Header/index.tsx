@@ -76,7 +76,7 @@ const MainHeader = (props: MainHeaderProps) => {
           </Header.LogoWrapper>
           <Header.Title>{props.title}</Header.Title>
         </Flex>
-        <Flex gap={12}>
+        <Flex css={{ gap: '12px' }}>
           {props.search ? (
             <CommandCenterButton
               isSearchShown={showSearch}

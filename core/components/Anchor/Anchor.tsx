@@ -18,10 +18,12 @@ const Anchor = (props: AnchorProps) => {
   return (
     <StyledAnchor
       arrow={arrow}
+      css={{
+        '--icon': `url(${icon})`,
+      }}
       discreet={discreet}
       favicon={favicon}
       href={href}
-      icon={icon}
       underline={underline}
       {...rest}
     >

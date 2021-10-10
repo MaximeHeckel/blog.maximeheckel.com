@@ -1,5 +1,4 @@
-import { PillVariant } from './constants';
-
-export interface PillProps {
-  variant: PillVariant;
+export interface PillProps extends React.HTMLAttributes<HTMLSpanElement> {
+  children: React.ReactNode;
+  variant: 'info' | 'danger' | 'success' | 'warning';
 }

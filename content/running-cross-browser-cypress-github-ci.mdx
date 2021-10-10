@@ -23,8 +23,6 @@ _This is going to be a short post, the first one for 2020! Better late than neve
 You might have noticed in some of my previous posts that I like testing and love to use [Cypress](https://cypress.io) as a way to run my end-to-end tests. I was excited when I learned that they added support for Firefox which is one of the main features that was missing to use it in a professional setting.
 I also always wanted to make sure the personal projects I work on run well on every browser automatically on a weekly basis, including this blog. This is why I created this small Github action workflow to do just that and I wanted to share it with you all as it might come handy to some people.
 
-<hr />
-
 ## Running cross-browser tests locally
 
 Before running an automated CI task, we have to ensure that our existing end-to-end tests run locally. If you update Cypress to its latest version (`4.0.2` as I'm writing these words) and have Chrome, Firefox, and Microsoft Edge installed on your machine, you might notice a little dropdown on the top right of the Cypress window when running `cypress open`, giving you a list of browser to run your tests on:
@@ -97,8 +95,6 @@ For the last two steps, we use the `cypress-io/github-action@v1` which allows ru
 />
 
 Now that this new automated weekly task is implemented we can ensure our projects run as expected and guarantee the best user experience regardless of which browser is being used 🎉!
-
-<hr />
 
 Before adding such scheduled task on your own project, remember that, as I'm writing these words, Firefox support on Cypress is still currently in beta, so this post only showcased something I'd consider "experimental" at this point. We'll have to be a bit more patient before running this in production. If you want to see this workflow in action, I use it right now on some of my open-source repositories, [click here](https://github.com/MaximeHeckel/blog.maximeheckel.com/pull/21/checks?check_run_id=491807460) to see an example.
 

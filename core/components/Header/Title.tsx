@@ -1,44 +1,44 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-import styled from '@emotion/styled';
+import { styled } from 'lib/stitches.config';
 import { HeaderContext } from './Context';
 
-export const TitleWrapper = styled.div`
-  overflow: hidden;
-  margin-left: 40px;
+export const TitleWrapper = styled('div', {
+  overflow: 'hidden',
+  marginLeft: '40px',
 
-  h3 {
-    margin-bottom: 0px;
-  }
+  h3: {
+    marginBottom: '0px',
+  },
 
-  a {
-    color: var(--maximeheckel-colors-typeface-primary);
-    display: block;
-    text-decoration: none;
-    overflow: hidden;
-    max-width: 600px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
+  a: {
+    color: 'var(--maximeheckel-colors-typeface-primary)',
+    display: 'block',
+    textDecoration: 'none',
+    overflow: 'hidden',
+    maxWidth: '600px',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+  },
 
-  @media (max-width: 1000px) {
-    a {
-      max-width: 450px;
-    }
-  }
+  '@media (max-width: 1000px)': {
+    a: {
+      maxWidth: '450px',
+    },
+  },
 
-  @media (max-width: 900px) {
-    a {
-      max-width: 300px;
-    }
-  }
+  '@media (max-width: 900px)': {
+    a: {
+      maxWidth: '300px',
+    },
+  },
 
-  @media (max-width: 700px) {
-    h3 {
-      display: none;
-    }
-  }
-`;
+  '@media (max-width: 700px)': {
+    h3: {
+      display: 'none',
+    },
+  },
+});
 
 const variants = {
   hide: {

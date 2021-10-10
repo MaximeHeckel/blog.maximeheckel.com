@@ -1,16 +1,16 @@
-import { css } from '@emotion/react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
 import { useMutation } from 'react-query';
+import Button from '@theme/components/Button';
+import TextInput from '@theme/components/TextInput';
+import Flex from '@theme/components/Flex';
+import Glow from '@theme/components/Glow';
+import Card from '@theme/components/Card';
+import Anchor from '@theme/components/Anchor';
 import { NewsletterHeader } from './Icons';
 import { NewsletterFormContent, ErrorMessage } from './Styles';
 import { subscribeCall } from './utils';
-import Button from '../Button';
-import TextInput from '../TextInput';
-import Flex from '../Flex';
-import Glow from '../Glow';
-import Card from '../Card';
-import Anchor from '../Anchor';
+import List from '../List';
 
 const textOutVariant = {
   checked: {
@@ -64,18 +64,18 @@ const NewsletterForm = (props: Props) => {
   return (
     <Card
       depth={0}
-      css={css`
-        margin-left: -8px;
-        margin-right: -8px;
-      `}
+      style={{
+        marginLeft: '-8px',
+        marginRight: '-8px',
+      }}
     >
       {large ? (
         <div
-          css={css`
-            display: flex;
-            justify-content: center;
-            padding-top: 48px;
-          `}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            paddingTop: '48px',
+          }}
         >
           <NewsletterHeader />
         </div>
@@ -98,28 +98,28 @@ const NewsletterForm = (props: Props) => {
               </Anchor>{' '}
               to receive a monthly digest containing:
             </p>
-            <ul>
-              <li>
+            <List variant="unordered">
+              <List.Item>
                 <p>
                   Deep dives into some of my{' '}
                   <span>ideas and secret projects</span> that will inspire you
                   👨‍💻
                 </p>
-              </li>
-              <li>
+              </List.Item>
+              <List.Item>
                 <p>
                   <span>Exclusive previews of upcoming articles</span> on
                   frontent development, React, and SwiftUI 🤫
                 </p>
-              </li>
-              <li>
+              </List.Item>
+              <List.Item>
                 <p>
                   Some of my <span>favorite resources and tips</span> on
                   frontend development or anything I&apos;m currently interested
                   in to further expand your skillset as a developer 📝
                 </p>
-              </li>
-            </ul>
+              </List.Item>
+            </List>
           </>
         ) : (
           <>
@@ -140,15 +140,14 @@ const NewsletterForm = (props: Props) => {
           }}
         >
           <Flex
-            gap={12}
             alignItems="flex-start"
-            css={css`
-              flex-direction: row;
-
-              @media (max-width: 500px) {
-                flex-direction: column;
-              }
-            `}
+            css={{
+              gap: '12px',
+              flexDirection: 'row',
+              '@media (max-width: 500px)': {
+                flexDirection: 'column',
+              },
+            }}
           >
             <TextInput
               aria-label="Email"
@@ -164,7 +163,6 @@ const NewsletterForm = (props: Props) => {
               <Button
                 aria-label="Subscribe to my newsletter"
                 disabled={isLoading}
-                glow={!isChecked && !isLoading}
                 title="Subscribe to my newsletter"
                 type="submit"
                 variant="primary"
@@ -290,10 +288,10 @@ const NewsletterForm = (props: Props) => {
         ) : null}
         {isSuccess ? (
           <p
-            css={css`
-              margin-top: 16px;
-              text-align: center;
-            `}
+            style={{
+              marginTop: '16px',
+              textAlign: 'center',
+            }}
           >
             (You will receive a confirmation email in a few seconds)
           </p>

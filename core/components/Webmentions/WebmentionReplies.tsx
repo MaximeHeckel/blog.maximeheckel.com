@@ -1,7 +1,7 @@
+import Anchor from '@theme/components/Anchor';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
-import Anchor from '../Anchor';
 import { Reply } from './types';
 
 const Replies = dynamic(() => import('./Replies'));

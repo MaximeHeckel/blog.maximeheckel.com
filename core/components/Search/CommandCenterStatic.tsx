@@ -1,5 +1,4 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
+import { css } from 'lib/stitches.config';
 import Link from 'next/link';
 import VisuallyHidden from '../VisuallyHidden';
 import {
@@ -10,16 +9,17 @@ import {
   RSSIcon,
   TwitterIcon,
 } from '../Icons';
-import { MAX_HEIGHT, HEIGHT } from './constants';
+import { MAX_HEIGHT } from './constants';
+import { Separator, Item, ShortcutKey } from './Styles';
+
+const commandCenterStaticWrapper = css({
+  backgroundColor: 'var(--maximeheckel-colors-body)',
+  maxHeight: `${MAX_HEIGHT}px`,
+  overflowY: 'scroll',
+});
 
 const CommandCenterStatic = () => (
-  <div
-    css={css`
-      background-color: var(--maximeheckel-colors-body);
-      max-height: ${MAX_HEIGHT}px;
-      overflow-y: scroll;
-    `}
-  >
+  <div className={commandCenterStaticWrapper()}>
     <Separator>Shortcuts</Separator>
     <Item data-nohover data-testid="shortcut" key="search-shortcut">
       <span>Command Center</span>
@@ -123,67 +123,3 @@ const CommandCenterStatic = () => (
 );
 
 export { CommandCenterStatic };
-
-const ShortcutKey = styled('kbd')`
-  color: var(--maximeheckel-colors-brand);
-  font-size: 14px;
-  border-radius: var(--border-radius-0);
-  padding: 6px 6px;
-  background: var(--maximeheckel-colors-emphasis);
-  &:not(:last-child) {
-    margin-right: 12px;
-  }
-`;
-
-const Item = styled('li')`
-  height: ${HEIGHT}px;
-  margin-bottom: 0px;
-  transition: 0.25s;
-  list-style: none;
-  font-size: 0.875rem;
-  color: var(--maximeheckel-colors-typeface-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 25px;
-  user-select: none;
-
-  a {
-    color: unset;
-    width: 100%;
-    height: ${HEIGHT}px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-  }
-
-  &:hover {
-    background-color: var(--maximeheckel-colors-emphasis);
-
-    &[data-nohover] {
-      background-color: inherit;
-    }
-
-    a {
-      color: var(--maximeheckel-colors-brand);
-    }
-
-    svg {
-      stroke: var(--maximeheckel-colors-brand);
-    }
-  }
-`;
-
-const Separator = styled('li')`
-  height: 30px;
-  width: 100%;
-  font-size: 14px;
-  background-color: var(--maximeheckel-colors-foreground);
-  color: var(--maximeheckel-colors-typeface-tertiary);
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  padding-left: 25px;
-  padding-right: 25px;
-  margin-bottom: 0;
-`;

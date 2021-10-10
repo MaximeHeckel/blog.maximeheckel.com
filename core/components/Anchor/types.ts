@@ -5,23 +5,26 @@ interface BaseAnchor extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   discreet?: boolean;
 }
 
-interface UnderlineAnchor extends BaseAnchor {
+interface UnderlineAnchorProps extends BaseAnchor {
   arrow?: never;
   /** This prop makes the Anchor component render an underline only visible on hover */
   underline?: boolean;
   favicon?: never;
 }
-interface ArrowAnchor extends BaseAnchor {
+interface ArrowAnchorProps extends BaseAnchor {
   /** This prop makes the Anchor component render an arrow to the left or the right of the text */
   arrow?: ArrowPosition;
   underline?: never;
   favicon?: never;
 }
-interface FaviconAnchor extends BaseAnchor {
+interface FaviconAnchorProps extends BaseAnchor {
   arrow?: never;
   underline?: never;
   /** This prop makes the Anchor component render a favicon corresponding to the domain name passed in the href prop (only Twitter and Github are supported) */
   favicon?: boolean;
 }
 
-export type AnchorProps = ArrowAnchor | FaviconAnchor | UnderlineAnchor;
+export type AnchorProps =
+  | ArrowAnchorProps
+  | FaviconAnchorProps
+  | UnderlineAnchorProps;

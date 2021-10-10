@@ -2,96 +2,51 @@ import dynamic from 'next/dynamic';
 
 // Components
 import Anchor from '@theme/components/Anchor';
+import Blockquote from '@theme/components/Blockquote';
 import Button from '@theme/components/Button';
 import Callout from '@theme/components/Callout';
 import Card from '@theme/components/Card';
+import Code from '@theme/components/Code';
+import InlineCode from '@theme/components/InlineCode';
+import List from '@theme/components/List';
 import Pill from '@theme/components/Pill';
+import VideoPlayer from '@theme/components/VideoPlayer';
 
 // MDX only components
-
-import { Blockquote } from './Blockquote';
-import InlineCode from './InlineCode';
-import Code from './Code';
 import Image from './Image';
-import VideoPlayer from './VideoPlayer';
-import { ListItem } from './MDX';
 
-const BranchPreview = dynamic<{}>(() =>
-  import('./custom/MicroAnimations/CICD').then((module) => module.BranchPreview)
-);
-const CodeValidation = dynamic<{}>(() =>
-  import('./custom/MicroAnimations/CICD').then(
-    (module) => module.CodeValidation
-  )
-);
-const E2ETest = dynamic<{}>(() =>
-  import('./custom/MicroAnimations/CICD').then((module) => module.E2ETest)
-);
-const FeatureFlags = dynamic<{}>(() =>
-  import('./custom/MicroAnimations/CICD').then((module) => module.FeatureFlags)
-);
-const IntegrationTest = dynamic<{}>(() =>
-  import('./custom/MicroAnimations/CICD').then(
-    (module) => module.IntegrationTest
-  )
-);
-const UnitTest = dynamic<{}>(() =>
-  import('./custom/MicroAnimations/CICD').then((module) => module.UnitTest)
-);
-const PreviewDeploy = dynamic<{}>(() =>
-  import('./custom/MicroAnimations/PreviewDeploy').then(
-    (module) => module.PreviewDeploy
-  )
-);
-const DockerBuild = dynamic<{}>(() =>
-  import('./custom/MicroAnimations/PreviewDeploy').then(
-    (module) => module.DockerBuild
-  )
-);
 // Widgets (used in blog post for interactive experiences)
-
 const ClipboardAnimationDetails = dynamic(
-  () => import('./custom/Widgets/ClipboardAnimationDetails')
+  () => import('./Widgets/ClipboardAnimationDetails')
 );
-const HeartRateWidget = dynamic(
-  () => import('./custom/Widgets/HeartRateWidget')
-);
-const SEOStats = dynamic(() => import('./custom/Widgets/SEOStats'));
+const HeartRateWidget = dynamic(() => import('./Widgets/HeartRateWidget'));
+const SEOStats = dynamic(() => import('./Widgets/SEOStats'));
 const FramerMotionPropagation = dynamic(
-  () => import('./custom/Widgets/FramerMotionPropagation')
+  () => import('./Widgets/FramerMotionPropagation')
 );
 const FramerMotionAnimationLayout = dynamic(
-  () => import('./custom/Widgets/FramerMotionAnimationLayout')
+  () => import('./Widgets/FramerMotionAnimationLayout')
 );
 const FramerMotionAnimatePresence = dynamic(
-  () => import('./custom/Widgets/FramerMotionAnimatePresence')
+  () => import('./Widgets/FramerMotionAnimatePresence')
 );
-const SpringPhysics = dynamic(() => import('./custom/Widgets/SpringPhysics'));
-const HighlightSection = dynamic(
-  () => import('./custom/Widgets/HighlightSection')
-);
-const AnimationTypes = dynamic(() => import('./custom/Widgets/AnimationTypes'));
-const Orchestration = dynamic(() => import('./custom/Widgets/Orchestration'));
-const ThemePicker = dynamic(() => import('./custom/Widgets/ThemePicker'));
-const HSLAShowcase = dynamic(() => import('./custom/Widgets/HSLAShowcase'));
-const PaletteGenerator = dynamic(
-  () => import('./custom/Widgets/PaletteGenerator')
-);
-const ScrollSpyWidget = dynamic(
-  () => import('./custom/Widgets/ScrollSpyWidget'),
-  {
-    ssr: false,
-    // eslint-disable-next-line react/display-name
-    loading: () => <div style={{ width: '100%', height: '705px' }} />,
-  }
-);
-const OpenAIPlayground = dynamic(
-  () => import('./custom/Widgets/OpenAIPlayground')
-);
+const SpringPhysics = dynamic(() => import('./Widgets/SpringPhysics'));
+const HighlightSection = dynamic(() => import('./Widgets/HighlightSection'));
+const AnimationTypes = dynamic(() => import('./Widgets/AnimationTypes'));
+const Orchestration = dynamic(() => import('./Widgets/Orchestration'));
+const ThemePicker = dynamic(() => import('./Widgets/ThemePicker'));
+const HSLAShowcase = dynamic(() => import('./Widgets/HSLAShowcase'));
+const PaletteGenerator = dynamic(() => import('./Widgets/PaletteGenerator'));
+const ScrollSpyWidget = dynamic(() => import('./Widgets/ScrollSpyWidget'), {
+  ssr: false,
+  // eslint-disable-next-line react/display-name
+  loading: () => <div style={{ width: '100%', height: '705px' }} />,
+});
+const OpenAIPlayground = dynamic(() => import('./Widgets/OpenAIPlayground'));
 const CubicBezierVisualizer = dynamic(
-  () => import('./custom/Widgets/CubicBezierVisualizer')
+  () => import('./Widgets/CubicBezierVisualizer')
 );
-const BezierCurve = dynamic(() => import('./custom/Widgets/BezierCurve'));
+const BezierCurve = dynamic(() => import('./Widgets/BezierCurve'));
 
 const customComponents = {
   AnimationTypes,
@@ -101,16 +56,8 @@ const customComponents = {
   PaletteGenerator,
   ThemePicker,
   HeartRateWidget,
-  BranchPreview,
-  CodeValidation,
-  E2ETest,
-  FeatureFlags,
-  IntegrationTest,
-  UnitTest,
   Card,
   CardBody: Card.Body,
-  DockerBuild,
-  PreviewDeploy,
   ScrollSpyWidget,
   SEOStats,
   SpringPhysics,
@@ -124,7 +71,7 @@ const customComponents = {
 };
 
 const MDXComponents = {
-  // Replace the defualt anchor tag by the Anchor component with underline set to true: this is the default link
+  // Replace the default anchor tag by the Anchor component with underline set to true: this is the default link
   // eslint-disable-next-line react/display-name
   a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
     <Anchor underline {...props} />
@@ -135,9 +82,14 @@ const MDXComponents = {
   Callout,
   Image,
   inlineCode: InlineCode,
-  li: ListItem,
+  li: List.Item,
+  // eslint-disable-next-line react/display-name
+  ol: (props: React.OlHTMLAttributes<HTMLOListElement>) => (
+    <List variant="ordered" {...props} />
+  ),
   Pill,
   pre: Code,
+  ul: List,
   VideoPlayer,
   ...customComponents,
 };

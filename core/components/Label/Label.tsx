@@ -1,17 +1,17 @@
-import styled from '@emotion/styled';
+import { styled } from 'lib/stitches.config';
 
-const StyledLabel = styled('label')`
-  font-size: 14px;
-  display: inline-block;
-  cursor: pointer;
-  color: var(--maximeheckel-colors-typeface-secondary);
-  font-weight: 500;
-  user-select: none;
-  margin-right: 8px;
-  vertical-align: top;
-`;
+const StyledLabel = styled('label', {
+  fontSize: '14px',
+  fontWeight: 500,
+  display: 'inline-block',
+  cursor: 'pointer',
+  color: 'var(--maximeheckel-colors-typeface-secondary)',
+  userSelect: 'none',
+  marginRight: '8px',
+  verticalAlign: 'top',
+});
 
-const Label: React.FC<Omit<React.HTMLProps<HTMLLabelElement>, 'as'>> = (
+const Label: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = (
   props
 ) => {
   const { children, ...rest } = props;

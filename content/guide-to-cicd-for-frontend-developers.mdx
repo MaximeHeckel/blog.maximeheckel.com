@@ -65,8 +65,6 @@ These three items are the foundational pieces for your team to ship more reliabl
 
 ### Linting and formatting
 
-<CodeValidation />
-
 Linting and formatting are essential to keep your codebase **consistent** and **clean**. Each team member should follow the same rules and conventions when it comes to writing code. **Consistency** in the codebase itself is essential:
 
 - you do not want to bring confusion on how to write a given piece of code in your app when you onboard a new team member
@@ -86,8 +84,6 @@ For this step, I want my tools to be fast and reliable. It should only take **a
 As said above, this step must be super fast. So fast that you can execute this step as a [pre-commit hook](https://githooks.com/) (an arbitrary script that runs on every commit. I like using **[husky](https://www.npmjs.com/package/husky)** to set these up) as it will ensure that the code is formatted and readable **before** it's up for review by your teammates.
 
 ### Unit tests
-
-<UnitTest />
 
 As stated earlier, I like to call these tests **fast to run**, **fast to fail. **They should not take an extensive amount of time to run and should reveal errors or bugs in a matter of a few seconds or even a few minutes depending on the scale of your project.
 
@@ -330,8 +326,6 @@ I'm dedicating this section to both integration and end-to-end testing as I some
 
 ### Integration tests
 
-<IntegrationTest />
-
 This is perhaps where most of your efforts should go when writing tests.
 
 Why? Well, **when considering the effort it takes to write tests, the time it takes to execute them and the confidence level it gives back to your team: integration tests are simply the best**. Unit tests give you a low confidence level but are fast to run, while end-to-end tests are slow to execute (sometimes taking over an hour in some large apps) and require expensive infrastructure to run but give you the highest confidence level possible. Integration tests, however, are easier to write than e2e tests and help you validate more complex behaviors than unit tests, all that in a pretty short amount of time.
@@ -523,8 +517,6 @@ describe('App', () => {
 
 ### End to End testing
 
-<E2ETest />
-
 End-to-End tests, or also sometimes named e2e, are the set of tests that are the closest to what the user should experience when using your product. In most frameworks like Selenium or Cypress, an e2e test suite is nothing more than a **scripted user flow** that the computer will go through. Additionally, most of these tests will be executed **directly within a browser **which gives you the ability to validate whether your app runs properly on different browsers that your customers may use.
 
 <Callout variant="info">
@@ -599,8 +591,6 @@ These, however, are purely used outside of my CI/CD pipeline, but I figured they
 Now that we have written some unit, integration, e2e tests, and put in place the tooling to track accessibility issues, it's time to talk automation. The objective for your team should be to automate as much as possible, from running the tests to previewing the deployments, to deploying to production. **The only manual step left in your CI/CD pipeline should be the code review**. Automation is the key component of any High-Velocity development team.
 
 ### Validate every code change
-
-<BranchPreview />
 
 As of now, we know how to run these tests locally but we want to ensure that these tests can be run automatically every time a change occurs on the codebase.
 
@@ -709,8 +699,6 @@ There are a couple of services out there that provide a great preview deployment
 </Callout>
 
 ### Releases
-
-<FeatureFlags />
 
 The last thing we want to automate is **the release process**. You do not want to have to run 20 scripts, manually, in a specific order, to get your application from your main branch to production. For this, I tend to favor having what I call a **release branch in my Github repository** and have the automated scripts run **every time the main branch is merged on the release branch**. You could also run the automated script on other events such as when you **tag a release** or **you can even have scheduled deployments** if your organization has a consistent release cadence. At this point, it depends on your team or your organization and how/when you want to do your release.
 

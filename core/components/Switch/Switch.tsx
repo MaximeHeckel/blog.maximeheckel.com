@@ -7,7 +7,7 @@ const Switch = (props: SwitchProps) => {
   const { toggled, id, label, ...rest } = props;
 
   return (
-    <Flex gap={8}>
+    <Flex css={{ gap: '8px' }}>
       <StyledSwitch
         className="switch"
         id={id}

@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import React from 'react';
 import Label from '../Label';
 import { AtSignIcon, EyeIcon, Tick } from './Icons';
@@ -28,13 +27,13 @@ const TextInput = (props: TextInputProps) => {
   }, [showPassword, type]);
 
   return (
-    <StyledInputWrapper className={isValid ? 'valid' : ''} type={type}>
+    <StyledInputWrapper className={isValid ? 'valid' : ''} variant={type}>
       {label ? (
         <Label
           htmlFor={id}
-          css={css`
-            margin-bottom: 8px;
-          `}
+          style={{
+            marginBottom: '8px',
+          }}
         >
           {label}
         </Label>
@@ -43,6 +42,8 @@ const TextInput = (props: TextInputProps) => {
         id={id}
         className={isValid ? 'valid' : ''}
         disabled={disabled}
+        // TODO cleanup variants: variants != types
+        variant={computedType()}
         type={computedType()}
         placeholder={placeholder}
         value={value}

@@ -1,5 +1,4 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
+import { styled } from 'lib/stitches.config';
 import Image from 'next/image';
 import React from 'react';
 import { loader } from '../../../lib/next-image-loader';
@@ -8,26 +7,54 @@ interface HeroImgProps {
   className: string;
 }
 
-const HeroImg = (props: HeroImgProps) => (
-  <div
-    css={css`
-      border-radius: var(--border-radius-2);
-      width: 100%;
-      height: 375px;
-      overflow: hidden;
-      margin: 32px auto;
-      position: relative;
+const HeroInfo = styled('div', {
+  marginBottom: '2.25rem',
+  p: {
+    color: 'var(--maximeheckel-colors-typeface-tertiary)',
+    fontSize: '14px',
+    fontWeight: 500,
+    marginBottom: '0px',
+  },
+});
 
-      @media (max-width: 700px) {
-        border-radius: 0px;
-        width: 100vw;
-        height: 250px;
-        left: 50%;
-        right: 50%;
-        margin: 32px -50vw;
-      }
-    `}
-  >
+const HeroSubtitle = styled('h3', {
+  color: 'var(--maximeheckel-colors-typeface-tertiary)',
+});
+
+const HeroTitle = styled('h1', {
+  marginBottom: '16px',
+});
+
+const HeroWrapper = styled('div', {
+  color: 'var(--maximeheckel-colors-typeface-primary)',
+  gridColumn: '2',
+  paddingTop: '248px',
+
+  '@media (max-width: 700px)': {
+    paddingTop: '150px',
+  },
+});
+
+const HeroImgWrapper = styled('div', {
+  borderRadius: 'var(--border-radius-2)',
+  width: '100%',
+  height: '375px',
+  overflow: 'hidden',
+  margin: '32px auto',
+  position: 'relative',
+
+  '@media (max-width: 700px)': {
+    borderRadius: '0px',
+    width: '100vw',
+    height: '250px',
+    left: '50%',
+    right: '50%',
+    margin: '32px -50vw',
+  },
+});
+
+const HeroImg = (props: HeroImgProps) => (
+  <HeroImgWrapper>
     <Image
       className={props.className}
       src={props.src}
@@ -37,37 +64,8 @@ const HeroImg = (props: HeroImgProps) => (
       loader={loader}
       priority
     />
-  </div>
+  </HeroImgWrapper>
 );
-
-const HeroInfo = styled.div`
-  margin-bottom: 2.25rem;
-  p {
-    color: var(--maximeheckel-colors-typeface-tertiary);
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 0px;
-  }
-`;
-
-const HeroSubtitle = styled.h3`
-  color: var(--maximeheckel-colors-typeface-tertiary);
-`;
-
-const HeroTitle = styled.h1`
-  margin-bottom: 16px;
-`;
-
-const HeroWrapper = styled.div`
-  align-items: center;
-  color: var(--maximeheckel-colors-typeface-primary);
-  grid-column: 2;
-  padding-top: 248px;
-
-  @media (max-width: 700px) {
-    padding-top: 150px;
-  }
-`;
 
 class Hero extends React.Component<{
   id?: string;

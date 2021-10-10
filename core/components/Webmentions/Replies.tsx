@@ -1,28 +1,25 @@
-import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-// @ts-ignore
 import React from 'react';
+import { styled } from 'lib/stitches.config';
 import { RepliesProps, Reply } from './types';
 
-const RepliesList = styled(motion.ul)`
-  display: flex;
-  flex-wrap: wrap;
-  margin-left: 0px;
-  margin-bottom: 8px;
-  margin-top: 15px;
-  li {
-    margin-right: -10px;
-  }
-`;
+const RepliesList = styled(motion.ul, {
+  display: 'flex',
+  flexWrap: 'wrap',
+  marginLeft: '0px',
+  marginBottom: '8px',
+  marginTop: '15px',
+});
 
-const Head = styled(motion.li)`
-  list-style: none;
+const Head = styled(motion.li, {
+  listStyle: 'none',
+  marginRight: '-10px',
 
-  img {
-    border-radius: 50%;
-    border: 3px solid var(--maximeheckel-colors-brand);
-  }
-`;
+  img: {
+    borderRadius: '50%',
+    border: '3px solid var(--maximeheckel-colors-brand)',
+  },
+});
 
 const list = {
   visible: {
@@ -58,7 +55,7 @@ const Replies = ({ replies }: RepliesProps) => {
     }, {});
 
   return (
-    <>
+    <React.Fragment>
       {Object.values(sanitizedReplies) &&
       Object.values(sanitizedReplies).length ? (
         <RepliesList initial="hidden" animate="visible" variants={list}>
@@ -91,7 +88,7 @@ const Replies = ({ replies }: RepliesProps) => {
           {/* <ReactTooltip place="top" effect="solid" /> */}
         </RepliesList>
       ) : null}
-    </>
+    </React.Fragment>
   );
 };
 

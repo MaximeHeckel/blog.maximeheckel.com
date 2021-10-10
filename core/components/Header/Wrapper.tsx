@@ -1,12 +1,58 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
 import useProgress from '@theme/hooks/useProgress';
 import { motion } from 'framer-motion';
+import { css, styled } from 'lib/stitches.config';
 import React from 'react';
 import useScrollCounter from '../../hooks/useScrollCounter';
+import Flex from '../Flex';
 import Grid from '../Grid';
 import { HeaderContext } from './Context';
 import { HeaderProps } from './types';
+
+const progressbar = css({
+  '@media (min-width: 700px)': {
+    display: 'none',
+  },
+
+  position: 'absolute',
+  bottom: '0px',
+});
+
+const HeaderWrapper = styled(motion.div, {
+  transition: 'background-color 0.5s',
+  backgroundColor: 'var(--maximeheckel-colors-body)',
+
+  '@media (max-width: 700px)': {
+    height: '65px !important',
+  },
+
+  variants: {
+    slim: {
+      true: {
+        boxShadow: 'var(--maximeheckel-shadow-1)',
+        backdropFilter: 'blur(6px)',
+        opacity: 0.88,
+      },
+      false: {
+        boxShadow: 'none',
+      },
+    },
+    sticky: {
+      true: {
+        '@media (max-width: 700px)': {
+          boxShadow: 'var(--maximeheckel-shadow-1)',
+        },
+      },
+      false: {
+        boxShadow: 'none',
+      },
+    },
+  },
+});
+
+const HeaderContent = styled(Flex, {
+  gridColumn: 2,
+  height: 'inherit',
+});
 
 export const Wrapper: React.FC<HeaderProps> = (props) => {
   const collapsed = useScrollCounter(150);
@@ -33,17 +79,17 @@ export const Wrapper: React.FC<HeaderProps> = (props) => {
   return (
     <HeaderContext.Provider value={memoizedContextValue}>
       <div
-        css={css`
-          position: ${props.sticky ? 'fixed' : 'inherit'};
-          width: 100%;
-          z-index: 999;
-        `}
+        style={{
+          position: `${props.sticky ? 'fixed' : 'inherit'}`,
+          width: '100%',
+          zIndex: 999,
+        }}
       >
         <div
-          css={css`
-            height: 6px;
-            background-color: var(--maximeheckel-colors-brand);
-          `}
+          style={{
+            height: '6px',
+            backgroundColor: 'var(--maximeheckel-colors-brand)',
+          }}
         />
         <HeaderWrapper
           sticky={props.sticky}
@@ -55,19 +101,15 @@ export const Wrapper: React.FC<HeaderProps> = (props) => {
           transition={{ ease: 'easeInOut', duration: 0.5 }}
         >
           <Grid columns="var(--layout-medium)" columnGap={20}>
-            <HeaderContent>{props.children}</HeaderContent>
+            <HeaderContent alignItems="center" justifyContent="space-between">
+              {props.children}
+            </HeaderContent>
           </Grid>
         </HeaderWrapper>
 
         {props.progress ? (
           <motion.div
-            css={css`
-              @media (min-width: 700px) {
-                display: none;
-              }
-              position: absolute;
-              bottom: 0px;
-            `}
+            className={progressbar()}
             style={{
               transformOrigin: 'left',
               scaleX: readingProgress,
@@ -81,31 +123,3 @@ export const Wrapper: React.FC<HeaderProps> = (props) => {
     </HeaderContext.Provider>
   );
 };
-
-interface StyledHeaderWrapperProps {
-  slim?: boolean;
-  sticky?: boolean;
-}
-
-const HeaderWrapper = styled(motion.div)<StyledHeaderWrapperProps>`
-  @media (max-width: 700px) {
-    height: 65px !important;
-    box-shadow: ${(props) =>
-      props.sticky ? 'var(--maximeheckel-shadow-1)' : 'none'};
-  }
-  transition: background 0.5s;
-  background-color: var(--maximeheckel-colors-body);
-
-  ${(props) =>
-    props.slim
-      ? `box-shadow: var(--maximeheckel-shadow-1); backdrop-filter: blur(6px); opacity: 0.88;`
-      : 'box-shadow: none;'}
-`;
-
-const HeaderContent = styled('div')`
-  grid-column: 2;
-  height: inherit;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;

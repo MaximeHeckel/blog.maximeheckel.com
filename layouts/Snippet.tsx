@@ -1,19 +1,32 @@
-import { css } from '@emotion/react';
 import { format } from 'date-fns';
 import React from 'react';
 import Layout from '@theme/layout';
 import Seo from '@theme/components/Seo';
 import Flex from '@theme/components/Flex';
-import Pill, { PillVariant } from '@theme/components/Pill';
-import MDXBody from '@theme/components/MDX/MDX';
+import Pill from '@theme/components/Pill';
 import { Snippet } from 'types/post';
 import Grid from '@theme/components/Grid';
 import Hero from '@theme/components/Hero';
+import { css } from 'lib/stitches.config';
 
 interface Props {
   children: React.ReactNode;
   frontMatter: Snippet;
 }
+
+const contentClass = css({
+  padding: '20px 0px',
+  gridColumn: '2',
+  color: 'var(--maximeheckel-colors-typeface-secondary)',
+
+  h2: {
+    marginTop: '2em',
+  },
+
+  h3: {
+    marginTop: '2em',
+  },
+});
 
 const SnippetLayout = ({ children, frontMatter }: Props) => {
   const { date, slug, title, description, language } = frontMatter;
@@ -37,15 +50,7 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
         date={date}
       />
       <article className="h-entry">
-        <Grid
-          columns="var(--layout-medium)"
-          columnGap={20}
-          css={css`
-            > * {
-              grid-column: 2;
-            }
-          `}
-        >
+        <Grid columns="var(--layout-medium)" columnGap={20}>
           <Hero
             id="top"
             /**
@@ -54,9 +59,9 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
              * TODO: Future Hero component of the Design System will have to handle
              * different layout/different header types (stickly/fixed etc)
              */
-            css={css`
-              padding-top: 32px !important;
-            `}
+            css={{
+              paddingTop: '32px !important',
+            }}
           >
             <Hero.Title
               className="p-name"
@@ -69,11 +74,11 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
                 <p>
                   Created {format(new Date(Date.parse(date)), 'MMM dd yyyy')}
                 </p>
-                <Pill variant={PillVariant.INFO}>{language.toUpperCase()}</Pill>
+                <Pill variant="info">{language.toUpperCase()}</Pill>
               </Flex>
             </Hero.Info>
           </Hero>
-          <MDXBody layout="medium">{children}</MDXBody>
+          <div className={contentClass()}>{children}</div>
         </Grid>
       </article>
     </Layout>

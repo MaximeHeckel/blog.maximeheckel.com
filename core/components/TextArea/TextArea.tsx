@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import React from 'react';
 import Label from '../Label';
 import { StyledTextArea } from './Styles';
@@ -22,9 +21,9 @@ const TextArea = React.forwardRef(
         {label ? (
           <Label
             htmlFor={id}
-            css={css`
-              margin-bottom: 8px;
-            `}
+            style={{
+              marginBottom: '8px',
+            }}
           >
             {label}
           </Label>

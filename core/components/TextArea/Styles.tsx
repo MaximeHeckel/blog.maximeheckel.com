@@ -1,71 +1,79 @@
-import styled from '@emotion/styled';
-import { StyledTextAreaProps } from './types';
+import { styled } from 'lib/stitches.config';
 
-export const StyledTextArea = styled('textarea')<StyledTextAreaProps>`
-  -webkit-appearance: none;
-  position: relative;
-  width: 100%;
-  outline: none;
-  display: block;
-  font-size: 16px;
-  font-family: inherit;
-  margin: 0;
-  padding: 8px 16px;
-  line-height: 26px;
+export const StyledTextArea = styled('textarea', {
+  WebkitAppearance: 'none',
+  MozAppearance: 'none',
 
-  border-radius: var(--border-radius-1);
-  color: var(--maximeheckel-colors-typeface-primary);
-  border: 1px solid var(--border-color, var(--maximeheckel-form-input-border));
-  background: var(--background, var(--maximeheckel-form-input-background));
-  cursor: var(--cursor, default);
-  opacity: var(--opacity, 1);
-  box-shadow: var(--shadow, none);
-  transition: border-color 0.3s, box-shadow 0.3s;
+  width: '100%',
+  outline: 'none',
+  position: 'relative',
+  display: 'block',
+  margin: 0,
+  padding: '8px 16px',
 
-  --shadow-hover-primary: 0 2px 20px -2px var(--maximeheckel-form-input-focus);
+  fontSize: '16px',
+  fontFamily: 'inherit',
+  lineHeight: '26px',
+  color: 'var(--maximeheckel-colors-typeface-primary)',
 
-  resize: ${(p) => p.resize};
+  borderRadius: 'var(--border-radius-1)',
+  border:
+    '1px solid var(--border-color, var(--maximeheckel-form-input-border))',
+  background: 'var(--background, var(--maximeheckel-form-input-background))',
+  cursor: 'var(--cursor, initial)',
+  opacity: 'var(--opacity, 1)',
+  boxShadow: 'var(--shadow, none)',
+  transition: 'border-color 0.3s, box-shadow 0.3s',
 
-  ${(p) => {
-    switch (p.readOnly) {
-      case true:
-        return `
-  --cursor: default;
-      `;
-      case false:
-        return `
-  --cursor: initial    
-      `;
-    }
-  }}
+  '--shadow-hover-primary':
+    '0 2px 20px -2px var(--maximeheckel-form-input-focus)',
 
-  &::placeholder {
-    color: var(--maximeheckel-colors-typeface-tertiary);
-    opacity: 0.5;
-  }
+  '&::placeholder': {
+    color: 'var(--maximeheckel-colors-typeface-tertiary)',
+    opacity: 0.5,
+  },
 
-  &::-webkit-autofill {
-    background: transparent;
-  }
+  '&::-webkit-autofill': {
+    background: 'transparent',
+  },
 
-  &:disabled {
-    --background: var(--maximeheckel-form-input-disabled);
-    --cursor: not-allowed;
-    --opacity: 0.65;
-    & + label {
-      --cursor: not-allowed;
-    }
-  }
+  '&:disabled': {
+    '--background': 'var(--maximeheckel-form-input-disabled)',
+    cursor: 'not-allowed',
+    opacity: 0.65,
+    '& + label': {
+      cursor: 'not-allowed',
+    },
+  },
 
-  &:hover {
-    &:not(:disabled) {
-      --border-color: var(--maximeheckel-form-input-active);
-      --shadow: var(--shadow-hover-primary);
-    }
-  }
+  '&:hover': {
+    '&:not(:disabled)': {
+      '--border-color': 'var(--maximeheckel-form-input-active)',
+      '--shadow': 'var(--shadow-hover-primary)',
+    },
+  },
 
-  &:focus {
-    --border-color: var(--maximeheckel-form-input-active);
-    --shadow: var(--shadow-hover-primary);
-  }
-`;
+  '&:focus': {
+    '--border-color': 'var(--maximeheckel-form-input-active)',
+    '--shadow': 'var(--shadow-hover-primary)',
+  },
+
+  variants: {
+    readOnly: {
+      true: {
+        '--cursor': 'default',
+      },
+    },
+    resize: {
+      none: {
+        resize: 'none',
+      },
+      vertical: {
+        resize: 'vertical',
+      },
+      horizontal: {
+        resize: 'horizontal',
+      },
+    },
+  },
+});

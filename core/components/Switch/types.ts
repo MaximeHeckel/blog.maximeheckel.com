@@ -1,5 +1,5 @@
 export interface SwitchProps
-  extends Omit<React.HTMLProps<HTMLInputElement>, 'checked' | 'label' | 'as'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   toggled?: boolean;
   label?: React.ReactNode;
   id: string;
