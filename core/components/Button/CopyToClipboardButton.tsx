@@ -2,10 +2,7 @@ import { css } from '@emotion/react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
 
-export const CopyToClipboardButton = (props: {
-  text: string;
-  title?: string;
-}) => {
+const CopyToClipboardButton = (props: { text: string; title?: string }) => {
   const duration = 0.4;
   const svgVariants = {
     hover: (isChecked: boolean) => ({
@@ -132,3 +129,5 @@ export const CopyToClipboardButton = (props: {
     </button>
   );
 };
+
+export default CopyToClipboardButton;

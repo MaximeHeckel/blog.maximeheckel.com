@@ -204,8 +204,8 @@
   --maximeheckel-form-input-active: var(--maximeheckel-colors-brand);
   --maximeheckel-form-input-background: hsl(var(--palette-gray-00));
   --maximeheckel-form-input-disabled: hsl(var(--palette-gray-10));
-  --maximeheckel-form-input-focus: hsla(var(--palette-blue-15), 0.8);
   --maximeheckel-form-input-border: hsl(var(--palette-blue-15));
+  --maximeheckel-form-input-focus: hsla(var(--palette-blue-40), 0.55);
 
   --code-snippet-background: hsla(var(--palette-gray-10), 0.2);
   --token-comment: hsl(var(--maximeheckel-colors-typeface-tertiary));
@@ -242,8 +242,8 @@
   --maximeheckel-form-input-active: var(--maximeheckel-colors-brand);
   --maximeheckel-form-input-background: hsl(var(--palette-gray-100));
   --maximeheckel-form-input-disabled: hsl(var(--palette-gray-55));
-  --maximeheckel-form-input-focus: hsla(var(--palette-blue-15), 0.8);
   --maximeheckel-form-input-border: hsl(var(--palette-blue-15));
+  --maximeheckel-form-input-focus: hsla(var(--palette-blue-50), 1);
 
   --code-snippet-background: hsla(var(--palette-gray-85), 0.5);
   --token-comment: hsl(var(--maximeheckel-colors-typeface-tertiary));
@@ -268,7 +268,6 @@ body {
 
 a {
   color: var(--maximeheckel-colors-brand);
-  text-decoration: underline;
 }
 
 [hidden],

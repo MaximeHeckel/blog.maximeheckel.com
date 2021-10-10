@@ -9,7 +9,7 @@ describe('Range - utils', () => {
 
   it('returns the expected linear gradient for a given value when the range is disabled', () => {
     expect(adjustSlider(27, 0, 100, true)).toEqual(
-      'linear-gradient(to right, var(--maximeheckel-form-input-focus) 27%, var(--maximeheckel-form-input-disabled) 27%)'
+      'linear-gradient(to right, var(--maximeheckel-form-input-border) 27%, var(--maximeheckel-form-input-disabled) 27%)'
     );
   });
 });

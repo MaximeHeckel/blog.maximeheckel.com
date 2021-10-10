@@ -1,6 +1,10 @@
 import styled from '@emotion/styled';
 import WebmentionReplies from '@theme/components/Webmentions/WebmentionReplies';
-import NewsletterForm from '@theme/components/NewsletterForm';
+import dynamic from 'next/dynamic';
+
+const NewsletterForm = dynamic(
+  () => import('@theme/components/NewsletterForm')
+);
 
 const ColoredBlockWrapper = styled('div')`
   background: var(--maximeheckel-colors-emphasis);

@@ -279,20 +279,14 @@ const OpenAIPlayground = (props: OpenAIPlaygroundProps) => {
           `}
         >
           <Button
-            disabled={
-              promptState.status === 'submitting'
-              // TO DO: REVISIT
-              // promptState.status === 'submitting' ||
-              // (promptState.value !== initialValue &&
-              //   promptState.value !== initialValueMoreExamples)
-            }
-            primary
+            disabled={promptState.status === 'submitting'}
+            variant="primary"
             onClick={() => makeRequest()}
           >
             {promptState.status === 'submitting' ? 'Computing 🤖' : 'Submit ✨'}
           </Button>
           <Button
-            tertiary
+            variant="secondary"
             onClick={() =>
               setPromptState((prev) => ({
                 ...prev,

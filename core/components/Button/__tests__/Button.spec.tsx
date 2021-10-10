@@ -1,22 +1,47 @@
-import { cleanup, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
 import Button from '../';
 
 describe('Button', () => {
-  beforeEach(cleanup);
-
-  it('renders the primary button', () => {
-    const component = render(<Button primary={true}>Test</Button>);
-    expect(component.baseElement).toMatchSnapshot();
+  it('renders a basic button', () => {
+    const { container, getByText } = render(
+      <Button variant="primary">Test</Button>
+    );
+    expect(container.querySelector('button')).toBeInTheDocument();
+    expect(container.querySelector('button')).toMatchSnapshot();
+    expect(getByText('Test')).toBeInTheDocument();
   });
 
-  it('renders the secondary button', () => {
-    const component = render(<Button secondary={true}>Test</Button>);
-    expect(component.baseElement).toMatchSnapshot();
+  it('renders a button with a startIcon', () => {
+    const { container, getByTestId, getByText } = render(
+      <Button variant="primary" startIcon={<svg data-testid="icon"></svg>}>
+        Test
+      </Button>
+    );
+    expect(container.querySelector('button')).toBeInTheDocument();
+    expect(container.querySelector('button')).toMatchSnapshot();
+    expect(getByTestId('icon')).toBeInTheDocument();
+    expect(getByText('Test')).toBeInTheDocument();
   });
 
-  it('renders the tertiary button', () => {
-    const component = render(<Button tertiary={true}>Test</Button>);
-    expect(component.baseElement).toMatchSnapshot();
+  it('renders a button with an endIcon', () => {
+    const { container, getByTestId, getByText } = render(
+      <Button variant="primary" endIcon={<svg data-testid="icon"></svg>}>
+        Test
+      </Button>
+    );
+    expect(container.querySelector('button')).toBeInTheDocument();
+    expect(container.querySelector('button')).toMatchSnapshot();
+    expect(getByTestId('icon')).toBeInTheDocument();
+    expect(getByText('Test')).toBeInTheDocument();
+  });
+
+  it('renders an icon button', () => {
+    const { container, getByTestId, debug } = render(
+      <Button variant="icon" icon={<svg data-testid="icon"></svg>} />
+    );
+    expect(container.querySelector('button')).toBeInTheDocument();
+    expect(container.querySelector('button')).toMatchSnapshot();
+    expect(getByTestId('icon')).toBeInTheDocument();
   });
 });

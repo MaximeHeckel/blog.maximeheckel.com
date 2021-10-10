@@ -18,7 +18,10 @@ export const StyledSwitch = styled('input')`
   border-radius: 11px;
   border: 1px solid var(--border-color, var(--maximeheckel-form-input-border));
   background: var(--background, var(--maximeheckel-form-input-background));
+  box-shadow: var(--shadow, none);
   transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+
+  --shadow-hover-primary: 0 2px 20px 3px var(--maximeheckel-form-input-focus);
 
   &:after {
     content: '';
@@ -33,7 +36,7 @@ export const StyledSwitch = styled('input')`
     background: var(--ab, var(--maximeheckel-form-input-border));
 
     transition: transform var(--d-t, 0.3s) var(--d-t-e, ease),
-      opacity var(--d-o, 0.2s);
+      opacity var(--d-o, 0.2s), box-shadow 0.2s;
     transform: translateX(var(--x, 0));
   }
 
@@ -50,7 +53,7 @@ export const StyledSwitch = styled('input')`
   &:disabled {
     --background: var(--maximeheckel-form-input-disabled);
     cursor: not-allowed;
-    opacity: 0.9;
+    opacity: 0.65;
     &:checked {
       --border-color: var(--maximeheckel-form-input-border);
     }
@@ -64,13 +67,16 @@ export const StyledSwitch = styled('input')`
     }
   }
   &:hover {
-    &:not(:checked) {
-      &:not(:disabled) {
+    &:not(:disabled) {
+      &:not(:checked) {
         --border-color: var(--maximeheckel-form-input-active);
       }
+      --shadow: var(--shadow-hover-primary);
     }
   }
-  &:focus {
-    box-shadow: 0 0 0 2px var(--maximeheckel-form-input-focus);
+
+  &:focus-visible {
+    --border-color: var(--maximeheckel-form-input-active);
+    --shadow: var(--shadow-hover-primary);
   }
 `;

@@ -18,7 +18,10 @@ export const StyledCheckbox = styled('input')`
   border-radius: var(--border-radius-1);
   border: 1px solid var(--border-color, var(--maximeheckel-form-input-border));
   background: var(--background, var(--maximeheckel-form-input-background));
+  box-shadow: var(--shadow, none);
   transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+
+  --shadow-hover-primary: 0 2px 20px 3px var(--maximeheckel-form-input-focus);
 
   &:after {
     content: '';
@@ -37,10 +40,6 @@ export const StyledCheckbox = styled('input')`
     left: 8px;
     top: 5px;
     transform: rotate(var(--rotation, 20deg));
-
-    &:disabled {
-      border: 2px solid var(--maximeheckel-form-input-disabled-inner);
-    }
   }
 
   &:checked {
@@ -57,7 +56,7 @@ export const StyledCheckbox = styled('input')`
   &:disabled {
     --background: var(--maximeheckel-form-input-disabled);
     cursor: not-allowed;
-    opacity: 0.8;
+    opacity: 0.65;
     &:checked {
       --border-color: var(--maximeheckel-form-input-border);
     }
@@ -67,14 +66,16 @@ export const StyledCheckbox = styled('input')`
   }
 
   &:hover {
-    &:not(:checked) {
-      &:not(:disabled) {
+    &:not(:disabled) {
+      &:not(:checked) {
         --border-color: var(--maximeheckel-form-input-active);
       }
+      --shadow: var(--shadow-hover-primary);
     }
   }
 
-  &:focus {
-    box-shadow: 0 0 0 2px var(--maximeheckel-form-input-focus);
+  &:focus-visible {
+    --border-color: var(--maximeheckel-form-input-active);
+    --shadow: var(--shadow-hover-primary);
   }
 `;

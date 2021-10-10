@@ -9,6 +9,5 @@ export interface MainHeaderProps {
   collapsableOnScroll?: boolean;
   title?: string;
   search?: boolean;
-  themeSwitcher?: boolean;
   progress?: boolean;
 }

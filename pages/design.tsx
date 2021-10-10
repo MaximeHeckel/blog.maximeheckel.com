@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Button from '@theme/components/Button';
-import { LinkButton } from '@theme/components/Button/LinkButton';
 import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
 import Grid from '@theme/components/Grid';
@@ -16,6 +15,9 @@ import {
 } from '@theme/components/Icons';
 import TextInput from '@theme/components/TextInput';
 import Logo from '@theme/components/Logo';
+import TextArea from '@theme/components/TextArea';
+import Flex from '@theme/components/Flex';
+import Glow from '@theme/components/Glow';
 import Callout from '@theme/components/MDX/Callout';
 import { VARIANT } from '@theme/components/MDX/Callout/Callout';
 import CodeBlock from '@theme/components/MDX/Code/CodeBlock';
@@ -30,12 +32,12 @@ import Switch from '@theme/components/Switch';
 import Tooltip from '@theme/components/Tooltip';
 import Tweet from '@theme/components/Tweet';
 import Layout from '@theme/layout';
+
 import { AnimatePresence } from 'framer-motion';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
-import TextArea from '@theme/components/TextArea';
 
 /**
  * TODO:
@@ -44,6 +46,11 @@ import TextArea from '@theme/components/TextArea';
  * - Polish interface for lists => should be in global.css if possible?
  * - VARIANT callout should be renamed "CalloutVariant"
  * - Small Responsive issue with Live Code Block on medium size screen
+ *
+ * - MAKE LINK/ANCHOR COMPONENT WITH COOL ANIMATION (mayve link and navigation with arrow icon)
+ *
+ * NOTES:
+ * - use var(--maximeheckel-colors-foreground) instead of --maximeheckel-border-color: hsl(var(--palette-gray-80)) ??
  */
 
 const Search = dynamic(() => import('@theme/components/Search'), {
@@ -85,7 +92,7 @@ export default function Design(props: {
 
   return (
     <Layout footer>
-      <Seo title="Components" />
+      <Seo title="Design" />
       <Grid
         columns="var(--layout-medium)"
         columnGap={20}
@@ -281,8 +288,59 @@ export default function Design(props: {
             </ol>
           </MDXBody>
         </section>
+        <section id="button">
+          <h2>Buttons</h2>
+          <Grid gap={24}>
+            <Glow>
+              <Button variant="primary">Button</Button>
+            </Glow>
+            <Button variant="primary">Button</Button>
+            <Button variant="primary" endIcon={<ExternalIcon />}>
+              Portfolio
+            </Button>
+            <Button variant="primary" startIcon={<TwitterIcon />}>
+              Follow me!
+            </Button>
+            <Button variant="primary" disabled>
+              Button
+            </Button>
+            <Button variant="secondary">Button</Button>
+            <Button variant="secondary" endIcon={<ExternalIcon />}>
+              Portfolio
+            </Button>
+            <Button variant="secondary" startIcon={<TwitterIcon />}>
+              Follow me!
+            </Button>
+            <Button variant="secondary" disabled>
+              Button
+            </Button>
+            <Button
+              aria-label="Follow me on Twitter!"
+              variant="icon"
+              icon={<TwitterIcon />}
+            />
+            <Button
+              aria-label="Follow me on Twitter!"
+              disabled
+              variant="icon"
+              icon={<TwitterIcon />}
+            />
+          </Grid>
+        </section>
         <section id="form-components">
           <h2>Form Components</h2>
+          <Flex gap={8}>
+            <TextInput
+              aria-label="Email"
+              id="email-input"
+              type="email"
+              placeholder="hello@maximeheckel.com"
+              onChange={(event) => setEmail(event.currentTarget.value)}
+              value={email}
+            />
+            <Button variant="primary">Subscribe</Button>
+          </Flex>
+          <br />
           <Grid gap={24} columns="repeat(auto-fit, minmax(300px, 1fr))">
             <TextInput
               label="Name"
@@ -309,6 +367,7 @@ export default function Design(props: {
               placeholder="hello@maximeheckel.com"
               onChange={(event) => setEmail(event.currentTarget.value)}
               value={email}
+              autoComplete="off"
             />
 
             <TextInput
@@ -620,29 +679,7 @@ they can change the world, are the ones who do.`}
             </div>
           </Grid>
         </section>
-        <section id="button">
-          <Grid rowGap={32}>
-            <h2>Button</h2>
-            <div>
-              <Button>Default</Button>
-            </div>
-            <div>
-              <Button primary>Primary</Button>
-            </div>
-            <div>
-              <Button secondary>Secondary</Button>
-            </div>
-            <div>
-              <Button tertiary>Tertiary</Button>
-            </div>
-            <div>
-              <Label>Icon Button</Label>
-              <LinkButton>
-                <TwitterIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />
-              </LinkButton>
-            </div>
-          </Grid>
-        </section>
+
         <section id="inline-code">
           <h2>Inline Code</h2>
           <InlineCode>Some Inline Code</InlineCode>
@@ -715,7 +752,7 @@ render(<Hi />);`}
         </section>
         <section id="command-center">
           <h2>Command Center / Search </h2>
-          <Button onClick={() => setShowSearch(true)}>
+          <Button variant="primary" onClick={() => setShowSearch(true)}>
             Show Command Center
           </Button>
           <AnimatePresence>

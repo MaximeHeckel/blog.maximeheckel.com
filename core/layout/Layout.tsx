@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import Footer from '../components/Footer';
-import { useTheme } from '../context/ThemeContext';
 import { MainHeaderProps } from '../components/Header/types';
 import Header from '../components/Header';
 
@@ -33,11 +32,10 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = (props) => {
   const { children, header, footer, headerProps } = props;
-  const theme = useTheme();
 
   return (
-    <Wrapper data-theme={theme.dark ? 'dark' : 'light'}>
-      {header ? <Header themeSwitcher={true} {...headerProps} /> : null}
+    <Wrapper>
+      {header ? <Header {...headerProps} /> : null}
       {children}
       {footer ? <Footer /> : null}
     </Wrapper>
