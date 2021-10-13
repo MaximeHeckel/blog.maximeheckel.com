@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { TransformedTweet } from 'types/tweet';
+import Anchor from '../Anchor';
 import { LikeIcon, ReplyIcon, RetweetIcon, TwitterLogo } from './Icons';
 import {
   TweetWrapper,
@@ -38,11 +39,11 @@ const Tweet = (props: Props) => {
     referenced_tweets,
   } = tweet;
 
-  const authorUrl = `https://twitter.com/${author.username}`;
-  const likeUrl = `https://twitter.com/intent/like?tweet_id=${id}`;
-  const retweetUrl = `https://twitter.com/intent/retweet?tweet_id=${id}`;
-  const replyUrl = `https://twitter.com/intent/tweet?in_reply_to=${id}`;
-  const tweetUrl = `https://twitter.com/${author.username}/status/${id}`;
+  const authorURL = `https://twitter.com/${author.username}`;
+  const likeURL = `https://twitter.com/intent/like?tweet_id=${id}`;
+  const retweetURL = `https://twitter.com/intent/retweet?tweet_id=${id}`;
+  const replyURL = `https://twitter.com/intent/tweet?in_reply_to=${id}`;
+  const tweetURL = `https://twitter.com/${author.username}/status/${id}`;
   const createdAt = new Date(created_at);
 
   const quoteTweet =
@@ -56,7 +57,7 @@ const Tweet = (props: Props) => {
           align-items: center;
         `}
       >
-        <Avatar href={authorUrl} target="_blank" rel="noopener noreferrer">
+        <Avatar href={authorURL} target="_blank" rel="noopener noreferrer">
           <Image
             alt={author.username}
             height={46}
@@ -68,7 +69,7 @@ const Tweet = (props: Props) => {
           />
         </Avatar>
         <Name
-          href={authorUrl}
+          href={authorURL}
           className="author"
           target="_blank"
           rel="noopener noreferrer"
@@ -93,7 +94,7 @@ const Tweet = (props: Props) => {
           css={css`
             margin-left: auto;
           `}
-          href={authorUrl}
+          href={tweetURL}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`@${author.username}'s Twitter profile`}
@@ -136,33 +137,38 @@ const Tweet = (props: Props) => {
         </SingleImageWrapper>
       ) : null}
       {quoteTweet ? <Tweet tweet={{ ...quoteTweet }} /> : null}
-      <a href={tweetUrl} target="_blank" rel="noopener noreferrer">
+      <Anchor
+        discreet
+        href={tweetURL}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <time
           title={`Time Posted: ${createdAt.toUTCString()}`}
           dateTime={createdAt.toISOString()}
         >
           {format(createdAt, 'h:mm a - MMM d, y')}
         </time>
-      </a>
+      </Anchor>
       <div
         css={css`
           display: flex;
           margin-top: 1rem;
         `}
       >
-        <ActionIcons href={replyUrl} target="_blank" rel="noopener noreferrer">
+        <ActionIcons href={replyURL} target="_blank" rel="noopener noreferrer">
           <ReplyIcon />
           <span>{public_metrics.reply_count}</span>
         </ActionIcons>
         <ActionIcons
-          href={retweetUrl}
+          href={retweetURL}
           target="_blank"
           rel="noopener noreferrer"
         >
           <RetweetIcon />
           <span>{public_metrics.retweet_count}</span>
         </ActionIcons>
-        <ActionIcons href={likeUrl} target="_blank" rel="noopener noreferrer">
+        <ActionIcons href={likeURL} target="_blank" rel="noopener noreferrer">
           <LikeIcon />
           <span>{public_metrics.like_count}</span>
         </ActionIcons>

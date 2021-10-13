@@ -28,9 +28,6 @@ const FooterWrapper = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   margin: 0 auto;
-  a {
-    color: inherit;
-  }
 `;
 
 const FooterContent = styled.div`

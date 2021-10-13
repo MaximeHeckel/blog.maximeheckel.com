@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 
 // Components
+import Anchor from '@theme/components/Anchor';
 import Button from '@theme/components/Button';
 import Card from '@theme/components/Card';
 import Pill from '@theme/components/Pill';
@@ -122,6 +123,12 @@ const customComponents = {
 };
 
 const MDXComponents = {
+  // Replace the defualt anchor tag by the Anchor component with underline set to true: this is the default link
+  // eslint-disable-next-line react/display-name
+  a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+    <Anchor underline {...props} />
+  ),
+  Anchor,
   Button,
   blockquote: Blockquote,
   Callout,

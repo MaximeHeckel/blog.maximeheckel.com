@@ -54,7 +54,9 @@ const HeroSubtitle = styled.h3`
   color: var(--maximeheckel-colors-typeface-tertiary);
 `;
 
-const HeroTitle = styled.h1``;
+const HeroTitle = styled.h1`
+  margin-bottom: 16px;
+`;
 
 const HeroWrapper = styled.div`
   align-items: center;

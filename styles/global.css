@@ -266,10 +266,6 @@ body {
   margin: 0;
 }
 
-a {
-  color: var(--maximeheckel-colors-brand);
-}
-
 [hidden],
 .hidden {
   display: none;

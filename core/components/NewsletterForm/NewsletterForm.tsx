@@ -2,7 +2,6 @@ import { css } from '@emotion/react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
 import { useMutation } from 'react-query';
-import Card from '@theme/components/Card';
 import { NewsletterHeader } from './Icons';
 import { NewsletterFormContent, ErrorMessage } from './Styles';
 import { subscribeCall } from './utils';
@@ -10,6 +9,8 @@ import Button from '../Button';
 import TextInput from '../TextInput';
 import Flex from '../Flex';
 import Glow from '../Glow';
+import Card from '../Card';
+import Anchor from '../Anchor';
 
 const textOutVariant = {
   checked: {
@@ -92,7 +93,9 @@ const NewsletterForm = (props: Props) => {
           <>
             <p>
               Subscribe to{' '}
-              <a href="https://buttondown.email/MaximeHeckel">my newsletter</a>{' '}
+              <Anchor underline href="https://buttondown.email/MaximeHeckel">
+                my newsletter
+              </Anchor>{' '}
               to receive a monthly digest containing:
             </p>
             <ul>
@@ -269,18 +272,18 @@ const NewsletterForm = (props: Props) => {
             <ErrorMessage>
               Looks like you already subscribed! If you think this is a mistake
               you can still subscribe by heading directly to my{' '}
-              <a href="https://buttondown.email/MaximeHeckel">
+              <Anchor href="https://buttondown.email/MaximeHeckel" underline>
                 Buttondown publication
-              </a>
+              </Anchor>
               .
             </ErrorMessage>
           ) : (
             <ErrorMessage>
               😬 woops! We just hit a snag here, but don&apos;t worry! You can
               still subscribe by heading directly to my{' '}
-              <a href="https://buttondown.email/MaximeHeckel">
+              <Anchor href="https://buttondown.email/MaximeHeckel" underline>
                 Buttondown publication
-              </a>
+              </Anchor>
               .
             </ErrorMessage>
           )

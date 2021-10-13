@@ -5,7 +5,7 @@ import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
 import Grid from '@theme/components/Grid';
 import {
-  ArrowIcon,
+  EnterArrowIcon,
   ContactIcon,
   EnterIcon,
   ExternalIcon,
@@ -38,6 +38,7 @@ import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
+import Anchor from '@theme/components/Anchor';
 
 /**
  * TODO:
@@ -326,6 +327,60 @@ export default function Design(props: {
               variant="icon"
               icon={<TwitterIcon />}
             />
+          </Grid>
+        </section>
+        <section id="anchor">
+          <h2>Anchor</h2>
+          <Grid gap={4}>
+            <h3>
+              <Anchor href="https://twitter.com/MaximeHeckel" favicon>
+                @MaximeHeckel
+              </Anchor>
+            </h3>
+            <p>
+              <Anchor href="https://twitter.com/MaximeHeckel" discreet favicon>
+                @MaximeHeckel
+              </Anchor>
+            </p>
+            <h3>
+              <Anchor href="https://github.com/MaximeHeckel" favicon>
+                Github
+              </Anchor>
+            </h3>
+            <p>
+              <Anchor href="https://github.com/MaximeHeckel" discreet favicon>
+                Github
+              </Anchor>
+            </p>
+            <h3>
+              <Anchor href="/" arrow="left">
+                Back
+              </Anchor>
+            </h3>
+            <h3>
+              <Anchor href="https://twitter.com/MaximeHeckel" arrow="right">
+                Twitter
+              </Anchor>
+            </h3>
+            <p>
+              <Anchor
+                href="https://github.com/MaximeHeckel/blog.maximeheckel.com"
+                arrow="right"
+                discreet
+              >
+                Check out this repo
+              </Anchor>
+            </p>
+            <h3>
+              <Anchor href="/design" underline>
+                Design System
+              </Anchor>
+            </h3>
+            <p>
+              <Anchor discreet href="/design" underline>
+                Design System
+              </Anchor>{' '}
+            </p>
           </Grid>
         </section>
         <section id="form-components">
@@ -627,7 +682,7 @@ they can change the world, are the ones who do.`}
           <ContactIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
           <EnterIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
           <PortfolioIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
-          <ArrowIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />
+          <EnterArrowIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />
         </section>
         <section id="tooltip">
           <h2>Tooltip</h2>

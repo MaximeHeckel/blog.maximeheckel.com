@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { ArrowIcon } from '../Icons';
+import { EnterArrowIcon } from '../Icons';
 
 // TODO This should be in its own folder/file
 export const ListItem: React.FC<HTMLLIElement> = (props) => {
   return (
     <li>
       <span data-arrow>
-        <ArrowIcon stroke="var(--maximeheckel-colors-brand)" />
+        <EnterArrowIcon stroke="var(--maximeheckel-colors-brand)" />
       </span>
       <div>{props.children}</div>
     </li>
@@ -86,11 +86,6 @@ const MDXBody = styled('div')<{ layout?: 'medium' | 'small' }>`
         padding-right: 12px;
       }
     }
-  }
-
-  a {
-    color: var(--maximeheckel-colors-brand);
-    word-break: break-word;
   }
 
   twitter-widget {

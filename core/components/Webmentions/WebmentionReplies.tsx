@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
+import Anchor from '../Anchor';
 import { Reply } from './types';
 
 const Replies = dynamic(() => import('./Replies'));
@@ -77,21 +78,23 @@ const WebmentionReplies = ({ title, url }: Props) => {
         <div style={{ height: heightRow * numberOfRow, width: '100%' }} />
       )}
       <p data-testid="share-text">
-        <a
+        <Anchor
           href={`https://twitter.com/intent/tweet?text=${encodeURI(text)}`}
           target="_blank"
           rel="noopener noreferrer"
+          underline
         >
           Tweet about this post
-        </a>{' '}
+        </Anchor>{' '}
         and it will show up here! Or,{' '}
-        <a
+        <Anchor
           href={`https://mobile.twitter.com/search?q=${url}`}
           target="_blank"
           rel="noopener noreferrer"
+          underline
         >
           click here to leave a comment
-        </a>{' '}
+        </Anchor>{' '}
         and discuss about it on Twitter.
       </p>
     </div>
