@@ -68,7 +68,17 @@ const NewsletterForm = (props: Props) => {
         margin-right: -8px;
       `}
     >
-      {large ? <NewsletterHeader /> : null}
+      {large ? (
+        <div
+          css={css`
+            display: flex;
+            justify-content: center;
+            padding-top: 48px;
+          `}
+        >
+          <NewsletterHeader />
+        </div>
+      ) : null}
       <NewsletterFormContent withOffset={large}>
         {large ? (
           <h3>

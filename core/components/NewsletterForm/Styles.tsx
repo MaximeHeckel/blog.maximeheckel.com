@@ -4,7 +4,7 @@ import Card from '@theme/components/Card';
 export const NewsletterFormContent = styled(Card.Body)<{
   withOffset?: boolean;
 }>`
-  padding: ${(p) => (p.withOffset ? '150px 48px 48px 48px' : '36px 24px')};
+  padding: ${(p) => (p.withOffset ? '48px' : '36px 24px')};
   h3 {
     max-width: 600px;
     color: var(--maximeheckel-colors-typeface-primary);
@@ -22,7 +22,7 @@ export const NewsletterFormContent = styled(Card.Body)<{
   }
 
   @media (max-width: 700px) {
-    padding: ${(p) => (p.withOffset ? '150px 20px 30px 20px;' : '24px 20px')};
+    padding: ${(p) => (p.withOffset ? '48px 20px 30px 20px;' : '24px 20px')};
   }
   ul {
     margin-left: 18px;
