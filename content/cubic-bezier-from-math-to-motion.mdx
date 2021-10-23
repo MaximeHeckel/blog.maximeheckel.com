@@ -1,0 +1,362 @@
+---
+title: 'Cubic Bézier: from math to motion'
+subtitle: A deep dive into the math behind Bézier curves, from simple linear interpolations to Cubic Bézier and how they are used to describe motion. This article introduces the concepts underneath cubic-bezier and easing timing functions that are used in CSS and Framer Motion transitions through easy-to-understand interactive examples.
+date: '2021-11-02T08:00:00.000Z'
+updated: '2021-11-02T08:00:00.000Z'
+categories: []
+keywords:
+  [
+    'bezier',
+    'bézier',
+    'cubic-bezier',
+    'framer-motion',
+    'CSS',
+    'animation',
+    'transition',
+    'motion',
+    'math',
+    'linear interpolation',
+    'quadratic',
+    'cubic',
+    'curve',
+    'micro-interaction',
+  ]
+slug: cubic-bezier-from-math-to-motion
+type: 'blogPost'
+featured: false
+---
+
+Over the past few months, I've been working a lot on my [Design System](/design/) and one aspect of this work that I enjoyed focusing on is **micro-interactions** ✨. These can be very tedious to get right, but if built properly they can make components go from good to exceptional!
+
+However, more recently, I brought my attention to something a bit more subtle. While iterating on a button component hover transition, using timing functions such as `linear` `ease-in` or `ease-out` did not feel quite right. The only way I achieved a satisfying result was to set my CSS transition property to the following: `cubic-bezier(0.34, 1.56, 0.64, 1)`, which I copied-pasted from a Codepen without really knowing what those values and function were doing, which, to be honest with you, is the kind of thing that always bothers me  😅. I like to understand the tools I'm using.
+
+So, I went down a rabbit hole of math, animations, and code to have a clear understanding of what `cubic-bezier` really is, and also what the numbers I passed to that function meant and how they translate to motion. Hence the title of this blog post! We'll first deep dive into **the math** behind `cubic-bezier`, then try to visualize **how the graphical representation of this function translates into motion** and how it relates to other timing functions you might be familiar with. All of that, illustrated through **interactive visualizations** to allow you to _see_ and _tweak_ the math that's behind these beautiful transitions ⭐️.
+
+## The math behind Bézier curves
+
+First, what's really behind this `cubic-bezier` function we keep seeing in our CSS codebases? Well, to simply put it, this function defines what is called a **Cubic Bézier curve**. It's a specific type of curve, that helps represent _how_ a transition goes from an initial state to a final state.
+
+Why _Cubic_? That is where the math part of this article comes in. To start let's look at the definition of the umbrella term "Bézier curve":
+
+> A Bézier curve is a parametric curve defined by a set of control points
+
+We can start our discovery of Bézier curves by looking at their simplest form to understand what these "control points" are, and then slowly make our way up in complexity to reach its cubic form.
+
+### Linear Interpolation
+
+Let's consider two distinct points `P0` and `P1`, and another point `P` that's located between them. In this scenario, `P0` and `P1` are the **control points** of the curve, and P is a point that moves between them. We can define the position of `P` with a value between `0` and `1` named `t` that is similar to a percentage:
+
+- if `t = 1`, `P` will move to `P1`
+- if `t = 0`, `P` will move to `P0`
+- any values between 0 and 1 would be a "mix" of `P0` and `P1`
+
+I represented this example in the widget below, where `P0` and `P1` are at the extremities of the curve, and `P` is the _blue dot_ moving between them. You'll see that the closer from 1 `t` is, the `closer` from the end of the curve `P` will be.
+
+<BezierCurve type="linear" />
+
+This is called a **Linear Interpolation**.
+
+<Callout variant="info">
+
+The math representation of the position of `P` in the case of a linear interpolation is:
+
+`P = (1-t)*P0 + t*P1`
+
+You can try to replace `t` by 0, or 1 and you'll see that we'll obtain the result we described above.
+
+</Callout>
+
+### Quadratic Bézier
+
+Let's add another point! We can now have two _interpolated points_, between each segment, moving respectively on the axis `P0 -> P1` and `P1 -> P2`. If we link these two points (the red dots) with a segment and position an interpolated point (the blue dot) on it as well, we'll obtain something rather interesting:
+
+<BezierCurve type="quadratic" />
+
+You can see that **the blue dot follows a specific path that resembles a curve**. This specifc one is called a **Quadratic Bézier curve**.
+
+<Callout variant="info">
+
+Let's do the math to find the equation representing the position of this blue dot at a given time `t`.
+We first break down the position of the red dots by using the formula we saw above. The position of these two red dots can be described as two distinct linear interpolations:
+
+`A = (1-t)*P0 + t*P1`
+
+`B = (1-t)*P1 + t*P2`
+
+We can describe the position of the blue dots as a linear interpolation as well, but this time between the points `A` and `B`:
+
+`P = (1-t)*A + t*B`
+
+We then replace A and B
+
+`P = (1-t)*[(1-t)*P0 + t*P1] + t*[(1-t)*P1 + t*P2]`
+
+and we obtain the following formula, which is the formula representing a Quadratic Bézier:
+
+`P = (1-t)**2 * P0 + 2*(1-t)*t * P1 + t**2 * P2`
+
+</Callout>
+
+Here's the Javascript version of that formula that I use to get the coordinates `x` and `y` of all the positions of the blue dot for 1 second at 60 frames per second to draw the curve above:
+
+```js {11-12,14-15}
+const quadratic = (P0, P1, P2) => {
+  const x0 = P0.x;
+  const y0 = P0.y;
+
+  const x1 = P1.x;
+  const y1 = P1.y;
+
+  const x2 = P2.x;
+  const y2 = P2.y;
+
+  const x = (t) =>
+    Math.pow(1 - t, 2) * x0 + 2 * (1 - t) * t * x1 + Math.pow(t, 2) * x2;
+
+  const y = (t) =>
+    Math.pow(1 - t, 2) * y0 + 2 * (1 - t) * t * y1 + Math.pow(t, 2) * y2;
+
+  const res = [];
+
+  // Get all the points for a transition at 60 frames per second that lasts 1s
+  for (let t = 0; t <= 1; t = t + 1 / 60) {
+    const valX = x(t);
+    const valY = y(t);
+    res.push({ x: valX, y: valY });
+  }
+  res.push({ x: 1, y: 0 });
+
+  return res;
+};
+```
+
+### Cubic Bézier
+
+Now, if we add a **fourth point** (so we now have the control points `P0`, `P1`, `P2`, and `P3`), and follow the same process as before:
+
+1. we add an interpolated point between each of the segments that link the 4 points (in red below)
+2. we link these interpolated points and define an interpolated point for each of the newly obtained segments (in green)
+3. we link again these points, draw a segment between them, and add yet another interpolated point (in blue)
+
+we finally obtain a the formula representing a **Cubic Bézier** curve. I know this may sound very complicated at this point, so I hope the visualization below will do a good job at illustrating how this curve is obtained:
+
+<BezierCurve type="cubic" />
+
+<Callout variant="info">
+
+The steps to obtain the formula of the Cubic Bézier would be a bit too long for this blog post. You can try it by yourself if you want, it follows the same method we used to get the Quadratic Bézier curve.
+
+Here's the formula that you should end up with:
+
+`P = (1-t)**3 * P0 + t*P1*(3*(1-t)**2) + P2*(3*(1-t)*t**2) + P3*t**3`
+
+At this point, you might observe the recursive nature of these curves. We can obtain the next order Bézier curve from the previous one.
+
+For the more curious among you, this method is called the **De Casteljau algorithm** and it allows you to find any point on any Bézier curve.
+If you want to read more about it, you can head to the corresponding [Wikipedia page](https://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm) or to [this awesome article](http://caffeineowl.com/graphics/2d/vectorial/bezierintro.html) that breaks down the math in details.
+
+</Callout>
+
+Below you'll find the JS version of that formula which, like its quadratic counterpart, will return all the coordinates `x` and `y` of all the points describing the position of the blue dot along this Cubic Bézier curve, for 1 second at 60 frames per second:
+
+```js {14-18,20-24}
+const cubic = (P0, P1, P2, P3) => {
+  const x0 = P0.x;
+  const y0 = P0.y;
+
+  const x1 = P1.x;
+  const y1 = P1.y;
+
+  const x2 = P2.x;
+  const y2 = P2.y;
+
+  const x3 = P3.x;
+  const y3 = P3.y;
+
+  const y = (t) =>
+    Math.pow(1 - t, 3) * y0 +
+    3 * Math.pow(1 - t, 2) * t * y1 +
+    3 * (1 - t) * Math.pow(t, 2) * y2 +
+    Math.pow(t, 3) * y3;
+
+  const x = (t) =>
+    Math.pow(1 - t, 3) * x0 +
+    3 * Math.pow(1 - t, 2) * t * x1 +
+    3 * (1 - t) * Math.pow(t, 2) * x2 +
+    Math.pow(t, 3) * x3;
+
+  const res = [];
+
+  for (let t = 0; t <= 1; t = t + 1 / 60) {
+    const valX = x(t);
+    const valY = y(t);
+    res.push({ x: valX, y: valY });
+  }
+  res.push({ x: 1, y: 0 });
+
+  return res;
+};
+```
+
+## Visualizing the motion
+
+We just did the hard part! 🎉 We broke down the math behind Bézier curves into small bits and slowly combined them to obtain the Cubic Bézier formula and represent its corresponding curve.
+Now we can see how this Cubic Bézier curve relates to transition and motion in general.
+
+<Callout variant="info">
+
+In this section, when we look at the graphical representation of the Cubic Bézier formula, the `x` axis always represents **time** and the `y` axis represents the % of the motion achieved.
+
+Note: The `y` axis is flipped upside down: 0 is at the top, 1 at the bottom.
+
+</Callout>
+
+For this part, we consider the Cubic Bézier formula from the previous section and draw its representation but with a twist:
+
+- we set the control point `P0` with the coordinates `x:0, y:0`
+- we set the control point `P3` with the coordinates `x:1, y:1`
+
+The reason behind that is that the `cubic-bezier` function in CSS uses **two implicit points**:
+
+- `P0` represents the initial time `x:0` and the initial state `y:0`. It's the point where our curve starts.
+- `P3` represents the final time `x:1` and the final state `y:1`. It's the point where our curve ends.
+
+Thus, this leaves us with only two control points to define: `P1` and `P2`. Now, remember when I gave the example of a `cubic-bezier` function I used for one of my transition in the intro?
+
+`cubic-bezier(0.34, 1.56, 0.64, 1)`
+
+The four numbers passed to this function are the coordinates of the control points `P1` and `P2`: `cubic-bezier(P1.x, P1.y, P2.x, P2.y)`. Setting those points gives us a specific curve representing the motion that the element with this timing function will follow during its transition.
+
+<Callout variant="danger">
+
+`P1.x` and `P2.x` should always have a **value between 0 and 1**.
+
+</Callout>
+
+To better illustrate that, I built the little **Cubic Bezier visualizer** below ✨. With it, you can change the position of `P1` and `P2` by moving the gray handles and get the Cubic Bézier curve corresponding to those values!
+
+The visualizer also allows you to:
+
+1. see the position an element (the blue dot in this case) throughout its motion for each frame
+2. project the position of the element to observe the change in `y` value, i.e. the trace of the motion of the element through time, by toggling `Project Points` on.
+
+<CubicBezierVisualizer editable />
+
+**By projecting the positions throughout the transition, we can "see" the motion of our element represented by a Cubic Bézier with these specific control points. This is how the "math becomes motion".**
+
+Some interesting things you can observe with the motion of this point:
+
+- we render the position of the point at each frame of the motion
+- **the further apart two consecutive points in the trace are, the faster the motion is**: the blue dot spends "less time" at a given position.
+- **the more narrow the gap between two consecutive points in the trace is, the slower the motion is**: the blue dot spends "more time" at that given position.
+
+<Callout variant="info">
+
+I also added the ability to plot the _derivative_ of this curve, which represents the velocity of the motion.
+
+You can toggle the `Derivative` switch to make it appear.
+
+Note: Given that the y axis is flipped, observing the velocity curve can be a bit confusing:
+
+- **the closer to the top it is, the slower the motion**
+- **the further from the top it is, the faster the motion**
+
+</Callout>
+
+## Easing functions
+
+Now that we know what is truly behind the `cubic-bezier` CSS function, you might be wondering how the other timing functions you might be familiar with such as `ease-in` or `linear` relate to that. In a nutshell, **they are actually Cubic Bézier themselves!**
+
+### Cubic Béziers, Cubic Béziers everywhere
+
+We can describe any of `linear`, `ease-in`, `ease-out`, `ease-out` in `cubic-bézier` form. The only thing to do to obtain these specific timing functions is to set the values of the coordinates for `P1` and `P2` accordingly.
+
+<Callout variant="info">
+
+- `ease` = `cubic-bezier(0.25,0.1,0.25,1)`
+- `linear` = `cubic-bezier(0,0,1,1)`
+- `ease-in` = `cubic-bezier(0.42,0,1,1)`
+- `ease-out` = `cubic-bezier(0,0,0.58,1)`
+- `ease-in-out` = `cubic-bezier(0.42,0, 0.58,1)`
+
+</Callout>
+
+These are just the set of `cubic-bezier` timing functions available to us out of the box in CSS. There are _many_ types of "ease" transitions that can be represented with specific Cubic Bézier curves. You can visualize some of those below with their corresponding `P1` and `P2` points:
+
+<CubicBezierVisualizer />
+
+Thus, not only uncovering the math behind Cubic Bézier helped us understand the `cubic-bézier` CSS function, but also a large number of easing functions that are used by many on a day-to-day basis!
+
+### Cubic Bézier in Framer Motion
+
+Another aspect that re-affirms the tight relationship between Cubic Bézier and easing functions can be found in the design choices made in Framer Motion's `transition` object.
+
+Unlike what we've seen so far with CSS, there's is no `cubic-bézier` function per se in Framer Motion. To describe this type of transition you just need to pass the values of the coordinates of your `P1` and `P2` points as an array to the `ease` property:
+
+```js {20} title=Example of cubic-bezier like transition in Framer Motion
+import { motion } from 'framer-motion';
+
+const Button = (props) => {
+  const buttonVariants = {
+    initial: {
+      scale: 1,
+    },
+    hover: {
+      scale: 0.94,
+    },
+  };
+
+  return (
+    <motion.button
+      {...props}
+      initial="initial"
+      whileHover="hover"
+      variants={buttonVariants}
+      transition={{
+        ease: [0.34, 1.56, 0.64, 1],
+      }}
+    />
+  );
+};
+```
+
+<Callout variant="info">
+
+If you want to learn more about easing functions and Framer Motion, I wrote a [guide to get started with Framer Motion](/posts/guide-animations-spark-joy-framer-motion/) that showcases how to use them and also covers all the basics you need to build delightful transitions.
+
+</Callout>
+
+## Conclusion
+
+Wow, what a ride! We went from looking at `cubic-bezier(0.34, 1.56, 0.64, 1)` a bit clueless and not knowing what it meant to:
+
+- understand the **mathematical concepts that govern Bézier curves**
+- being able to **draw the graphical representation of Cubic Bézier** and understand **how it translates to motion**
+- analyze the close relationship between `cubic-bézier` and **the easing functions** we've always been familiar with
+
+Yet, despite having learned a lot together, we've just scratched the surface! We only took a look at CSS but Bézier curves, and especially its cubic form, can be found in many other frontend adjacent tools/process like:
+
+- drawing [SVG paths](https://medium.com/@bragg/cubic-bezier-curves-with-svg-paths-a326bb09616f)
+- in the Chrome Dev tools or other awesome frontend tools such as [Leva](https://leva.pmnd.rs/?path=/story/plugins-bezier--default-bezier)
+
+<Image
+  src="blog/dev-tools-cubic-bezier"
+  alt="Screenshot showcasing the Chrome Dev Tools with the Cubic Bézier editor"
+  layout="responsive"
+  width={700}
+  height={500}
+/>
+
+- Design tools like Figma, to draw anything from curves, shapes, and even [fonts](http://www.anaesthetist.com/mnm/fonts/Findex.htm#index.htm)!
+
+I hope this blog post satisfied your curiosity and helped you learn some of the cool things that hide behind the tools we use on a day-to-day basis. You can now play with the `cubic-bézier` function with confidence in your code and know exactly what to tweak to come up with unique / delightful transitions and animations for your components.
+
+Quick shoutout to **3 awesome people who helped me directly or indirectly to produce this piece** by sharing their own creations around this subject:
+
+- [@pixelbeat](https://twitter.com/pixelbeat/) who created an awesome Framer prototype to visualize easing curves:
+
+<StaticTweet id="1450570908838645763" />
+
+- [@nansdotio](https://twitter.com/nansdotio) who built a super slick [CSS transition visualizer](https://css-transitions-sandbox-narendras.vercel.app/)
+
+- [@FreyaHolmer](https://twitter.com/FreyaHolmer) who made an absolutely amazing [Youtube video](https://www.youtube.com/watch?v=aVwxzDHniEw) about Bézier curves. She goes way further into the weeds than this article, thus I highly recommend checking this video out if you want to go further. Her way of illustrating and explaining these complex concepts is really inspiring.

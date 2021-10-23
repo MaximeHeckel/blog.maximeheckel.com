@@ -36,9 +36,6 @@ const IntegrationTest = dynamic<{}>(() =>
 const UnitTest = dynamic<{}>(() =>
   import('./custom/MicroAnimations/CICD').then((module) => module.UnitTest)
 );
-const SEOAnimation = dynamic<{}>(() =>
-  import('./custom/MicroAnimations/SEO').then((module) => module.SEOAnimation)
-);
 const PreviewDeploy = dynamic<{}>(() =>
   import('./custom/MicroAnimations/PreviewDeploy').then(
     (module) => module.PreviewDeploy
@@ -91,10 +88,13 @@ const ScrollSpyWidget = dynamic(
     loading: () => <div style={{ width: '100%', height: '705px' }} />,
   }
 );
-
 const OpenAIPlayground = dynamic(
   () => import('./custom/Widgets/OpenAIPlayground')
 );
+const CubicBezierVisualizer = dynamic(
+  () => import('./custom/Widgets/CubicBezierVisualizer')
+);
+const BezierCurve = dynamic(() => import('./custom/Widgets/BezierCurve'));
 
 const customComponents = {
   AnimationTypes,
@@ -112,7 +112,6 @@ const customComponents = {
   UnitTest,
   Card,
   CardBody: Card.Body,
-  SEOAnimation,
   DockerBuild,
   PreviewDeploy,
   SlidingWindow,
@@ -124,6 +123,8 @@ const customComponents = {
   FramerMotionAnimatePresence,
   FramerMotionAnimationLayout,
   OpenAIPlayground,
+  CubicBezierVisualizer,
+  BezierCurve,
 };
 
 const MDXComponents = {
