@@ -32,7 +32,7 @@
     "@emotion/react": "11.1.4",
     "@emotion/server": "11.0.0",
     "@emotion/styled": "11.0.0",
-    "@visx/clip-path": "1.6.1",
+    "@visx/clip-path": "2.1.0",
     "@visx/curve": "1.6.1",
     "@visx/event": "1.6.1",
     "@visx/group": "1.6.1",
