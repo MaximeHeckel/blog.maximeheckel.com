@@ -77,7 +77,7 @@
   "devDependencies": {
     "@babel/core": "7.12.10",
     "@cypress/snapshot": "2.1.7",
-    "@emotion/babel-preset-css-prop": "11.0.0",
+    "@emotion/babel-preset-css-prop": "11.2.0",
     "@emotion/jest": "11.2.0",
     "@netlify/plugin-nextjs": "3.9.0",
     "@next/bundle-analyzer": "10.0.5",
