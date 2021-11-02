@@ -30,7 +30,7 @@ export const HighlightedValue = styled('div')`
   border-radius: var(--border-radius-0);
   background-color: var(--maximeheckel-colors-emphasis);
   color: var(--maximeheckel-colors-brand);
-  border: 1px solid var(--maximeheckel-colors-brand);
+  border: 2px solid var(--maximeheckel-colors-brand);
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 6px;

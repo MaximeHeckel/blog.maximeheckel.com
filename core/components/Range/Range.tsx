@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import useDebounce from '@theme/hooks/useDebouncedValue';
 import React from 'react';
 import Label from '../Label';
@@ -23,25 +24,30 @@ const Range = (props: RangeProps) => {
 
   React.useEffect(() => {
     onChange(debouncedValue);
-  }, [debouncedValue, onChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
 
-  const fill = React.useMemo(() => adjustSlider(range, min, max, disabled), [
-    range,
+  const fill = React.useMemo(() => adjustSlider(value, min, max, disabled), [
+    value,
     min,
     max,
     disabled,
   ]);
 
   return (
-    <div>
-      <Label htmlFor={id}>{label}</Label>
+    <div
+      css={css`
+        width: 100%;
+      `}
+    >
+      {label ? <Label htmlFor={id}>{label}</Label> : null}
       <StyledRange
         id={id}
         type="range"
         min={min}
         max={max}
         step={step}
-        value={range}
+        value={value}
         onChange={(event) => setRange(parseFloat(event.target.value))}
         fill={fill}
         disabled={disabled}

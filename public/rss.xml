@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Wed, 06 Oct 2021 01:22:38 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 02 Nov 2021 01:08:09 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Cubic Bézier: from math to motion]]></title>
+            <description><![CDATA[A deep dive into the math behind Bézier curves, from simple linear interpolations to Cubic Bézier and how they are used to describe motion. This article introduces the concepts underneath cubic-bezier and easing timing functions that are used in CSS and Framer Motion transitions through easy-to-understand interactive examples.]]></description>
+            <link>https://blog.maximeheckel.com/posts/cubic-bezier-from-math-to-motion</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/cubic-bezier-from-math-to-motion</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 02 Nov 2021 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[First steps with GTP-3 for frontend developers]]></title>
             <description><![CDATA[A beginners guide to OpenAI's API that eases frontend developers into the world of GPT-3 and gives all the tools needed to start building AI-powered Next.js apps.]]></description>

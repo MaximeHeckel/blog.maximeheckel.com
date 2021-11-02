@@ -31,6 +31,8 @@ export const CardHeader = styled('div')`
   font-size: 16px;
 `;
 
+CardHeader.displayName = 'CardHeader';
+
 export const CardBody = styled('div')`
   padding: 36px 24px;
   position: relative;
