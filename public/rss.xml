@@ -9,7 +9,7 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Tue, 02 Nov 2021 01:08:09 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 03 Nov 2021 22:18:22 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
         <item>
@@ -21,7 +21,7 @@
             <pubDate>Tue, 02 Nov 2021 08:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[First steps with GTP-3 for frontend developers]]></title>
+            <title><![CDATA[First steps with GPT-3 for frontend developers]]></title>
             <description><![CDATA[A beginners guide to OpenAI's API that eases frontend developers into the world of GPT-3 and gives all the tools needed to start building AI-powered Next.js apps.]]></description>
             <link>https://blog.maximeheckel.com/posts/first-steps-with-gpt-3-and-beyond</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/first-steps-with-gpt-3-and-beyond</guid>
