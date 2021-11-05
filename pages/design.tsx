@@ -74,6 +74,7 @@ export default function Design(props: {
 }) {
   const [showSearch, setShowSearch] = React.useState(false);
   const [email, setEmail] = React.useState('');
+  const [rangeValue, setRangeValue] = React.useState(250);
 
   const colorScaleNumbers = React.useMemo(
     () =>
@@ -552,10 +553,10 @@ they can change the world, are the ones who do.`}
               id="range-1"
               aria-label="Range"
               label="Range"
-              value={250}
+              value={rangeValue}
               min={0}
               max={500}
-              onChange={() => {}}
+              onChange={(value) => setRangeValue(value)}
             />
             <Range
               id="range-2"
