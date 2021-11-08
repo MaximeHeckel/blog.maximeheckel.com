@@ -1,15 +1,13 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import Button from '@theme/components/Button';
 import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
-import Flex from '@theme/components/Flex';
 import Grid from '@theme/components/Grid';
-import { motion, AnimateSharedLayout } from 'framer-motion';
+import { motion } from 'framer-motion';
 import React from 'react';
 import { AnimationCardContent } from './Components';
 
-let PETS = [
+const PETS = [
   {
     id: '1',
     photo: '🐶',
@@ -32,7 +30,7 @@ let PETS = [
   },
   {
     id: '6',
-    photo: '🦊',
+    photo: '🐷',
   },
   {
     id: '7',
@@ -40,7 +38,7 @@ let PETS = [
   },
   {
     id: '8',
-    photo: '🐼',
+    photo: '🦁',
   },
   {
     id: '9',
@@ -48,7 +46,7 @@ let PETS = [
   },
   {
     id: '10',
-    photo: '🐶',
+    photo: '🐧',
   },
   {
     id: '11',
@@ -56,96 +54,26 @@ let PETS = [
   },
   {
     id: '12',
-    photo: '🐰',
+    photo: '🐮',
   },
 ];
 
-const ClearIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M15 9L9 15"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M9 9L15 15"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const AddIcon = () => (
-  <svg
-    width="25"
-    height="25"
-    viewBox="0 0 25 25"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M12.5154 8.91113V16.9111"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M8.51541 12.9111H16.5154"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const CardWrapper = styled(motion.div)`
-  background: hsl(var(--palette-gray-10));
-  box-shadow: var(--maximeheckel-shadow-2);
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 25px;
-  max-width: 250px;
-  margin: 0 auto;
-  color: hsl(var(--palette-gray-90));
-
-  ul {
-    margin: 0px;
-  }
-`;
-
-const Circle = styled(motion.li)`
+const Circle = styled('div')`
   background: linear-gradient(104.01deg, #9bebeb 5.51%, #0fa6e9 98.93%);
   width: 48px;
   height: 48px;
-  list-style: none;
+  user-select: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 32px;
   margin: 0 auto;
-  border: 2px solid var(--maximeheckel-colors-brand);
 `;
 
 const FramerMotionAnimationLayout = () => {
-  const [items, setItems] = React.useState<
-    Array<{ id: string; photo: string }>
-  >([]);
-
-  const [layout, setLayout] = React.useState(false);
+  const [selectedPetID, setSelectedPetID] = React.useState('1');
+  const [withLayoutID, setWithLayoutID] = React.useState(false);
 
   return (
     <Card
@@ -155,104 +83,51 @@ const FramerMotionAnimationLayout = () => {
       `}
     >
       <AnimationCardContent>
-        <div
+        <Grid
+          as="ul"
+          columns="repeat(4, 48px)"
           css={css`
-            height: 300px;
+            height: 250px;
             width: 100%;
           `}
+          columnGap="12px"
+          justifyContent="center"
         >
-          {layout ? (
-            <AnimateSharedLayout>
-              <CardWrapper layout initial={{ borderRadius: 25 }}>
-                <motion.p
-                  layout
+          {PETS.map((pet) => (
+            <li
+              css={css`
+                list-style: none;
+                position: relative;
+                cursor: pointer;
+              `}
+              key={pet.id}
+              onClick={() => setSelectedPetID(pet.id)}
+            >
+              <Circle>{pet.photo}</Circle>
+              {selectedPetID === pet.id && (
+                <motion.div
+                  layoutId={withLayoutID ? 'border' : undefined}
                   css={css`
-                    margin-bottom: 0px;
+                    position: absolute;
+                    border-radius: 50%;
+                    width: 48px;
+                    height: 48px;
+                    border: 4px solid var(--maximeheckel-colors-brand);
                   `}
-                >
-                  You have {items.length} {items.length === 1 ? 'pet' : 'pets'}
-                </motion.p>
-                <Grid
-                  as="ul"
-                  columns="repeat(auto-fill, minmax(50px, 1fr))"
-                  gap="8px"
-                >
-                  {items.map((item) => (
-                    <Circle
-                      key={item.id}
-                      layout
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                    >
-                      {item.photo}
-                    </Circle>
-                  ))}
-                </Grid>
-              </CardWrapper>
-            </AnimateSharedLayout>
-          ) : (
-            <CardWrapper layout initial={{ borderRadius: 25 }}>
-              <motion.p
-                layout
-                css={css`
-                  margin-bottom: 0px;
-                `}
-              >
-                You have {items.length} {items.length === 1 ? 'pet' : 'pets'}
-              </motion.p>
-              <Grid
-                as="ul"
-                columns="repeat(auto-fill, minmax(50px, 1fr))"
-                gap="8px"
-              >
-                {items.map((item) => (
-                  <Circle
-                    key={item.id}
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
-                    {item.photo}
-                  </Circle>
-                ))}
-              </Grid>
-            </CardWrapper>
-          )}
-        </div>
+                />
+              )}
+            </li>
+          ))}
+        </Grid>
         <div>
           <Checkbox
-            aria-label="Enable animating shared layouts"
-            checked={layout}
+            aria-label="Use common layout ID"
+            checked={withLayoutID}
             id="layout"
-            label="Enable animating shared layouts"
-            onChange={() => setLayout((prev) => !prev)}
+            label="Use common layout ID"
+            onChange={() => setWithLayoutID((prev) => !prev)}
           />
         </div>
-        <Flex gap={12}>
-          <Button
-            title="Add new pet!"
-            variant="icon"
-            icon={<AddIcon />}
-            disabled={PETS.length === 0}
-            onClick={() =>
-              setItems((prev) => {
-                const newElement = PETS.shift()!;
-                const newState = [...prev, newElement];
-
-                return newState;
-              })
-            }
-          />
-          <Button
-            title="Clear pets list"
-            variant="icon"
-            icon={<ClearIcon />}
-            onClick={() => {
-              PETS = [...items, ...PETS];
-              setItems([]);
-            }}
-          />
-        </Flex>
       </AnimationCardContent>
     </Card>
   );

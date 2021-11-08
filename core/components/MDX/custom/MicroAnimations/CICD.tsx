@@ -76,7 +76,8 @@ const CodeValidation = () => {
                   opacity: 1,
                 }}
                 transition={{
-                  yoyo: Infinity,
+                  repeat: Infinity,
+                  repeatType: 'mirror',
                   ease: 'easeInOut',
                   duration,
                   delay: i * duration,
@@ -93,7 +94,8 @@ const CodeValidation = () => {
                   rotate: 45,
                 }}
                 transition={{
-                  flip: Infinity,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
                   duration,
                   delay: i * duration,
                   repeatDelay: lines.length * duration,
@@ -139,7 +141,8 @@ const UnitTest = () => {
       }}
       transition={{
         duration,
-        flip: Infinity,
+        repeat: Infinity,
+        repeatType: 'reverse',
         delay: duration * 4 * 2,
         repeatDelay: 4 * duration * 2 + duration,
       }}
@@ -156,7 +159,8 @@ const UnitTest = () => {
       }}
       transition={{
         duration,
-        flip: Infinity,
+        repeat: Infinity,
+        repeatType: 'reverse',
         delay: duration * 4 * 2,
         repeatDelay: 4 * duration * 2 + duration,
       }}
@@ -173,7 +177,8 @@ const UnitTest = () => {
       }}
       transition={{
         duration,
-        flip: Infinity,
+        repeat: Infinity,
+        repeatType: 'reverse',
         delay: duration * 4 * 2,
         repeatDelay: 4 * duration * 2 + duration,
       }}
@@ -188,7 +193,8 @@ const UnitTest = () => {
       }}
       transition={{
         duration,
-        flip: Infinity,
+        repeat: Infinity,
+        repeatType: 'reverse',
         delay: duration * 4 * 2,
         repeatDelay: 4 * duration * 2 + duration,
       }}
@@ -217,7 +223,8 @@ const UnitTest = () => {
                   rotate: 45,
                 }}
                 transition={{
-                  flip: Infinity,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
                   duration,
                   delay: i * duration,
                   repeatDelay: components.length * duration,
@@ -255,7 +262,8 @@ const IntegrationTest = () => {
           }}
           transition={{
             duration,
-            flip: Infinity,
+            repeat: Infinity,
+            repeatType: 'reverse',
             delay: duration * 2 * 2,
             repeatDelay: 2 * duration * 2 + duration,
           }}
@@ -273,7 +281,8 @@ const IntegrationTest = () => {
           }}
           transition={{
             duration,
-            flip: Infinity,
+            repeat: Infinity,
+            repeatType: 'reverse',
             delay: duration * 2 * 2,
             repeatDelay: 2 * duration * 2 + duration,
           }}
@@ -291,7 +300,8 @@ const IntegrationTest = () => {
           }}
           transition={{
             duration,
-            flip: Infinity,
+            repeat: Infinity,
+            repeatType: 'reverse',
             delay: duration * 2 * 2,
             repeatDelay: 2 * duration * 2 + duration,
           }}
@@ -307,7 +317,8 @@ const IntegrationTest = () => {
             rotate: 45,
           }}
           transition={{
-            flip: Infinity,
+            repeat: Infinity,
+            repeatType: 'reverse',
             duration,
             delay: duration * 2 * 2,
             repeatDelay: 2 * duration * 2 + duration,
@@ -370,7 +381,8 @@ const E2ETest = () => {
             y: ['5px', '55px', '5px', '5px'],
           }}
           transition={{
-            flip: Infinity,
+            repeat: Infinity,
+            repeatType: 'reverse',
             duration: 5,
             repeatDelay: 5,
           }}
@@ -385,7 +397,8 @@ const E2ETest = () => {
             rotate: 45,
           }}
           transition={{
-            flip: Infinity,
+            repeat: Infinity,
+            repeatType: 'reverse',
             duration,
             delay: 5,
             repeatDelay: 5,
@@ -443,7 +456,8 @@ const BranchPreview = () => {
           x: '0px',
         }}
         transition={{
-          loop: Infinity,
+          repeat: Infinity,
+          repeatType: 'loop',
           duration: 2,
           delay: 2,
           repeatDelay: 4,
@@ -496,7 +510,8 @@ const FeatureFlags = () => {
               backgroundColor: '#2fca49',
             }}
             transition={{
-              yoyo: Infinity,
+              repeat: Infinity,
+              repeatType: 'mirror',
               duration: 0.7,
               delay: 1,
               repeatDelay: 2,
@@ -543,7 +558,8 @@ const FeatureFlags = () => {
             opacity: 1,
           }}
           transition={{
-            yoyo: Infinity,
+            repeat: Infinity,
+            repeatType: 'mirror',
             duration: 0.7,
             delay: 2,
             repeatDelay: 2,

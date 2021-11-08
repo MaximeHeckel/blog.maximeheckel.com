@@ -5,7 +5,7 @@ import {
   useMotionValue,
   useTransform,
   AnimatePresence,
-  AnimateSharedLayout,
+  LayoutGroup,
 } from 'framer-motion';
 import { PrismTheme } from 'prism-react-renderer';
 import React from 'react';
@@ -20,7 +20,7 @@ const LiveCodeBlock = (props: CodeBlockProps) => {
   const scope = {
     motion,
     AnimatePresence,
-    AnimateSharedLayout,
+    LayoutGroup,
     useAnimation,
     useMotionValue,
     useTransform,

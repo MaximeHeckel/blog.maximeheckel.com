@@ -69,7 +69,8 @@ const Heart = ({ bpm }: { bpm: number }) => {
       }}
       transition={{
         ease: 'easeInOut',
-        yoyo: Infinity,
+        repeat: Infinity,
+        repeatType: 'mirror',
         duration: 60 / bpm / 2,
       }}
     >

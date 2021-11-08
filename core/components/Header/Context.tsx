@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface HeaderContextValue {
-  collapsed: boolean;
+  collapsed?: boolean;
   sticky: boolean;
 }
 
