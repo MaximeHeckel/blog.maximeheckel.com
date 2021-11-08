@@ -2,7 +2,7 @@
 title: 'Advanced animation patterns with Framer Motion'
 subtitle: A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns through curated examples and interactive playgrounds.
 date: '2021-04-20T08:00:00.000Z'
-updated: '2021-04-20T08:00:00.000Z'
+updated: '2021-11-08T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -271,8 +271,7 @@ We now have a new awesome tool to use to make our transitions even better! It's 
 const List = styled(motion.ul)`
   padding: 16px;
   width: 350px;
-  background: var(--maximeheckel-colors-background);
-  box-shadow: var(--maximeheckel-shadow-2);
+  background: var(--maximeheckel-colors-body);
   border-radius: var(--border-radius-1);
   display: grid;
   gap: 16px;
@@ -550,68 +549,95 @@ I plan on revisiting some of the animations implemented on this blog and maybe c
 
 ### Shared Layout Animation
 
-So we now know what layout animations are and how to leverage those for some specific use cases. However, if we try some complex examples like nesting several of those layout animations, you will notice some _ weird behavior_. Those can end up out of sync make elements overlap during a transition and that's not a desirable output. Thankfully the `AnimateSharedLayout` component is here to save the day ✨!
+We now know what layout animations are and how to leverage those for some specific use cases. But what happens if we start having layout animations that span several components?
 
-But first, what do I mean by "weird behavior" exactly? Let's take a look at the little example below to see what's happening when `AnimateSharedLayout` is absent and present:
+<Callout variant="info">
+
+**Update November 2021**
+
+After the release of Framer Motion `v5.0`, this section has been entirely rewritten, including the examples.
+
+`AnimatedSharedLayout` has been deprecated in favor of a new and more performant way to handle shared layout animations.
+
+You can read more details about this update in the [v5.0 migration docs](https://www.framer.com/docs/guide-upgrade/#50)
+
+</Callout>
+
+In the more recent versions of Framer Motion, building shared layout animations has been greatly improved: the only thing we need to do is set a **common** `layoutId` prop to the components that are part of a shared layout animation.
+
+Below, you'll find a widget that showcases an example of shared layout animation.
 
 <FramerMotionAnimationLayout />
 
-By clicking on the `+` button you will make items appear on the card. The card's height will adjust based on the element gracefully thanks to the `layout` prop that is set in both the card and items components. However, you may notice that:
+When clicking on one of the emojis in the example above you will notice that:
 
-- when not using `AnimateSharedLayout`, **the item appears AND slides down** as the layout animation of the card is still happening
-- but when using `AnimateSharedLayout`, **the item appears already in its final position**, despite the layout animation of the card still being in progress
+- **the border will gracefully move** to the newly selected element when the common `layoutId` is **enabled**
+- **the border will abruptly appear** around the newly selected element when the common `layoutId` is **disabled** (i.e. not defined or different)
 
-This change is very subtle but it makes our animations look so much better! The only difference between those 2 transitions in the example above is the use of `AnimateSharedLayout` and we're lucky because just like `AnimatePresence` it's very easy to use:
+All we need to do to obtain this seemingly complex animation was to add a prop, that's it! ✨ In this example in particular, all I added is a common `layoutId` called `border` to every instance of the blue circle component.
 
-```js {8,26} title=Example showcasing how simple it is to use AnimateSharedLayout
+```js {17} title=Example of shared animate layout using the "layoutId" prop
 const MagicWidgetComponent = () => {
+  const [selectedID, setSelectedID] = React.useState('1');
+
   return (
-    /*
-     The only thing to do when wanting to "share" a layout animation
-     is to wrap the desired motion components in <AnimateSharedLayout>
-     component! That's it!
-    */
-    <AnimateSharedLayout>
-      <CardWrapper layout initial={{ borderRadius: 25 }}>
-        <motion.p layout>
-          You have {items.length} {items.length === 1 ? 'pet' : 'pets'}
-        </motion.p>
-        <Grid as="ul" columns="repeat(auto-fill, minmax(50px, 1fr))" gap="8px">
-          {items.map((item) => (
-            <Circle
-              key={item.id}
-              layout
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              {item.photo}
-            </Circle>
-          ))}
-        </Grid>
-      </CardWrapper>
-    </AnimateSharedLayout>
+    <ul>
+      {items.map((item) => (
+        <li
+          style={{
+            position: 'relative'
+          }}
+          key={item.id}
+          onClick={() => setSelectedID(item.id)}
+        >
+          <Circle>{item.photo}</Circle>
+          {selectedID === item.id && (
+            <motion.div
+              layoutId="border"
+              style={{
+                position: 'absolute',
+                borderRadius: '50%',
+                width: '48px',
+                height: '48px',
+                border: '4px solid blue';
+              }}
+            />
+          )}
+        </li>
+      ))}
+    </Grid>
   );
 };
 ```
 
-That's right! The only thing to do is to wrap the set of layout animations we want to keep in sync in a `AnimateSharedLayout` component. That's it!
+<Callout variant="info">
 
-It's now time to give a try at what we just learned! This last example compiles all the previous playgrounds together to create this list component with filters. This component contains:
+In previous versions of Framer Motion, before `v5.0`, this kind of use case would have required the `AnimatedSharedLayout` component which is now deprecated.
 
-- Some layout animations to transition the items on the lists when their sorting changes.
-- `AnimateSharedLayout` to gracefully resize the list when an item expands on hover revealing more details.
+On top of handling shared layout animations, this component also helped handle layout animations that affected each other. Today, if you end up in situations involving a lot of individual layout animations, you will need to "group" them with the `LayoutGroup` component.
+
+See the example in the playground below to try it out!
+
+</Callout>
+
+It's now time to give a try at what we just learned! This last example **compiles all the previous playgrounds together** to create this list component. This implementation includes:
+
+- using the `layout` prop on the `ListItem` component to animate reordering the list
+- using the `layout` prop on the list itself to handle resizing gracefully when items are expanded when clicked on
+- other instances of the `layout` prop used to prevent glitches during a layout animation (especially the ones involving changing the height of a list item)
 
 You can try to:
 
-- comment out `AnimateSharedLayout` and notice the subtle differences when a layout animation is triggered.
-- try to add the `layout` prop on the `motion.div` component surrounding the title and see it gracefully adjusting when the item's height changes after clicking on it.
+- comment out or remove the `layout` prop on the `ListItem` and see that now, reordering happens abruptly 👉 no more transition!
+- comment out or remove the `LayoutGroup` and notice how this affects all the layout animations
+- try to add the `layout` prop on the `<Title/>` component and see it gracefully adjusting when the height of an item changes
 
 ```js live
 const List = styled(motion.ul)`
+  position: relative;
   padding: 16px;
   width: 350px;
-  background: var(--maximeheckel-colors-background);
-  box-shadow: var(--maximeheckel-shadow-2);
+  background: var(--maximeheckel-colors-body);
   border-radius: var(--border-radius-1);
   display: grid;
   gap: 16px;
@@ -628,6 +654,8 @@ const ListItem = styled(motion.li)`
   cursor: pointer;
   margin-bottom: 0px;
 `;
+
+const Title = motion.div;
 
 const Button = styled('button')`
   background: transparent;
@@ -684,11 +712,7 @@ const categoryToVariant = {
 };
 
 const Item = (props) => {
-  const { article, showCategory } = props;
-
-  const [expand, setExpand] = React.useState(false);
-
-  const toggleExpand = () => setExpand((prev) => !prev);
+  const { article, showCategory, expanded, onClick } = props;
 
   const readButtonVariants = {
     hover: {
@@ -700,24 +724,22 @@ const Item = (props) => {
   };
 
   return (
-    <ListItem
-      layout
-      initial="initial"
-      whileHover="hover"
-      onClick={toggleExpand}
-    >
+    <ListItem layout initial="initial" whileHover="hover" onClick={onClick}>
       <InfoBox>
-        {/* 
+        {/*
           Try to add the "layout" prop to this motion component
-          and notice how it now gracefully moves as the list 
+          and notice how it now gracefully moves as the list
           item expands
         */}
-        <motion.div>{article.title}</motion.div>
+        <Title
+        //layout
+        >
+          {article.title}
+        </Title>
         <AnimatePresence>
-          {expand && (
+          {expanded && (
             <motion.div
               style={{ fontSize: '12px' }}
-              layout
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -741,7 +763,11 @@ const Item = (props) => {
           </motion.div>
         )}
       </AnimatePresence>
-      <motion.div variants={readButtonVariants} transition={{ duration: 0.25 }}>
+      <motion.div
+        layout
+        variants={readButtonVariants}
+        transition={{ duration: 0.25 }}
+      >
         <Button
           aria-label="read article"
           title="Read article"
@@ -757,6 +783,7 @@ const Item = (props) => {
 const Component = () => {
   const [showCategory, setShowCategory] = React.useState(false);
   const [sortBy, setSortBy] = React.useState('title');
+  const [expanded, setExpanded] = React.useState(null);
 
   const onSortChange = (event) => setSortBy(event.target.value);
 
@@ -808,21 +835,27 @@ const Component = () => {
         </div>
       </FilterWrapper>
       {/*
-        Try to remove AnimateSharedLayout and notice
-        the subtle differences when a layout animation 
-        is triggered
+        Since each layout animation in this list affect each other's layout
+        we have to wrap them in a `LayoutGroup`
+        Try to remove it! You should see that:
+        - without it concurrent layout animations when clicking on list 
+        items end up being "choppy" 
+        - with it concurrent layout animations when clicking on list items 
+        are more graceful
       */}
-      <AnimateSharedLayout>
+      <LayoutGroup>
         <List layout>
           {articlesToRender.map((article) => (
             <Item
               key={article.id}
+              expanded={expanded === article.id}
+              onClick={() => setExpanded(article.id)}
               article={article}
               showCategory={showCategory}
             />
           ))}
         </List>
-      </AnimateSharedLayout>
+      </LayoutGroup>
     </>
   );
 };
@@ -843,9 +876,9 @@ Don't hesitate to send me a message showcasing your creations!
 
 **Want to see more examples?**
 
-The [Framer Motion documentation](https://www.framer.com/api/motion/animate-shared-layout/) has tons of those to play with on Codepen.
+The [Framer Motion documentation](https://www.framer.com/docs/examples/) has tons of those to play with on Codepen.
 
 If you want to dig a bit deeper, below is the list of links to check out the implementations of the widgets featured in this article:
 
 - [Animation Presence Widget](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/3c8291d96bd9069d22bdcf26436abc75b7386a04/core/components/MDX/custom/Widgets/FramerMotionAnimatePresence.tsx)
-- [Shared Animation Layout](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/3c8291d96bd9069d22bdcf26436abc75b7386a04/core/components/MDX/custom/Widgets/FramerMotionAnimationLayout.tsx)
+- [Shared Animation Layout](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/b5429b983bdc3cedd24a021f6f2fb932df57514e/core/components/MDX/custom/Widgets/FramerMotionAnimationLayout.tsx)

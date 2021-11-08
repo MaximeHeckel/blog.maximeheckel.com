@@ -46,11 +46,6 @@ const DockerBuild = dynamic<{}>(() =>
     (module) => module.DockerBuild
   )
 );
-const SlidingWindow = dynamic<{}>(() =>
-  import('./custom/MicroAnimations/ReactSwift').then(
-    (module) => module.SlidingWindow
-  )
-);
 // Widgets (used in blog post for interactive experiences)
 
 const ClipboardAnimationDetails = dynamic(
@@ -114,7 +109,6 @@ const customComponents = {
   CardBody: Card.Body,
   DockerBuild,
   PreviewDeploy,
-  SlidingWindow,
   ScrollSpyWidget,
   SEOStats,
   SpringPhysics,
