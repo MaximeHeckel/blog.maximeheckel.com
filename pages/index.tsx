@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { motion, MotionProps } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import Anchor from '@theme/components/Anchor';
 import Button from '@theme/components/Button';
 import Grid from '@theme/components/Grid';
 import Card from '@theme/components/Card';
@@ -235,17 +236,14 @@ const IndexPage = (props: Props) => {
               return (
                 <li key={post.slug} data-testid="article-item">
                   {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
-                  <Link href={`/posts/${post.slug}/`}>
-                    <a
-                      css={css`
-                        text-decoration: none;
-                      `}
-                    >
+                  <Link href={`/posts/${post.slug}/`} passHref>
+                    {/* Revisit this component: merge Anchor and block together (extend block from Anchor) */}
+                    <a style={{ textDecoration: 'none' }}>
                       <Block data-testid="article-link">
                         <DateBlock>
                           {format(new Date(Date.parse(post.date)), 'MMM dd')}
                         </DateBlock>
-                        <TitleBlock>{post.title}</TitleBlock>
+                        {post.title}
                       </Block>
                     </a>
                   </Link>
@@ -257,9 +255,9 @@ const IndexPage = (props: Props) => {
           <Card>
             <Card.Body>
               <h3>#BlackLivesMatter</h3>
-              <a href="https://blacklivesmatters.carrd.co/">
+              <Anchor underline href="https://blacklivesmatters.carrd.co/">
                 Click here to find out how you can help.
-              </a>
+              </Anchor>
             </Card.Body>
           </Card>
         </section>
@@ -316,10 +314,17 @@ const Block = styled('div')`
   color: var(--maximeheckel-colors-typeface-primary);
   transition: background-color 0.25s, box-shadow 0.25s, color 0.25s;
 
-  &:hover {
-    background-color: var(--maximeheckel-colors-foreground);
-    box-shadow: var(--maximeheckel-shadow-1);
+  &:focus {
+    background-color: var(--maximeheckel-colors-emphasis);
     color: var(--maximeheckel-colors-brand);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-color: var(--maximeheckel-colors-emphasis);
+      // box-shadow: var(--maximeheckel-shadow-1);
+      color: var(--maximeheckel-colors-brand);
+    }
   }
 `;
 
@@ -334,10 +339,6 @@ const DateBlock = styled('div')`
   color: var(--maximeheckel-colors-typeface-tertiary);
   min-width: 50px;
   margin-right: 32px;
-`;
-
-const TitleBlock = styled('div')`
-  font-weight: 500;
 `;
 
 const List = styled(Grid)`

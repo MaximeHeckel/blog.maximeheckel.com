@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import { format } from 'date-fns';
 import React from 'react';
 import siteConfig from 'config/site';
@@ -13,6 +12,7 @@ import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
 import Grid from '@theme/components/Grid';
 import TableOfContent from '@theme/components/TableOfContent';
+import Anchor from '@theme/components/Anchor';
 
 interface WebmentionBlogDataProps {
   date: string;
@@ -99,6 +99,11 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
       <article className="h-entry">
         <Grid columns="var(--layout-small)" columnGap={20}>
           <Hero id="top">
+            <div css={{ marginBottom: '24px', fontSize: '16px' }}>
+              <Anchor arrow="left" discreet href="/">
+                Home
+              </Anchor>
+            </div>
             <Hero.Title
               className="p-name"
               data-testid={`project-title-${title}`}
@@ -107,9 +112,9 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
             </Hero.Title>
             <Hero.Info>
               <Flex
-                css={css`
-                  margin-bottom: 16px;
-                `}
+                css={{
+                  marginBottom: '12px',
+                }}
                 wrap="wrap"
               >
                 <p>{format(new Date(Date.parse(date)), 'MMMM d, yyyy')}</p>
@@ -121,6 +126,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
                 {format(new Date(Date.parse(updated)), 'MMMM d, yyyy')}
               </Pill>
             </Hero.Info>
+
             {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
           </Hero>
         </Grid>

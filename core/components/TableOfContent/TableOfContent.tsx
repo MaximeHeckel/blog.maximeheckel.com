@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Anchor from '@theme/components/Anchor';
 import useProgress from '@theme/hooks/useProgress';
 import useScrollSpy from '@theme/hooks/useScrollSpy';
 import { useReducedMotion, motion } from 'framer-motion';
@@ -45,8 +46,6 @@ const Wrapper = styled('div')<WrapperProps>`
       a {
         ${(p) =>
           !p.showTableOfContents ? `cursor: none;  pointer-events: none;` : ''}
-        color: var(--maximeheckel-colors-typeface-tertiary);
-        text-decoration: none;
       }
 
       &:focus:not(:focus-visible) {
@@ -148,14 +147,15 @@ const TableOfContent = ({ ids }: TableOfContentProps) => {
                 key={item.id}
                 custom={shouldShowTableOfContent}
               >
-                <a
+                <Anchor
+                  discreet
                   href={`#${item.id}`}
                   onClick={(event) =>
                     handleLinkClick(event, `${item.id}-section`)
                   }
                 >
                   {item.title}
-                </a>
+                </Anchor>
               </motion.li>
             );
           })}

@@ -27,11 +27,6 @@ export const TweetWrapper = styled('div')`
 
     border-radius: 0px;
   }
-
-  a {
-    text-decoration: none;
-    color: var(--maximeheckel-colors-typeface-tertiary) !important;
-  }
 `;
 
 export const Avatar = styled('a')`
@@ -44,12 +39,13 @@ export const Name = styled('a')`
   display: flex;
   flex-direction: column;
   margin-left: 1rem;
+  color: var(--maximeheckel-colors-typeface-primary);
+  text-decoration: none;
 
   span:first-of-type {
     display: flex;
     align-items: center;
     font-weight: 700;
-    color: var(--maximeheckel-colors-typeface-primary);
   }
 `;
 
@@ -78,4 +74,6 @@ export const ActionIcons = styled('a')`
   display: flex;
   align-items: center;
   margin-right: 1rem;
+  color: var(--maximeheckel-colors-typeface-tertiary);
+  text-decoration: none;
 `;
