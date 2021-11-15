@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import Link from 'next/link';
 import React from 'react';
 import siteConfig from 'config/site';
 import Layout from '@theme/layout';
@@ -100,9 +101,11 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
         <Grid columns="var(--layout-small)" columnGap={20}>
           <Hero id="top">
             <div css={{ marginBottom: '24px', fontSize: '16px' }}>
-              <Anchor arrow="left" discreet href="/">
-                Home
-              </Anchor>
+              <Link href="/" passHref>
+                <Anchor arrow="left" discreet>
+                  Home
+                </Anchor>
+              </Link>
             </div>
             <Hero.Title
               className="p-name"
