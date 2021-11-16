@@ -238,7 +238,7 @@ const IndexPage = (props: Props) => {
                   {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
                   <Link href={`/posts/${post.slug}/`} passHref>
                     {/* Revisit this component: merge Anchor and block together (extend block from Anchor) */}
-                    <a style={{ textDecoration: 'none' }}>
+                    <a style={{ textDecoration: 'none', fontWeight: 500 }}>
                       <Block data-testid="article-link">
                         <DateBlock>
                           {format(new Date(Date.parse(post.date)), 'MMM dd')}
