@@ -57,7 +57,7 @@
   --palette-blue-95: var(--base-blue), 5%;
 
   /* Red scale */
-  --base-red: 0, 99%;
+  --base-red: 0, 95%;
   --palette-red-05: var(--base-red), 95%;
   --palette-red-10: var(--base-red), 90%;
   --palette-red-15: var(--base-red), 85%;
@@ -194,6 +194,7 @@
   --maximeheckel-colors-typeface-secondary: hsla(var(--palette-gray-55), 100%);
   --maximeheckel-colors-typeface-tertiary: hsla(var(--palette-gray-60), 100%);
   --maximeheckel-colors-typeface-danger: hsla(var(--palette-red-60), 100%);
+  --maximeheckel-shadow-0: none;
   --maximeheckel-shadow-1: 0 0px 10px -6px rgba(0, 24, 40, 0.3);
   --maximeheckel-shadow-2: 0 0px 15px -6px rgba(0, 24, 40, 0.4);
   --maximeheckel-shadow-3: 0 0px 20px -6px rgba(0, 24, 40, 0.5);
@@ -232,6 +233,7 @@
   --maximeheckel-colors-typeface-secondary: hsla(var(--palette-gray-35), 100%);
   --maximeheckel-colors-typeface-tertiary: hsla(var(--palette-gray-20), 100%);
   --maximeheckel-colors-typeface-danger: hsla(var(--palette-red-20), 100%);
+  --maximeheckel-shadow-0: none;
   --maximeheckel-shadow-1: 0 0px 20px -6px rgba(0, 0, 0, 0.7);
   --maximeheckel-shadow-2: 0 0px 25px -6px rgba(0, 0, 0, 0.8);
   --maximeheckel-shadow-3: 0 0px 30px -6px rgba(0, 0, 0, 0.9);

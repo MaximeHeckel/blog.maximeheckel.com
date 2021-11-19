@@ -6,6 +6,7 @@ const StyledLabel = styled('label')`
   cursor: pointer;
   color: var(--maximeheckel-colors-typeface-secondary);
   font-weight: 500;
+  user-select: none;
   margin-right: 8px;
   vertical-align: top;
 `;

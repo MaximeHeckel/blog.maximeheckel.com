@@ -18,10 +18,8 @@ import Logo from '@theme/components/Logo';
 import TextArea from '@theme/components/TextArea';
 import Flex from '@theme/components/Flex';
 import Glow from '@theme/components/Glow';
-import Callout from '@theme/components/MDX/Callout';
-import { VARIANT } from '@theme/components/MDX/Callout/Callout';
+import Callout from '@theme/components/Callout';
 import CodeBlock from '@theme/components/MDX/Code/CodeBlock';
-import LiveCodeBlock from '@theme/components/MDX/Code/LiveCodeBlock';
 import InlineCode from '@theme/components/MDX/InlineCode';
 import MDXBody, { ListItem } from '@theme/components/MDX/MDX';
 import Pill, { PillVariant } from '@theme/components/Pill';
@@ -45,14 +43,16 @@ import Anchor from '@theme/components/Anchor';
  * - Decouple Search in 2 components => Overlay and Command Center
  * - Rename Search
  * - Polish interface for lists => should be in global.css if possible?
- * - VARIANT callout should be renamed "CalloutVariant"
  * - Small Responsive issue with Live Code Block on medium size screen
  *
- * - MAKE LINK/ANCHOR COMPONENT WITH COOL ANIMATION (mayve link and navigation with arrow icon)
  *
  * NOTES:
  * - use var(--maximeheckel-colors-foreground) instead of --maximeheckel-border-color: hsl(var(--palette-gray-80)) ??
  */
+
+const LiveCodeBlock = dynamic(
+  () => import('@theme/components/MDX/Code/LiveCodeBlock')
+);
 
 const Search = dynamic(() => import('@theme/components/Search'), {
   ssr: false,
@@ -726,13 +726,15 @@ they can change the world, are the ones who do.`}
         </section>
         <section id="callout">
           <h2>Callout</h2>
-          <Grid rowGap={32}>
-            <div>
-              <Callout variant={VARIANT.INFO}>Info Callout</Callout>
-            </div>
-            <div>
-              <Callout variant={VARIANT.DANGER}>Danger Callout</Callout>
-            </div>
+          <Grid gap={32}>
+            <Callout variant="info">Info Callout</Callout>
+            <Callout label="Learn more" variant="info">
+              Info Callout
+            </Callout>
+            <Callout variant="danger">Danger Callout</Callout>
+            <Callout label="Be careful!" variant="danger">
+              Danger Callout
+            </Callout>
           </Grid>
         </section>
 
