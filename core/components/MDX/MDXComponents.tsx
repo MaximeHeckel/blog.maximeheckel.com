@@ -3,11 +3,12 @@ import dynamic from 'next/dynamic';
 // Components
 import Anchor from '@theme/components/Anchor';
 import Button from '@theme/components/Button';
+import Callout from '@theme/components/Callout';
 import Card from '@theme/components/Card';
 import Pill from '@theme/components/Pill';
 
 // MDX only components
-import Callout from './Callout';
+
 import { Blockquote } from './Blockquote';
 import InlineCode from './InlineCode';
 import Code from './Code';

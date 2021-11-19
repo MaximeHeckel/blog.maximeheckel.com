@@ -94,13 +94,15 @@ const StyledLiveCodeWrapper = styled('div')<CodeSnippetWrapperProps>`
   @media (min-width: 1100px) {
     position: relative;
     width: calc(100% + 400px);
-    margin: 0px -200px 32px -200px;
+    margin-left: -200px;
+    margin-right: -200px;
   }
 
   backdrop-filter: blur(6px);
   border-radius: var(--border-radius-2);
   display: flex;
   align-items: center;
+  margin-bottom: 32px;
 `;
 
 const StyledEditorWrapper = styled('div')`

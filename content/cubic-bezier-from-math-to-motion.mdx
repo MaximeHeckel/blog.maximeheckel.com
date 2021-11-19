@@ -2,7 +2,7 @@
 title: 'Cubic Bézier: from math to motion'
 subtitle: A deep dive into the math behind Bézier curves, from simple linear interpolations to Cubic Bézier and how they are used to describe motion. This article introduces the concepts underneath cubic-bezier and easing timing functions that are used in CSS and Framer Motion transitions through easy-to-understand interactive examples.
 date: '2021-11-02T08:00:00.000Z'
-updated: '2021-11-02T08:00:00.000Z'
+updated: '2021-11-18T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -56,7 +56,7 @@ I represented this example in the widget below, where `P0` and `P1` are at the e
 
 This is called a **Linear Interpolation**.
 
-<Callout variant="info">
+<Callout label="The math" variant="info">
 
 The math representation of the position of `P` in the case of a linear interpolation is:
 
@@ -74,7 +74,7 @@ Let's add another point! We can now have two _interpolated points_, between each
 
 You can see that **the blue dot follows a specific path that resembles a curve**. This specifc one is called a **Quadratic Bézier curve**.
 
-<Callout variant="info">
+<Callout label="The math" variant="info">
 
 Let's do the math to find the equation representing the position of this blue dot at a given time `t`.
 We first break down the position of the red dots by using the formula we saw above. The position of these two red dots can be described as two distinct linear interpolations:

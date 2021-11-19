@@ -1,0 +1,341 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Callout can render a Callout with variant danger 1`] = `
+.emotion-0 {
+  position: relative;
+  padding: 30px 30px;
+  margin-bottom: 2.25rem;
+  border: 0px solid;
+  border-radius: var(--border-radius-1);
+  color: var(--maximeheckel-colors-typeface-primary);
+  border: 2px solid var(--maximeheckel-colors-foreground);
+  background: var(--callout-background, var(--maximeheckel-colors-emphasis));
+}
+
+.emotion-0 code {
+  background: none;
+}
+
+.emotion-0 *:last-child {
+  margin-bottom: 0px;
+}
+
+.emotion-0[data-variant^='info'] {
+  --callout-background: var(--maximeheckel-colors-emphasis);
+}
+
+.emotion-0[data-variant^='danger'] {
+  --callout-background: var(--maximeheckel-colors-danger-emphasis);
+}
+
+.emotion-2 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  top: -24px;
+  right: -20px;
+  border-radius: 50%;
+  padding: 8px;
+  color: var(--maximeheckel-colors-body);
+  border: 8px solid var(--maximeheckel-colors-body);
+  background: var(--icon-background, var(--maximeheckel-colors-body));
+}
+
+.emotion-2[data-variant^='info'] {
+  --icon-background: var(--maximeheckel-colors-brand);
+}
+
+.emotion-2[data-variant^='danger'] {
+  --icon-background: var(--maximeheckel-colors-danger);
+}
+
+<body>
+  <div>
+    <aside
+      class="emotion-0 emotion-1"
+      data-variant="danger"
+    >
+      <div
+        class="emotion-2 emotion-3"
+        data-variant="danger"
+      >
+        <svg
+          fill="none"
+          height="22"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="22"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polygon
+            points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"
+          />
+          <line
+            x1="12"
+            x2="12"
+            y1="8"
+            y2="12"
+          />
+          <line
+            x1="12"
+            x2="12.01"
+            y1="16"
+            y2="16"
+          />
+        </svg>
+      </div>
+      Test
+    </aside>
+  </div>
+</body>
+`;
+
+exports[`Callout can render a Callout with variant danger 2`] = `
+.emotion-0 {
+  position: relative;
+  padding: 30px 30px;
+  margin-bottom: 2.25rem;
+  border: 0px solid;
+  border-radius: var(--border-radius-1);
+  color: var(--maximeheckel-colors-typeface-primary);
+  border: 2px solid var(--maximeheckel-colors-foreground);
+  background: var(--callout-background, var(--maximeheckel-colors-emphasis));
+}
+
+.emotion-0 code {
+  background: none;
+}
+
+.emotion-0 *:last-child {
+  margin-bottom: 0px;
+}
+
+.emotion-0[data-variant^='info'] {
+  --callout-background: var(--maximeheckel-colors-emphasis);
+}
+
+.emotion-0[data-variant^='danger'] {
+  --callout-background: var(--maximeheckel-colors-danger-emphasis);
+}
+
+.emotion-2 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  top: -24px;
+  right: -8px;
+  border-radius: var(--border-radius-1);
+  padding: 8px;
+  color: var(--maximeheckel-colors-body);
+  font-size: 14px;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: var(--icon-background, var(--maximeheckel-colors-body));
+}
+
+.emotion-2[data-variant^='info'] {
+  --icon-background: var(--maximeheckel-colors-brand);
+}
+
+.emotion-2[data-variant^='danger'] {
+  --icon-background: var(--maximeheckel-colors-danger);
+}
+
+<body>
+  <div>
+    <aside
+      class="emotion-0 emotion-1"
+      data-variant="danger"
+    >
+      <div
+        class="emotion-2 emotion-3"
+        data-variant="danger"
+      >
+        Test Label
+      </div>
+      Test
+    </aside>
+  </div>
+</body>
+`;
+
+exports[`Callout can render a Callout with variant info 1`] = `
+.emotion-0 {
+  position: relative;
+  padding: 30px 30px;
+  margin-bottom: 2.25rem;
+  border: 0px solid;
+  border-radius: var(--border-radius-1);
+  color: var(--maximeheckel-colors-typeface-primary);
+  border: 2px solid var(--maximeheckel-colors-foreground);
+  background: var(--callout-background, var(--maximeheckel-colors-emphasis));
+}
+
+.emotion-0 code {
+  background: none;
+}
+
+.emotion-0 *:last-child {
+  margin-bottom: 0px;
+}
+
+.emotion-0[data-variant^='info'] {
+  --callout-background: var(--maximeheckel-colors-emphasis);
+}
+
+.emotion-0[data-variant^='danger'] {
+  --callout-background: var(--maximeheckel-colors-danger-emphasis);
+}
+
+.emotion-2 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  top: -24px;
+  right: -20px;
+  border-radius: 50%;
+  padding: 8px;
+  color: var(--maximeheckel-colors-body);
+  border: 8px solid var(--maximeheckel-colors-body);
+  background: var(--icon-background, var(--maximeheckel-colors-body));
+}
+
+.emotion-2[data-variant^='info'] {
+  --icon-background: var(--maximeheckel-colors-brand);
+}
+
+.emotion-2[data-variant^='danger'] {
+  --icon-background: var(--maximeheckel-colors-danger);
+}
+
+<body>
+  <div>
+    <aside
+      class="emotion-0 emotion-1"
+      data-variant="info"
+    >
+      <div
+        class="emotion-2 emotion-3"
+        data-variant="info"
+      >
+        <svg
+          fill="none"
+          height="22"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="22"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="12"
+            cy="12"
+            r="10"
+          />
+          <line
+            x1="12"
+            x2="12"
+            y1="16"
+            y2="12"
+          />
+          <line
+            x1="12"
+            x2="12.01"
+            y1="8"
+            y2="8"
+          />
+        </svg>
+      </div>
+      Test
+    </aside>
+  </div>
+</body>
+`;
+
+exports[`Callout can render a Callout with variant info 2`] = `
+.emotion-0 {
+  position: relative;
+  padding: 30px 30px;
+  margin-bottom: 2.25rem;
+  border: 0px solid;
+  border-radius: var(--border-radius-1);
+  color: var(--maximeheckel-colors-typeface-primary);
+  border: 2px solid var(--maximeheckel-colors-foreground);
+  background: var(--callout-background, var(--maximeheckel-colors-emphasis));
+}
+
+.emotion-0 code {
+  background: none;
+}
+
+.emotion-0 *:last-child {
+  margin-bottom: 0px;
+}
+
+.emotion-0[data-variant^='info'] {
+  --callout-background: var(--maximeheckel-colors-emphasis);
+}
+
+.emotion-0[data-variant^='danger'] {
+  --callout-background: var(--maximeheckel-colors-danger-emphasis);
+}
+
+.emotion-2 {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  top: -24px;
+  right: -8px;
+  border-radius: var(--border-radius-1);
+  padding: 8px;
+  color: var(--maximeheckel-colors-body);
+  font-size: 14px;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: var(--icon-background, var(--maximeheckel-colors-body));
+}
+
+.emotion-2[data-variant^='info'] {
+  --icon-background: var(--maximeheckel-colors-brand);
+}
+
+.emotion-2[data-variant^='danger'] {
+  --icon-background: var(--maximeheckel-colors-danger);
+}
+
+<body>
+  <div>
+    <aside
+      class="emotion-0 emotion-1"
+      data-variant="info"
+    >
+      <div
+        class="emotion-2 emotion-3"
+        data-variant="info"
+      >
+        Test Label
+      </div>
+      Test
+    </aside>
+  </div>
+</body>
+`;
