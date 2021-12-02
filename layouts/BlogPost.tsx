@@ -50,12 +50,12 @@ const contentClass = css({
   gridColumn: '2',
   color: 'var(--maximeheckel-colors-typeface-secondary)',
 
-  h2: {
+  h3: {
     marginTop: '2em',
   },
 
-  h3: {
-    marginTop: '2em',
+  section: {
+    marginTop: '5em',
   },
 });
 
@@ -145,9 +145,9 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
             </Hero.Info>
             {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
           </Hero>
-          <TableOfContent ids={ids} />
           <div className={contentClass()}>{children}</div>
         </Grid>
+        <TableOfContent ids={ids} />
         <Signature title={title} url={postUrl} />
         <WebmentionBlogData date={date} postUrl={postUrl} subtitle={subtitle} />
       </article>

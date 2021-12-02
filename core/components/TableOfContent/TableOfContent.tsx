@@ -102,7 +102,7 @@ const TableOfContent = ({ ids }: TableOfContentProps) => {
     const bodyRect = document.body.getBoundingClientRect().top;
     const elementRect = element.getBoundingClientRect().top;
     const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - 50;
+    const offsetPosition = elementPosition - 100;
 
     /**
      * Note @MaximeHeckel: This doesn't work on Safari :(
