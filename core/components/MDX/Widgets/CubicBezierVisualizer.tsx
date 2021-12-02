@@ -613,7 +613,7 @@ const Chart = (props: ChartProps) => {
       <Grid
         gap={8}
         columns="repeat(auto-fit, minmax(0px, 1fr))"
-        css={{
+        style={{
           marginTop: '16px',
         }}
       >

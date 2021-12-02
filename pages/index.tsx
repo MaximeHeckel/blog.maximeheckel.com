@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { styled } from 'lib/stitches.config';
+import { css, styled } from 'lib/stitches.config';
 import { format } from 'date-fns';
 import { motion, MotionProps } from 'framer-motion';
 import dynamic from 'next/dynamic';
@@ -67,6 +67,13 @@ const glowVariants = {
   },
 };
 
+const wrapperGrid = css({
+  paddingTop: '128px',
+  '> *': {
+    gridColumn: 2,
+  },
+});
+
 const IndexPage = (props: Props) => {
   const { posts } = props;
 
@@ -76,12 +83,7 @@ const IndexPage = (props: Props) => {
         columns="var(--layout-medium)"
         columnGap={20}
         rowGap={100}
-        css={{
-          paddingTop: '128px',
-          '> *': {
-            gridColumn: 2,
-          },
-        }}
+        className={wrapperGrid()}
       >
         <div>
           <h1>
@@ -138,7 +140,7 @@ const IndexPage = (props: Props) => {
           <h2>Featured</h2>
           <Grid
             as="ul"
-            css={{
+            style={{
               marginLeft: '0px',
               marginBottom: '0px',
             }}
@@ -230,7 +232,7 @@ const IndexPage = (props: Props) => {
           <h2>All articles</h2>
           <Grid
             as="ul"
-            css={{
+            style={{
               marginLeft: '0px',
               marginBottom: '0px',
             }}
@@ -250,7 +252,7 @@ const IndexPage = (props: Props) => {
 
               return (
                 <li
-                  css={{
+                  style={{
                     listStyle: 'none',
                     cursor: 'pointer',
                   }}

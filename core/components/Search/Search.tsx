@@ -245,7 +245,7 @@ const Search = (props: Props) => {
                   value={searchQuery}
                 />
                 <Label
-                  css={{
+                  style={{
                     width: '120px',
                     opacity: '0.8',
                   }}

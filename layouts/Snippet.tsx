@@ -28,6 +28,10 @@ const contentClass = css({
   },
 });
 
+const wrapperHero = css({
+  paddingTop: '32px !important',
+});
+
 const SnippetLayout = ({ children, frontMatter }: Props) => {
   const { date, slug, title, description, language } = frontMatter;
   const path = `/snippets/${slug}/`;
@@ -59,9 +63,7 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
              * TODO: Future Hero component of the Design System will have to handle
              * different layout/different header types (stickly/fixed etc)
              */
-            css={{
-              paddingTop: '32px !important',
-            }}
+            className={wrapperHero()}
           >
             <Hero.Title
               className="p-name"

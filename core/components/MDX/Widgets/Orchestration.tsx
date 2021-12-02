@@ -89,7 +89,7 @@ const Orchestration = () => {
         </Form>
         <motion.div
           key={key}
-          css={{
+          style={{
             background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
             height: '280px',
             width: '230px',

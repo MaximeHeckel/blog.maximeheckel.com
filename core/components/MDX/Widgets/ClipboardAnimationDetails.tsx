@@ -64,7 +64,7 @@ const ClipboardAnimationDetails = () => {
           maxWidth: '400px',
         }}
       >
-        <div css={{ width: '70%', marginBotton: '20px' }}>
+        <div style={{ width: '70%', marginBottom: '20px' }}>
           <Grid gap={12}>
             <Label>
               <Grid>
@@ -79,7 +79,7 @@ const ClipboardAnimationDetails = () => {
           </Grid>
         </div>
         <button
-          css={{
+          style={{
             background: 'transparent',
             border: 'none',
             cursor: isClicked ? 'default' : 'pointer',

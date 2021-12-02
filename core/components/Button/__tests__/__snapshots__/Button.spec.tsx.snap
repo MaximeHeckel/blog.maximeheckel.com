@@ -9,15 +9,11 @@ exports[`Button renders a basic button 1`] = `
 `;
 
 exports[`Button renders a button with a startIcon 1`] = `
-.emotion-0 {
-  margin-right: 8px;
-}
-
 <button
   class="c-gLcEqv c-gLcEqv-kxlbib-variant-primary"
 >
   <span
-    class="emotion-0"
+    style="margin-right: 8px;"
   >
     <svg
       data-testid="icon"
@@ -28,16 +24,12 @@ exports[`Button renders a button with a startIcon 1`] = `
 `;
 
 exports[`Button renders a button with an endIcon 1`] = `
-.emotion-0 {
-  margin-left: 8px;
-}
-
 <button
   class="c-gLcEqv c-gLcEqv-kxlbib-variant-primary"
 >
   Test
   <span
-    class="emotion-0"
+    style="margin-left: 8px;"
   >
     <svg
       data-testid="icon"
@@ -47,20 +39,12 @@ exports[`Button renders a button with an endIcon 1`] = `
 `;
 
 exports[`Button renders an icon button 1`] = `
-.emotion-0 {
-  z-index: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
 <button
   class="c-bhXMVC"
   variant="icon"
 >
   <span
-    class="emotion-0"
+    style="z-index: 1; display: flex;"
   >
     <svg
       data-testid="icon"

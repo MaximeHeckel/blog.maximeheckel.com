@@ -85,7 +85,7 @@ const FramerMotionAnimationLayout = () => {
         <Grid
           as="ul"
           columns="repeat(4, 48px)"
-          css={{
+          style={{
             height: '250px',
             width: '100%',
           }}

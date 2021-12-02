@@ -28,7 +28,6 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@emotion/react": "11.1.4",
     "@stitches/react": "1.2.5",
     "@visx/clip-path": "1.6.1",
     "@visx/curve": "1.6.1",
@@ -75,8 +74,6 @@
   "devDependencies": {
     "@babel/core": "7.12.10",
     "@cypress/snapshot": "2.1.7",
-    "@emotion/babel-plugin": "11.3.0",
-    "@emotion/jest": "11.2.0",
     "@netlify/plugin-nextjs": "3.9.0",
     "@next/bundle-analyzer": "10.0.5",
     "@now/node": "1.8.5",
@@ -121,9 +118,6 @@
     "react-dom": "17.0.1"
   },
   "jest": {
-    "snapshotSerializers": [
-      "@emotion/jest/serializer"
-    ],
     "setupFilesAfterEnv": [
       "./setup-jest.js"
     ],

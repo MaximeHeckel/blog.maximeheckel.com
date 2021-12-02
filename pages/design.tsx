@@ -42,6 +42,8 @@ import { TransformedTweet } from 'types/tweet';
  * - Decouple Search in 2 components => Overlay and Command Center
  * - Rename Search
  * - Fix smooth scroll Table of content
+ * - Remove inline styles in components (should be class or styled components)
+ * - Make sure Grid can take the css prop / Revisit Grid implementation
  *
  *
  * NOTES:

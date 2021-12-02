@@ -48,7 +48,7 @@ const ThemePicker = () => {
         <Grid
           columns="repeat(auto-fill, minmax(85px, 1fr))"
           gap="5px"
-          css={{
+          style={{
             margin: '0 auto',
             width: '80%',
             height: '100px',

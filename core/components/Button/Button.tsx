@@ -20,7 +20,7 @@ const Button = <T extends object>(
     return (
       <StyledIconButton variant={variant} as={Component} ref={ref} {...rest}>
         <span
-          css={{
+          style={{
             zIndex: 1,
             display: 'flex',
           }}
@@ -35,7 +35,7 @@ const Button = <T extends object>(
     <StyledButton variant={variant} as={Component} ref={ref} {...rest}>
       {startIcon ? (
         <span
-          css={{
+          style={{
             marginRight: '8px',
           }}
         >
@@ -45,7 +45,7 @@ const Button = <T extends object>(
       {children}
       {endIcon ? (
         <span
-          css={{
+          style={{
             marginLeft: '8px',
           }}
         >
