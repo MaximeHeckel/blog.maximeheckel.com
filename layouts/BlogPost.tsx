@@ -23,7 +23,6 @@ interface WebmentionBlogDataProps {
 
 const WebmentionBlogData = (props: WebmentionBlogDataProps) => {
   const { date, postUrl, subtitle } = props;
-
   return (
     <>
       <time
@@ -145,9 +144,9 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
             </Hero.Info>
             {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
           </Hero>
+          <TableOfContent ids={ids} />
           <div className={contentClass()}>{children}</div>
         </Grid>
-        <TableOfContent ids={ids} />
         <Signature title={title} url={postUrl} />
         <WebmentionBlogData date={date} postUrl={postUrl} subtitle={subtitle} />
       </article>

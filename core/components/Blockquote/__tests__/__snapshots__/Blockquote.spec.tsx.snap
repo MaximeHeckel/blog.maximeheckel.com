@@ -4,11 +4,11 @@ exports[`Blockquote can render a Blockquote 1`] = `
 <body>
   <div>
     <blockquote
-      class="c-jfBerW"
+      class="c-dBvjDU"
     >
-      <p>
+      <div>
         Test
-      </p>
+      </div>
     </blockquote>
   </div>
 </body>

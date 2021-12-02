@@ -6,7 +6,7 @@ const Blockquote: React.FC = (props) => {
 
   return (
     <StyledBlockquote {...rest}>
-      <p>{children}</p>
+      <div>{children}</div>
     </StyledBlockquote>
   );
 };

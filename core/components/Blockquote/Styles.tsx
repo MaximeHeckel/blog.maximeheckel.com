@@ -1,7 +1,6 @@
 import { styled } from 'lib/stitches.config';
 
 export const StyledBlockquote = styled('blockquote', {
-  transition: '0.5s',
   /**
    * Make it fullbleed!
    */
@@ -17,9 +16,12 @@ export const StyledBlockquote = styled('blockquote', {
   backdropFilter: 'blur(6px)',
 
   p: {
+    marginBottom: 0,
+  },
+
+  div: {
     maxWidth: '880px !important',
-    paddingLeft: '50px',
-    paddingBottom: '0',
+    padding: '0 32px',
     width: '100%',
     margin: '0 auto',
     fontSize: '27px',
