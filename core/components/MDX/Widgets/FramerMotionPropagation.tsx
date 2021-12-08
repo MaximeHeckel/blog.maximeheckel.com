@@ -1,6 +1,7 @@
 import Button from '@theme/components/Button';
 import DesignSystemCard from '@theme/components/Card';
 import Flex from '@theme/components/Flex';
+import { H3 } from '@theme/components/Typography';
 import { motion } from 'framer-motion';
 import { styled } from 'lib/stitches.config';
 import React from 'react';
@@ -196,7 +197,7 @@ const CardWithGlow = () => {
         variants={layerVariants}
       >
         <CaptureLayer show={inPerspective} variants={topLayerVariants} />
-        <h3>Hover me!</h3>
+        <H3>Hover me!</H3>
         <CardWrapper>
           <Glow variants={glowVariants} custom={inPerspective} />
           <Card>

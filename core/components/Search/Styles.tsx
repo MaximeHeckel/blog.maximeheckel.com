@@ -1,3 +1,4 @@
+import Text from '@theme/components/Typography';
 import { motion } from 'framer-motion';
 import { styled } from 'lib/stitches.config';
 import { HEIGHT, MAX_HEIGHT } from './constants';
@@ -7,7 +8,7 @@ export const Result = styled(motion.li, {
   alignItems: 'center',
   marginBottom: '0px',
   listStyle: 'none',
-  fontSize: '0.875rem',
+  fontSize: 'var(--font-size-2)',
   lineHeight: '24px',
   color: 'var(--maximeheckel-colors-typeface-secondary)',
   padding: '10px 25px',
@@ -46,7 +47,8 @@ export const SearchResults = styled('ul', {
   background: 'var(--maximeheckel-colors-body)',
   maxHeight: `${MAX_HEIGHT}px`,
   overflowY: 'scroll',
-  margin: '0px',
+  margin: '0',
+  padding: '0',
 
   '@media (max-width: 700px)': {
     maxHeight: '450px',
@@ -86,7 +88,7 @@ export const FormWrapper = styled('div', {
   input: {
     background: 'transparent',
     border: 'none',
-    fontSize: '0.875rem',
+    fontSize: 'var(--font-size-2)',
     fontWeight: '400',
     height: '55px',
     padding: '0px 25px',
@@ -125,7 +127,7 @@ export const FormWrapper = styled('div', {
     '&::-webkit-autofill': {
       background: 'transparent',
       color: 'var(--maximeheckel-colors-typeface-primary)',
-      fontSize: '14px',
+      fontSize: 'var(--font-size-1)',
     },
   },
 });
@@ -140,23 +142,30 @@ export const Overlay = styled(motion.div, {
   outline: 'none',
 });
 
-export const ShortcutKey = styled('kbd', {
-  color: 'var(--maximeheckel-colors-brand)',
-  fontSize: '14px',
-  borderRadius: 'var(--border-radius-0)',
-  padding: '6px 6px',
-  background: 'var(--maximeheckel-colors-emphasis)',
-  '&:not(:last-child)': {
-    marginRight: '12px',
-  },
-});
+export const KBD = (props: React.HTMLAttributes<HTMLParagraphElement>) => (
+  <Text
+    {...props}
+    as="kbd"
+    css={{
+      fontFamily: 'var(--font-display)',
+      borderRadius: 'var(--border-radius-1)',
+      padding: '8px',
+      background: 'var(--maximeheckel-colors-emphasis)',
+      '&:not(:last-child)': {
+        marginRight: '12px',
+      },
+    }}
+    size="1"
+    variant="info"
+  />
+);
 
 export const Item = styled('li', {
   height: `${HEIGHT}px`,
   marginBottom: '0px',
   transition: '0.25s',
   listStyle: 'none',
-  fontSize: '0.875rem',
+  fontSize: 'var(--font-size-2)',
   color: 'var(--maximeheckel-colors-typeface-secondary)',
   display: 'flex',
   alignItems: 'center',
@@ -193,7 +202,7 @@ export const Item = styled('li', {
 export const Separator = styled('li', {
   height: '30px',
   width: '100%',
-  fontSize: '14px',
+  fontSize: 'var(--font-size-1)',
   backgroundColor: 'var(--maximeheckel-colors-foreground)',
   color: 'var(--maximeheckel-colors-typeface-tertiary)',
   fontWeight: '500',

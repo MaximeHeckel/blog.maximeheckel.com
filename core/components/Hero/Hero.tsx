@@ -2,6 +2,7 @@ import { styled } from 'lib/stitches.config';
 import Image from 'next/image';
 import React from 'react';
 import { loader } from '../../../lib/next-image-loader';
+import { H1 } from '../Typography';
 interface HeroImgProps {
   src: string;
   className: string;
@@ -9,21 +10,20 @@ interface HeroImgProps {
 
 const HeroInfo = styled('div', {
   marginBottom: '2.25rem',
-  p: {
-    color: 'var(--maximeheckel-colors-typeface-tertiary)',
-    fontSize: '14px',
-    fontWeight: 500,
-    marginBottom: '0px',
-  },
 });
 
 const HeroSubtitle = styled('h3', {
   color: 'var(--maximeheckel-colors-typeface-tertiary)',
 });
 
-const HeroTitle = styled('h1', {
-  marginBottom: '16px',
-});
+const HeroTitle = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+  <H1
+    {...props}
+    css={{
+      marginBottom: '16px',
+    }}
+  />
+);
 
 const HeroWrapper = styled('div', {
   color: 'var(--maximeheckel-colors-typeface-primary)',

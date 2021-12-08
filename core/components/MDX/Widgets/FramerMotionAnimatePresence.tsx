@@ -1,6 +1,7 @@
 import Button from '@theme/components/Button';
 import DesignSystemCard from '@theme/components/Card';
 import Flex from '@theme/components/Flex';
+import { ArrowIcon } from '@theme/components/Icons';
 import InlineCode from '@theme/components/InlineCode';
 import { AnimatePresence, motion } from 'framer-motion';
 import { styled } from 'lib/stitches.config';
@@ -113,7 +114,7 @@ const ContentDemo = (props: Props) => {
           variant="icon"
           onMouseEnter={() => setAboutToBeClicked('prev')}
           onClick={prev}
-          icon={<div>&#8592;</div>}
+          icon={<ArrowIcon style={{ transform: 'scaleX(-1)' }} />}
         />
 
         <Button
@@ -122,7 +123,7 @@ const ContentDemo = (props: Props) => {
           variant="icon"
           onMouseEnter={() => setAboutToBeClicked('next')}
           onClick={next}
-          icon={<div>&#8594;</div>}
+          icon={<ArrowIcon />}
         />
       </Flex>
     </>

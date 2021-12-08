@@ -2,7 +2,7 @@
 
 exports[`Button renders a basic button 1`] = `
 <button
-  class="c-gLcEqv c-gLcEqv-kxlbib-variant-primary"
+  class="c-bVoOVF c-bVoOVF-kxlbib-variant-primary"
 >
   Test
 </button>
@@ -10,7 +10,7 @@ exports[`Button renders a basic button 1`] = `
 
 exports[`Button renders a button with a startIcon 1`] = `
 <button
-  class="c-gLcEqv c-gLcEqv-kxlbib-variant-primary"
+  class="c-bVoOVF c-bVoOVF-kxlbib-variant-primary"
 >
   <span
     style="margin-right: 8px;"
@@ -25,7 +25,7 @@ exports[`Button renders a button with a startIcon 1`] = `
 
 exports[`Button renders a button with an endIcon 1`] = `
 <button
-  class="c-gLcEqv c-gLcEqv-kxlbib-variant-primary"
+  class="c-bVoOVF c-bVoOVF-kxlbib-variant-primary"
 >
   Test
   <span

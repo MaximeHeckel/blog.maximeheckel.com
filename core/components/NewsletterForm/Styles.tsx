@@ -1,24 +1,8 @@
 import { styled } from 'lib/stitches.config';
 import Card from '@theme/components/Card';
+import Text from '@theme/components/Typography';
 
 export const NewsletterFormContent = styled(Card.Body, {
-  h3: {
-    maxWidth: '600px',
-    color: 'var(--maximeheckel-colors-typeface-primary)',
-  },
-
-  p: {
-    color: 'var(--maximeheckel-colors-typeface-secondary)',
-    marginBottom: '0px',
-  },
-
-  'span:not([data-list-item])': {
-    padding: '6px 0px 7px 0px',
-    color: 'var(--maximeheckel-colors-brand)',
-    background: 'var(--maximeheckel-colors-emphasis)',
-    fontWeight: 500,
-  },
-
   variants: {
     withOffset: {
       true: {
@@ -34,8 +18,15 @@ export const NewsletterFormContent = styled(Card.Body, {
   },
 });
 
-export const ErrorMessage = styled('p', {
-  marginTop: '16px',
-  color: 'var(--maximeheckel-colors-danger) !important',
-  maxWidth: '800px !important',
-});
+export const ErrorMessage: React.FC = (props) => (
+  <Text
+    as="p"
+    css={{
+      margin: '16px 0px 0px 0px',
+      maxWidth: '800px !important',
+    }}
+    variant="danger"
+  >
+    {props.children}
+  </Text>
+);

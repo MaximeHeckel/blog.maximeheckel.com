@@ -88,6 +88,7 @@ const FramerMotionAnimationLayout = () => {
           style={{
             height: '250px',
             width: '100%',
+            padding: '0',
           }}
           columnGap="12px"
           justifyContent="center"

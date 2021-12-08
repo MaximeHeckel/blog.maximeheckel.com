@@ -1,6 +1,6 @@
 import Flex from '@theme/components/Flex';
+import Text from '@theme/components/Typography';
 import React from 'react';
-import { styled } from 'lib/stitches.config';
 
 const initialCounts = {
   count: 0,
@@ -11,14 +11,6 @@ const initialCounts = {
     repost: 0,
   },
 };
-
-const CountWrapper = styled(Flex, {
-  p: {
-    color: 'var(--maximeheckel-colors-brand) !important',
-    fontSize: '14px',
-    fontWeight: 500,
-  },
-});
 
 const fetchCounts = async (target: string) =>
   fetch(
@@ -38,29 +30,52 @@ const WebmentionCount = ({ target }: { target: string }) => {
   }, [target]);
 
   return (
-    <CountWrapper>
+    <Flex>
       {counts === undefined && (
-        <p data-testid="failed">Failed to load counts 😞</p>
+        <Text as="p" data-testid="failed">
+          Failed to load counts 😞
+        </Text>
       )}
       {counts && (
         <>
-          <p data-testid="likes">
+          <Text
+            as="p"
+            size="1"
+            weight="3"
+            variant="info"
+            css={{ marginBottom: 0 }}
+            data-testid="likes"
+          >
             {counts.type.like || 0}
             {' Likes '}&bull;
-          </p>
-          <p data-testid="replies">
+          </Text>
+          <Text
+            as="p"
+            size="1"
+            weight="3"
+            variant="info"
+            css={{ marginBottom: 0 }}
+            data-testid="replies"
+          >
             {' '}
             {counts.type.reply || 0}
             {' Replies '}&bull;
-          </p>
-          <p data-testid="reposts">
+          </Text>
+          <Text
+            as="p"
+            size="1"
+            weight="3"
+            variant="info"
+            css={{ marginBottom: 0 }}
+            data-testid="reposts"
+          >
             {' '}
             {(counts.type.repost || 0) + (counts.type.mention || 0)}
             {' Mentions'}
-          </p>
+          </Text>
         </>
       )}
-    </CountWrapper>
+    </Flex>
   );
 };
 
