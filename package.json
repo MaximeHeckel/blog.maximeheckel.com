@@ -47,6 +47,7 @@
     "graphql": "15.4.0",
     "graphql-request": "3.3.0",
     "gray-matter": "4.0.2",
+    "lodash.merge": "4.6.2",
     "lunr": "2.3.9",
     "mousetrap": "1.6.5",
     "next": "11.1.2",
@@ -81,6 +82,7 @@
     "@testing-library/react": "11.2.3",
     "@types/d3-array": "2.9.0",
     "@types/jest": "26.0.19",
+    "@types/lodash.merge": "^4.6.6",
     "@types/lunr": "^2.3.3",
     "@types/mousetrap": "1.6.5",
     "@types/node": "14.14.20",
@@ -139,7 +141,10 @@
       ".+\\.(css|styl|less|sass|scss)$": "identity-obj-proxy",
       ".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/file.js"
     },
-    "moduleDirectories": ["node_modules", "<rootDir>"],
+    "moduleDirectories": [
+      "node_modules",
+      "<rootDir>"
+    ],
     "collectCoverage": false,
     "coverageReporters": [
       "lcov",

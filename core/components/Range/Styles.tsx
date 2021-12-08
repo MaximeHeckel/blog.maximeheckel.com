@@ -102,16 +102,6 @@ export const StyledRange = styled('input', {
       '--shadow': '0 2px 20px 3px var(--maximeheckel-form-input-focus)',
     },
   },
-
-  '& + label': {
-    fontSize: '16px',
-    display: 'inline-block',
-    cursor: 'pointer',
-    color: 'var(--maximeheckel-colors-typeface-secondary)',
-    fontWeight: '500',
-    marginRight: '8px',
-    verticalAlign: 'top',
-  },
 });
 
 // export const StyledRange = styled('input')<{ fill: string }>`

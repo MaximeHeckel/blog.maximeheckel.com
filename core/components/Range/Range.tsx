@@ -39,7 +39,11 @@ const Range = (props: RangeProps) => {
         width: '100%',
       }}
     >
-      {label ? <Label htmlFor={id}>{label}</Label> : null}
+      {label ? (
+        <Label htmlFor={id} style={{ marginBottom: '8px' }}>
+          {label}
+        </Label>
+      ) : null}
       <StyledRange
         id={id}
         type="range"

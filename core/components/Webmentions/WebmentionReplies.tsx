@@ -1,4 +1,5 @@
 import Anchor from '@theme/components/Anchor';
+import Text from '@theme/components/Typography';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -60,24 +61,22 @@ const WebmentionReplies = ({ title, url }: Props) => {
 
   return (
     <div ref={ref}>
-      <strong>
-        <p data-testid="main-text">
-          {replies.length > 0
-            ? `Already ${
-                distinctFans.size > 1
-                  ? `${distinctFans.size} awesome people`
-                  : 'one awesome person'
-              } liked, shared or talked about this article:`
-            : 'Be the first one to share this article!'}
-          <br />
-        </p>
-      </strong>
+      <Text as="p" weight="4" data-testid="main-text">
+        {replies.length > 0
+          ? `Already ${
+              distinctFans.size > 1
+                ? `${distinctFans.size} awesome people`
+                : 'one awesome person'
+            } liked, shared or talked about this article:`
+          : 'Be the first one to share this article!'}
+        <br />
+      </Text>
       {inView ? (
         <Replies replies={replies} />
       ) : (
         <div style={{ height: heightRow * numberOfRow, width: '100%' }} />
       )}
-      <p data-testid="share-text">
+      <Text as="p" data-testid="share-text">
         <Anchor
           href={`https://twitter.com/intent/tweet?text=${encodeURI(text)}`}
           target="_blank"
@@ -96,7 +95,7 @@ const WebmentionReplies = ({ title, url }: Props) => {
           click here to leave a comment
         </Anchor>{' '}
         and discuss about it on Twitter.
-      </p>
+      </Text>
     </div>
   );
 };

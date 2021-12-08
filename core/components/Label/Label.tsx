@@ -1,21 +1,27 @@
-import { styled } from 'lib/stitches.config';
+import Text from '@theme/components/Typography';
 
-const StyledLabel = styled('label', {
-  fontSize: '14px',
-  fontWeight: 500,
-  display: 'inline-block',
-  cursor: 'pointer',
-  color: 'var(--maximeheckel-colors-typeface-secondary)',
-  userSelect: 'none',
-  marginRight: '8px',
-  verticalAlign: 'top',
-});
-
-const Label: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = (
-  props
-) => {
+const Label = (props: React.LabelHTMLAttributes<HTMLLabelElement>) => {
   const { children, ...rest } = props;
-  return <StyledLabel {...rest}>{children}</StyledLabel>;
+  return (
+    <Text
+      {...rest}
+      as="label"
+      css={{
+        display: 'inline-block',
+        cursor: 'pointer',
+        userSelect: 'none',
+        marginRight: '8px',
+        marginBottom: '0px',
+        letterSpacing: '0px',
+        verticalAlign: 'top',
+      }}
+      variant="secondary"
+      size="1"
+      weight="3"
+    >
+      {children}
+    </Text>
+  );
 };
 
 export default Label;

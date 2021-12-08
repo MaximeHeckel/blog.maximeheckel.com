@@ -5,11 +5,7 @@ import { HeaderContext } from './Context';
 
 export const TitleWrapper = styled('div', {
   overflow: 'hidden',
-  marginLeft: '40px',
-
-  h3: {
-    marginBottom: '0px',
-  },
+  marginLeft: '42px',
 
   a: {
     color: 'var(--maximeheckel-colors-typeface-primary)',

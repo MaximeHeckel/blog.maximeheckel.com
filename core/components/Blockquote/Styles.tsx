@@ -17,17 +17,17 @@ export const StyledBlockquote = styled('blockquote', {
 
   p: {
     marginBottom: 0,
+    fontSize: 'var(--font-size-6) !important',
+    lineHeight: '1.6818 !important',
+    fontWeight: 'var(--font-weight-2) !important',
+    fontStyle: 'italic',
   },
 
   div: {
     maxWidth: '880px !important',
-    padding: '0 32px',
+    padding: '0 20px',
     width: '100%',
     margin: '0 auto',
-    fontSize: '27px',
-    lineHeight: '1.6818',
-    fontWeight: '400',
-    fontStyle: 'italic',
     color: 'var(--maximeheckel-colors-typeface-primary)',
   },
 });
