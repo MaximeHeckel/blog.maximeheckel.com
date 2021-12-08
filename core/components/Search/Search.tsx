@@ -247,7 +247,6 @@ const Search = (props: Props) => {
                 <Label
                   style={{
                     width: '120px',
-                    opacity: '0.8',
                   }}
                 >
                   {debouncedSearchQuery !== '' && !loading

@@ -3,7 +3,7 @@
 exports[`Pill Renders the Pill component with the danger variant 1`] = `
 <DocumentFragment>
   <span
-    class="c-gIiHtB c-gIiHtB-cGyTej-variant-danger"
+    class="c-gdtzuy c-gdtzuy-cGyTej-variant-danger"
   >
     test
   </span>
@@ -13,7 +13,7 @@ exports[`Pill Renders the Pill component with the danger variant 1`] = `
 exports[`Pill Renders the Pill component with the info variant 1`] = `
 <DocumentFragment>
   <span
-    class="c-gIiHtB c-gIiHtB-dGJyPl-variant-info"
+    class="c-gdtzuy c-gdtzuy-dGJyPl-variant-info"
   >
     test
   </span>
@@ -23,7 +23,7 @@ exports[`Pill Renders the Pill component with the info variant 1`] = `
 exports[`Pill Renders the Pill component with the success variant 1`] = `
 <DocumentFragment>
   <span
-    class="c-gIiHtB c-gIiHtB-ypDbH-variant-success"
+    class="c-gdtzuy c-gdtzuy-ypDbH-variant-success"
   >
     test
   </span>
@@ -33,7 +33,7 @@ exports[`Pill Renders the Pill component with the success variant 1`] = `
 exports[`Pill Renders the Pill component with the warning variant 1`] = `
 <DocumentFragment>
   <span
-    class="c-gIiHtB c-gIiHtB-lghveN-variant-warning"
+    class="c-gdtzuy c-gdtzuy-lghveN-variant-warning"
   >
     test
   </span>

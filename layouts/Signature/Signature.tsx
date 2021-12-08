@@ -1,4 +1,5 @@
 import Anchor from '@theme/components/Anchor';
+import Text from '@theme/components/Typography';
 import WebmentionReplies from '@theme/components/Webmentions/WebmentionReplies';
 import { styled } from 'lib/stitches.config';
 import dynamic from 'next/dynamic';
@@ -31,7 +32,7 @@ const Signature = ({ title, url }: { title: string; url: string }) => {
     <ColoredBlockWrapper data-testid="signature">
       <section>
         <WebmentionReplies title={title} url={url} />
-        <p>
+        <Text as="p">
           Do you have any questions, comments or simply wish to contact me
           privately? Don&rsquo;t hesitate to shoot me a DM on{' '}
           <Anchor
@@ -43,12 +44,12 @@ const Signature = ({ title, url }: { title: string; url: string }) => {
             Twitter
           </Anchor>
           .
-        </p>
+        </Text>
         <br />
-        <p>
+        <Text as="p">
           Have a wonderful day. <br />
           Maxime
-        </p>
+        </Text>
         <NewsletterForm />
       </section>
     </ColoredBlockWrapper>

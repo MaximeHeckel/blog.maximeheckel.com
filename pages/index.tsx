@@ -10,6 +10,7 @@ import Grid from '@theme/components/Grid';
 import Card from '@theme/components/Card';
 import Flex from '@theme/components/Flex';
 import { ExternalIcon, TwitterIcon } from '@theme/components/Icons';
+import Text, { H1, H2, H3 } from '@theme/components/Typography';
 import VisuallyHidden from '@theme/components/VisuallyHidden';
 import Layout from '@theme/layout';
 import { getAllFilesFrontMatter } from 'lib/mdx';
@@ -86,18 +87,14 @@ const IndexPage = (props: Props) => {
         className={wrapperGrid()}
       >
         <div>
-          <h1>
+          <H1>
             Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
-            <span
-              style={{
-                color: 'var(--maximeheckel-colors-typeface-secondary)',
-              }}
-            >
+            <Text variant="secondary" size="7" weight="4">
               Here, I share through my writing my experience as a frontend
               engineer and everything I'm learning about on React, Typescript,
               SwiftUI, Serverless, and testing.
-            </span>
-          </h1>
+            </Text>
+          </H1>
           <Flex
             css={{
               marginLeft: '-12px',
@@ -133,16 +130,17 @@ const IndexPage = (props: Props) => {
           </Flex>
         </div>
         <section>
-          <h2>Newsletter</h2>
+          <H2>Newsletter</H2>
           <NewsletterForm large />
         </section>
         <section>
-          <h2>Featured</h2>
+          <H2>Featured</H2>
           <Grid
             as="ul"
             style={{
               marginLeft: '0px',
               marginBottom: '0px',
+              padding: '0px',
             }}
             data-testid="featured-list"
             rowGap={16}
@@ -158,6 +156,9 @@ const IndexPage = (props: Props) => {
                       marginRight: '-8px',
                       listStyle: 'none',
                       cursor: 'pointer',
+                      marginBottom: 'calc(1.45rem / 2)',
+                      lineHeight: '1.9',
+                      letterSpacing: '0.3px',
                     }}
                     key={post.slug}
                     data-testid="featured-article-item"
@@ -208,17 +209,18 @@ const IndexPage = (props: Props) => {
                           depth={1}
                         >
                           <Card.Body>
-                            <TitleWithBackground
-                              style={{
-                                WebkitBackgroundClip: 'text',
-                              }}
+                            <H2
+                              gradient
                               css={{
-                                background: post.colorFeatured!,
+                                backgroundImage: post.colorFeatured!,
+                                marginBottom: '8px',
                               }}
                             >
                               {post.title}
-                            </TitleWithBackground>
-                            <p>{post.subtitle}</p>
+                            </H2>
+                            <Text as="p" css={{ marginBottom: '0px' }}>
+                              {post.subtitle}
+                            </Text>
                           </Card.Body>
                         </Card>
                       </a>
@@ -229,12 +231,12 @@ const IndexPage = (props: Props) => {
           </Grid>
         </section>
         <section>
-          <h2>All articles</h2>
+          <H2>All articles</H2>
           <Grid
             as="ul"
             style={{
-              marginLeft: '0px',
-              marginBottom: '0px',
+              margin: '0',
+              padding: '0',
             }}
             data-testid="article-list"
             rowGap={4}
@@ -255,18 +257,41 @@ const IndexPage = (props: Props) => {
                   style={{
                     listStyle: 'none',
                     cursor: 'pointer',
+                    marginBottom: 'calc(1.45rem / 2)',
+                    lineHeight: '1.9',
+                    letterSpacing: '0.3px',
                   }}
                   key={post.slug}
                   data-testid="article-item"
                 >
-                  {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
+                  {printYear ? (
+                    <Text
+                      as="p"
+                      weight="4"
+                      css={{
+                        paddingTop: '30px',
+                      }}
+                    >
+                      {currentYear}
+                    </Text>
+                  ) : null}
                   <Link href={`/posts/${post.slug}/`} passHref>
                     {/* Revisit this component: merge Anchor and block together (extend block from Anchor) */}
                     <a style={{ textDecoration: 'none', fontWeight: 500 }}>
                       <Block data-testid="article-link">
-                        <DateBlock>
+                        <Text
+                          as="p"
+                          size="1"
+                          variant="tertiary"
+                          weight="3"
+                          css={{
+                            minWidth: '52px',
+                            marginRight: '32px',
+                            marginBottom: '0px',
+                          }}
+                        >
                           {format(new Date(Date.parse(post.date)), 'MMM dd')}
-                        </DateBlock>
+                        </Text>
                         {post.title}
                       </Block>
                     </a>
@@ -278,7 +303,7 @@ const IndexPage = (props: Props) => {
           <br />
           <Card>
             <Card.Body>
-              <h3>#BlackLivesMatter</h3>
+              <H3>#BlackLivesMatter</H3>
               <Anchor underline href="https://blacklivesmatters.carrd.co/">
                 Click here to find out how you can help.
               </Anchor>
@@ -305,17 +330,6 @@ const Glow = styled(motion.div, {
   webkitFilter: 'blur(15px)',
   filter: 'blur(15px)',
   borderRadius: 'var(--border-radius-2)',
-});
-
-const TitleWithBackground = styled('h2', {
-  color: 'var(--maximeheckel-colors-typeface-primary)',
-  letterSpacing: '-0.02em',
-  marginBlockEnd: '0px',
-  backgroundClip: 'text',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  display: 'inline-block',
-  marginBottom: '8px',
 });
 
 const Block = styled('div', {
@@ -347,19 +361,6 @@ const Block = styled('div', {
   '@media (max-width: 700px)': {
     height: '100px',
   },
-});
-
-const YearBlock = styled('div', {
-  padding: '30px 0px',
-  fontWeight: 600,
-});
-
-const DateBlock = styled('div', {
-  fontSize: '14px',
-  fontWeight: 500,
-  color: 'var(--maximeheckel-colors-typeface-tertiary)',
-  minWidth: '52px',
-  marginRight: '32px',
 });
 
 export default IndexPage;

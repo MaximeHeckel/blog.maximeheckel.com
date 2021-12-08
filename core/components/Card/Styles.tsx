@@ -46,7 +46,7 @@ export const CardHeader = styled('div', {
   padding: '0px 24px',
   color: 'var(--maximeheckel-colors-typeface-tertiary)',
   fontWeight: 500,
-  fontSize: '16px',
+  fontSize: 'var(--font-size-2)',
   borderBottom: '1px solid var(--maximeheckel-border-color)',
 });
 

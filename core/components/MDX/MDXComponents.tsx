@@ -10,6 +10,7 @@ import Code from '@theme/components/Code';
 import InlineCode from '@theme/components/InlineCode';
 import List from '@theme/components/List';
 import Pill from '@theme/components/Pill';
+import Text, { EM, H2, H3, Strong } from '@theme/components/Typography';
 import VideoPlayer from '@theme/components/VideoPlayer';
 
 // MDX only components
@@ -80,6 +81,9 @@ const MDXComponents = {
   Button,
   blockquote: Blockquote,
   Callout,
+  em: EM,
+  h2: H2,
+  h3: H3,
   Image,
   inlineCode: InlineCode,
   li: List.Item,
@@ -87,8 +91,14 @@ const MDXComponents = {
   ol: (props: React.OlHTMLAttributes<HTMLOListElement>) => (
     <List variant="ordered" {...props} />
   ),
+  // eslint-disable-next-line react/display-name
+  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
+    <Text as="p" {...props} />
+  ),
   Pill,
   pre: Code,
+  // eslint-disable-next-line react/display-name
+  strong: Strong,
   ul: List,
   VideoPlayer,
   ...customComponents,

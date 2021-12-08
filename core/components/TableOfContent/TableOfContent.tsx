@@ -16,6 +16,11 @@ const Wrapper = styled('div', {
     maxWidth: '200px',
     flexDirection: 'column',
     display: 'flex',
+    margin: '0 0 1.45rem 1.45rem',
+    padding: '0',
+    color: 'inherit',
+    listStylePosition: 'outside',
+    listStyleImage: 'none',
 
     '@media (max-width: 1250px)': {
       display: 'none',
@@ -23,9 +28,10 @@ const Wrapper = styled('div', {
 
     li: {
       listStyle: 'none',
-      fontSize: '14px',
-      fontWeight: '500',
+      fontSize: 'var(--font-size-1)',
+      fontWeight: 'var(--font-weight-3)',
       lineHeight: '1.5',
+      letterSpacing: '0.3px',
       marginBottom: '22px',
 
       '&:focus:not(:focus-visible)': {

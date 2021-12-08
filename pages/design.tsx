@@ -29,6 +29,13 @@ import Seo from '@theme/components/Seo';
 import Switch from '@theme/components/Switch';
 import Tooltip from '@theme/components/Tooltip';
 import Tweet from '@theme/components/Tweet';
+import Text, {
+  EM,
+  H1,
+  H2,
+  Heading,
+  Strong,
+} from '@theme/components/Typography';
 import Layout from '@theme/layout';
 import { AnimatePresence } from 'framer-motion';
 import { styled, css } from 'lib/stitches.config';
@@ -41,8 +48,7 @@ import { TransformedTweet } from 'types/tweet';
  * TODO:
  * - Decouple Search in 2 components => Overlay and Command Center
  * - Rename Search
- * - Fix smooth scroll Table of content
- * - Remove inline styles in components (should be class or styled components)
+ * - Remove inline styles in components (should be class/css or styled components)
  * - Make sure Grid can take the css prop / Revisit Grid implementation
  *
  *
@@ -109,13 +115,13 @@ export default function Design(props: {
         className={wrapperGrid()}
       >
         <section>
-          <h1
-            style={{
+          <H1
+            css={{
               marginBottom: '0px',
             }}
           >
             Components / Design System{' '}
-          </h1>
+          </H1>
           <HR />
           <Grid gap={12} columns="140px 50px">
             <Pill variant="warning">Work In Progress</Pill>
@@ -123,11 +129,11 @@ export default function Design(props: {
           </Grid>
         </section>
         <section id="logo">
-          <h2>Logo</h2>
+          <H2>Logo</H2>
           <Logo />
         </section>
         <section id="Colors">
-          <h2>Colors</h2>
+          <H2>Colors</H2>
           <Grid gap={12}>
             Brand:
             <Tooltip id="brand" tooltipText="--brand">
@@ -207,7 +213,7 @@ export default function Design(props: {
           </Grid>
         </section>
         <section id="Palette">
-          <h2>Palette</h2>
+          <H2>Palette</H2>
           <Grid gap={32} columns="repeat(auto-fill, minmax(10rem, 1fr))">
             {palette.map((paletteItem) => (
               <Grid
@@ -239,28 +245,75 @@ export default function Design(props: {
           </Grid>
         </section>
         <section id="typography">
-          <h2>Typography</h2>
-          <Label>h1</Label>
-          <h1>Almost before we knew it, we had left the ground.</h1>
-          <Label>h2</Label>
-          <h2>Almost before we knew it, we had left the ground.</h2>
-          <Label>h3</Label>
-          <h3>Almost before we knew it, we had left the ground.</h3>
-          <Label>h4</Label>
-          <h4>Almost before we knew it, we had left the ground.</h4>
-          <Label>p</Label>
-          <p>Almost before we knew it, we had left the ground.</p>
-          <Label>p (bold)</Label>
-          <p style={{ fontWeight: 700 }}>
+          <H2>Typography</H2>
+          <Label>H1</Label>
+          <Heading as="h1" size="4">
             Almost before we knew it, we had left the ground.
-          </p>
-          <Label>p (italic)</Label>
-          <p style={{ fontStyle: 'italic' }}>
+          </Heading>
+          <Label>H2</Label>
+          <Heading as="h2" size="3">
             Almost before we knew it, we had left the ground.
-          </p>
+          </Heading>
+          <Label>H3</Label>
+          <Heading as="h3" size="2">
+            Almost before we knew it, we had left the ground.
+          </Heading>
+          <Label>H4</Label>
+          <Heading as="h4" size="1">
+            Almost before we knew it, we had left the ground.
+          </Heading>
+          <br />
+          <Label>Text size 7</Label>
+          <Text as="p" size="7">
+            Almost before we knew it, we had left the ground.
+          </Text>
+          <Label>Text size 6</Label>
+          <Text as="p" size="6">
+            Almost before we knew it, we had left the ground.
+          </Text>
+          <Label>Text size 5</Label>
+          <Text as="p" size="5">
+            Almost before we knew it, we had left the ground.
+          </Text>
+          <Label>Text size 4</Label>
+          <Text as="p" size="4">
+            Almost before we knew it, we had left the ground.
+          </Text>
+          <Label>Text size 3</Label>
+          <Text as="p" size="3">
+            Almost before we knew it, we had left the ground.
+          </Text>
+          <Label>Text size 2</Label>
+          <Text as="p" size="2">
+            Almost before we knew it, we had left the ground.
+          </Text>
+          <Label>Text size 1</Label>
+          <Text as="p" size="1">
+            Almost before we knew it, we had left the ground.
+          </Text>
+          <Label>Text gradient</Label>
+          <Text
+            as="p"
+            size="3"
+            gradient
+            css={{
+              backgroundImage: `linear-gradient(
+              91.83deg,
+              hsl(var(--palette-pink-50)) -20.26%,
+              hsl(var(--palette-blue-20)) 20.55%,
+              hsl(var(--palette-indigo-30)) 60.81%
+            )`,
+            }}
+          >
+            Almost before we knew it, we had left the ground.
+          </Text>
+          <Label>EM</Label>
+          <EM>Almost before we knew it, we had left the ground.</EM>
+          <Label>Strong</Label>
+          <Strong>Almost before we knew it, we had left the ground.</Strong>
         </section>
         <section id="lists">
-          <h2>Lists</h2>
+          <H2>Lists</H2>
           <List variant="unordered">
             <List.Item>First</List.Item>
             <List.Item>Second</List.Item>
@@ -271,9 +324,26 @@ export default function Design(props: {
             <List.Item>Second</List.Item>
             <List.Item>Third</List.Item>
           </List>
+          <List variant="unordered">
+            <List.Item>
+              <List variant="ordered">
+                <List.Item>First</List.Item>
+                <List.Item>Second</List.Item>
+                <List.Item>Third</List.Item>
+              </List>
+            </List.Item>
+            <List.Item>
+              <List variant="unordered">
+                <List.Item>First</List.Item>
+                <List.Item>Second</List.Item>
+                <List.Item>Third</List.Item>
+              </List>
+            </List.Item>
+            <List.Item>Third</List.Item>
+          </List>
         </section>
         <section id="button">
-          <h2>Buttons</h2>
+          <H2>Buttons</H2>
           <Grid gap={24}>
             <Glow>
               <Button variant="primary">Button</Button>
@@ -312,7 +382,7 @@ export default function Design(props: {
           </Grid>
         </section>
         <section id="anchor">
-          <h2>Anchor</h2>
+          <H2>Anchor</H2>
           <Grid gap={4}>
             <h3>
               <Anchor href="https://twitter.com/MaximeHeckel" favicon>
@@ -366,7 +436,7 @@ export default function Design(props: {
           </Grid>
         </section>
         <section id="form-components">
-          <h2>Form Components</h2>
+          <H2>Form Components</H2>
           <Flex css={{ gap: '8px' }}>
             <TextInput
               aria-label="Email"
@@ -608,7 +678,7 @@ they can change the world, are the ones who do.`}
           </Grid>
         </section>
         <section id="cards">
-          <h2>Card</h2>
+          <H2>Card</H2>
           <Grid rowGap={30}>
             <Card>
               <Card.Body>Base Card</Card.Body>
@@ -656,7 +726,7 @@ they can change the world, are the ones who do.`}
           </Grid>
         </section>
         <section id="icons">
-          <h2>Icons</h2>
+          <H2>Icons</H2>
           <TwitterIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
           <ExternalIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
           <RSSIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
@@ -666,7 +736,7 @@ they can change the world, are the ones who do.`}
           <EnterArrowIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />
         </section>
         <section id="tooltip">
-          <h2>Tooltip</h2>
+          <H2>Tooltip</H2>
           <Tooltip
             id="exampletooltip"
             tooltipText="@MaximeHeckel"
@@ -688,7 +758,7 @@ they can change the world, are the ones who do.`}
           </Tooltip>
         </section>
         <section id="pill">
-          <h2>Pill</h2>
+          <H2>Pill</H2>
           <Grid rowGap={32}>
             <div>
               <Pill variant="info">Info Pill</Pill>
@@ -705,7 +775,7 @@ they can change the world, are the ones who do.`}
           </Grid>
         </section>
         <section id="callout">
-          <h2>Callout</h2>
+          <H2>Callout</H2>
           <Grid gap={32}>
             <Callout variant="info">Info Callout</Callout>
             <Callout label="Learn more" variant="info">
@@ -719,15 +789,17 @@ they can change the world, are the ones who do.`}
         </section>
         <section id="blockquote">
           <Blockquote>
-            Almost before we knew it, we had left the ground.
+            <Text as="p">
+              Almost before we knew it, we had left the ground.
+            </Text>
           </Blockquote>
         </section>
         <section id="inline-code">
-          <h2>Inline Code</h2>
-          <InlineCode>Some Inline Code</InlineCode>
+          <H2>Inline Code</H2>
+          <InlineCode>{"const foo = () => 'bar'"}</InlineCode>
         </section>
         <section id="code-block">
-          <h2>Code Block</h2>
+          <H2>Code Block</H2>
           <Label>Basic</Label>
           <CodeBlock
             metastring=""
@@ -794,7 +866,7 @@ render(<Hi />);`}
           />
         </section>
         <section id="command-center">
-          <h2>Command Center / Search </h2>
+          <H2>Command Center / Search </H2>
           <Button variant="primary" onClick={() => setShowSearch(true)}>
             Show Command Center
           </Button>
@@ -805,7 +877,7 @@ render(<Hi />);`}
           </AnimatePresence>
         </section>
         <section id="tweet">
-          <h2>Tweet</h2>
+          <H2>Tweet</H2>
           <Tweet tweet={props.tweets['1386013361809281024']} />
         </section>
       </Grid>

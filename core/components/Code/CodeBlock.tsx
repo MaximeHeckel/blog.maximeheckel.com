@@ -125,6 +125,10 @@ const Pre = styled('pre', {
   overflow: 'auto',
   borderBottomLeftRadius: 'var(--border-radius-2)',
   borderBottomRightRadius: 'var(--border-radius-2)',
+  backgroundColor: 'var(--code-snippet-background)',
+  fontFamily: 'var(--font-mono)',
+  fontSize: 'var(--font-size-1)',
+  lineHeight: '26px',
 });
 
 const Line = styled('div', {
@@ -157,40 +161,9 @@ const LineContent = styled('span', {
 });
 
 const CodeSnippetTitle = styled('p', {
-  fontSize: '14px',
+  marginBlockStart: '0px',
+  fontSize: 'var(--font-size-1)',
   marginBottom: '0px',
   color: 'var(--maximeheckel-colors-typeface-primary)',
   fontWeight: '500',
 });
-
-// const CodeSnippetHeader = styled('div', {
-//   display: 'flex',
-//   justifyContent: 'space-between',
-//   alignItems: 'center',
-//   borderTopLeftRadius: 'var(--border-radius-2)',
-//   borderTopRightRadius: 'var(--border-radius-2)',
-//   minHeight: '50px',
-//   padding: '0px 14px',
-//   backgroundColor: 'var(--code-snippet-background)',
-//   borderBottom: '1px solid var(--maximeheckel-border-color)',
-// });
-
-// const CodeSnippetWrapper = styled('div', {
-//   borderRadius: 'var(--border-radius-2)',
-//   boxShadow: 'var(--maximeheckel-shadow-1)',
-//   border: '1px solid var(--maximeheckel-border-color)',
-//   marginBottom: '32px',
-
-//   '@media(max-width: 750px)': {
-//     /**
-//      * Make it fullbleed!
-//      */
-//     width: '100vw',
-//     position: 'relative',
-//     left: '50%',
-//     right: '50%',
-//     marginLeft: '-50vw',
-//     marginRight: '-50vw',
-//     borderRadius: '0px',
-//   },
-// });

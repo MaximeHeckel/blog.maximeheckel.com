@@ -1,9 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
-import { styled } from 'lib/stitches.config';
-import Link from 'next/link';
 import Anchor from '@theme/components/Anchor';
 import Grid from '@theme/components/Grid';
 import { DefaultSeo } from '@theme/components/Seo';
+import { H1, H3 } from '@theme/components/Typography';
+import Link from 'next/link';
+import { styled } from 'lib/stitches.config';
 import siteConfig from '../config/site';
 
 const Wrapper = styled('div', {
@@ -21,16 +22,15 @@ const NotFoundPage = () => (
     <DefaultSeo title={`404: Not found - ${siteConfig.title}`} />
     <Wrapper>
       <div>
-        <h1>404 Not Found</h1>
-
-        <h3>
+        <H1>404 Not Found</H1>
+        <H3>
           Oh no! You just got lost 😱! <br />
           Don't worry I got you!{' '}
           <Link href="/" passHref>
             <Anchor underline>Click here</Anchor>
           </Link>{' '}
           to go back home.
-        </h3>
+        </H3>
       </div>
     </Wrapper>
   </Grid>

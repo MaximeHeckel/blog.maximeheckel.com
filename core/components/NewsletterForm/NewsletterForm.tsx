@@ -7,6 +7,7 @@ import Flex from '@theme/components/Flex';
 import Glow from '@theme/components/Glow';
 import Card from '@theme/components/Card';
 import Anchor from '@theme/components/Anchor';
+import Text, { EM, H3 } from '@theme/components/Typography';
 import { NewsletterHeader } from './Icons';
 import { NewsletterFormContent, ErrorMessage } from './Styles';
 import { subscribeCall } from './utils';
@@ -70,63 +71,102 @@ const NewsletterForm = (props: Props) => {
       }}
     >
       {large ? (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
+        <Flex
+          justifyContent="center"
+          css={{
             paddingTop: '48px',
           }}
         >
           <NewsletterHeader />
-        </div>
+        </Flex>
       ) : null}
       <NewsletterFormContent withOffset={large}>
         {large ? (
-          <h3>
+          <H3
+            css={{
+              maxWidth: '600px',
+            }}
+          >
             Get a behind the scenes look at what I&apos;m currently learning,
             exploring, and creating.
-          </h3>
+          </H3>
         ) : (
-          <h3>Subscribe to my newsletter</h3>
+          <H3
+            css={{
+              maxWidth: '600px',
+            }}
+          >
+            Subscribe to my newsletter
+          </H3>
         )}
         {large ? (
           <>
-            <p>
+            <Text
+              as="p"
+              css={{
+                marginBottom: '0px',
+              }}
+              variant="secondary"
+            >
               Subscribe to{' '}
               <Anchor underline href="https://buttondown.email/MaximeHeckel">
                 my newsletter
               </Anchor>{' '}
               to receive a monthly digest containing:
-            </p>
+            </Text>
+            <br />
             <List variant="unordered">
               <List.Item>
-                <p>
-                  Deep dives into some of my{' '}
-                  <span>ideas and secret projects</span> that will inspire you
-                  👨‍💻
-                </p>
+                <Text
+                  as="p"
+                  css={{
+                    marginBottom: '0px',
+                  }}
+                  variant="secondary"
+                >
+                  Deep dives into some of my <EM>ideas and secret projects</EM>{' '}
+                  that will inspire you 👨‍💻
+                </Text>
               </List.Item>
               <List.Item>
-                <p>
-                  <span>Exclusive previews of upcoming articles</span> on
-                  frontent development, React, and SwiftUI 🤫
-                </p>
+                <Text
+                  as="p"
+                  css={{
+                    marginBottom: '0px',
+                  }}
+                  variant="secondary"
+                >
+                  <EM>Exclusive previews of upcoming articles</EM> on frontent
+                  development, React, and SwiftUI 🤫
+                </Text>
               </List.Item>
               <List.Item>
-                <p>
-                  Some of my <span>favorite resources and tips</span> on
-                  frontend development or anything I&apos;m currently interested
-                  in to further expand your skillset as a developer 📝
-                </p>
+                <Text
+                  as="p"
+                  css={{
+                    marginBottom: '0px',
+                  }}
+                  variant="secondary"
+                >
+                  Some of my <EM>favorite resources and tips</EM> on frontend
+                  development or anything I&apos;m currently interested in to
+                  further expand your skillset as a developer 📝
+                </Text>
               </List.Item>
             </List>
           </>
         ) : (
           <>
-            <p>
+            <Text
+              as="p"
+              css={{
+                marginBottom: '0px',
+              }}
+              variant="secondary"
+            >
               Get email from me about my ideas, frontend development resources
               and tips as well as exclusive previews of upcoming articles.
-            </p>
+            </Text>
             <br />
           </>
         )}
@@ -287,14 +327,15 @@ const NewsletterForm = (props: Props) => {
           )
         ) : null}
         {isSuccess ? (
-          <p
-            style={{
-              marginTop: '16px',
+          <Text
+            as="p"
+            css={{
+              margin: '16px 0px 0px 0px',
               textAlign: 'center',
             }}
           >
             (You will receive a confirmation email in a few seconds)
-          </p>
+          </Text>
         ) : null}
       </NewsletterFormContent>
     </Card>

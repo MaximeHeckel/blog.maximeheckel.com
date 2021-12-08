@@ -31,8 +31,8 @@ export const StyledCalloutLabelWrapper = styled('div', {
   borderRadius: 'var(--border-radius-1)',
   padding: '8px',
   color: 'var(--maximeheckel-colors-body)',
-  fontSize: '14px',
-  fontWeight: '500',
+  fontSize: 'var(--font-size-1)',
+  fontWeight: 'var(--font-weight-3)',
   userSelect: 'none',
   background: 'var(--icon-background, var(--maximeheckel-colors-body))',
 
@@ -49,10 +49,6 @@ export const StyledCalloutLabelWrapper = styled('div', {
 });
 
 export const StyledCallout = styled('aside', {
-  code: {
-    background: 'none',
-  },
-
   '*:last-child': {
     marginBottom: '0px',
   },

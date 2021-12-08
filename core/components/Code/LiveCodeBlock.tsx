@@ -104,39 +104,6 @@ const StyledLiveCodeWrapper = styled('div', {
   },
 });
 
-// `
-//   position: relative;
-
-//   backdrop-filter: blur(6px);
-//   border-radius: var(--border-radius-2);
-//   display: flex;
-//   align-items: center;
-//   margin-bottom: 32px;
-
-//   @media (max-width: 750px) {
-//     display: block;
-//   }
-
-//   @media (max-width: 1100px) {
-//     /**
-//      * Make it fullbleed!
-//      */
-//     width: 100vw;
-
-//     left: 50%;
-//     right: 50%;
-//     margin-left: -50vw;
-//     margin-right: -50vw;
-//   }
-
-//   @media (min-width: 1100px) {
-//     position: relative;
-//     width: calc(100% + 400px);
-//     margin-left: -200px;
-//     margin-right: -200px;
-//   }
-// `;
-
 const StyledEditorWrapper = styled('div', {
   flex: '50 1 0%',
   height: '100%',
@@ -144,24 +111,17 @@ const StyledEditorWrapper = styled('div', {
   overflow: 'auto',
   margin: '0',
 
-  '* > textarea:focus': {
+  'textarea:focus': {
     outline: 'none',
   },
+
+  'pre, textarea': {
+    backgroundColor: 'var(--code-snippet-background) !important',
+    fontFamily: 'var(--font-mono) !important',
+    fontSize: 'var(--font-size-1) !important',
+    lineHeight: '26px !important',
+  },
 });
-
-/*`
-  flex: 60 1 0%;
-  height: 100%;
-  max-height: 600px;
-  overflow: auto;
-  margin: 0;
-  border-top-right-radius: var(--border-radius-2);
-  border-bottom-right-radius: var(--border-radius-2);
-
-  * > textarea:focus {
-    outline: none;
-  }
-`; */
 
 const StyledPreviewWrapper = styled('div', {
   maxHeight: '600px',
@@ -188,26 +148,6 @@ const StyledPreviewWrapper = styled('div', {
   },
 });
 
-// `
-//   max-height: 600px;
-//   min-height: ${(p) => p.height || 300}px;
-//   flex: 40 1 0%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   background-color: var(--maximeheckel-colors-emphasis);
-//   overflow: hidden;
-//   ${(p) =>
-//     p.withEditor
-//       ? `
-//     border-top-left-radius: var(--border-radius-2);
-//     border-bottom-left-radius: var(--border-radius-2);
-//     `
-//       : `
-//     border-radius: var(--border-radius-2);
-//     `}
-// `;
-
 const StyledErrorWrapper = styled('div', {
   color: 'var(--maximeheckel-colors-typeface-secondary)',
   maxWidth: '300px',
@@ -217,15 +157,5 @@ const StyledErrorWrapper = styled('div', {
     marginBottom: '0px',
   },
 });
-
-// `
-//   color: var(--maximeheckel-colors-typeface-secondary);
-//   max-width: 300px;
-
-//   pre {
-//     padding: 15px;
-//     margin-bottom: 0px;
-//   }
-// `;
 
 export default LiveCodeBlock;

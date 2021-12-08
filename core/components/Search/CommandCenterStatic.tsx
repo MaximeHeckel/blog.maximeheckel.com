@@ -10,7 +10,7 @@ import {
   TwitterIcon,
 } from '../Icons';
 import { MAX_HEIGHT } from './constants';
-import { Separator, Item, ShortcutKey } from './Styles';
+import { Separator, Item, KBD } from './Styles';
 
 const commandCenterStaticWrapper = css({
   backgroundColor: 'var(--maximeheckel-colors-body)',
@@ -24,15 +24,15 @@ const CommandCenterStatic = () => (
     <Item data-nohover data-testid="shortcut" key="search-shortcut">
       <span>Command Center</span>
       <div>
-        <ShortcutKey>ctrl</ShortcutKey>
-        <ShortcutKey>k</ShortcutKey>
+        <KBD>ctrl</KBD>
+        <KBD>k</KBD>
       </div>
     </Item>
     <Item data-nohover data-testid="shortcut" key="theme-shortcut">
       <span>Switch Theme</span>
       <div>
-        <ShortcutKey>ctrl</ShortcutKey>
-        <ShortcutKey>t</ShortcutKey>
+        <KBD>ctrl</KBD>
+        <KBD>t</KBD>
       </div>
     </Item>
     <Separator>Navigation</Separator>

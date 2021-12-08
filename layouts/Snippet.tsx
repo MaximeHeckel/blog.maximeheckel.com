@@ -7,6 +7,7 @@ import Pill from '@theme/components/Pill';
 import { Snippet } from 'types/post';
 import Grid from '@theme/components/Grid';
 import Hero from '@theme/components/Hero';
+import Text from '@theme/components/Typography';
 import { css } from 'lib/stitches.config';
 
 interface Props {
@@ -73,9 +74,15 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
             </Hero.Title>
             <Hero.Info>
               <Flex justifyContent="space-between">
-                <p>
+                <Text
+                  as="p"
+                  size="1"
+                  variant="tertiary"
+                  weight="3"
+                  css={{ marginBottom: '0px' }}
+                >
                   Created {format(new Date(Date.parse(date)), 'MMM dd yyyy')}
-                </p>
+                </Text>
                 <Pill variant="info">{language.toUpperCase()}</Pill>
               </Flex>
             </Hero.Info>
