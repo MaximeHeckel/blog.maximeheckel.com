@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import useDebounce from '@theme/hooks/useDebouncedValue';
 import React from 'react';
 import Label from '../Label';
@@ -36,9 +35,9 @@ const Range = (props: RangeProps) => {
 
   return (
     <div
-      css={css`
-        width: 100%;
-      `}
+      style={{
+        width: '100%',
+      }}
     >
       {label ? <Label htmlFor={id}>{label}</Label> : null}
       <StyledRange
@@ -49,7 +48,9 @@ const Range = (props: RangeProps) => {
         step={step}
         value={value}
         onChange={(event) => setRange(parseFloat(event.target.value))}
-        fill={fill}
+        css={{
+          '--track-background': `${fill}`,
+        }}
         disabled={disabled}
         {...rest}
       />

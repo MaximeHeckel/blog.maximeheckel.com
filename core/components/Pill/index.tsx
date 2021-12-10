@@ -1,2 +1,2 @@
-export { Pill as default } from './Pill';
-export { PillVariant } from './constants';
+export { default } from './Pill';
+export type { PillProps } from './types';

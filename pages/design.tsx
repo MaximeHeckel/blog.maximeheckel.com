@@ -1,5 +1,4 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
+import Anchor from '@theme/components/Anchor';
 import Button from '@theme/components/Button';
 import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
@@ -13,16 +12,17 @@ import {
   RSSIcon,
   TwitterIcon,
 } from '@theme/components/Icons';
+import Blockquote from '@theme/components/Blockquote';
 import TextInput from '@theme/components/TextInput';
 import Logo from '@theme/components/Logo';
 import TextArea from '@theme/components/TextArea';
 import Flex from '@theme/components/Flex';
 import Glow from '@theme/components/Glow';
 import Callout from '@theme/components/Callout';
-import CodeBlock from '@theme/components/MDX/Code/CodeBlock';
-import InlineCode from '@theme/components/MDX/InlineCode';
-import MDXBody, { ListItem } from '@theme/components/MDX/MDX';
-import Pill, { PillVariant } from '@theme/components/Pill';
+import List from '@theme/components/List';
+import CodeBlock from '@theme/components/Code/CodeBlock';
+import InlineCode from '@theme/components/InlineCode';
+import Pill from '@theme/components/Pill';
 import Radio from '@theme/components/Radio';
 import Range from '@theme/components/Range';
 import Seo from '@theme/components/Seo';
@@ -30,45 +30,52 @@ import Switch from '@theme/components/Switch';
 import Tooltip from '@theme/components/Tooltip';
 import Tweet from '@theme/components/Tweet';
 import Layout from '@theme/layout';
-
 import { AnimatePresence } from 'framer-motion';
+import { styled, css } from 'lib/stitches.config';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
-import Anchor from '@theme/components/Anchor';
 
 /**
  * TODO:
  * - Decouple Search in 2 components => Overlay and Command Center
  * - Rename Search
- * - Polish interface for lists => should be in global.css if possible?
- * - Small Responsive issue with Live Code Block on medium size screen
+ * - Fix smooth scroll Table of content
+ * - Remove inline styles in components (should be class or styled components)
+ * - Make sure Grid can take the css prop / Revisit Grid implementation
  *
  *
  * NOTES:
  * - use var(--maximeheckel-colors-foreground) instead of --maximeheckel-border-color: hsl(var(--palette-gray-80)) ??
  */
 
+const wrapperGrid = css({
+  paddingTop: '64px',
+  section: {
+    gridColumn: 2,
+  },
+});
+
 const LiveCodeBlock = dynamic(
-  () => import('@theme/components/MDX/Code/LiveCodeBlock')
+  () => import('@theme/components/Code/LiveCodeBlock')
 );
 
 const Search = dynamic(() => import('@theme/components/Search'), {
   ssr: false,
 });
 
-const HR = styled('hr')`
-  height: 2px;
-  width: 100%;
-  background: hsl(var(--palette-gray-20));
-  border: none;
-  margin-bottom: 16px;
-`;
+const HR = styled('hr', {
+  height: '2px',
+  width: '100%',
+  background: 'hsl(var(--palette-gray-20))',
+  border: 'none',
+  marginBottom: '16px',
+});
 
-const Label = styled('p')`
-  margin-bottom: 8px;
-`;
+const Label = styled('p', {
+  marginBottom: '8px',
+});
 
 export default function Design(props: {
   tweets: Record<string, TransformedTweet>;
@@ -99,28 +106,22 @@ export default function Design(props: {
         columns="var(--layout-medium)"
         columnGap={20}
         rowGap={64}
-        css={css`
-          padding-top: 128px;
-          padding-top: 64px;
-          > * {
-            grid-column: 2;
-          }
-        `}
+        className={wrapperGrid()}
       >
-        <div>
+        <section>
           <h1
-            css={css`
-              margin-bottom: 0px;
-            `}
+            style={{
+              marginBottom: '0px',
+            }}
           >
             Components / Design System{' '}
           </h1>
           <HR />
           <Grid gap={12} columns="140px 50px">
-            <Pill variant={PillVariant.WARNING}>Work In Progress</Pill>
-            <Pill variant={PillVariant.INFO}>v1.0</Pill>
+            <Pill variant="warning">Work In Progress</Pill>
+            <Pill variant="info">v1.0</Pill>
           </Grid>
-        </div>
+        </section>
         <section id="logo">
           <h2>Logo</h2>
           <Logo />
@@ -131,50 +132,50 @@ export default function Design(props: {
             Brand:
             <Tooltip id="brand" tooltipText="--brand">
               <div
-                css={css`
-                  width: 44px;
-                  height: 44px;
-                  border-radius: 50%;
-                  background: var(--maximeheckel-colors-brand);
-                  border: 2px solid var(--maximeheckel-border-color);
-                `}
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '50%',
+                  background: 'var(--maximeheckel-colors-brand)',
+                  border: '2px solid var(--maximeheckel-border-color)',
+                }}
               />
             </Tooltip>
             Background:
             <Tooltip id="background" tooltipText="--background">
               <div
-                css={css`
-                  width: 44px;
-                  height: 44px;
-                  border-radius: 50%;
-                  background: var(--maximeheckel-colors-background);
-                  border: 2px solid var(--maximeheckel-border-color);
-                `}
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '50%',
+                  background: 'var(--maximeheckel-colors-background)',
+                  border: '2px solid var(--maximeheckel-border-color)',
+                }}
               />
             </Tooltip>
             Foreground:
             <Tooltip id="foreground" tooltipText="--foreground">
               <div
-                css={css`
-                  width: 44px;
-                  height: 44px;
-                  border-radius: 50%;
-                  background: var(--maximeheckel-colors-foreground);
-                  border: 2px solid var(--maximeheckel-border-color);
-                `}
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '50%',
+                  background: 'var(--maximeheckel-colors-foreground)',
+                  border: '2px solid var(--maximeheckel-border-color)',
+                }}
               />
             </Tooltip>
             Typeface:
             <Grid columns="repeat(3, 44px)" gap={12}>
               <Tooltip id="typeface-primary" tooltipText="--typeface-primary">
                 <div
-                  css={css`
-                    width: 44px;
-                    height: 44px;
-                    border-radius: 50%;
-                    background: var(--maximeheckel-colors-typeface-primary);
-                    border: 2px solid var(--maximeheckel-border-color);
-                  `}
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '50%',
+                    background: 'var(--maximeheckel-colors-typeface-primary)',
+                    border: '2px solid var(--maximeheckel-border-color)',
+                  }}
                 />
               </Tooltip>
               <Tooltip
@@ -182,24 +183,24 @@ export default function Design(props: {
                 tooltipText="--typeface-secondary"
               >
                 <div
-                  css={css`
-                    width: 44px;
-                    height: 44px;
-                    border-radius: 50%;
-                    background: var(--maximeheckel-colors-typeface-secondary);
-                    border: 2px solid var(--maximeheckel-border-color);
-                  `}
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '50%',
+                    background: 'var(--maximeheckel-colors-typeface-secondary)',
+                    border: '2px solid var(--maximeheckel-border-color)',
+                  }}
                 />
               </Tooltip>
               <Tooltip id="typeface-tertiary" tooltipText="--typeface-teriary">
                 <div
-                  css={css`
-                    width: 44px;
-                    height: 44px;
-                    border-radius: 50%;
-                    background: var(--maximeheckel-colors-typeface-tertiary);
-                    border: 2px solid var(--maximeheckel-border-color);
-                  `}
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '50%',
+                    background: 'var(--maximeheckel-colors-typeface-tertiary)',
+                    border: '2px solid var(--maximeheckel-border-color)',
+                  }}
                 />
               </Tooltip>
             </Grid>
@@ -207,21 +208,14 @@ export default function Design(props: {
         </section>
         <section id="Palette">
           <h2>Palette</h2>
-          <div
-            css={css`
-              display: grid;
-              gap: 2rem;
-              grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-            `}
-          >
+          <Grid gap={32} columns="repeat(auto-fill, minmax(10rem, 1fr))">
             {palette.map((paletteItem) => (
-              <div
+              <Grid
                 key={paletteItem}
-                css={css`
-                  display: grid;
-                  grid-template-columns: repeat(auto-fill, minmax(2rem, 1fr));
-                  margin-right: 12px;
-                `}
+                columns="repeat(auto-fill, minmax(2rem, 1fr))"
+                style={{
+                  marginRight: '12px',
+                }}
               >
                 {colorScaleNumbers.map((shade) => (
                   <Tooltip
@@ -230,19 +224,19 @@ export default function Design(props: {
                     tooltipText={`--palette-${paletteItem}-${shade}`}
                   >
                     <div
-                      css={css`
-                        width: 44px;
-                        height: 44px;
-                        border-radius: 50%;
-                        background: hsl(var(--palette-${paletteItem}-${shade}));
-                        border: 2px solid var(--maximeheckel-border-color);
-                      `}
+                      style={{
+                        width: '44px',
+                        height: '44px',
+                        borderRadius: '50%',
+                        background: `hsl(var(--palette-${paletteItem}-${shade}))`,
+                        border: '2px solid var(--maximeheckel-border-color)',
+                      }}
                     />
                   </Tooltip>
                 ))}
-              </div>
+              </Grid>
             ))}
-          </div>
+          </Grid>
         </section>
         <section id="typography">
           <h2>Typography</h2>
@@ -267,28 +261,16 @@ export default function Design(props: {
         </section>
         <section id="lists">
           <h2>Lists</h2>
-          <MDXBody
-            /**
-             * Cancel grid MDXBody here
-             */
-            css={css`
-              display: block;
-            `}
-          >
-            <ul>
-              {/*@ts-ignore */}
-              <ListItem>First</ListItem>
-              {/*@ts-ignore */}
-              <ListItem>Second</ListItem>
-              {/*@ts-ignore */}
-              <ListItem>Third</ListItem>
-            </ul>
-            <ol>
-              <li>First</li>
-              <li>Second</li>
-              <li>Third</li>
-            </ol>
-          </MDXBody>
+          <List variant="unordered">
+            <List.Item>First</List.Item>
+            <List.Item>Second</List.Item>
+            <List.Item>Third</List.Item>
+          </List>
+          <List variant="ordered">
+            <List.Item>First</List.Item>
+            <List.Item>Second</List.Item>
+            <List.Item>Third</List.Item>
+          </List>
         </section>
         <section id="button">
           <h2>Buttons</h2>
@@ -385,7 +367,7 @@ export default function Design(props: {
         </section>
         <section id="form-components">
           <h2>Form Components</h2>
-          <Flex gap={8}>
+          <Flex css={{ gap: '8px' }}>
             <TextInput
               aria-label="Email"
               id="email-input"
@@ -641,16 +623,15 @@ they can change the world, are the ones who do.`}
               <Card.Body>Card With Custom Header</Card.Body>
             </Card>
             <Card>
-              <div
-                css={css`
-                  padding: 40px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                `}
+              <Flex
+                alignItems="center"
+                justifyContent="center"
+                css={{
+                  padding: '40px',
+                }}
               >
                 Card With custom Body
-              </div>
+              </Flex>
             </Card>
             <Card depth={0}>
               <Card.Body>
@@ -691,36 +672,35 @@ they can change the world, are the ones who do.`}
             tooltipText="@MaximeHeckel"
             tooltipVisuallyHiddenText="Follow Me on Twitter"
           >
-            <div
-              css={css`
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                height: 50px;
-                width: 150px;
-                padding: 8px;
-              `}
+            <Flex
+              alignItems="center"
+              justifyContent="space-between"
+              css={{
+                height: '50px',
+                width: '150px',
+                padding: '8px',
+              }}
               aria-describedby="exampletooltip"
             >
               <TwitterIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
               Hover Me!
-            </div>
+            </Flex>
           </Tooltip>
         </section>
         <section id="pill">
           <h2>Pill</h2>
           <Grid rowGap={32}>
             <div>
-              <Pill variant={PillVariant.INFO}>Info Pill</Pill>
+              <Pill variant="info">Info Pill</Pill>
             </div>
             <div>
-              <Pill variant={PillVariant.SUCCESS}>Success Pill</Pill>
+              <Pill variant="success">Success Pill</Pill>
             </div>
             <div>
-              <Pill variant={PillVariant.WARNING}>Warning Pill</Pill>
+              <Pill variant="warning">Warning Pill</Pill>
             </div>
             <div>
-              <Pill variant={PillVariant.DANGER}>Danger Pill</Pill>
+              <Pill variant="danger">Danger Pill</Pill>
             </div>
           </Grid>
         </section>
@@ -737,7 +717,11 @@ they can change the world, are the ones who do.`}
             </Callout>
           </Grid>
         </section>
-
+        <section id="blockquote">
+          <Blockquote>
+            Almost before we knew it, we had left the ground.
+          </Blockquote>
+        </section>
         <section id="inline-code">
           <h2>Inline Code</h2>
           <InlineCode>Some Inline Code</InlineCode>

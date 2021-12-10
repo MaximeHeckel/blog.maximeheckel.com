@@ -8,9 +8,6 @@ describe('Callout', () => {
     const { container, baseElement } = render(
       <Callout variant="info">Test</Callout>
     );
-    expect(
-      container.querySelector('[data-variant="info"]')
-    ).toBeInTheDocument();
     expect(container.querySelector('svg')).toBeInTheDocument();
     expect(baseElement).toMatchSnapshot();
   });
@@ -19,9 +16,6 @@ describe('Callout', () => {
     const { container, baseElement } = render(
       <Callout variant="danger">Test</Callout>
     );
-    expect(
-      container.querySelector('[data-variant="danger"]')
-    ).toBeInTheDocument();
     expect(container.querySelector('svg')).toBeInTheDocument();
     expect(baseElement).toMatchSnapshot();
   });
@@ -32,9 +26,6 @@ describe('Callout', () => {
         Test
       </Callout>
     );
-    expect(
-      container.querySelector('[data-variant="info"]')
-    ).toBeInTheDocument();
     expect(container.querySelector('svg')).not.toBeInTheDocument();
     expect(queryByText('Test Label')).toBeInTheDocument();
     expect(baseElement).toMatchSnapshot();
@@ -46,9 +37,6 @@ describe('Callout', () => {
         Test
       </Callout>
     );
-    expect(
-      container.querySelector('[data-variant="danger"]')
-    ).toBeInTheDocument();
     expect(container.querySelector('svg')).not.toBeInTheDocument();
     expect(queryByText('Test Label')).toBeInTheDocument();
     expect(baseElement).toMatchSnapshot();

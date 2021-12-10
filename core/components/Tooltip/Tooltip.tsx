@@ -1,7 +1,6 @@
-import { css } from '@emotion/react';
 import { motion, useAnimation } from 'framer-motion';
 import React from 'react';
-// import ReactDOM from 'react-dom';
+import { css } from 'lib/stitches.config';
 import VisuallyHidden from '../VisuallyHidden';
 
 interface Props {
@@ -9,6 +8,27 @@ interface Props {
   tooltipText: string;
   tooltipVisuallyHiddenText?: string;
 }
+
+const wrapper = css({
+  position: 'relative',
+});
+
+const tooltip = css({
+  color: 'hsla(var(--palette-gray-00))',
+  background: 'hsla(var(--palette-gray-75))',
+  boxShadow: 'var(--maximeheckel-shadow-2)',
+  borderRadius: 'var(--border-radius-0)',
+  position: 'absolute',
+  bottom: '-60%',
+  fontWeight: 500,
+  fontSize: '14px',
+  display: 'flex',
+  padding: '4px 10px',
+  zIndex: 5,
+  whiteSpace: 'nowrap',
+  pointerEvents: 'none',
+  userSelect: 'none',
+});
 
 const Tooltip: React.FC<Props> = (props) => {
   const { children, id, tooltipText, tooltipVisuallyHiddenText } = props;
@@ -99,9 +119,7 @@ const Tooltip: React.FC<Props> = (props) => {
 
   return (
     <motion.div
-      css={css`
-        position: relative;
-      `}
+      className={wrapper()}
       initial="idle"
       animate={controls}
       onMouseEnter={showTooltip}
@@ -120,28 +138,13 @@ const Tooltip: React.FC<Props> = (props) => {
       {/* {ReactDOM.createPortal( */}
       <motion.span
         id={id}
+        className={tooltip()}
         aria-hidden={true}
         ref={tooltipRef}
         variants={tipVariants}
         transition={{
           delay: 0.15,
         }}
-        css={css`
-          color: hsla(var(--palette-gray-00));
-          background: hsla(var(--palette-gray-75));
-          box-shadow: var(--maximeheckel-shadow-2);
-          border-radius: var(--border-radius-0);
-          position: absolute;
-          bottom: -60%;
-          font-weight: 500;
-          font-size: 14px;
-          display: flex;
-          padding: 4px 10px;
-          z-index: 5;
-          white-space: nowrap;
-          pointer-events: none;
-          user-select: none;
-        `}
         role="tooltip"
       >
         {tooltipText}

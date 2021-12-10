@@ -15,7 +15,6 @@
     ],
     /* Specify library files to be included in the compilation. */
     "jsx": "preserve" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
-    "jsxImportSource": "@emotion/react",
     "sourceMap": false /* Generates corresponding '.map' file. */,
     /* Strict Type-Checking Options */
     "strict": true /* Enable all strict type-checking options. */,

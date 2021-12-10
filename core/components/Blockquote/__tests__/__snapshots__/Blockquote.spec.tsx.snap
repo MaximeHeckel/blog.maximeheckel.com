@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Blockquote can render a Blockquote 1`] = `
+<body>
+  <div>
+    <blockquote
+      class="c-dBvjDU"
+    >
+      <div>
+        Test
+      </div>
+    </blockquote>
+  </div>
+</body>
+`;

@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
+import { css, styled } from 'lib/stitches.config';
 import { format } from 'date-fns';
 import { motion, MotionProps } from 'framer-motion';
 import dynamic from 'next/dynamic';
@@ -63,10 +62,17 @@ const glowVariants = {
     opacity: 0.8,
   },
   initial: {
-    scale: 1.05,
+    scale: 1.07,
     opacity: 0,
   },
 };
+
+const wrapperGrid = css({
+  paddingTop: '128px',
+  '> *': {
+    gridColumn: 2,
+  },
+});
 
 const IndexPage = (props: Props) => {
   const { posts } = props;
@@ -77,20 +83,15 @@ const IndexPage = (props: Props) => {
         columns="var(--layout-medium)"
         columnGap={20}
         rowGap={100}
-        css={css`
-          padding-top: 128px;
-          > * {
-            grid-column: 2;
-          }
-        `}
+        className={wrapperGrid()}
       >
         <div>
           <h1>
             Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
             <span
-              css={css`
-                color: var(--maximeheckel-colors-typeface-secondary);
-              `}
+              style={{
+                color: 'var(--maximeheckel-colors-typeface-secondary)',
+              }}
             >
               Here, I share through my writing my experience as a frontend
               engineer and everything I'm learning about on React, Typescript,
@@ -98,11 +99,11 @@ const IndexPage = (props: Props) => {
             </span>
           </h1>
           <Flex
-            gap={8}
-            css={css`
-              margin-left: -12px;
-              margin-right: -12px;
-            `}
+            css={{
+              marginLeft: '-12px',
+              marginRight: '-12px',
+              gap: '16px',
+            }}
           >
             <a
               href="https://maximeheckel.com"
@@ -137,17 +138,27 @@ const IndexPage = (props: Props) => {
         </section>
         <section>
           <h2>Featured</h2>
-          <List as="ul" data-testid="featured-list" rowGap={16}>
+          <Grid
+            as="ul"
+            style={{
+              marginLeft: '0px',
+              marginBottom: '0px',
+            }}
+            data-testid="featured-list"
+            rowGap={16}
+          >
             {posts
               .filter((post) => post.featured)
               .map((post) => {
                 return (
                   <motion.li
-                    css={css`
-                      position: relative;
-                      margin-left: -8px;
-                      margin-right: -8px;
-                    `}
+                    style={{
+                      position: 'relative',
+                      marginLeft: '-8px',
+                      marginRight: '-8px',
+                      listStyle: 'none',
+                      cursor: 'pointer',
+                    }}
                     key={post.slug}
                     data-testid="featured-article-item"
                     initial="initial"
@@ -155,36 +166,36 @@ const IndexPage = (props: Props) => {
                   >
                     <Link href={`/posts/${post.slug}/`}>
                       <a
-                        css={css`
-                          text-decoration: none;
-                          color: var(--maximeheckel-colors-typeface-secondary);
-                        `}
+                        style={{
+                          textDecoration: 'none',
+                          color:
+                            'var(--maximeheckel-colors-typeface-secondary)',
+                        }}
                       >
                         <Glow
-                          css={css`
-                            background: ${post.colorFeatured};
-                          `}
+                          css={{
+                            background: post.colorFeatured,
+                          }}
                           variants={glowVariants}
                           transition={{
                             type: 'tween',
                             ease: 'easeOut',
-                            // delay: 0.15,
                             duration: 0.4,
                           }}
                         />
                         <div
-                          css={css`
-                            height: 95%;
-                            width: 105%;
-                            position: absolute;
-                            border-radius: var(--border-radius-2);
-                            top: 50%;
-                            left: 50%;
-                            background: var(--maximeheckel-colors-body);
-                            transform: translateY(-50%) translateX(-50%);
-                            filter: blur(20px);
-                            transition: 0.5s;
-                          `}
+                          style={{
+                            height: '95%',
+                            width: '105%',
+                            position: 'absolute',
+                            borderRadius: 'var(--border-radius-2)',
+                            top: '50%',
+                            left: '50%',
+                            background: 'var(--maximeheckel-colors-body)',
+                            transform: 'translateY(-50%) translateX(-50%)',
+                            filter: 'blur(20px)',
+                            transition: '0.5s',
+                          }}
                         />
                         <Card<MotionProps>
                           as={motion.div}
@@ -192,24 +203,22 @@ const IndexPage = (props: Props) => {
                           transition={{
                             type: 'tween',
                             ease: 'easeOut',
-                            // delay: 0.15,
                             duration: 0.4,
                           }}
                           depth={1}
                         >
                           <Card.Body>
                             <TitleWithBackground
-                              background={post.colorFeatured!}
+                              style={{
+                                WebkitBackgroundClip: 'text',
+                              }}
+                              css={{
+                                background: post.colorFeatured!,
+                              }}
                             >
                               {post.title}
                             </TitleWithBackground>
-                            <p
-                              css={css`
-                                margin-top: 1em;
-                              `}
-                            >
-                              {post.subtitle}
-                            </p>
+                            <p>{post.subtitle}</p>
                           </Card.Body>
                         </Card>
                       </a>
@@ -217,11 +226,19 @@ const IndexPage = (props: Props) => {
                   </motion.li>
                 );
               })}
-          </List>
+          </Grid>
         </section>
         <section>
           <h2>All articles</h2>
-          <List as="ul" data-testid="article-list" rowGap={4}>
+          <Grid
+            as="ul"
+            style={{
+              marginLeft: '0px',
+              marginBottom: '0px',
+            }}
+            data-testid="article-list"
+            rowGap={4}
+          >
             {posts.map((post) => {
               const currentYear = new Date(post.date).getFullYear();
               let printYear;
@@ -234,7 +251,14 @@ const IndexPage = (props: Props) => {
               }
 
               return (
-                <li key={post.slug} data-testid="article-item">
+                <li
+                  style={{
+                    listStyle: 'none',
+                    cursor: 'pointer',
+                  }}
+                  key={post.slug}
+                  data-testid="article-item"
+                >
                   {printYear ? <YearBlock>{currentYear}</YearBlock> : null}
                   <Link href={`/posts/${post.slug}/`} passHref>
                     {/* Revisit this component: merge Anchor and block together (extend block from Anchor) */}
@@ -250,7 +274,7 @@ const IndexPage = (props: Props) => {
                 </li>
               );
             })}
-          </List>
+          </Grid>
           <br />
           <Card>
             <Card.Body>
@@ -272,87 +296,70 @@ export async function getStaticProps() {
   return { props: { posts } };
 }
 
-const Glow = styled(motion.div)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  -webkit-filter: blur(15px);
-  filter: blur(15px);
-  border-radius: var(--border-radius-2);
-`;
+const Glow = styled(motion.div, {
+  position: 'absolute',
+  top: '0',
+  left: '0',
+  width: '100%',
+  height: '100%',
+  webkitFilter: 'blur(15px)',
+  filter: 'blur(15px)',
+  borderRadius: 'var(--border-radius-2)',
+});
 
-const TitleWithBackground = styled('h2')<{ background: string }>`
-  color: var(--maximeheckel-colors-typeface-primary);
-  margin-bottom: 0px !important;
-  letter-spacing: -0.02em;
-  margin-block-end: 0px;
-  background: ${(p) => p.background};
-  background-clip: text;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-`;
+const TitleWithBackground = styled('h2', {
+  color: 'var(--maximeheckel-colors-typeface-primary)',
+  letterSpacing: '-0.02em',
+  marginBlockEnd: '0px',
+  backgroundClip: 'text',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  display: 'inline-block',
+  marginBottom: '8px',
+});
 
-const Block = styled('div')`
-  @media (max-width: 700px) {
-    height: 100px;
-  }
+const Block = styled('div', {
+  display: 'flex',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  paddingLeft: '10px',
+  borderRadius: 'var(--border-radius-2)',
+  marginLeft: '-10px',
+  height: '60px',
+  boxShadow: 'none',
+  backgroundColor: 'var(--article-block-background-color, "transparent")',
+  color:
+    'var(--article-block-color, var(--maximeheckel-colors-typeface-primary))',
+  transition: 'background-color 0.25s, box-shadow 0.25s, color 0.25s',
 
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 10px;
-  border-radius: var(--border-radius-2);
-  margin-left: -10px;
+  '&:focus': {
+    '--article-block-background-color': 'var(--maximeheckel-colors-emphasis)',
+    '--article-block-color': 'var(--maximeheckel-colors-brand)',
+  },
 
-  height: 60px;
-  box-shadow: none;
+  '@media (hover: hover) and (pointer: fine)': {
+    '&:hover': {
+      '--article-block-background-color': 'var(--maximeheckel-colors-emphasis)',
+      '--article-block-color': 'var(--maximeheckel-colors-brand)',
+    },
+  },
 
-  color: var(--maximeheckel-colors-typeface-primary);
-  transition: background-color 0.25s, box-shadow 0.25s, color 0.25s;
+  '@media (max-width: 700px)': {
+    height: '100px',
+  },
+});
 
-  &:focus {
-    background-color: var(--maximeheckel-colors-emphasis);
-    color: var(--maximeheckel-colors-brand);
-  }
+const YearBlock = styled('div', {
+  padding: '30px 0px',
+  fontWeight: 600,
+});
 
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      background-color: var(--maximeheckel-colors-emphasis);
-      // box-shadow: var(--maximeheckel-shadow-1);
-      color: var(--maximeheckel-colors-brand);
-    }
-  }
-`;
-
-const YearBlock = styled('div')`
-  padding: 30px 0px;
-  font-weight: 600;
-`;
-
-const DateBlock = styled('div')`
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--maximeheckel-colors-typeface-tertiary);
-  min-width: 50px;
-  margin-right: 32px;
-`;
-
-const List = styled(Grid)`
-  margin-left: 0px;
-  margin-bottom: 0px;
-
-  li {
-    list-style: none;
-    cursor: pointer;
-  }
-
-  h3 {
-    color: var(--maximeheckel-colors-typeface-primary);
-  }
-`;
+const DateBlock = styled('div', {
+  fontSize: '14px',
+  fontWeight: 500,
+  color: 'var(--maximeheckel-colors-typeface-tertiary)',
+  minWidth: '52px',
+  marginRight: '32px',
+});
 
 export default IndexPage;

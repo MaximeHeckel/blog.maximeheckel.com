@@ -1,30 +1,30 @@
-import styled from '@emotion/styled';
 import Anchor from '@theme/components/Anchor';
 import WebmentionReplies from '@theme/components/Webmentions/WebmentionReplies';
+import { styled } from 'lib/stitches.config';
 import dynamic from 'next/dynamic';
 
 const NewsletterForm = dynamic(
   () => import('@theme/components/NewsletterForm')
 );
 
-const ColoredBlockWrapper = styled('div')`
-  background: var(--maximeheckel-colors-emphasis);
-  color: var(--maximeheckel-colors-typeface-primary);
-  padding-bottom: 50px;
-  padding-top: 50px;
-  width: 100%;
-  grid-column: 1 / 4;
+const ColoredBlockWrapper = styled('div', {
+  background: 'var(--maximeheckel-colors-emphasis)',
+  color: 'var(--maximeheckel-colors-typeface-primary)',
+  paddingBottom: '50px',
+  paddingTop: '50px',
+  width: '100%',
+  gridColumn: '1 / 4',
 
-  section {
-    @media (max-width: 700px) {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
+  section: {
+    '@media (max-width: 700px)': {
+      paddingLeft: '20px',
+      paddingRight: '20px',
+    },
 
-    margin: 0 auto;
-    max-width: 700px;
-  }
-`;
+    margin: '0 auto',
+    maxWidth: '700px',
+  },
+});
 
 const Signature = ({ title, url }: { title: string; url: string }) => {
   return (

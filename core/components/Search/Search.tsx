@@ -1,16 +1,22 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
+import Flex from '@theme/components/Flex';
+import { EnterIcon } from '@theme/components/Icons';
+import Label from '@theme/components/Label';
 import FocusTrap from 'focus-trap-react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 import useDebouncedValue from '../../hooks/useDebouncedValue';
 import { useTheme } from '../../context/ThemeContext';
-import { EnterIcon } from '../Icons';
 import { CommandCenterStatic } from './CommandCenterStatic';
 import { HEIGHT, MAX_HEIGHT } from './constants';
+import {
+  Overlay,
+  SearchBox,
+  FormWrapper,
+  SearchResults,
+  Result,
+} from './Styles';
 
 const toggleLockScroll = () => {
   document.documentElement.classList.toggle('lock-scroll');
@@ -185,7 +191,7 @@ const Search = (props: Props) => {
 
   const { dark } = useTheme();
 
-  return ReactDOM.createPortal(
+  return createPortal(
     <FocusTrap>
       <aside>
         <Overlay
@@ -238,28 +244,28 @@ const Search = (props: Props) => {
                   }}
                   value={searchQuery}
                 />
-                <div
-                  css={css`
-                    width: 120px;
-                    color: var(--maximeheckel-colors-typeface-tertiary);
-                    font-size: 14px;
-                    font-weight: 500;
-                    opacity: 0.8;
-                  `}
+                <Label
+                  style={{
+                    width: '120px',
+                    opacity: '0.8',
+                  }}
                 >
                   {debouncedSearchQuery !== '' && !loading
                     ? `${results.length} results`
                     : null}
-                </div>
+                </Label>
               </form>
             </FormWrapper>
             {debouncedSearchQuery !== '' ? (
               <SearchResults
-                height={
-                  results.length * HEIGHT >= MAX_HEIGHT
-                    ? MAX_HEIGHT
-                    : results.length * HEIGHT
-                }
+                style={{
+                  height:
+                    results.length * HEIGHT >= MAX_HEIGHT
+                      ? MAX_HEIGHT
+                      : results.length * HEIGHT,
+                  transition: 'height 0.4s ease-out',
+                  willChange: 'height',
+                }}
               >
                 {results.map((result, index) => (
                   <Result
@@ -278,24 +284,23 @@ const Search = (props: Props) => {
                         {result.title}
                       </a>
                     </Link>
-                    <div
-                      css={css`
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin-left: 16px;
-                        height: 35px;
-                        width: 35px;
-                        background-color: var(--maximeheckel-colors-emphasis);
-                        border-radius: var(--border-radius-1);
+                    <Flex
+                      alignItems="center"
+                      justifyContent="center"
+                      css={{
+                        marginLeft: '16px',
+                        height: '35px',
+                        width: '35px',
+                        backgroundColor: 'var(--maximeheckel-colors-emphasis)',
+                        borderRadius: 'var(--border-radius-1)',
 
-                        path {
-                          stroke: var(--maximeheckel-colors-brand);
-                        }
-                      `}
+                        path: {
+                          stroke: 'var(--maximeheckel-colors-brand)',
+                        },
+                      }}
                     >
                       <EnterIcon />
-                    </div>
+                    </Flex>
                   </Result>
                 ))}
               </SearchResults>
@@ -311,138 +316,3 @@ const Search = (props: Props) => {
 };
 
 export { Search };
-
-const Result = styled(motion.li)<{ selected: boolean }>`
-  display: flex;
-  align-items: center;
-  margin-bottom: 0px;
-  list-style: none;
-  font-size: 0.875rem;
-  line-height: 24px;
-  color: var(--maximeheckel-colors-typeface-secondary);
-  padding: 10px 25px;
-  height: ${HEIGHT}px;
-
-  a {
-    color: unset;
-    display: block;
-    width: 500px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-decoration: none;
-  }
-
-  > div {
-    opacity: 0;
-  }
-
-  ${(p) =>
-    p.selected
-      ? `
-  background-color: var(--maximeheckel-colors-foreground);
-  a {
-    color: var(--maximeheckel-colors-brand);
-  }
-  > div {
-    opacity: 1;
-  }
-  `
-      : ''}
-`;
-
-const SearchResults = styled('ul')<{ height?: number }>`
-  @media (max-width: 700px) {
-    max-height: 450px;
-  }
-
-  background: var(--maximeheckel-colors-body);
-  max-height: ${MAX_HEIGHT}px;
-  height: ${(p) => p.height || 0}px;
-  overflow-y: scroll;
-  margin: 0px;
-  transition: height 0.4s ease-out;
-  will-change: height;
-`;
-
-const SearchBox = styled(motion.div)`
-  position: fixed;
-  overflow: hidden;
-  width: 600px;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: var(--border-radius-2);
-  box-shadow: var(--maximeheckel-shadow-1);
-  border: 1px solid var(--maximeheckel-border-color);
-
-  @media (max-width: 700px) {
-    width: 100%;
-    top: 0;
-    border-radius: 0px;
-  }
-`;
-
-const FormWrapper = styled('div')`
-  background: var(--maximeheckel-colors-body);
-
-  form {
-    margin: 0px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--maximeheckel-border-color);
-  }
-
-  input {
-    background: transparent;
-    border: none;
-    font-size: 0.875rem;
-    font-weight: 400;
-    height: 55px;
-    padding: 0px 25px;
-    width: 100%;
-    outline: none;
-    color: var(--maximeheckel-colors-typeface-primary);
-    ::placeholder,
-    ::-webkit-input-placeholder {
-      color: var(--maximeheckel-colors-typeface-secondary);
-    }
-    :-ms-input-placeholder {
-      color: var(--maximeheckel-colors-typeface-secondary);
-    }
-
-    -webkit-appearance: textfield;
-    outline-offset: -2px;
-
-    ::-webkit-search-cancel-button,
-    ::-webkit-search-decoration {
-      -webkit-appearance: none;
-    }
-    ::-webkit-input-placeholder {
-      color: inherit;
-      opacity: 0.54;
-    }
-    ::-webkit-file-upload-button {
-      -webkit-appearance: button;
-      font: inherit;
-    }
-
-    ::-webkit-autofill {
-      background: transparent;
-      color: var(--maximeheckel-colors-typeface-primary);
-      font-size: 14px;
-    }
-  }
-`;
-
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 999;
-  outline: none;
-`;

@@ -1,6 +1,34 @@
-import { css } from '@emotion/react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { styled } from 'lib/stitches.config';
 import React from 'react';
+
+const CopyButton = styled('button', {
+  background: 'transparent',
+  border: 'none',
+
+  svg: {
+    marginTop: '4px',
+  },
+
+  '&:focus:not(:focus-visible)': {
+    outline: '0',
+  },
+
+  '&:focus-visible': {
+    outline: '2px solid var(--maximeheckel-colors-brand)',
+  },
+
+  variants: {
+    checked: {
+      true: {
+        cursor: 'default',
+      },
+      false: {
+        cursor: 'pointer',
+      },
+    },
+  },
+});
 
 const CopyToClipboardButton = (props: { text: string; title?: string }) => {
   const duration = 0.4;
@@ -50,24 +78,8 @@ const CopyToClipboardButton = (props: { text: string; title?: string }) => {
   }, [isChecked]);
 
   return (
-    <button
-      css={css`
-        background: transparent;
-        border: none;
-        cursor: ${isChecked ? 'default' : 'pointer'};
-
-        svg {
-          margin-top: 4px;
-        }
-
-        &:focus:not(:focus-visible) {
-          outline: 0;
-        }
-
-        &:focus-visible {
-          outline: 2px solid var(--maximeheckel-colors-brand);
-        }
-      `}
+    <CopyButton
+      checked={isChecked}
       aria-label="Copy to clipboard"
       disabled={isChecked}
       onClick={() => {
@@ -126,7 +138,7 @@ const CopyToClipboardButton = (props: { text: string; title?: string }) => {
           transition={{ duration }}
         />
       </motion.svg>
-    </button>
+    </CopyButton>
   );
 };
 

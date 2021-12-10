@@ -386,45 +386,45 @@ To see our Hook in action you can:
 - try to add or remove sections and see the Scrollspy updating accordingly.
 
 ```js live
-const Wrapper = styled('div')`
-  display: flex;
-  width: 300px;
-`;
+const Wrapper = styled('div', {
+  display: 'flex',
+  width: '300px',
+});
 
-const Content = styled('div')`
-  height: 500px;
-  overflow-y: scroll;
+const Content = styled('div', {
+  height: '500px',
+  overflowY: 'scroll',
 
-  ::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 8px;
-  }
+  '&::-webkit-scrollbar': {
+    WebkitAppearance: 'none',
+    width: '8px',
+  },
 
-  ::-webkit-scrollbar-track {
-    background-color: hsla(var(--palette-gray-30), 0.2);
-    border-radius: 8px;
-  }
+  '&::-webkit-scrollbar-track': {
+    backgroundColor: 'hsla(var(--palette-gray-30), 0.2)',
+    borderRadius: '8px',
+  },
 
-  ::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background-color: var(--maximeheckel-colors-typeface-tertiary);
-  }
-`;
+  '&::-webkit-scrollbar-thumb': {
+    borderRadius: '8px',
+    backgroundColor: 'var(--maximeheckel-colors-typeface-tertiary)',
+  },
+});
 
-const TableOfContent = styled('div')`
-  width: 100px;
-`;
+const TableOfContent = styled('div', {
+  width: '100px',
+});
 
-const List = styled('ul')`
-  position: absolute;
-`;
+const List = styled('ul', {
+  position: 'absolute',
+});
 
-const Section = styled('section')`
-  height: 500px;
-  width: 175px;
-  display: block !important;
-  background: var(--maximeheckel-colors-body);
-`;
+const Section = styled('section', {
+  height: '500px',
+  width: '175px',
+  display: 'block !important',
+  background: 'var(--maximeheckel-colors-body)',
+});
 
 const useScrollspy = (elements, options) => {
   const [

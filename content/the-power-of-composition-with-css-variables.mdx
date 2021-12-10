@@ -330,77 +330,81 @@ Since they are composed and since the lightness is calculated based on a "base l
   You can see here that we're only passing CSS variables for the background color
   for the hover, focus and rest state of the Button.
 **/
-const StyledButton = styled('button')`
-  height: 45px;
-  border-radius: 8px;
-  box-shadow: none;
-  border: none;
-  padding: 8px 16px;
-  text-align: center;
-  color: var(--text-color);
-  background-color: var(--primary);
-  cursor: pointer;
-  font-weight: 500;
-  &:hover {
-    background-color: var(--primary-hover);
-  }
-  &:focus {
-    background-color: var(--primary-focus);
-  }
-`;
+const StyledButton = styled('button', {
+  height: '45px',
+  borderRadius: '8px',
+  boxShadow: 'none',
+  border: 'none',
+  padding: '8px 16px',
+  textAlign: 'center',
+  color: 'var(--text-color)',
+  backgroundColor: 'var(--primary)',
+  cursor: 'pointer',
+  fontWeight: '500',
+  '&:hover': {
+    backgroundColor: 'var(--primary-hover)',
+  },
+  '&:focus': {
+    backgroundColor: 'var(--primary-focus)',
+  },
+});
+
 /**
   You can try to modify the lightness or base hue/saturation below.
   You should see that the button hover and focus color will adapt and take into account
   almost (see below why) any color!
 **/
-const BlueThemeWrapper = styled('div')`
-  --base-primary: 222, 89%;
-  --base-primary-lightness: 50%;
-  --primary: hsla(var(--base-primary), var(--base-primary-lightness), 100%);
-  --primary-hover: hsla(
+const BlueThemeWrapper = styled('div', {
+  '--base-primary': '222, 89%',
+  '--base-primary-lightness': '50%',
+  '--primary': 'hsla(var(--base-primary), var(--base-primary-lightness), 100%)',
+  '--primary-hover': `hsla(
     var(--base-primary),
     calc(var(--base-primary-lightness) - 10%),
     /* --primary-hover is --primary but 10% darker */ 100%
-  );
-  --primary-focus: hsla(
+  )`,
+  '--primary-focus': `hsla(
     var(--base-primary),
     calc(var(--base-primary-lightness) - 20%),
     /* --primary-hover is --primary but 20% darker */ 100%
-  );
-  --text-color: hsla(0, 0%, 100%, 100%);
-`;
-const CyanThemedWrapper = styled('div')`
-  --base-primary: 185, 75%;
-  --base-primary-lightness: 60%;
-  --primary: hsla(var(--base-primary), var(--base-primary-lightness), 100%);
-  --primary-hover: hsla(
+  )`,
+  '--text-color': 'hsla(0, 0%, 100%, 100%)',
+});
+
+const CyanThemedWrapper = styled('div', {
+  '--base-primary': '185, 75%',
+  '--base-primary-lightness': '60%',
+  '--primary': 'hsla(var(--base-primary), var(--base-primary-lightness), 100%)',
+  '--primary-hover': `hsla(
     var(--base-primary),
     calc(var(--base-primary-lightness) - 10%),
     100%
-  );
-  --primary-focus: hsla(
+  )`,
+  '--primary-focus': `hsla(
     var(--base-primary),
     calc(var(--base-primary-lightness) - 20%),
     100%
-  );
-  --text-color: hsla(0, 0%, 100%, 100%);
-`;
-const RedThemeWrapper = styled('div')`
-  --base-primary: 327, 80%;
-  --base-primary-lightness: 40%;
-  --primary: hsla(var(--base-primary), var(--base-primary-lightness), 100%);
-  --primary-hover: hsla(
+  )`,
+  '--text-color': 'hsla(0, 0%, 100%, 100%)',
+});
+
+const RedThemeWrapper = styled('div', {
+  '--base-primary': '327, 80%',
+  '--base-primary-lightness': '40%',
+  '--primary': 'hsla(var(--base-primary), var(--base-primary-lightness), 100%)',
+  '--primary-hover': `hsla(
     var(--base-primary),
     calc(var(--base-primary-lightness) - 10%),
     100%
-  );
-  --primary-focus: hsla(
+  )`,
+  '--primary-focus': `hsla(
     var(--base-primary),
     calc(var(--base-primary-lightness) - 20%),
     100%
-  );
-  --text-color: hsla(0, 0%, 100%, 100%);
-`;
+  )`,
+  '--text-color': 'hsla(0, 0%, 100%, 100%)',
+});
+
 const ThemedButton = () => {
   return (
     <div

@@ -1,6 +1,6 @@
+import Flex from '@theme/components/Flex';
 import React from 'react';
-import Flex from '../Flex';
-import styled from '@emotion/styled';
+import { styled } from 'lib/stitches.config';
 
 const initialCounts = {
   count: 0,
@@ -11,6 +11,14 @@ const initialCounts = {
     repost: 0,
   },
 };
+
+const CountWrapper = styled(Flex, {
+  p: {
+    color: 'var(--maximeheckel-colors-brand) !important',
+    fontSize: '14px',
+    fontWeight: 500,
+  },
+});
 
 const fetchCounts = async (target: string) =>
   fetch(
@@ -55,13 +63,5 @@ const WebmentionCount = ({ target }: { target: string }) => {
     </CountWrapper>
   );
 };
-
-const CountWrapper = styled(Flex)`
-  p {
-    color: var(--maximeheckel-colors-brand) !important;
-    font-size: 14px;
-    font-weight: 500;
-  }
-`;
 
 export default WebmentionCount;

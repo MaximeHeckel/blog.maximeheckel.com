@@ -5,7 +5,7 @@ After a pit stop on Medium, I built it from scratch using GatbsyJS but decided i
 
 It's also built using
 
-- Emotion / CSS
+- Stitches / CSS
 - MDX
 - Netlify
 

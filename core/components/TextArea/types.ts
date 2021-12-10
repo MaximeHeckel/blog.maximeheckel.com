@@ -6,7 +6,10 @@ export interface StyledTextAreaProps {
 }
 
 export interface TextAreaProps
-  extends Omit<React.HTMLProps<HTMLTextAreaElement>, 'label' | 'as' | 'value'> {
+  extends Omit<
+    React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+    'label' | 'as' | 'value'
+  > {
   label?: React.ReactNode;
   value?: string;
   id: string;

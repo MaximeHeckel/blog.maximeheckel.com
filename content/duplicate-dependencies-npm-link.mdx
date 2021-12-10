@@ -23,8 +23,6 @@ type: 'blogPost'
 
 This post is about an issue that keeps coming on several of my projects involving third-party libraries linked locally with npm link: **Duplicate dependencies**. I ran into this issue multiple times, whether it was when working on a styled-components library even on some simple packages using only React as a peer dependency. I thought it could be worth writing about with an example it and explain why it happens and how I solve it.
 
-<hr />
-
 ## Context of the problem
 
 As an example, to illustrate the problem, we can consider a main React project called "myApp" bundled with Webpack. The app will be themed through emotion-theming and Emotion which use React Context to inject a theme object to be used by the entire app and any styled-components which are consumers of that “theme context”.
@@ -140,7 +138,5 @@ resolve: {
 With this change, whether "myLib" is installed or linked to "myApp", it will have a similar dependency tree than the one described in schema 1 above. Setting this option properly might also fix some issues involving hooks described in [the React docs](https://reactjs.org/warnings/invalid-hook-call-warning.html) which, in a setup similar than the one featured here, is often due to having multiple versions of React used within the same app.
 
 We can now continue to develop our package without any duplicate dependencies issues 🎉. This is obviously one of many ways of fixing this problem, but it's the one that has fixed so many of my problems in the past, and I keep getting back to it every so often.
-
-<hr />
 
 PS: In these weird times (I'm writing these words during the Covid-19 outbreak) remember to **stay safe and stay home**!

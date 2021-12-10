@@ -1,6 +1,6 @@
 export interface RangeProps
   extends Omit<
-    React.HTMLProps<HTMLInputElement>,
+    React.InputHTMLAttributes<HTMLInputElement>,
     'onChange' | 'label' | 'as' | 'type'
   > {
   id: string;

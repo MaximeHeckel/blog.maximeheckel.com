@@ -93,30 +93,30 @@ Now let's apply what we learned about the propagation mechanism of Framer Motion
 - **Set an**`animate` **prop on the motion component that wraps the button** and see that it now animates on its own and does not consume the variant set by the parent on hover.
 
 ```js live
-const ListItem = styled(motion.li)`
-  width: 100%;
-  min-width: 300px;
-  background: var(--maximeheckel-colors-foreground);
-  box-shadow: var(--maximeheckel-shadow-1);
-  border-radius: var(--border-radius-1);
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  margin-bottom: 0px;
-`;
+const ListItem = styled(motion.li, {
+  width: '100%',
+  minWidth: '300px',
+  background: 'var(--maximeheckel-colors-foreground)',
+  boxShadow: 'var(--maximeheckel-shadow-1)',
+  borderRadius: 'var(--border-radius-1)',
+  padding: '8px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  cursor: 'pointer',
+  marginBottom: '0px',
+});
 
-const Button = styled('button')`
-  background: transparent;
-  border: none;
-  shadow: none;
-  color: var(--maximeheckel-colors-typeface-tertiary);
-`;
+const Button = styled('button', {
+  background: 'transparent',
+  border: 'none',
+  shadow: 'none',
+  color: 'var(--maximeheckel-colors-typeface-tertiary)',
+});
 
-const InfoBox = styled('div')`
-  width: 50%;
-`;
+const InfoBox = styled('div', {
+  width: '50%',
+});
 
 const ARTICLES = [
   {
@@ -268,47 +268,47 @@ We now have a new awesome tool to use to make our transitions even better! It's 
 - Try to modify the animation defined in the `exit` prop. For example, you could make the whole component scale from 1 to 0 while it exit. (I already added the proper animation objects commented in the code below 😄)
 
 ```js live
-const List = styled(motion.ul)`
-  padding: 16px;
-  width: 350px;
-  background: var(--maximeheckel-colors-body);
-  border-radius: var(--border-radius-1);
-  display: grid;
-  gap: 16px;
-`;
+const List = styled(motion.ul, {
+  padding: '16px',
+  width: '350px',
+  background: 'var(--maximeheckel-colors-body)',
+  borderRadius: 'var(--border-radius-1)',
+  display: 'grid',
+  gap: '16px',
+});
 
-const ListItem = styled(motion.li)`
-  background: var(--maximeheckel-colors-foreground);
-  box-shadow: var(--maximeheckel-shadow-1);
-  border-radius: var(--border-radius-1);
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  margin-bottom: 0px;
-`;
+const ListItem = styled(motion.li, {
+  background: 'var(--maximeheckel-colors-foreground)',
+  boxShadow: 'var(--maximeheckel-shadow-1)',
+  borderRadius: 'var(--border-radius-1)',
+  padding: '8px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  cursor: 'pointer',
+  marginBottom: '0px',
+});
 
-const Button = styled('button')`
-  background: transparent;
-  border: none;
-  shadow: none;
-  color: var(--maximeheckel-colors-typeface-tertiary);
-`;
+const Button = styled('button', {
+  background: 'transparent',
+  border: 'none',
+  shadow: 'none',
+  color: 'var(--maximeheckel-colors-typeface-tertiary)',
+});
 
-const InfoBox = styled('div')`
-  width: 50%;
-`;
+const InfoBox = styled('div', {
+  width: '50%',
+});
 
-const FilterWrapper = styled('div')`
-  margin-bottom: 16px;
-  input {
-    margin-right: 4px;
-  }
-  label {
-    margin-right: 4px;
-  }
-`;
+const FilterWrapper = styled('div', {
+  marginBottom: '16px',
+  input: {
+    marginRight: '4px',
+  },
+  label: {
+    marginRight: '4px',
+  },
+});
 
 const ARTICLES = [
   {
@@ -443,20 +443,20 @@ But to give you a little bit more of an idea of what I'm talking about here, let
 - the second one uses a new prop: `layout`. It's here set to true to tell Framer Motion that a "layout related property", and thus by extension the layout of the component, will change between rerenders. The properties themselves are simply defined in CSS as any developer would do normally when not using Framer Motion.
 
 ```js live
-const SwitchWrapper1 = styled(motion.div)`
-  width: 50px;
-  height: 30px;
-  border-radius: 20px;
-  cursor: pointer;
-  display: flex;
-`;
+const SwitchWrapper1 = styled(motion.div, {
+  width: '50px',
+  height: '30px',
+  borderRadius: '20px',
+  cursor: 'pointer',
+  display: 'flex',
+});
 
-const SwitchHandle1 = styled(motion.div)`
-  background: #fff;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-`;
+const SwitchHandle1 = styled(motion.div, {
+  background: '#fff',
+  width: '30px',
+  height: '30px',
+  borderRadius: '50%',
+});
 
 // Attempt at a Switch motion component without layout animation: It simply does not work
 const Switch1 = () => {
@@ -485,27 +485,27 @@ const Switch1 = () => {
   );
 };
 
-const SwitchWrapper2 = styled('div')`
-  width: 50px;
-  height: 30px;
-  border-radius: 20px;
-  cursor: pointer;
-  display: flex;
-  background: #111;
-  justify-content: flex-start;
+const SwitchWrapper2 = styled('div', {
+  width: '50px',
+  height: '30px',
+  borderRadius: '20px',
+  cursor: 'pointer',
+  display: 'flex',
+  background: '#111',
+  justifyContent: 'flex-start',
 
-  &[data-isactive='true'] {
-    background: #f90566;
-    justify-content: flex-end;
-  }
-`;
+  '&[data-isactive="true"]': {
+    background: '#f90566',
+    justifyContent: 'flex-end',
+  },
+});
 
-const SwitchHandle2 = styled(motion.div)`
-  background: #fff;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-`;
+const SwitchHandle2 = styled(motion.div, {
+  background: '#fff',
+  width: '30px',
+  height: '30px',
+  borderRadius: '50%',
+});
 
 // Simpler version of the Switch motion component using layout animation
 const Switch2 = () => {
@@ -633,50 +633,49 @@ You can try to:
 - try to add the `layout` prop on the `<Title/>` component and see it gracefully adjusting when the height of an item changes
 
 ```js live
-const List = styled(motion.ul)`
-  position: relative;
-  padding: 16px;
-  width: 350px;
-  background: var(--maximeheckel-colors-body);
-  border-radius: var(--border-radius-1);
-  display: grid;
-  gap: 16px;
-`;
+const List = styled(motion.ul, {
+  padding: '16px',
+  width: '350px',
+  background: 'var(--maximeheckel-colors-body)',
+  borderRadius: 'var(--border-radius-1)',
+  display: 'grid',
+  gap: '16px',
+});
 
-const ListItem = styled(motion.li)`
-  background: var(--maximeheckel-colors-foreground);
-  box-shadow: var(--maximeheckel-shadow-1);
-  border-radius: var(--border-radius-1);
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  margin-bottom: 0px;
-`;
+const ListItem = styled(motion.li, {
+  background: 'var(--maximeheckel-colors-foreground)',
+  boxShadow: 'var(--maximeheckel-shadow-1)',
+  borderRadius: 'var(--border-radius-1)',
+  padding: '8px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  cursor: 'pointer',
+  marginBottom: '0px',
+});
+
+const Button = styled('button', {
+  background: 'transparent',
+  border: 'none',
+  shadow: 'none',
+  color: 'var(--maximeheckel-colors-typeface-tertiary)',
+});
+
+const InfoBox = styled('div', {
+  width: '50%',
+});
+
+const FilterWrapper = styled('div', {
+  marginBottom: '16px',
+  input: {
+    marginRight: '4px',
+  },
+  label: {
+    marginRight: '4px',
+  },
+});
 
 const Title = motion.div;
-
-const Button = styled('button')`
-  background: transparent;
-  border: none;
-  shadow: none;
-  color: var(--maximeheckel-colors-typeface-tertiary);
-`;
-
-const InfoBox = styled('div')`
-  width: 50%;
-`;
-
-const FilterWrapper = styled('div')`
-  margin-bottom: 16px;
-  input {
-    margin-right: 4px;
-  }
-  label {
-    margin-right: 4px;
-  }
-`;
 
 const ARTICLES = [
   {

@@ -1,7 +1,7 @@
 export type TextInputTypes = 'email' | 'password' | 'search' | 'text' | 'url';
 
 export interface TextInputProps
-  extends Omit<React.HTMLProps<HTMLInputElement>, 'label' | 'as'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   type?: TextInputTypes;
   label?: React.ReactNode;
   value?: string;

@@ -24,7 +24,7 @@ I recently took the time to check out [Framer Motion](https://www.framer.com/mot
 The projects I usually work on, however, rely heavily on styled-components built with Emotion, which allows me to write both animations and transitions with CSS syntax.
 When converting these same animations to Framer Motion, I found myself wrapping my existing styled-components in a `motion.div` component and migrate any animation code to this element. Little to say, it was tedious work, and I also wasn't satisfied with the resulting code:
 
-```js live
+```js
 const StyledButton = styled('div')`
   height: 48px;
   margin: 0;
@@ -64,7 +64,7 @@ Note: You can head over to the [Header component code of this blog](https://gith
 
 Although the code above is working, I wanted to be able to declare a single component to hold both the style and the animation while keep using styled-components. My first instinct was to I try to wrap a `motion.button` into Emotion's styled function as follows:
 
-```js live
+```js
 const StyledButton = styled(motion.button)`
   height: 48px;
   margin: 0;

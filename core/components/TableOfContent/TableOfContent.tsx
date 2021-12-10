@@ -1,64 +1,59 @@
-import styled from '@emotion/styled';
 import Anchor from '@theme/components/Anchor';
 import useProgress from '@theme/hooks/useProgress';
 import useScrollSpy from '@theme/hooks/useScrollSpy';
 import { useReducedMotion, motion } from 'framer-motion';
+import { styled } from 'lib/stitches.config';
 import React from 'react';
 import ProgressBar from './ProgressBar';
 
-interface WrapperProps {
-  showTableOfContents: boolean;
-}
+const Wrapper = styled('div', {
+  position: 'fixed',
+  top: '266px',
+  display: 'flex',
+  left: '30px',
 
-const Wrapper = styled('div')<WrapperProps>`
-  @media (max-width: 1100px) {
-    left: 10px;
-  }
-  position: fixed;
-  top: 266px;
-  display: flex;
-  left: 30px;
+  ul: {
+    maxWidth: '200px',
+    flexDirection: 'column',
+    display: 'flex',
 
-  ${(p) =>
-    !p.showTableOfContents
-      ? `
-   ul {
-     display: none;
-   }
-  `
-      : ''}
+    '@media (max-width: 1250px)': {
+      display: 'none',
+    },
 
-  ul {
-    @media (max-width: 1250px) {
-      display: none;
-    }
+    li: {
+      listStyle: 'none',
+      fontSize: '14px',
+      fontWeight: '500',
+      lineHeight: '1.5',
+      marginBottom: '22px',
 
-    max-width: 200px;
-    display: flex;
-    flex-direction: column;
+      '&:focus:not(:focus-visible)': {
+        outline: 0,
+      },
 
-    li {
-      list-style: none;
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 1.5;
-      margin-bottom: 22px;
-      a {
-        ${(p) =>
-          !p.showTableOfContents ? `cursor: none;  pointer-events: none;` : ''}
-      }
+      '&:focus-visible': {
+        outline: '2px solid var(--maximeheckel-colors-brand)',
+        opacity: '1 !important',
+      },
+    },
+  },
 
-      &:focus:not(:focus-visible) {
-        outline: 0;
-      }
+  '@media (max-width: 1100px)': {
+    left: '10px',
+  },
 
-      &:focus-visible {
-        outline: 2px solid var(--maximeheckel-colors-brand);
-        opacity: 1 !important;
-      }
-    }
-  }
-`;
+  variants: {
+    hidden: {
+      true: {
+        a: {
+          cursor: 'none',
+          pointerEvents: 'none',
+        },
+      },
+    },
+  },
+});
 
 interface TableOfContentProps {
   ids: Array<{ id: string; title: string }>;
@@ -107,7 +102,7 @@ const TableOfContent = ({ ids }: TableOfContentProps) => {
     const bodyRect = document.body.getBoundingClientRect().top;
     const elementRect = element.getBoundingClientRect().top;
     const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - 50;
+    const offsetPosition = elementPosition - 100;
 
     /**
      * Note @MaximeHeckel: This doesn't work on Safari :(
@@ -132,7 +127,7 @@ const TableOfContent = ({ ids }: TableOfContentProps) => {
   );
 
   return (
-    <Wrapper showTableOfContents={shouldShowTableOfContent}>
+    <Wrapper hidden={!shouldShowTableOfContent}>
       <ProgressBar progress={readingProgress} />
       {ids.length > 0 ? (
         <ul>

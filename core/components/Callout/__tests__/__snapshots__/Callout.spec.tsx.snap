@@ -1,65 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Callout can render a Callout with variant danger 1`] = `
-.emotion-0 {
-  position: relative;
-  padding: 30px 30px;
-  margin-bottom: 2.25rem;
-  border: 0px solid;
-  border-radius: var(--border-radius-1);
-  color: var(--maximeheckel-colors-typeface-primary);
-  border: 2px solid var(--maximeheckel-colors-foreground);
-  background: var(--callout-background, var(--maximeheckel-colors-emphasis));
-}
-
-.emotion-0 code {
-  background: none;
-}
-
-.emotion-0 *:last-child {
-  margin-bottom: 0px;
-}
-
-.emotion-0[data-variant^='info'] {
-  --callout-background: var(--maximeheckel-colors-emphasis);
-}
-
-.emotion-0[data-variant^='danger'] {
-  --callout-background: var(--maximeheckel-colors-danger-emphasis);
-}
-
-.emotion-2 {
-  position: absolute;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  top: -24px;
-  right: -20px;
-  border-radius: 50%;
-  padding: 8px;
-  color: var(--maximeheckel-colors-body);
-  border: 8px solid var(--maximeheckel-colors-body);
-  background: var(--icon-background, var(--maximeheckel-colors-body));
-}
-
-.emotion-2[data-variant^='info'] {
-  --icon-background: var(--maximeheckel-colors-brand);
-}
-
-.emotion-2[data-variant^='danger'] {
-  --icon-background: var(--maximeheckel-colors-danger);
-}
-
 <body>
   <div>
     <aside
-      class="emotion-0 emotion-1"
-      data-variant="danger"
+      class="c-eUCdYY c-eUCdYY-jVzdYt-variant-danger"
     >
       <div
-        class="emotion-2 emotion-3"
-        data-variant="danger"
+        class="c-hEVHDD c-hEVHDD-deNlpD-variant-danger"
       >
         <svg
           fill="none"
@@ -96,70 +44,13 @@ exports[`Callout can render a Callout with variant danger 1`] = `
 `;
 
 exports[`Callout can render a Callout with variant danger 2`] = `
-.emotion-0 {
-  position: relative;
-  padding: 30px 30px;
-  margin-bottom: 2.25rem;
-  border: 0px solid;
-  border-radius: var(--border-radius-1);
-  color: var(--maximeheckel-colors-typeface-primary);
-  border: 2px solid var(--maximeheckel-colors-foreground);
-  background: var(--callout-background, var(--maximeheckel-colors-emphasis));
-}
-
-.emotion-0 code {
-  background: none;
-}
-
-.emotion-0 *:last-child {
-  margin-bottom: 0px;
-}
-
-.emotion-0[data-variant^='info'] {
-  --callout-background: var(--maximeheckel-colors-emphasis);
-}
-
-.emotion-0[data-variant^='danger'] {
-  --callout-background: var(--maximeheckel-colors-danger-emphasis);
-}
-
-.emotion-2 {
-  position: absolute;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  top: -24px;
-  right: -8px;
-  border-radius: var(--border-radius-1);
-  padding: 8px;
-  color: var(--maximeheckel-colors-body);
-  font-size: 14px;
-  font-weight: 500;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background: var(--icon-background, var(--maximeheckel-colors-body));
-}
-
-.emotion-2[data-variant^='info'] {
-  --icon-background: var(--maximeheckel-colors-brand);
-}
-
-.emotion-2[data-variant^='danger'] {
-  --icon-background: var(--maximeheckel-colors-danger);
-}
-
 <body>
   <div>
     <aside
-      class="emotion-0 emotion-1"
-      data-variant="danger"
+      class="c-eUCdYY c-eUCdYY-jVzdYt-variant-danger"
     >
       <div
-        class="emotion-2 emotion-3"
-        data-variant="danger"
+        class="c-hNaTmg c-hNaTmg-deNlpD-variant-danger"
       >
         Test Label
       </div>
@@ -170,65 +61,13 @@ exports[`Callout can render a Callout with variant danger 2`] = `
 `;
 
 exports[`Callout can render a Callout with variant info 1`] = `
-.emotion-0 {
-  position: relative;
-  padding: 30px 30px;
-  margin-bottom: 2.25rem;
-  border: 0px solid;
-  border-radius: var(--border-radius-1);
-  color: var(--maximeheckel-colors-typeface-primary);
-  border: 2px solid var(--maximeheckel-colors-foreground);
-  background: var(--callout-background, var(--maximeheckel-colors-emphasis));
-}
-
-.emotion-0 code {
-  background: none;
-}
-
-.emotion-0 *:last-child {
-  margin-bottom: 0px;
-}
-
-.emotion-0[data-variant^='info'] {
-  --callout-background: var(--maximeheckel-colors-emphasis);
-}
-
-.emotion-0[data-variant^='danger'] {
-  --callout-background: var(--maximeheckel-colors-danger-emphasis);
-}
-
-.emotion-2 {
-  position: absolute;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  top: -24px;
-  right: -20px;
-  border-radius: 50%;
-  padding: 8px;
-  color: var(--maximeheckel-colors-body);
-  border: 8px solid var(--maximeheckel-colors-body);
-  background: var(--icon-background, var(--maximeheckel-colors-body));
-}
-
-.emotion-2[data-variant^='info'] {
-  --icon-background: var(--maximeheckel-colors-brand);
-}
-
-.emotion-2[data-variant^='danger'] {
-  --icon-background: var(--maximeheckel-colors-danger);
-}
-
 <body>
   <div>
     <aside
-      class="emotion-0 emotion-1"
-      data-variant="info"
+      class="c-eUCdYY c-eUCdYY-dpIRHz-variant-info"
     >
       <div
-        class="emotion-2 emotion-3"
-        data-variant="info"
+        class="c-hEVHDD c-hEVHDD-jXIqcX-variant-info"
       >
         <svg
           fill="none"
@@ -267,70 +106,13 @@ exports[`Callout can render a Callout with variant info 1`] = `
 `;
 
 exports[`Callout can render a Callout with variant info 2`] = `
-.emotion-0 {
-  position: relative;
-  padding: 30px 30px;
-  margin-bottom: 2.25rem;
-  border: 0px solid;
-  border-radius: var(--border-radius-1);
-  color: var(--maximeheckel-colors-typeface-primary);
-  border: 2px solid var(--maximeheckel-colors-foreground);
-  background: var(--callout-background, var(--maximeheckel-colors-emphasis));
-}
-
-.emotion-0 code {
-  background: none;
-}
-
-.emotion-0 *:last-child {
-  margin-bottom: 0px;
-}
-
-.emotion-0[data-variant^='info'] {
-  --callout-background: var(--maximeheckel-colors-emphasis);
-}
-
-.emotion-0[data-variant^='danger'] {
-  --callout-background: var(--maximeheckel-colors-danger-emphasis);
-}
-
-.emotion-2 {
-  position: absolute;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  top: -24px;
-  right: -8px;
-  border-radius: var(--border-radius-1);
-  padding: 8px;
-  color: var(--maximeheckel-colors-body);
-  font-size: 14px;
-  font-weight: 500;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background: var(--icon-background, var(--maximeheckel-colors-body));
-}
-
-.emotion-2[data-variant^='info'] {
-  --icon-background: var(--maximeheckel-colors-brand);
-}
-
-.emotion-2[data-variant^='danger'] {
-  --icon-background: var(--maximeheckel-colors-danger);
-}
-
 <body>
   <div>
     <aside
-      class="emotion-0 emotion-1"
-      data-variant="info"
+      class="c-eUCdYY c-eUCdYY-dpIRHz-variant-info"
     >
       <div
-        class="emotion-2 emotion-3"
-        data-variant="info"
+        class="c-hNaTmg c-hNaTmg-jXIqcX-variant-info"
       >
         Test Label
       </div>

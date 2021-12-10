@@ -6,7 +6,11 @@ import { CheckboxProps } from './types';
 const Checkbox = (props: CheckboxProps) => {
   const { checked, disabled, id, label, ...rest } = props;
   return (
-    <Flex gap={8}>
+    <Flex
+      css={{
+        gap: '8px',
+      }}
+    >
       <StyledCheckbox
         id={id}
         type="checkbox"

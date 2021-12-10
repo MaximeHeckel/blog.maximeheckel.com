@@ -3,17 +3,17 @@ import Link from 'next/link';
 import React from 'react';
 import siteConfig from 'config/site';
 import Layout from '@theme/layout';
+import Grid from '@theme/components/Grid';
+import TableOfContent from '@theme/components/TableOfContent';
+import Anchor from '@theme/components/Anchor';
 import Seo from '@theme/components/Seo';
 import Hero from '@theme/components/Hero';
 import WebmentionCount from '@theme/components/Webmentions/WebmentionCount';
 import Flex from '@theme/components/Flex';
-import MDXBody from '@theme/components/MDX/MDX';
-import Pill, { PillVariant } from '@theme/components/Pill';
+import Pill from '@theme/components/Pill';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
-import Grid from '@theme/components/Grid';
-import TableOfContent from '@theme/components/TableOfContent';
-import Anchor from '@theme/components/Anchor';
+import { css } from 'lib/stitches.config';
 
 interface WebmentionBlogDataProps {
   date: string;
@@ -23,7 +23,6 @@ interface WebmentionBlogDataProps {
 
 const WebmentionBlogData = (props: WebmentionBlogDataProps) => {
   const { date, postUrl, subtitle } = props;
-
   return (
     <>
       <time
@@ -44,6 +43,20 @@ interface Props {
   frontMatter: Post & { readingTime: ReadingTime };
   ogImage: string;
 }
+
+const contentClass = css({
+  padding: '20px 0px',
+  gridColumn: '2',
+  color: 'var(--maximeheckel-colors-typeface-secondary)',
+
+  h3: {
+    marginTop: '2em',
+  },
+
+  section: {
+    marginTop: '5em',
+  },
+});
 
 const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
   const {
@@ -100,7 +113,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
       <article className="h-entry">
         <Grid columns="var(--layout-small)" columnGap={20}>
           <Hero id="top">
-            <div css={{ marginBottom: '24px', fontSize: '16px' }}>
+            <div style={{ marginBottom: '24px', fontSize: '16px' }}>
               <Link href="/" passHref>
                 <Anchor arrow="left" discreet>
                   Home
@@ -124,17 +137,16 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
                 <p> / {readingTime.text} / </p>
                 <WebmentionCount target={postUrl} />
               </Flex>
-              <Pill variant={PillVariant.INFO}>
+              <Pill variant="info">
                 Last Updated{' '}
                 {format(new Date(Date.parse(updated)), 'MMMM d, yyyy')}
               </Pill>
             </Hero.Info>
-
             {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
           </Hero>
+          <TableOfContent ids={ids} />
+          <div className={contentClass()}>{children}</div>
         </Grid>
-        <TableOfContent ids={ids} />
-        <MDXBody>{children}</MDXBody>
         <Signature title={title} url={postUrl} />
         <WebmentionBlogData date={date} postUrl={postUrl} subtitle={subtitle} />
       </article>

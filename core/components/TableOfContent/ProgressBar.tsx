@@ -1,17 +1,17 @@
-import styled from '@emotion/styled';
 import { motion, useReducedMotion } from 'framer-motion';
+import { styled } from 'lib/stitches.config';
 import React from 'react';
 
-const ProgressBarWrapper = styled(motion.div)`
-  height: calc(88vh - 40px);
-  max-height: 425px;
-  width: 2px;
-  background-color: hsla(var(--palette-gray-20), 0.3);
+const ProgressBarWrapper = styled(motion.div, {
+  height: 'calc(88vh - 40px)',
+  maxHeight: '425px',
+  width: '2px',
+  backgroundColor: 'hsla(var(--palette-gray-20), 0.3)',
 
-  @media (max-width: 700px) {
-    display: none;
-  }
-`;
+  '@media(max-width: 700px)': {
+    display: 'none',
+  },
+});
 
 const ProgressBar = ({ progress }: { progress: number }) => {
   const [visibility, setVisibility] = React.useState(true);

@@ -26,8 +26,6 @@ colorFeatured: 'linear-gradient(301.9deg, #FEF8FD -5.6%, #E4EEFF 93.18%)'
 fontFeatured: '#000000'
 ---
 
-<PreviewDeploy />
-
 **Preview deployments are an essential step in the CI/CD pipelines of many frontend teams**. The ability to preview every frontend change in a hosted and self-contained environment can increase the development velocity of a team quite significantly. Moreover, it brings more confidence that any newly added change will not bring any undesirable effect that would not get caught by automated tests before getting merged to production.
 
 I wanted to bring this kind of service to my team at work, however, using one of the already available platforms that provided preview deployments out of the box such as [Netlify](https://www.netlify.com/), [Vercel](https://vercel.com/) or [Serverless](https://www.serverless.com/) was not an option. All our services and deployments were either managed on Google Cloud or Firebase. Thus, if we wanted a preview deployment service, we would have to build it on Google's Cloud platform.
@@ -177,8 +175,6 @@ We now have all the key commands to deploy a service and a revision on Cloud Run
 
 ## Automating the deployments
 
-<DockerBuild />
-
 In this part, we will create a Github workflow to execute the commands we just looked at on every Pull Request event.
 
 <Callout variant="info">
@@ -226,7 +222,6 @@ on:
 - Run the checkout action and setup node action:
 
 ```yaml
-
 ---
 steps:
   - name: Checkout Commit
@@ -242,7 +237,6 @@ steps:
 - Then we need to install and configure the GCloud SDK and beta components using our service account name and secret key:
 
 ```yaml
-
 ---
 - name: Setup Google Cloud SDK
   uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
@@ -257,7 +251,6 @@ steps:
 - Let's not forget to configure Docker, as we showed earlier, to be able to push on GCR
 
 ```yaml
-
 ---
 - name: Setup Docker for GCR
   run: gcloud auth configure-docker
@@ -266,7 +259,6 @@ steps:
 - **Build** and **Push** our Docker image using the PR number as a tag:
 
 ```yaml
-
 ---
 - name: Build Docker Image
   run: docker build -t gcr.io/${secrets.PROJECTID}/IMAGENAME:${{github.event.number}}
@@ -277,7 +269,6 @@ steps:
 - **Get the commit hash of the HEAD commit** of this PR. This is necessary because every revision suffix must be unique, and commit hashes are very handy to generate unique strings 😊:
 
 ```yaml
-
 ---
 - name: Get HEAD Commit Hash
   id: commit
@@ -295,7 +286,6 @@ To do so, you can head to the Google Cloud Run UI and create a service with the 
 </Callout>
 
 ```yaml
-
 ---
 - name: Deploy Revision On Cloud Run
   run: gcloud beta run deploy "myapp" --image "gcr.io/${secrets.PROJECTID}/IMAGENAME:${{github.event.number}}" --no-traffic --platform managed --revision-suffix=${{github.event.number}}-${{steps.commit.outputs.hash}} --port=3000 --region=us-east1
@@ -304,7 +294,6 @@ To do so, you can head to the Google Cloud Run UI and create a service with the 
 - **Tag the revision**:
 
 ```yaml
-
 ---
 - name: Tag Revision On Cloud Run
   run: gcloud beta run services update-traffic "myapp" --update-tags pr-${{github.event.number}}=myapp-${{github.event.number}}-${{steps.commit.outputs.hash}} --platform=managed --region=us-east1
@@ -313,7 +302,6 @@ To do so, you can head to the Google Cloud Run UI and create a service with the 
 - Post the comment on the PR containing the URL! This will let your reviewers know how to access the revision that's just been deployed. I used the [add-pr-comment Github Action](https://github.com/marketplace/actions/add-pr-comment). You could use any other action or even build your own (!), as long as you can pass your revision URL as an argument:
 
 ```yaml
-
 ---
 - name: Post PR comment with preview deployment URL
   uses: mshick/add-pr-comment@v1

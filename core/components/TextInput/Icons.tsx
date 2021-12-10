@@ -1,5 +1,3 @@
-import { css } from '@emotion/react';
-
 export const EyeIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -14,11 +12,11 @@ export const EyeIcon = () => (
       cx="12"
       cy="12"
       r="3"
-      css={css`
-        stroke-dasharray: 24;
-        stroke-dashoffset: var(--eye, 24);
-        transition: stroke-dashoffset 0.6s ease var(--eye-delay, 0s);
-      `}
+      style={{
+        strokeDasharray: 24,
+        strokeDashoffset: 'var(--eye, 24)',
+        transition: 'stroke-dashoffset 0.6s ease var(--eye-delay, 0s)',
+      }}
     />
     <path
       strokeLinecap="round"
@@ -31,11 +29,11 @@ export const EyeIcon = () => (
       y1="4"
       x2="20"
       y2="20"
-      css={css`
-        stroke-dasharray: 24;
-        stroke-dashoffset: var(--strike, 0);
-        transition: stroke-dashoffset 0.45s ease var(--strike-delay, 0s);
-      `}
+      style={{
+        strokeDasharray: 24,
+        strokeDashoffset: 'var(--strike, 0)',
+        transition: 'stroke-dashoffset 0.45s ease var(--strike-delay, 0s)',
+      }}
     />
   </svg>
 );
@@ -51,11 +49,11 @@ export const AtSignIcon = () => (
     data-testid="at-sign-icon"
   >
     <path
-      css={css`
-        stroke-dasharray: 107;
-        stroke-dashoffset: var(--at-sign, 227);
-        transition: stroke-dashoffset 0.8s ease var(--at-sign-delay, 0.3s);
-      `}
+      style={{
+        strokeDasharray: 107,
+        strokeDashoffset: 'var(--at-sign, 227)',
+        transition: 'stroke-dashoffset 0.8s ease var(--at-sign-delay, 0.3s)',
+      }}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}
@@ -75,11 +73,11 @@ export const Tick = () => (
     data-testid="tick-icon"
   >
     <path
-      css={css`
-        stroke-dasharray: 30;
-        stroke-dashoffset: var(--tick, 30);
-        transition: stroke-dashoffset 0.6s ease var(--tick-delay, 0s);
-      `}
+      style={{
+        strokeDasharray: 30,
+        strokeDashoffset: 'var(--tick, 30)',
+        transition: 'stroke-dashoffset 0.6s ease var(--tick-delay, 0s)',
+      }}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}
