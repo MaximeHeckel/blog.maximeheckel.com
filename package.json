@@ -73,7 +73,6 @@
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
-    "@cypress/snapshot": "2.1.7",
     "@netlify/plugin-nextjs": "3.9.0",
     "@next/bundle-analyzer": "10.0.5",
     "@now/node": "1.8.5",
@@ -92,7 +91,7 @@
     "babel-jest": "26.6.3",
     "babel-plugin-transform-dynamic-import": "2.1.0",
     "cross-env": "7.0.3",
-    "cypress": "7.3.0",
+    "cypress": "9.1.1",
     "eslint": "7.29.0",
     "eslint-config-next": "11.0.1",
     "eslint-config-prettier": "7.1.0",
