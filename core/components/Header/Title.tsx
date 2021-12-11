@@ -2,14 +2,11 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { styled } from 'lib/stitches.config';
 import { HeaderContext } from './Context';
+import { H3 } from '../Typography';
 
 export const TitleWrapper = styled('div', {
   overflow: 'hidden',
-  marginLeft: '40px',
-
-  h3: {
-    marginBottom: '0px',
-  },
+  marginLeft: '42px',
 
   a: {
     color: 'var(--maximeheckel-colors-typeface-primary)',
@@ -66,7 +63,7 @@ export const Title: React.FC<HeaderTitleProps> = (props) => {
               animate={collapsed ? 'show' : 'hide'}
               transition={{ ease: 'easeInOut', duration: 0.5 }}
             >
-              <h3>
+              <H3 css={{ marginBottom: 0 }}>
                 <a
                   href="#top"
                   onClick={(event) => {
@@ -78,7 +75,7 @@ export const Title: React.FC<HeaderTitleProps> = (props) => {
                 >
                   {children}
                 </a>
-              </h3>
+              </H3>
             </motion.div>
           ) : null}
         </div>

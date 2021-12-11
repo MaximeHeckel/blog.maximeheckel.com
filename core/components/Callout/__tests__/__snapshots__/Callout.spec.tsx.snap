@@ -4,7 +4,7 @@ exports[`Callout can render a Callout with variant danger 1`] = `
 <body>
   <div>
     <aside
-      class="c-eUCdYY c-eUCdYY-jVzdYt-variant-danger"
+      class="c-dXzGmz c-dXzGmz-jVzdYt-variant-danger"
     >
       <div
         class="c-hEVHDD c-hEVHDD-deNlpD-variant-danger"
@@ -47,10 +47,10 @@ exports[`Callout can render a Callout with variant danger 2`] = `
 <body>
   <div>
     <aside
-      class="c-eUCdYY c-eUCdYY-jVzdYt-variant-danger"
+      class="c-dXzGmz c-dXzGmz-jVzdYt-variant-danger"
     >
       <div
-        class="c-hNaTmg c-hNaTmg-deNlpD-variant-danger"
+        class="c-dxxjkH c-dxxjkH-deNlpD-variant-danger"
       >
         Test Label
       </div>
@@ -64,7 +64,7 @@ exports[`Callout can render a Callout with variant info 1`] = `
 <body>
   <div>
     <aside
-      class="c-eUCdYY c-eUCdYY-dpIRHz-variant-info"
+      class="c-dXzGmz c-dXzGmz-dpIRHz-variant-info"
     >
       <div
         class="c-hEVHDD c-hEVHDD-jXIqcX-variant-info"
@@ -109,10 +109,10 @@ exports[`Callout can render a Callout with variant info 2`] = `
 <body>
   <div>
     <aside
-      class="c-eUCdYY c-eUCdYY-dpIRHz-variant-info"
+      class="c-dXzGmz c-dXzGmz-dpIRHz-variant-info"
     >
       <div
-        class="c-hNaTmg c-hNaTmg-jXIqcX-variant-info"
+        class="c-dxxjkH c-dxxjkH-jXIqcX-variant-info"
       >
         Test Label
       </div>

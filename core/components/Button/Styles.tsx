@@ -13,9 +13,11 @@ export const StyledButton = styled('button', {
   outline: 'none',
   cursor: 'pointer',
   border: '0',
+  font: 'inherit',
   /* Constant properties */
-  fontSize: '16px',
-  fontWeight: '500',
+
+  fontSize: 'var(--font-size-2)',
+  fontWeight: 'var(--font-weight-3)',
   height: '44px',
   width: 'max-content',
   padding: '11px 16px',
@@ -75,7 +77,6 @@ export const StyledButton = styled('button', {
           '--shadow': 'var(--shadow-hover-primary)',
         },
       },
-      foobar: {},
     },
   },
 });

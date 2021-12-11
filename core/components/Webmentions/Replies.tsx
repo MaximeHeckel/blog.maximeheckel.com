@@ -9,11 +9,13 @@ const RepliesList = styled(motion.ul, {
   marginLeft: '0px',
   marginBottom: '8px',
   marginTop: '15px',
+  padding: '0',
 });
 
 const Head = styled(motion.li, {
   listStyle: 'none',
   marginRight: '-10px',
+  marginBottom: 'calc(1.45rem / 2)',
 
   img: {
     borderRadius: '50%',

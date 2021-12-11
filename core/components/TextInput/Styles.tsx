@@ -11,7 +11,7 @@ export const StyledInput = styled('input', {
   margin: 0,
   padding: 'var(--input-inner-padding, 8px 40px 8px 16px)',
 
-  fontSize: '16px',
+  fontSize: 'var(--font-size-2)',
   fontFamily: 'inherit',
   lineHeight: '26px',
   color: 'var(--maximeheckel-colors-typeface-primary)',

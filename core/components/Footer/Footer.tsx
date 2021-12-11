@@ -2,6 +2,7 @@ import { styled } from 'lib/stitches.config';
 import Flex from '@theme/components/Flex';
 import Grid from '@theme/components/Grid';
 import Logo from '@theme/components/Logo';
+import Text from '@theme/components/Typography';
 
 const FooterBlock = styled('div', {
   background: 'var(--maximeheckel-colors-body)',
@@ -21,10 +22,7 @@ const FooterWrapper = styled(Flex, {
   paddingTop: '30px',
   width: '100%',
   margin: '0px auto',
-  color: 'var(--maximeheckel-colors-typeface-primary)',
   gridColumn: '2',
-  fontWeight: 500,
-  fontSize: '14px',
 });
 
 const FooterContent = styled(Flex, {
@@ -38,7 +36,15 @@ const Footer = () => (
       <FooterWrapper direction="column" justifyContent="space-evenly">
         <hr />
         <FooterContent alignItems="center" justifyContent="space-between">
-          <div>© {new Date().getFullYear()} Maxime Heckel —— SF/NY</div>
+          <Text
+            as="p"
+            css={{ margin: 0 }}
+            size="1"
+            variant="primary"
+            weight="3"
+          >
+            © {new Date().getFullYear()} Maxime Heckel —— SF/NY
+          </Text>
           <Logo alt="Maxime Heckel's logo" size={35} />
         </FooterContent>
       </FooterWrapper>

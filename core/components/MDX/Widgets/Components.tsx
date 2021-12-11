@@ -32,9 +32,10 @@ export const HighlightedValue = styled('div', {
   color: 'var(--maximeheckel-colors-brand)',
   border: '2px solid var(--maximeheckel-colors-brand)',
   padding: '2px 6px',
-  fontFamily: 'Fira Code',
+  fontFamily: 'var(--font-mono)',
   display: 'inline-block',
   marginBottom: '8px',
+  lineHeight: '1rem',
 });
 
 export const Wrapper = styled('div', {
