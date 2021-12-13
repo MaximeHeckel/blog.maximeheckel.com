@@ -185,11 +185,14 @@
   --font-mono: 'Fira Code', monospace;
   --font-serif: 'Inter';
 
-  /*
-  --leading
-  */
+  /* TODO: Define line height tokens with `--leading` */
 
-  --font-size-1: 0.75rem;
+  /* 
+    Note: we set --font-size-1 in px on purpose: 14px is the smallest font we should allow in the UI 
+    to pass mobile usability issue. Setting it to REM would shrink it to 12px on mobile which is 
+    too small
+  */
+  --font-size-1: 14px; /*0.75rem;*/
   --font-size-2: 0.875rem; /* 16px */
   --font-size-3: 1rem;
   --font-size-4: 1.125rem;
@@ -315,6 +318,20 @@ body {
   text-rendering: optimizeLegibility;
   margin: 0;
 }
+
+/* TODO Find a way to remove the following */
+/* Patch gif wrapped in figure tag */
+
+figure {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* END Patch gif wrapped in figure tag */
 
 [hidden],
 [aria-hidden='true'],

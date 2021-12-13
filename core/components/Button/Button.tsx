@@ -1,4 +1,5 @@
 import React from 'react';
+import Flex from '../Flex';
 import { StyledButton, StyledIconButton } from './Styles';
 import { ButtonProps } from './types';
 
@@ -19,14 +20,13 @@ const Button = <T extends object>(
   if (variant === 'icon') {
     return (
       <StyledIconButton variant={variant} as={Component} ref={ref} {...rest}>
-        <span
-          style={{
+        <Flex
+          css={{
             zIndex: 1,
-            display: 'flex',
           }}
         >
           {icon}
-        </span>
+        </Flex>
       </StyledIconButton>
     );
   }
@@ -34,23 +34,23 @@ const Button = <T extends object>(
   return (
     <StyledButton variant={variant} as={Component} ref={ref} {...rest}>
       {startIcon ? (
-        <span
-          style={{
+        <Flex
+          css={{
             marginRight: '8px',
           }}
         >
           {startIcon}
-        </span>
+        </Flex>
       ) : null}
       {children}
       {endIcon ? (
-        <span
-          style={{
+        <Flex
+          css={{
             marginLeft: '8px',
           }}
         >
           {endIcon}
-        </span>
+        </Flex>
       ) : null}
     </StyledButton>
   );
