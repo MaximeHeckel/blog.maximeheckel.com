@@ -63,7 +63,7 @@ const glowVariants = {
     opacity: 0.8,
   },
   initial: {
-    scale: 1.07,
+    scale: 1.05,
     opacity: 0,
   },
 };
