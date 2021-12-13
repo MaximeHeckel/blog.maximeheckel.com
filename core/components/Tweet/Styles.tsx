@@ -39,18 +39,6 @@ export const Name = styled('a', {
   marginLeft: '1rem',
   color: 'var(--maximeheckel-colors-typeface-primary)',
   textDecoration: 'none',
-
-  'span:first-of-type': {
-    display: 'flex',
-    alignItems: 'center',
-    fontWeight: '700',
-  },
-});
-
-export const Body = styled('p', {
-  marginTop: '1rem',
-  marginBottom: '0.5rem',
-  whiteSpace: 'pre-wrap',
 });
 
 export const ImageGrid = styled('div', {

@@ -9,13 +9,13 @@ export const StyledButton = styled('button', {
   userSelect: 'none',
   display: 'flex',
   justifyContent: 'center',
+  alignItems: 'center',
   flexShrink: '0',
   outline: 'none',
   cursor: 'pointer',
   border: '0',
   font: 'inherit',
   /* Constant properties */
-
   fontSize: 'var(--font-size-2)',
   fontWeight: 'var(--font-weight-3)',
   height: '44px',

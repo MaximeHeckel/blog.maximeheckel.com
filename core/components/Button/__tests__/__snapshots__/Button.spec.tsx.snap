@@ -2,7 +2,7 @@
 
 exports[`Button renders a basic button 1`] = `
 <button
-  class="c-bVoOVF c-bVoOVF-kxlbib-variant-primary"
+  class="c-dTdqlH c-dTdqlH-kxlbib-variant-primary"
 >
   Test
 </button>
@@ -10,31 +10,31 @@ exports[`Button renders a basic button 1`] = `
 
 exports[`Button renders a button with a startIcon 1`] = `
 <button
-  class="c-bVoOVF c-bVoOVF-kxlbib-variant-primary"
+  class="c-dTdqlH c-dTdqlH-kxlbib-variant-primary"
 >
-  <span
-    style="margin-right: 8px;"
+  <div
+    class="c-hJgkFV c-hJgkFV-ijxSBfJ-css"
   >
     <svg
       data-testid="icon"
     />
-  </span>
+  </div>
   Test
 </button>
 `;
 
 exports[`Button renders a button with an endIcon 1`] = `
 <button
-  class="c-bVoOVF c-bVoOVF-kxlbib-variant-primary"
+  class="c-dTdqlH c-dTdqlH-kxlbib-variant-primary"
 >
   Test
-  <span
-    style="margin-left: 8px;"
+  <div
+    class="c-hJgkFV c-hJgkFV-ieSlpoK-css"
   >
     <svg
       data-testid="icon"
     />
-  </span>
+  </div>
 </button>
 `;
 
@@ -43,12 +43,12 @@ exports[`Button renders an icon button 1`] = `
   class="c-bhXMVC"
   variant="icon"
 >
-  <span
-    style="z-index: 1; display: flex;"
+  <div
+    class="c-hJgkFV c-hJgkFV-ijVLVTy-css"
   >
     <svg
       data-testid="icon"
     />
-  </span>
+  </div>
 </button>
 `;

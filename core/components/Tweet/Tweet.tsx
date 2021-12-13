@@ -1,5 +1,6 @@
 import Anchor from '@theme/components/Anchor';
 import Flex from '@theme/components/Flex';
+import Text from '@theme/components/Typography';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { TransformedTweet } from 'types/tweet';
@@ -7,7 +8,6 @@ import { LikeIcon, ReplyIcon, RetweetIcon, TwitterLogo } from './Icons';
 import {
   TweetWrapper,
   Avatar,
-  Body,
   Name,
   ImageGrid,
   SingleImageWrapper,
@@ -68,7 +68,12 @@ const Tweet = (props: Props) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <span title={author.name}>
+            <Text
+              css={{ marginBottom: 0, lineHeight: '1.5' }}
+              title={author.name}
+              variant="primary"
+              weight="4"
+            >
               {author.name}
               {/* {author.verified ? (
               <svg
@@ -81,8 +86,15 @@ const Tweet = (props: Props) => {
                 </g>
               </svg>
             ) : null} */}
-            </span>
-            <span title={`@${author.username}`}>@{author.username}</span>
+            </Text>
+            <Text
+              css={{ marginBottom: 0, lineHeight: 'initial' }}
+              variant="tertiary"
+              title={`@${author.username}`}
+              size="2"
+            >
+              @{author.username}
+            </Text>
           </Name>
         </Flex>
         <a
@@ -94,7 +106,17 @@ const Tweet = (props: Props) => {
           <TwitterLogo />
         </a>
       </Flex>
-      <Body>{text}</Body>
+      <Text
+        as="p"
+        variant="primary"
+        css={{
+          marginTop: '1rem',
+          marginBottom: '1rem',
+          whiteSpace: 'pre-wrap',
+        }}
+      >
+        {text}
+      </Text>
       {media && media.length > 1 ? (
         <ImageGrid>
           {media.map((m) => (
