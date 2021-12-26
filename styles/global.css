@@ -183,7 +183,7 @@
     sans-serif;
   --font-display: 'Inter', var(--font-fallback);
   --font-mono: 'Fira Code', monospace;
-  --font-serif: 'Inter';
+  --font-numeric: 'Space Grotesk', var(--font-fallback);
 
   /* TODO: Define line height tokens with `--leading` */
 

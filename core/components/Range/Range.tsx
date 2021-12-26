@@ -37,10 +37,11 @@ const Range = (props: RangeProps) => {
     <div
       style={{
         width: '100%',
+        margin: '8px 0px',
       }}
     >
       {label ? (
-        <Label htmlFor={id} style={{ marginBottom: '8px' }}>
+        <Label htmlFor={id} style={{ marginBottom: '12px' }}>
           {label}
         </Label>
       ) : null}
