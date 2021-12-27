@@ -5,7 +5,6 @@ import { EMProps, StrongProps } from './types';
 /**
  * lineheight
  * 1.9 p li
- *
  * 1.6818 h1 h2 h3
  *
  * 1.45 // Inline code
