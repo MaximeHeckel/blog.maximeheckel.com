@@ -128,6 +128,16 @@ export default function Design(props: {
             <Pill variant="info">v1.0</Pill>
           </Grid>
         </section>
+        <section>
+          <H2>Name (WIP)</H2>
+          <Text family="numeric" size="4">
+            3X-DS (Explore, Expand, Experiment)
+          </Text>
+          <br />
+          <Text size="2" variant="tertiary">
+            A set of tools and components to build and write content
+          </Text>
+        </section>
         <section id="logo">
           <H2>Logo</H2>
           <Logo />
@@ -246,6 +256,20 @@ export default function Design(props: {
         </section>
         <section id="typography">
           <H2>Typography</H2>
+          <Label>Display</Label>
+          <Text size="4">
+            Almost before we knew it, we had left the ground.
+          </Text>
+          <Label>Numeric (experimenting)</Label>
+          <Text size="3" family="numeric">
+            1 AU = 1,495978707x10<sup>11</sup> m
+          </Text>
+          <Label>Mono</Label>
+          <Text size="3" family="mono">
+            console.log(foobar)
+          </Text>
+          <br />
+          <br />
           <Label>H1</Label>
           <Heading as="h1" size="4">
             Almost before we knew it, we had left the ground.
@@ -307,10 +331,43 @@ export default function Design(props: {
           >
             Almost before we knew it, we had left the ground.
           </Text>
-          <Label>EM</Label>
-          <EM>Almost before we knew it, we had left the ground.</EM>
+          <br />
           <Label>Strong</Label>
           <Strong>Almost before we knew it, we had left the ground.</Strong>
+          <Label>EM</Label>
+          <EM>Almost before we knew it, we had left the ground.</EM>
+          <Label>BigNum (WIP)</Label>
+          <Text family="numeric" size="7" weight="4">
+            1 AU = 1,495978707x10<sup>11</sup> m
+          </Text>
+          <Label>BigNum Outline (Experimenting)</Label>
+          <Text
+            family="numeric"
+            size="7"
+            weight="4"
+            style={{
+              color: 'transparent',
+              WebkitTextStrokeColor: 'var(--maximeheckel-colors-brand)',
+              WebkitTextStrokeWidth: '1px',
+            }}
+          >
+            1 AU = 1,495978707x10<sup>11</sup> m
+          </Text>
+          <br />
+          <Text
+            family="numeric"
+            size="7"
+            weight="4"
+            style={{
+              color: 'transparent',
+              WebkitTextStrokeColor: 'var(--maximeheckel-colors-danger)',
+              WebkitTextStrokeWidth: '1px',
+            }}
+          >
+            1 AU = 1,495978707x10<sup>11</sup> m
+          </Text>
+          <br />
+          <br />
         </section>
         <section id="lists">
           <H2>Lists</H2>

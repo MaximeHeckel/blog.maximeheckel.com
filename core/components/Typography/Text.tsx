@@ -21,12 +21,28 @@ const Text = styled('span', {
 
   variants: {
     // add truncate variant
-    // line heights (define token)
+    // line heights / leading (define token)
+    // rename space to tracking (define token)
     // composed variant => gradient = true => variant = default ?
+    // Follow dynamic metrics https://rsms.me/inter/dynmetrics/
     spaced: {
       true: {
         letterSpacing: '0.3px',
         lineHeight: 1.9,
+      },
+    },
+    family: {
+      default: {
+        fontFamily: 'inherit',
+      },
+      display: {
+        fontFamily: 'var(--font-display)',
+      },
+      mono: {
+        fontFamily: 'var(--font-mono)',
+      },
+      numeric: {
+        fontFamily: 'var(--font-numeric)',
       },
     },
     size: {
@@ -84,6 +100,7 @@ const Text = styled('span', {
     },
   },
   defaultVariants: {
+    family: 'default',
     size: '3',
     variant: 'default',
     weight: '2',
@@ -91,8 +108,25 @@ const Text = styled('span', {
   },
 });
 
+// TODO: Add SUP component + examples with fractions
+// EXPLORE: Smart fraction component ? replace / with &fracl; ?
+// http://www.meticulous.org.uk/meticulous/websolutions/coding_tests/fractions.html
+// EXPLORE: Footnote component: http://microformats.org/wiki/footnotes-examples https://2ality.com/2011/12/footnotes.html
+
 const EM = React.forwardRef<React.ElementRef<'em'>, EMProps>((props, ref) => {
-  return <Text {...props} as="em" variant="primary" weight="3" ref={ref} />;
+  return (
+    <Text
+      {...props}
+      as="em"
+      variant="tertiary"
+      weight="3"
+      ref={ref}
+      spaced={false}
+      style={{
+        letterSpacing: '-0.3px',
+      }}
+    />
+  );
 });
 
 EM.displayName = 'EM';

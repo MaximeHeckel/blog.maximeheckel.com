@@ -32,9 +32,9 @@ export const HighlightedValue = styled('div', {
   color: 'var(--maximeheckel-colors-brand)',
   border: '2px solid var(--maximeheckel-colors-brand)',
   padding: '2px 6px',
-  fontFamily: 'var(--font-mono)',
+  fontFamily: 'var(--font-numeric)',
+  fontSize: 'var(--font-size-2)',
   display: 'inline-block',
-  marginBottom: '8px',
   lineHeight: '1rem',
 });
 
