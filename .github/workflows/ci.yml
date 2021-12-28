@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12]
+        node-version: [16]
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v2
@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12]
+        node: [16]
     needs: install-cache
     steps:
       - name: Checkout Commit
@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12]
+        node: [16]
     needs: install-cache
     steps:
       - name: Checkout Commit
@@ -104,7 +104,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12]
+        node: [16]
     needs: install-cache
     steps:
       - name: Checkout Commit
@@ -128,7 +128,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12]
+        node: [16]
     needs: [lint-format, type-check, unit-test]
     steps:
       - name: Checkout Commit
@@ -147,7 +147,7 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Run build
         run: |
-          yarn add playwright@1.8.0 && yarn build
+          npx playwright install && yarn build
         env:
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
       - name: Upload build artifacts
@@ -160,7 +160,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12]
+        node: [16]
     needs: build
     steps:
       - name: Checkout Commit
@@ -201,7 +201,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12]
+        node: [16]
     needs: build
     steps:
       - name: Checkout Commit
