@@ -1,5 +1,5 @@
 [build]
-  command   = "yarn add playwright@1.8.0 && yarn build"
+  command   = "yarn build"
   functions = "out_functions"
   publish   = "out_publish"
 
