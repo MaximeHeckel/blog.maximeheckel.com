@@ -83,7 +83,7 @@
     "@types/jest": "26.0.19",
     "@types/lodash.merge": "^4.6.6",
     "@types/lunr": "^2.3.3",
-    "@types/mousetrap": "1.6.5",
+    "@types/mousetrap": "1.6.9",
     "@types/node": "14.14.20",
     "@types/qs": "6.9.5",
     "@types/react": "17.0.38",
