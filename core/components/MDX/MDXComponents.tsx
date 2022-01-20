@@ -49,6 +49,14 @@ const CubicBezierVisualizer = dynamic(
 );
 const BezierCurve = dynamic(() => import('./Widgets/BezierCurve'));
 
+const VaporwaveThreejsSandpacks = dynamic(
+  () => import('./Widgets/VaporwaveThreejs/Sandpack')
+);
+
+const VaporwaveThreejsDisclaimer = dynamic(
+  () => import('./Widgets/VaporwaveThreejs/CalloutGPUTier')
+);
+
 const customComponents = {
   AnimationTypes,
   ClipboardAnimationDetails,
@@ -69,6 +77,9 @@ const customComponents = {
   OpenAIPlayground,
   CubicBezierVisualizer,
   BezierCurve,
+  // Sandpacks
+  VaporwaveThreejsDisclaimer,
+  VaporwaveThreejsSandpacks,
 };
 
 const MDXComponents = {

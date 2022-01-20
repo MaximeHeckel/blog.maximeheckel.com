@@ -44,6 +44,47 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
 
+const WavingHandCode = `import { motion } from 'framer-motion';
+
+const WavingHand = () => (
+  <motion.div
+    style={{
+      marginBottom: '-20px',
+      marginRight: '-45px',
+      paddingBottom: '20px',
+      paddingRight: '45px',
+      display: 'inline-block',
+    }}
+    animate={{ rotate: 20 }}
+    transition={{
+      repeat: Infinity,
+      repeatType: 'mirror',
+      duration: 0.2,
+      delay: 0.5,
+      ease: 'easeInOut',
+      type: 'tween',
+    }}
+  >
+  👋
+  </motion.div>
+);
+
+const Hi = () => (
+    <h1>
+        Hi <WavingHand /> !
+    </h1>
+);
+
+export default Hi;
+`;
+
+const AppCode = `import WavingHand from './WavingHand';
+
+export default function App() {
+  return <WavingHand/>;
+}
+`;
+
 /**
  * TODO:
  * - Decouple Search in 2 components => Overlay and Command Center
@@ -62,6 +103,8 @@ const wrapperGrid = css({
     gridColumn: 2,
   },
 });
+
+const Sandpack = dynamic(() => import('@theme/components/Code/Sandpack'));
 
 const LiveCodeBlock = dynamic(
   () => import('@theme/components/Code/LiveCodeBlock')
@@ -885,7 +928,29 @@ function sayHi(name) {
     return message;
 }`}
           />
-          <Label>Live (for React code only)</Label>
+          <Label>Sandpack Code Block</Label>
+          <Sandpack
+            template="react"
+            dependencies={{
+              'framer-motion': '5.2.1',
+            }}
+            files={{
+              '/App.js': {
+                code: AppCode,
+              },
+              '/WavingHand.js': {
+                code: WavingHandCode,
+              },
+              '/styles.css': {
+                code: `
+                  body: {
+                    color: var(--maximeheckel-colors-brand);
+                  }
+                `,
+              },
+            }}
+          />
+          <Label>Live (for React code only) (DEPRECATED)</Label>
           <LiveCodeBlock
             live
             metastring=""

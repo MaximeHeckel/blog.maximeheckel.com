@@ -1,0 +1,707 @@
+---
+title: 'Building a Vaporwave scene with Three.js'
+subtitle: TBD.
+date: '2022-01-25T08:00:00.000Z'
+updated: '2022-01-25T08:00:00.000Z'
+categories: []
+keywords: []
+slug: vaporwave-3d-scene-with-threejs
+type: 'blogPost'
+featured: false
+---
+
+After spending months in my backlog of things to explore, I finally made the jump and started learning Three.js 🎉. I've followed the [Three.js journey course](https://threejs-journey.com) from <Anchor href="https://twitter.com/bruno_simon" favicon discreet>@bruno_simon</Anchor> for a few weeks now, and it's been an eye-opener. It feels like it just unlocked a new realm of possibilities for me to spend time doing more creative coding.
+
+While going through the course, there was a moment where I felt that I needed to explore and build something on my own to apply what I've learned.
+
+<StaticTweet id="1476956816630337542" />
+
+One project I had in mind was to **reverse engineer the WebGL animation from [Linear's 2021 release page](https://linear.app/releases/2021-06)** and try rebuilding it to see how close I could get from the source material. Since I saw this scene on my timeline last June, I've been a bit obsessed with it. I absolutely love the _vaporwave/outrun vibe_ of this animation and I think the developers and designers involved in this project did an incredible job 👏✨. On top of that, this scene happens to touch upon a wide range of key Three.js concepts which was perfect as a first project!
+
+In this blog post, we're going to take a look at **the thought process and the steps I took to rebuild this vaporwave Three.js scene** by using nothing but **fundamental constructs** that I recently learned. If you do not want to wait until the end of this article to see the result, you can head over to [https://linear-vaporwave-three-js.vercel.app/](https://linear-vaporwave-three-js.vercel.app/) to get a nice preview 😛.
+
+I added editable code snippets with their corresponding rendered scene (including comments) throughout the article for each key step of this project. You will be invited to modify them and observe how some of the changes impact the final render of the Three.js scene 😄.
+
+<VaporwaveThreejsDisclaimer />
+
+## Setting up the scene
+
+First, we need to do some initial setup to have everything we need to build our scene. To render a Three.js scene, you need the following key elements:
+
+- A [scene](https://threejs.org/docs/index.html?q=scene#api/en/scenes/Scene)
+- A Mesh, with both a material and a geometry.
+- A [camera](https://threejs.org/docs/index.html?q=Camera#api/en/cameras/Camera)
+- A [renderer](https://threejs.org/docs/index.html?q=renderer#api/en/renderers/WebGLRenderer)
+- Some event listeners for resizing and animations
+
+```js title=Basic Three.js scene
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
+const canvas = document.querySelector('canvas.webgl');
+
+// Scene
+const scene = new THREE.Scene();
+
+// Objects
+/**
+ * Here I use a Plane Geometry of width 1 and height 2
+ * It's also subdivided into 24 square along the width and the height
+ * which adds more vertices and edges to play with when we'll build our terrain
+ */
+const geometry = new THREE.PlaneGeometry(1, 2, 24, 24);
+const material = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+});
+
+const plane = new THREE.Mesh(geometry, material);
+
+// Here we position our plane flat in front of the camera
+plane.rotation.x = -Math.PI * 0.5;
+plane.position.y = 0.0;
+plane.position.z = 0.15;
+
+scene.add(plane);
+
+// Sizes
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+
+// Camera
+const camera = new THREE.PerspectiveCamera(
+  // field of view
+  75,
+  // aspect ratio
+  sizes.width / sizes.height,
+  // near plane: it's low since we want our mesh to be visible even from very close
+  0.01,
+  // far plane: how far we're rendering
+  20
+);
+
+// Position the camera a bit higher on the y axis and a bit further back from the center
+camera.position.x = 0;
+camera.position.y = 0.06;
+camera.position.z = 1.1;
+
+// Controls
+// These are custom controls I like using for dev: we can drag/rotate the scene easily
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+// Renderer
+const renderer = new THREE.WebGLRenderer({
+  canvas: canvas,
+});
+renderer.setSize(sizes.width, sizes.height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+// Event listener to handle screen resize
+window.addEventListener('resize', () => {
+  // Update sizes
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+
+  // Update camera's aspect ratio and projection matrix
+  camera.aspect = sizes.width / sizes.height;
+  camera.updateProjectionMatrix();
+
+  // Update renderer
+  renderer.setSize(sizes.width, sizes.height);
+  // Note: We set the pixel ratio of the renderer to at most 2
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+// Animate: we call this tick function on every frame
+const tick = () => {
+  // Update controls
+  controls.update();
+
+  // Update the rendered scene
+  renderer.render(scene, camera);
+
+  // Call tick again on the next frame
+  window.requestAnimationFrame(tick);
+};
+
+// Calling tick will initiate the rendering of the scene
+tick();
+```
+
+I know..., it can feel a bit overwhelming. But don't worry! Let's take some time to break down each one of these elements.
+
+```js title=How to define a Three.js scene
+// Canvas code...
+
+// Scene
+const scene = new THREE.Scene();
+
+// Objects code...
+```
+
+First, we have the `scene`. This is **the container that holds the objects we will render**.
+
+```js title=How to define a Three.js mesh
+// Scene code...
+
+// Objects
+const geometry = new THREE.PlaneGeometry(1, 2, 24, 24);
+const material = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+});
+
+const plane = new THREE.Mesh(geometry, material);
+
+// Sizes code...
+```
+
+Then we define the objects that will be added to our scene. For our project, we only have one: just a simple plane. I chose to start with a plane because we're working on a landscape. There are, of course, [many other geometries available](https://threejs.org/docs/index.html?q=geometry) but we won't need any other for our vaporwave scene.
+
+A Three.js object is always defined using 2 key elements:
+
+1. **Geometry**: the shape of our object. Here we use the Three.js `PlaneGeometry` which represents a plane. I gave it a width of **1 "unit"**, and a height of **2 "units"** on purpose because I want this plane where our landscape will be rendered to feel "long". It's also subdivided in **24 segments** on its width and height, this is to give us more vertices to play with and let us shape our plane with a bit more detail.
+2. **Material**: how the object looks. Here I used the `MeshBasicMaterial` which is the simplest material you can use in `Three.js`. In this case, I set the color to white so our plane will be white in our scene
+
+By combining the **geometry** and the **material** you get our object which is also called a **mesh**.
+
+```js title=How to define a Three.js camera
+// Sizes code...
+
+// Camera
+const camera = new THREE.PerspectiveCamera(
+  // field of view
+  75,
+  // aspect ratio
+  sizes.width / sizes.height,
+  // near plane: it's low since we want our mesh to be visible even from very close
+  0.01,
+  // far plane: how far we're rendering
+  20
+);
+
+// Position the camera a bit higher on the y axis and a bit further back from the center
+camera.position.x = 0;
+camera.position.y = 0.06;
+camera.position.z = 1.1;
+
+// Controls code...
+```
+
+Here we define our **camera**, an object representing the _point of view_ we have in our scene. I positioned it close to the ground `camera.position.y = 0.06` and a bit further from the center of the scene `camera.position.z = 1.1` to get a point of view similar to the one from the original scene.
+
+<Callout variant="info" label="Axes helper">
+
+When working on a Three.js project, the axes describing the space in which we're working are set as follows:
+
+<Image
+  src="blog/axis-helper.png"
+  alt='Axes helper. "x" is the horizontal axis to move things left and right from the center. "y" is the vertical axis to move things up and down. "z" is the "depth" axis, it points towards the viewer by default'
+  layout="responsive"
+  width={600}
+  height={418}
+/>
+
+</Callout>
+
+```js title=How to define a Three.js renderer and handle resize
+// Controls code...
+
+// Renderer
+const renderer = new THREE.WebGLRenderer({
+  canvas: canvas,
+});
+renderer.setSize(sizes.width, sizes.height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+// Event listener to handle screen resize
+window.addEventListener('resize', () => {
+  // Update sizes
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+
+  // Update camera's aspect ratio and projection matrix
+  camera.aspect = sizes.width / sizes.height;
+  camera.updateProjectionMatrix();
+
+  // Update renderer
+  renderer.setSize(sizes.width, sizes.height);
+  // Note: We set the pixel ratio of the renderer to at most 2
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+// Animate code...
+```
+
+The renderer will **render/draw our scene onto an HTML canvas**. It's a tool that uses the camera set up earlier to get snapshots of our scene and display it on the page. It needs to be updated on window resize so the scene can render properly no matter the size of the viewport.
+
+```js title=How to define a tick function to handle animations in Three.js
+// Renderer and resize handler code...
+
+// Animate: we call this tick function on every frame
+const tick = () => {
+  // Update controls
+  controls.update();
+
+  // Update the rendered scene
+  renderer.render(scene, camera);
+
+  // Call tick again on the next frame
+  window.requestAnimationFrame(tick);
+};
+
+// Calling tick will initiate the rendering of the scene
+tick();
+```
+
+The `tick` function will handle animations and camera movements in our scene. It's executed on every frame thanks to the use of `requestAnimationFrame`. Right now, it only handles our `OrbitControls`: a Three.js utility that lets us use the mouse to grab and move the scene around, which I use a lot when building a scene to look at it from any angle. We'll use it later to handle anything related to animation ✨.
+
+<VaporwaveThreejsSandpacks script="script1" />
+
+<Callout variant="info">
+
+I went fast here as this article is intended to focus more on the reverse engineering part, rather than being just _yet another_ intro to Three.js.
+Here are some free resources I found if you wish to deep dive into some of the concepts we just introduced above:
+
+- [Three.js: Creating a scene](https://threejs.org/docs/index.html?q=Creat#manual/en/introduction/Creating-a-scene)
+- [Your first Three.js scene](https://discoverthreejs.com/book/first-steps/first-scene/)
+
+</Callout>
+
+## Building the terrain
+
+We now have the _base_ for our scene: a flat plane. Before we start working with it, we have to take a closer look at the [Linear release page WebGL animation](https://linear.app/releases/2021-06) and deconstruct the scene to know what we'll need to do to achieve a similar render.
+
+### Deconstructing the original scene
+
+<Image
+  src="blog/annotations.png"
+  alt="My original annotations for key elements of the Linear WebGL scene"
+  layout="responsive"
+  width={800}
+  height={574}
+/>
+
+Above, you can see the annotations I wrote down when I started working on this project. Most of the decisions I've made regarding the implementation details have been made from my own observations of this scene, so the following is just here to illustrate my train of thought:
+
+- The plane will need a texture to draw the **grid** on top of it
+- The plane will need to have some **displacement** to shape the terrain on the sides
+- The terrain is very _low-poly_ and seems to match with the grid texture. Thus, we can have as many "squares" in our grid as subdivisions of our plane (I counted 24, but this might be very wrong 😅). So, no matter how we shape our terrain, the intersections of the segments of our grid texture will match the position of the vertices of the plane giving it its distinct vaporwave look
+- The surface is a bit shiny in some areas so we'll need to put a _red-ish_ **light behind the camera** and tweak the material of our mesh
+- The terrain moves towards _us_ (the viewer), so **we'll animate the position of our plane along the z-axis**
+
+Now that we've analyzed our scene we can start building 🤘.
+
+### Texture
+
+First and foremost, let's make our `PlaneGeometry` look more like the final render. We can see from the Linear scene that the terrain is mostly some kind of grid. To achieve that effect we will need to do 3 things:
+
+1. Draw the grid and export it as a `.jpg` or `.png` on a software like Figma for example
+2. Load this file as a **texture** in our scene
+3. Put that texture on our plane, and _voilà_ ✨ we'll have our _vaporwave grid_ effect!
+
+It may sound complicated at first, but Three.js makes it very easy to do so in just a few lines of code with the [textureLoader](https://threejs.org/docs/index.html?q=textureLoader#api/en/loaders/TextureLoader) class.
+
+```js title=How to load a texture with Three.js
+// Instantiate the texture loader
+const textureLoader = new THREE.TextureLoader();
+// Load a texture from a given path using the texture loader
+const gridTexture = textureLoader.load(TEXTURE_PATH);
+```
+
+<Callout variant="info">
+
+You can download the texture I made on my own [here](https://res.cloudinary.com/dg5nsedzw/image/upload/v1641657168/blog/vaporwave-threejs-textures/grid.png). It's pretty heavy, but I'll talk about that a bit later.
+
+</Callout>
+
+After loading the texture, we then apply it on the plane by assigning the texture to the `normalMap` property of the material, and we get something like this:
+
+<VaporwaveThreejsSandpacks script="script2" />
+
+### Terrain
+
+We can now focus on the terrain. We want to create some **steep mountains on each side of the plane** but **keep the middle of the plane flat**. How can we do that?
+
+First, we need to change our material. So far we only used the `MeshBasicMaterial` which is, like its name indicates, _basic_. We need a more advanced material such as `MeshStandardMaterial` which allows us to play a bit more with it:
+
+- it's physically based, meaning it's more realistic and can interact with light
+- we can edit the different vertices, thus changing the "shape" of the Mesh. **This is the property we need now to make our terrain**.
+
+<Callout variant="info">
+
+You can read more about `MeshStandardMaterial` in the corresponding [Three.js documentation](https://threejs.org/docs/?q=MeshStand#api/en/materials/MeshStandardMaterial).
+
+</Callout>
+
+However, if you go to the playground above and change the material and refresh the preview, you might notice that the scene becomes all of a sudden dark. This is because, unlike the `MeshBasicMaterial`, the `MeshStandardMaterial` needs **light** to show up on the screen.
+
+To fix this, I added a white `ambientLight`, a simple light that emits in every direction in the playground below. Try to comment in and out the code for the light of this scene to see the effect:
+
+<VaporwaveThreejsSandpacks script="script3" />
+
+Now that we have our material set up we need to shape the terrain by _displacing_ the vertices of the material of our mesh. With Three.js we can do that by providing another texture: **a displacement map**. Once applied to the `displacementMap` property of a material, this texture will tell our renderer at which height the points of our material are.
+
+Here's the displacement map (also called "heightmap") I provided to this scene:
+
+<Image
+  src="blog/displacementmap.png"
+  alt="Displacement Map used for our terrain. The lighter the area, the higher the vertices will appear, the darker the lower."
+  layout="responsive"
+  width={400}
+  height={400}
+/>
+
+<Callout variant="info" label="How I made this map?">
+
+- I created a 24x24 pixels image because we have 24 subdivisions in our grid textures and our terrain is low poly and its displacement should match the grid texture
+- I made the middle of the map completely black since the middle of the terrain should remain low and flat
+- I randomly colored pixels on the side to create terrain: **the lighter the pixel, the higher the terrain will be**
+
+</Callout>
+
+We can import our displacement map the same way we previously imported our grid texture: using a `textureLoader`. On top of that, Three.js lets you specify a `displacementScale`: the intensity with which the displacement map affects the mesh. I used a value of `0.4`, which I got by simply tweaking until it _felt right_.
+
+We can now see the terrain for our scene taking shape ✨:
+
+<VaporwaveThreejsSandpacks script="script4" />
+
+## Animating the scene
+
+We're getting closer! We now have a scene containing our terrain with the proper texture. It's now time to look into some Three.js animation patterns to make our scene move.
+
+### Animation patterns and Frame Rate
+
+When we deconstructed the Linear WebGL animation we saw that the terrain is moving _towards us_. Thus to get that effect in our own scene we'll need to **move our mesh** along the z-axis. You will see, it's actually pretty simple 😄!
+
+We talked earlier when setting the scene about the `tick` function. This is the function that gets called again and again, on **every frame**. To make our terrain move, **we'll increment the position of our mesh along the z-axis on every frame**.
+
+<Callout variant="danger" label="Watch out for the frame rate!">
+
+However, there's a little issue (I learned it the hard way). We can't just do the following:
+
+```js
+const tick = () => {
+  //...
+  plane.position.z += 0.05;
+  //...
+};
+```
+
+because the frame rate varies based on the device that loads the scene!
+
+The speed of our animation would appear:
+
+- **faster on a 120fps device**: our `tick` function would be called twice as much as on a 60fps device
+- **slower on a 30fps device**: our `tick` function would be called half as much as on a 60fps device
+
+To have constant animations regardless of the device, we need a **constant value to start counting against**. In Three.js we can use the `Clock` class from which we can get the elapsed time since the scene loaded.
+
+</Callout>
+
+So to make our terrain move, we need to increment our Mesh `z` position **relative to the elapsed time** like below:
+
+```js {15} title=Making our terrain move along the z-axis in the tick function
+// Renderer and resize handler code...
+// Instantiate the Three.js Clock
+const clock = new THREE.Clock();
+
+// Animate
+const tick = () => {
+  // Get the elapsedTime since the scene rendered from the clock
+  const elapsedTime = clock.getElapsedTime();
+
+  // Update controls
+  controls.update();
+
+  // Increase the position of the plane along the z axis
+  // (Multiply by 0.15 here to "slow down" the animation)
+  plane.position.z = elapsedTime * 0.15;
+
+  // Render
+  renderer.render(scene, camera);
+
+  // Call tick again on the next frame
+  window.requestAnimationFrame(tick);
+};
+```
+
+### Making the scene endless
+
+You will notice that there's one issue with our scene now: the plane moves towards us, but since its length is finite, **we don't see anything after a few seconds** 😅:
+
+<VideoPlayer
+  src="https://d2xl4m2ghaywko.cloudfront.net/linear-finite-scene.mp4 "
+  controls={true}
+  width={700}
+/>
+
+We have to find a way to give the user the _impression_ that this terrain goes on forever. For obvious reasons, we can't make our terrain infinite, it's just impossible, but we can use a few tricks!
+
+<Image
+  src="blog/terrain-animation.png"
+  alt="Diagram showcasing how to trick the viewer to think the animation is endless by using a copy of the plane, and swap its position at the right moment"
+  layout="responsive"
+  width={800}
+  height={500}
+/>
+
+- We can add a **second copy of our plane**, put it behind the first one and make it move towards us as well
+- Once the first plane has gone past our camera (just behind it), the second plane will be at the same position as the first one was at the beginning of the transition
+- We can now reset both planes to their original position, respectively `z=0` and `z=-2`, without the viewer noticing.
+- Our animation will thus feel _infinite_. Plus our terrain looks organic enough that it's not too obvious that we keep reusing the same plane 😄
+
+Implementing this effect requires just a few lines of code (and some math):
+
+```js {11-20} title=Animating our terrain to make it look endless
+// Renderer and resize handler code...
+
+const clock = new THREE.Clock();
+
+// Animate
+const tick = () => {
+  const elapsedTime = clock.getElapsedTime();
+  // Update controls
+  controls.update();
+
+  /**
+   * When the first plane reaches a position of z = 2
+   * we reset it to 0, its initial position
+   */
+  plane.position.z = (elapsedTime * 0.15) % 2;
+  /**
+   * When the first plane reaches a position of z = 0
+   * we reset it to -2, its initial position
+   */
+  plane2.position.z = ((elapsedTime * 0.15) % 2) - 2;
+
+  // Render
+  renderer.render(scene, camera);
+
+  // Call tick again on the next frame
+  window.requestAnimationFrame(tick);
+};
+```
+
+Let's add this code to our `tick` function to see the magic happen ✨:
+
+<VaporwaveThreejsSandpacks script="script5" />
+
+<Callout variant="danger">
+
+It works! But there's one tiny caveat here: **we can see the second plane appearing on the back of the scene**. That kind of ruins the effect, right?
+
+One tip I used to fix this is to add some [fog](https://threejs.org/docs/index.html?q=fog#api/en/scenes/Fog) towards the back of the scene to hide all this:
+
+```js
+// Scene
+const scene = new THREE.Scene();
+
+// Add some fog to the back of the scene
+const fog = new THREE.Fog('#000000', 1, 2.5);
+scene.fog = fog;
+```
+
+This code is available at the beginning of the playground above 👆. Just uncomment it to see the result!
+
+</Callout>
+
+We did it! 🎉 We managed to animate our scene in an infinite loop and we're slowly getting closer to Linear's original scene. However, there're still a few details to add.
+
+## Adding post-processing effects
+
+As you can see from the previous playground, our terrain looks a bit off compared to what the Linear team came up with. I didn't really know what it was at first, it was almost as if our terrain looked _too sharp_. However, after looking at the original scene _very_ closely I noticed the following:
+
+<Image
+  src="blog/linear-scene-zoomed.png"
+  alt="Screenshot of the Linear WebGL animation with a portion zoomed in on the grid showcasing the grid is in fact composed of RGB stripes"
+  layout="responsive"
+  width={800}
+  height={500}
+/>
+
+At first glance, it looks like we got our texture kind of wrong right? It's actually a bit more subtle than this.
+Trust me I tried to rebuild a grid with RGB lines, the result was complete garbage 🤮.
+
+The Linear WebGL scene actually leverages some **Three.js post-processing effects**. In this specific case, it uses an `RGBShift` effect. Or at least I think so 😄. It's the only effect that brings our scene closer to the result the Linear team got. So we'll use that going forward.
+
+<Callout variant="info">
+
+What's post-processing in the world of Three.js?
+It's a way to apply graphical effects to your scene. In our case, the RGBShift is one specific effect among many others.
+
+I encourage you to check out or just skim through the dedicated doc on [how to use prost-processing](https://threejs.org/docs/?q=post#manual/en/introduction/How-to-use-post-processing) before continuing.
+
+</Callout>
+
+Below, you can find the code I came up with to include the `RGBShift` effect in our scene:
+
+```js {5,13-14,20,23,41} title=Applying post-processing effect to our Three.js scene
+// Renderer code...
+
+// Post Processing
+// Add the effectComposer
+const effectComposer = new EffectComposer(renderer);
+effectComposer.setSize(sizes.width, sizes.height);
+effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+/**
+ * Add the render path to the composer
+ * This pass will take care of rendering the final scene
+ */
+const renderPass = new RenderPass(scene, camera);
+effectComposer.addPass(renderPass);
+
+/**
+ * Add the rgbShift pass to the composer
+ * This pass will be responsible for handling the rgbShift effect
+ */
+const rgbShiftPass = new ShaderPass(RGBShiftShader);
+rgbShiftPass.uniforms['amount'].value = 0.0015;
+
+effectComposer.addPass(rgbShiftPass);
+
+// Resize handler code...
+
+// Animate code...
+const tick = () => {
+  //...
+
+  // Render
+  /**
+   * We don't need the renderer anymore, since it's taken care of
+   * in the render pass of the effect composer
+   */
+  // renderer.render(scene, camera);
+  /**
+   * We use the render method of the effect composer instead to
+   * render the scene with our post-processing effects
+   */
+  effectComposer.render();
+
+  // Call tick again on the next frame
+  window.requestAnimationFrame(tick);
+};
+```
+
+You can see some new elements were introduced here:
+
+- the `EffectComposer`: the class that manages all the post-processing effects to eventually produce the final result
+- the`RenderPass`: the pass responsible of the first render of the scene.
+- our `rGBShiftPass`: the post-processing pass responsible to apply the `RGBShift` effect.
+
+When I applied this effect for the first time, the colors ended up looking... quite _off_:
+
+<Image
+  src="blog/linear-scene-no-gamma-correction.png"
+  alt="Screenshot showcasing our Three.js scene without color correction"
+  layout="responsive"
+  width={800}
+  height={575}
+/>
+
+After some investigation, I found out that after applying certain effects, Three.js scenes might get darker because the renderer's output encoding is not working anymore. To fix this we need to add another post-processing effect pass named `GammaCorrectionShader` which will act as a kind of color correction layer to our scene.
+
+In the playground below you'll find our rendered scene with our post-processing-effects looking simply fabulous ⚡️. In it you can try to:
+
+- Comment out the `gammaCorrectionPass` and see how the colors end up a bit messed up
+- Tweak the value of the `rgbShiftPass` to make our RGB shift more or less intense!
+
+<VaporwaveThreejsSandpacks script="script6" />
+
+## Let there be light!
+
+We're now missing the most important aspect of our scene: **the light**! The original scene has some kind of a _red-ish_ light being reflected on some (not all) squares of the grid with some kind of a _brushed metal_ effect. How do we achieve that?
+
+I had to look for hints to figure out what to do here. By looking at the reflective squares on the grid, I figured that there should be two lights pointing at the sides of the scene (not the floor).
+After a bit of research, it seemed that spotlights were the only lights that were fit for that so I defined them as follows:
+
+<Image
+  src="blog/spotlights-positions.png"
+  alt="Diagram showcasing the position of the two spotlights relative to the first plane that light up our scene at specific targets"
+  layout="responsive"
+  width={800}
+  height={500}
+/>
+
+Which would be equivalent to the following code:
+
+```js title=Adding and positioning spotlights in our Three.js scene
+// Ambient light code...
+
+// Right Spotlight aiming to the left
+const spotlight = new THREE.SpotLight('#d53c3d', 20, 25, Math.PI * 0.1, 0.25);
+spotlight.position.set(0.5, 0.75, 2.2);
+// Target the spotlight to a specific point to the left of the scene
+spotlight.target.position.x = -0.25;
+spotlight.target.position.y = 0.25;
+spotlight.target.position.z = 0.25;
+scene.add(spotlight);
+scene.add(spotlight.target);
+
+// Left Spotlight aiming to the right
+const spotlight2 = new THREE.SpotLight('#d53c3d', 20, 25, Math.PI * 0.1, 0.25);
+spotlight2.position.set(-0.5, 0.75, 2.2);
+// Target the spotlight to a specific point to the right side of the scene
+spotlight2.target.position.x = 0.25;
+spotlight2.target.position.y = 0.25;
+spotlight2.target.position.z = 0.25;
+scene.add(spotlight2);
+scene.add(spotlight2.target);
+
+// Sizes...
+```
+
+<Callout variant="info">
+
+I'm not the biggest specialist when it comes to Three.js lights (yet 😉), I mainly figured out this part by trial and error and (lots) of tweaking.
+
+Here's a link to the [Spotlight documentation](https://threejs.org/docs/index.html?q=Spotli#api/en/lights/SpotLight) if you wish to dig deeper on the side.
+
+</Callout>
+
+Now, what about the reflective parts of our terrain? When we introduced our `MeshStandardMaterial` earlier, we mentioned that it is a _physical-based_ material. This means we can tweak its properties to make it interact with light and its environment like a real material such as:
+
+- `metalness`: How much the material is like metal. `0` being non-metallic and `1` being purely metallic.
+- `roughness`: How rough the material is. `0` being smooth, almost mirror-like, and `1` being diffuse.
+
+In our case, however, our material doesn't behave consistently:
+
+- some squares diffuse some light so they will be rougher and less metallic
+- some other squares diffuse no light so they will be purely metallic
+
+To achieve this we can set the `metalnessMap` property of our material: a texture to indicate the parts of our mesh should be metallic and the ones that should not.
+
+<Image
+  src="blog/linear-metalnessmap.png"
+  alt="Metalness Map used for our terrain. The lighter the area, the more metallic the material will appear in that area, the darker the rougher. "
+  layout="responsive"
+  width={800}
+  height={800}
+/>
+
+By adding this `metalnessMap`, tweaking the `metalness` and `roughness` values of our material (I chose respectively `0.96` and `0.5`, again by tweaking a lot), and finally adding the right light pointing at the right spot on our scene we get our final result that is pretty spot on 🎉!
+
+<VaporwaveThreejsSandpacks script="script7" />
+
+## Conclusion
+
+From a simple plane geometry, we managed to build with just a few lines of code and a bit of tweaking **a sleek, animated, vaporwave Three.js scene** 🎉 . We could spend a ton of time trying to tweak this scene even further to improve:
+
+- the light: I didn't nail that one quite well 😅
+- the texture: the grid appears to be a bit too _thick_. Maybe the original team didn't use a texture after all and instead relied on [shaders](https://threejs.org/docs/index.html?q=shader#api/en/materials/ShaderMaterial)?
+- probably performance
+- add some sick tracks as background music to go with the vibe of the scene
+
+but without the original scene, it will be quite hard to get _exactly_ the same result. This entire project was purely done by guessing and applying the things I learned through the Three.js journey course so I feel the result looks already pretty cool!
+
+I hope you liked this project as much as I did. I feel like **it's a great first project** to get a bit more hands-on with some of the fundamental concepts of Three.js such as:
+
+- anything dealing with meshes: textures, geometries, materials and their properties
+- light and post-processing effects that can, if tweaked properly, give the perfect _mood_ to your scene
+- animations and frame rate
+
+and not get stuck in _tutorial hell_. If you wish to further improve your Three.js skills **I highly encourage taking a simple scene you like and start reverse-engineering it/rebuild it** as I did for this one: you will learn a lot!
+
+If you want to hack on top of it and have some fun, or simply use it as a base for your next Three.js creation you can head over to the <Anchor favicon href="https://github.com/MaximeHeckel/linear-vaporwave-three.js">Github repository of this project</Anchor> 😄. I'll try to provide a React Three Fiber equivalent in the upcoming weeks (I promise!).
