@@ -236,11 +236,11 @@
   --maximeheckel-form-input-focus: hsla(var(--palette-blue-40), 0.55);
 
   --code-snippet-background: hsla(var(--palette-gray-10), 0.2);
-  --token-comment: hsl(var(--maximeheckel-colors-typeface-tertiary));
+  --token-comment: var(--maximeheckel-colors-typeface-tertiary);
   --token-selector: hsl(var(--palette-indigo-50));
   --token-symbol: hsl(var(--palette-blue-60));
   --token-operator: hsl(var(--palette-orange-75));
-  --token-keyworkd: hsl(var(--palette-blue-50));
+  --token-keyword: hsl(var(--palette-blue-50));
   --token-function: hsl(var(--palette-pink-60));
   --token-punctuation: hsl(var(--palette-indigo-60));
 }
@@ -275,11 +275,11 @@
   --maximeheckel-form-input-focus: hsla(var(--palette-blue-50), 1);
 
   --code-snippet-background: hsla(var(--palette-gray-85), 0.5);
-  --token-comment: hsl(var(--maximeheckel-colors-typeface-tertiary));
+  --token-comment: var(--maximeheckel-colors-typeface-tertiary);
   --token-selector: hsl(var(--palette-indigo-20));
   --token-symbol: hsl(var(--palette-blue-35));
   --token-operator: hsl(var(--palette-orange-35));
-  --token-keyworkd: hsl(var(--palette-blue-30));
+  --token-keyword: hsl(var(--palette-blue-30));
   --token-function: hsl(var(--palette-pink-35));
   --token-punctuation: hsl(var(--palette-indigo-20));
 }
@@ -395,7 +395,7 @@ img {
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-  color: var(--token-keyworkd);
+  color: var(--token-keyword);
 }
 
 .token.function,

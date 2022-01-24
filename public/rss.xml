@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Tue, 28 Dec 2021 04:06:39 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 24 Jan 2022 02:47:39 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Building a Vaporwave scene with Three.js]]></title>
+            <description><![CDATA[A step-by-step tutorial documenting my attempt at reverse-engineering the vaporwave WebGL scene from the Linear 2021 release page using solely fundamental concepts of Three.js like textures, lights, animations, and post-processing effects.]]></description>
+            <link>https://blog.maximeheckel.com/posts/vaporwave-3d-scene-with-threejs</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/vaporwave-3d-scene-with-threejs</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 25 Jan 2022 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Cubic Bézier: from math to motion]]></title>
             <description><![CDATA[A deep dive into the math behind Bézier curves, from simple linear interpolations to Cubic Bézier and how they are used to describe motion. This article introduces the concepts underneath cubic-bezier and easing timing functions that are used in CSS and Framer Motion transitions through easy-to-understand interactive examples.]]></description>

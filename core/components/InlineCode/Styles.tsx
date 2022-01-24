@@ -5,7 +5,7 @@ export const StyledInlineCode = styled('code', {
   lineHeight: '1.45rem',
   borderRadius: 'var(--border-radius-1)',
   backgroundColor: 'var(--maximeheckel-colors-foreground)',
-  color: 'var(--token-keyworkd)',
+  color: 'var(--token-keyword)',
   padding: '2px 8px',
   fontSize: 'var(--font-size-2)',
   fontWeight: 'var(--font-weight-2) !important',
