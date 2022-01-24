@@ -6,7 +6,7 @@ const CalloutGPUTier = () => {
   const { tier, loading: tierLoading } = useGPUTier();
 
   const instructionMessage =
-    tier > 0
+    tier > 1
       ? 'Demos will be run automatically.'
       : 'You will need to run demos manually by clicking on the "Run" button present on the bottom right of some code snippets.';
 
