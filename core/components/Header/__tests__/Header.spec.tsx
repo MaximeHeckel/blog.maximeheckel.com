@@ -2,7 +2,7 @@ import { ThemeContext } from '@theme/context/ThemeContext';
 import { fireEvent, render } from '@testing-library/react';
 import preloadAll from 'jest-next-dynamic';
 import React from 'react';
-import MainHeader from '../';
+import Header from '../';
 
 beforeAll(async () => {
   await preloadAll();
@@ -12,7 +12,7 @@ describe('Header', () => {
   it('renders the header without the site title or the post title or theme switcher', () => {
     const { queryByTestId } = render(
       <ThemeContext.Provider value={{ dark: false, toggleDark: () => null }}>
-        <MainHeader />
+        <Header />
       </ThemeContext.Provider>
     );
     expect(queryByTestId('header-title')).toBeNull();
@@ -22,10 +22,11 @@ describe('Header', () => {
   it('renders the header with a title', () => {
     const { getByTestId, queryByTestId } = render(
       <ThemeContext.Provider value={{ dark: false, toggleDark: () => null }}>
-        <MainHeader title="Maxime Heckel" />
+        <Header title="Maxime Heckel" />
       </ThemeContext.Provider>
     );
     expect(queryByTestId('header-title')).toBeInTheDocument();
+    expect(queryByTestId('header-title')).toHaveTextContent('Maxime Heckel');
     expect(getByTestId('darkmode-switch')).toBeInTheDocument();
   });
 
@@ -36,7 +37,7 @@ describe('Header', () => {
       <ThemeContext.Provider
         value={{ dark: false, toggleDark: mockToggleDark }}
       >
-        <MainHeader />
+        <Header />
       </ThemeContext.Provider>
     );
     fireEvent.click(getByTestId('darkmode-switch'));

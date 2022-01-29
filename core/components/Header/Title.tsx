@@ -1,85 +1,62 @@
-import { motion } from 'framer-motion';
-import React from 'react';
-import { styled } from 'lib/stitches.config';
-import { HeaderContext } from './Context';
-import { H3 } from '../Typography';
+import Text from '@theme/components/Typography';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { fixTruncate, HeaderTitleWrapper } from './Styles';
+import { HeaderTitleProps } from './types';
 
-export const TitleWrapper = styled('div', {
-  overflow: 'hidden',
-  marginLeft: '42px',
-
-  a: {
-    color: 'var(--maximeheckel-colors-typeface-primary)',
-    display: 'block',
-    textDecoration: 'none',
-    overflow: 'hidden',
-    maxWidth: '600px',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-  },
-
-  '@media (max-width: 1000px)': {
-    a: {
-      maxWidth: '450px',
+const titleVariants = {
+  open: {
+    y: 70,
+    transition: {
+      ease: 'easeInOut',
+      duration: 0.4,
     },
   },
-
-  '@media (max-width: 900px)': {
-    a: {
-      maxWidth: '300px',
-    },
-  },
-
-  '@media (max-width: 700px)': {
-    h3: {
-      display: 'none',
-    },
-  },
-});
-
-const variants = {
-  hide: {
-    y: 80,
-  },
-  show: {
+  collapsed: {
     y: 0,
+    transition: {
+      ease: 'easeInOut',
+      duration: 0.4,
+    },
   },
 };
 
-export interface HeaderTitleProps {}
-
-export const Title: React.FC<HeaderTitleProps> = (props) => {
-  const { children } = props;
-  const { collapsed, sticky } = React.useContext(HeaderContext);
+const HeaderTitle = (props: HeaderTitleProps) => {
+  const { text } = props;
+  const titleY = useMotionValue(0);
+  const titleOpacity = useTransform(titleY, [10, 0], [0, 1]);
 
   return (
-    <TitleWrapper>
-      {children ? (
-        <div data-testid="header-title">
-          {sticky ? (
-            <motion.div
-              initial="hide"
-              variants={variants}
-              animate={collapsed ? 'show' : 'hide'}
-              transition={{ ease: 'easeInOut', duration: 0.5 }}
-            >
-              <H3 css={{ marginBottom: 0 }}>
-                <a
-                  href="#top"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    document
-                      .getElementById('top')
-                      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }}
-                >
-                  {children}
-                </a>
-              </H3>
-            </motion.div>
-          ) : null}
-        </div>
-      ) : null}
-    </TitleWrapper>
+    <HeaderTitleWrapper className={fixTruncate()}>
+      <Text
+        as={motion.span}
+        data-testid="header-title"
+        size={4}
+        weight={4}
+        variants={titleVariants}
+        css={{
+          marginBottom: 0,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+        }}
+        style={{
+          y: titleY,
+          opacity: titleOpacity,
+        }}
+      >
+        <a
+          href="#top"
+          onClick={(event) => {
+            event.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          tabIndex={-1}
+        >
+          {text}
+        </a>
+      </Text>
+    </HeaderTitleWrapper>
   );
 };
+
+export default HeaderTitle;

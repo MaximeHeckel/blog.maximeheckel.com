@@ -28,11 +28,11 @@ const HeroTitle = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
 const HeroWrapper = styled('div', {
   color: 'var(--maximeheckel-colors-typeface-primary)',
   gridColumn: '2',
-  paddingTop: '248px',
+  // paddingTop: '248px',
 
-  '@media (max-width: 700px)': {
-    paddingTop: '150px',
-  },
+  // '@media (max-width: 700px)': {
+  //   paddingTop: '150px',
+  // },
 });
 
 const HeroImgWrapper = styled('div', {

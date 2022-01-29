@@ -74,9 +74,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
 
   const headerProps = {
     title,
-    sticky: true,
-    collapsableOnScroll: true,
-    search: true,
+    offsetHeight: 256,
     progress: true,
   };
 
@@ -113,7 +111,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
       />
       <article className="h-entry">
         <Grid columns="var(--layout-small)" columnGap={20}>
-          <Hero id="top">
+          <Hero>
             <div
               style={{ marginBottom: '24px', fontSize: 'var(--font-size-2)' }}
             >
