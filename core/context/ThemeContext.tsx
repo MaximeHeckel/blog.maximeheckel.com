@@ -1,3 +1,4 @@
+import useKeyboardShortcut from '@theme/hooks/useKeyboardShortcut';
 import React from 'react';
 
 enum Theme {
@@ -66,29 +67,14 @@ const ThemeProvider: React.FC = (props) => {
     setThemeStateEnhanced();
   }, [setThemeStateEnhanced]);
 
-  React.useEffect(() => {
-    const keyPressHandler = (e: KeyboardEvent): void => {
-      if (e.ctrlKey) {
-        switch (e.key) {
-          case 't':
-            toggleDark();
-            break;
-          default:
-        }
-        return;
-      }
-    };
+  useKeyboardShortcut('ctrl+t', toggleDark);
 
+  React.useEffect(() => {
     window
       .matchMedia('(prefers-color-scheme: dark)')
       .addEventListener('change', (e) => {
         setThemeStateEnhanced(e.matches ? Theme.DARK : Theme.LIGHT);
       });
-
-    document.addEventListener('keydown', keyPressHandler);
-    return () => {
-      document.removeEventListener('keydown', keyPressHandler);
-    };
   }, [setThemeStateEnhanced, toggleDark]);
 
   return (

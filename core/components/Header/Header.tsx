@@ -2,6 +2,7 @@ import Flex from '@theme/components/Flex';
 import Grid from '@theme/components/Grid';
 import Logo from '@theme/components/Logo';
 import Tooltip from '@theme/components/Tooltip';
+import useKeyboardShortcut from '@theme/hooks/useKeyboardShortcut';
 import useProgress from '@theme/hooks/useProgress';
 import useScrollCounter from '@theme/hooks/useScrollCounter';
 import { AnimatePresence } from 'framer-motion';
@@ -42,37 +43,8 @@ const Header = (props: HeaderProps) => {
   const reached = useScrollCounter(offsetHeight / 2);
   const readingProgress = useProgress();
 
-  // Make a generic hook for key presses and combinations
-  React.useEffect(() => {
-    const keyPressHandler = (e: KeyboardEvent): void => {
-      if (e.ctrlKey) {
-        switch (e.key) {
-          case 'k':
-            setShowSearch((prevState) => !prevState);
-            break;
-          default:
-        }
-
-        return;
-      }
-
-      switch (e.key) {
-        case 'Escape':
-          if (showSearch) {
-            return setShowSearch(false);
-          }
-          break;
-        default:
-      }
-    };
-
-    document.addEventListener('keydown', keyPressHandler);
-
-    return () => {
-      document.removeEventListener('keydown', keyPressHandler);
-    };
-    // eslint-disable-next-line
-  }, [showSearch]);
+  useKeyboardShortcut('Escape', () => setShowSearch(false));
+  useKeyboardShortcut('ctrl+k|meta+k', () => setShowSearch(true));
 
   return (
     <>

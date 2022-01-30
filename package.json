@@ -80,6 +80,8 @@
     "@now/node": "1.8.5",
     "@testing-library/jest-dom": "5.11.9",
     "@testing-library/react": "11.2.3",
+    "@testing-library/react-hooks": "7.0.2",
+    "@testing-library/user-event": "^13.5.0",
     "@types/d3-array": "2.9.0",
     "@types/jest": "26.0.19",
     "@types/lodash.merge": "^4.6.6",
