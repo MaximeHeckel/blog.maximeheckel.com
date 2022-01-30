@@ -29,10 +29,6 @@ const contentClass = css({
   },
 });
 
-const wrapperHero = css({
-  paddingTop: '32px !important',
-});
-
 const SnippetLayout = ({ children, frontMatter }: Props) => {
   const { date, slug, title, description, language } = frontMatter;
   const path = `/snippets/${slug}/`;
@@ -40,9 +36,7 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
 
   const headerProps = {
     title,
-    search: true,
-    // sticky: true,
-    // collapsableOnScroll: true,
+    offsetHeight: 200,
   };
 
   return (
@@ -56,16 +50,7 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
       />
       <article className="h-entry">
         <Grid columns="var(--layout-medium)" columnGap={20}>
-          <Hero
-            id="top"
-            /**
-             * Override padding top for the snippet layout Hero
-             *
-             * TODO: Future Hero component of the Design System will have to handle
-             * different layout/different header types (stickly/fixed etc)
-             */
-            className={wrapperHero()}
-          >
+          <Hero>
             <Hero.Title
               className="p-name"
               data-testid={`project-title-${title}`}

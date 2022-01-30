@@ -209,6 +209,7 @@
 .maximeheckel-light {
   --maximeheckel-colors-brand: hsla(var(--palette-blue-50), 100%);
   --maximeheckel-colors-body: hsla(var(--palette-gray-02), 100%);
+  --maximeheckel-colors-header: hsla(var(--palette-gray-02), 40%);
   --maximeheckel-colors-emphasis: hsla(var(--palette-blue-50), 5%);
   --maximeheckel-colors-foreground: hsla(var(--palette-gray-10), 21%);
   --maximeheckel-colors-danger: hsla(var(--palette-red-55), 100%);
@@ -248,6 +249,7 @@
 .maximeheckel-dark {
   --maximeheckel-colors-brand: hsla(var(--palette-blue-35), 100%);
   --maximeheckel-colors-body: hsla(var(--palette-gray-90), 100%);
+  --maximeheckel-colors-header: hsla(var(--palette-gray-90), 40%);
   --maximeheckel-colors-emphasis: hsla(var(--palette-blue-35), 10%);
   --maximeheckel-colors-foreground: hsla(var(--palette-gray-85), 45%);
   --maximeheckel-colors-danger: hsla(var(--palette-red-30), 100%);

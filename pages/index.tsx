@@ -69,7 +69,6 @@ const glowVariants = {
 };
 
 const wrapperGrid = css({
-  paddingTop: '128px',
   '> *': {
     gridColumn: 2,
   },
@@ -79,7 +78,7 @@ const IndexPage = (props: Props) => {
   const { posts } = props;
 
   return (
-    <Layout footer header headerProps={{ search: true }}>
+    <Layout footer header headerProps={{ offsetHeight: 256 }}>
       <Grid
         columns="var(--layout-medium)"
         columnGap={20}

@@ -1,13 +1,9 @@
-export interface HeaderProps {
-  sticky?: boolean;
-  collapsableOnScroll?: boolean;
-  progress?: boolean;
+export interface HeaderTitleProps {
+  text: string;
 }
 
-export interface MainHeaderProps {
-  sticky?: boolean;
-  collapsableOnScroll?: boolean;
+export interface HeaderProps {
   title?: string;
-  search?: boolean;
-  progress?: boolean;
+  offsetHeight?: number;
+  showProgressBarOnMobile?: boolean;
 }

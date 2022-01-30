@@ -1,4 +1,4 @@
-import Mousetrap from 'mousetrap';
+import useKeyboardShortcut from '@theme/hooks/useKeyboardShortcut';
 import React from 'react';
 
 enum Theme {
@@ -67,18 +67,14 @@ const ThemeProvider: React.FC = (props) => {
     setThemeStateEnhanced();
   }, [setThemeStateEnhanced]);
 
-  React.useEffect(() => {
-    Mousetrap.bind(['ctrl+t'], () => toggleDark());
+  useKeyboardShortcut('ctrl+t', toggleDark);
 
+  React.useEffect(() => {
     window
       .matchMedia('(prefers-color-scheme: dark)')
       .addEventListener('change', (e) => {
         setThemeStateEnhanced(e.matches ? Theme.DARK : Theme.LIGHT);
       });
-
-    return () => {
-      Mousetrap.unbind(['ctrl+t']);
-    };
   }, [setThemeStateEnhanced, toggleDark]);
 
   return (

@@ -74,10 +74,8 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
 
   const headerProps = {
     title,
-    sticky: true,
-    collapsableOnScroll: true,
-    search: true,
-    progress: true,
+    offsetHeight: 256,
+    showProgressBarOnMobile: true,
   };
 
   const [ids, setIds] = React.useState<Array<{ id: string; title: string }>>(
@@ -113,12 +111,12 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
       />
       <article className="h-entry">
         <Grid columns="var(--layout-small)" columnGap={20}>
-          <Hero id="top">
+          <Hero>
             <div
               style={{ marginBottom: '24px', fontSize: 'var(--font-size-2)' }}
             >
               <Link href="/" passHref>
-                <Anchor arrow="left" discreet>
+                <Anchor arrow="left" data-testid="home-link" discreet>
                   Home
                 </Anchor>
               </Link>

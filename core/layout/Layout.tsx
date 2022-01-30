@@ -1,7 +1,6 @@
 import React from 'react';
 import Footer from '@theme/components/Footer';
-import { MainHeaderProps } from '@theme/components/Header/types';
-import Header from '@theme/components/Header';
+import Header, { HeaderProps } from '@theme/components/Header';
 import { styled } from 'lib/stitches.config';
 
 const Wrapper = styled('main', {
@@ -27,7 +26,7 @@ const Wrapper = styled('main', {
 interface LayoutProps {
   footer?: boolean;
   header?: boolean;
-  headerProps?: MainHeaderProps;
+  headerProps?: HeaderProps;
 }
 
 const Layout: React.FC<LayoutProps> = (props) => {

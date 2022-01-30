@@ -33,22 +33,12 @@ const ClipboardAnimationDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isClicked]);
 
-  React.useEffect(
-    () =>
-      opacity.onChange((latest: number) =>
-        setOpacityVal(parseFloat(latest.toFixed(5)))
-      ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+  opacity.onChange((latest: number) =>
+    setOpacityVal(parseFloat(latest.toFixed(5)))
   );
 
-  React.useEffect(
-    () =>
-      pathLength.onChange((latest: number) =>
-        setPathLengthVal(parseFloat(latest.toFixed(5)))
-      ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+  pathLength.onChange((latest: number) =>
+    setPathLengthVal(parseFloat(latest.toFixed(5)))
   );
 
   return (

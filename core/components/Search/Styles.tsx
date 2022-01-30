@@ -109,8 +109,8 @@ export const FormWrapper = styled('div', {
       opacity: '0.54',
     },
 
-    WebkitAppearance: 'textfield',
-    MozAppearance: 'textfield',
+    WebkitAppearance: 'none',
+    MozAppearance: 'none',
     outlineOffset: '-2px',
 
     '&::-webkit-search-cancel-button': {
