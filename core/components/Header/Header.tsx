@@ -2,9 +2,9 @@ import Flex from '@theme/components/Flex';
 import Grid from '@theme/components/Grid';
 import Logo from '@theme/components/Logo';
 import Tooltip from '@theme/components/Tooltip';
+import useProgress from '@theme/hooks/useProgress';
 import useScrollCounter from '@theme/hooks/useScrollCounter';
 import { AnimatePresence } from 'framer-motion';
-import Mousetrap from 'mousetrap';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React from 'react';
@@ -12,6 +12,7 @@ import {
   fixTruncate,
   HeaderContent,
   HeaderPadding,
+  HeaderProgressBar,
   HeaderWrapper,
 } from './Styles';
 import HeaderTitle from './Title';
@@ -36,27 +37,32 @@ const headerVariants = {
 };
 
 const Header = (props: HeaderProps) => {
-  const { title, offsetHeight = 120 } = props;
+  const { title, offsetHeight = 120, showProgressBarOnMobile } = props;
   const [showSearch, setShowSearch] = React.useState(false);
   const reached = useScrollCounter(offsetHeight / 2);
+  const readingProgress = useProgress();
 
-  React.useEffect(() => {
-    Mousetrap.bind(['ctrl+k'], () => setShowSearch((prevState) => !prevState));
-    return () => {
-      Mousetrap.unbind(['ctrl+k']);
-    };
-  }, []);
-
-  // Make a generic hook for key presses
+  // Make a generic hook for key presses and combinations
   React.useEffect(() => {
     const keyPressHandler = (e: KeyboardEvent): void => {
-      if (showSearch) {
-        switch (e.keyCode) {
-          case 27:
-            return setShowSearch(false);
+      if (e.ctrlKey) {
+        switch (e.key) {
+          case 'k':
+            setShowSearch((prevState) => !prevState);
+            break;
           default:
-            return;
         }
+
+        return;
+      }
+
+      switch (e.key) {
+        case 'Escape':
+          if (showSearch) {
+            return setShowSearch(false);
+          }
+          break;
+        default:
       }
     };
 
@@ -109,8 +115,12 @@ const Header = (props: HeaderProps) => {
             <Flex className={fixTruncate()}>
               <Tooltip id="hometooltip" tooltipText="Home">
                 <Link href="/">
-                  <a aria-label="Home" aria-describedby="hometooltip">
-                    <Logo alt="Logo" data-testid="header-logo" size={44} />
+                  <a
+                    aria-label="Home"
+                    aria-describedby="hometooltip"
+                    data-testid="header-logo"
+                  >
+                    <Logo alt="Logo" size={44} />
                   </a>
                 </Link>
               </Tooltip>
@@ -125,6 +135,13 @@ const Header = (props: HeaderProps) => {
             </Flex>
           </HeaderContent>
         </Grid>
+        {showProgressBarOnMobile ? (
+          <HeaderProgressBar
+            style={{
+              scaleX: readingProgress,
+            }}
+          />
+        ) : null}
       </HeaderWrapper>
       <HeaderPadding css={{ '--offsetHeight': `${offsetHeight}px` }} />
     </>

@@ -1,4 +1,3 @@
-import Mousetrap from 'mousetrap';
 import React from 'react';
 
 enum Theme {
@@ -68,7 +67,17 @@ const ThemeProvider: React.FC = (props) => {
   }, [setThemeStateEnhanced]);
 
   React.useEffect(() => {
-    Mousetrap.bind(['ctrl+t'], () => toggleDark());
+    const keyPressHandler = (e: KeyboardEvent): void => {
+      if (e.ctrlKey) {
+        switch (e.key) {
+          case 't':
+            toggleDark();
+            break;
+          default:
+        }
+        return;
+      }
+    };
 
     window
       .matchMedia('(prefers-color-scheme: dark)')
@@ -76,8 +85,9 @@ const ThemeProvider: React.FC = (props) => {
         setThemeStateEnhanced(e.matches ? Theme.DARK : Theme.LIGHT);
       });
 
+    document.addEventListener('keydown', keyPressHandler);
     return () => {
-      Mousetrap.unbind(['ctrl+t']);
+      document.removeEventListener('keydown', keyPressHandler);
     };
   }, [setThemeStateEnhanced, toggleDark]);
 
