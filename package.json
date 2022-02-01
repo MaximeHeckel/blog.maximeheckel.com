@@ -104,7 +104,7 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "identity-obj-proxy": "3.0.0",
     "is-ci-cli": "2.1.2",
-    "jest": "26.6.3",
+    "jest": "27.4.7",
     "jest-next-dynamic": "1.0.1",
     "netlify-plugin-cache-nextjs": "1.5.2",
     "next-remote-watch": "^1.0.0",
