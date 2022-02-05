@@ -13,7 +13,7 @@ exports[`Button renders a button with a startIcon 1`] = `
   class="c-dTdqlH c-dTdqlH-kxlbib-variant-primary"
 >
   <div
-    class="c-hJgkFV c-hJgkFV-ijxSBfJ-css"
+    class="c-dhzjXW c-dhzjXW-jroWjL-alignItems-center c-dhzjXW-ejCoEP-direction-row c-dhzjXW-bXfaDp-gap-1 c-dhzjXW-kVNAnR-wrap-nowrap c-dhzjXW-iAVZzu-css"
   >
     <svg
       data-testid="icon"
@@ -29,7 +29,7 @@ exports[`Button renders a button with an endIcon 1`] = `
 >
   Test
   <div
-    class="c-hJgkFV c-hJgkFV-ieSlpoK-css"
+    class="c-dhzjXW c-dhzjXW-jroWjL-alignItems-center c-dhzjXW-ejCoEP-direction-row c-dhzjXW-bXfaDp-gap-1 c-dhzjXW-kVNAnR-wrap-nowrap c-dhzjXW-ikFADUB-css"
   >
     <svg
       data-testid="icon"
@@ -44,7 +44,7 @@ exports[`Button renders an icon button 1`] = `
   variant="icon"
 >
   <div
-    class="c-hJgkFV c-hJgkFV-ijVLVTy-css"
+    class="c-dhzjXW c-dhzjXW-jroWjL-alignItems-center c-dhzjXW-ejCoEP-direction-row c-dhzjXW-bXfaDp-gap-1 c-dhzjXW-kVNAnR-wrap-nowrap c-dhzjXW-ijVLVTy-css"
   >
     <svg
       data-testid="icon"

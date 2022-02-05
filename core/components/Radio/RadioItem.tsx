@@ -18,7 +18,7 @@ const RadioItem = (props: RadioItemProps) => {
   const { name, onChange } = radioContext;
 
   return (
-    <Flex css={{ gap: '8px' }}>
+    <Flex gap={2}>
       <StyledRadio
         role="radio"
         id={id}

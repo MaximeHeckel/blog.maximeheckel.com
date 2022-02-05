@@ -5,6 +5,7 @@ import { motion, MotionProps } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Anchor from '@theme/components/Anchor';
+import Box from '@theme/components/Box';
 import Button from '@theme/components/Button';
 import Grid from '@theme/components/Grid';
 import Card from '@theme/components/Card';
@@ -79,13 +80,8 @@ const IndexPage = (props: Props) => {
 
   return (
     <Layout footer header headerProps={{ offsetHeight: 256 }}>
-      <Grid
-        columns="var(--layout-medium)"
-        columnGap={20}
-        rowGap={100}
-        className={wrapperGrid()}
-      >
-        <div>
+      <Grid columns="medium" gapX={4} gapY={12} className={wrapperGrid()}>
+        <Box>
           <H1>
             Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
             <Text variant="secondary" size="7" weight="4">
@@ -94,12 +90,11 @@ const IndexPage = (props: Props) => {
               SwiftUI, Serverless, and testing.
             </Text>
           </H1>
-
           <Flex
+            gap={4}
             css={{
-              marginLeft: '-12px',
-              marginRight: '-12px',
-              gap: '16px',
+              marginLeft: '-var(--space-3)',
+              marginRight: '-var(--space-3)',
             }}
           >
             <a
@@ -128,7 +123,7 @@ const IndexPage = (props: Props) => {
               </VisuallyHidden>
             </a>
           </Flex>
-        </div>
+        </Box>
         <section>
           <H2>Newsletter</H2>
           <NewsletterForm large />
@@ -137,13 +132,13 @@ const IndexPage = (props: Props) => {
           <H2>Featured</H2>
           <Grid
             as="ul"
-            style={{
+            css={{
               marginLeft: '0px',
               marginBottom: '0px',
               padding: '0px',
             }}
             data-testid="featured-list"
-            rowGap={16}
+            gapY={4}
           >
             {posts
               .filter((post) => post.featured)
@@ -152,8 +147,8 @@ const IndexPage = (props: Props) => {
                   <motion.li
                     style={{
                       position: 'relative',
-                      marginLeft: '-8px',
-                      marginRight: '-8px',
+                      marginLeft: '-var(--space-1)',
+                      marginRight: '-var(--space-1)',
                       listStyle: 'none',
                       cursor: 'pointer',
                       marginBottom: 'calc(1.45rem / 2)',
@@ -184,8 +179,8 @@ const IndexPage = (props: Props) => {
                             duration: 0.4,
                           }}
                         />
-                        <div
-                          style={{
+                        <Box
+                          css={{
                             height: '95%',
                             width: '105%',
                             position: 'absolute',
@@ -196,6 +191,10 @@ const IndexPage = (props: Props) => {
                             transform: 'translateY(-50%) translateX(-50%)',
                             filter: 'blur(20px)',
                             transition: '0.5s',
+
+                            '@media(max-width: 700px)': {
+                              display: 'none',
+                            },
                           }}
                         />
                         <Card<MotionProps>
@@ -234,12 +233,12 @@ const IndexPage = (props: Props) => {
           <H2>All articles</H2>
           <Grid
             as="ul"
-            style={{
-              margin: '0',
-              padding: '0',
+            css={{
+              margin: 0,
+              padding: 0,
             }}
             data-testid="article-list"
-            rowGap={4}
+            gapY={1}
           >
             {posts.map((post) => {
               const currentYear = new Date(post.date).getFullYear();
@@ -332,7 +331,7 @@ const Glow = styled(motion.div, {
   borderRadius: 'var(--border-radius-2)',
 });
 
-const Block = styled('div', {
+const Block = styled(Box, {
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'center',

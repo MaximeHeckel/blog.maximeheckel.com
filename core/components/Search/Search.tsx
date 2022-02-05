@@ -287,7 +287,7 @@ const Search = (props: Props) => {
                       alignItems="center"
                       justifyContent="center"
                       css={{
-                        marginLeft: '16px',
+                        marginLeft: 'var(--space-4)',
                         height: '35px',
                         width: '35px',
                         backgroundColor: 'var(--maximeheckel-colors-emphasis)',

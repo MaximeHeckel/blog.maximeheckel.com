@@ -18,7 +18,7 @@ const Wrapper = styled('div', {
 });
 
 const NotFoundPage = () => (
-  <Grid columns="1px 1fr 1px" gap={20}>
+  <Grid columns="medium" gapX={4}>
     <DefaultSeo title={`404: Not found - ${siteConfig.title}`} />
     <Wrapper>
       <div>

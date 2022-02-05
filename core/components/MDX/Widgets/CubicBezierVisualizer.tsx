@@ -386,7 +386,7 @@ const Chart = (props: ChartProps) => {
   }
 
   return (
-    <Grid gap={40}>
+    <Grid gap={7}>
       {!editable ? (
         <select
           id="ease-type"
@@ -611,10 +611,10 @@ const Chart = (props: ChartProps) => {
       </svg>
 
       <Grid
-        gap={8}
-        columns="repeat(auto-fit, minmax(0px, 1fr))"
-        style={{
-          marginTop: '16px',
+        gap={2}
+        css={{
+          gridTemplateColumns: 'repeat(auto-fit, minmax(0px, 1fr))',
+          marginTop: 'var(--space-4)',
         }}
       >
         <Flex justifyContent="center">
@@ -632,9 +632,11 @@ const Chart = (props: ChartProps) => {
       </Grid>
       {editable ? (
         <Grid
-          gap={8}
-          justifyContent="center"
-          columns="repeat(auto-fit, minmax(120px, 1fr))"
+          gap={2}
+          justify="center"
+          css={{
+            gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+          }}
         >
           <Switch
             id="show-handles-switch"
@@ -667,7 +669,7 @@ const Chart = (props: ChartProps) => {
           />
         </Grid>
       ) : null}
-      <Flex css={{ gap: '16px' }} justifyContent="center">
+      <Flex gap={4} justifyContent="center">
         <Tooltip id="playpauseButton" tooltipText={paused ? 'Play' : 'Pause'}>
           <Button
             aria-label={paused ? 'Play' : 'Pause'}

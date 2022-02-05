@@ -107,7 +107,7 @@ const ContentDemo = (props: Props) => {
           );
         })}
       </CardWrapper>
-      <Flex css={{ gap: '12px' }}>
+      <Flex gap={4}>
         <Button
           id="prev"
           aria-label="Previous"

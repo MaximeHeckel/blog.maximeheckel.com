@@ -110,7 +110,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
         updated={updated}
       />
       <article className="h-entry">
-        <Grid columns="var(--layout-small)" columnGap={20}>
+        <Grid columns="small" gapX={4}>
           <Hero>
             <div
               style={{ marginBottom: '24px', fontSize: 'var(--font-size-2)' }}
@@ -130,7 +130,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
             <Hero.Info>
               <Flex
                 css={{
-                  marginBottom: '12px',
+                  marginBottom: 'var(--space-3)',
                 }}
                 wrap="wrap"
               >
@@ -148,7 +148,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
               </Flex>
               <Flex
                 css={{
-                  marginLeft: '-8px',
+                  marginLeft: '-var(--space-2)',
                 }}
               >
                 <Pill variant="info">
