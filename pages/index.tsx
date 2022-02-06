@@ -44,7 +44,7 @@ const WavingHand = () => (
       type: 'tween',
     }}
   >
-    👋
+    👋🏻
   </motion.div>
 );
 
@@ -208,15 +208,15 @@ const IndexPage = (props: Props) => {
                           depth={1}
                         >
                           <Card.Body>
-                            <H2
+                            <H3
                               gradient
                               css={{
-                                backgroundImage: post.colorFeatured!,
                                 marginBottom: '8px',
+                                backgroundImage: post.colorFeatured!,
                               }}
                             >
                               {post.title}
-                            </H2>
+                            </H3>
                             <Text as="p" css={{ marginBottom: '0px' }}>
                               {post.subtitle}
                             </Text>
