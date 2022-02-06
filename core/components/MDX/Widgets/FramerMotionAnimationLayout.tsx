@@ -84,14 +84,14 @@ const FramerMotionAnimationLayout = () => {
       <AnimationCardContent>
         <Grid
           as="ul"
-          columns="repeat(4, 48px)"
-          style={{
+          css={{
+            gridTemplateColumns: 'repeat(4, 48px)',
             height: '250px',
             width: '100%',
             padding: '0',
           }}
-          columnGap="12px"
-          justifyContent="center"
+          gapX={3}
+          justify="center"
         >
           {PETS.map((pet) => (
             <li

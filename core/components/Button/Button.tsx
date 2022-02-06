@@ -36,7 +36,7 @@ const Button = <T extends object>(
       {startIcon ? (
         <Flex
           css={{
-            marginRight: '8px',
+            marginRight: 'var(--space-2)',
           }}
         >
           {startIcon}
@@ -46,7 +46,7 @@ const Button = <T extends object>(
       {endIcon ? (
         <Flex
           css={{
-            marginLeft: '8px',
+            marginLeft: 'var(--space-2)',
           }}
         >
           {endIcon}

@@ -46,9 +46,9 @@ const ThemePicker = () => {
     >
       <AnimationCardContent>
         <Grid
-          columns="repeat(auto-fill, minmax(85px, 1fr))"
-          gap="5px"
-          style={{
+          gap={1}
+          css={{
+            gridTemplateColumns: 'repeat(auto-fill, minmax(85px, 1fr))',
             margin: '0 auto',
             width: '80%',
             height: '100px',
@@ -169,6 +169,7 @@ const ThemePicker = () => {
             🥑
           </ButtonWrapper>
         </Grid>
+
         <ButtonWrapper>
           <ThemeColor
             css={{

@@ -32,7 +32,7 @@ const FooterContent = styled(Flex, {
 
 const Footer = () => (
   <FooterBlock data-testid="footer">
-    <Grid columns="var(--layout-medium)" columnGap={20}>
+    <Grid columns="medium" gapX={4}>
       <FooterWrapper direction="column" justifyContent="space-evenly">
         <hr />
         <FooterContent alignItems="center" justifyContent="space-between">

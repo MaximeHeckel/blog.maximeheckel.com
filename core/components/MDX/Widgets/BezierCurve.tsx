@@ -591,7 +591,7 @@ const Chart = (props: ChartProps) => {
           }}
         />
       </Flex>
-      <Flex css={{ gap: '16px' }} justifyContent="center">
+      <Flex gap={4} justifyContent="center">
         <Tooltip id="playpauseButton" tooltipText={paused ? 'Play' : 'Pause'}>
           <Button
             aria-label={paused ? 'Play' : 'Pause'}

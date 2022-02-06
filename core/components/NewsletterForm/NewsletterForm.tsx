@@ -66,15 +66,15 @@ const NewsletterForm = (props: Props) => {
     <Card
       depth={0}
       style={{
-        marginLeft: '-8px',
-        marginRight: '-8px',
+        marginLeft: '-var(--space-1)',
+        marginRight: '-var(--space-1)',
       }}
     >
       {large ? (
         <Flex
           justifyContent="center"
           css={{
-            paddingTop: '48px',
+            paddingTop: 'var(--space-8)',
           }}
         >
           <NewsletterHeader />
@@ -181,8 +181,8 @@ const NewsletterForm = (props: Props) => {
         >
           <Flex
             alignItems="flex-start"
+            gap="3"
             css={{
-              gap: '12px',
               flexDirection: 'row',
               '@media (max-width: 500px)': {
                 flexDirection: 'column',

@@ -15,9 +15,7 @@ const RadioGroup: React.FC<RadioGroupProps> = (props) => {
     <Flex
       alignItems={direction === 'vertical' ? 'flex-start' : 'center'}
       direction={direction === 'vertical' ? 'column' : 'row'}
-      css={{
-        gap: '8px',
-      }}
+      gap={2}
       role="radiogroup"
     >
       <RadioContext.Provider value={{ name, onChange }}>

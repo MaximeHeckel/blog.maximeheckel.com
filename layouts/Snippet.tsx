@@ -49,7 +49,7 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
         date={date}
       />
       <article className="h-entry">
-        <Grid columns="var(--layout-medium)" columnGap={20}>
+        <Grid columns="medium" gapX={4}>
           <Hero>
             <Hero.Title
               className="p-name"

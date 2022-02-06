@@ -78,7 +78,7 @@ const Header = (props: HeaderProps) => {
             : 'transparent',
         }}
       >
-        <Grid columns="var(--layout-medium)" columnGap={20}>
+        <Grid columns="medium" gapX={4}>
           <HeaderContent
             alignItems="center"
             justifyContent="space-between"
@@ -98,7 +98,7 @@ const Header = (props: HeaderProps) => {
               </Tooltip>
               {title ? <HeaderTitle text={title} /> : null}
             </Flex>
-            <Flex css={{ gap: '12px' }}>
+            <Flex gap={3}>
               <CommandCenterButton
                 isSearchShown={showSearch}
                 onClick={() => setShowSearch(true)}

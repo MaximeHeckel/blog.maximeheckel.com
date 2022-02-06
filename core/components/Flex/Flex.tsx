@@ -2,11 +2,7 @@ import { styled } from 'lib/stitches.config';
 
 const Flex = styled('div', {
   display: 'flex',
-  flexWrap: 'nowrap',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  gap: '4px',
+
   variants: {
     alignItems: {
       baseline: {
@@ -62,6 +58,53 @@ const Flex = styled('div', {
         flexDirection: 'row-reverse',
       },
     },
+    gap: {
+      1: {
+        gap: 'var(--space-1)',
+      },
+      2: {
+        gap: 'var(--space-2)',
+      },
+      3: {
+        gap: 'var(--space-3)',
+      },
+      4: {
+        gap: 'var(--space-4)',
+      },
+      5: {
+        gap: 'var(--space-5)',
+      },
+      6: {
+        gap: 'var(--space-6)',
+      },
+      7: {
+        gap: 'var(--space-7)',
+      },
+      8: {
+        gap: 'var(--space-8)',
+      },
+      9: {
+        gap: 'var(--space-9)',
+      },
+      10: {
+        gap: 'var(--space-10)',
+      },
+      11: {
+        gap: 'var(--space-11)',
+      },
+      12: {
+        gap: 'var(--space-12)',
+      },
+      13: {
+        gap: 'var(--space-13)',
+      },
+      14: {
+        gap: 'var(--space-14)',
+      },
+      15: {
+        gap: 'var(--space-15)',
+      },
+    },
     justifyContent: {
       center: {
         justifyContent: 'center',
@@ -90,6 +133,13 @@ const Flex = styled('div', {
         flexWrap: 'nowrap',
       },
     },
+  },
+  defaultVariants: {
+    gap: 1,
+    wrap: 'nowrap',
+    direction: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
 });
 

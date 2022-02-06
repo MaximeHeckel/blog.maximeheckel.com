@@ -151,12 +151,7 @@ export default function Design(props: {
   return (
     <Layout footer>
       <Seo title="Design" />
-      <Grid
-        columns="var(--layout-medium)"
-        columnGap={20}
-        rowGap={64}
-        className={wrapperGrid()}
-      >
+      <Grid columns="medium" gapX={4} gapY={10} className={wrapperGrid()}>
         <section>
           <H1
             css={{
@@ -166,10 +161,10 @@ export default function Design(props: {
             Components / Design System{' '}
           </H1>
           <HR />
-          <Grid gap={12} columns="140px 50px">
+          <Flex justifyContent="space-between">
             <Pill variant="warning">Work In Progress</Pill>
             <Pill variant="info">v1.0</Pill>
-          </Grid>
+          </Flex>
         </section>
         <section>
           <H2>Name (WIP)</H2>
@@ -187,7 +182,7 @@ export default function Design(props: {
         </section>
         <section id="Colors">
           <H2>Colors</H2>
-          <Grid gap={12}>
+          <Grid gap={3}>
             Brand:
             <Tooltip id="brand" tooltipText="--brand">
               <div
@@ -225,7 +220,7 @@ export default function Design(props: {
               />
             </Tooltip>
             Typeface:
-            <Grid columns="repeat(3, 44px)" gap={12}>
+            <Grid gap={3} css={{ gridTemplateColumns: 'repeat(3, 44px)' }}>
               <Tooltip id="typeface-primary" tooltipText="--typeface-primary">
                 <div
                   style={{
@@ -267,13 +262,18 @@ export default function Design(props: {
         </section>
         <section id="Palette">
           <H2>Palette</H2>
-          <Grid gap={32} columns="repeat(auto-fill, minmax(10rem, 1fr))">
+          <Grid
+            gap={6}
+            css={{
+              gridTemplateColumns: 'repeat(auto-fill, minmax(10rem, 1fr))',
+            }}
+          >
             {palette.map((paletteItem) => (
               <Grid
                 key={paletteItem}
-                columns="repeat(auto-fill, minmax(2rem, 1fr))"
-                style={{
-                  marginRight: '12px',
+                css={{
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(2rem, 1fr))',
+                  marginRight: '$3',
                 }}
               >
                 {colorScaleNumbers.map((shade) => (
@@ -444,7 +444,7 @@ export default function Design(props: {
         </section>
         <section id="button">
           <H2>Buttons</H2>
-          <Grid gap={24}>
+          <Grid gap={5}>
             <Glow>
               <Button variant="primary">Button</Button>
             </Glow>
@@ -483,7 +483,7 @@ export default function Design(props: {
         </section>
         <section id="anchor">
           <H2>Anchor</H2>
-          <Grid gap={4}>
+          <Grid gap={1}>
             <h3>
               <Anchor href="https://twitter.com/MaximeHeckel" favicon>
                 @MaximeHeckel
@@ -537,7 +537,7 @@ export default function Design(props: {
         </section>
         <section id="form-components">
           <H2>Form Components</H2>
-          <Flex css={{ gap: '8px' }}>
+          <Flex gap={2}>
             <TextInput
               aria-label="Email"
               id="email-input"
@@ -549,7 +549,12 @@ export default function Design(props: {
             <Button variant="primary">Subscribe</Button>
           </Flex>
           <br />
-          <Grid gap={24} columns="repeat(auto-fit, minmax(300px, 1fr))">
+          <Grid
+            gap={5}
+            css={{
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            }}
+          >
             <TextInput
               label="Name"
               aria-label="Name"
@@ -648,7 +653,10 @@ they can change the world, are the ones who do.`}
             />
           </Grid>
           <br />
-          <Grid gap={12} columns="repeat(2, minmax(2rem, 1fr))">
+          <Grid
+            gap={3}
+            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
+          >
             <Checkbox aria-label="Checkbox" id="checkbox1" label="Checkbox" />
             <Checkbox
               aria-label="Checkbox"
@@ -673,7 +681,10 @@ they can change the world, are the ones who do.`}
             />
           </Grid>
           <br />
-          <Grid gap={12} columns="repeat(2, minmax(2rem, 1fr))">
+          <Grid
+            gap={3}
+            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
+          >
             <Switch id="switch1" aria-label="Switch" label="Switch" />
             <Switch id="switch2" aria-label="Switch" label="Switch" disabled />
             <Switch
@@ -693,7 +704,10 @@ they can change the world, are the ones who do.`}
             />
           </Grid>
           <br />
-          <Grid gap={12} columns="repeat(2, minmax(2rem, 1fr))">
+          <Grid
+            gap={3}
+            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
+          >
             <Radio.Group
               name="options"
               direction="vertical"
@@ -755,7 +769,10 @@ they can change the world, are the ones who do.`}
             </Radio.Group>
           </Grid>
           <br />
-          <Grid gap={12} columns="repeat(2, minmax(2rem, 1fr))">
+          <Grid
+            gap={3}
+            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
+          >
             <Range
               id="range-1"
               aria-label="Range"
@@ -779,7 +796,7 @@ they can change the world, are the ones who do.`}
         </section>
         <section id="cards">
           <H2>Card</H2>
-          <Grid rowGap={30}>
+          <Grid gapY={6} css={{ width: '100%' }}>
             <Card>
               <Card.Body>Base Card</Card.Body>
             </Card>
@@ -797,7 +814,7 @@ they can change the world, are the ones who do.`}
                 alignItems="center"
                 justifyContent="center"
                 css={{
-                  padding: '40px',
+                  padding: 'var(--space-7)',
                 }}
               >
                 Card With custom Body
@@ -848,7 +865,7 @@ they can change the world, are the ones who do.`}
               css={{
                 height: '50px',
                 width: '150px',
-                padding: '8px',
+                padding: 'var(--space-2)',
               }}
               aria-describedby="exampletooltip"
             >
@@ -859,7 +876,7 @@ they can change the world, are the ones who do.`}
         </section>
         <section id="pill">
           <H2>Pill</H2>
-          <Grid rowGap={32}>
+          <Grid gapY={5}>
             <div>
               <Pill variant="info">Info Pill</Pill>
             </div>
@@ -876,7 +893,7 @@ they can change the world, are the ones who do.`}
         </section>
         <section id="callout">
           <H2>Callout</H2>
-          <Grid gap={32}>
+          <Grid gapY={5}>
             <Callout variant="info">Info Callout</Callout>
             <Callout label="Learn more" variant="info">
               Info Callout

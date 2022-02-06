@@ -7,7 +7,7 @@ exports[`Callout can render a Callout with variant danger 1`] = `
       class="c-dXzGmz c-dXzGmz-jVzdYt-variant-danger"
     >
       <div
-        class="c-hEVHDD c-hEVHDD-deNlpD-variant-danger"
+        class="c-jBmcOA c-jBmcOA-deNlpD-variant-danger"
       >
         <svg
           fill="none"
@@ -67,7 +67,7 @@ exports[`Callout can render a Callout with variant info 1`] = `
       class="c-dXzGmz c-dXzGmz-dpIRHz-variant-info"
     >
       <div
-        class="c-hEVHDD c-hEVHDD-jXIqcX-variant-info"
+        class="c-jBmcOA c-jBmcOA-jXIqcX-variant-info"
       >
         <svg
           fill="none"
