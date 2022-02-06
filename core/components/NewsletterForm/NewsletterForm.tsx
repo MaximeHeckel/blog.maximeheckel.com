@@ -125,7 +125,7 @@ const NewsletterForm = (props: Props) => {
                   variant="secondary"
                 >
                   Deep dives into some of my <EM>ideas and secret projects</EM>{' '}
-                  that will inspire you 👨‍💻
+                  that will inspire you
                 </Text>
               </List.Item>
               <List.Item>
@@ -137,7 +137,7 @@ const NewsletterForm = (props: Props) => {
                   variant="secondary"
                 >
                   <EM>Exclusive previews of upcoming articles</EM> on frontent
-                  development, React, and SwiftUI 🤫
+                  development, React, and SwiftUI
                 </Text>
               </List.Item>
               <List.Item>
@@ -150,7 +150,7 @@ const NewsletterForm = (props: Props) => {
                 >
                   Some of my <EM>favorite resources and tips</EM> on frontend
                   development or anything I&apos;m currently interested in to
-                  further expand your skillset as a developer 📝
+                  further expand your skillset as a developer
                 </Text>
               </List.Item>
             </List>

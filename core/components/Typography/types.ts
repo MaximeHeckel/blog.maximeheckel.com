@@ -2,13 +2,15 @@ import { CSS, VariantProps } from 'lib/stitches.config';
 import { DEFAULT_TAG } from './constant';
 import Text from './Text';
 
-export type EMProps = React.HTMLAttributes<HTMLParagraphElement>;
-export type StrongProps = React.HTMLAttributes<HTMLParagraphElement>;
-
 export type TextSizeVariants = Pick<
   VariantProps<typeof Text>,
   'size' | 'variant' | 'gradient'
 >;
+
+export type EMProps = React.HTMLAttributes<HTMLParagraphElement> &
+  TextSizeVariants;
+export type StrongProps = React.HTMLAttributes<HTMLParagraphElement> &
+  TextSizeVariants;
 
 export type HeadingSizeVariants = '1' | '2' | '3' | '4';
 export type HeadingVariants = { size?: HeadingSizeVariants } & Omit<
