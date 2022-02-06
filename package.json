@@ -74,8 +74,8 @@
     "unist-util-visit-parents": "3.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.12.10",
-    "@netlify/plugin-nextjs": "3.9.0",
+    "@babel/core": "7.17.0",
+    "@netlify/plugin-nextjs": "4.2.2",
     "@next/bundle-analyzer": "10.0.5",
     "@now/node": "1.8.5",
     "@testing-library/jest-dom": "5.11.9",
