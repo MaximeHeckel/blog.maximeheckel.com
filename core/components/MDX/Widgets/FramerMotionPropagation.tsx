@@ -1,12 +1,43 @@
 import Button from '@theme/components/Button';
 import DesignSystemCard from '@theme/components/Card';
 import Flex from '@theme/components/Flex';
-import { StackIcon } from '@theme/components/Icons';
 import { H3 } from '@theme/components/Typography';
 import { motion } from 'framer-motion';
 import { styled } from 'lib/stitches.config';
 import React from 'react';
 import { AnimationCardContent } from './Components';
+
+const PerspectiveIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 25 25"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12.0645 2.92166L2.06452 7.92166L12.0645 12.9217L22.0645 7.92166L12.0645 2.92166Z"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M2.06452 17.9217L12.0645 22.9217L22.0645 17.9217"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M2.06452 12.9217L12.0645 17.9217L22.0645 12.9217"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
 const CardWrapper = styled('div', {
   position: 'relative',
@@ -207,7 +238,7 @@ const CardWithGlow = () => {
       <br />
       <Button
         variant="icon"
-        icon={<StackIcon />}
+        icon={<PerspectiveIcon />}
         title={inPerspective ? 'Disable perspective' : 'Enable perspective'}
         onClick={() => setInPerspective((prev) => !prev)}
       />

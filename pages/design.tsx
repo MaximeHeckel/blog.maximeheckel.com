@@ -4,21 +4,13 @@ import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
 import Grid from '@theme/components/Grid';
 import {
+  EnterArrowIcon,
   ContactIcon,
   EnterIcon,
   ExternalIcon,
   PortfolioIcon,
   RSSIcon,
   TwitterIcon,
-  ArrowIcon,
-  PlayIcon,
-  PauseIcon,
-  RepeatIcon,
-  InfoIcon,
-  AlertIcon,
-  GithubIcon,
-  MapIcon,
-  StackIcon,
 } from '@theme/components/Icons';
 import Blockquote from '@theme/components/Blockquote';
 import TextInput from '@theme/components/TextInput';
@@ -51,7 +43,6 @@ import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
-import Box from '@theme/components/Box';
 
 const WavingHandCode = `import { motion } from 'framer-motion';
 
@@ -194,8 +185,8 @@ export default function Design(props: {
           <Grid gap={3}>
             Brand:
             <Tooltip id="brand" tooltipText="--brand">
-              <Box
-                css={{
+              <div
+                style={{
                   width: '44px',
                   height: '44px',
                   borderRadius: '50%',
@@ -206,8 +197,8 @@ export default function Design(props: {
             </Tooltip>
             Background:
             <Tooltip id="background" tooltipText="--background">
-              <Box
-                css={{
+              <div
+                style={{
                   width: '44px',
                   height: '44px',
                   borderRadius: '50%',
@@ -218,8 +209,8 @@ export default function Design(props: {
             </Tooltip>
             Foreground:
             <Tooltip id="foreground" tooltipText="--foreground">
-              <Box
-                css={{
+              <div
+                style={{
                   width: '44px',
                   height: '44px',
                   borderRadius: '50%',
@@ -231,8 +222,8 @@ export default function Design(props: {
             Typeface:
             <Grid gap={3} css={{ gridTemplateColumns: 'repeat(3, 44px)' }}>
               <Tooltip id="typeface-primary" tooltipText="--typeface-primary">
-                <Box
-                  css={{
+                <div
+                  style={{
                     width: '44px',
                     height: '44px',
                     borderRadius: '50%',
@@ -245,8 +236,8 @@ export default function Design(props: {
                 id="typeface-secondary"
                 tooltipText="--typeface-secondary"
               >
-                <Box
-                  css={{
+                <div
+                  style={{
                     width: '44px',
                     height: '44px',
                     borderRadius: '50%',
@@ -256,8 +247,8 @@ export default function Design(props: {
                 />
               </Tooltip>
               <Tooltip id="typeface-tertiary" tooltipText="--typeface-teriary">
-                <Box
-                  css={{
+                <div
+                  style={{
                     width: '44px',
                     height: '44px',
                     borderRadius: '50%',
@@ -291,8 +282,8 @@ export default function Design(props: {
                     key={`${paletteItem}-${shade}`}
                     tooltipText={`--palette-${paletteItem}-${shade}`}
                   >
-                    <Box
-                      css={{
+                    <div
+                      style={{
                         width: '44px',
                         height: '44px',
                         borderRadius: '50%',
@@ -421,42 +412,35 @@ export default function Design(props: {
           <br />
           <br />
         </section>
-        <section id="icons">
-          <H2>Icons</H2>
-          <IconSection />
-        </section>
         <section id="lists">
           <H2>Lists</H2>
-          <Grid columns={2}>
-            <List variant="unordered">
-              <List.Item>First</List.Item>
-              <List.Item>Second</List.Item>
-              <List.Item>Third</List.Item>
-            </List>
-            <List variant="ordered">
-              <List.Item>First</List.Item>
-              <List.Item>Second</List.Item>
-              <List.Item>Third</List.Item>
-            </List>
-            <List variant="unordered">
-              <List.Item>
-                <List variant="ordered">
-                  <List.Item>First</List.Item>
-                  <List.Item>Second</List.Item>
-                  <List.Item>Third</List.Item>
-                </List>
-              </List.Item>
-            </List>
-            <List variant="unordered">
-              <List.Item>
-                <List variant="unordered">
-                  <List.Item>First</List.Item>
-                  <List.Item>Second</List.Item>
-                  <List.Item>Third</List.Item>
-                </List>
-              </List.Item>
-            </List>
-          </Grid>
+          <List variant="unordered">
+            <List.Item>First</List.Item>
+            <List.Item>Second</List.Item>
+            <List.Item>Third</List.Item>
+          </List>
+          <List variant="ordered">
+            <List.Item>First</List.Item>
+            <List.Item>Second</List.Item>
+            <List.Item>Third</List.Item>
+          </List>
+          <List variant="unordered">
+            <List.Item>
+              <List variant="ordered">
+                <List.Item>First</List.Item>
+                <List.Item>Second</List.Item>
+                <List.Item>Third</List.Item>
+              </List>
+            </List.Item>
+            <List.Item>
+              <List variant="unordered">
+                <List.Item>First</List.Item>
+                <List.Item>Second</List.Item>
+                <List.Item>Third</List.Item>
+              </List>
+            </List.Item>
+            <List.Item>Third</List.Item>
+          </List>
         </section>
         <section id="button">
           <H2>Buttons</H2>
@@ -858,6 +842,16 @@ they can change the world, are the ones who do.`}
             </Card>
           </Grid>
         </section>
+        <section id="icons">
+          <H2>Icons</H2>
+          <TwitterIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <ExternalIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <RSSIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <ContactIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <EnterIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <PortfolioIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+          <EnterArrowIcon stroke="var(--maximeheckel-colors-typeface-tertiary)" />
+        </section>
         <section id="tooltip">
           <H2>Tooltip</H2>
           <Tooltip
@@ -883,18 +877,18 @@ they can change the world, are the ones who do.`}
         <section id="pill">
           <H2>Pill</H2>
           <Grid gapY={5}>
-            <Box>
+            <div>
               <Pill variant="info">Info Pill</Pill>
-            </Box>
-            <Box>
+            </div>
+            <div>
               <Pill variant="success">Success Pill</Pill>
-            </Box>
-            <Box>
+            </div>
+            <div>
               <Pill variant="warning">Warning Pill</Pill>
-            </Box>
-            <Box>
+            </div>
+            <div>
               <Pill variant="danger">Danger Pill</Pill>
-            </Box>
+            </div>
           </Grid>
         </section>
         <section id="callout">
@@ -1029,108 +1023,6 @@ render(<Hi />);`}
     </Layout>
   );
 }
-
-const IconSection = () => (
-  <Flex direction="column" gap={8} alignItems="stretch" css={{ width: '100%' }}>
-    <Grid flow="column" gap={4}>
-      <TwitterIcon variant="info" size={5} />
-      <TwitterIcon variant="danger" size={5} />
-      <TwitterIcon variant="success" size={5} />
-      <TwitterIcon variant="warning" size={5} />
-      <TwitterIcon variant="primary" size={5} />
-      <TwitterIcon variant="secondary" size={5} />
-      <TwitterIcon variant="tertiary" size={5} />
-    </Grid>
-    <Box
-      css={{
-        color: 'hsl(var(--palette-pink-50))',
-        svg: {
-          strokeWidth: '1',
-          fill: 'hsla(var(--palette-pink-50), 50%) !important',
-        },
-      }}
-    >
-      <TwitterIcon />
-    </Box>
-    <Grid gapY={4} columns={5} flow="row" align="center">
-      <TwitterIcon variant="default" size={7} />
-      <TwitterIcon variant="default" size={6} />
-      <TwitterIcon variant="default" size={5} />
-      <TwitterIcon variant="default" size={4} />
-      <TwitterIcon variant="default" size={3} />
-      <GithubIcon variant="default" size={7} />
-      <GithubIcon variant="default" size={6} />
-      <GithubIcon variant="default" size={5} />
-      <GithubIcon variant="default" size={4} />
-      <GithubIcon variant="default" size={3} />
-      <ContactIcon variant="default" size={7} />
-      <ContactIcon variant="default" size={6} />
-      <ContactIcon variant="default" size={5} />
-      <ContactIcon variant="default" size={4} />
-      <ContactIcon variant="default" size={3} />
-      <MapIcon variant="default" size={7} />
-      <MapIcon variant="default" size={6} />
-      <MapIcon variant="default" size={5} />
-      <MapIcon variant="default" size={4} />
-      <MapIcon variant="default" size={3} />
-      <ExternalIcon variant="default" size={7} />
-      <ExternalIcon variant="default" size={6} />
-      <ExternalIcon variant="default" size={5} />
-      <ExternalIcon variant="default" size={4} />
-      <ExternalIcon variant="default" size={3} />
-      <RSSIcon variant="default" size={7} />
-      <RSSIcon variant="default" size={6} />
-      <RSSIcon variant="default" size={5} />
-      <RSSIcon variant="default" size={4} />
-      <RSSIcon variant="default" size={3} />
-      <EnterIcon variant="default" size={7} />
-      <EnterIcon variant="default" size={6} />
-      <EnterIcon variant="default" size={5} />
-      <EnterIcon variant="default" size={4} />
-      <EnterIcon variant="default" size={3} />
-      <ArrowIcon variant="default" size={7} />
-      <ArrowIcon variant="default" size={6} />
-      <ArrowIcon variant="default" size={5} />
-      <ArrowIcon variant="default" size={4} />
-      <ArrowIcon variant="default" size={3} />
-      <PortfolioIcon variant="default" size={7} />
-      <PortfolioIcon variant="default" size={6} />
-      <PortfolioIcon variant="default" size={5} />
-      <PortfolioIcon variant="default" size={4} />
-      <PortfolioIcon variant="default" size={3} />
-      <PlayIcon variant="default" size={7} />
-      <PlayIcon variant="default" size={6} />
-      <PlayIcon variant="default" size={5} />
-      <PlayIcon variant="default" size={4} />
-      <PlayIcon variant="default" size={3} />
-      <PauseIcon variant="default" size={7} />
-      <PauseIcon variant="default" size={6} />
-      <PauseIcon variant="default" size={5} />
-      <PauseIcon variant="default" size={4} />
-      <PauseIcon variant="default" size={3} />
-      <RepeatIcon variant="default" size={7} />
-      <RepeatIcon variant="default" size={6} />
-      <RepeatIcon variant="default" size={5} />
-      <RepeatIcon variant="default" size={4} />
-      <RepeatIcon variant="default" size={3} />
-      <InfoIcon variant="default" size={7} />
-      <InfoIcon variant="default" size={6} />
-      <InfoIcon variant="default" size={5} />
-      <InfoIcon variant="default" size={4} />
-      <InfoIcon variant="default" size={3} />
-      <AlertIcon variant="default" size={7} />
-      <AlertIcon variant="default" size={6} />
-      <AlertIcon variant="default" size={5} />
-      <AlertIcon variant="default" size={4} />
-      <AlertIcon variant="default" size={3} />
-      <StackIcon variant="default" size={7} />
-      <StackIcon variant="default" size={6} />
-      <StackIcon variant="default" size={5} />
-      <StackIcon variant="default" size={4} />
-      <StackIcon variant="default" size={3} />
-    </Grid>
-  </Flex>
-);
 
 export async function getStaticProps() {
   const tweets = await getTweets(['1386013361809281024']);
