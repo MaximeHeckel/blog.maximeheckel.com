@@ -1,5 +1,5 @@
 import React from 'react';
-import { EnterArrowIcon } from '../Icons';
+import { ArrowIcon } from '../Icons';
 import { StyledListItem } from './Styles';
 
 const ListItem: React.FC<React.LiHTMLAttributes<HTMLLIElement>> = (props) => {
@@ -8,7 +8,7 @@ const ListItem: React.FC<React.LiHTMLAttributes<HTMLLIElement>> = (props) => {
   return (
     <StyledListItem {...rest}>
       <span data-list-item>
-        <EnterArrowIcon stroke="var(--maximeheckel-colors-brand)" />
+        <ArrowIcon variant="info" />
       </span>
       <div>{children}</div>
     </StyledListItem>
