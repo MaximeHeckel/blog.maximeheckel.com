@@ -2,7 +2,7 @@ import { css } from 'lib/stitches.config';
 import Link from 'next/link';
 import VisuallyHidden from '../VisuallyHidden';
 import {
-  EnterArrowIcon,
+  ArrowIcon,
   ContactIcon,
   MapIcon,
   PortfolioIcon,
@@ -39,7 +39,7 @@ const CommandCenterStatic = () => (
     <Item data-testid="navigation" key="home-navigation">
       <Link href="/">
         <a>
-          <EnterArrowIcon />
+          <ArrowIcon size={4} />
           <span style={{ marginLeft: '20px' }}>Home</span>
         </a>
       </Link>
@@ -47,7 +47,7 @@ const CommandCenterStatic = () => (
     <Item data-testid="navigation" key="design-navigation">
       <Link href="/design/">
         <a>
-          <EnterArrowIcon />
+          <ArrowIcon size={4} />
           <span style={{ marginLeft: '20px' }}>Design System</span>
         </a>
       </Link>
