@@ -298,7 +298,7 @@ const Search = (props: Props) => {
                         },
                       }}
                     >
-                      <EnterIcon size={4} />
+                      <EnterIcon />
                     </Flex>
                   </Result>
                 ))}

@@ -10,11 +10,8 @@ exports[`Callout can render a Callout with variant danger 1`] = `
         class="c-jBmcOA c-jBmcOA-deNlpD-variant-danger"
       >
         <svg
-          aria-labelledby="title  desc"
-          class="c-PJLV c-PJLV-bHjGOQ-variant-default c-PJLV-hKgDZV-outline-true c-PJLV-jnsSHc-size-5"
           fill="none"
           height="22"
-          role="img"
           stroke="currentColor"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -23,16 +20,6 @@ exports[`Callout can render a Callout with variant danger 1`] = `
           width="22"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <title
-            id="title"
-          >
-            Alert
-          </title>
-          <desc
-            id="desc"
-          >
-            An icon representing an exclamation mark in an octogone
-          </desc>
           <polygon
             points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"
           />
@@ -83,11 +70,8 @@ exports[`Callout can render a Callout with variant info 1`] = `
         class="c-jBmcOA c-jBmcOA-jXIqcX-variant-info"
       >
         <svg
-          aria-labelledby="title  desc"
-          class="c-PJLV c-PJLV-bHjGOQ-variant-default c-PJLV-hKgDZV-outline-true c-PJLV-jnsSHc-size-5"
           fill="none"
           height="22"
-          role="img"
           stroke="currentColor"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -96,16 +80,6 @@ exports[`Callout can render a Callout with variant info 1`] = `
           width="22"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <title
-            id="title"
-          >
-            Info
-          </title>
-          <desc
-            id="desc"
-          >
-            An icon representing the letter ‘i‘ in a circle
-          </desc>
           <circle
             cx="12"
             cy="12"
