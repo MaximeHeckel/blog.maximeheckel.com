@@ -1,15 +1,15 @@
-import { css, styled } from 'lib/stitches.config';
+import { css, Shadows, styled } from 'lib/stitches.config';
 
 export const TweetWrapper = styled('div', {
   color: 'var(--maximeheckel-colors-typeface-primary)',
   borderRadius: 'var(--border-radius-2)',
-  backgroundColor: 'var(--maximeheckel-colors-foreground)',
+  backgroundColor: 'var(--maximeheckel-card-background-color)',
   padding: '1rem 1.5rem',
   marginBottom: '2rem',
   width: '100%',
 
   border: 'solid 1px var(--maximeheckel-border-color)',
-  boxShadow: 'var(--maximeheckel-shadow-1)',
+  boxShadow: Shadows[1],
 
   '@media (max-width: 700px)': {
     /**

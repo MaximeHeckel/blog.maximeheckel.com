@@ -6,7 +6,7 @@ import {
   SandpackPredefinedTemplate,
 } from '@codesandbox/sandpack-react';
 import '@codesandbox/sandpack-react/dist/index.css';
-import { styled } from 'lib/stitches.config';
+import { Shadows, styled } from 'lib/stitches.config';
 import setupFiles from './SandpackSetupFiles';
 // import setupFiles from './SandpackSetupFiles';
 
@@ -58,6 +58,8 @@ const SandpackWrapper = styled('div', {
     position: 'relative',
     marginBottom: '32px',
     borderRadius: 'var(--border-radius-2)',
+    border: '1px solid var(--maximeheckel-border-color)',
+    shadow: Shadows[1],
 
     '@media (max-width: 750px)': {
       display: 'block',
@@ -84,7 +86,7 @@ const SandpackWrapper = styled('div', {
   },
 
   '.sp-navigator,.sp-tabs-scrollable-container': {
-    background: 'var(--maximeheckel-card-background-color)',
+    background: 'var(--code-snippet-background)',
   },
 
   '.sp-preview-container': {
@@ -113,11 +115,11 @@ const SandpackWrapper = styled('div', {
   },
 
   '.cm-gutters': {
-    background: 'var(--maximeheckel-card-background-color)',
+    background: 'var(--code-snippet-background)',
   },
 
   '.cm-scroller': {
-    background: 'var(--maximeheckel-card-background-color)',
+    background: 'var(--code-snippet-background)',
   },
 });
 

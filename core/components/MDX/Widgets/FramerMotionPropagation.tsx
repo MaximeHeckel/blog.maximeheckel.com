@@ -4,7 +4,7 @@ import Flex from '@theme/components/Flex';
 import { StackIcon } from '@theme/components/Icons';
 import { H3 } from '@theme/components/Typography';
 import { motion } from 'framer-motion';
-import { styled } from 'lib/stitches.config';
+import { Shadows, styled } from 'lib/stitches.config';
 import React from 'react';
 import { AnimationCardContent } from './Components';
 
@@ -77,8 +77,8 @@ const Card = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  background: 'hsla(var(--palette-gray-05), 0.65)',
-  boxShadow: 'var(--maximeheckel-shadow-2)',
+  background: 'hsla(var(--palette-gray-05), 0.55)',
+  boxShadow: Shadows[3],
   height: '100%',
   div: {
     color: '#4a4a4c',
@@ -218,7 +218,7 @@ const CardWithGlow = () => {
 const FramerMotionPropagation = () => {
   return (
     <DesignSystemCard
-      depth={0}
+      depth={1}
       css={{
         marginBottom: '2.25rem',
       }}

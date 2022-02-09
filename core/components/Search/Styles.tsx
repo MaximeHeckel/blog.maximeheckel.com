@@ -1,6 +1,6 @@
 import Text from '@theme/components/Typography';
 import { motion } from 'framer-motion';
-import { styled } from 'lib/stitches.config';
+import { Shadows, styled } from 'lib/stitches.config';
 import { HEIGHT, MAX_HEIGHT } from './constants';
 
 export const Result = styled(motion.li, {
@@ -63,7 +63,7 @@ export const SearchBox = styled(motion.div, {
   left: '50%',
   transform: 'translateX(-50%)',
   borderRadius: 'var(--border-radius-2)',
-  boxShadow: 'var(--maximeheckel-shadow-1)',
+  boxShadow: Shadows[3],
   border: '1px solid var(--maximeheckel-border-color)',
 
   '@media (max-width: 700px)': {

@@ -1,14 +1,13 @@
-import { styled } from 'lib/stitches.config';
+import { Shadows, styled } from 'lib/stitches.config';
+import Box from '../Box';
 
-const DEFAULT_TAG = 'div';
-
-export const CardWrapper = styled(DEFAULT_TAG, {
+export const CardWrapper = styled(Box, {
   position: 'relative',
   background:
     'var(--card-background, var(--maximeheckel-card-background-color))',
   backdropFilter: 'var(--card-blur, none)',
   borderRadius: 'var(--border-radius-2)',
-  boxShadow: 'var(--card-shadow, var(--maximeheckel-shadow-1))',
+  boxShadow: 'var(--card-shadow)',
   border: '1px solid var(--maximeheckel-border-color)',
   overflow: 'hidden',
 
@@ -21,18 +20,21 @@ export const CardWrapper = styled(DEFAULT_TAG, {
     },
     depth: {
       0: {
-        '--card-shadow': 'var(--maximeheckel-shadow-0)',
+        '--card-shadow': Shadows[0],
       },
       1: {
-        '--card-shadow': 'var(--maximeheckel-shadow-1)',
+        '--card-shadow': Shadows[1],
       },
       2: {
-        '--card-shadow': 'var(--maximeheckel-shadow-2)',
+        '--card-shadow': Shadows[2],
       },
       3: {
-        '--card-shadow': 'var(--maximeheckel-shadow-3)',
+        '--card-shadow': Shadows[3],
       },
     },
+  },
+  defaultVariants: {
+    depth: 1,
   },
 });
 

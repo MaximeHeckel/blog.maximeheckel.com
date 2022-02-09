@@ -64,7 +64,7 @@ const NewsletterForm = (props: Props) => {
 
   return (
     <Card
-      depth={0}
+      depth={1}
       style={{
         marginLeft: '-var(--space-1)',
         marginRight: '-var(--space-1)',

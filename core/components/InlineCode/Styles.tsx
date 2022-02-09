@@ -1,4 +1,4 @@
-import { styled } from 'lib/stitches.config';
+import { Shadows, styled } from 'lib/stitches.config';
 
 export const StyledInlineCode = styled('code', {
   fontFamily: 'var(--font-mono)',
@@ -11,5 +11,5 @@ export const StyledInlineCode = styled('code', {
   fontWeight: 'var(--font-weight-2) !important',
   wordBreak: 'break-word',
   border: '1px solid var(--maximeheckel-border-color)',
-  boxShadow: 'var(--maximeheckel-shadow-1)',
+  boxShadow: Shadows[1],
 });

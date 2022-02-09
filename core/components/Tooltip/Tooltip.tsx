@@ -16,7 +16,6 @@ const wrapper = css({
 const tooltip = css({
   color: 'hsla(var(--palette-gray-00))',
   background: 'hsla(var(--palette-gray-75))',
-  boxShadow: 'var(--maximeheckel-shadow-2)',
   borderRadius: 'var(--border-radius-0)',
   position: 'absolute',
   bottom: '-60%',

@@ -1,4 +1,6 @@
 import Anchor from '@theme/components/Anchor';
+import Box from '@theme/components/Box';
+import Blockquote from '@theme/components/Blockquote';
 import Button from '@theme/components/Button';
 import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
@@ -20,7 +22,6 @@ import {
   MapIcon,
   StackIcon,
 } from '@theme/components/Icons';
-import Blockquote from '@theme/components/Blockquote';
 import TextInput from '@theme/components/TextInput';
 import Logo from '@theme/components/Logo';
 import TextArea from '@theme/components/TextArea';
@@ -51,7 +52,12 @@ import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
-import Box from '@theme/components/Box';
+import { useTheme } from '@theme/context/ThemeContext';
+
+const Sandpack = dynamic(() => import('@theme/components/Code/Sandpack'));
+const Search = dynamic(() => import('@theme/components/Search'), {
+  ssr: false,
+});
 
 const WavingHandCode = `import { motion } from 'framer-motion';
 
@@ -96,31 +102,18 @@ export default function App() {
 
 /**
  * TODO:
- * - Decouple Search in 2 components => Overlay and Command Center
- * - Rename Search
- * - Remove inline styles in components (should be class/css or styled components)
- * - Make sure Grid can take the css prop / Revisit Grid implementation
- *
- *
- * NOTES:
- * - use var(--maximeheckel-colors-foreground) instead of --maximeheckel-border-color: hsl(var(--palette-gray-80)) ??
+ * - Decouple Search in 2 components => Overlay + Dialog and Command Center
+ * - Rebuild/Rename Search component
+ * - Define specific token for glass card background (foreground is not cutting it)
+ * -> hsla(var(--palette-gray-03), 0.2) like code snippet background
  */
+
+const gridItem = css({
+  gridColumn: 2,
+});
 
 const wrapperGrid = css({
   paddingTop: '64px',
-  section: {
-    gridColumn: 2,
-  },
-});
-
-const Sandpack = dynamic(() => import('@theme/components/Code/Sandpack'));
-
-const LiveCodeBlock = dynamic(
-  () => import('@theme/components/Code/LiveCodeBlock')
-);
-
-const Search = dynamic(() => import('@theme/components/Search'), {
-  ssr: false,
 });
 
 const HR = styled('hr', {
@@ -138,6 +131,7 @@ const Label = styled('p', {
 export default function Design(props: {
   tweets: Record<string, TransformedTweet>;
 }) {
+  const { dark } = useTheme();
   const [showSearch, setShowSearch] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [rangeValue, setRangeValue] = React.useState(250);
@@ -161,7 +155,7 @@ export default function Design(props: {
     <Layout footer>
       <Seo title="Design" />
       <Grid columns="medium" gapX={4} gapY={10} className={wrapperGrid()}>
-        <section>
+        <Box as="section" className={gridItem()}>
           <H1
             css={{
               marginBottom: '0px',
@@ -174,8 +168,8 @@ export default function Design(props: {
             <Pill variant="warning">Work In Progress</Pill>
             <Pill variant="info">v1.0</Pill>
           </Flex>
-        </section>
-        <section>
+        </Box>
+        <Box as="section" className={gridItem()}>
           <H2>Name (WIP)</H2>
           <Text family="numeric" size="4">
             3X-DS (Explore, Expand, Experiment)
@@ -184,17 +178,18 @@ export default function Design(props: {
           <Text size="2" variant="tertiary">
             A set of tools and components to build and write content
           </Text>
-        </section>
-        <section id="logo">
+        </Box>
+        <Box as="section" className={gridItem()} id="logo">
           <H2>Logo</H2>
           <Logo />
-        </section>
-        <section id="Colors">
+        </Box>
+        <Box as="section" className={gridItem()} id="Colors">
           <H2>Colors</H2>
           <Grid gap={3}>
             Brand:
             <Tooltip id="brand" tooltipText="--brand">
               <Box
+                as="section"
                 css={{
                   width: '44px',
                   height: '44px',
@@ -207,6 +202,7 @@ export default function Design(props: {
             Background:
             <Tooltip id="background" tooltipText="--background">
               <Box
+                as="section"
                 css={{
                   width: '44px',
                   height: '44px',
@@ -219,6 +215,7 @@ export default function Design(props: {
             Foreground:
             <Tooltip id="foreground" tooltipText="--foreground">
               <Box
+                as="section"
                 css={{
                   width: '44px',
                   height: '44px',
@@ -232,6 +229,7 @@ export default function Design(props: {
             <Grid gap={3} css={{ gridTemplateColumns: 'repeat(3, 44px)' }}>
               <Tooltip id="typeface-primary" tooltipText="--typeface-primary">
                 <Box
+                  as="section"
                   css={{
                     width: '44px',
                     height: '44px',
@@ -246,6 +244,7 @@ export default function Design(props: {
                 tooltipText="--typeface-secondary"
               >
                 <Box
+                  as="section"
                   css={{
                     width: '44px',
                     height: '44px',
@@ -257,6 +256,7 @@ export default function Design(props: {
               </Tooltip>
               <Tooltip id="typeface-tertiary" tooltipText="--typeface-teriary">
                 <Box
+                  as="section"
                   css={{
                     width: '44px',
                     height: '44px',
@@ -268,8 +268,8 @@ export default function Design(props: {
               </Tooltip>
             </Grid>
           </Grid>
-        </section>
-        <section id="Palette">
+        </Box>
+        <Box as="section" className={gridItem()} id="Palette">
           <H2>Palette</H2>
           <Grid
             gap={6}
@@ -292,6 +292,7 @@ export default function Design(props: {
                     tooltipText={`--palette-${paletteItem}-${shade}`}
                   >
                     <Box
+                      as="section"
                       css={{
                         width: '44px',
                         height: '44px',
@@ -305,8 +306,8 @@ export default function Design(props: {
               </Grid>
             ))}
           </Grid>
-        </section>
-        <section id="typography">
+        </Box>
+        <Box as="section" className={gridItem()} id="typography">
           <H2>Typography</H2>
           <Label>Display</Label>
           <Text size="4">
@@ -397,7 +398,7 @@ export default function Design(props: {
             family="numeric"
             size="7"
             weight="4"
-            style={{
+            css={{
               color: 'transparent',
               WebkitTextStrokeColor: 'var(--maximeheckel-colors-brand)',
               WebkitTextStrokeWidth: '1px',
@@ -410,7 +411,7 @@ export default function Design(props: {
             family="numeric"
             size="7"
             weight="4"
-            style={{
+            css={{
               color: 'transparent',
               WebkitTextStrokeColor: 'var(--maximeheckel-colors-danger)',
               WebkitTextStrokeWidth: '1px',
@@ -420,12 +421,108 @@ export default function Design(props: {
           </Text>
           <br />
           <br />
-        </section>
-        <section id="icons">
+        </Box>
+        <Box as="section" className={gridItem()} id="icons">
           <H2>Icons</H2>
           <IconSection />
-        </section>
-        <section id="lists">
+        </Box>
+        <Box as="section" className={gridItem()}>
+          <H2>Shadows</H2>
+          <Grid
+            columns={2}
+            gap={4}
+            css={{
+              padding: 'var(--space-5) var(--space-3)',
+            }}
+          >
+            <Card depth={0}>
+              <Card.Body>
+                <Text size="2" variant="secondary">
+                  Shadow 0
+                </Text>
+              </Card.Body>
+            </Card>
+            <Card depth={1}>
+              <Card.Body>
+                <Text size="2" variant="secondary">
+                  Shadow 1
+                </Text>
+              </Card.Body>
+            </Card>
+            <Card depth={2}>
+              <Card.Body>
+                <Text size="2" variant="secondary">
+                  Shadow 2
+                </Text>
+              </Card.Body>
+            </Card>
+            <Card depth={3}>
+              <Card.Body>
+                <Text size="2" variant="secondary">
+                  Shadow 3
+                </Text>
+              </Card.Body>
+            </Card>
+          </Grid>
+          <Grid
+            columns={2}
+            gap={4}
+            css={{
+              background: 'var(--maximeheckel-colors-emphasis)',
+              padding: 'var(--space-5) var(--space-3)',
+            }}
+          >
+            <Card
+              css={{
+                '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+              }}
+              depth={0}
+            >
+              <Card.Body>
+                <Text size="2" variant="secondary">
+                  Custom Shadow 0
+                </Text>
+              </Card.Body>
+            </Card>
+            <Card
+              css={{
+                '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+              }}
+              depth={1}
+            >
+              <Card.Body>
+                <Text size="2" variant="secondary">
+                  Custom Shadow 1
+                </Text>
+              </Card.Body>
+            </Card>
+            <Card
+              css={{
+                '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+              }}
+              depth={2}
+            >
+              <Card.Body>
+                <Text size="2" variant="secondary">
+                  Custom Shadow 2
+                </Text>
+              </Card.Body>
+            </Card>
+            <Card
+              css={{
+                '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+              }}
+              depth={3}
+            >
+              <Card.Body>
+                <Text size="2" variant="secondary">
+                  Custom Shadow 3
+                </Text>
+              </Card.Body>
+            </Card>
+          </Grid>
+        </Box>
+        <Box as="section" className={gridItem()} id="lists">
           <H2>Lists</H2>
           <Grid columns={2}>
             <List variant="unordered">
@@ -457,8 +554,8 @@ export default function Design(props: {
               </List.Item>
             </List>
           </Grid>
-        </section>
-        <section id="button">
+        </Box>
+        <Box as="section" className={gridItem()} id="button">
           <H2>Buttons</H2>
           <Grid gap={5}>
             <Glow>
@@ -496,8 +593,8 @@ export default function Design(props: {
               icon={<TwitterIcon />}
             />
           </Grid>
-        </section>
-        <section id="anchor">
+        </Box>
+        <Box as="section" className={gridItem()} id="anchor">
           <H2>Anchor</H2>
           <Grid gap={1}>
             <h3>
@@ -550,8 +647,8 @@ export default function Design(props: {
               </Anchor>{' '}
             </p>
           </Grid>
-        </section>
-        <section id="form-components">
+        </Box>
+        <Box as="section" className={gridItem()} id="form-components">
           <H2>Form Components</H2>
           <Flex gap={2}>
             <TextInput
@@ -809,8 +906,8 @@ they can change the world, are the ones who do.`}
               disabled
             />
           </Grid>
-        </section>
-        <section id="cards">
+        </Box>
+        <Box as="section" className={gridItem()} id="cards">
           <H2>Card</H2>
           <Grid gapY={6} css={{ width: '100%' }}>
             <Card>
@@ -857,8 +954,8 @@ they can change the world, are the ones who do.`}
               </Card.Body>
             </Card>
           </Grid>
-        </section>
-        <section id="tooltip">
+        </Box>
+        <Box as="section" className={gridItem()} id="tooltip">
           <H2>Tooltip</H2>
           <Tooltip
             id="exampletooltip"
@@ -879,8 +976,8 @@ they can change the world, are the ones who do.`}
               Hover Me!
             </Flex>
           </Tooltip>
-        </section>
-        <section id="pill">
+        </Box>
+        <Box as="section" className={gridItem()} id="pill">
           <H2>Pill</H2>
           <Grid gapY={5}>
             <Box>
@@ -896,8 +993,8 @@ they can change the world, are the ones who do.`}
               <Pill variant="danger">Danger Pill</Pill>
             </Box>
           </Grid>
-        </section>
-        <section id="callout">
+        </Box>
+        <Box as="section" className={gridItem()} id="callout">
           <H2>Callout</H2>
           <Grid gapY={5}>
             <Callout variant="info">Info Callout</Callout>
@@ -909,19 +1006,19 @@ they can change the world, are the ones who do.`}
               Danger Callout
             </Callout>
           </Grid>
-        </section>
-        <section id="blockquote">
+        </Box>
+        <Box as="section" className={gridItem()} id="blockquote">
           <Blockquote>
             <Text as="p">
               Almost before we knew it, we had left the ground.
             </Text>
           </Blockquote>
-        </section>
-        <section id="inline-code">
+        </Box>
+        <Box as="section" className={gridItem()} id="inline-code">
           <H2>Inline Code</H2>
           <InlineCode>{"const foo = () => 'bar'"}</InlineCode>
-        </section>
-        <section id="code-block">
+        </Box>
+        <Box as="section" className={gridItem()} id="code-block">
           <H2>Code Block</H2>
           <Label>Basic</Label>
           <CodeBlock
@@ -973,44 +1070,8 @@ function sayHi(name) {
               },
             }}
           />
-          <Label>Live (for React code only) (DEPRECATED)</Label>
-          <LiveCodeBlock
-            live
-            metastring=""
-            language="javascript"
-            codeString={`const WavingHand = () => (
-  <motion.div
-    style={{
-      marginBottom: '-20px',
-      marginRight: '-45px',
-      paddingBottom: '20px',
-      paddingRight: '45px',
-      display: 'inline-block',
-    }}
-    animate={{ rotate: 20 }}
-    transition={{
-      repeat: Infinity,
-      repeatType: 'mirror',
-      duration: 0.2,
-      delay: 0.5,
-      ease: 'easeInOut',
-      type: 'tween',
-    }}
-  >
-  👋
-  </motion.div>
-);
-
-const Hi = () => (
-    <h1>
-        Hi <WavingHand /> !
-    </h1>
-);
-
-render(<Hi />);`}
-          />
-        </section>
-        <section id="command-center">
+        </Box>
+        <Box as="section" className={gridItem()} id="command-center">
           <H2>Command Center / Search </H2>
           <Button variant="primary" onClick={() => setShowSearch(true)}>
             Show Command Center
@@ -1020,11 +1081,11 @@ render(<Hi />);`}
               <Search onClose={() => setShowSearch(false)} />
             ) : null}
           </AnimatePresence>
-        </section>
-        <section id="tweet">
+        </Box>
+        <Box as="section" className={gridItem()} id="tweet">
           <H2>Tweet</H2>
           <Tweet tweet={props.tweets['1386013361809281024']} />
-        </section>
+        </Box>
       </Grid>
     </Layout>
   );
