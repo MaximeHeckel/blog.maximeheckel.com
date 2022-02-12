@@ -101,7 +101,7 @@ export const StyledIconButton = styled('button', {
   background: 'transparent',
   transition: 'color 0.3s ease, transform 0.3s ease',
   borderRadius: 'var(--border-radius-1)',
-  color: 'var(--color, var(--maximeheckel-colors-typeface-secondary))',
+  color: 'var(--color, var(--maximeheckel-colors-typeface-tertiary))',
   transform: 'scale(var(--button-content-scale, 1)) translateZ(0)',
   '--shadow-hover-primary':
     '0 2px 40px -4px var(--maximeheckel-form-input-focus)',
@@ -119,7 +119,7 @@ export const StyledIconButton = styled('button', {
     background: 'var(--background, var(--maximeheckel-colors-foreground))',
     transform: 'scale(var(--button-background-scale, 1)) translateZ(0)',
     border:
-      '2px solid var(--border-color, var(--maximeheckel-colors-foreground))',
+      'var(--border-thickness, 1px) solid var(--border-color, var(--maximeheckel-border-color))',
     boxShadow: 'var(--shadow, none)',
   },
 
@@ -132,6 +132,7 @@ export const StyledIconButton = styled('button', {
   '&:hover': {
     '&:not(:disabled)': {
       '--border-color': 'var(--maximeheckel-colors-brand)',
+      '--border-thickness': '2px',
       '--color': 'var(--maximeheckel-colors-brand)',
       '--corner': 'calc(var(--border-radius-1) + 2px)',
       '--button-background-scale': '0.92',
@@ -141,6 +142,7 @@ export const StyledIconButton = styled('button', {
 
   '&:focus-visible': {
     '--border-color': 'var(--maximeheckel-colors-brand)',
+    '--border-thickness': '2px',
     '--color': 'var(--maximeheckel-colors-brand)',
     '--corner': 'calc(var(--border-radius-1) + 2px)',
     '--button-background-scale': 0.92,

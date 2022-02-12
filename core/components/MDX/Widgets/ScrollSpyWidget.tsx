@@ -1,4 +1,4 @@
-import { styled } from 'lib/stitches.config';
+import { Shadows, styled } from 'lib/stitches.config';
 import Card from '@theme/components/Card';
 import InlineCode from '@theme/components/InlineCode';
 import Range from '@theme/components/Range';
@@ -11,7 +11,7 @@ import Flex from '@theme/components/Flex';
 const BrowserWindow = styled('div', {
   borderRadius: 'var(--border-radius-1)',
   width: '100%',
-  boxShadow: 'var(--maximeheckel-shadow-3)',
+  boxShadow: Shadows[2],
 
   variants: {
     dark: {
@@ -105,7 +105,6 @@ const Section = styled('section', {
   color: 'var(--maximeheckel-colors-typeface-primary)',
   borderRadius: 'var(--border-radius-2)',
   border: '1px solid var(--maximeheckel-colors-emphasis)',
-  boxShadow: 'var(--maximeheckel-shadow-2)',
 
   variants: {
     intersecting: {

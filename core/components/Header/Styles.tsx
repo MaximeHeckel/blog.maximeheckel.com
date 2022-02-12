@@ -11,7 +11,6 @@ export const HeaderWrapper = styled(motion.header, {
   transition: 'background-color 0.5s, border-color 0.5s',
   background: 'var(--maximeheckel-colors-header)',
   borderBottom: '1px solid',
-  boxShadow: 'var(--maximeheckel-shadow-0)',
 
   '@media (max-width: 700px)': {
     height: '64px !important',
