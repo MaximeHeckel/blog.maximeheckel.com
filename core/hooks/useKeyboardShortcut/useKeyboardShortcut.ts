@@ -25,6 +25,7 @@ const useKeyboardShortcut = (
         const requireCtrl = combination.includes(specialKeys.CTRL);
         const requireShift = combination.includes(specialKeys.SHIFT);
         const requireAlt = combination.includes(specialKeys.ALT);
+        const requireMeta = combination.includes(specialKeys.META);
 
         const regularKeys = extractRegularKeys(option, innerConfig);
 
@@ -32,7 +33,8 @@ const useKeyboardShortcut = (
           regularKeys.includes(event.key.toUpperCase()) &&
           requireCtrl === event.ctrlKey &&
           requireShift === event.shiftKey &&
-          requireAlt === event.altKey
+          requireAlt === event.altKey &&
+          requireMeta === event.metaKey
         );
       });
 

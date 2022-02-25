@@ -119,7 +119,7 @@ export const StyledIconButton = styled('button', {
     background: 'var(--background, var(--maximeheckel-colors-foreground))',
     transform: 'scale(var(--button-background-scale, 1)) translateZ(0)',
     border:
-      'var(--border-thickness, 1px) solid var(--border-color, var(--maximeheckel-border-color))',
+      'var(--border-thickness, 1px) solid var(--border-color, transparent)',
     boxShadow: 'var(--shadow, none)',
   },
 

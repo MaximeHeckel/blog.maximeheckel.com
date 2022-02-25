@@ -55,7 +55,7 @@ const ClipboardAnimationDetails = () => {
         }}
       >
         <div style={{ width: '70%', marginBottom: '20px' }}>
-          <Grid gap={12}>
+          <Grid gap={3}>
             <Label>
               <Grid>
                 PathLength: <HighlightedValue>{pathLengthVal}</HighlightedValue>

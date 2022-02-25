@@ -58,7 +58,7 @@ export const StyledCallout = styled('aside', {
   marginBottom: '2.25rem',
   borderRadius: 'var(--border-radius-1)',
   color: 'var(--maximeheckel-colors-typeface-primary)',
-  border: '2px solid var(--maximeheckel-colors-foreground)',
+  border: '1px solid var(--maximeheckel-colors-emphasis)',
   background: 'var(--callout-background, var(--maximeheckel-colors-emphasis))',
 
   variants: {
