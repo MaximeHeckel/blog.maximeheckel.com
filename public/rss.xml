@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Sat, 12 Feb 2022 00:30:07 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 03 Mar 2022 02:58:03 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Everything about Framer Motion layout animations]]></title>
+            <description><![CDATA[A complete guide to Framer Motion layout animations showcasing every concept, from the layout prop, shared layout animations and LayoutGroup, to complex drag-to-reorder interactions.]]></description>
+            <link>https://blog.maximeheckel.com/posts/framer-motion-layout-animations</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/framer-motion-layout-animations</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 01 Mar 2022 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Building a Vaporwave scene with Three.js]]></title>
             <description><![CDATA[A step-by-step tutorial documenting my attempt at reverse-engineering the vaporwave WebGL scene from the Linear 2021 release page using solely fundamental concepts of Three.js like textures, lights, animations, and post-processing effects.]]></description>

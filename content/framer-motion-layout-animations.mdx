@@ -1,0 +1,446 @@
+---
+title: 'Everything about Framer Motion layout animations'
+subtitle: A complete guide to Framer Motion layout animations showcasing every concept, from the layout prop, shared layout animations and LayoutGroup, to complex drag-to-reorder interactions.
+date: '2022-03-08T08:00:00.000Z'
+updated: '2022-03-08T08:00:00.000Z'
+categories: []
+keywords:
+  [
+    'framer motion',
+    'animation',
+    'frontend',
+    'ui',
+    'ux',
+    'transition',
+    'react',
+    'layout',
+    'shared layout animation',
+    'reorder',
+    'layoutgroup',
+    'layout prop',
+    'position',
+    'size',
+    'distortion',
+    'scale correction',
+  ]
+slug: framer-motion-layout-animations
+type: 'blogPost'
+featured: true
+colorFeatured: 'linear-gradient(90deg,#2E83FF -10%,#EB7D9F 50%, #FFCBBE 100%)'
+fontFeatured: '#E8E8FD'
+---
+
+Framer Motion has changed a lot since I last wrote about it. So much so that I recently got a bit lost trying to build a specific _layout animation_ and [my own blog post](/posts/advanced-animation-patterns-with-framer-motion/) that actually looked into this specific type of animation was far from helpful 😅. Despite the updated section I added back in November, it still felt like I was not touching upon several points on this subject and that some of them were incomplete.
+
+On top of the API changes and the many new features that the Framer team added to the package around layout animations, I noticed that there are lots of little tricks that can make your layout animations go from feeling clumsy to absolutely ✨ perfect ✨. However, these are a bit hidden or lack some practical examples to fully understand them.
+
+Thus, I felt it was time to write **a dedicated deep dive into all the different types of layout animations**. My objective is for this article to be the place you go to whenever you need a refresher on layout animations or get stuck. Additionally, I'll give you some of **my own tips and tricks** that I use to work around some of the glitches that layout animations can trigger and examples on how to combine them with other tools from the library such as `AnimatePresence` to achieve absolutely delightful effects in your projects!
+
+<Callout variant="info">
+
+Looking for an intro to Framer Motion?
+
+Don't worry I got your back! You can check out my [guide to creating animations that spark joy with Framer Motion](/posts/guide-animations-spark-joy-framer-motion/) to get started.
+
+</Callout>
+
+## Layout animations fundamentals
+
+Before we dive into the new features and complex examples of layout animations, let's look back at the fundamentals to reacquaint ourselves with how they work.
+
+### A brief refresher on layout animations
+
+In Framer Motion, you can animate a `motion` component between distinct _layouts_ by setting the `layout` prop to `true`. This will result in what we call a **layout animation**.
+
+<Callout variant="info" label='What do we mean by "layout"?'>
+
+When we're talking about animating the "layout" or a "layout property" we mean updating any of the following properties:
+
+- Position-related, such as CSS `flex`, `position` or `grid`
+- Size-related, such as CSS `width` or `height`
+- The overall position of an element within a list for example. This can useful if you want to animate sorting/reordering a list.
+
+</Callout>
+
+We can't animate a `motion` component between layouts using a combination of `initial` and `animate` props as we would do for other kinds of Framer Motion animations. For that, we _need_ to use the `layout` prop.
+
+In the example below, you'll find a first showcase of a layout animation:
+
+- You can change the position of the `motion` component, the square, along the y axis.
+- You can enable or disable the `layout` prop for that `motion` component
+
+<FramerMotionLayoutAnimationsBasic />
+
+We can see that each time we change the layout, i.e. a rerender occurs, the `layout` prop allows for the component **to transition smoothly from its previous layout to the newly selected one**. However, without it there is no transition: the square will move abruptly.
+
+Layout animations "smooth things up", and add a certain level of physicality to some user interactions where usually things would transition abruptly. **One example where they can shine is when adding/removing elements from a list**. I tend to leverage layout animations a lot for use cases like this one, especially combined with other Framer Motion features such as `AnimatePresence`.
+
+The playground below showcases one of my own `NotificationList` component that leverages layout animations:
+
+- each notification is wrapped in a `motion` component with the `layout` prop set to `true`.
+- the overall list is wrapped in `AnimatePresence` thus allowing each item in a list to have an `exit` animation.
+- clicking on any of the notifications on the list will remove them and, thanks to layout animations, the stack will gracefully readjust itself.
+
+<FramerMotionToastNotificationSandpack />
+
+<Callout variant="info" label="Customizing layout animations">
+
+You can customize the transition of your layout animations by setting it up within a `layout` key in your transition object:
+
+```jsx
+<motion.div
+  layout
+  transition={{
+    layout: {
+      duration: 1.5,
+    },
+  }}
+/>
+```
+
+</Callout>
+
+### Fixing distortions
+
+When performing a layout animation that affects the size of a component, some distortions may appear during the transition for some properties like `borderRadius` or `boxShadow`. These distortions will occur even if these properties are not part of the animation.
+
+Luckily, there's an easy workaround to fix those: set these properties as inline styles as showcased below:
+
+<FramerMotionDistortions />
+
+<Callout variant="danger" label="CSS variables">
+
+If like me, you're using CSS variables in your codebase, just be warned that setting a CSS variable for the value of `borderRadius` or `boxShadow` will not fix any of the side effects showcased above.
+You will _need_ to use a proper value to avoid any distortions.
+
+</Callout>
+
+### More about the layout prop
+
+We just saw that setting the `layout` prop to `true` gives us the ability to animate a component between layouts by transitioning any properties related to its size or position. I recently discovered that there are more values that the `layout` prop can take:
+
+- `layout="position"`: we only smoothly transition the position-related properties. Size-related properties will transition abruptly.
+- `layout="size"`: we only smoothly transition the size-related properties. Position-related properties will transition abruptly.
+
+<Callout variant="info">
+
+<Image
+  src="blog/layoutpropcharts.png"
+  alt="Charts representing the evolution of positions and sizes related properties in function of the time for all the possible values of the layout prop"
+  layout="responsive"
+  width={600}
+  height={379}
+/>
+
+</Callout>
+
+To illustrate this, I built the widget below that showcases how the transition of a `motion` component is altered based on the value of the `layout` prop:
+
+<FramerMotionLayoutAnimationsLayoutProp />
+
+_Why would we need to use these other `layout` properties? What's the practical use?_ you may ask. Sometimes, as a result of a layout animation, the content of a component that resizes can end up "squished" or "stretched". If you see this happening when working on a layout animation, chances are that it can be fixed by simply setting the `layout` prop to `position`.
+
+Below you'll find an example of such a use case:
+
+- Removing items in this horizontal list will affect the size of each component. By default, you will notice the components getting slightly squished when an item is removed.
+- Wrapping the content in a `motion` component and setting `layout` to `position` by toggling the switch will fix all the distortions you may observe on the content of the `motion` block. Each component will resize gracefully with a more _natural_ transition.
+
+<FramerMotionLayoutAnimationsLayoutPosition />
+
+## Shared layout animations and LayoutGroup
+
+These two concepts are perhaps what I struggled the most with recently as:
+
+- they appear to be closely related based on their names but have very distinct purposes and use cases
+- there has been a lot of API changes in this area. Thus, everything I _thought_ I had mastered was actually brand new and a bit different 😅
+
+And I know I'm not the only one, I've seen many people confusing shared layout animations and `LayoutGroup`
+
+<Callout variant="info">
+
+The confusion is understanding. There used to be a feature called `AnimatedSharedLayout` that was necessary to achieve shared layout animations that was deprecated around the same time as `LayoutGroup` was introduced.
+
+I first thought `LayoutGroup` was meant to _replace_ `AnimatedSharedLayout`, but we're going to see in this part that this not really the case.
+
+</Callout>
+
+### Shared layout animations
+
+One might think that this is yet another type of layout animation like we saw in the previous part, but with a twist. It's not wrong, but also not quite exact either.
+
+**Shared layout animations have their own API**, not directly related to the `layout` prop. Instead of animating a component's position and size, we are animating a component between all its instances that have a common `layoutId` prop. To illustrate this concept let's look at the playground below:
+
+<FramerMotionArrowListSandpack />
+
+We can see in this example that:
+
+- We're transitioning between multiple instances of the `Arrow` component
+- They all share a common `layoutId` which tells Framer Motion that these components are related and need to transition from one instance to the newly "active" one when the user clicks on a new item.
+
+The _shared_ aspect comes from the effect of the component moving from one position to another as if it was the same. And that's what I love about shared layout animations. It's all smoke and mirrors. Like a magic trick 🪄!
+
+The "magic" behind it is actually quite simple:
+
+1. In our example above, when clicking on a new element, the `Arrow` component that was displayed on the screen fades away to reveal a new instance of the `Arrow` component
+2. That new `Arrow` component is the one that will be eventually positioned under our newly selected element on the list
+3. That component then transitions to its final position
+
+To show you this effect, I reused the demo above and gave a different color to each instance of `Arrow` so you can better visualize what's happening:
+
+<FramerMotionLayoutAnimationsSharedLayoutAnimationDetails />
+
+One component I like to decorate with shared layout animations is `Tabs`. We can leverage this type of animation to add proper transitions for the "selected indicator" but also to a "hover highlight" like [Vercel](https://vercel.com/) does on their own `Tabs` component! Below is an example implementation of such component with these two layout animations:
+
+- We can see the "selected indicator" transitioning from one tab to another when a new one is selected
+- The "hover highlight" will follow the user's mouse when hovering over the `Tabs` component
+- **Each shared layout animation has a distinct `layoutId` prop**: `underline` and `highlight`
+
+<FramerMotionTabsSandpack />
+
+There's however one little problem. What if we wanted to build a reusable component that has a shared layout animation defined and use it twice within the same page? Well, both seemingly distinct shared layout animation would end up with the same `layoutId` prop which, as a result, would cause things to get a bit _weird_:
+
+<FramerMotionLayoutAnimationsTabsLayoutGroup />
+
+This is where `LayoutGroup` comes into the picture 👀.
+
+### LayoutGroup: the namespacing use case
+
+For this use case, we can see `LayoutGroup` as **a tool to use on top of shared layout animations** and not directly related to them as it may have first seemed.
+
+We saw above that `layoutId` props do not take into consideration which instance of a component they are used in, i.e. **they are global**. In this first use case, we'll use it to _namespace_ our shared layout animations: give them a unique `id` so they can be rendered multiple times and still behave distinctly.
+
+```jsx title=Namespacing multiple instance of shared layout animations with LayoutGroup
+const ComponentsWithSharedLayoutAnimation = () => {
+  //...
+
+  return (
+    //...
+    <motion.div layoutId="shared-layout-animation" />
+    //...
+  );
+};
+
+const App = () => (
+  <>
+    <LayoutGroup id="1">
+      <ComponentsWithSharedLayoutAnimation />
+    </LayoutGroup>
+    <LayoutGroup id="2">
+      <ComponentsWithSharedLayoutAnimation />
+    </LayoutGroup>
+  </>
+);
+```
+
+By using `LayoutGroup` in our `Tabs` component implementation, we can now make it a truly reusable component and work around the bug we showcased in the previous part: **the shared layout animations are now only "shared" within their own** `LayoutGroup`.
+
+<FramerMotionLayoutAnimationsTabsLayoutGroup layoutGroup />
+
+### LayoutGroup: the grouping use case
+
+Namespacing shared layout animations is not the only use case for `LayoutGroup`. Its original purpose is actually to:
+
+> Group motion components that should perform layout animations together.
+
+But what does that exactly mean?
+
+We saw in the first part that a layout animation will transition a component from one layout to another when a rerender occurs. That works fantastically well for everything within the `motion` component with the `layout` prop, but what about the sibling components?
+
+As a result of one component's layout animation, **the overall layout of the page may be affected**. For example when removing an item from a list, all the surrounding components will need to adapt through a transition or a resize. The problem here is that **there's no way to make those other components transition smoothly as is** because:
+
+- they are not necessarily `motion` components themselves
+- they are not rerendering since not interacted with
+- since they are not rerendering they are unable to perform a layout animation by themselves, even if defined.
+
+This can be fixed by wrapping each sibling components in a `motion` component with the `layout` set to `true` (if the siblings were not `motion` components themselves already), and wrapping all the components we wish to perform a smooth transition when the overall layout changes in a `LayoutGroup`.
+
+In the little widget below I showcase this by rendering two instances of a list component where each item is a `motion` component:
+
+<FramerMotionLayoutAnimationListLayoutGroup />
+
+- Try to remove an item from the first list and notice that the items within the first list perform a smooth layout animation and that the second list, however, moves abruptly
+- Toggle `LayoutGroup` wrapping on and notice that now when removing an item from the first list, the second list transition smoothly to its target position.
+
+<Callout variant="info" label="To summarize">
+
+To conclude this part, `LayoutGroup` has two use cases:
+
+- Namespacing `layoutId` which allows us to build reusable components that leverage shared layout animation and use those components within the same page
+- Grouping together sibling components that perform distinct layout animations that may impact the overall layout on the page so they can adapt gracefully to the new updated layout.
+
+</Callout>
+
+## Reorder
+
+Drag-to-reorder items in a list where each item then smoothly moves to its final position is perhaps the best in class use case when it comes to layout animations. It's actually the first use case I thought about when I discovered layout animations in the first place a year ago.
+
+Lucky us, the developers at Framer gave us **a ready-to-use set of components** to handle that specific use case with ease 🎉. They provided 2 components that we're going to use in follow-up examples:
+
+1. `Reorder.Group` where we pass our list of items, the direction of the reorder (horizontal or vertical), and the `onReorder` callback which will return the latest order of the list
+2. `Reorder.Item` where we pass the value of an item in the list
+
+```jsx {5,9,13,17} title=Simple examples of drag-to-reorder list using Reorder
+const MyList = () => {
+  const [items, setItems] = React.useState(['Item 1', 'Item 2', 'Item 3']);
+
+  return (
+    <Reorder.Group
+      // Specify the direction of the list (x for horizontal, y for vertical)
+      axis="y"
+      // Specify the full set of items within your reorder group
+      values={items}
+      // Callback that passes the newly reordered list of item
+      // Note: simply passing a useState setter here is equivalent to
+      // doing `(reordereditems) => setItmes(reordereditems)`
+      onReorder={setItems}
+    >
+      {items.map((item) => (
+        // /!\ don't forget the value prop!
+        <Reorder.Item key={item} value={item}>
+          {item}
+        </Reorder.Item>
+      ))}
+    </Reorder.Group>
+  );
+};
+```
+
+With just a few lines of code, we can get a ready-to-use list with a drag-to-reorder effect! And that's not all of it:
+
+- Each `Reorder.Item` is a motion component
+- Each `Reorder.Item` component in the list is able, out-of-the-box, to perform layout animations
+
+Thus it's very easy to add a lot more animations on top of this component to build a truly delightful user experience. There are, however, two little catches that I only discovered when I started working with the `Reorder` components 👇
+
+<Callout variant="danger">
+
+When I tried the basic example the first time I noticed a very odd effect:
+
+<VideoPlayer
+  src="https://d2xl4m2ghaywko.cloudfront.net/overlap.mp4 "
+  controls={true}
+  width={700}
+/>
+
+You can see that there's a strange overlap issue happening: the item being dragged sometimes renders behind its siblings. It would feel more natural to have the element being dragged always on top of its siblings right?
+
+It doesn't happen consistently, but if you see this don't worry. There's a simple workaround for this issue: setting the `position` CSS property to `relative` for each instance of `Reorder.Item`.
+
+</Callout>
+
+<Callout variant="info" label="A note on polymorphism">
+
+Both `Reorder.Group` and `Reorder.Item` support _polymorphism_, i.e. they let the developer pick the underlying HTML tag that will be rendered. However, unlike other library that support polymorphism, here you can **only** pass HTML elements.
+
+```jsx
+// Valid
+<Reorder.Group as="span" />
+<Reorder.Item as="div" />
+<Reorder.Item as="aside" />
+
+// Invalid
+<Reorder.Group as={List} />
+<Reorder.Item as={Card} />
+```
+
+This prop will not accept custom React components as of writing this blog post. There's, luckily, an easy way around this. If your component library/design system supports polymorphism, you can work around this limitation by simply passing the desired `Reorder` component in your component's `as` prop:
+
+```jsx
+const Card = styled('div', {...});
+
+// ...
+
+// Valid Custom Reorder component
+<Card as={Reorder.Item} />
+```
+
+</Callout>
+
+### Combining everything
+
+In the playground below, you will find a more advanced example that leverages `Reorder.Group` and `Reorder.Item` along with some other aspects of layout animations that we saw earlier:
+
+<FramerMotionAdvanceReorderExample />
+
+- `layout="position"` is used on the content of each item to avoid distortions when they are selected and a layout animation is performed
+- Custom React styled-components use `Reorder` components through polymorphism
+
+```jsx {4,8}
+//...
+
+<Card
+  as={Reorder.Item}
+  //...
+  value={item}
+>
+  <Card.Body as={motion.div} layout="position">
+    <Checkbox
+      id={`checkbox-${item.id}`}
+      aria-label="Mark as done"
+      checked={item.checked}
+      onChange={() => completeItem(item.id)}
+    />
+    <Text>{item.text}</Text>
+  </Card.Body>
+</Card>
+
+//...
+```
+
+- Inline styles are used for the `borderRadius` of the item to avoid distortions when the item resizes
+- `position: relative` has been added as inline style to the `Reorder.Item` to fix overlap issues that occur while dragging elements of the list over one another
+- `AnimatePresence` is used to allow for exit animations when elements are removed from the list
+
+```jsx {2,5,10-11}
+//...
+<AnimatePresence>
+  {items.map((item) => (
+    <motion.div
+       exit={{ opacity: 0, transition: { duration: 0.2 } }}
+    />
+      <Card
+        as={Reorder.Item}
+        style={{
+          position: 'relative', // this is needed to avoid weird overlap
+          borderRadius: '12px', // this is set as inline styles to avoid distortions
+          width: item.checked ? '70%' : '100%', // will be animated through layout animation
+        }}
+        value={item}
+      >
+        //...
+      </Card>
+    </motion.div>
+    //...
+  )}
+</AnimatePresence>
+//...
+```
+
+- The list and its sibling elements are wrapped in a `LayoutGroup` to perform smooth layout animations when the task list updates and changes the overall layout
+
+```jsx {1,7,11}
+<LayoutGroup>
+  <Reorder.Group axis="y" values={items} onReorder={setItems}>
+    <AnimatePresence>
+      {//...}
+    </AnimatePresence>
+  </Reorder.Group>
+  <motion.div layout>
+    <hr />
+    <span>Check items off the list when you&apos;re done!</span>
+  </motion.div>
+</LayoutGroup>
+```
+
+Want to run this example yourself and hack on top of it? You can find the full implementation of this example on <Anchor favicon href="https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/4ce1571e758dc1bae6eeb1bf7607e56de1405faf/core/components/MDX/Widgets/FramerMotionLayoutAnimations/AdvanceReorderExample.tsx">my blog's Github repository</Anchor>.
+
+## Conclusion
+
+You now know pretty much everything there is to know about Framer Motion layout animations 🎉. Whether it's for some basic use cases, such as the Notification List we've seen in the first part, adding little details like the shared layout animations from the tabs components, to building reorderable lists with complex transitions: **layout animations have no more secrets to you**.
+
+I hope this blog post can serve you as a guide/helper to make your own animations look absolutely perfect ✨, especially when working on the nitty-gritty details of your transitions. It may sound overkill to spend so much time reading and working around the issues we showcased in this blog post, but trust me, it's worth it!
+
+**Want to go further?**
+
+I'd suggest taking a look at some of the complex examples provided in the [Framer Motion documentation](https://www.framer.com/docs/introduction/). The team came up with very good examples such as [this drag to reorder tabs component](https://codesandbox.io/s/framer-motion-5-drag-to-reorder-tabs-zd2q7?from-embed) which contains every concept used in the task list example that I introduced in this blog post.
+After that, I'd try to see where you could sprinkle some layout animation magic on your own projects 🪄. There's no better way of learning than building things by yourself!

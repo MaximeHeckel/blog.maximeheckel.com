@@ -40,7 +40,7 @@ exports[`Button renders a button with an endIcon 1`] = `
 
 exports[`Button renders an icon button 1`] = `
 <button
-  class="c-fNVmdc"
+  class="c-eKosra"
   variant="icon"
 >
   <div

@@ -243,7 +243,7 @@
   --maximeheckel-colors-body: hsla(var(--palette-gray-02), 100%);
   --maximeheckel-colors-header: hsla(var(--palette-gray-02), 40%);
   --maximeheckel-colors-emphasis: hsla(var(--palette-blue-50), 5%);
-  --maximeheckel-colors-foreground: hsla(var(--palette-gray-05), 40%);
+  --maximeheckel-colors-foreground: hsla(var(--palette-gray-05), 60%);
   --maximeheckel-colors-danger: hsla(var(--palette-red-55), 100%);
   --maximeheckel-colors-danger-emphasis: hsla(var(--palette-red-15), 15%);
   --maximeheckel-colors-warning: hsla(var(--palette-orange-80), 100%);
@@ -281,7 +281,7 @@
   --maximeheckel-colors-body: hsla(var(--palette-gray-90), 100%);
   --maximeheckel-colors-header: hsla(var(--palette-gray-90), 40%);
   --maximeheckel-colors-emphasis: hsla(var(--palette-blue-35), 10%);
-  --maximeheckel-colors-foreground: hsla(var(--palette-gray-85), 40%);
+  --maximeheckel-colors-foreground: hsla(var(--palette-gray-80), 60%);
   --maximeheckel-colors-danger: hsla(var(--palette-red-30), 100%);
   --maximeheckel-colors-danger-emphasis: hsla(var(--palette-red-40), 15%);
   --maximeheckel-colors-warning: hsla(var(--palette-orange-45), 100%);

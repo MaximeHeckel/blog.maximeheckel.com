@@ -362,3 +362,23 @@ export const StackIcon = (props: IconProps) => (
     <path d="M2.06452 12.9217L12.0645 17.9217L22.0645 12.9217" />
   </StyledSVG>
 );
+
+export const XIcon = (props: IconProps) => (
+  <StyledSVG
+    width="24"
+    height="24"
+    viewBox="0 0 25 25"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    role="img"
+    {...props}
+  >
+    <title>X</title>
+    <desc>An icon representing an X</desc>
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </StyledSVG>
+);

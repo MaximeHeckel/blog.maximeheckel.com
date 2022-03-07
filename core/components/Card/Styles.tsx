@@ -58,4 +58,15 @@ export const CardBody = styled('div', {
   overflow: 'hidden',
   padding: '36px 24px',
   position: 'relative',
+
+  variants: {
+    dotMatrix: {
+      true: {
+        backgroundImage:
+          'radial-gradient(var(--maximeheckel-border-color) 1px, transparent 0)',
+        backgroundPosition: '50% center',
+        backgroundSize: '20px 20px',
+      },
+    },
+  },
 });

@@ -57,6 +57,53 @@ const VaporwaveThreejsDisclaimer = dynamic(
   () => import('./Widgets/VaporwaveThreejs/CalloutGPUTier')
 );
 
+const FramerMotionLayoutAnimationsBasic = dynamic(
+  () => import('./Widgets/FramerMotionLayoutAnimations/Basic')
+);
+
+const FramerMotionDistortions = dynamic(
+  () => import('./Widgets/FramerMotionLayoutAnimations/Distortions')
+);
+
+const FramerMotionLayoutAnimationsLayoutProp = dynamic(
+  () => import('./Widgets/FramerMotionLayoutAnimations/LayoutProp')
+);
+
+const FramerMotionLayoutAnimationsLayoutPosition = dynamic(
+  () => import('./Widgets/FramerMotionLayoutAnimations/LayoutPosition')
+);
+
+const FramerMotionLayoutAnimationsSharedLayoutAnimationDetails = dynamic(
+  () =>
+    import(
+      './Widgets/FramerMotionLayoutAnimations/SharedLayoutAnimationDetails'
+    )
+);
+
+const FramerMotionLayoutAnimationListLayoutGroup = dynamic(
+  () => import('./Widgets/FramerMotionLayoutAnimations/ListLayoutGroup')
+);
+
+const FramerMotionLayoutAnimationsTabsLayoutGroup = dynamic(
+  () => import('./Widgets/FramerMotionLayoutAnimations/TabsLayoutGroup')
+);
+
+const FramerMotionAdvanceReorderExample = dynamic(
+  () => import('./Widgets/FramerMotionLayoutAnimations/AdvanceReorderExample')
+);
+
+const FramerMotionToastNotificationSandpack = dynamic(
+  () => import('./Widgets/FramerMotionLayoutAnimations/SandpackNotification')
+);
+
+const FramerMotionTabsSandpack = dynamic(
+  () => import('./Widgets/FramerMotionLayoutAnimations/SandpackTabs')
+);
+
+const FramerMotionArrowListSandpack = dynamic(
+  () => import('./Widgets/FramerMotionLayoutAnimations/SandpackArrowList')
+);
+
 const customComponents = {
   AnimationTypes,
   ClipboardAnimationDetails,
@@ -77,8 +124,19 @@ const customComponents = {
   OpenAIPlayground,
   CubicBezierVisualizer,
   BezierCurve,
-  // Sandpacks
   VaporwaveThreejsDisclaimer,
+  FramerMotionLayoutAnimationsBasic,
+  FramerMotionDistortions,
+  FramerMotionLayoutAnimationsLayoutProp,
+  FramerMotionLayoutAnimationsLayoutPosition,
+  FramerMotionLayoutAnimationsSharedLayoutAnimationDetails,
+  FramerMotionLayoutAnimationsTabsLayoutGroup,
+  FramerMotionLayoutAnimationListLayoutGroup,
+  FramerMotionAdvanceReorderExample,
+  // Sandpacks
+  FramerMotionToastNotificationSandpack,
+  FramerMotionTabsSandpack,
+  FramerMotionArrowListSandpack,
   VaporwaveThreejsSandpacks,
 };
 
