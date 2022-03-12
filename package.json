@@ -129,7 +129,7 @@
     },
     "testURL": "http://localhost",
     "transform": {
-      "^.+\\.[jt]sx?$": "babel-jest"
+      "^.+\\.[jt]sx?$": ["babel-jest", { "configFile": "./jest-babel-config.json" }]
     },
     "transformIgnorePatterns": [],
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$",
