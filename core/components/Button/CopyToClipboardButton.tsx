@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 import React from 'react';
 
 const CopyButton = styled('button', {

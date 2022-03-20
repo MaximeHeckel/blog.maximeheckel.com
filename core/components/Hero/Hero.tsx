@@ -1,4 +1,4 @@
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 import Image from 'next/image';
 import React from 'react';
 import { loader } from '../../../lib/next-image-loader';

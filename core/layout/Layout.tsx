@@ -1,7 +1,7 @@
 import React from 'react';
 import Footer from '@theme/components/Footer';
 import Header, { HeaderProps } from '@theme/components/Header';
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 
 const Wrapper = styled('main', {
   background: 'var(--maximeheckel-colors-body)',

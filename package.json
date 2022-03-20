@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^0.10.10",
-    "@stitches/react": "1.2.5",
+    "@maximeheckel/design-system": "^0.0.3",
     "@visx/clip-path": "1.6.1",
     "@visx/curve": "1.6.1",
     "@visx/drag": "2.1.2",
@@ -60,8 +60,8 @@
     "prism-react-renderer": "^1.1.1",
     "prismjs": "^1.25.0",
     "qs": "6.9.4",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "react-intersection-observer": "8.27.1",
     "react-live": "2.2.3",
     "react-query": "2.25.2",
@@ -115,10 +115,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/MaximeHeckel/blog.maximeheckel.com"
-  },
-  "resolutions": {
-    "react": "17.0.1",
-    "react-dom": "17.0.1"
   },
   "jest": {
     "setupFilesAfterEnv": [

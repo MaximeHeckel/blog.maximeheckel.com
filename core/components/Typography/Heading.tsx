@@ -1,4 +1,4 @@
-import { CSS } from 'lib/stitches.config';
+import { CSS } from '@maximeheckel/design-system';
 import merge from 'lodash.merge';
 import React from 'react';
 import { DEFAULT_TAG } from './constant';

@@ -1,4 +1,4 @@
-import { css } from 'lib/stitches.config';
+import { css } from '@maximeheckel/design-system';
 import Link from 'next/link';
 import VisuallyHidden from '../VisuallyHidden';
 import {

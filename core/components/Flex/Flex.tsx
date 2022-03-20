@@ -1,4 +1,4 @@
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 
 const Flex = styled('div', {
   display: 'flex',

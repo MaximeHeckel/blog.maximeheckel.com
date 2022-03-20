@@ -14,7 +14,7 @@ import Pill from '@theme/components/Pill';
 import Text from '@theme/components/Typography';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
-import { css } from 'lib/stitches.config';
+import { css } from '@maximeheckel/design-system';
 
 interface WebmentionBlogDataProps {
   date: string;

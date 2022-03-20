@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from '@theme/context/ThemeContext';
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 
 interface Props {
   poster?: string;

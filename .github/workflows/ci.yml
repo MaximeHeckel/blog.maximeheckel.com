@@ -48,7 +48,10 @@ jobs:
       - name: Install Dependencies
         if: steps.cache-dependencies.outputs.cache-hit != 'true' || steps.cache-cypress-binary.outputs.cache-hit != 'true'
         run: |
+          yarn config set //npm.pkg.github.com/:_authToken=$GH_PACKAGES_TOKEN
           yarn install --force --non-interactive
+        env:
+          GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
   lint-format:
     runs-on: ubuntu-latest
     strategy:

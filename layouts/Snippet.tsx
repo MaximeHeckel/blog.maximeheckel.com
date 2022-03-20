@@ -8,7 +8,7 @@ import { Snippet } from 'types/post';
 import Grid from '@theme/components/Grid';
 import Hero from '@theme/components/Hero';
 import Text from '@theme/components/Typography';
-import { css } from 'lib/stitches.config';
+import { css } from '@maximeheckel/design-system';
 
 interface Props {
   children: React.ReactNode;

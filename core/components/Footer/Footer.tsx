@@ -1,8 +1,7 @@
-import { styled } from 'lib/stitches.config';
-import Flex from '@theme/components/Flex';
+import { styled, Text, EM, Flex } from '@maximeheckel/design-system';
 import Grid from '@theme/components/Grid';
 import Logo from '@theme/components/Logo';
-import Text, { EM } from '@theme/components/Typography';
+
 import Anchor from '../Anchor';
 import Box from '../Box';
 import Link from 'next/link';

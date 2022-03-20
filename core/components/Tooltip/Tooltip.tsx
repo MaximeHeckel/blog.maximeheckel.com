@@ -1,6 +1,6 @@
 import { motion, useAnimation } from 'framer-motion';
 import React from 'react';
-import { css } from 'lib/stitches.config';
+import { css } from '@maximeheckel/design-system';
 import VisuallyHidden from '../VisuallyHidden';
 
 interface Props {

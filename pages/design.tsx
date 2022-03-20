@@ -1,7 +1,5 @@
-import Anchor from '@theme/components/Anchor';
 import Box from '@theme/components/Box';
 import Blockquote from '@theme/components/Blockquote';
-import Button from '@theme/components/Button';
 import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
 import Grid from '@theme/components/Grid';
@@ -38,21 +36,24 @@ import Seo from '@theme/components/Seo';
 import Switch from '@theme/components/Switch';
 import Tooltip from '@theme/components/Tooltip';
 import Tweet from '@theme/components/Tweet';
-import Text, {
-  EM,
-  H1,
-  H2,
-  Heading,
-  Strong,
-} from '@theme/components/Typography';
 import Layout from '@theme/layout';
 import { AnimatePresence } from 'framer-motion';
-import { styled, css } from 'lib/stitches.config';
+import { styled, css } from '@maximeheckel/design-system';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
 import { useTheme } from '@theme/context/ThemeContext';
+import {
+  Anchor,
+  Button,
+  EM,
+  H1,
+  H2,
+  Heading,
+  Strong,
+  Text,
+} from '@maximeheckel/design-system';
 
 const Sandpack = dynamic(() => import('@theme/components/Code/Sandpack'));
 const Search = dynamic(() => import('@theme/components/Search'), {

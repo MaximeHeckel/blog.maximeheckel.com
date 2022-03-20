@@ -12,7 +12,7 @@ import { ParentSize } from '@visx/responsive';
 import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
 import { AnimatePresence, motion } from 'framer-motion';
-import { css } from 'lib/stitches.config';
+import { css } from '@maximeheckel/design-system';
 import React from 'react';
 import { HighlightedValue } from './Components';
 

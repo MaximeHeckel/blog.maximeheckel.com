@@ -6,7 +6,7 @@ import { RepeatIcon, XIcon } from '@theme/components/Icons';
 import Text from '@theme/components/Typography';
 import Tooltip from '@theme/components/Tooltip';
 import { AnimatePresence, LayoutGroup, motion, Reorder } from 'framer-motion';
-import { css, styled } from 'lib/stitches.config';
+import { css, styled } from '@maximeheckel/design-system';
 import React from 'react';
 
 const HR = styled('hr', {

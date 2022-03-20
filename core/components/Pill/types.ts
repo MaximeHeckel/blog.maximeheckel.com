@@ -1,4 +1,4 @@
-import { CSS } from 'lib/stitches.config';
+import { CSS } from '@maximeheckel/design-system';
 
 export interface PillProps extends React.HTMLAttributes<HTMLSpanElement> {
   children: React.ReactNode;

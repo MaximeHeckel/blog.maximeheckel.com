@@ -1,17 +1,23 @@
 /* eslint-disable react/no-unescaped-entities */
-import { css, styled } from 'lib/stitches.config';
+import { css } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import { motion, MotionProps } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import Anchor from '@theme/components/Anchor';
+import {
+  Anchor,
+  Button,
+  Flex,
+  Text,
+  H1,
+  H2,
+  H3,
+  styled,
+} from '@maximeheckel/design-system';
 import Box from '@theme/components/Box';
-import Button from '@theme/components/Button';
 import Grid from '@theme/components/Grid';
 import Card from '@theme/components/Card';
-import Flex from '@theme/components/Flex';
 import { ExternalIcon, TwitterIcon } from '@theme/components/Icons';
-import Text, { H1, H2, H3 } from '@theme/components/Typography';
 import VisuallyHidden from '@theme/components/VisuallyHidden';
 import Layout from '@theme/layout';
 import { getAllFilesFrontMatter } from 'lib/mdx';

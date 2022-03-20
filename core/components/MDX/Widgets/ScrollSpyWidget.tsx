@@ -1,4 +1,4 @@
-import { Shadows, styled } from 'lib/stitches.config';
+import { Shadows, styled } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
 import InlineCode from '@theme/components/InlineCode';
 import Range from '@theme/components/Range';

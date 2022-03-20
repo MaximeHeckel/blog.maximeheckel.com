@@ -6,7 +6,7 @@ import Pill from '@theme/components/Pill';
 import Switch from '@theme/components/Switch';
 import Text from '@theme/components/Typography';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
-import { css } from 'lib/stitches.config';
+import { css } from '@maximeheckel/design-system';
 import React from 'react';
 
 const ITEMS = [

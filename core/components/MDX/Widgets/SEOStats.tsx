@@ -1,7 +1,7 @@
 import LineChart from '@theme/components/Charts/LineChart';
 import Flex from '@theme/components/Flex';
 import { ParentSize } from '@visx/responsive';
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 
 const Wrapper = styled(Flex, {
   padding: '20px',

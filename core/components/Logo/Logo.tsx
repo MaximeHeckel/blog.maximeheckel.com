@@ -1,4 +1,4 @@
-import { css } from 'lib/stitches.config';
+import { css } from '@maximeheckel/design-system';
 import { LogoProps } from './types';
 
 const transitionLogo = css({

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { css, styled } from 'lib/stitches.config';
+import { css, styled } from '@maximeheckel/design-system';
 import Flex from '../Flex';
 
 export const HeaderWrapper = styled(motion.header, {

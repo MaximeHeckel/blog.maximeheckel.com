@@ -2,6 +2,9 @@
   command   = "yarn build"
   publish   = ".next"
 
+[build.environment]
+  NPM_CONFIG_USERCONFIG = "./netlify/.npmrc"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 

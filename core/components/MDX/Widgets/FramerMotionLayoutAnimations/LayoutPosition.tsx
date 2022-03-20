@@ -8,7 +8,7 @@ import Pill from '@theme/components/Pill';
 import Switch from '@theme/components/Switch';
 import Tooltip from '@theme/components/Tooltip';
 import { motion } from 'framer-motion';
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 import React from 'react';
 
 const IconButton = styled(motion.button, {

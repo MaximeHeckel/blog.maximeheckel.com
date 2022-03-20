@@ -4,7 +4,7 @@ import Grid from '@theme/components/Grid';
 import { DefaultSeo } from '@theme/components/Seo';
 import { H1, H3 } from '@theme/components/Typography';
 import Link from 'next/link';
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 import siteConfig from '../config/site';
 
 const Wrapper = styled('div', {

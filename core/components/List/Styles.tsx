@@ -1,4 +1,4 @@
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 
 export const StyledListItem = styled('li', {
   listStyle: 'none',

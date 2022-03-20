@@ -4,7 +4,7 @@ import Flex from '@theme/components/Flex';
 import { ArrowIcon } from '@theme/components/Icons';
 import InlineCode from '@theme/components/InlineCode';
 import { AnimatePresence, motion } from 'framer-motion';
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 import React from 'react';
 import { AnimationCardContent, TransitionGridWrapper } from './Components';
 

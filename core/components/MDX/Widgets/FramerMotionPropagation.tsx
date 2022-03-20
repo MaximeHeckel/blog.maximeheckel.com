@@ -4,7 +4,7 @@ import Flex from '@theme/components/Flex';
 import { StackIcon } from '@theme/components/Icons';
 import { H3 } from '@theme/components/Typography';
 import { motion } from 'framer-motion';
-import { Shadows, styled } from 'lib/stitches.config';
+import { Shadows, styled } from '@maximeheckel/design-system';
 import React from 'react';
 import { AnimationCardContent } from './Components';
 

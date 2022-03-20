@@ -1,4 +1,4 @@
-import { Shadows, styled } from 'lib/stitches.config';
+import { Shadows, styled } from '@maximeheckel/design-system';
 
 export const StyledInlineCode = styled('code', {
   fontFamily: 'var(--font-mono)',
