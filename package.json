@@ -19,6 +19,7 @@
     "generate:og": "node ./scripts/generate-opengraph-images",
     "generate:rss": "node ./scripts/generate-rss",
     "generate:sitemap": "node ./scripts/generate-sitemap",
+    "initialize": "echo \"@maximeheckel:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=GITHUB_PACKAGES_READ_TOKEN\" >> .npmrc",
     "lint": "eslint --ext=jsx,ts,tsx .",
     "prebuild": "yarn generate:index && yarn generate:og && yarn generate:rss && yarn generate:sitemap",
     "start": "next start",
@@ -29,7 +30,7 @@
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^0.10.10",
-    "@maximeheckel/design-system": "^0.0.3",
+    "@maximeheckel/design-system": "^0.0.5",
     "@visx/clip-path": "1.6.1",
     "@visx/curve": "1.6.1",
     "@visx/drag": "2.1.2",

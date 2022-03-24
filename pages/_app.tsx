@@ -1,11 +1,14 @@
 import Head from 'next/head';
 import { AppProps } from 'next/app';
+import { globalStyles } from '@maximeheckel/design-system';
 import { DefaultSeo } from '@theme/components/Seo';
 import RootWrapper from '@theme/context/ThemeProvider';
 import 'styles/global.css';
 import 'styles/font.css';
 
 const App = ({ Component, pageProps }: AppProps) => {
+  globalStyles();
+
   return (
     <RootWrapper>
       <Head>
