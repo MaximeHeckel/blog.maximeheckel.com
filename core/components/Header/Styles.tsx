@@ -1,6 +1,5 @@
+import { css, styled, Flex } from '@maximeheckel/design-system';
 import { motion } from 'framer-motion';
-import { css, styled } from '@maximeheckel/design-system';
-import Flex from '../Flex';
 
 export const HeaderWrapper = styled(motion.header, {
   position: 'fixed',

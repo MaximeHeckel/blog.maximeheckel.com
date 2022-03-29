@@ -1,16 +1,22 @@
 import dynamic from 'next/dynamic';
 
 // Components
-import Anchor from '@theme/components/Anchor';
+import {
+  Anchor,
+  Button,
+  Text,
+  EM,
+  H2,
+  H3,
+  Strong,
+} from '@maximeheckel/design-system';
 import Blockquote from '@theme/components/Blockquote';
-import Button from '@theme/components/Button';
 import Callout from '@theme/components/Callout';
 import Card from '@theme/components/Card';
 import Code from '@theme/components/Code';
 import InlineCode from '@theme/components/InlineCode';
 import List from '@theme/components/List';
 import Pill from '@theme/components/Pill';
-import Text, { EM, H2, H3, Strong } from '@theme/components/Typography';
 import VideoPlayer from '@theme/components/VideoPlayer';
 
 // MDX only components

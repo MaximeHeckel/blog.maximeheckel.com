@@ -1,7 +1,5 @@
-import Button from '@theme/components/Button';
+import { Button, Flex, Icon } from '@maximeheckel/design-system';
 import DesignSystemCard from '@theme/components/Card';
-import Flex from '@theme/components/Flex';
-import { ArrowIcon } from '@theme/components/Icons';
 import InlineCode from '@theme/components/InlineCode';
 import { AnimatePresence, motion } from 'framer-motion';
 import { styled } from '@maximeheckel/design-system';
@@ -114,7 +112,7 @@ const ContentDemo = (props: Props) => {
           variant="icon"
           onMouseEnter={() => setAboutToBeClicked('prev')}
           onClick={prev}
-          icon={<ArrowIcon style={{ transform: 'scaleX(-1)' }} />}
+          icon={<Icon.Arrow style={{ transform: 'scaleX(-1)' }} />}
         />
 
         <Button
@@ -123,7 +121,7 @@ const ContentDemo = (props: Props) => {
           variant="icon"
           onMouseEnter={() => setAboutToBeClicked('next')}
           onClick={next}
-          icon={<ArrowIcon />}
+          icon={<Icon.Arrow />}
         />
       </Flex>
     </>

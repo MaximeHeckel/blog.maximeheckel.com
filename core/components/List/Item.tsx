@@ -1,5 +1,5 @@
+import { Icon } from '@maximeheckel/design-system';
 import React from 'react';
-import { ArrowIcon } from '../Icons';
 import { StyledListItem } from './Styles';
 
 const ListItem: React.FC<React.LiHTMLAttributes<HTMLLIElement>> = (props) => {
@@ -8,7 +8,7 @@ const ListItem: React.FC<React.LiHTMLAttributes<HTMLLIElement>> = (props) => {
   return (
     <StyledListItem {...rest}>
       <span data-list-item>
-        <ArrowIcon variant="info" />
+        <Icon.Arrow variant="info" />
       </span>
       <div>{children}</div>
     </StyledListItem>

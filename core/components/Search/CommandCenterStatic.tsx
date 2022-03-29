@@ -1,14 +1,5 @@
-import { css } from '@maximeheckel/design-system';
+import { css, Icon, VisuallyHidden } from '@maximeheckel/design-system';
 import Link from 'next/link';
-import VisuallyHidden from '../VisuallyHidden';
-import {
-  ArrowIcon,
-  ContactIcon,
-  MapIcon,
-  PortfolioIcon,
-  RSSIcon,
-  TwitterIcon,
-} from '../Icons';
 import { MAX_HEIGHT } from './constants';
 import { Separator, Item, KBD } from './Styles';
 
@@ -39,7 +30,7 @@ const CommandCenterStatic = () => (
     <Item data-testid="navigation" key="home-navigation">
       <Link href="/">
         <a>
-          <ArrowIcon size={4} />
+          <Icon.Arrow size={4} />
           <span style={{ marginLeft: '20px' }}>Home</span>
         </a>
       </Link>
@@ -47,7 +38,7 @@ const CommandCenterStatic = () => (
     <Item data-testid="navigation" key="design-navigation">
       <Link href="/design/">
         <a>
-          <ArrowIcon size={4} />
+          <Icon.Arrow size={4} />
           <span style={{ marginLeft: '20px' }}>Design System</span>
         </a>
       </Link>
@@ -59,7 +50,7 @@ const CommandCenterStatic = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <TwitterIcon />
+        <Icon.Twitter />
         <span style={{ marginLeft: '15px' }}>Twitter</span>
         <VisuallyHidden as="p">
           Link redirects to my Twitter profile page
@@ -73,7 +64,7 @@ const CommandCenterStatic = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <ContactIcon />
+        <Icon.Contact />
         <span style={{ marginLeft: '15px' }}>Contact</span>
         <VisuallyHidden as="p">
           Link opens your default mail client with my email address
@@ -87,7 +78,7 @@ const CommandCenterStatic = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <MapIcon />
+        <Icon.Map />
         <span style={{ marginLeft: '15px' }}>Roadmap</span>
         <VisuallyHidden as="p">
           Link redirects to a Figjam file where you can see the roadmap with my
@@ -101,7 +92,7 @@ const CommandCenterStatic = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        <PortfolioIcon />
+        <Icon.Portfolio />
         <span style={{ marginLeft: '15px' }}>Work</span>
         <VisuallyHidden as="p">
           Link redirects to my portfolio https://maximeheckel.com.
@@ -111,7 +102,7 @@ const CommandCenterStatic = () => (
     <Item data-testid="link" key="rss-link">
       <Link href="/rss.xml" data-testid="rss-link" aria-label="RSS Feed">
         <a title="RSS Feed">
-          <RSSIcon />
+          <Icon.RSS />
           <span style={{ marginLeft: '15px' }}>RSS</span>
           <VisuallyHidden as="p">
             Link redirects to the rss.xml file.

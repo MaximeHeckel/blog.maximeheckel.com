@@ -1,5 +1,5 @@
+import { Flex } from '@maximeheckel/design-system';
 import React from 'react';
-import Flex from '../Flex';
 import { RadioContext } from './RadioContext';
 import { RadioGroupProps } from './types';
 import { isRadioItemElement } from './utils';

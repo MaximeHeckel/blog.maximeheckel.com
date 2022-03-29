@@ -1,3 +1,4 @@
+import { css, Anchor, Flex, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import React from 'react';
@@ -5,16 +6,12 @@ import siteConfig from 'config/site';
 import Layout from '@theme/layout';
 import Grid from '@theme/components/Grid';
 import TableOfContent from '@theme/components/TableOfContent';
-import Anchor from '@theme/components/Anchor';
 import Seo from '@theme/components/Seo';
 import Hero from '@theme/components/Hero';
 import WebmentionCount from '@theme/components/Webmentions/WebmentionCount';
-import Flex from '@theme/components/Flex';
 import Pill from '@theme/components/Pill';
-import Text from '@theme/components/Typography';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
-import { css } from '@maximeheckel/design-system';
 
 interface WebmentionBlogDataProps {
   date: string;

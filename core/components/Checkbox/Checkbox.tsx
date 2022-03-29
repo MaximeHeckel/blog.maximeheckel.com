@@ -1,4 +1,4 @@
-import Flex from '../Flex';
+import { Flex } from '@maximeheckel/design-system';
 import Label from '../Label';
 import { StyledCheckbox } from './Styles';
 import { CheckboxProps } from './types';

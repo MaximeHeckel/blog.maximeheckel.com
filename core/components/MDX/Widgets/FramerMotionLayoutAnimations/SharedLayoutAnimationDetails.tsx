@@ -1,7 +1,5 @@
-import Box from '@theme/components/Box';
+import { Box, Flex, Icon } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
-import Flex from '@theme/components/Flex';
-import { ArrowIcon } from '@theme/components/Icons';
 import Range from '@theme/components/Range';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -58,7 +56,7 @@ const SharedLayoutAnimationDetails = () => {
                       },
                     }}
                   >
-                    <ArrowIcon
+                    <Icon.Arrow
                       style={{
                         color: COLORS[index],
                         transform: 'rotate(-90deg)',

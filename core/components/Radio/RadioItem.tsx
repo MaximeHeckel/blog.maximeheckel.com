@@ -1,5 +1,5 @@
+import { Flex } from '@maximeheckel/design-system';
 import React from 'react';
-import Flex from '../Flex';
 import Label from '../Label';
 import { RadioContext } from './RadioContext';
 import { StyledRadio } from './Styles';

@@ -1,6 +1,4 @@
-import Anchor from '@theme/components/Anchor';
-import Flex from '@theme/components/Flex';
-import Text from '@theme/components/Typography';
+import { Anchor, Flex, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { TransformedTweet } from 'types/tweet';

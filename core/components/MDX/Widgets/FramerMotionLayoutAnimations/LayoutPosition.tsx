@@ -1,9 +1,6 @@
-import Box from '@theme/components/Box';
-import Button from '@theme/components/Button';
+import { Box, Flex, Button, Icon } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
 import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
-import Flex from '@theme/components/Flex';
-import { RepeatIcon, XIcon } from '@theme/components/Icons';
 import Pill from '@theme/components/Pill';
 import Switch from '@theme/components/Switch';
 import Tooltip from '@theme/components/Tooltip';
@@ -93,7 +90,7 @@ const LayoutPosition = () => {
                         )
                       }
                     >
-                      <XIcon size={3} />
+                      <Icon.X size={3} />
                     </IconButton>
                     <span>Label {item}</span>
                   </Flex>
@@ -113,7 +110,7 @@ const LayoutPosition = () => {
               aria-label="Reset"
               aria-describedby="reset-tooltip"
               variant="icon"
-              icon={<RepeatIcon />}
+              icon={<Icon.Repeat />}
               onClick={() => setItems(ITEMS)}
             />
           </Tooltip>

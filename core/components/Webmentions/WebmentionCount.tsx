@@ -1,5 +1,4 @@
-import Flex from '@theme/components/Flex';
-import Text from '@theme/components/Typography';
+import { Flex, Text } from '@maximeheckel/design-system';
 import React from 'react';
 
 const initialCounts = {

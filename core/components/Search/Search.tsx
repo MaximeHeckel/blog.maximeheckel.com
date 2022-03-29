@@ -1,5 +1,4 @@
-import Flex from '@theme/components/Flex';
-import { EnterIcon } from '@theme/components/Icons';
+import { Flex, Icon } from '@maximeheckel/design-system';
 import Label from '@theme/components/Label';
 import FocusTrap from 'focus-trap-react';
 import Link from 'next/link';
@@ -298,7 +297,7 @@ const Search = (props: Props) => {
                         },
                       }}
                     >
-                      <EnterIcon size={4} />
+                      <Icon.Enter size={4} />
                     </Flex>
                   </Result>
                 ))}

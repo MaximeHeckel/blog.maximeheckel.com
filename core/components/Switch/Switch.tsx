@@ -1,4 +1,4 @@
-import Flex from '../Flex';
+import { Flex } from '@maximeheckel/design-system';
 import Label from '../Label';
 import { StyledSwitch } from './Styles';
 import { SwitchProps } from './types';

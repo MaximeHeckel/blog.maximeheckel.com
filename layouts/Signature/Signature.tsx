@@ -1,7 +1,5 @@
-import Anchor from '@theme/components/Anchor';
-import Text from '@theme/components/Typography';
+import { styled, Anchor, Text } from '@maximeheckel/design-system';
 import WebmentionReplies from '@theme/components/Webmentions/WebmentionReplies';
-import { styled } from '@maximeheckel/design-system';
 import dynamic from 'next/dynamic';
 
 const NewsletterForm = dynamic(

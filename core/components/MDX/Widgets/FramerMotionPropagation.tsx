@@ -1,8 +1,5 @@
-import Button from '@theme/components/Button';
+import { Button, Flex, H3, Icon } from '@maximeheckel/design-system';
 import DesignSystemCard from '@theme/components/Card';
-import Flex from '@theme/components/Flex';
-import { StackIcon } from '@theme/components/Icons';
-import { H3 } from '@theme/components/Typography';
 import { motion } from 'framer-motion';
 import { Shadows, styled } from '@maximeheckel/design-system';
 import React from 'react';
@@ -207,7 +204,7 @@ const CardWithGlow = () => {
       <br />
       <Button
         variant="icon"
-        icon={<StackIcon />}
+        icon={<Icon.Stack />}
         title={inPerspective ? 'Disable perspective' : 'Enable perspective'}
         onClick={() => setInPerspective((prev) => !prev)}
       />

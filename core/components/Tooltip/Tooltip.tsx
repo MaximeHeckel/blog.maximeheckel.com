@@ -1,7 +1,6 @@
 import { motion, useAnimation } from 'framer-motion';
 import React from 'react';
-import { css } from '@maximeheckel/design-system';
-import VisuallyHidden from '../VisuallyHidden';
+import { css, VisuallyHidden } from '@maximeheckel/design-system';
 
 interface Props {
   id: string;
