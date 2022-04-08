@@ -1,4 +1,4 @@
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
 import Text from '@theme/components/Typography';
 

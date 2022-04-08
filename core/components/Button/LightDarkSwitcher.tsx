@@ -1,7 +1,7 @@
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { Button } from '@maximeheckel/design-system';
 import Tooltip from '@theme/components/Tooltip';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
-import Button from './Button';
 
 const LightDarkSwitcher = () => {
   const theme = useTheme();

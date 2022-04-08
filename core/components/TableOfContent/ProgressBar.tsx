@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 import React from 'react';
 
 const ProgressBarWrapper = styled(motion.div, {

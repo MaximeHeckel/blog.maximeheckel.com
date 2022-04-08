@@ -1,4 +1,4 @@
-import { Shadows, styled } from 'lib/stitches.config';
+import { Shadows, styled, Flex } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
 import InlineCode from '@theme/components/InlineCode';
 import Range from '@theme/components/Range';
@@ -6,7 +6,6 @@ import { useTheme } from '@theme/context/ThemeContext';
 import useScrollSpy from '@theme/hooks/useScrollSpy';
 import React from 'react';
 import { AnimationCardContent, Form, HighlightedValue } from './Components';
-import Flex from '@theme/components/Flex';
 
 const BrowserWindow = styled('div', {
   borderRadius: 'var(--border-radius-1)',

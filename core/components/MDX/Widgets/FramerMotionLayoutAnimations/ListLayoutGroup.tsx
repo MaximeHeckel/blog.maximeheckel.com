@@ -1,12 +1,9 @@
+import { css, Flex, Icon, Text } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
 import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
-import Flex from '@theme/components/Flex';
-import { XIcon } from '@theme/components/Icons';
 import Pill from '@theme/components/Pill';
 import Switch from '@theme/components/Switch';
-import Text from '@theme/components/Typography';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
-import { css } from 'lib/stitches.config';
 import React from 'react';
 
 const ITEMS = [
@@ -87,7 +84,7 @@ const List = (props: {
                     )
                   }
                 >
-                  <XIcon size="4" />
+                  <Icon.X size="4" />
                 </button>
                 <Text
                   size="2"

@@ -1,5 +1,4 @@
-import { Shadows, styled } from 'lib/stitches.config';
-import Box from '../Box';
+import { Box, Shadows, styled } from '@maximeheckel/design-system';
 
 export const CardWrapper = styled(Box, {
   position: 'relative',

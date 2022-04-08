@@ -16,6 +16,9 @@ concurrency:
   group: ${{ github.head_ref }}
   cancel-in-progress: true
 
+env:
+  GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+
 jobs:
   install-cache:
     runs-on: ubuntu-latest

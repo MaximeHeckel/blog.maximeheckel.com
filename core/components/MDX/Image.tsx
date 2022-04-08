@@ -1,6 +1,6 @@
 import Text from '@theme/components/Typography';
 import { loader } from 'lib/next-image-loader';
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 import NextImage, { ImageProps } from 'next/image';
 
 const StyledFigure = styled('figure', {

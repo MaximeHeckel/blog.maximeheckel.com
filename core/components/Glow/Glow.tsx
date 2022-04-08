@@ -1,4 +1,4 @@
-import { css, keyframes, styled } from 'lib/stitches.config';
+import { css, keyframes, styled } from '@maximeheckel/design-system';
 import { GlowProps } from './types';
 
 const pulse = keyframes({

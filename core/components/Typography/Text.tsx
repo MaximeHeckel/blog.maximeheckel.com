@@ -1,4 +1,4 @@
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 import React from 'react';
 import { EMProps, StrongProps } from './types';
 

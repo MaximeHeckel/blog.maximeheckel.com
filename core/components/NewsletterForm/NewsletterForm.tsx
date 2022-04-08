@@ -1,13 +1,17 @@
+import {
+  Anchor,
+  Button,
+  Flex,
+  Text,
+  EM,
+  H3,
+} from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
 import { useMutation } from 'react-query';
-import Button from '@theme/components/Button';
 import TextInput from '@theme/components/TextInput';
-import Flex from '@theme/components/Flex';
 import Glow from '@theme/components/Glow';
 import Card from '@theme/components/Card';
-import Anchor from '@theme/components/Anchor';
-import Text, { EM, H3 } from '@theme/components/Typography';
 import { NewsletterHeader } from './Icons';
 import { NewsletterFormContent, ErrorMessage } from './Styles';
 import { subscribeCall } from './utils';

@@ -1,11 +1,11 @@
-import { AlertIcon, InfoIcon } from '../Icons';
+import { Icon } from '@maximeheckel/design-system';
 import { CalloutVariant } from './types';
 
 export const getVariantIcon = (variant: CalloutVariant): React.ReactNode => {
   switch (variant) {
     case 'info':
-      return <InfoIcon size={5} />;
+      return <Icon.Info size={5} />;
     case 'danger':
-      return <AlertIcon size={5} />;
+      return <Icon.Alert size={5} />;
   }
 };

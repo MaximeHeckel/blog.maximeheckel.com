@@ -1,4 +1,4 @@
-import { CSS, VariantProps } from 'lib/stitches.config';
+import { CSS, VariantProps } from '@maximeheckel/design-system';
 import { DEFAULT_TAG } from './constant';
 import Text from './Text';
 

@@ -3,7 +3,7 @@ import Card from '@theme/components/Card';
 import { ParentSize } from '@visx/responsive';
 import { motion } from 'framer-motion';
 import { GraphQLClient, gql } from 'graphql-request';
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 import { useQuery } from 'react-query';
 
 const GraphLabel = styled('div', {

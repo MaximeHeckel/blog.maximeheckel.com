@@ -1,4 +1,4 @@
-import Flex from '@theme/components/Flex';
+import { Flex } from '@maximeheckel/design-system';
 import Grid from '@theme/components/Grid';
 import Logo from '@theme/components/Logo';
 import Tooltip from '@theme/components/Tooltip';

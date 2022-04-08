@@ -1,8 +1,7 @@
-import Anchor from '@theme/components/Anchor';
+import { styled, Anchor } from '@maximeheckel/design-system';
 import useProgress from '@theme/hooks/useProgress';
 import useScrollSpy from '@theme/hooks/useScrollSpy';
 import { useReducedMotion, motion } from 'framer-motion';
-import { styled } from 'lib/stitches.config';
 import React from 'react';
 import ProgressBar from './ProgressBar';
 

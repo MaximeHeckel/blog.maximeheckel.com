@@ -1,8 +1,6 @@
-import Button from '@theme/components/Button';
+import { css, Button, Flex, Icon } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
-import Flex from '@theme/components/Flex';
 import Grid from '@theme/components/Grid';
-import { PauseIcon, PlayIcon, RepeatIcon } from '@theme/components/Icons';
 import Switch from '@theme/components/Switch';
 import Tooltip from '@theme/components/Tooltip';
 import useInterval from '@theme/hooks/useInterval';
@@ -12,7 +10,6 @@ import { ParentSize } from '@visx/responsive';
 import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
 import { AnimatePresence, motion } from 'framer-motion';
-import { css } from 'lib/stitches.config';
 import React from 'react';
 import { HighlightedValue } from './Components';
 
@@ -675,7 +672,7 @@ const Chart = (props: ChartProps) => {
             aria-label={paused ? 'Play' : 'Pause'}
             aria-describedby="playpauseButton"
             variant="icon"
-            icon={paused ? <PlayIcon /> : <PauseIcon />}
+            icon={paused ? <Icon.Play /> : <Icon.Pause />}
             onClick={() => setPaused((prev) => !prev)}
           />
         </Tooltip>
@@ -684,7 +681,7 @@ const Chart = (props: ChartProps) => {
             aria-label="Repeat"
             aria-describedby="repeatButton"
             variant="icon"
-            icon={<RepeatIcon />}
+            icon={<Icon.Repeat />}
             onClick={repeat}
           />
         </Tooltip>

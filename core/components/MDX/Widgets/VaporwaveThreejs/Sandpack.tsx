@@ -1,7 +1,7 @@
 import Sandpack from '@theme/components/Code/Sandpack';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
-import { css } from 'lib/stitches.config';
+import { css } from '@maximeheckel/design-system';
 import { script1 } from './script1';
 import { script2 } from './script2';
 import { script3 } from './script3';

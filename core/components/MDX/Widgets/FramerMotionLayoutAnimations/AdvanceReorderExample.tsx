@@ -1,12 +1,9 @@
-import Button from '@theme/components/Button';
+import { Button, Flex, Icon, Text } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
-import Flex from '@theme/components/Flex';
-import { RepeatIcon, XIcon } from '@theme/components/Icons';
-import Text from '@theme/components/Typography';
 import Tooltip from '@theme/components/Tooltip';
 import { AnimatePresence, LayoutGroup, motion, Reorder } from 'framer-motion';
-import { css, styled } from 'lib/stitches.config';
+import { css, styled } from '@maximeheckel/design-system';
 import React from 'react';
 
 const HR = styled('hr', {
@@ -102,7 +99,7 @@ const AdvanceReorderExample = () => {
               <Button
                 variant="icon"
                 onClick={() => setItems(ITEMS)}
-                icon={<RepeatIcon />}
+                icon={<Icon.Repeat />}
               />
             </Tooltip>
           </Flex>
@@ -184,7 +181,7 @@ const AdvanceReorderExample = () => {
                         >
                           <Button
                             variant="icon"
-                            icon={<XIcon />}
+                            icon={<Icon.X />}
                             onClick={() =>
                               setItems((prev) =>
                                 prev.filter((task) => task.id !== item.id)

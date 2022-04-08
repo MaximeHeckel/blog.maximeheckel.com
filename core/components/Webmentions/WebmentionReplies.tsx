@@ -1,5 +1,4 @@
-import Anchor from '@theme/components/Anchor';
-import Text from '@theme/components/Typography';
+import { Anchor, Text } from '@maximeheckel/design-system';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';

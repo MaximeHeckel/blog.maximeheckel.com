@@ -1,6 +1,6 @@
-import { motion, MotionProps, useMotionValue } from 'framer-motion';
+import { Button } from '@maximeheckel/design-system';
 import Tooltip from '@theme/components/Tooltip';
-import Button from './Button';
+import { motion, MotionProps, useMotionValue } from 'framer-motion';
 
 interface Props {
   onClick: () => void;

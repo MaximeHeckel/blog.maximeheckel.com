@@ -1,14 +1,12 @@
+import { css, Flex, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import React from 'react';
 import Layout from '@theme/layout';
 import Seo from '@theme/components/Seo';
-import Flex from '@theme/components/Flex';
 import Pill from '@theme/components/Pill';
 import { Snippet } from 'types/post';
 import Grid from '@theme/components/Grid';
 import Hero from '@theme/components/Hero';
-import Text from '@theme/components/Typography';
-import { css } from 'lib/stitches.config';
 
 interface Props {
   children: React.ReactNode;

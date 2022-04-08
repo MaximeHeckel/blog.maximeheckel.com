@@ -6,7 +6,7 @@ import {
   SandpackPredefinedTemplate,
 } from '@codesandbox/sandpack-react';
 import '@codesandbox/sandpack-react/dist/index.css';
-import { Shadows, styled } from 'lib/stitches.config';
+import { Shadows, styled } from '@maximeheckel/design-system';
 import setupFiles from './SandpackSetupFiles';
 // import setupFiles from './SandpackSetupFiles';
 

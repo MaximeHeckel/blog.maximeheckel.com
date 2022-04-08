@@ -1,4 +1,4 @@
-import { styled } from 'lib/stitches.config';
+import { styled } from '@maximeheckel/design-system';
 
 export const StyledRadio = styled('input', {
   WebkitAppearance: 'none',

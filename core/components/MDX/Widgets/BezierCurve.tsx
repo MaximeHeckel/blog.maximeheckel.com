@@ -1,7 +1,5 @@
-import Button from '@theme/components/Button';
+import { Button, Flex, Icon } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
-import Flex from '@theme/components/Flex';
-import { PauseIcon, PlayIcon, RepeatIcon } from '@theme/components/Icons';
 import Range from '@theme/components/Range';
 import Tooltip from '@theme/components/Tooltip';
 import useInterval from '@theme/hooks/useInterval';
@@ -597,7 +595,7 @@ const Chart = (props: ChartProps) => {
             aria-label={paused ? 'Play' : 'Pause'}
             aria-describedby="playpauseButton"
             variant="icon"
-            icon={paused ? <PlayIcon /> : <PauseIcon />}
+            icon={paused ? <Icon.Play /> : <Icon.Pause />}
             onClick={() => setPaused((prev) => !prev)}
           />
         </Tooltip>
@@ -606,7 +604,7 @@ const Chart = (props: ChartProps) => {
             aria-label="Repeat"
             aria-describedby="repeatButton"
             variant="icon"
-            icon={<RepeatIcon />}
+            icon={<Icon.Repeat />}
             onClick={repeat}
           />
         </Tooltip>

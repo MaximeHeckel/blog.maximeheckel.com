@@ -1,6 +1,5 @@
-import Button from '@theme/components/Button';
+import { Button, Flex } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
-import Flex from '@theme/components/Flex';
 import Switch from '@theme/components/Switch';
 import TextArea from '@theme/components/TextArea';
 import React from 'react';

@@ -1,5 +1,5 @@
+import { Flex } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
-import Flex from '@theme/components/Flex';
 import InlineCode from '@theme/components/InlineCode';
 import Range from '@theme/components/Range';
 import React from 'react';

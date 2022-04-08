@@ -1,8 +1,6 @@
-import Box from '@theme/components/Box';
+import { Box, Flex, Text } from '@maximeheckel/design-system';
 import Card from '@theme/components/Card';
 import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
-import Flex from '@theme/components/Flex';
-import Text from '@theme/components/Typography';
 import { LayoutGroup, motion } from 'framer-motion';
 import React from 'react';
 
