@@ -129,6 +129,38 @@ const Pre = styled('pre', {
   fontFamily: 'var(--font-mono)',
   fontSize: 'var(--font-size-1)',
   lineHeight: '26px',
+
+  '.token.parameter,.token.imports,.token.plain,.token.comment,.token.prolog,.token.doctype,.token.cdata': {
+    color: 'var(--token-comment)',
+  },
+
+  '.token.punctuation': {
+    color: 'var(--token-punctuation)',
+  },
+
+  '.token.property,.token.tag,.token.boolean,.token.number,.token.constant,.token.symbol,.token.deleted': {
+    color: 'var(--token-symbol)',
+  },
+
+  '.token.selector,.token.attr-name,.token.char,.token.builtin,.token.number,.token.string,.token.inserted': {
+    color: 'var(--token-selector)',
+  },
+
+  '.token.operator,.token.entity,.token.url,.language-css .style': {
+    color: 'var(--token-operator)',
+  },
+
+  '.token.atrule,.token.attr-value,.token.keyword': {
+    color: 'var(--token-keyword)',
+  },
+
+  '.token.function,.token.maybe-class-name,.token.class-name': {
+    color: 'var(--token-function)',
+  },
+
+  '.token.regex,.token.important,.token.variable': {
+    color: 'var(--token-operator)',
+  },
 });
 
 const Line = styled('div', {

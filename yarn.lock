@@ -887,10 +887,10 @@
   dependencies:
     "@lezer/common" "^0.15.0"
 
-"@maximeheckel/design-system@^0.0.13":
-  version "0.0.13"
-  resolved "https://npm.pkg.github.com/download/@maximeheckel/design-system/0.0.13/813319d3fc238b400291dfd132c6afacdd2b0d44f8638d473318cb74e4430ebc#ade2671baf3e216ad847a21b5077e5131be1c900"
-  integrity sha512-yH1+WeepLy6U2PnVSXJrcu6CtXjEr/Jq4Td7m6R7zvqtSVNqlkFHDrWhTz5Y+jzX025sJfLapjklDG8bwANGAQ==
+"@maximeheckel/design-system@^0.1.1":
+  version "0.1.1"
+  resolved "https://npm.pkg.github.com/download/@maximeheckel/design-system/0.1.1/6fc41560a981f352b5c5c0349f66727824426a0f048b2ba7acd3a50478e42a43#fb9037167812a2382a6bcdc16adca16fd5969252"
+  integrity sha512-2uY2B5ghtCWTgqz18pVuCw4zwoBLdaP9sXNR476D+WKSzGhlKSdcPkSkUgj4vDn/zNwEsyGjUv4D5jHfyHx2qw==
   dependencies:
     "@stitches/react" "^1.2.7"
 
