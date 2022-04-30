@@ -4,11 +4,11 @@ import { motion, MotionProps, useMotionValue } from 'framer-motion';
 
 interface Props {
   onClick: () => void;
-  isSearchShown: boolean;
+  isSearchShown?: boolean;
 }
 
 const CommandCenterButton = (props: Props) => {
-  const { isSearchShown, onClick } = props;
+  const { isSearchShown = false, onClick } = props;
   const duration = 0.7;
 
   const commandCenterVariants = {
@@ -22,7 +22,7 @@ const CommandCenterButton = (props: Props) => {
   return (
     <Tooltip
       id="commandCenterTooltip"
-      tooltipText="  Show command center"
+      tooltipText="Show command center"
       tooltipVisuallyHiddenText={`Opens a modal to allow you to quickly search for the content of this
     blog and access links to my portfolio, Twitter account, and email.`}
     >

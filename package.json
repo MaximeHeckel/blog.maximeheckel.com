@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^0.10.10",
-    "@maximeheckel/design-system": "^0.1.1",
+    "@maximeheckel/design-system": "^0.1.2",
     "@visx/clip-path": "1.6.1",
     "@visx/curve": "1.6.1",
     "@visx/drag": "2.1.2",
@@ -126,7 +126,12 @@
     },
     "testURL": "http://localhost",
     "transform": {
-      "^.+\\.[jt]sx?$": ["babel-jest", { "configFile": "./jest-babel-config.json" }]
+      "^.+\\.[jt]sx?$": [
+        "babel-jest",
+        {
+          "configFile": "./jest-babel-config.json"
+        }
+      ]
     },
     "transformIgnorePatterns": [],
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$",

@@ -1,0 +1,682 @@
+---
+title: 'Building a Design System from scratch'
+subtitle: A deep dive into my experience building my own design system that documents my process of defining tokens, creating efficient components, and shipping them as a package.
+date: '2022-05-10T08:00:00.000Z'
+updated: '2022-05-10T08:00:00.000Z'
+categories: []
+keywords:
+  [
+    design system,
+    react,
+    stitches,
+    components,
+    patterns,
+    tokens,
+    colors,
+    fonts,
+    typography,
+    space,
+    package,
+    library,
+    NPM,
+    esbuild,
+    versioning,
+    compound,
+    composition,
+    styled-components,
+    CSS,
+    variables,
+  ]
+slug: building-a-design-system-from-scratch
+type: 'blogPost'
+featured: false
+colorFeatured: 'radial-gradient(at 30% 20%, hsl(239, 84%, 80%) 0px, transparent 50%), radial-gradient(at 80% -10%, hsl(222, 89%, 60%) 0px, transparent 50%), radial-gradient(at 70% 50%, hsl(330, 98%, 75%) 0px, transparent 50%), radial-gradient(at -10% 90%, hsl(222, 89%, 75%) 0px, transparent 50%), radial-gradient(at 80% 110%, hsl(0, 95%, 75%) 0px, transparent 50%), radial-gradient(at 0% 0%, hsl(0, 95%, 75%) 0px, transparent 50%)'
+fontFeatured: '#E8E8FD'
+---
+
+As someone who's always been striving for consistency, building delightful and accessible experiences, and trying to do all that faster than ever, the concept of ✨**design systems**✨ has always interested me. I believe in setting up clear standards for colors and fonts and establishing patterns to build reusable components as the _key_ to building sustainable UIs that can withstand the test of time.
+
+For the past few years, I've been working a lot on this blog, the interactive experiences showcased in my blog posts, and several other tiny projects that needed consistency in branding and components. The more I worked on them, the more I felt the need to stop copy-pasting code and colors between projects and needed my own set of UI pieces: **my personal design system**.
+
+After pouring countless hours into this project and sharing my progress over the past several months (almost a year now actually!), I felt it was time to write **a little return on experience to focus on all the things I've learned while building a design system on my own** 😊. So in this blog post, I'll go through the **component patterns** I came up with, explain how I **picked up my tokens** and overall the _design system thinking_ mentality I adopted to make this project (somewhat) successful.
+
+<Callout variant="info">
+
+Want to look at what I built before jumping into this blog post?
+You can check out [@maximeheckel/design-system](https://github.com/MaximeHeckel/design-system), the open-source repository of this project.
+
+**Note**: This repository is still a work in progress, I have not yet migrated all the components to it!
+
+</Callout>
+
+## Context: Why would I even choose to build my own design system?
+
+Before jumping on the actual building part of this blog post, I first want to give a bit more context on _why_ I chose to dedicate time to this project.
+Among the many reasons why this project came to life, you will mainly find:
+
+- **Branding**: I'm trying very hard to be unique in an endless sea of developers' blogs/websites looking more or less the same. I want people to recognize my work from afar through my choice of colors, logo, components design, playfulness, and attention to detail.
+- **Consistency**: Each piece composing this system should have a purpose. All components follow the same guidelines and are composed of more primitive elements/tokens.
+- **Fun and Learning**: I learned a lot about component building, design system thinking, and myself while building this tiny library. It helped me develop some empathy and step back and think twice about the interface of a component, composability, abstraction, and scalability. Focusing on one piece of the system at a time and making that one component mine was tons of fun and very satisfying.
+
+This project was not a necessity per se, but the more my blog/portfolio and brand were evolving, the more I was striving for these things, and the more not having a design system was slowing me down. I needed my own set of "Lego pieces" that I could rearrange/combine infinitely. Thus the idea of building a **personal design system** came to my mind:
+
+> A small scoped design system mainly composed of primitive components focused solely on personal branding and personal use.
+
+Even though the scope of this design system feels small compared to the bigger ones we can get to work on in a work context, it was not necessarily less complex to build. In the following parts, I'll go through the challenges and decisions I've made along the way when working on this project.
+
+## Tokens
+
+Tokens are the **discrete elements** of styles like color palette, spacing units, shadows, or typography that form **the foundation of a design system**. Breaking down my different projects into these most fundamental pieces was essential when I started working on my design system.
+
+### Color system
+
+First, I wanted to define an efficient solid _color system_. I ended up opting for what I dubbed a "two-tier color variable system":
+
+1. The first layer is a series of variables representing the HSL (Hue, Saturation, Lightness) values of the different colors within the palettes like `--blue-10: '222, 89%, 90%'` or `--red-60: 0, 95%, 40%`.
+2. The second layer is more of a generic alias to the colors that will end up referenced by the components of the design system: `--brand: hsl(var(--blue-50))` or `--foreground: hsla(var(--gray-05), 60%)`. In this layer, we use the colors defined in the first one and compose them or expand them.
+
+<Image
+  src="blog/diagram-2-layer-variables.png"
+  alt="Diagram illustrating the two-tier variable system: the --brand color is used as background color in the button while referencing the color itself."
+  layout="responsive"
+  width={1800}
+  height={420}
+/>
+
+This system worked for me for the following reasons:
+
+- Components _never_ end up referencing actual "colors" per se: the background color of the `Button` component is not `--blue-10` but `--brand` and the value of that variable may evolve through time from blue to purple or anything else. Thanks to this system, components are more resilient to change: _want to change the brand color?_ All you need to do is update the value of the `--brand` variable, and all the components referencing it will update accordingly.
+- It lets me _compose my color tokens_, like adding some opacity. I talked about all this in a dedicated blog post: [The Power of Composition with CSS variables](/posts/the-power-of-composition-with-css-variables/) where I showcase a few of my color composition patterns.
+- Building themes like light and dark mode easily: in light mode `--brand` might reference `--blue-60`, in dark mode it will be `--blue-20`.
+
+To illustrate the steps I took to pick up colors, create a palette, and come up with tokens, I built the little _animated slideshow_ ✨ below:
+
+<DesignSystemColorTokens />
+
+<Callout variant="info">
+
+Try toggling light/dark mode and notice how the palette changes based on the current theme all thanks to the "two-tier color variable system" detailed above!
+
+</Callout>
+
+### Other tokens
+
+Colors variables were my main focus to get started. They are perhaps the most crucial set of tokens to start building a compelling visual language. Then came the necessity to define consistent spacing units:
+
+```css title=Spacing tokens
+--space-0: 0px;
+--space-1: 4px;
+--space-2: 8px;
+--space-3: 12px;
+--space-4: 16px;
+--space-5: 24px;
+--space-6: 32px;
+--space-7: 40px;
+--space-8: 48px;
+--space-9: 56px;
+--space-10: 64px;
+--space-11: 80px;
+--space-12: 96px;
+```
+
+and font related tokens:
+
+```css title=Typography tokens
+--font-size-1: 0.75rem;
+--font-size-2: 0.875rem;
+--font-size-3: 1rem;
+--font-size-4: 1.125rem;
+--font-size-5: 1.25rem;
+--font-size-6: 1.5rem;
+--font-size-7: 2rem;
+```
+
+and little things like border radii:
+
+```css title=Radii tokens
+--border-radius-0: 4px;
+--border-radius-1: 8px;
+--border-radius-2: 16px;
+```
+
+Components reference these tokens directly as they are less likely to be changing significantly over time.
+
+<Callout variant="info" label="Naming">
+
+Quick parenthesis on the naming of my tokens: **it's far from perfect!** Here's a summary of some of the rules I followed for myself:
+
+- For "size-related" token sets, I'd opt for using numerical suffixes with increments of 1 like `1`, `2`, ..., `12`.
+- For tokens that may need a bit more granularity in the future, like color scales, I opted for numerical suffixes with increments of 10. Thus if I ever needed to add a bit more I'd have the ability to do so without _breaking_ anything.
+
+</Callout>
+
+### Lessons learned
+
+As I iterated on the components and developed common patterns, I often had to go back to the drawing board and define new tokens, redefine/refine some other ones, or combine and delete some. This process was particularly tedious for me as:
+
+- Unlike my experience working on a design system in a professional context, I do not have a designer working on this one. I could only rely on _gut feeling_ or _trial and error_ until it felt like I nailed it or defined something that looked great.
+- I imposed a rule on myself: **containing the number of tokens as much as possible**. That was, at times, really hard as I needed to preserve a balance between the "complexity of my design system" and the level of consistency.
+
+The tokens I've defined so far will most likely evolve in the future as I'm expanding the number of components or experimenting with new colors or new ways to define variables. I learned through this project to see them more as a malleable layer of a design system instead of a solid bedrock where everything sits on top.
+
+## Component patterns
+
+As of today, my design system contains only simple components or primitives. All I need is a set of _simple_ pieces that lets me build things faster, with consistency, while still allowing some wiggle room for creativity: _like a Lego kit_. Thus, I optimized this project to preserve a balance of:
+
+- Good developer experience (DX). I want my components to be _useful_ and help me work, experiment, and iterate faster.
+- Beautiful and cohesive design/design language. Thus allowing components to be composed not just on the code side of things but also visually.
+
+I'm dedicating this part to showcasing some patterns and tricks I've come up with to achieve these goals while also making the components of my design system easier to use and maintain. If you're into component DX and composition patterns, this section should scratch an itch ✨.
+
+<Callout variant="info">
+
+In this section, you may question some of my decisions or even not agree with some of them. That's fine. I think there are no 100% right or 100% wrong opinions about component patterns: the context in which we build them and preferences matter.
+
+In my case, keep in mind that I made those decisions because:
+
+- Of the context in which I'm building this design system. I will be the only developer using it and have no other customers/consumers.
+- Because I liked it 😄 or it just made me happy
+
+</Callout>
+
+### Variant driven components
+
+I've always been a big fan of styled components and wanted them to be at the core of this design system. This time, however, I opted for something a bit more opinionated: [@stitches/react](https://github.com/modulz/stitches).
+
+Among the many reasons why I picked this one rather than a more widely adopted library are:
+
+- **[The variant-driven approach](https://ped.ro/writing/variant-driven-components)**. Stitches emphasize the use of _variants_. The set of variants a given component supports **must be predefined**, which means no dynamic props are allowed for styling. I'm a big believer in this pattern when working on a design system. It makes you really _think_ about developer experience and the interface of your components. I did my best to keep the number of variants down and privilege composition and compound components which I will detail later in this article. // PEDRO's blog post!
+- **The support for polymorphism**. Stitches lets you override the tag of a component via a polymorphic `as` prop. I'll showcase some examples of that pattern below.
+- **The advanced Typescript support**. Styled components' variants come with types automatically. There's no extra work needed.
+
+```jsx title=Sample component showcasing the main features of Stitches
+import { styled } from '@stitches/react';
+
+const Block = styled('div', {
+    borderRadius: 8px;
+    height: '50px';
+    width: '100%';
+    display: 'flex';
+    justifyContent: 'center;
+    alignItems: 'center';
+
+    variants: {
+        /* the appearance prop will be automatically typed as 'primary' | 'secondary' */
+        appearance: {
+            'primary': {
+                background: 'blue';
+                color: 'white';
+            },
+            'secondary': {
+                background: 'hotpink';
+                color: 'white';
+            }
+        }
+    }
+
+    /* specifying a default variant will make the appearance prop optional */
+    defaultVariant: {
+        appearance: 'primary';
+    }
+});
+
+
+const App = () => {
+    return (
+        <Block as="section" appearance="secondary">
+            Styled-components
+        </Block>
+    )
+}
+```
+
+When it comes to writing actual styles, I wrote my fair share of spaghetti CSS throughout my career, and I did not want this project to end up the same way. Luckily,** Stitches keeps my styled-components code in check** whether it's pattern-wise (no dynamic props, only variants) or type-wise, and makes me avoid many of the pitfalls I fell into with other styled-components libraries. On top of that, I came up with some custom patterns/rules to further improve the readability and maintainability of my code.
+
+One pattern that I kept getting back to while building my components was relying on **local CSS variables to handle transitions, and hover/focus/active states**.
+
+```jsx title=Button component using local CSS variables
+import { styled } from '@stitches/react';
+
+const StyledButton = styled('button', {
+  /* Initializing local variables first and assigning them default values */
+  background: 'var(--background, white)',
+  color: 'var(--color, black)',
+  boxShadow: 'var(--shadow, none)',
+  opacity: 'var(--opacity, 1)',
+  transform: 'scale(var(--button-scale, 1)) translateZ(0)',
+
+  /* Main styles of the component */
+  padding: 'var(--space-3) var(--space-4)',
+  fontSize: 'var(--font-size-2)',
+  fontWeight: 'var(--font-weight-3)',
+  height: '44px',
+  width: 'max-content',
+  transition: 'background 0.2s, transform 0.2s, color 0.2s, box-shadow 0.3s',
+  borderRadius: 'var(--border-radius-1)',
+
+  /* Update local variables based on state/variant */
+  '&:active': {
+    '--button-scale': 0.95,
+  },
+
+  '&:disabled': {
+    '--background': 'var(--form-input-disabled)',
+    '--color': 'var(--typeface-tertiary)',
+  },
+
+  '&:hover': {
+    '&:not(:disabled)': {
+      '--shadow': 'var(--shadow-hover)',
+    },
+  },
+  '&:focus-visible': {
+    '--shadow': 'var(--shadow-hover)',
+  },
+
+  variants: {
+    variant: {
+      primary: {
+        '--background': 'var(--brand)',
+        '--color': 'var(--typeface-primary)',
+      },
+      secondary: {
+        '--background': 'var(--brand-transparent)',
+        '--color': 'var(--brand)',
+      },
+    },
+  },
+});
+```
+
+You can see in the snippet above that:
+
+- The local variables used in this component sit at the top. This is where I initialize them with default values.
+- Then, I follow up with the main _body_ of the CSS which contains all the main CSS properties.
+- Then, any nested code, variants, selectors, `::before`, or `::after` statements _only_ reassign those CSS variables.
+
+The resulting code is much easier to read and I am less afraid to experiment with more complex CSS code without feeling like I am giving up on maintainability.
+
+<Callout variant="info">
+
+You may notice that I am not leveraging Stitches' own theme and variable system for now. I may eventually give it a try. My original intention was to make my code independent from any framework/library.
+
+</Callout>
+
+### Utility components
+
+Since the objective of this design system was to enable faster work/experimentations, I came up with a set of **utility components**. These components range from:
+
+These components range from:
+
+- `Box`. The primordial component of the design system. It's mainly an empty shell that I use as an _enhanced_ `div` that supports the Stitches `css` prop. It's useful for quickly prototyping without having to edit multiple files.
+
+```jsx title=Box component
+
+import { styled } from '@stitches/react';
+
+const Box = styled('div', {});
+
+/* Usage with `css` prop on the fly */
+
+const App = () => {
+    return (
+        <Box
+            css={{
+                background: 'var(--brand-transparent)';
+                color: 'var(--typeface-primary)';
+                borderRadius: 'var(--border-radius-1)';
+                width: 100,
+                height: 100,
+            }}
+        />
+    )
+}
+```
+
+- `Flex` and `Grid`. These are my **layout utility components**. They aim to quickly create `flex` and `grid` CSS layouts. They come with predefined variants/props to help set some of their unique properties like `alignItems`, `justifyContent`, `gap`, or `columns`. These slowly became life savers in the codebases that use my design system. They allow me to build prototypes with complex layouts in no time.
+
+<DesignSystemFlexGridShowcase />
+
+- `Text`. Keeping anything typography-related throughout any project I have undertaken has always been a challenge. Thus, to solve this issue, I created this utility component. It has dedicated variants for sizes, colors, weights, and neat little utility props like `truncate` or ✨`gradient`✨ which have been lifesavers many times. I appreciate using this component daily and ended up composing many more specific typography components on top of it.
+
+<DesignSystemTextShowcase />
+
+- `VisuallyHidden`. The CSS to visually hide an element is [very hard to remember](https://piccalil.li/quick-tip/visually-hidden/). So I created a component to not have to Google it every so often 😄. It helps me add additional text for assistive technologies to elements can have more context when needed.
+
+### Compound components
+
+I _love_ compound components. I even dedicated three different articles about them 😄 (that are a bit dated now). I believe coming up with a nice set of compound components can significantly improve the DX of a given component.
+
+There were two use cases where I ended up opting for compound components:
+
+1. When, if not split into smaller related components, the prop interface would be overloaded.
+2. When the component could potentially be composed in many ways.
+
+Among some of the components that ended up leveraging a compound components pattern are:
+
+- `Radio`
+
+```jsx
+<Radio.Group name="options" direction="vertical" onChange={...}>
+  <Radio.Item
+    id="option-1"
+    value="option1"
+    aria-label="Option 1"
+    label="Option 1"
+  />
+  <Radio.Item
+    id="option-2"
+    value="option2"
+    aria-label="Option 2"
+    label="Option 2"
+    checked
+  />
+</Radio.Group>
+```
+
+- `Card`
+
+```jsx
+<Card>
+  <Card.Header>Title of the card</Card.Header>
+  <Card.Body>Content of the card</Card.Body>
+</Card>
+```
+
+Some of my compound components are more _restrictive_ than others when it comes to the types of components that can be rendered within them as children. In the case of `Card`, I chose flexibility since I didn't want to "gate" its use. For `Radio`, however, I felt the need to prescribe how to use it, and for that, I built the following little utility:
+
+```js title=isElementOfType utility function
+export function isElementOfType(element, ComponentType): element {
+  return element?.type?.displayName === ComponentType.displayName;
+}
+```
+
+This function lets me filter the components rendered under `Radio` based on the `displayName` of the child:
+
+```jsx {7, 12} title=Using isElementOfType to filter out invalid children
+import RadioItem from './RadioItem';
+
+const RadioGroup = (props) => {
+  const { children, ... } = props;
+
+  const filteredChildren = React.Children.toArray(children).filter((child) =>
+    isElementOfType(child, RadioItem);
+  );
+
+  return (
+    <Flex gap={2} role="radiogroup">
+      {filteredChildren}
+    </Flex>
+  )
+}
+```
+
+### Polymorphism and composition
+
+Using composition results in more abstract components that require fewer props than their primitive counterpart and have a more narrow use case. When done well, they can increase developer velocity and make a design system even easier to use.
+Given the wide range of applications this design system could have, and how _primitive_ its pieces are, I wanted to optimize for composition and extensibility from the start. Luckily for me, picking the `@stiches/react` library proved to be a great choice due to its support for polymorphism through the `as` prop.
+
+The `as` prop allows picking which tag a component renders. I expose it in many of my utility components, like `Text` for example:
+
+```jsx
+// Renders a p tag
+<Text as="p">Hello</Text>
+
+// Renders an h1 tag
+<Text as="h1">Hello</Text>
+```
+
+Not only these components can take any HTML tag in their `as` prop, but I found many use cases where more specifying other components makes perfect sense:
+
+```jsx
+<Card>
+  {/* Card.Body inherits the style, the props and the type of Flex! */}
+  <Card.Body as={Flex} direction="column" gap="2">
+    ...
+  </Card.Body>
+</Card>
+```
+
+The code snippet above showcases the`Card.Body` compound component rendered as a `Flex` component. In this case, not only does `Card.Body` inherits the styles, but **it also inherits the props and the types**! 🤯
+
+It does not stop there! On top of allowing for polymorphism, my styled-components are also built to be composed:
+
+```jsx title=Composed components originating from Text
+const DEFAULT_TAG = 'h1';
+
+const Heading = () => {
+  // Remapping the size prop from Text to a new scale for Heading
+  const headingSize = {
+    1: { '@initial': '4' },
+    2: { '@initial': '5' },
+    3: { '@initial': '6' },
+    4: { '@initial': '7' },
+  };
+
+  // Overriding some styles of Text based on the new size prop of Heading
+  const headingCSS = {
+    1: {
+      fontWeight: 'var(--font-weight-4)',
+      lineHeight: '1.6818',
+      letterSpacing: '0px',
+      marginBottom: '1.45rem',
+    },
+    2: {
+      fontWeight: 'var(--font-weight-4)',
+      lineHeight: '1.6818',
+      letterSpacing: '0px',
+      marginBottom: '1.45rem',
+    },
+    3: {
+      fontWeight: 'var(--font-weight-4)',
+      lineHeight: '1.6818',
+      letterSpacing: '0px',
+      marginBottom: '1.45rem',
+    },
+    4: {
+      fontWeight: 'var(--font-weight-4)',
+      lineHeight: '1.6818',
+      letterSpacing: '0px',
+      marginBottom: '1.45rem',
+    },
+  };
+
+  return (
+    <Text
+      as={DEFAULT_TAG}
+      {...rest}
+      ref={ref}
+      size={headingSize[size]}
+      css={{
+        ...merge(headingCSS[size], props.css),
+      }}
+    />
+  );
+};
+
+// Creating a more abstracted version of Heading
+const H1 = (props) => <Heading {...props} as="h1" size="4" />;
+const H2 = (props) => <Heading {...props} as="h2" size="3" />;
+const H3 = (props) => <Heading {...props} as="h3" size="2" />;
+const H4 = (props) => <Heading {...props} as="h4" size="1" />;
+```
+
+This allows me to create more abstracted and narrow focused components out of the primitives of the design system.
+
+### Make it shine!
+
+The final look and feel of the whole system is, to my eyes, as essential as the DX. I built these pieces not only to build faster but also to _build prettier_. On top of the colors and the little details such as:
+
+- The favicons that render next to <Anchor favicon href="https://twitter.com">Twitter</Anchor> and <Anchor favicon href="https://github.com">Github</Anchor> `Anchor` links.
+- The slight border around cards makes them stand out a bit more.
+- [The programmatic and realistic layered shadow system](https://twitter.com/MaximeHeckel/status/1491809182638432260/photo/1).
+
+I sprinkled some subtle, yet delightful, micro-interactions inspired by some of the work of <Anchor discreet favicon href="https://twitter.com/aaroniker_me">@aaroniker_me</Anchor> in my components:
+
+<DesignSystemMicroInteractionShowcase />
+
+Adding those little details made this project fun and kept me going. Using them on other projects and this blog brings me joy ✨.
+
+## Packaging and shipping
+
+In this last part, I want to focus on the _shipping_ aspect of a design system such as:
+
+- Packaging patterns, and which one I ended up picking.
+- File structure.
+- Bundling and releasing.
+
+### Versioning
+
+_Should you build an individual library?_ _Or have one package per component?_
+These are valid questions when thinking about how your projects will consume your design system.
+
+Since I optimized for simplicity throughout this project, I chose to have one package for my entire design system: `@maximeheckel/design-system`. Thus, I'd only have to ever worry about versioning this one library. However, this came with one major pitfall: **I know had to make my package _three shakable_ so importing one component of my design system would not result in a big increase in bundle size on my projects**.
+
+If you're curious about other versioning/packaging patterns along with their respective advantages and drawbacks I'd recommend checking out [Design System versioning: single library or individual components?](https://bradfrost.com/blog/post/design-system-versioning-single-library-or-individual-components/) from <Anchor discreet favicon href="https://twitter.com/brad_frost">@brad_frost</Anchor>. It's an excellent read, and it helped me through my decision process for the versioning of this project.
+
+<Callout variant="info" label="How do I version?">
+
+- `major` bump when significant a design language change occurs or when a breaking change in the code is shipped.
+- `minor` bump when a new component or new tokens are added to the design system.
+- `patch` bump when some existing components/tokens are updated or when a fix is shipped.
+
+</Callout>
+
+### File structure
+
+When it comes to file structures, I found a lot of inspiration in <Anchor discreet favicon href="https://twitter.com/JoshWComeau">@JoshWComeau</Anchor>'s proposal in one of his latest blog posts titled [Delightful React File/Directory Structure](https://www.joshwcomeau.com/react/file-structure/). Some of his decisions made sense to me and I highly encourage reading it!
+
+### Bundling
+
+For bundling, I picked up [esbuild](https://github.com/evanw/esbuild). I got to play with my fair share of bundlers throughout my career, but nothing comes close to the speed of esbuild. I can bundle my entire design system (excluding Typescript type generation) in barely a second.
+Without having much prior experience with esbuilt itself, I still managed to come up with a working configuration relatively fast:
+
+```js {13-14,25,26-28,35-40,43,44-46} title=My current esbuild config
+const esbuild = require('esbuild');
+const packagejson = require('./package.json');
+const { globPlugin } = require('esbuild-plugin-glob');
+
+const sharedConfig = {
+  loader: {
+    '.tsx': 'tsx',
+    '.ts': 'tsx',
+  },
+  outbase: './src',
+  bundle: true,
+  minify: true,
+  jsxFactory: 'createElement',
+  jsxFragment: 'Fragment',
+  target: ['esnext'],
+  logLevel: 'debug',
+  external: [...Object.keys(packagejson.peerDependencies || {})],
+};
+
+esbuild
+  .build({
+    ...sharedConfig,
+    entryPoints: ['src/index.ts'],
+    outdir: 'dist/cjs',
+    format: 'cjs',
+    banner: {
+      js: "const { createElement, Fragment } = require('react');\n",
+    },
+  })
+  .catch(() => process.exit(1));
+
+esbuild
+  .build({
+    ...sharedConfig,
+    entryPoints: [
+      'src/index.ts',
+      'src/components/**/index.tsx',
+      'src/lib/stitches.config.ts',
+      'src/lib/globalStyles.ts',
+    ],
+    outdir: 'dist/esm',
+    splitting: true,
+    format: 'esm',
+    banner: {
+      js: "import { createElement, Fragment } from 'react';\n",
+    },
+    plugins: [globPlugin()],
+  })
+  .catch(() => process.exit(1));
+```
+
+Here are some of the main takeaways from this config:
+
+- esbuild does not provide any JSX transform feature or plugin [like Babel does](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html). I had to define a `jsxFactory` (L13-14) and `jsxFragment` option as a workaround.
+- On the same note, I also had to add the `react` import/require statements through the `banner` option. It is not the most elegant thing, but it's the only way I could make this package work.
+- I bundled this package in both ESM and CJS format.
+- ESM supports tree-shaking, hence, why you'll see multiple `entryPoints` (L35-40) provided in this section of the config.
+
+<Callout variant="info" label="Types">
+
+Esbuild's only focus is to bundle the code. To generate the type definitions, I had no other choice than to rely directly on `tsc` itself:
+
+```json title=Excerpt of my package.json scripts
+{
+    "scripts": {
+        "build": "node ./esbuild.build.js",
+        ...
+        "postbuild": "yarn ts-types",
+        ...
+        "ts-types": "tsc --emitDeclarationOnly --outDir dist",
+    }
+}
+```
+
+</Callout>
+
+Thanks to this configuration, I had a way to generate a **tree-shakable package** for my design system in seconds. This allowed me to fix to biggest drawback of using a single package: no matter what you'll import from the design system, only what's imported will end up bundled in the consumer project.
+
+```jsx
+// This will make the project's bundle *slightly* heavier
+import { Button } from '@maximeheckel/design-system';
+
+// This will make the project's bundle *much* heavier
+import { Button, Flex, Grid, Icon, Text } from '@maximeheckel/design-system';
+```
+
+### Releasing
+
+For the release process of this project, I opted for a _semi-manual_ approach for now:
+
+- Releases are triggered manually on Github via a [repository dispatch](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#repository_dispatch) event.
+- I select the `branch` and the release type (`major/minor/patch`) based on the versioning rules I established earlier.
+- A Github workflow then starts and will bump the version based on the selected release type and publish the package on [NPM](https://www.npmjs.com/package/@maximeheckel/design-system).
+
+<VideoPlayer
+  src="https://d2xl4m2ghaywko.cloudfront.net/release-design-system.mp4 "
+  controls={true}
+  width={700}
+/>
+
+<Callout variant="info" label="Public scoped packages">
+
+A little tip if, like me, you want to publish a **public scoped package on NPM**: instead of simply running `yarn publish`, run `yarn publish --access public`. This will avoid you having to go to the package settings after every release to set it back to public.
+
+</Callout>
+
+I will most certainly iterate on this whole process very soon:
+
+- I still do not have a proper CI process for this project.
+- I don't even have a Storybook where I can publish and compare different versions of my design system components. This is still on my TODO list.
+- I would love to automate the release process even further using libraries like [Semantic Release](https://semantic-release.gitbook.io/semantic-release/).
+
+This will most likely deserve a standalone blog post 👀 as there's a lot to talk about on this subject alone. In the meantime, you can head out to the [repository of this project](https://github.com/MaximeHeckel/design-system/blob/main/.github/workflows/release.yml) to check out the current release workflow.
+
+## Conclusion
+
+As of writing these words, this project is still a work in progress. **The resulting package is already actively being used on this blog and my upcoming portfolio** (which is yet another massive project I have in progress). There's, however, still _a lot_ left to do before I could publish what I could consider a good `v1.0`! Among the things left are:
+
+- Migrating the rest of the components to `@maximeheckel/design-system`.
+- Providing more primitive components such as `Modal` or `Tabs`.
+- Including a couple of utility React hooks that I use in all my projects like `useDebounce` or `useKeyboardShortcut`.
+- More experimentations with little micro-interactions to provide the best experience to the people visiting my sites. (and that includes you 😄!)
+- Coming up with a great CI process, to visually test my components and avoid regressions: stay tuned for a potential dedicated blog post for this one 👀.
+- Build a dedicated project page for the design system on my portfolio.
+
+Right now, the set of primitive and utility components I have available through my design system is already helping me work faster and build consistent experiences. For more complex components, I'd lean towards using Radix UI as a solid base rather than building them from scratch. Time will tell what UI pieces I will eventually need.
+
+It would be an understatement to qualify this design system as a _daunting task_. I spent on/off a couple of months on it, and it was sometimes frustrating, especially when coming up with the right tokens, but I still had a lot of fun working on this project and the result is worth it! I now have a working personal design system that gives me all the tools and components to build consistent experiences, and I can't wait to see how it will evolve.

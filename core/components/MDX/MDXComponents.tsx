@@ -110,6 +110,22 @@ const FramerMotionArrowListSandpack = dynamic(
   () => import('./Widgets/FramerMotionLayoutAnimations/SandpackArrowList')
 );
 
+const DesignSystemColorTokens = dynamic(
+  () => import('./Widgets/DesignSystem/ColorTokens')
+);
+
+const DesignSystemMicroInteractionShowcase = dynamic(
+  () => import('./Widgets/DesignSystem/MicroInteractionShowcase')
+);
+
+const DesignSystemTextShowcase = dynamic(
+  () => import('./Widgets/DesignSystem/TextShowcase')
+);
+
+const DesignSystemFlexGridShowcase = dynamic(
+  () => import('./Widgets/DesignSystem/FlexGridShowcase')
+);
+
 const customComponents = {
   AnimationTypes,
   ClipboardAnimationDetails,
@@ -139,6 +155,10 @@ const customComponents = {
   FramerMotionLayoutAnimationsTabsLayoutGroup,
   FramerMotionLayoutAnimationListLayoutGroup,
   FramerMotionAdvanceReorderExample,
+  DesignSystemColorTokens,
+  DesignSystemMicroInteractionShowcase,
+  DesignSystemTextShowcase,
+  DesignSystemFlexGridShowcase,
   // Sandpacks
   FramerMotionToastNotificationSandpack,
   FramerMotionTabsSandpack,

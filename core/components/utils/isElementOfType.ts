@@ -10,12 +10,6 @@ export function isElementOfType<P = {}>(
 ): element is React.ReactElement<P> {
   const reactElement = element as React.ReactElement;
 
-  return (
-    reactElement &&
-    reactElement.type &&
-    // @ts-ignore
-    reactElement.type.displayName &&
-    // @ts-ignore
-    reactElement.type.displayName === ComponentType.displayName
-  );
+  // @ts-ignore ts complains about displayName not existing on `type`
+  return reactElement?.type?.displayName === ComponentType.displayName;
 }

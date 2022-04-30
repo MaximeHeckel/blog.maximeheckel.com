@@ -86,7 +86,15 @@ const Tooltip: React.FC<Props> = (props) => {
     }
   };
 
-  const showTooltip = () => {
+  const showTooltip = (event: React.BaseSyntheticEvent) => {
+    let target = event.target;
+
+    if (target.hasAttribute('disabled')) {
+      target = target.parentElement!;
+    }
+
+    target.addEventListener('mouseleave', hideTooltip);
+
     if (tooltipRef.current) {
       tooltipRef.current.setAttribute('aria-hidden', 'false');
       controls.start('hover');

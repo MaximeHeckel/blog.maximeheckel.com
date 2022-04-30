@@ -1,3 +1,4 @@
+import { Box } from '@maximeheckel/design-system';
 import React from 'react';
 import Label from '../Label';
 import { AtSignIcon, EyeIcon, Tick } from './Icons';
@@ -38,36 +39,38 @@ const TextInput = (props: TextInputProps) => {
           {label}
         </Label>
       ) : null}
-      <StyledInput
-        id={id}
-        className={isValid ? 'valid' : ''}
-        disabled={disabled}
-        // TODO cleanup variants: variants != types
-        variant={computedType()}
-        type={computedType()}
-        placeholder={placeholder}
-        value={value}
-        {...rest}
-      />
-      {type === 'email' && (
-        <>
-          <AtSignIcon />
-          <Tick />
-        </>
-      )}
-      {type === 'password' && (
-        <>
-          <button
-            aria-label="Reveal Password"
-            className={showPassword ? 'clicked' : ''}
-            data-testid="reveal-password-button"
-            disabled={disabled}
-            onClick={() => setShowPassword((prev) => !prev)}
-          >
-            <EyeIcon />
-          </button>
-        </>
-      )}
+      <Box css={{ position: 'relative' }}>
+        <StyledInput
+          id={id}
+          className={isValid ? 'valid' : ''}
+          disabled={disabled}
+          // TODO cleanup variants: variants != types
+          variant={computedType()}
+          type={computedType()}
+          placeholder={placeholder}
+          value={value}
+          {...rest}
+        />
+        {type === 'email' && (
+          <>
+            <AtSignIcon />
+            <Tick />
+          </>
+        )}
+        {type === 'password' && (
+          <>
+            <button
+              aria-label="Reveal Password"
+              className={showPassword ? 'clicked' : ''}
+              data-testid="reveal-password-button"
+              disabled={disabled}
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <EyeIcon />
+            </button>
+          </>
+        )}
+      </Box>
     </StyledInputWrapper>
   );
 };

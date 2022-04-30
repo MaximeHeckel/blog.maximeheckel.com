@@ -24,7 +24,7 @@ const Tweet = (props: Props) => {
   const { tweet } = props;
 
   // TODO: There's a race condition happening where the tweet might end up being undefined at first
-  if (!tweet) {
+  if (!tweet || !tweet.author) {
     return null;
   }
 
