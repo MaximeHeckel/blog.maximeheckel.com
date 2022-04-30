@@ -1,97 +1,10 @@
-.maximeheckel-light {
-  --maximeheckel-colors-brand: hsla(var(--palette-blue-50), 100%);
-  --maximeheckel-colors-body: hsla(var(--palette-gray-02), 100%);
-  --maximeheckel-colors-header: hsla(var(--palette-gray-02), 40%);
-  --maximeheckel-colors-emphasis: hsla(var(--palette-blue-50), 5%);
-  --maximeheckel-colors-foreground: hsla(var(--palette-gray-05), 60%);
-  --maximeheckel-colors-danger: hsla(var(--palette-red-55), 100%);
-  --maximeheckel-colors-danger-emphasis: hsla(var(--palette-red-15), 15%);
-  --maximeheckel-colors-warning: hsla(var(--palette-orange-80), 100%);
-  --maximeheckel-colors-warning-emphasis: hsla(var(--palette-orange-45), 15%);
-  --maximeheckel-colors-success: hsl(var(--palette-green-80));
-  --maximeheckel-colors-success-emphasis: hsla(var(--palette-green-45), 15%);
-  --maximeheckel-colors-typeface-primary: hsla(var(--palette-indigo-90), 100%);
-  --maximeheckel-colors-typeface-secondary: hsla(var(--palette-gray-55), 100%);
-  --maximeheckel-colors-typeface-tertiary: hsla(var(--palette-gray-60), 100%);
-  --maximeheckel-colors-typeface-danger: hsla(var(--palette-red-60), 100%);
-
-  --maximeheckel-border-color: var(--maximeheckel-colors-emphasis);
-  --maximeheckel-card-background-color: hsl(var(--palette-gray-01));
-
-  --maximeheckel-form-input-active: var(--maximeheckel-colors-brand);
-  --maximeheckel-form-input-background: hsl(var(--palette-gray-00));
-  --maximeheckel-form-input-disabled: hsl(var(--palette-gray-09));
-  --maximeheckel-form-input-border: hsl(var(--palette-blue-10));
-  --maximeheckel-form-input-focus: hsla(var(--palette-blue-40), 0.55);
-
-  --shadow-color: var(--local-shadow-color, 223deg 5% 80%);
-
-  --code-snippet-background: hsla(var(--palette-gray-03), 0.2);
-  --token-comment: var(--maximeheckel-colors-typeface-tertiary);
-  --token-selector: hsl(var(--palette-indigo-50));
-  --token-symbol: hsl(var(--palette-blue-60));
-  --token-operator: hsl(var(--palette-orange-75));
-  --token-keyword: hsl(var(--palette-blue-50));
-  --token-function: hsl(var(--palette-pink-60));
-  --token-punctuation: hsl(var(--palette-indigo-60));
-}
-
-.maximeheckel-dark {
-  --maximeheckel-colors-brand: hsla(var(--palette-blue-35), 100%);
-  --maximeheckel-colors-body: hsla(var(--palette-gray-90), 100%);
-  --maximeheckel-colors-header: hsla(var(--palette-gray-90), 40%);
-  --maximeheckel-colors-emphasis: hsla(var(--palette-blue-35), 10%);
-  --maximeheckel-colors-foreground: hsla(var(--palette-gray-80), 60%);
-  --maximeheckel-colors-danger: hsla(var(--palette-red-30), 100%);
-  --maximeheckel-colors-danger-emphasis: hsla(var(--palette-red-40), 15%);
-  --maximeheckel-colors-warning: hsla(var(--palette-orange-45), 100%);
-  --maximeheckel-colors-warning-emphasis: hsla(var(--palette-orange-45), 15%);
-  --maximeheckel-colors-success: hsla(var(--palette-green-45), 100%);
-  --maximeheckel-colors-success-emphasis: hsla(var(--palette-green-45), 15%);
-  --maximeheckel-colors-typeface-primary: hsla(var(--palette-indigo-05), 100%);
-  --maximeheckel-colors-typeface-secondary: hsla(var(--palette-gray-35), 100%);
-  --maximeheckel-colors-typeface-tertiary: hsla(var(--palette-gray-20), 100%);
-  --maximeheckel-colors-typeface-danger: hsla(var(--palette-red-20), 100%);
-
-  --maximeheckel-border-color: hsl(var(--palette-gray-80));
-  --maximeheckel-card-background-color: hsl(var(--palette-gray-88));
-
-  --maximeheckel-form-input-active: var(--maximeheckel-colors-brand);
-  --maximeheckel-form-input-background: hsl(var(--palette-gray-100));
-  --maximeheckel-form-input-disabled: hsl(var(--palette-gray-55));
-  --maximeheckel-form-input-border: hsl(var(--palette-gray-60));
-  --maximeheckel-form-input-focus: hsla(var(--palette-blue-50), 1);
-
-  --shadow-color: var(--local-shadow-color, 223deg 5% 1%);
-
-  --code-snippet-background: hsla(var(--palette-gray-85), 0.5);
-  --token-comment: var(--maximeheckel-colors-typeface-tertiary);
-  --token-selector: hsl(var(--palette-indigo-20));
-  --token-symbol: hsl(var(--palette-blue-35));
-  --token-operator: hsl(var(--palette-orange-35));
-  --token-keyword: hsl(var(--palette-blue-30));
-  --token-function: hsl(var(--palette-pink-35));
-  --token-punctuation: hsl(var(--palette-indigo-20));
-}
-
 ::selection {
   background-color: var(--maximeheckel-colors-emphasis);
   color: var(--maximeheckel-colors-brand);
 }
 
-* {
-  box-sizing: border-box;
-}
-*:before {
-  box-sizing: border-box;
-}
-*:after {
-  box-sizing: border-box;
-}
-
 html {
   font: 112.5%/1.45 var(--font-display);
-  overflow-y: scroll;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -109,6 +22,16 @@ body {
   margin: 0;
 }
 
+[hidden],
+[aria-hidden='true'],
+.hidden {
+  display: none;
+}
+
+[aria-hidden='false'] {
+  display: block;
+}
+
 /* TODO Find a way to remove the following */
 /* Patch gif wrapped in figure tag */
 
@@ -122,80 +45,3 @@ img {
 }
 
 /* END Patch gif wrapped in figure tag */
-
-[hidden],
-[aria-hidden='true'],
-.hidden {
-  display: none;
-}
-
-[aria-hidden='false'] {
-  display: block;
-}
-
-.lock-scroll {
-  overflow: hidden !important;
-}
-
-.isCurrent > a {
-  color: var(--maximeheckel-colors-brand) !important;
-}
-
-.token.parameter,
-.token.imports,
-.token.plain,
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-  color: var(--token-comment);
-}
-
-.token.punctuation {
-  color: var(--token-punctuation);
-}
-
-.token.property,
-.token.tag,
-.token.boolean,
-.token.number,
-.token.constant,
-.token.symbol,
-.token.deleted {
-  color: var(--token-symbol);
-}
-
-.token.selector,
-.token.attr-name,
-.token.char,
-.token.builtin,
-.token.number,
-.token.string,
-.token.inserted {
-  color: var(--token-selector);
-}
-
-.token.operator,
-.token.entity,
-.token.url,
-.language-css .style {
-  color: var(--token-operator);
-}
-
-.token.atrule,
-.token.attr-value,
-.token.keyword {
-  color: var(--token-keyword);
-}
-
-.token.function,
-.token.maybe-class-name,
-.token.class-name {
-  color: var(--token-function);
-}
-
-.token.regex,
-.token.important,
-.token.variable {
-  color: var(--token-operator);
-}

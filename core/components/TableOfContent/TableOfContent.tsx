@@ -1,4 +1,4 @@
-import { styled, Anchor } from '@maximeheckel/design-system';
+import { Anchor, Box, styled } from '@maximeheckel/design-system';
 import useProgress from '@theme/hooks/useProgress';
 import useScrollSpy from '@theme/hooks/useScrollSpy';
 import { useReducedMotion, motion } from 'framer-motion';
@@ -138,9 +138,18 @@ const TableOfContent = ({ ids }: TableOfContentProps) => {
         <ul>
           {ids.map((item, index) => {
             return (
-              <motion.li
+              <Box
+                as={motion.li}
                 initial="hide"
-                className={currentActiveIndex === index ? 'isCurrent' : ''}
+                css={
+                  currentActiveIndex === index
+                    ? {
+                        a: {
+                          color: 'var(--maximeheckel-colors-brand)!important',
+                        },
+                      }
+                    : {}
+                }
                 variants={variants}
                 animate="show"
                 transition={{ type: 'spring' }}
@@ -156,7 +165,7 @@ const TableOfContent = ({ ids }: TableOfContentProps) => {
                 >
                   {item.title}
                 </Anchor>
-              </motion.li>
+              </Box>
             );
           })}
         </ul>

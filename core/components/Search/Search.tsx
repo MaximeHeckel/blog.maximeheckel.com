@@ -16,11 +16,7 @@ import {
   SearchResults,
   Result,
 } from './Styles';
-
-const toggleLockScroll = () => {
-  document.documentElement.classList.toggle('lock-scroll');
-  return;
-};
+import useBodyScrollLock from '@theme/hooks/useBodyScrollLock';
 
 type Result = {
   type: 'snippet' | 'blogPost';
@@ -79,11 +75,13 @@ function useIndexItem<T>(
 
 const Search = (props: Props) => {
   const { onClose } = props;
-  const router = useRouter();
 
   const [loading, setLoading] = React.useState(true);
   const [results, setResults] = React.useState<Result[]>([]);
   const [searchQuery, setSearchQuery] = React.useState('');
+
+  useBodyScrollLock();
+  const router = useRouter();
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 250);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -148,9 +146,9 @@ const Search = (props: Props) => {
       inputRef.current.focus();
     }
 
-    toggleLockScroll();
+    // toggleLockScroll();
 
-    return () => toggleLockScroll();
+    // return () => toggleLockScroll();
   }, []);
 
   React.useEffect(() => {
