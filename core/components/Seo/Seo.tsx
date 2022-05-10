@@ -1,4 +1,5 @@
 import { NextSeo, ArticleJsonLd } from 'next-seo';
+import Head from 'next/head';
 import React from 'react';
 import siteConfig from '../../../config/site';
 
@@ -35,7 +36,7 @@ const Seo = ({ title, desc, image, path, date, updated }: Props) => {
     ? new Date(seo.updated).toISOString()
     : '';
   const featuredImage = {
-    url: seo.image,
+    url: `${seo.image}?v1`,
     alt: seo.title,
   };
 
@@ -62,6 +63,13 @@ const Seo = ({ title, desc, image, path, date, updated }: Props) => {
           cardType: 'summary_large_image',
         }}
       />
+      <Head>
+        <meta name="twitter:image" content={featuredImage.url} />
+        <meta name="twitter:image:alt" content={featuredImage.alt} />
+        <meta name="twitter:description" content={seo.description} />
+        <meta property="twitter:image:width" content="1280" />
+        <meta property="twitter:image:height" content="720" />
+      </Head>
       <ArticleJsonLd
         authorName={author}
         dateModified={formattedDate}
