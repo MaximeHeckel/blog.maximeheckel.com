@@ -157,6 +157,14 @@
 
   <url>
     <loc
+      >https://blog.maximeheckel.com/posts/building-a-design-system-from-scratch/</loc
+    >
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc
       >https://blog.maximeheckel.com/posts/building-a-graphql-wrapper-for-the-docker-api-2109f2b9c202/</loc
     >
     <changefreq>daily</changefreq>
