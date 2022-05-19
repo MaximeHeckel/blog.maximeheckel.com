@@ -306,8 +306,6 @@ You may notice that I am not leveraging Stitches' own theme and variable system 
 
 Since the objective of this design system was to enable faster work/experimentations, I came up with a set of **utility components**. These components range from:
 
-These components range from:
-
 - `Box`. The primordial component of the design system. It's mainly an empty shell that I use as an _enhanced_ `div` that supports the Stitches `css` prop. It's useful for quickly prototyping without having to edit multiple files.
 
 ```jsx title=Box component
@@ -530,7 +528,7 @@ In this last part, I want to focus on the _shipping_ aspect of a design system s
 _Should you build an individual library?_ _Or have one package per component?_
 These are valid questions when thinking about how your projects will consume your design system.
 
-Since I optimized for simplicity throughout this project, I chose to have one package for my entire design system: `@maximeheckel/design-system`. Thus, I'd only have to ever worry about versioning this one library. However, this came with one major pitfall: **I know had to make my package _three shakable_ so importing one component of my design system would not result in a big increase in bundle size on my projects**.
+Since I optimized for simplicity throughout this project, I chose to have one package for my entire design system: `@maximeheckel/design-system`. Thus, I'd only have to ever worry about versioning this one library. However, this came with one major pitfall: **I now had to make my package _three shakable_ so importing one component of my design system would not result in a big increase in bundle size on my projects**.
 
 If you're curious about other versioning/packaging patterns along with their respective advantages and drawbacks I'd recommend checking out [Design System versioning: single library or individual components?](https://bradfrost.com/blog/post/design-system-versioning-single-library-or-individual-components/) from <Anchor discreet favicon href="https://twitter.com/brad_frost">@brad_frost</Anchor>. It's an excellent read, and it helped me through my decision process for the versioning of this project.
 
