@@ -1,7 +1,6 @@
-import Card from '@theme/components/Card';
+import { styled, Card } from '@maximeheckel/design-system';
 import Grid from '@theme/components/Grid';
 import { motion } from 'framer-motion';
-import { styled } from '@maximeheckel/design-system';
 import { AnimationCardContent } from './Components';
 
 const setVariableToGlobalStyles = (variable: string, value: string) =>

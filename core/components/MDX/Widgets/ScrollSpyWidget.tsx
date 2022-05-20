@@ -1,5 +1,4 @@
-import { Shadows, styled, Flex } from '@maximeheckel/design-system';
-import Card from '@theme/components/Card';
+import { Shadows, styled, Card, Flex } from '@maximeheckel/design-system';
 import InlineCode from '@theme/components/InlineCode';
 import Range from '@theme/components/Range';
 import { useTheme } from '@theme/context/ThemeContext';

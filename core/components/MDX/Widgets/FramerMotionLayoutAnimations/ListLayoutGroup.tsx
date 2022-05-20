@@ -1,5 +1,4 @@
-import { css, Flex, Icon, Text } from '@maximeheckel/design-system';
-import Card from '@theme/components/Card';
+import { css, Card, Flex, Icon, Text } from '@maximeheckel/design-system';
 import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
 import Pill from '@theme/components/Pill';
 import Switch from '@theme/components/Switch';

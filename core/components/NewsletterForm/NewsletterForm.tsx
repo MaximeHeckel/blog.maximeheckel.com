@@ -1,6 +1,7 @@
 import {
   Anchor,
   Button,
+  Card,
   Flex,
   Text,
   EM,
@@ -11,7 +12,6 @@ import React from 'react';
 import { useMutation } from 'react-query';
 import TextInput from '@theme/components/TextInput';
 import Glow from '@theme/components/Glow';
-import Card from '@theme/components/Card';
 import { NewsletterHeader } from './Icons';
 import { NewsletterFormContent, ErrorMessage } from './Styles';
 import { subscribeCall } from './utils';

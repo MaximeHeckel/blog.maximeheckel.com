@@ -1,6 +1,12 @@
-import { Box, Button, Flex, Icon, Text } from '@maximeheckel/design-system';
+import {
+  Box,
+  Button,
+  Card,
+  Flex,
+  Icon,
+  Text,
+} from '@maximeheckel/design-system';
 import LightDarkSwitcher from '@theme/components/Button/LightDarkSwitcher';
-import Card from '@theme/components/Card';
 import Grid from '@theme/components/Grid';
 import Tooltip from '@theme/components/Tooltip';
 import { useTheme } from '@theme/context/ThemeContext';

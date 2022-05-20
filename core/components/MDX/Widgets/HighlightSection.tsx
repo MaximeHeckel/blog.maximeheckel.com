@@ -1,4 +1,4 @@
-import Card from '@theme/components/Card';
+import { Card } from '@maximeheckel/design-system';
 import InlineCode from '@theme/components/InlineCode';
 import Switch from '@theme/components/Switch';
 import React from 'react';

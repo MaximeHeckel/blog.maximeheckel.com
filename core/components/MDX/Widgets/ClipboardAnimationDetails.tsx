@@ -1,4 +1,4 @@
-import Card from '@theme/components/Card';
+import { Card } from '@maximeheckel/design-system';
 import Grid from '@theme/components/Grid';
 import Label from '@theme/components/Label';
 import Range from '@theme/components/Range';

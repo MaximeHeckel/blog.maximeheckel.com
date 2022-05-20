@@ -1,5 +1,4 @@
-import { Box, Flex } from '@maximeheckel/design-system';
-import Card from '@theme/components/Card';
+import { Box, Card, Flex } from '@maximeheckel/design-system';
 import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
 import Grid from '@theme/components/Grid';
 import React from 'react';

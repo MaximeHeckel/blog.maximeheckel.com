@@ -1,5 +1,4 @@
-import { Box, Flex, Icon } from '@maximeheckel/design-system';
-import Card from '@theme/components/Card';
+import { Box, Card, Flex, Icon } from '@maximeheckel/design-system';
 import Range from '@theme/components/Range';
 import { motion } from 'framer-motion';
 import React from 'react';
