@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   Flex,
+  Grid,
   Icon,
   Text,
   VisuallyHidden,
@@ -18,7 +19,6 @@ import { format } from 'date-fns';
 import { motion, MotionProps } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import Grid from '@theme/components/Grid';
 import Layout from '@theme/layout';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';

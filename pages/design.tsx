@@ -1,6 +1,5 @@
 import Blockquote from '@theme/components/Blockquote';
 import Checkbox from '@theme/components/Checkbox';
-import Grid from '@theme/components/Grid';
 import TextInput from '@theme/components/TextInput';
 import Logo from '@theme/components/Logo';
 import TextArea from '@theme/components/TextArea';
@@ -32,6 +31,7 @@ import {
   Card,
   EM,
   Flex,
+  Grid,
   H1,
   H2,
   Heading,

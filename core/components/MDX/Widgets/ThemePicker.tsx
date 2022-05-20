@@ -1,5 +1,4 @@
-import { styled, Card } from '@maximeheckel/design-system';
-import Grid from '@theme/components/Grid';
+import { styled, Card, Grid } from '@maximeheckel/design-system';
 import { motion } from 'framer-motion';
 import { AnimationCardContent } from './Components';
 

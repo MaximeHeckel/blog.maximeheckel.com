@@ -1,4 +1,4 @@
-import Text from '@theme/components/Typography';
+import { Text } from '@maximeheckel/design-system';
 
 const Label = (props: React.LabelHTMLAttributes<HTMLLabelElement>) => {
   const { children, ...rest } = props;

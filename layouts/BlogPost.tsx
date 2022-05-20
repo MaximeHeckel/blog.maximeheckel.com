@@ -1,10 +1,9 @@
-import { css, Anchor, Flex, Text } from '@maximeheckel/design-system';
+import { css, Anchor, Flex, Grid, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import React from 'react';
 import siteConfig from 'config/site';
 import Layout from '@theme/layout';
-import Grid from '@theme/components/Grid';
 import TableOfContent from '@theme/components/TableOfContent';
 import Seo from '@theme/components/Seo';
 import Hero from '@theme/components/Hero';

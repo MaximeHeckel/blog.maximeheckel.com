@@ -1,11 +1,10 @@
-import { css, Flex, Text } from '@maximeheckel/design-system';
+import { css, Flex, Grid, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import React from 'react';
 import Layout from '@theme/layout';
 import Seo from '@theme/components/Seo';
 import Pill from '@theme/components/Pill';
 import { Snippet } from 'types/post';
-import Grid from '@theme/components/Grid';
 import Hero from '@theme/components/Hero';
 
 interface Props {

@@ -1,5 +1,4 @@
-import { Box, Card, Flex } from '@maximeheckel/design-system';
-import Grid from '@theme/components/Grid';
+import { Box, Card, Flex, Grid } from '@maximeheckel/design-system';
 import Switch from '@theme/components/Switch';
 import { motion } from 'framer-motion';
 import React from 'react';

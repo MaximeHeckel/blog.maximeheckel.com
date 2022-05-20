@@ -1,4 +1,4 @@
-import Text from '@theme/components/Typography';
+import { Text } from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { fixTruncate, HeaderTitleWrapper } from './Styles';
 import { HeaderTitleProps } from './types';

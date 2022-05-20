@@ -1,5 +1,4 @@
-import { Card } from '@maximeheckel/design-system';
-import Grid from '@theme/components/Grid';
+import { Card, Grid } from '@maximeheckel/design-system';
 import Label from '@theme/components/Label';
 import Range from '@theme/components/Range';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
