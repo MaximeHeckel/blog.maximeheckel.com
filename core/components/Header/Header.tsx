@@ -1,5 +1,4 @@
-import { Flex } from '@maximeheckel/design-system';
-import Grid from '@theme/components/Grid';
+import { Flex, Grid } from '@maximeheckel/design-system';
 import Logo from '@theme/components/Logo';
 import Tooltip from '@theme/components/Tooltip';
 import useKeyboardShortcut from '@theme/hooks/useKeyboardShortcut';
@@ -21,9 +20,9 @@ import { HeaderProps } from './types';
 
 // TODO Abstract these out
 const CommandCenterButton = dynamic(
-  () => import('../Button/CommandCenterButton')
+  () => import('../Buttons/CommandCenterButton')
 );
-const LightDarkSwitcher = dynamic(() => import('../Button/LightDarkSwitcher'));
+const LightDarkSwitcher = dynamic(() => import('../Buttons/LightDarkSwitcher'));
 const Search = dynamic(() => import('../Search'));
 
 const headerVariants = {

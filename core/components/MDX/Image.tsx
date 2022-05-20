@@ -1,6 +1,5 @@
-import Text from '@theme/components/Typography';
+import { styled, Text } from '@maximeheckel/design-system';
 import { loader } from 'lib/next-image-loader';
-import { styled } from '@maximeheckel/design-system';
 import NextImage, { ImageProps } from 'next/image';
 
 const StyledFigure = styled('figure', {

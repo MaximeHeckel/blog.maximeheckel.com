@@ -1,5 +1,4 @@
-import { styled, Card } from '@maximeheckel/design-system';
-import Text from '@theme/components/Typography';
+import { styled, Card, Text } from '@maximeheckel/design-system';
 
 export const NewsletterFormContent = styled(Card.Body, {
   variants: {

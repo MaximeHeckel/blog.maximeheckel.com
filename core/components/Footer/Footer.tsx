@@ -2,11 +2,11 @@ import {
   styled,
   Anchor,
   Box,
+  Grid,
   Text,
   EM,
   Flex,
 } from '@maximeheckel/design-system';
-import Grid from '@theme/components/Grid';
 import Logo from '@theme/components/Logo';
 import Link from 'next/link';
 

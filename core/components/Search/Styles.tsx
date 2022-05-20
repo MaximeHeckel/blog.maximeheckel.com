@@ -1,6 +1,5 @@
-import Text from '@theme/components/Typography';
 import { motion } from 'framer-motion';
-import { Shadows, styled } from '@maximeheckel/design-system';
+import { Shadows, styled, Text } from '@maximeheckel/design-system';
 import { HEIGHT, MAX_HEIGHT } from './constants';
 
 export const Result = styled(motion.li, {
