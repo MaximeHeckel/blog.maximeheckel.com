@@ -5,6 +5,7 @@ import {
   Anchor,
   Box,
   Button,
+  Card,
   Flex,
   Icon,
   Text,
@@ -18,7 +19,6 @@ import { motion, MotionProps } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Grid from '@theme/components/Grid';
-import Card from '@theme/components/Card';
 import Layout from '@theme/layout';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';

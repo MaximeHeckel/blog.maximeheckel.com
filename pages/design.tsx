@@ -1,5 +1,4 @@
 import Blockquote from '@theme/components/Blockquote';
-import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
 import Grid from '@theme/components/Grid';
 import TextInput from '@theme/components/TextInput';
@@ -30,6 +29,7 @@ import {
   Anchor,
   Box,
   Button,
+  Card,
   EM,
   Flex,
   H1,

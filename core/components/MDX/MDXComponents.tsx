@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import {
   Anchor,
   Button,
+  Card,
   Text,
   EM,
   H2,
@@ -12,7 +13,6 @@ import {
 } from '@maximeheckel/design-system';
 import Blockquote from '@theme/components/Blockquote';
 import Callout from '@theme/components/Callout';
-import Card from '@theme/components/Card';
 import Code from '@theme/components/Code';
 import InlineCode from '@theme/components/InlineCode';
 import List from '@theme/components/List';

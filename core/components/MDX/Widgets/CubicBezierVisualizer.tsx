@@ -1,5 +1,4 @@
-import { css, Button, Flex, Icon } from '@maximeheckel/design-system';
-import Card from '@theme/components/Card';
+import { css, Button, Card, Flex, Icon } from '@maximeheckel/design-system';
 import Grid from '@theme/components/Grid';
 import Switch from '@theme/components/Switch';
 import Tooltip from '@theme/components/Tooltip';

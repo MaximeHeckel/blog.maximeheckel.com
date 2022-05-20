@@ -1,5 +1,4 @@
-import Card from '@theme/components/Card';
-import { styled } from '@maximeheckel/design-system';
+import { Card, styled } from '@maximeheckel/design-system';
 import Highlight, { Prism, defaultProps } from 'prism-react-renderer';
 import CopyToClipboardButton from '../Button/CopyToClipboardButton';
 import { CodeBlockProps, HighlightedCodeTextProps } from './types';

@@ -1,9 +1,8 @@
 import LineChart from '@theme/components/Charts/LineChart';
-import Card from '@theme/components/Card';
 import { ParentSize } from '@visx/responsive';
 import { motion } from 'framer-motion';
 import { GraphQLClient, gql } from 'graphql-request';
-import { styled } from '@maximeheckel/design-system';
+import { styled, Card } from '@maximeheckel/design-system';
 import { useQuery } from 'react-query';
 
 const GraphLabel = styled('div', {

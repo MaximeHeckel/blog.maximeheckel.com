@@ -1,5 +1,4 @@
-import { Button, Flex, Icon } from '@maximeheckel/design-system';
-import Card from '@theme/components/Card';
+import { Button, Card, Flex, Icon } from '@maximeheckel/design-system';
 import Range from '@theme/components/Range';
 import Tooltip from '@theme/components/Tooltip';
 import useInterval from '@theme/hooks/useInterval';

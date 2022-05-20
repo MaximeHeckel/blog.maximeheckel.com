@@ -1,8 +1,7 @@
-import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
 import Grid from '@theme/components/Grid';
 import { motion } from 'framer-motion';
-import { styled } from '@maximeheckel/design-system';
+import { styled, Card } from '@maximeheckel/design-system';
 import React from 'react';
 import { AnimationCardContent } from './Components';
 

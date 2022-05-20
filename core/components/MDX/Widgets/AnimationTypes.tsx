@@ -1,4 +1,4 @@
-import Card from '@theme/components/Card';
+import { Card } from '@maximeheckel/design-system';
 import Label from '@theme/components/Label';
 import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
 import Range from '@theme/components/Range';

@@ -1,7 +1,13 @@
-import { Button, Flex, H3, Icon } from '@maximeheckel/design-system';
-import DesignSystemCard from '@theme/components/Card';
+import {
+  Button,
+  Card as DesignSystemCard,
+  Flex,
+  H3,
+  Icon,
+  Shadows,
+  styled,
+} from '@maximeheckel/design-system';
 import { motion } from 'framer-motion';
-import { Shadows, styled } from '@maximeheckel/design-system';
 import React from 'react';
 import { AnimationCardContent } from './Components';
 

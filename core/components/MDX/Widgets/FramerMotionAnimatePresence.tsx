@@ -1,5 +1,9 @@
-import { Button, Flex, Icon } from '@maximeheckel/design-system';
-import DesignSystemCard from '@theme/components/Card';
+import {
+  Button,
+  Card as DesignSystemCard,
+  Flex,
+  Icon,
+} from '@maximeheckel/design-system';
 import InlineCode from '@theme/components/InlineCode';
 import { AnimatePresence, motion } from 'framer-motion';
 import { styled } from '@maximeheckel/design-system';

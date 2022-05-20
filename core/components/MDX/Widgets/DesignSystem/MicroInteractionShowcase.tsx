@@ -1,6 +1,5 @@
-import { Flex, Text } from '@maximeheckel/design-system';
+import { Card, Flex, Text } from '@maximeheckel/design-system';
 import CommandCenterButton from '@theme/components/Button/CommandCenterButton';
-import Card from '@theme/components/Card';
 import Checkbox from '@theme/components/Checkbox';
 import Grid from '@theme/components/Grid';
 import Switch from '@theme/components/Switch';
