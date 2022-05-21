@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Flex,
+  List,
   Text,
   EM,
   H3,
@@ -15,7 +16,6 @@ import Glow from '@theme/components/Glow';
 import { NewsletterHeader } from './Icons';
 import { NewsletterFormContent, ErrorMessage } from './Styles';
 import { subscribeCall } from './utils';
-import List from '../List';
 
 const textOutVariant = {
   checked: {

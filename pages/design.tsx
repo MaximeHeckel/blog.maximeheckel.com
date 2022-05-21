@@ -1,10 +1,30 @@
-import Blockquote from '@theme/components/Blockquote';
+import {
+  useTheme,
+  styled,
+  css,
+  Anchor,
+  Blockquote,
+  Box,
+  Button,
+  Card,
+  Callout,
+  EM,
+  Flex,
+  Grid,
+  H1,
+  H2,
+  Heading,
+  Icon,
+  List,
+  Pill,
+  Strong,
+  Text,
+} from '@maximeheckel/design-system';
 import Checkbox from '@theme/components/Checkbox';
 import TextInput from '@theme/components/TextInput';
 import Logo from '@theme/components/Logo';
 import TextArea from '@theme/components/TextArea';
 import Glow from '@theme/components/Glow';
-import List from '@theme/components/List';
 import CodeBlock from '@theme/components/Code/CodeBlock';
 import InlineCode from '@theme/components/InlineCode';
 import Radio from '@theme/components/Radio';
@@ -19,26 +39,6 @@ import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
-import {
-  useTheme,
-  styled,
-  css,
-  Anchor,
-  Box,
-  Button,
-  Card,
-  Callout,
-  EM,
-  Flex,
-  Grid,
-  H1,
-  H2,
-  Heading,
-  Icon,
-  Pill,
-  Strong,
-  Text,
-} from '@maximeheckel/design-system';
 
 const Sandpack = dynamic(() => import('@theme/components/Code/Sandpack'));
 const Search = dynamic(() => import('@theme/components/Search'), {
