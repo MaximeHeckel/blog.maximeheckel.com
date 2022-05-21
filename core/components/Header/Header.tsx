@@ -1,7 +1,6 @@
-import { Flex, Grid } from '@maximeheckel/design-system';
+import { Flex, Grid, useKeyboardShortcut } from '@maximeheckel/design-system';
 import Logo from '@theme/components/Logo';
 import Tooltip from '@theme/components/Tooltip';
-import useKeyboardShortcut from '@theme/hooks/useKeyboardShortcut';
 import useProgress from '@theme/hooks/useProgress';
 import useScrollCounter from '@theme/hooks/useScrollCounter';
 import { AnimatePresence } from 'framer-motion';

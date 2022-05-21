@@ -6,10 +6,10 @@ import {
   Grid,
   Icon,
   Text,
+  useTheme,
 } from '@maximeheckel/design-system';
 import LightDarkSwitcher from '@theme/components/Buttons/LightDarkSwitcher';
 import Tooltip from '@theme/components/Tooltip';
-import { useTheme } from '@theme/context/ThemeContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 

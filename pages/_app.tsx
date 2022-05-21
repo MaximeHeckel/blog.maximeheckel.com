@@ -1,8 +1,7 @@
 import Head from 'next/head';
 import { AppProps } from 'next/app';
-import { globalStyles } from '@maximeheckel/design-system';
+import { globalStyles, ThemeProvider } from '@maximeheckel/design-system';
 import { DefaultSeo } from '@theme/components/Seo';
-import RootWrapper from '@theme/context/ThemeProvider';
 import 'styles/global.css';
 import 'styles/font.css';
 
@@ -10,7 +9,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   globalStyles();
 
   return (
-    <RootWrapper>
+    <ThemeProvider>
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta
@@ -20,7 +19,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       </Head>
       <DefaultSeo />
       <Component {...pageProps} />
-    </RootWrapper>
+    </ThemeProvider>
   );
 };
 export default App;

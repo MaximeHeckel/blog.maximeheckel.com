@@ -1,6 +1,5 @@
-import { css, Card, Flex, Icon, Text } from '@maximeheckel/design-system';
+import { css, Card, Flex, Icon, Pill, Text } from '@maximeheckel/design-system';
 import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
-import Pill from '@theme/components/Pill';
 import Switch from '@theme/components/Switch';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import React from 'react';

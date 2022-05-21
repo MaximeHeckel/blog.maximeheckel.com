@@ -1,7 +1,12 @@
-import { Shadows, styled, Card, Flex } from '@maximeheckel/design-system';
+import {
+  Shadows,
+  styled,
+  Card,
+  Flex,
+  useTheme,
+} from '@maximeheckel/design-system';
 import InlineCode from '@theme/components/InlineCode';
 import Range from '@theme/components/Range';
-import { useTheme } from '@theme/context/ThemeContext';
 import useScrollSpy from '@theme/hooks/useScrollSpy';
 import React from 'react';
 import { AnimationCardContent, Form, HighlightedValue } from './Components';

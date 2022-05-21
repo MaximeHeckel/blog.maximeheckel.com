@@ -4,7 +4,9 @@ import dynamic from 'next/dynamic';
 import {
   Anchor,
   Button,
+  Callout,
   Card,
+  Pill,
   Text,
   EM,
   H2,
@@ -12,11 +14,9 @@ import {
   Strong,
 } from '@maximeheckel/design-system';
 import Blockquote from '@theme/components/Blockquote';
-import Callout from '@theme/components/Callout';
 import Code from '@theme/components/Code';
 import InlineCode from '@theme/components/InlineCode';
 import List from '@theme/components/List';
-import Pill from '@theme/components/Pill';
 import VideoPlayer from '@theme/components/VideoPlayer';
 
 // MDX only components

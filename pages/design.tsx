@@ -4,11 +4,9 @@ import TextInput from '@theme/components/TextInput';
 import Logo from '@theme/components/Logo';
 import TextArea from '@theme/components/TextArea';
 import Glow from '@theme/components/Glow';
-import Callout from '@theme/components/Callout';
 import List from '@theme/components/List';
 import CodeBlock from '@theme/components/Code/CodeBlock';
 import InlineCode from '@theme/components/InlineCode';
-import Pill from '@theme/components/Pill';
 import Radio from '@theme/components/Radio';
 import Range from '@theme/components/Range';
 import Seo from '@theme/components/Seo';
@@ -21,14 +19,15 @@ import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
-import { useTheme } from '@theme/context/ThemeContext';
 import {
+  useTheme,
   styled,
   css,
   Anchor,
   Box,
   Button,
   Card,
+  Callout,
   EM,
   Flex,
   Grid,
@@ -36,6 +35,7 @@ import {
   H2,
   Heading,
   Icon,
+  Pill,
   Strong,
   Text,
 } from '@maximeheckel/design-system';
