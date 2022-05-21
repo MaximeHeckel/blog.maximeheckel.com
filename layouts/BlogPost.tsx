@@ -1,4 +1,11 @@
-import { css, Anchor, Flex, Grid, Text } from '@maximeheckel/design-system';
+import {
+  css,
+  Anchor,
+  Flex,
+  Grid,
+  Pill,
+  Text,
+} from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import React from 'react';
@@ -8,7 +15,6 @@ import TableOfContent from '@theme/components/TableOfContent';
 import Seo from '@theme/components/Seo';
 import Hero from '@theme/components/Hero';
 import WebmentionCount from '@theme/components/Webmentions/WebmentionCount';
-import Pill from '@theme/components/Pill';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
 

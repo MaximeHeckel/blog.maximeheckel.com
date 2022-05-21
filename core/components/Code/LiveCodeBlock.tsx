@@ -1,4 +1,3 @@
-import Pill from '@theme/components/Pill';
 import {
   motion,
   useAnimation,
@@ -7,7 +6,7 @@ import {
   AnimatePresence,
   LayoutGroup,
 } from 'framer-motion';
-import { styled } from '@maximeheckel/design-system';
+import { styled, Pill } from '@maximeheckel/design-system';
 import { PrismTheme } from 'prism-react-renderer';
 import React from 'react';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live';

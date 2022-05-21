@@ -1,6 +1,5 @@
+import { styled, useTheme } from '@maximeheckel/design-system';
 import React from 'react';
-import { useTheme } from '@theme/context/ThemeContext';
-import { styled } from '@maximeheckel/design-system';
 
 interface Props {
   poster?: string;

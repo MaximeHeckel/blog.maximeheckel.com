@@ -1,4 +1,4 @@
-import { ThemeContext } from '@theme/context/ThemeContext';
+import { ThemeContext } from '@maximeheckel/design-system';
 import { fireEvent, render } from '@testing-library/react';
 import preloadAll from 'jest-next-dynamic';
 import React from 'react';
