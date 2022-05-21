@@ -1,11 +1,15 @@
-import { Flex, Icon, useTheme } from '@maximeheckel/design-system';
-import Label from '@theme/components/Label';
+import {
+  Flex,
+  Icon,
+  Label,
+  useDebouncedValue,
+  useTheme,
+} from '@maximeheckel/design-system';
 import FocusTrap from 'focus-trap-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { createPortal } from 'react-dom';
-import useDebouncedValue from '../../hooks/useDebouncedValue';
 import { CommandCenterStatic } from './CommandCenterStatic';
 import { HEIGHT, MAX_HEIGHT } from './constants';
 import {

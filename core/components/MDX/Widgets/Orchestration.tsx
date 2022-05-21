@@ -1,17 +1,15 @@
-import { Card } from '@maximeheckel/design-system';
-import Range from '@theme/components/Range';
+import { Card, Range, useDebouncedValue } from '@maximeheckel/design-system';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { AnimationCardContent, Form, HighlightedValue } from './Components';
-import { useDebounce } from './utils';
 
 const Orchestration = () => {
   const [key, setKey] = React.useState(0);
   const [delayChildren, setDelayChildren] = React.useState(0.5);
   const [staggerChildren, setStaggerChildren] = React.useState(0.5);
 
-  const debouncedDelay = useDebounce(delayChildren, 500);
-  const debouncedStagger = useDebounce(staggerChildren, 500);
+  const debouncedDelay = useDebouncedValue(delayChildren, 500);
+  const debouncedStagger = useDebouncedValue(staggerChildren, 500);
 
   const boxVariants = {
     out: {

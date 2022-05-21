@@ -5,8 +5,8 @@ import {
   Flex,
   Grid,
   Icon,
+  Switch,
 } from '@maximeheckel/design-system';
-import Switch from '@theme/components/Switch';
 import Tooltip from '@theme/components/Tooltip';
 import useInterval from '@theme/hooks/useInterval';
 import { Drag } from '@visx/drag';

@@ -17,20 +17,20 @@ import {
   Icon,
   List,
   Pill,
+  Range,
   Strong,
   Text,
+  TextInput,
+  TextArea,
+  Checkbox,
+  Switch,
+  Radio,
 } from '@maximeheckel/design-system';
-import Checkbox from '@theme/components/Checkbox';
-import TextInput from '@theme/components/TextInput';
 import Logo from '@theme/components/Logo';
-import TextArea from '@theme/components/TextArea';
 import Glow from '@theme/components/Glow';
 import CodeBlock from '@theme/components/Code/CodeBlock';
 import InlineCode from '@theme/components/InlineCode';
-import Radio from '@theme/components/Radio';
-import Range from '@theme/components/Range';
 import Seo from '@theme/components/Seo';
-import Switch from '@theme/components/Switch';
 import Tooltip from '@theme/components/Tooltip';
 import Tweet from '@theme/components/Tweet';
 import Layout from '@theme/layout';

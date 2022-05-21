@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^0.10.10",
-    "@maximeheckel/design-system": "^0.2.3",
+    "@maximeheckel/design-system": "^0.3.0",
     "@visx/clip-path": "1.6.1",
     "@visx/curve": "1.6.1",
     "@visx/drag": "2.1.2",

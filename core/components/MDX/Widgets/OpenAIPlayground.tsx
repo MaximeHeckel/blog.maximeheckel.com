@@ -1,6 +1,10 @@
-import { Button, Card, Flex } from '@maximeheckel/design-system';
-import Switch from '@theme/components/Switch';
-import TextArea from '@theme/components/TextArea';
+import {
+  Button,
+  Card,
+  Flex,
+  Switch,
+  TextArea,
+} from '@maximeheckel/design-system';
 import React from 'react';
 
 type PromptStatus = 'submitting' | 'idle';

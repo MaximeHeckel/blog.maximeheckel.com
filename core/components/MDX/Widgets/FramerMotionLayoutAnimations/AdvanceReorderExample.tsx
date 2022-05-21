@@ -1,5 +1,11 @@
-import { Button, Card, Flex, Icon, Text } from '@maximeheckel/design-system';
-import Checkbox from '@theme/components/Checkbox';
+import {
+  Button,
+  Card,
+  Checkbox,
+  Flex,
+  Icon,
+  Text,
+} from '@maximeheckel/design-system';
 import Tooltip from '@theme/components/Tooltip';
 import { AnimatePresence, LayoutGroup, motion, Reorder } from 'framer-motion';
 import { css, styled } from '@maximeheckel/design-system';
