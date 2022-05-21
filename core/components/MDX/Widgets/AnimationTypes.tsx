@@ -1,7 +1,10 @@
-import { Card } from '@maximeheckel/design-system';
-import Label from '@theme/components/Label';
+import {
+  Card,
+  Label,
+  Range,
+  useDebouncedValue,
+} from '@maximeheckel/design-system';
 import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
-import Range from '@theme/components/Range';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -12,7 +15,6 @@ import {
   TransitionGridWrapper,
   Wrapper,
 } from './Components';
-import { useDebounce } from './utils';
 
 const AnimationTypes = () => {
   const [ref, inView] = useInView();
@@ -24,10 +26,10 @@ const AnimationTypes = () => {
   const [countSpring, setCountSpring] = React.useState(0);
   const [countInertia, setCountInertia] = React.useState(0);
 
-  const debouncedMass = useDebounce(mass, 300);
-  const debouncedStiffness = useDebounce(stiffness, 300);
-  const debouncedDamping = useDebounce(damping, 300);
-  const debouncedVelocity = useDebounce(velocity, 300);
+  const debouncedMass = useDebouncedValue(mass, 300);
+  const debouncedStiffness = useDebouncedValue(stiffness, 300);
+  const debouncedDamping = useDebouncedValue(damping, 300);
+  const debouncedVelocity = useDebouncedValue(velocity, 300);
 
   React.useEffect(() => {
     setCountSpring(countSpring + 1);

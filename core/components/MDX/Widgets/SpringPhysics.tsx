@@ -1,5 +1,4 @@
-import { Card } from '@maximeheckel/design-system';
-import Range from '@theme/components/Range';
+import { Card, Range } from '@maximeheckel/design-system';
 import { curveBasisOpen } from '@visx/curve';
 import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';

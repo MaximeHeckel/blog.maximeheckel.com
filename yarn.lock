@@ -887,10 +887,10 @@
   dependencies:
     "@lezer/common" "^0.15.0"
 
-"@maximeheckel/design-system@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@maximeheckel/design-system/-/design-system-0.2.3.tgz#193b24198b86c24b85885b73fe0d69fb07a29bf8"
-  integrity sha512-hE00FwcFR6D2aWBg2jGtUUOnkDiUXBoarlmoZk+1XlA1DbNCV5Wj6mAnJ79P7AznjbxcFzcGcCodZ6Nfcwl5zA==
+"@maximeheckel/design-system@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@maximeheckel/design-system/-/design-system-0.3.0.tgz#f45bde6b66032affd684b82006ba36b4e014ae94"
+  integrity sha512-zIE/kbbJJLFQlpE25Ap0msMp91TRRjaSS/VlgLZ5e53PGv71qhhspTGB5ydzznlE4it0J5QZdbDYnQUB12uW9Q==
   dependencies:
     "@stitches/react" "^1.2.7"
 

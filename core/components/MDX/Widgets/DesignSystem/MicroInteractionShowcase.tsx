@@ -1,8 +1,13 @@
-import { Card, Flex, Grid, Text } from '@maximeheckel/design-system';
+import {
+  Card,
+  Checkbox,
+  Flex,
+  Grid,
+  Switch,
+  Text,
+  TextInput,
+} from '@maximeheckel/design-system';
 import CommandCenterButton from '@theme/components/Buttons/CommandCenterButton';
-import Checkbox from '@theme/components/Checkbox';
-import Switch from '@theme/components/Switch';
-import TextInput from '@theme/components/TextInput';
 import React from 'react';
 
 const MicroInteractionShowcase = () => {

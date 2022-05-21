@@ -1,5 +1,4 @@
-import { Button, Card, Flex, Icon } from '@maximeheckel/design-system';
-import Range from '@theme/components/Range';
+import { Button, Card, Flex, Icon, Range } from '@maximeheckel/design-system';
 import Tooltip from '@theme/components/Tooltip';
 import useInterval from '@theme/hooks/useInterval';
 import { Group } from '@visx/group';

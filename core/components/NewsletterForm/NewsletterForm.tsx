@@ -5,13 +5,13 @@ import {
   Flex,
   List,
   Text,
+  TextInput,
   EM,
   H3,
 } from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
 import { useMutation } from 'react-query';
-import TextInput from '@theme/components/TextInput';
 import Glow from '@theme/components/Glow';
 import { NewsletterHeader } from './Icons';
 import { NewsletterFormContent, ErrorMessage } from './Styles';

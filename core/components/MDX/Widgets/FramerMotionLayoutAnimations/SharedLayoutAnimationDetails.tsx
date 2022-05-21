@@ -1,5 +1,4 @@
-import { Box, Card, Flex, Icon } from '@maximeheckel/design-system';
-import Range from '@theme/components/Range';
+import { Box, Card, Flex, Icon, Range } from '@maximeheckel/design-system';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { HighlightedValue } from '../Components';

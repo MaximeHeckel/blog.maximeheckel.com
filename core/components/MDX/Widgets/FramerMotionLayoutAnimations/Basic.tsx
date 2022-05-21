@@ -1,7 +1,5 @@
-import { Box, Card, Flex } from '@maximeheckel/design-system';
+import { Box, Card, Flex, Radio, Switch } from '@maximeheckel/design-system';
 import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
-import Radio from '@theme/components/Radio';
-import Switch from '@theme/components/Switch';
 import { motion } from 'framer-motion';
 import React from 'react';
 

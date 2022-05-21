@@ -1,6 +1,5 @@
-import { Card, Flex } from '@maximeheckel/design-system';
+import { Card, Flex, Range } from '@maximeheckel/design-system';
 import InlineCode from '@theme/components/InlineCode';
-import Range from '@theme/components/Range';
 import React from 'react';
 import { AnimationCardContent, Form, HighlightedValue } from './Components';
 
