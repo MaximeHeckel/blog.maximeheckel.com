@@ -15,6 +15,7 @@ import {
   H2,
   Heading,
   Icon,
+  InlineCode,
   List,
   Pill,
   Range,
@@ -29,7 +30,6 @@ import {
 import Logo from '@theme/components/Logo';
 import Glow from '@theme/components/Glow';
 import CodeBlock from '@theme/components/Code/CodeBlock';
-import InlineCode from '@theme/components/InlineCode';
 import Seo from '@theme/components/Seo';
 import Tooltip from '@theme/components/Tooltip';
 import Tweet from '@theme/components/Tweet';
