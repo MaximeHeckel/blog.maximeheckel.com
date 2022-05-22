@@ -3,10 +3,10 @@ import {
   Card as DesignSystemCard,
   Flex,
   Icon,
+  InlineCode,
+  styled,
 } from '@maximeheckel/design-system';
-import InlineCode from '@theme/components/InlineCode';
 import { AnimatePresence, motion } from 'framer-motion';
-import { styled } from '@maximeheckel/design-system';
 import React from 'react';
 import { AnimationCardContent, TransitionGridWrapper } from './Components';
 

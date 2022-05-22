@@ -1,5 +1,4 @@
-import { Card, Switch } from '@maximeheckel/design-system';
-import InlineCode from '@theme/components/InlineCode';
+import { Card, InlineCode, Switch } from '@maximeheckel/design-system';
 import React from 'react';
 
 const HighlightSection = () => {

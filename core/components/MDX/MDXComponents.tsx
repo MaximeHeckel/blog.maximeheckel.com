@@ -7,6 +7,7 @@ import {
   Button,
   Callout,
   Card,
+  InlineCode,
   List,
   Pill,
   Text,
@@ -16,7 +17,6 @@ import {
   Strong,
 } from '@maximeheckel/design-system';
 import Code from '@theme/components/Code';
-import InlineCode from '@theme/components/InlineCode';
 import VideoPlayer from '@theme/components/VideoPlayer';
 
 // MDX only components

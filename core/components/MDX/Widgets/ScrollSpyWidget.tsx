@@ -3,10 +3,10 @@ import {
   styled,
   Card,
   Flex,
+  InlineCode,
   Range,
   useTheme,
 } from '@maximeheckel/design-system';
-import InlineCode from '@theme/components/InlineCode';
 import useScrollSpy from '@theme/hooks/useScrollSpy';
 import React from 'react';
 import { AnimationCardContent, Form, HighlightedValue } from './Components';
