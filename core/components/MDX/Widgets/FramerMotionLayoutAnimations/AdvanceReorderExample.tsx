@@ -5,8 +5,8 @@ import {
   Flex,
   Icon,
   Text,
+  Tooltip,
 } from '@maximeheckel/design-system';
-import Tooltip from '@theme/components/Tooltip';
 import { AnimatePresence, LayoutGroup, motion, Reorder } from 'framer-motion';
 import { css, styled } from '@maximeheckel/design-system';
 import React from 'react';
@@ -100,7 +100,7 @@ const AdvanceReorderExample = () => {
             >
               Add item
             </Button>
-            <Tooltip id="tooltip-reset-list" tooltipText="Reset task list">
+            <Tooltip id="tooltip-reset-list" content="Reset task list">
               <Button
                 variant="icon"
                 onClick={() => setItems(ITEMS)}

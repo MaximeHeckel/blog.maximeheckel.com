@@ -1,6 +1,6 @@
-import { Button } from '@maximeheckel/design-system';
-import Tooltip from '@theme/components/Tooltip';
-import { motion, MotionProps, useMotionValue } from 'framer-motion';
+import { Button, Tooltip } from '@maximeheckel/design-system';
+import { motion, useMotionValue } from 'framer-motion';
+import React from 'react';
 
 interface Props {
   onClick: () => void;
@@ -22,11 +22,11 @@ const CommandCenterButton = (props: Props) => {
   return (
     <Tooltip
       id="commandCenterTooltip"
-      tooltipText="Show command center"
-      tooltipVisuallyHiddenText={`Opens a modal to allow you to quickly search for the content of this
-    blog and access links to my portfolio, Twitter account, and email.`}
+      content="Show command center"
+      visuallyHiddenText={`Opens a modal to allow you to quickly search for the content of this
+      // blog and access links to my portfolio, Twitter account, and email.`}
     >
-      <Button<MotionProps>
+      <Button
         as={motion.button}
         variant="icon"
         data-testid="command-center"

@@ -6,10 +6,10 @@ import {
   Grid,
   Icon,
   Text,
+  Tooltip,
   useTheme,
 } from '@maximeheckel/design-system';
 import LightDarkSwitcher from '@theme/components/Buttons/LightDarkSwitcher';
-import Tooltip from '@theme/components/Tooltip';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 
@@ -166,22 +166,23 @@ const ColorGrid = (props) => {
       <AnimatePresence>
         {/* @ts-ignore */}
         {colorScale.map((shade, index) => (
-          <Tooltip id={shade.color} key={shade.color} tooltipText={shade.color}>
-            <motion.div
-              variants={colorVariants}
-              layout="position"
-              initial="out"
-              animate="in"
-              exit="out"
-              transition={{
-                duration: 0.5,
-                delay: step === 1 ? 1 + index / 10 : 2,
-                layout: {
-                  delay: 0.2,
-                },
-              }}
-            >
-              <Flex alignItems="start" direction="column" gap="2">
+          <motion.div
+            key={shade.color}
+            variants={colorVariants}
+            layout="position"
+            initial="out"
+            animate="in"
+            exit="out"
+            transition={{
+              duration: 0.5,
+              delay: step === 1 ? 1 + index / 10 : 2,
+              layout: {
+                delay: 0.2,
+              },
+            }}
+          >
+            <Flex alignItems="start" direction="column" gap="2">
+              <Tooltip id={shade.color} content={shade.color}>
                 <Box
                   css={{
                     flexShrink: 0,
@@ -192,25 +193,25 @@ const ColorGrid = (props) => {
                     border: '2px solid var(--maximeheckel-border-color)',
                   }}
                 />
-                {step === 2 ? (
-                  <motion.div
-                    layout="position"
-                    initial="out"
-                    animate="in"
-                    exit="out"
-                    variants={colorVariants}
-                    transition={{
-                      delay: 3,
-                    }}
-                  >
-                    <Text family="mono" size="1">
-                      {shade.label}
-                    </Text>
-                  </motion.div>
-                ) : null}
-              </Flex>
-            </motion.div>
-          </Tooltip>
+              </Tooltip>
+              {step === 2 ? (
+                <motion.div
+                  layout="position"
+                  initial="out"
+                  animate="in"
+                  exit="out"
+                  variants={colorVariants}
+                  transition={{
+                    delay: 3,
+                  }}
+                >
+                  <Text family="mono" size="1">
+                    {shade.label}
+                  </Text>
+                </motion.div>
+              ) : null}
+            </Flex>
+          </motion.div>
         ))}
       </AnimatePresence>
     </Grid>
@@ -259,7 +260,7 @@ const ColorTokens = () => {
           </Box>
           <Flex css={{ width: '100%' }} justifyContent="space-between">
             <Flex gap="3">
-              <Tooltip id="prev-state" tooltipText="Previous Step">
+              <Tooltip id="prev-state" content="Previous Step">
                 <Button
                   aria-label="Previous Step"
                   aria-describedby="prev-state"
@@ -269,7 +270,7 @@ const ColorTokens = () => {
                   onClick={() => setStep((prev) => prev - 1)}
                 />
               </Tooltip>
-              <Tooltip id="next-step" tooltipText="Next Step">
+              <Tooltip id="next-step" content="Next Step">
                 <Button
                   aria-label="Next Step"
                   aria-describedby="next-step"

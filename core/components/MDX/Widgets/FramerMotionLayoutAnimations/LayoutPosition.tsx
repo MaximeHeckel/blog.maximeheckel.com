@@ -7,9 +7,9 @@ import {
   Icon,
   Pill,
   Switch,
+  Tooltip,
 } from '@maximeheckel/design-system';
 import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
-import Tooltip from '@theme/components/Tooltip';
 import { motion } from 'framer-motion';
 import React from 'react';
 
@@ -110,7 +110,7 @@ const LayoutPosition = () => {
             onChange={() => setPosition((prev) => !prev)}
           />
 
-          <Tooltip id="reset-tooltip" tooltipText="Reset">
+          <Tooltip id="reset-tooltip" content="Reset">
             <Button
               aria-label="Reset"
               aria-describedby="reset-tooltip"

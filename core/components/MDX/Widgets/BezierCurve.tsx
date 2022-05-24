@@ -1,5 +1,11 @@
-import { Button, Card, Flex, Icon, Range } from '@maximeheckel/design-system';
-import Tooltip from '@theme/components/Tooltip';
+import {
+  Button,
+  Card,
+  Flex,
+  Icon,
+  Range,
+  Tooltip,
+} from '@maximeheckel/design-system';
 import useInterval from '@theme/hooks/useInterval';
 import { Group } from '@visx/group';
 import { ParentSize } from '@visx/responsive';
@@ -588,7 +594,7 @@ const Chart = (props: ChartProps) => {
         />
       </Flex>
       <Flex gap={4} justifyContent="center">
-        <Tooltip id="playpauseButton" tooltipText={paused ? 'Play' : 'Pause'}>
+        <Tooltip id="playpauseButton" content={paused ? 'Play' : 'Pause'}>
           <Button
             aria-label={paused ? 'Play' : 'Pause'}
             aria-describedby="playpauseButton"
@@ -597,7 +603,7 @@ const Chart = (props: ChartProps) => {
             onClick={() => setPaused((prev) => !prev)}
           />
         </Tooltip>
-        <Tooltip id="repeatButton" tooltipText="Repeat">
+        <Tooltip id="repeatButton" content="Repeat">
           <Button
             aria-label="Repeat"
             aria-describedby="repeatButton"

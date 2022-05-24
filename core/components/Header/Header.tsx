@@ -1,6 +1,10 @@
-import { Flex, Grid, useKeyboardShortcut } from '@maximeheckel/design-system';
+import {
+  Flex,
+  Grid,
+  Tooltip,
+  useKeyboardShortcut,
+} from '@maximeheckel/design-system';
 import Logo from '@theme/components/Logo';
-import Tooltip from '@theme/components/Tooltip';
 import useProgress from '@theme/hooks/useProgress';
 import useScrollCounter from '@theme/hooks/useScrollCounter';
 import { AnimatePresence } from 'framer-motion';
@@ -83,16 +87,18 @@ const Header = (props: HeaderProps) => {
             className={fixTruncate()}
           >
             <Flex className={fixTruncate()}>
-              <Tooltip id="hometooltip" tooltipText="Home">
-                <Link href="/">
-                  <a
-                    aria-label="Home"
-                    aria-describedby="hometooltip"
-                    data-testid="header-logo"
-                  >
-                    <Logo alt="Logo" size={44} />
-                  </a>
-                </Link>
+              <Tooltip id="hometooltip" content="Home">
+                <span>
+                  <Link href="/">
+                    <a
+                      aria-label="Home"
+                      aria-describedby="hometooltip"
+                      data-testid="header-logo"
+                    >
+                      <Logo alt="Logo" size={44} />
+                    </a>
+                  </Link>
+                </span>
               </Tooltip>
               {title ? <HeaderTitle text={title} /> : null}
             </Flex>
