@@ -113,9 +113,7 @@ const Header = (props: HeaderProps) => {
         </Grid>
         {showProgressBarOnMobile ? (
           <HeaderProgressBar
-            style={{
-              scaleX: readingProgress,
-            }}
+            css={{ '--progress': `${readingProgress * 100}%` }}
           />
         ) : null}
       </HeaderWrapper>

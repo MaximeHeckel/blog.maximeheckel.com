@@ -32,17 +32,27 @@ export const HeaderTitleWrapper = styled('div', {
   },
 });
 
-export const HeaderProgressBar = styled(motion.div, {
+export const HeaderProgressBar = styled('div', {
   '@media (min-width: 700px)': {
     display: 'none',
   },
 
-  position: 'absolute',
-  bottom: '0px',
-  transformOrigin: 'left',
-  height: '2px',
-  backgroundColor: 'var(--maximeheckel-colors-typeface-tertiary)',
   width: '100%',
+  background: 'transparent',
+  position: 'relative',
+  height: 1,
+
+  '&:after': {
+    content: '',
+    position: 'absolute',
+    top: -2,
+    left: 0,
+    background: 'var(--maximeheckel-colors-typeface-tertiary)',
+    transition: 'width 0.5s',
+    willChange: 'width',
+    height: 2,
+    width: 'var(--progress)',
+  },
 });
 
 export const HeaderPadding = styled('div', {
