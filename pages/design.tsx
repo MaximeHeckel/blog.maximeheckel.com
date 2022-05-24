@@ -23,6 +23,7 @@ import {
   Text,
   TextInput,
   TextArea,
+  Tooltip,
   Checkbox,
   Switch,
   Radio,
@@ -31,7 +32,6 @@ import Logo from '@theme/components/Logo';
 import Glow from '@theme/components/Glow';
 import CodeBlock from '@theme/components/Code/CodeBlock';
 import Seo from '@theme/components/Seo';
-import Tooltip from '@theme/components/Tooltip';
 import Tweet from '@theme/components/Tweet';
 import Layout from '@theme/layout';
 import { AnimatePresence } from 'framer-motion';
@@ -173,7 +173,7 @@ export default function Design(props: {
           <H2>Colors</H2>
           <Grid gap={3}>
             Brand:
-            <Tooltip id="brand" tooltipText="--brand">
+            <Tooltip id="brand" content="--brand">
               <Box
                 as="section"
                 css={{
@@ -186,7 +186,7 @@ export default function Design(props: {
               />
             </Tooltip>
             Background:
-            <Tooltip id="background" tooltipText="--background">
+            <Tooltip id="background" content="--background">
               <Box
                 as="section"
                 css={{
@@ -199,7 +199,7 @@ export default function Design(props: {
               />
             </Tooltip>
             Foreground:
-            <Tooltip id="foreground" tooltipText="--foreground">
+            <Tooltip id="foreground" content="--foreground">
               <Box
                 as="section"
                 css={{
@@ -213,7 +213,7 @@ export default function Design(props: {
             </Tooltip>
             Typeface:
             <Grid gap={3} css={{ gridTemplateColumns: 'repeat(3, 44px)' }}>
-              <Tooltip id="typeface-primary" tooltipText="--typeface-primary">
+              <Tooltip id="typeface-primary" content="--typeface-primary">
                 <Box
                   as="section"
                   css={{
@@ -225,10 +225,7 @@ export default function Design(props: {
                   }}
                 />
               </Tooltip>
-              <Tooltip
-                id="typeface-secondary"
-                tooltipText="--typeface-secondary"
-              >
+              <Tooltip id="typeface-secondary" content="--typeface-secondary">
                 <Box
                   as="section"
                   css={{
@@ -240,7 +237,7 @@ export default function Design(props: {
                   }}
                 />
               </Tooltip>
-              <Tooltip id="typeface-tertiary" tooltipText="--typeface-teriary">
+              <Tooltip id="typeface-tertiary" content="--typeface-teriary">
                 <Box
                   as="section"
                   css={{
@@ -275,7 +272,7 @@ export default function Design(props: {
                   <Tooltip
                     id={`${paletteItem}-${shade}`}
                     key={`${paletteItem}-${shade}`}
-                    tooltipText={`--palette-${paletteItem}-${shade}`}
+                    content={`--palette-${paletteItem}-${shade}`}
                   >
                     <Box
                       as="section"
@@ -943,8 +940,8 @@ they can change the world, are the ones who do.`}
           <H2>Tooltip</H2>
           <Tooltip
             id="exampletooltip"
-            tooltipText="@MaximeHeckel"
-            tooltipVisuallyHiddenText="Follow Me on Twitter"
+            content="@MaximeHeckel"
+            visuallyHiddenText="Follow Me on Twitter"
           >
             <Flex
               alignItems="center"

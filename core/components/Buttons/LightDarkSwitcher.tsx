@@ -1,5 +1,4 @@
-import { useTheme, Button } from '@maximeheckel/design-system';
-import Tooltip from '@theme/components/Tooltip';
+import { useTheme, Button, Tooltip } from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 
 const LightDarkSwitcher = () => {
@@ -34,8 +33,8 @@ const LightDarkSwitcher = () => {
   return (
     <Tooltip
       id="lightDarkSwitcherTooltip"
-      tooltipText={theme.dark ? 'Activate light mode' : 'Activate dark mode'}
-      tooltipVisuallyHiddenText="Toggles between light and dark mode."
+      content={theme.dark ? 'Activate light mode' : 'Activate dark mode'}
+      visuallyHiddenText="Toggles between light and dark mode."
     >
       <Button
         as={motion.button}
