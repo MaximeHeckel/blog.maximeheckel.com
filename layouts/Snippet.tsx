@@ -1,4 +1,4 @@
-import { css, Flex, Grid, Pill, Text } from '@maximeheckel/design-system';
+import { Box, css, Flex, Grid, Pill, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import React from 'react';
 import Layout from '@theme/layout';
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const contentClass = css({
-  padding: '20px 0px',
+  padding: 'var(--space-5) 0px',
   gridColumn: '2',
   color: 'var(--maximeheckel-colors-typeface-secondary)',
 
@@ -68,7 +68,7 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
               </Flex>
             </Hero.Info>
           </Hero>
-          <div className={contentClass()}>{children}</div>
+          <Box className={contentClass()}>{children}</Box>
         </Grid>
       </article>
     </Layout>

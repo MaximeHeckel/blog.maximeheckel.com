@@ -1,6 +1,7 @@
 import {
   css,
   Anchor,
+  Box,
   Flex,
   Grid,
   Pill,
@@ -48,7 +49,7 @@ interface Props {
 }
 
 const contentClass = css({
-  padding: '20px 0px',
+  padding: 'var(--space-5) 0px',
   gridColumn: '2',
   color: 'var(--maximeheckel-colors-typeface-secondary)',
 
@@ -114,15 +115,13 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
       <article className="h-entry">
         <Grid columns="small" gapX={4}>
           <Hero>
-            <div
-              style={{ marginBottom: '24px', fontSize: 'var(--font-size-2)' }}
-            >
+            <Box css={{ marginBottom: '24px', fontSize: 'var(--font-size-2)' }}>
               <Link href="/" passHref>
                 <Anchor arrow="left" data-testid="home-link" discreet>
                   Home
                 </Anchor>
               </Link>
-            </div>
+            </Box>
             <Hero.Title
               className="p-name"
               data-testid={`project-title-${title}`}
@@ -162,7 +161,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
             {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
           </Hero>
           <TableOfContent ids={ids} />
-          <div className={contentClass()}>{children}</div>
+          <Box className={contentClass()}>{children}</Box>
         </Grid>
         <Signature title={title} url={postUrl} />
         <WebmentionBlogData date={date} postUrl={postUrl} subtitle={subtitle} />
