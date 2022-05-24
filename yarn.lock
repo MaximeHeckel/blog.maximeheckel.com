@@ -894,10 +894,10 @@
   dependencies:
     "@lezer/common" "^0.15.0"
 
-"@maximeheckel/design-system@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@maximeheckel/design-system/-/design-system-0.4.1.tgz#c8efb7278dfab02fb112196be26fd84578f68f3b"
-  integrity sha512-uIFtpxn6reeYd7MP7MBg7l0CcVuawdZ8lWKE1xj60Whl05wN8neou+4JOO1NxGM1ngX0TG/oam9HpJ1AoBAQrA==
+"@maximeheckel/design-system@^0.4.3":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@maximeheckel/design-system/-/design-system-0.4.3.tgz#2552cc0cea28aef6c34e391eb75f53a179ec857b"
+  integrity sha512-Agvu4tuguXRaQg11JPp5Vj3PtOD1MGHZA5JGqtFJlgqmVVA77LSTkelbfHIG/JN+hjBsbOOf5GjUslABfdGzYA==
   dependencies:
     "@radix-ui/react-tooltip" "^0.1.7"
     "@stitches/react" "^1.2.7"
