@@ -12,7 +12,7 @@ const GraphLabel = styled('div', {
 });
 
 const endpoint = 'https://graphql.fauna.com/graphql';
-const { NEXT_PUBLIC_FAUNADB_SECRET: secret } = process.env;
+const secret = process.env.NEXT_PUBLIC_FAUNADB_SECRET;
 
 const graphQLClient = new GraphQLClient(endpoint, {
   headers: {
