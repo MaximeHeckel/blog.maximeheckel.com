@@ -37,7 +37,7 @@
     "@visx/group": "1.6.1",
     "@visx/responsive": "1.6.1",
     "@visx/scale": "1.6.1",
-    "@visx/shape": "1.6.1",
+    "@visx/shape": "2.11.1",
     "@visx/tooltip": "1.6.1",
     "chalk": "4.1.1",
     "d3-array": "2.12.0",
