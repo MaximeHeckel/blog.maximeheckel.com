@@ -59,37 +59,35 @@ const VaporwaveThreejsSandpack = (props: any) => {
   const [ref, inView] = useInView();
   const { tier, loading: tierLoading } = useGPUTier();
 
-  if (tierLoading) {
-    return <div className={placeholder()} />;
-  }
-
-  const editorOnly = !inView;
   const autorun = tier > 1;
 
   return (
     <div ref={ref}>
-      <Sandpack
-        autorun={autorun}
-        editorOnly={editorOnly}
-        template="vanilla"
-        dependencies={{
-          three: '0.134.0',
-        }}
-        files={{
-          '/src/index.js': {
-            // @ts-ignore
-            code: SCRIPTS[script],
-          },
-          '/index.html': {
-            code: htmlSandpack,
-            hidden: true,
-          },
-          '/styles.css': {
-            code: cssSandpack,
-            hidden: true,
-          },
-        }}
-      />
+      {inView && !tierLoading ? (
+        <Sandpack
+          autorun={autorun}
+          template="vanilla"
+          dependencies={{
+            three: '0.134.0',
+          }}
+          files={{
+            '/src/index.js': {
+              // @ts-ignore
+              code: SCRIPTS[script],
+            },
+            '/index.html': {
+              code: htmlSandpack,
+              hidden: true,
+            },
+            '/styles.css': {
+              code: cssSandpack,
+              hidden: true,
+            },
+          }}
+        />
+      ) : (
+        <div className={placeholder()} />
+      )}
     </div>
   );
 };

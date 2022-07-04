@@ -5,24 +5,20 @@ import {
   SandpackLayout,
   SandpackPredefinedTemplate,
 } from '@codesandbox/sandpack-react';
-import '@codesandbox/sandpack-react/dist/index.css';
 import { Shadows, styled } from '@maximeheckel/design-system';
 import setupFiles from './SandpackSetupFiles';
-// import setupFiles from './SandpackSetupFiles';
 
 // Default Theme
 const theme = {
-  palette: {
-    activeText: 'var(--maximeheckel-colors-brand)',
-    defaultText: 'var(--maximeheckel-colors-typeface-secondary)',
-    inactiveText: 'unset',
-    // inactiveText: 'var(--maximeheckel-border-color)',
-    activeBackground: 'var(--maximeheckel-colors-emphasis)',
-    // defaultBackground: 'var(--maximeheckel-card-background-color)',
-    defaultBackground: 'unset',
+  colors: {
+    hover: 'var(--maximeheckel-colors-brand)',
+    clickable: 'var(--maximeheckel-colors-typeface-secondary)',
     accent: 'var(--maximeheckel-colors-brand)',
-    errorBackground: 'var(--maximeheckel-colors-body)',
-    errorForeground: 'var(--maximeheckel-colors-danger)',
+    errorSurface: 'var(--maximeheckel-colors-danger-emphasis)',
+    error: 'var(--maximeheckel-colors-danger)',
+    surface3: 'var(--maximeheckel-colors-emphasis)',
+    surface2: 'var(--maximeheckel-border-color)',
+    surface1: 'var(--code-snippet-background)',
   },
   syntax: {
     plain: 'var(--token-comment)',
@@ -37,10 +33,10 @@ const theme = {
     static: 'var(--token-comment)',
     string: 'var(--token-selector)',
   },
-  typography: {
-    bodyFont: 'var(--font-display)',
-    monoFont: 'var(--font-mono)',
-    fontSize: '14px',
+  font: {
+    body: 'var(--font-display)',
+    mono: 'var(--font-mono)',
+    size: '14px',
     lineHeight: '26px',
   },
 };
@@ -56,15 +52,12 @@ const defaultEditorOptions = {
 const SandpackWrapper = styled('div', {
   '.sp-layout': {
     position: 'relative',
-    marginBottom: '32px',
+    marginBottom: '2.25rem',
     borderRadius: 'var(--border-radius-2)',
-    border: '1px solid var(--maximeheckel-border-color)',
-    shadow: Shadows[1],
-
+    boxShadow: Shadows[1],
     '@media (max-width: 750px)': {
       display: 'block',
     },
-
     '@media (max-width: 1200px)': {
       /**
        * Make it fullbleed!
@@ -76,7 +69,6 @@ const SandpackWrapper = styled('div', {
       marginRight: '-50vw',
       borderRadius: '0px',
     },
-
     '@media (min-width: 1200px)': {
       position: 'relative',
       width: 'calc(100% + 200px)',
@@ -84,42 +76,18 @@ const SandpackWrapper = styled('div', {
       marginRight: '-100px',
     },
   },
-
-  '.sp-navigator,.sp-tabs-scrollable-container': {
-    background: 'var(--code-snippet-background)',
+  '.cm-gutterElement': {
+    fontSize: '12px',
+    userSelect: 'none',
+    opacity: '1',
+    color: 'var(--maximeheckel-colors-typeface-tertiary)',
   },
-
-  '.sp-preview-container': {
-    background: 'var(--maximeheckel-colors-foreground)',
-    backdropFilter: 'blur(6px)',
-  },
-
-  '.sp-cm': {
-    padding: '2px 0',
-  },
-
-  '.sp-button': {
+  '.button': {
     backgroundColor: 'var(--maximeheckel-colors-body)!important',
     cursor: 'pointer !important',
     '&:hover': {
       backgroundColor: 'var(--maximeheckel-colors-body)!important',
     },
-  },
-
-  '.sp-icon,.sp-icon-standalone': {
-    color: 'var(--maximeheckel-colors-typeface-secondary) !important',
-
-    svg: {
-      fill: 'currentColor',
-    },
-  },
-
-  '.cm-gutters': {
-    background: 'var(--code-snippet-background)',
-  },
-
-  '.cm-scroller': {
-    background: 'var(--code-snippet-background)',
   },
 });
 
@@ -162,26 +130,30 @@ const Sandpack = (props: SandpackProps) => {
     vue: '',
     vue3: '',
     svelte: '',
+    solid: '',
   };
 
   return (
     <SandpackWrapper>
       <SandpackProvider
         template={template}
+        theme={theme}
+        files={{
+          ...files,
+          ...defaultFilesByTemplate[template],
+        }}
         customSetup={{
-          files: {
-            ...files,
-            ...defaultFilesByTemplate[template],
-          },
           dependencies: dependencies || {},
         }}
-        autorun={autorun}
+        options={{
+          autorun,
+        }}
       >
-        <SandpackLayout theme={theme}>
+        <SandpackLayout>
           {!editorOnly ? (
             <SandpackPreview
               showNavigator={defaultEditorOptions.showNavigator}
-              customStyle={{
+              style={{
                 height: defaultEditorOptions.editorHeight,
                 flexGrow: previewPart,
                 flexShrink: previewPart,
@@ -192,7 +164,7 @@ const Sandpack = (props: SandpackProps) => {
           {!renderOnly ? (
             <SandpackCodeEditor
               {...defaultEditorOptions}
-              customStyle={{
+              style={{
                 height: defaultEditorOptions.editorHeight,
                 flexGrow: editorPart,
                 flexShrink: editorPart,
