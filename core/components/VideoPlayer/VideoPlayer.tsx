@@ -1,10 +1,12 @@
 import { styled, useTheme } from '@maximeheckel/design-system';
 import React from 'react';
 
-interface Props {
+interface VideoPlayerProps {
+  autoPlay?: boolean;
   poster?: string;
   controls?: boolean;
   loop?: boolean;
+  muted?: boolean;
   width?: number;
   height?: number;
   src: string;
@@ -30,8 +32,8 @@ const getDisplayedPoster = (poster: string, dark: boolean) => {
   return `/static/posters/${poster}_light.png`;
 };
 
-const VideoPlayer = (props: Props) => {
-  const { controls, loop, width, height, poster, src } = props;
+const VideoPlayer = (props: VideoPlayerProps) => {
+  const { autoPlay, controls, loop, muted, width, height, poster, src } = props;
   const { dark } = useTheme();
   const [currentPoster, setCurrentPoster] = React.useState<string | undefined>(
     undefined
@@ -50,11 +52,13 @@ const VideoPlayer = (props: Props) => {
   return (
     <Wrapper>
       <video
+        autoPlay={autoPlay}
         poster={currentPoster}
         width={width}
         height={height}
         controls={controls}
         loop={loop || false}
+        muted={muted}
       >
         <source src={src} type="video/mp4" />
       </video>

@@ -25,6 +25,6 @@ export interface CodeBlockProps {
 
 export interface HighlightedCodeTextProps {
   codeString: string;
-  language: Language;
+  language: Language | 'glsl';
   highlightLine?: (index: number) => boolean;
 }

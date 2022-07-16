@@ -421,6 +421,14 @@
 
   <url>
     <loc
+      >https://blog.maximeheckel.com/posts/the-study-of-shaders-with-react-three-fiber/</loc
+    >
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc
       >https://blog.maximeheckel.com/posts/using-flow-generics-to-type-generic-react-components-22dd642634d8/</loc
     >
     <changefreq>daily</changefreq>
