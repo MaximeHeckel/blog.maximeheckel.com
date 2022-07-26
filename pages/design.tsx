@@ -1034,8 +1034,6 @@ function sayHi(name) {
             template="react"
             dependencies={{
               'framer-motion': '5.2.1',
-              react: '17.0.2',
-              'react-dom': '17.0.2',
             }}
             files={{
               '/App.js': {
@@ -1043,13 +1041,6 @@ function sayHi(name) {
               },
               '/WavingHand.js': {
                 code: WavingHandCode,
-              },
-              '/styles.css': {
-                code: `
-                  body: {
-                    color: var(--maximeheckel-colors-brand);
-                  }
-                `,
               },
             }}
           />

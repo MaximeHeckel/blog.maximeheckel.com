@@ -126,6 +126,14 @@ const DesignSystemFlexGridShowcase = dynamic(
   () => import('./Widgets/DesignSystem/FlexGridShowcase')
 );
 
+const FragmentShaderVisualizer = dynamic(
+  () => import('./Widgets/ShaderReactThreeFiber/FragmentShaderVisualizer')
+);
+
+const R3FShaderSandpack = dynamic(
+  () => import('./Widgets/ShaderReactThreeFiber/Sandpack')
+);
+
 const customComponents = {
   AnimationTypes,
   ClipboardAnimationDetails,
@@ -159,11 +167,13 @@ const customComponents = {
   DesignSystemMicroInteractionShowcase,
   DesignSystemTextShowcase,
   DesignSystemFlexGridShowcase,
+  FragmentShaderVisualizer,
   // Sandpacks
   FramerMotionToastNotificationSandpack,
   FramerMotionTabsSandpack,
   FramerMotionArrowListSandpack,
   VaporwaveThreejsSandpacks,
+  R3FShaderSandpack,
 };
 
 const MDXComponents = {

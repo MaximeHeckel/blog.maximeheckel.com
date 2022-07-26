@@ -1,0 +1,647 @@
+---
+title: 'The Study of Shaders with React Three Fiber'
+subtitle: A complete guide on how to use shaders with React Three Fiber, work with uniforms and varyings, and build dynamic, interactive and composable materials with them through 8 unique 3D scenes.
+date: '2022-07-26T08:00:00.000Z'
+updated: '2022-07-26T08:00:00.000Z'
+categories: []
+keywords:
+  [
+    three.js,
+    react three fiber,
+    shader,
+    fragment,
+    vertex,
+    noise,
+    geometry,
+    material,
+    layer,
+    3d,
+    webgl,
+    javascript,
+    animation,
+    scene,
+    camera,
+    renderer,
+    lights,
+    mesh,
+    meshes,
+  ]
+slug: the-study-of-shaders-with-react-three-fiber
+type: 'blogPost'
+featured: true
+colorFeatured: 'linear-gradient(90deg,#A79FFD -10%, #E3BEE9 40%, #F4A89A 70%)'
+fontFeatured: '#E8E8FD'
+---
+
+When writing my **first Three.js scene from start to finish** in [Building a Vaporwave scene with Three.js](/posts/vaporwave-3d-scene-with-threejs/), I felt an immense sense of achievement. However, all I really did in this project was glue a couple of PNGs and maps I drew on Figma onto a plane and make the scene move. I'm being hard on myself here, I know 😅. At that point, I barely scratched the surface of the possibilities of creative coding on the web.
+
+Around the same time, as I was looking for inspiration for my next Three.js challenge, I kept finding gorgeous 3D scenes like this one:
+
+<VideoPlayer
+  src="https://d2xl4m2ghaywko.cloudfront.net/shader-moving-plane.mp4"
+  autoPlay
+  muted
+  loop
+  controls={true}
+  width={700}
+  height={595}
+/>
+
+I had no clue how to build such dynamic meshes or make my geometries move, and my materials change colors. A few Google searches later: **I got introduced to the concept of shaders** that make scenes like the one above possible, and I wanted to know everything about them. However, shaders are _incredibly difficult_. Thus, I spent the past few weeks studying them, learned new techniques, created [_dozens_ of scenes](https://r3f.maximeheckel.com) from scratch, and hit as many roadblocks.
+
+In this article, you'll find **everything I learned about shaders** during my experimentations, from how they work and **use them with React Three Fiber** to making them **dynamic** and **interactive** ✨. I included some of _my own scenes/shaders_ as examples, as well as all the resources I used myself and tips on making your shaders composable and reusable.
+
+<Callout variant="info">
+
+👉 This article is not a guided tutorial! The objective here is to provide a high overview of what shaders are, how to use them, and some examples of what you can achieve with them. Just enough to give you that little push to explore on your own.
+
+Rest assured that you'll find links and references to all the resources I used to get to where I am today 😄.
+
+</Callout>
+
+<Callout variant="info">
+
+The GLSL code in the demos will be displayed as _strings_ as it was easier to make that work with React Three Fiber on Sandpack.
+
+To learn more on how to import `.glsl` files in your React project, check out [glslify-loader](https://github.com/glslify/glslify-loader).
+
+</Callout>
+
+## Shaders in React Three Fiber
+
+Before jumping into the world of shaders and what they are, I want to introduce their use case. In Three.js and React Three Fiber, a 3D object is called a _Mesh_. And there's one thing you need to know and remember about meshes:
+
+**Mesh = Geometry + Material**
+
+- The geometry is what defines the shape of the mesh.
+- The material defines how the object looks and also what gives it some specific properties like reflection, metalness, roughness, etc.
+
+```jsx {9-10} title=Basic definition of a React Three Fiber mesh
+import { Canvas } from '@react-three/fiber';
+import { useRef } from 'react';
+
+const Cube = () => {
+  const mesh = useRef();
+
+  return (
+    <mesh ref={ref}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshBasicMaterial color={0xffffff} />
+    </mesh>
+  );
+};
+
+const Scene = () => {
+  return (
+    <Canvas>
+      <Cube />
+    </Canvas>
+  );
+};
+```
+
+If you were to render the mesh defined by the React Three Fiber code above, you would see a white cube on your screen. **That render is made possible by shaders**.
+
+Three.js, and by extension React Three Fiber, is an abstraction on top of WebGL that uses shaders as its main component to render things on the screen: **the materials bundled inside Three.js itself are implemented with shaders**. So, if you've been tinkering around with Three.js or React Three Fiber, **you've already used shaders without knowing it** 🤯!
+
+These materials are pretty handy, but sometimes they are very limiting and put boundaries on our creativity. Defining your own material through shaders gives you _absolute control_ over how your mesh looks within a scene. That is why a lot of creative developers decide to create their shaders _from scratch_!
+
+<Callout variant="info">
+
+If you're curious about how the bundled materials are built and want to go deeper: I highly encourage you to read through some of the shader implementations in the Three.js Github repository:
+
+- [MeshNormalMaterial](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshnormal.glsl.js)
+- [MeshPhysicalMaterial](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshphysical.glsl.js)
+- [MeshLambertMaterial](https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshlambert.glsl.js)
+
+</Callout>
+
+### What is a shader?
+
+A shader is a **program**, written in [GLSL](<https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)>), that runs on the GPU. This program consists of two main functions that can output both 2D and 3D content:
+
+- Vertex Shader
+- Fragment Shader
+
+You can pass both functions to your React Three Fiber mesh's material via a `shaderMaterial` to render your desired custom material.
+
+```jsx title=Basic definition of a React Three Fiber mesh with shaderMaterial
+import { Canvas } from '@react-three/fiber';
+import { useRef } from 'react';
+
+const fragmentShader = `...`;
+const vertexShader = `...`;
+
+const Cube = () => {
+  const mesh = useRef();
+
+  return (
+    <mesh ref={ref}>
+      <boxGeometry args={[1, 1, 1]} />
+      <shaderMaterial
+        fragmentShader={fragmentShader}
+        vertexShader={vertexShader}
+      />
+    </mesh>
+  );
+};
+
+const Scene = () => {
+  <Canvas>
+    <Cube />
+  </Canvas>;
+};
+```
+
+_Why do we need to pass these two functions separately?_ Simply because each has a very distinct purpose. Let's take a closer look at what they are doing.
+
+### Vertex Shader
+
+The role of the vertex shader is to **position each vertex** of a geometry. In simpler terms, this shader function allows you to programmatically alter the shape of your geometry and, potentially, "make things move".
+
+The code snippet below showcases how the default vertex shader looks. In this case, this function runs for every vertex and sets a property called `gl_Position` that contains the x,y,z coordinates of a given vertex on the screen.
+
+```glsl title=Default vertex shader
+void main() {
+  vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+  vec4 viewPosition = viewMatrix * modelPosition;
+  vec4 projectedPosition = projectionMatrix * viewPosition;
+
+  gl_Position = projectedPosition;
+}
+```
+
+For this first vertex shader example, I showcase how to edit the position of any vertex programmatically by changing their `y` coordinate and make it a function of the `x` coordinate. In this case, `y = sin(x * 4.0) * 0.2` means that the "height" of our plane geometry follows a [sine curve](https://en.wikipedia.org/wiki/Sine_and_cosine) along the x-axis.
+
+<R3FShaderSandpack scene="scene1" />
+
+<Callout variant="info" label="What about those matrices?">
+
+`projectionMatrix` `modelViewMatrix` and `position` are provided by React Three Fiber / Three.js. Thus, you don't need to worry about those too much to start playing with shaders.
+It would take a long time to explain why the `gl_Position` formula looks the way it does, but if you want to read more about it, I found the [WebGL model view projection documentation](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_model_view_projection) from MDN quite helpful.
+
+</Callout>
+
+Once the GPU has run the vertex shader and placed all the vertices on the screen, i.e. when we have the overall "shape" of our geometry, and it can start processing the second function: the **fragment shader**.
+
+### Fragment Shader
+
+The role of the Fragment Shader is to **set the color of each visible pixel** of a geometry. This function sets the color in RGBA format, which we're already familiar with thanks to CSS (The only difference is that the values range from `0` to `1` instead of `0` to `255`: `1.0, 1.0, 1.0` is `white` and `0.0, 0.0, 0.0` is `black`).
+
+```glsl title=Simple Fragment shader setting every pixel of the mesh to white
+void main() {
+  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+}
+```
+
+Using Fragment Shader feels a lot like _painting_ with computer code. Many creative coders, such as [the author of the Book Of Shaders](https://patriciogonzalezvivo.github.io/glslGallery/), draw a lot of stunning effects only through fragment shaders applied to a plane, like paint on a canvas.
+
+To demonstrate in a simple way how the fragment shader works, I built the little widget ✨ below that shows some simulated, low-resolution (`16x16`) examples of fragment shaders. Notice how the fragment shader function runs for each pixel and outputs an RGBA color.
+
+<FragmentShaderVisualizer />
+
+<Callout variant="info" label="Tip">
+
+For simplicity's sake, this demo only outputs grayscale colors: we set the color's red, green, and blue channels to the same value. You can hover over each pixel to see the value computed by the fragment shader function.
+
+</Callout>
+
+As for your first (real) fragment shader example, why not play with some gradients 🎨! The scene below features a plane geometry with a shader material set to render of pink and yellow colors. In this specific fragment shader, we use the `mix` function [that's bundled in the GLSL language](https://thebookofshaders.com/glossary/?search=mix) along the x-axis of our plane. The x coordinates go from `0` to `1`, thus rendering a different color for each pixel along the x-axis, that color being a mix of pink and yellow.
+
+<R3FShaderSandpack scene="scene2" />
+
+### Why are shaders so hard to use?
+
+1. You have to learn a whole new language: GLSL. It is always challenging, but in this case, doing some C adjacent coding can feel far from pleasant, especially when coming from Javascript 😮‍💨. My advise here: go read [The Book Of Shaders](https://thebookofshaders.com)!
+2. If you're used to fixing Javascript using `console.log`, you are out of luck here: _you can't log any values_ 😬. Debugging GLSL code is very tedious.
+3. Finally, the worst of all the reasons: when your code doesn't compile, _nothing_ renders. You just get a blank screen 😵.
+
+All these downsides should not scare you away from learning shaders. Like when learning anything, it will take practice. Shaders will just require a bit more than usual. That's also the reason I'm writing this blog post: to give you some examples to put you on the right track!
+
+## Dynamic Shaders with uniforms and varyings
+
+So far, the shaders we saw are pretty static: we do not pass any external data, which is why we were only rendering some static colors and geometry. To make those dynamic, we need to add _variables_ to our shaders and also be able to send data to the vertex and the fragment shader. This is where **uniforms**, **varyings**, and **attributes** come into the picture.
+
+### Uniforms
+
+To pass data from your Javascript code into your shader, we need to use **uniforms**. A uniform acts as an input to _both_ vertex and fragment shader. The information passed is *read-only*and the _same_ for each pixel and vertex of your mesh, hence the name "uniform".
+
+<Image
+  src="blog/uniforms-2.png"
+  alt="Diagram illustrating how to pass uniforms from our mesh to the vertex shader and fragment shader."
+  layout="responsive"
+  width={700}
+  height={402}
+/>
+
+You can picture a uniform as a bridge between your JS code and your shader code:
+
+- _Do you want to pass the x and y position of the mouse on the screen to your shader?_ That will be through a uniform.
+- _Do you want to pass the number of milliseconds since the scene rendered?_ That will be through a uniform as well.
+- _What about passing colors?_ Same: uniform!
+
+To declare uniforms, we need to place them at _the top_ of your shaders, preceded by the variable type: `float` `vec2` `mat3`, etc.
+Then we have to pass a uniforms object to our `shaderMaterial` through the `uniforms` prop as follows:
+
+```jsx {5,11,18-25,33} title=Example of passing a uniform to a shader
+import { Canvas } from '@react-three/fiber';
+import { useRef, useMemo } from 'react';
+
+const fragmentShader = `
+uniform float u_test;
+
+// Rest of fragment shader code
+`;
+
+const vertexShader = `
+uniform float u_test;
+
+// Rest of vertex shader code
+`;
+
+const Cube = () => {
+  const mesh = useRef();
+  const uniforms = useMemo(
+    () => ({
+      u_test: {
+        value: 1.0,
+      },
+    }),
+    []
+  );
+
+  return (
+    <mesh ref={ref}>
+      <boxGeometry args={[1, 1, 1]} />
+      <shaderMaterial
+        fragmentShader={fragmentShader}
+        vertexShader={vertexShader}
+        uniforms={uniforms}
+      />
+    </mesh>
+  );
+};
+
+const Scene = () => {
+  return (
+    <Canvas>
+      <Cube />
+    </Canvas>
+  );
+};
+```
+
+<Callout variant="info" label="Notation">
+
+I like to prefix my uniforms with `u_`:
+
+- `u_time` for the time uniform
+- `u_mouse` for the position of the mouse
+- `u_color` for the value of a color
+
+</Callout>
+
+By accessing the uniforms object through the ref of our mesh within the `useFrame` hook and updating any values within that object, we can obtain dynamic uniforms that change their value _through time/each frame_.
+
+That is the technique featured below where the `u_time` uniform is continuously given the elapsed time since the scene rendered, thus changing its value on every frame and resulting in the shape moving:
+
+<R3FShaderSandpack scene="scene3" />
+
+<Callout variant="danger" label="Watch out for re-renders!">
+
+If your scene contains some React state that can change and thus trigger a re-render: **do not forget to memoize your uniform object**!
+
+If you do not:
+
+- the resulting re-render will create _a new uniform object_
+- our mesh will use this new object
+- the `useFrame` hook will, unfortunately, keep updating the previous reference of our uniforms object
+
+Your shader will thus appear frozen on the screen until the next refresh.
+
+</Callout>
+
+<Callout variant="info" label="About attributes">
+
+We saw that the vertex shader runs for every vertex. With uniforms, we can inject data into our vertex shader. However, this data is always the same for every vertex! _What if we wanted to inject different data for each vertex?_
+
+For this use case, we can use **attributes**.
+
+I'm not going to deep dive into those in this blog post as I haven't yet got to use them much, but I'm mentioning them so you know that they exist.
+
+Some attributes are used implicitly in every vertex shader like the `position` variable or the `uv` variable (that will be mentioned below). Both are attributes that are _always_ injected in any vertex shader.
+
+```glsl
+attribute vec3 position;
+attribute vec2 uv;
+
+void main() {
+    // ...
+}
+
+```
+
+It's also important to keep in mind that attributes are _only_ available in the vertex shader!
+
+</Callout>
+
+### Varyings
+
+We now know how to pass data from our React Three Fiber code to our shaders 🎉. But, what if we want to send information _from one shader function to the other_? Lucky us, we have varyings to do just that!
+
+A varying is **a variable that can be declared and set in the vertex shader to be read by the fragment shader**.
+
+<Image
+  src="blog/varyings-2.png"
+  alt="Diagram illustrating how to pass the attributes from a geometry from the vertex shader to the fragment shader using varyings."
+  layout="responsive"
+  width={700}
+  height={521}
+/>
+
+In a nutshell, with varyings, we can "link" how we set the color of a given pixel based on the position of a vertex of the geometry. They are handy to pass attribute data to the fragment shader since, as we saw earlier, we can't pass attributes directly to the fragment shader. One way to do that is to:
+
+1. Declare a varying in the vertex shader.
+2. Assign the attribute to that varying variable.
+3. Read the varying in the fragment shader.
+
+```glsl {2-3,6,12} title=Using varying to send the value of an attribute to the fragment shader
+// vertex shader
+attribute float a_test;
+varying float v_test;
+
+void main() {
+    v_test = a_test;
+
+    // Rest of vertex shader code
+}
+
+// fragment shader
+varying float v_test;
+
+void main() {
+    // The value of v_test is accesible
+    // Do something with v_test, e.g.
+    gl_FragColor = vec4(v_test, 0.0, 1.0, 1.0);
+}
+```
+
+In my own shader work, I use varyings to send **my mesh's UV coordinates** to my fragment shaders, especially when drawing shaders onto a plane. It allows me to simplify and _normalize_ the coordinate system of my fragment shader. I've seen many fellow Three.js / React Three Fiber developers do so on their own shader work, and it's been working well for me. We're going to use this technique in our scenes going forward.
+
+<Callout variant="info" label="UV Coordinates">
+
+UV coordinates is a coordinate system that allows you to position a 2D texture on a 3D object.
+
+Each UV coordinate references a pixel of a given texture and ranges from `0` to `1`. They act as a reference point to map a given point of the texture to a vertex of the mesh.
+
+This process of mapping a 2D texture on a 3D shape is also referred to as _UV Mapping_.
+
+UVs are given to us by Three.js/React Three Fiber out-of-the-box through an attribute in the vertex shader:
+
+```glsl
+attribute vec2 uv;
+
+varying vec2 vUv;
+
+void main() {
+  vUv = uv
+  //...
+}
+```
+
+</Callout>
+
+In the code sandbox below we can see an example of such a technique:
+
+- assign the UV coordinates in a varying in the vertex shader
+- retrieve the UV coordinates back in the fragment shader.
+- use the `mix` function against the x-axis of the `vUv` vector.
+
+The result is this horizontal gradient going from pink to yellow:
+
+<R3FShaderSandpack scene="scene4" />
+
+### Combining uniforms and varyings
+
+When using both uniforms and varyings within a shader, we can start seeing some magic happen 🪄. The code sandbox below showcases the implementation of the scene used as a teaser in the introduction:
+
+- We use a combination of the `useFrame` hook from React Three Fiber and uniforms to pass the number of elapsed milliseconds since we rendered the scene.
+- We apply a function to make the `y` coordinate of a given vertex depend on the `u_time` uniform and the `x`/`z` coordinates: the plane wobbles.
+- We pass the `y` coordinate as a varying to the fragment shader and colorize each pixel based on the value of `y`: higher points are pink, lower points are more yellow.
+
+<R3FShaderSandpack scene="scene5" />
+
+## Advanced Interactive Shaders
+
+In this part, we'll look at two examples of interactive React Three Fiber scenes with shaders that combine everything we've seen in the previous parts. But first, before we deep dive into those…
+
+### Let's make some noise 🤘!
+
+I'm going to give you the one trick every creator developer uses to create those beautiful scenes with gradients, organic textures, clouds, and landscapes: _noise_.
+
+Sometimes you want to create a shader that is:
+
+- dynamic: it evolves through time
+- _random_: it is not repetitive
+
+One could use an equivalent of `Math.random()` in GLSL on every pixel or vertices, but that would not yield an appealing result. What we want is _organic randomness_, which is exactly what noise functions enable us to get!
+
+<Callout variant="info" label="Must Read">
+
+While noise is a fascinating subject, this article will not focus on it:
+
+- It's a deep and complex subject that deserves its own article.
+- <Anchor href="https://twitter.com/winkerVSbecks" favicon discreet>
+    @winkerVSbecks
+  </Anchor> already wrote an incredible article about this subject, better than I
+  could have ever done 😄.
+
+👉 I highly recommend reading his write-up: [Noise in Creative Coding](https://varun.ca/noise/).
+
+👉 Also worth mentioning: The Book Of Shaders has [a chapter entirely dedicated to noise](https://thebookofshaders.com/11/).
+
+</Callout>
+
+In the upcoming code sandboxes, we'll use only two types of noise:
+
+- Perlin noise
+- Simplex noise
+
+The full code for both noise functions will be featured in the code snippets (this was the only way I could make those work in Sandpack), it's long and very hard to follow but that's expected! _You do not need to understand those functions_. Most developers don't. In a normal setup, I'd recommend using the [glsl-noise package](https://github.com/hughsk/glsl-noise) and simply import the functions you need.
+
+### Blob
+
+The first shader we'll look at, named _Blob_, is a bit of a classic. It's an `icosahedronGeometry` with the `detail` property (second argument) tuned to a high value to appear like a sphere.
+
+```jsx title=A 3D sphere using a icosahedron geometry
+const fragmentShader = `...`;
+const vertexShader = `...`;
+
+const Sphere = () => {
+  const mesh = useRef();
+
+  return (
+    <mesh ref={ref}>
+      <icosahedronGeometry args={[2, 20]} />
+      <shaderMaterial
+        fragmentShader={fragmentShader}
+        vertexShader={vertexShader}
+      />
+    </mesh>
+  );
+};
+```
+
+We apply a `ShaderMaterial` to this geometry with a custom shader:
+
+- We use Perlin noise to "displace" vertices in the vertex shader.
+- We use a `u_time` uniform to make the _organic randomness_ evolve through time.
+- The displacement value for each vertex is set as a varying to be sent to the fragment shader.
+- In the fragment shader, we set the color based on the value of that displacement varying, thus creating an organic-looking colored sphere.
+
+We also add a bit of interactivity to this scene:
+
+- We use a `u_intensity` uniform that sets the "amplitude" of our noise.
+- We add hover listeners to increase the intensity of the noise when we hover the mesh.
+- We _lerp_ between the base value of our `u_intensity` uniform and its final value, when hovered, to _ease_ the transition between these two values in the `useFrame` hook.
+
+<R3FShaderSandpack scene="scene6" />
+
+Pretty right? ✨
+
+By combining uniforms, varyings, noise, and some hover effects, we created a pretty advanced shader for this scene that is both _dynamic_ and _interactive_.
+
+### Gradient
+
+For this second shader, I wanted to emphasize the "painting" aspect of shaders. When I feel like experimenting, I like to keep my geometries simple: I use a `planeGeometry` like I'd use an actual canvas to paint.
+
+<Callout variant="info">
+
+That's what developers sharing their creations on [ShaderToy](https://www.shadertoy.com/) do: they only share a fragment shader applied on a plane.
+
+I love checking ShaderToy for inspiration: there are a lot of great techniques and GLSL code to read there!
+
+</Callout>
+
+In this shader:
+
+- We do _not_ touch anything in the vertex shader besides sending the UV coordinates as a varying to the fragment shader.
+- We use the UV coordinates, the `u_mouse` and `u_time` uniforms as arguments for our _Simplex noise_. Instead of a hover effect like in the previous example, we directly send the cursor coordinates to the fragment shader!
+- We use the `mix` function with color uniforms and our noise and assign the result to a `color` variable several times to create a random gradient.
+
+The result is a dynamic gradient that changes when our cursor moves over the scene ✨:
+
+<R3FShaderSandpack scene="scene7" />
+
+## Composable shader layers with Lamina
+
+Throughout this article, we built our shaders from scratch on top of the `shaderMaterial` material bundled in React Three Fiber. While it gives us almost unlimited possibilities, it also strips away a lot of work already done in some other materials.
+
+`meshPhysicalMaterial`, for example, comes with props that allow us to tweak the reflectivity and interact with lights on a scene. However, if we want to get that effect along a custom shader, we're out of luck: **we would have to reimplement the reflectivity and other physical properties of the material from scratch!**
+
+It is possible to do just that, but for many developers getting started with shaders, including me, this feels out of reach at this stage. This is where [Lamina](https://github.com/pmndrs/lamina) comes into the picture 🍰.
+
+> lamina lets you create materials with a declarative, system of layers. Layers make it incredibly easy to stack and blend effects. This approach was first made popular by the [Spline Team](https://spline.design).
+
+<Callout variant="info">
+
+I highly recommend taking a look at Lamina's [README](https://github.com/pmndrs/lamina/blob/main/README.md) and also at some of the examples the maintainers included. Those are worth experimenting with!
+
+</Callout>
+
+With Lamina, you can not only stack their pre-build layers (like `Depth`, `Fresnel`, or `Displace`) on top of existing material, but it also lets you declare your _own custom layers_ ([doc](https://github.com/pmndrs/lamina#writing-your-own-layers)). And guess what? Those custom layers can be built using shaders!
+
+```jsx {8-9,12-13,23,31-35} title=Sample code for a Lamnina custom layer and layered material
+import { Canvas, extend } from '@react-three/fiber';
+import { LayerMaterial, Depth } from 'lamina';
+import { Abstract } from 'lamina/vanilla';
+import { useRef } from 'react';
+
+class CustomLayer extends Abstract {
+  // define your uniforms
+  static u_colorA = 'blue';
+  static u_colorB = 'pink';
+
+  // pass your shader code here
+  static vertexShader = `...`;
+  static fragmentShader = `...`;
+
+  constructor(props) {
+    super(CustomLayer, {
+      name: 'CustomLayer',
+      ...props,
+    });
+  }
+}
+
+extend({ CustomLayer });
+
+const Cube = () => {
+  const mesh = useRef();
+
+  return (
+    <mesh ref={ref}>
+      <boxGeometry args={[1, 1, 1]} />
+      <LayerMaterial>
+        {/* Override your default uniforms with props! */}
+        <CustomLayer colorA="pink" colorB="orange" />
+        <Depth colorA="purple" colorB="red" />
+      </LayerMaterial>
+    </mesh>
+  );
+};
+
+const Scene = () => {
+  return (
+    <Canvas>
+      <Cube />
+    </Canvas>
+  );
+};
+```
+
+<Callout variant="danger">
+
+Worth noting: you sadly can't just copy and paste your shader code into a `CustomLayer` clas. You'll have to slightly tweak the code to get it to work:
+
+- Uniforms must be prefixed by `u_` (this is also why I like to pick up this notation for my shaders in general).
+- Varyings must be prefixed by `v_`.
+- Local variables in the fragment shader must be prefixed by `f_`.
+- You must `return` the "fragColor" of the fragment shader and the "position" (only the position attribute, no need to return `gl_position`) in the vertex shader.
+
+Apart from that, you can keep your shader code untouched!
+
+</Callout>
+
+The result of that custom layer is **a reusable and composable shader**. Notice how the uniforms are automatically made available as props of the layer: our shader layer is easier to use and read ✨.
+
+```jsx title=Excerpt of the layered material
+<LayerMaterial>
+  {/*
+    Notice how the uniforms we declared in the Custom Layer
+    can now be modified through props ✨
+  */}
+  <CustomLayer colorA="pink" colorB="orange" />
+</LayerMaterial>
+```
+
+Using a combination of custom shaders in Lamina can yield incredible results ✨. One such example is the [Planet scene](https://r3f.maximeheckel.com/planet) I created while learning shaders:
+
+- I used **Fractal Brownian Motion**, a concept I learned about in [the dedicated chapter of The Book Of Shaders](https://thebookofshaders.com/13/). This noise type can be changed more granularly and produce results that feel more organic, akin to clouds or mountains.
+- I created a custom Lamina layer based on this shader.
+- I used this custom layer on top of a `meshLambertMaterial`: this material can interact with light.
+- Finally, I also used a `Fresnel` layer to add that "light pink atmospheric effect" at the edge of the mesh 🍒.
+
+I provided the full implementation of this final example right below 👇, ready to be tweaked/forked:
+
+<R3FShaderSandpack scene="scene8" />
+
+Absolutely stunning result isn't it? 🪄
+
+## Conclusion
+
+I hope this blog post gave you the little push you needed if you ever were on the fence about exploring shaders!
+
+There are a _lot more_ aspects of shaders to cover, but this article sums up what I focused on while learning them. At this point, you have all the knowledge and techniques I gathered after spending several weeks working hard on many different shader scenes. **From the fundamentals of shaders to building composable layers** to use in your next creation, you now have all the tools to start experimenting on your own 🎉.
+
+If you are looking for a productive "next step" from this blog post, I would _really_ encourage you to **read [The Book Of Shaders](https://thebookofshaders.com/)** (I know, this is perhaps the third time I'm mentioning this website), go through all the examples, and even attempt to recreate some of the scene featured in the gallery. Or you can check out [my creations](https://r3f.maximeheckel.com) and challenge yourself to reproduce them as closely as possible on your own 😄.

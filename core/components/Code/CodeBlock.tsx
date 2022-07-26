@@ -8,9 +8,10 @@ import { calculateLinesToHighlight, hasTitle } from './utils';
 (typeof global !== 'undefined' ? global : window).Prism = Prism;
 
 /**
- * This imports the syntax highlighting style for the Swift language
+ * This imports the syntax highlighting style for the Swift and GLSLlanguage
  */
 require('prismjs/components/prism-swift');
+require('prismjs/components/prism-glsl');
 
 export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
   const { codeString, language, highlightLine } = props;
@@ -20,6 +21,7 @@ export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
       {...defaultProps}
       theme={{ plain: {}, styles: [] }}
       code={codeString}
+      // @ts-ignore let glsl be a valid language
       language={language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
