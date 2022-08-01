@@ -52,7 +52,7 @@
     "lodash.merge": "4.6.2",
     "lunr": "2.3.9",
     "next": "12.0.9",
-    "next-mdx-remote": "3.0.2",
+    "next-mdx-remote": "4.1.0",
     "next-seo": "4.29.0",
     "playwright": "1.17.1",
     "playwright-aws-lambda": "0.7.0",
