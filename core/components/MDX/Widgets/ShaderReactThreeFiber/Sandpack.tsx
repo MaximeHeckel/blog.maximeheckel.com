@@ -60,7 +60,7 @@ const R3FShaderSandpack = (props: any) => {
           dependencies={{
             '@react-three/drei': '9.11.3',
             '@react-three/fiber': '8.0.20',
-            lamina: '^1.1.20',
+            lamina: '1.1.20',
             three: '0.142.0',
           }}
           files={{
