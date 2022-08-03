@@ -1,4 +1,5 @@
-import { DefaultSeo as NextDefaultSeo, BlogJsonLd } from 'next-seo';
+import { DefaultSeo as NextDefaultSeo, ArticleJsonLd } from 'next-seo';
+import Head from 'next/head';
 import React from 'react';
 import siteConfig from '../../../config/site';
 
@@ -33,7 +34,11 @@ const DefaultSeo = (props: Props) => (
         cardType: 'summary_large_image',
       }}
     />
-    <BlogJsonLd
+    <Head>
+      <meta name="googlebot" content="index,follow" />
+    </Head>
+    <ArticleJsonLd
+      type="Blog"
       authorName={siteConfig.author}
       dateModified={new Date().toISOString()}
       datePublished={new Date().toISOString()}
