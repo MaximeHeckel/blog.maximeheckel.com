@@ -69,6 +69,7 @@ const Seo = ({ title, desc, image, path, date, updated }: Props) => {
         <meta name="twitter:description" content={seo.description} />
         <meta property="twitter:image:width" content="1280" />
         <meta property="twitter:image:height" content="720" />
+        <meta name="googlebot" content="index,follow" />
       </Head>
       <ArticleJsonLd
         authorName={author}
