@@ -9,12 +9,12 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Thu, 21 Jul 2022 03:12:55 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 03 Aug 2022 00:07:52 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
         <item>
             <title><![CDATA[The Study of Shaders with React Three Fiber]]></title>
-            <description><![CDATA[A deep dive into my experience building my own design system that documents my process of defining tokens, creating efficient components, and shipping them as a package.]]></description>
+            <description><![CDATA[A complete guide on how to use shaders with React Three Fiber, work with uniforms and varyings, and build dynamic, interactive and composable materials with them through 8 unique 3D scenes.]]></description>
             <link>https://blog.maximeheckel.com/posts/the-study-of-shaders-with-react-three-fiber</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/the-study-of-shaders-with-react-three-fiber</guid>
             <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
