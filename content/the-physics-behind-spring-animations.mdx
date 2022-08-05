@@ -2,7 +2,7 @@
 title: The physics behind spring animations
 subtitle: A deep dive into the inner workings of spring animations in Framer Motion.
 date: '2020-06-23T08:00:00.000Z'
-updated: '2021-11-03T08:00:00.000Z'
+updated: '2022-08-04T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -259,35 +259,7 @@ As you can see we now have a spring animation that eventually stops due to dampi
 
 By default, Framer Motion sets the stiffness of the spring animation to **100**, the damping to **10**, and the mass to **1** [according to the docs](https://www.framer.com/api/motion/types/#spring). Below, I wrote an animated `Button` component that is closer to a real-life example that you might want to implement in your UI projects. Now that you know what **mass**, **stiffness** and **damping** you can try to fine-tune your spring animation.
 
-```js live
-const Example = () => {
-  return (
-    <motion.button
-      style={{
-        background:
-          'linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)',
-        color: 'white',
-        height: '50px',
-        width: '200px',
-        borderRadius: '10px',
-        border: 'none',
-        boxShadow: 'none',
-        outline: 'none',
-        cursor: 'pointer',
-      }}
-      whileTap={{
-        scale: 1.3,
-        borderRadius: '6px',
-      }}
-      transition={{ type: 'spring', stiffness: 100, damping: 10, mass: 1 }}
-    >
-      Click me!
-    </motion.button>
-  );
-};
-
-render(<Example />);
-```
+<SpringAnimationSandpack />
 
 <Callout variant="info">
 

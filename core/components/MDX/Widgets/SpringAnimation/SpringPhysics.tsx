@@ -4,7 +4,7 @@ import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
 import { motion } from 'framer-motion';
 import React from 'react';
-import { AnimationCardContent, Form } from './Components';
+import { AnimationCardContent, Form } from '../Components';
 
 const loop = (stiffness: number, mass: number, damping: number) => {
   /* Spring Length, set to 1 for simplicity */

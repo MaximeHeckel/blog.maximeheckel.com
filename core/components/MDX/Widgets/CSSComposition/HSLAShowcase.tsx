@@ -1,6 +1,6 @@
 import { Card, Flex, InlineCode, Range } from '@maximeheckel/design-system';
 import React from 'react';
-import { AnimationCardContent, Form, HighlightedValue } from './Components';
+import { AnimationCardContent, Form, HighlightedValue } from '../Components';
 
 const HSLAShowcase = () => {
   const [hue, setHue] = React.useState(222);
