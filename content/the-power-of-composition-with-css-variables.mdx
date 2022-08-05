@@ -2,7 +2,7 @@
 title: 'The Power of Composition with CSS Variables'
 subtitle: How leveraging CSS variable composition and HSLA colors helped me build a more efficient way to theme my apps and rely less on CSS-in-JS.
 date: '2021-02-02T08:00:00.000Z'
-updated: '2021-02-04T08:00:00.000Z'
+updated: '2022-08-02T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -325,110 +325,7 @@ With what we've seen so far, it's easy to just throw a bunch of CSS variables at
 Below you can see an example implementation: a "themed" button that only has one set of CSS variables in its implementation for its different background colors.
 Since they are composed and since the lightness is calculated based on a "base lightness", changing the color of the button should give you an equivalent hover and focus color respectively `10%` and `20%` darker no matter the color. Try it out yourself!
 
-```js live
-/**
-  You can see here that we're only passing CSS variables for the background color
-  for the hover, focus and rest state of the Button.
-**/
-const StyledButton = styled('button', {
-  height: '45px',
-  borderRadius: '8px',
-  boxShadow: 'none',
-  border: 'none',
-  padding: '8px 16px',
-  textAlign: 'center',
-  color: 'var(--text-color)',
-  backgroundColor: 'var(--primary)',
-  cursor: 'pointer',
-  fontWeight: '500',
-  '&:hover': {
-    backgroundColor: 'var(--primary-hover)',
-  },
-  '&:focus': {
-    backgroundColor: 'var(--primary-focus)',
-  },
-});
-
-/**
-  You can try to modify the lightness or base hue/saturation below.
-  You should see that the button hover and focus color will adapt and take into account
-  almost (see below why) any color!
-**/
-const BlueThemeWrapper = styled('div', {
-  '--base-primary': '222, 89%',
-  '--base-primary-lightness': '50%',
-  '--primary': 'hsla(var(--base-primary), var(--base-primary-lightness), 100%)',
-  '--primary-hover': `hsla(
-    var(--base-primary),
-    calc(var(--base-primary-lightness) - 10%),
-    /* --primary-hover is --primary but 10% darker */ 100%
-  )`,
-  '--primary-focus': `hsla(
-    var(--base-primary),
-    calc(var(--base-primary-lightness) - 20%),
-    /* --primary-hover is --primary but 20% darker */ 100%
-  )`,
-  '--text-color': 'hsla(0, 0%, 100%, 100%)',
-});
-
-const CyanThemedWrapper = styled('div', {
-  '--base-primary': '185, 75%',
-  '--base-primary-lightness': '60%',
-  '--primary': 'hsla(var(--base-primary), var(--base-primary-lightness), 100%)',
-  '--primary-hover': `hsla(
-    var(--base-primary),
-    calc(var(--base-primary-lightness) - 10%),
-    100%
-  )`,
-  '--primary-focus': `hsla(
-    var(--base-primary),
-    calc(var(--base-primary-lightness) - 20%),
-    100%
-  )`,
-  '--text-color': 'hsla(0, 0%, 100%, 100%)',
-});
-
-const RedThemeWrapper = styled('div', {
-  '--base-primary': '327, 80%',
-  '--base-primary-lightness': '40%',
-  '--primary': 'hsla(var(--base-primary), var(--base-primary-lightness), 100%)',
-  '--primary-hover': `hsla(
-    var(--base-primary),
-    calc(var(--base-primary-lightness) - 10%),
-    100%
-  )`,
-  '--primary-focus': `hsla(
-    var(--base-primary),
-    calc(var(--base-primary-lightness) - 20%),
-    100%
-  )`,
-  '--text-color': 'hsla(0, 0%, 100%, 100%)',
-});
-
-const ThemedButton = () => {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        height: '175px',
-      }}
-    >
-      <BlueThemeWrapper>
-        <StyledButton>Primary Button</StyledButton>
-      </BlueThemeWrapper>
-      <CyanThemedWrapper>
-        <StyledButton>Primary Button</StyledButton>
-      </CyanThemedWrapper>
-      <RedThemeWrapper>
-        <StyledButton>Primary Button</StyledButton>
-      </RedThemeWrapper>
-    </div>
-  );
-};
-render(<ThemedButton />);
-```
+<CSSCompositionSandpack />
 
 This technique above is pretty cool but it has its limits:
 

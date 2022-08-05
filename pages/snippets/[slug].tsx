@@ -4,10 +4,15 @@ import SnippetLayout from 'layouts/Snippet';
 import { getFileBySlug, getFiles } from 'lib/mdx';
 import Code from '@theme/components/Code';
 import { FrontMatterSnippet, PostType } from 'types/post';
+import dynamic from 'next/dynamic';
 
 interface SnippetProps {
   snippet: FrontMatterSnippet;
 }
+
+const WaveAnimationSandpack = dynamic(
+  () => import('@theme/components/MDX/Widgets/WaveAnimation/Sandpack')
+);
 
 export default function Snippet({
   snippet: { mdxSource, frontMatter },
@@ -18,6 +23,7 @@ export default function Snippet({
         {...mdxSource}
         components={{
           pre: Code,
+          WaveAnimationSandpack,
         }}
       />
     </SnippetLayout>

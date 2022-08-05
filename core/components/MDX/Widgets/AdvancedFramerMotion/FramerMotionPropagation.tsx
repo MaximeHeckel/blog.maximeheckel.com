@@ -9,7 +9,7 @@ import {
 } from '@maximeheckel/design-system';
 import { motion } from 'framer-motion';
 import React from 'react';
-import { AnimationCardContent } from './Components';
+import { AnimationCardContent } from '../Components';
 
 const CardWrapper = styled('div', {
   position: 'relative',

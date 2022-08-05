@@ -40,51 +40,12 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
 
-const Sandpack = dynamic(() => import('@theme/components/Code/Sandpack'));
+const SandpackExample = dynamic(
+  () => import('@theme/components/MDX/Widgets/WaveAnimation/Sandpack')
+);
 const Search = dynamic(() => import('@theme/components/Search'), {
   ssr: false,
 });
-
-const WavingHandCode = `import { motion } from 'framer-motion';
-
-const WavingHand = () => (
-  <motion.div
-    style={{
-      marginBottom: '-20px',
-      marginRight: '-45px',
-      paddingBottom: '20px',
-      paddingRight: '45px',
-      display: 'inline-block',
-    }}
-    animate={{ rotate: 20 }}
-    transition={{
-      repeat: Infinity,
-      repeatType: 'mirror',
-      duration: 0.2,
-      delay: 0.5,
-      ease: 'easeInOut',
-      type: 'tween',
-    }}
-  >
-  👋
-  </motion.div>
-);
-
-const Hi = () => (
-    <h1>
-        Hi <WavingHand /> !
-    </h1>
-);
-
-export default Hi;
-`;
-
-const AppCode = `import WavingHand from './WavingHand';
-
-export default function App() {
-  return <WavingHand/>;
-}
-`;
 
 /**
  * TODO:
@@ -1030,20 +991,7 @@ function sayHi(name) {
 }`}
           />
           <Label>Sandpack Code Block</Label>
-          <Sandpack
-            template="react"
-            dependencies={{
-              'framer-motion': '5.2.1',
-            }}
-            files={{
-              '/App.js': {
-                code: AppCode,
-              },
-              '/WavingHand.js': {
-                code: WavingHandCode,
-              },
-            }}
-          />
+          <SandpackExample />
         </Box>
         <Box as="section" className={gridItem()} id="command-center">
           <H2>Command Center / Search </H2>

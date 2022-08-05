@@ -24,31 +24,48 @@ import Image from './Image';
 
 // Widgets (used in blog post for interactive experiences)
 const ClipboardAnimationDetails = dynamic(
-  () => import('./Widgets/ClipboardAnimationDetails')
+  () => import('./Widgets/GuideToFramerMotion/ClipboardAnimationDetails')
 );
 const HeartRateWidget = dynamic(() => import('./Widgets/HeartRateWidget'));
 const SEOStats = dynamic(() => import('./Widgets/SEOStats'));
 const FramerMotionPropagation = dynamic(
-  () => import('./Widgets/FramerMotionPropagation')
+  () => import('./Widgets/AdvancedFramerMotion/FramerMotionPropagation')
 );
 const FramerMotionAnimationLayout = dynamic(
-  () => import('./Widgets/FramerMotionAnimationLayout')
+  () => import('./Widgets/AdvancedFramerMotion/FramerMotionAnimationLayout')
 );
 const FramerMotionAnimatePresence = dynamic(
-  () => import('./Widgets/FramerMotionAnimatePresence')
+  () => import('./Widgets/AdvancedFramerMotion/FramerMotionAnimatePresence')
 );
-const SpringPhysics = dynamic(() => import('./Widgets/SpringPhysics'));
-const HighlightSection = dynamic(() => import('./Widgets/HighlightSection'));
-const AnimationTypes = dynamic(() => import('./Widgets/AnimationTypes'));
-const Orchestration = dynamic(() => import('./Widgets/Orchestration'));
-const ThemePicker = dynamic(() => import('./Widgets/ThemePicker'));
-const HSLAShowcase = dynamic(() => import('./Widgets/HSLAShowcase'));
-const PaletteGenerator = dynamic(() => import('./Widgets/PaletteGenerator'));
-const ScrollSpyWidget = dynamic(() => import('./Widgets/ScrollSpyWidget'), {
-  ssr: false,
-  // eslint-disable-next-line react/display-name
-  loading: () => <div style={{ width: '100%', height: '705px' }} />,
-});
+const SpringPhysics = dynamic(
+  () => import('./Widgets/SpringAnimation/SpringPhysics')
+);
+const HighlightSection = dynamic(
+  () => import('./Widgets/Scrollspy/HighlightSection')
+);
+const AnimationTypes = dynamic(
+  () => import('./Widgets/GuideToFramerMotion/AnimationTypes')
+);
+const Orchestration = dynamic(
+  () => import('./Widgets/GuideToFramerMotion/Orchestration')
+);
+const ThemePicker = dynamic(
+  () => import('./Widgets/CSSComposition/ThemePicker')
+);
+const HSLAShowcase = dynamic(
+  () => import('./Widgets/CSSComposition/HSLAShowcase')
+);
+const PaletteGenerator = dynamic(
+  () => import('./Widgets/CSSComposition/PaletteGenerator')
+);
+const ScrollSpyWidget = dynamic(
+  () => import('./Widgets/Scrollspy/ScrollSpyWidget'),
+  {
+    ssr: false,
+    // eslint-disable-next-line react/display-name
+    loading: () => <div style={{ width: '100%', height: '705px' }} />,
+  }
+);
 const OpenAIPlayground = dynamic(() => import('./Widgets/OpenAIPlayground'));
 const CubicBezierVisualizer = dynamic(
   () => import('./Widgets/CubicBezierVisualizer')
@@ -134,6 +151,24 @@ const R3FShaderSandpack = dynamic(
   () => import('./Widgets/ShaderReactThreeFiber/Sandpack')
 );
 
+const CSSCompositionSandpack = dynamic(
+  () => import('./Widgets/CSSComposition/Sandpack')
+);
+
+const SpringAnimationSandpack = dynamic(
+  () => import('./Widgets/SpringAnimation/Sandpack')
+);
+
+const ScrollSpySandpack = dynamic(() => import('./Widgets/Scrollspy/Sandpack'));
+
+const GuideToFramerMotionSandpack = dynamic(
+  () => import('./Widgets/GuideToFramerMotion/Sandpack')
+);
+
+const AdvancedFramerMotionSandpack = dynamic(
+  () => import('./Widgets/AdvancedFramerMotion/Sandpack')
+);
+
 const customComponents = {
   AnimationTypes,
   ClipboardAnimationDetails,
@@ -169,6 +204,11 @@ const customComponents = {
   DesignSystemFlexGridShowcase,
   FragmentShaderVisualizer,
   // Sandpacks
+  CSSCompositionSandpack,
+  ScrollSpySandpack,
+  SpringAnimationSandpack,
+  GuideToFramerMotionSandpack,
+  AdvancedFramerMotionSandpack,
   FramerMotionToastNotificationSandpack,
   FramerMotionTabsSandpack,
   FramerMotionArrowListSandpack,

@@ -2,7 +2,7 @@
 title: 'Advanced animation patterns with Framer Motion'
 subtitle: A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns through curated examples and interactive playgrounds.
 date: '2021-04-20T08:00:00.000Z'
-updated: '2022-03-02T08:00:00.000Z'
+updated: '2022-08-04T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -57,7 +57,7 @@ By clicking on the "perspective" button, you can see what happens under the hood
 
 Thus when hovering this invisible layer, we toggle the "hover" variant and any child motion component having this variant define in their `variants` prop will detect this change and toggle the corresponding behavior.
 
-```js {2-9,13,17} title=Example of propagation pattern with Framer Motion
+```jsx {2-9,13,17} title=Example of propagation pattern with Framer Motion
 const CardWithGlow = () => {
   const glowVariants = {
     initial: {
@@ -92,85 +92,7 @@ Now let's apply what we learned about the propagation mechanism of Framer Motion
 - **Modify the variant key** used in the motion component wrapping the button and see that now that it defers from what's being set by the parent component, the animation does not trigger and the button is not visible on hover.
 - **Set an**`animate` **prop on the motion component that wraps the button** and see that it now animates on its own and does not consume the variant set by the parent on hover.
 
-```js live
-const ListItem = styled(motion.li, {
-  width: '100%',
-  minWidth: '300px',
-  background: 'var(--maximeheckel-colors-foreground)',
-  boxShadow: '0 0px 10px -6px rgba(0, 24, 40, 0.3)',
-  borderRadius: 'var(--border-radius-1)',
-  padding: '8px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  cursor: 'pointer',
-  marginBottom: '0px',
-});
-
-const Button = styled('button', {
-  background: 'transparent',
-  border: 'none',
-  shadow: 'none',
-  color: 'var(--maximeheckel-colors-typeface-tertiary)',
-});
-
-const InfoBox = styled('div', {
-  width: '50%',
-});
-
-const ARTICLES = [
-  {
-    category: 'swift',
-    title: 'Intro to SwiftUI',
-    description: 'An article with some SwitftUI basics',
-    id: 1,
-  },
-];
-
-const Item = (props) => {
-  const { article } = props;
-
-  const readButtonVariants = {
-    hover: {
-      opacity: 1,
-    },
-    // Uncomment the variant below and comment the variant above and notice the button will not show up on hover
-    /*  hoverme: {
-        opacity: 1,
-      },
-    */
-    initial: {
-      opacity: 0,
-    },
-    magic: {
-      rotate: 360,
-      opacity: 1,
-    },
-  };
-
-  return (
-    <ListItem layout initial="initial" whileHover="hover">
-      <InfoBox>{article.title}</InfoBox>
-      <motion.div
-        // Uncomment me and notice the button now rotates and is always visible
-        // animate="magic"
-        variants={readButtonVariants}
-        transition={{ duration: 0.25 }}
-      >
-        <Button
-          aria-label="read article"
-          title="Read article"
-          onClick={(e) => e.preventDefault()}
-        >
-          &#8594;
-        </Button>
-      </motion.div>
-    </ListItem>
-  );
-};
-
-render(<Item article={ARTICLES[0]} />);
-```
+<AdvancedFramerMotionSandpack snippet="snippet1" />
 
 ## Animate components when they are unmounting
 
@@ -180,7 +102,7 @@ Well, in this second part, we'll take a look at the Framer Motion feature that a
 
 I tried to implement some kind of exit animations before learning about `AnimatePresence`, but it was hacky and always required extra code to set a proper "transitional" state (like `isClosing`, `isOpening`) and toggle the corresponding animation of that state. As you can imagine, it was very error-prone.
 
-```js title=A very hacky way to implement an exist animation without AnimatePresence
+```jsx title=A very hacky way to implement an exist animation without AnimatePresence
 /**
 This is mostly pseudo code, do not do this!
 It's not good practice
@@ -220,7 +142,7 @@ const MagicComponent = () => {
 
 On the other hand, `AnimatePresence` is extremely well thought of and easy to use. By simply wrapping any motion component in an `AnimatePresence` component, you'll have the ability to set an `exit` prop!
 
-```js {5,15} title=Example of use case for AnimatePresence
+```jsx {5,15} title=Example of use case for AnimatePresence
 const MagicComponent = () => {
   const [hidden, setHidden] = React.useState(false);
 
@@ -267,157 +189,7 @@ We now have a new awesome tool to use to make our transitions even better! It's 
 - Try to remove the `AnimatePresence` component. Notice how this makes Framer Motion skip the animation specified in the `exit` prop.
 - Try to modify the animation defined in the `exit` prop. For example, you could make the whole component scale from 1 to 0 while it exit. (I already added the proper animation objects commented in the code below 😄)
 
-```js live
-const List = styled(motion.ul, {
-  padding: '16px',
-  width: '350px',
-  background: 'var(--maximeheckel-colors-body)',
-  borderRadius: 'var(--border-radius-1)',
-  display: 'grid',
-  gap: '16px',
-});
-
-const ListItem = styled(motion.li, {
-  background: 'var(--maximeheckel-colors-foreground)',
-  boxShadow: '0 0px 10px -6px rgba(0, 24, 40, 0.3)',
-  borderRadius: 'var(--border-radius-1)',
-  padding: '8px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  cursor: 'pointer',
-  marginBottom: '0px',
-});
-
-const Button = styled('button', {
-  background: 'transparent',
-  border: 'none',
-  shadow: 'none',
-  color: 'var(--maximeheckel-colors-typeface-tertiary)',
-});
-
-const InfoBox = styled('div', {
-  width: '50%',
-});
-
-const FilterWrapper = styled('div', {
-  marginBottom: '16px',
-  input: {
-    marginRight: '4px',
-  },
-  label: {
-    marginRight: '4px',
-  },
-});
-
-const ARTICLES = [
-  {
-    category: 'swift',
-    title: 'Intro to SwiftUI',
-    description: 'An article with some SwitftUI basics',
-    id: 1,
-  },
-  {
-    category: 'js',
-    title: 'Awesome React stuff',
-    description: 'My best React tips!',
-    id: 2,
-  },
-  {
-    category: 'js',
-    title: 'Styled components magic',
-    description: 'Get to know ways to use styled components',
-    id: 3,
-  },
-  {
-    category: 'ts',
-    title: 'A guide to Typescript',
-    description: 'Type your React components!',
-    id: 4,
-  },
-];
-
-const categoryToVariant = {
-  js: 'warning',
-  ts: 'info',
-  swift: 'danger',
-};
-
-const Item = (props) => {
-  const { article, showCategory } = props;
-
-  const readButtonVariants = {
-    hover: {
-      opacity: 1,
-    },
-    initial: {
-      opacity: 0,
-    },
-  };
-
-  return (
-    <ListItem initial="initial" whileHover="hover">
-      <InfoBox>{article.title}</InfoBox>
-      {/* Try to remove/comment the AnimatePresence component below! */}
-      <AnimatePresence>
-        {showCategory && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            // initial={{ opacity: 0, scale: 1}}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            // exit={{ opacity: 0, scale: 0, }}
-          >
-            <Pill variant={categoryToVariant[article.category]}>
-              {article.category}
-            </Pill>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <motion.div variants={readButtonVariants} transition={{ duration: 0.25 }}>
-        <Button
-          aria-label="read article"
-          title="Read article"
-          onClick={(e) => e.preventDefault()}
-        >
-          &#8594;
-        </Button>
-      </motion.div>
-    </ListItem>
-  );
-};
-
-const Component = () => {
-  const [showCategory, setShowCategory] = React.useState(false);
-
-  return (
-    <>
-      <FilterWrapper>
-        <div>
-          <input
-            type="checkbox"
-            id="showCategory"
-            checked={showCategory}
-            onChange={() => setShowCategory((prev) => !prev)}
-          />
-          <label htmlFor="showCategory">Show Category</label>
-        </div>
-      </FilterWrapper>
-      <List>
-        {ARTICLES.map((article) => (
-          <Item
-            key={article.id}
-            article={article}
-            showCategory={showCategory}
-          />
-        ))}
-      </List>
-    </>
-  );
-};
-
-render(<Component />);
-```
+<AdvancedFramerMotionSandpack snippet="snippet2" />
 
 ## Layout animations
 
@@ -450,98 +222,7 @@ But to give you a little bit more of an idea of what I'm talking about here, let
 - the first one animates `justify-content` property between `flex-start` and `flex-end` by simply using the patterns we only know so far: setting this property in the `animation` prop
 - the second one uses a new prop: `layout`. It's here set to true to tell Framer Motion that a "layout related property", and thus by extension the layout of the component, will change between rerenders. The properties themselves are simply defined in CSS as any developer would do normally when not using Framer Motion.
 
-```js live
-const SwitchWrapper1 = styled(motion.div, {
-  width: '50px',
-  height: '30px',
-  borderRadius: '20px',
-  cursor: 'pointer',
-  display: 'flex',
-});
-
-const SwitchHandle1 = styled(motion.div, {
-  background: '#fff',
-  width: '30px',
-  height: '30px',
-  borderRadius: '50%',
-});
-
-// Attempt at a Switch motion component without layout animation: It simply does not work
-const Switch1 = () => {
-  const [active, setActive] = React.useState(false);
-
-  const switchVariants = {
-    initial: {
-      backgroundColor: '#111',
-    },
-    animate: (active) => ({
-      backgroundColor: active ? '#f90566' : '#111',
-      justifyContent: active ? 'flex-end' : 'flex-start',
-    }),
-  };
-
-  return (
-    <SwitchWrapper1
-      initial="initial"
-      animate="animate"
-      onClick={() => setActive((prev) => !prev)}
-      variants={switchVariants}
-      custom={active}
-    >
-      <SwitchHandle1 />
-    </SwitchWrapper1>
-  );
-};
-
-const SwitchWrapper2 = styled('div', {
-  width: '50px',
-  height: '30px',
-  borderRadius: '20px',
-  cursor: 'pointer',
-  display: 'flex',
-  background: '#111',
-  justifyContent: 'flex-start',
-
-  '&[data-isactive="true"]': {
-    background: '#f90566',
-    justifyContent: 'flex-end',
-  },
-});
-
-const SwitchHandle2 = styled(motion.div, {
-  background: '#fff',
-  width: '30px',
-  height: '30px',
-  borderRadius: '50%',
-});
-
-// Simpler version of the Switch motion component using layout animation
-const Switch2 = () => {
-  const [active, setActive] = React.useState(false);
-
-  return (
-    <SwitchWrapper2
-      data-isactive={active}
-      onClick={() => setActive((prev) => !prev)}
-    >
-      <SwitchHandle2 layout />
-    </SwitchWrapper2>
-  );
-};
-
-const Component = () => (
-  <div style={{ maxWidth: '300px' }}>
-    Switch 1: Attempt at animating justify-content in a Framer Motion animation
-    object.
-    <Switch1 />
-    <br />
-    Switch 2: Animating justify-content using layout animation and the layout prop.
-    <Switch2 />
-  </div>
-);
-
-render(<Component />);
-```
+<AdvancedFramerMotionSandpack snippet="snippet3" />
 
 We can observe multiple things here:
 
@@ -584,7 +265,7 @@ When clicking on one of the emojis in the example above you will notice that:
 
 All we need to do to obtain this seemingly complex animation was to add a prop, that's it! ✨ In this example in particular, all I added is a common `layoutId` called `border` to every instance of the blue circle component.
 
-```js {17} title=Example of shared animate layout using the "layoutId" prop
+```jsx {17} title=Example of shared animate layout using the "layoutId" prop
 const MagicWidgetComponent = () => {
   const [selectedID, setSelectedID] = React.useState('1');
 
@@ -640,235 +321,7 @@ You can try to:
 - comment out or remove the `LayoutGroup` and notice how this affects all the layout animations
 - try to add the `layout` prop on the `<Title/>` component and see it gracefully adjusting when the height of an item changes
 
-```js live
-const List = styled(motion.ul, {
-  padding: '16px',
-  width: '350px',
-  background: 'var(--maximeheckel-colors-body)',
-  borderRadius: 'var(--border-radius-1)',
-  display: 'grid',
-  gap: '16px',
-});
-
-const ListItem = styled(motion.li, {
-  background: 'var(--maximeheckel-colors-foreground)',
-  boxShadow: '0 0px 10px -6px rgba(0, 24, 40, 0.3)',
-  borderRadius: 'var(--border-radius-1)',
-  padding: '8px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  cursor: 'pointer',
-  marginBottom: '0px',
-});
-
-const Button = styled('button', {
-  background: 'transparent',
-  border: 'none',
-  shadow: 'none',
-  color: 'var(--maximeheckel-colors-typeface-tertiary)',
-});
-
-const InfoBox = styled('div', {
-  width: '50%',
-});
-
-const FilterWrapper = styled('div', {
-  marginBottom: '16px',
-  input: {
-    marginRight: '4px',
-  },
-  label: {
-    marginRight: '4px',
-  },
-});
-
-const Title = motion.div;
-
-const ARTICLES = [
-  {
-    category: 'swift',
-    title: 'Intro to SwiftUI',
-    description: 'An article with some SwitftUI basics',
-    id: 1,
-  },
-  {
-    category: 'js',
-    title: 'Awesome React stuff',
-    description: 'My best React tips!',
-    id: 2,
-  },
-  {
-    category: 'js',
-    title: 'Styled components magic',
-    description: 'Get to know ways to use styled components',
-    id: 3,
-  },
-  {
-    category: 'ts',
-    title: 'A guide to Typescript',
-    description: 'Type your React components!',
-    id: 4,
-  },
-];
-
-const categoryToVariant = {
-  js: 'warning',
-  ts: 'info',
-  swift: 'danger',
-};
-
-const Item = (props) => {
-  const { article, showCategory, expanded, onClick } = props;
-
-  const readButtonVariants = {
-    hover: {
-      opacity: 1,
-    },
-    initial: {
-      opacity: 0,
-    },
-  };
-
-  return (
-    <ListItem layout initial="initial" whileHover="hover" onClick={onClick}>
-      <InfoBox>
-        {/*
-          Try to add the "layout" prop to this motion component
-          and notice how it now gracefully moves as the list
-          item expands
-        */}
-        <Title
-        //layout
-        >
-          {article.title}
-        </Title>
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              style={{ fontSize: '12px' }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              {article.description}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </InfoBox>
-      <AnimatePresence>
-        {showCategory && (
-          <motion.div
-            layout
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <Pill variant={categoryToVariant[article.category]}>
-              {article.category}
-            </Pill>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <motion.div
-        layout
-        variants={readButtonVariants}
-        transition={{ duration: 0.25 }}
-      >
-        <Button
-          aria-label="read article"
-          title="Read article"
-          onClick={(e) => e.preventDefault()}
-        >
-          &#8594;
-        </Button>
-      </motion.div>
-    </ListItem>
-  );
-};
-
-const Component = () => {
-  const [showCategory, setShowCategory] = React.useState(false);
-  const [sortBy, setSortBy] = React.useState('title');
-  const [expanded, setExpanded] = React.useState(null);
-
-  const onSortChange = (event) => setSortBy(event.target.value);
-
-  const articlesToRender = ARTICLES.sort((a, b) => {
-    const itemA = a[sortBy].toLowerCase();
-    const itemB = b[sortBy].toLowerCase();
-
-    if (itemA < itemB) {
-      return -1;
-    }
-    if (itemA > itemB) {
-      return 1;
-    }
-    return 0;
-  });
-
-  return (
-    <>
-      <FilterWrapper>
-        <div>
-          <input
-            type="checkbox"
-            id="showCategory2"
-            checked={showCategory}
-            onChange={() => setShowCategory((prev) => !prev)}
-          />
-          <label htmlFor="showCategory2">Show Category</label>
-        </div>
-        <div>
-          Sort by:{' '}
-          <input
-            type="radio"
-            id="title"
-            name="sort"
-            value="title"
-            checked={sortBy === 'title'}
-            onChange={onSortChange}
-          />
-          <label htmlFor="title">Title</label>
-          <input
-            type="radio"
-            id="category"
-            name="sort"
-            value="category"
-            checked={sortBy === 'category'}
-            onChange={onSortChange}
-          />
-          <label htmlFor="category">Category</label>
-        </div>
-      </FilterWrapper>
-      {/*
-        Since each layout animation in this list affect each other's layout
-        we have to wrap them in a `LayoutGroup`
-        Try to remove it! You should see that:
-        - without it concurrent layout animations when clicking on list 
-        items end up being "choppy" 
-        - with it concurrent layout animations when clicking on list items 
-        are more graceful
-      */}
-      <LayoutGroup>
-        <List layout>
-          {articlesToRender.map((article) => (
-            <Item
-              key={article.id}
-              expanded={expanded === article.id}
-              onClick={() => setExpanded(article.id)}
-              article={article}
-              showCategory={showCategory}
-            />
-          ))}
-        </List>
-      </LayoutGroup>
-    </>
-  );
-};
-
-render(<Component />);
-```
+<AdvancedFramerMotionSandpack snippet="snippet4" />
 
 ## Conclusion
 

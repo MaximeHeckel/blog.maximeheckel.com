@@ -14,7 +14,7 @@ import {
   HighlightedValue,
   TransitionGridWrapper,
   Wrapper,
-} from './Components';
+} from '../Components';
 
 const AnimationTypes = () => {
   const [ref, inView] = useInView();

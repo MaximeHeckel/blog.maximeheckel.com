@@ -1,7 +1,7 @@
 import { Card, Grid, Label, Range } from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
-import { AnimationCardContent, Form, HighlightedValue } from './Components';
+import { AnimationCardContent, Form, HighlightedValue } from '../Components';
 
 const ClipboardAnimationDetails = () => {
   const clipboardIconVariants = {

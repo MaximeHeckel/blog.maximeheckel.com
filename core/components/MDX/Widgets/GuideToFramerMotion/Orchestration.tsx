@@ -1,7 +1,7 @@
 import { Card, Range, useDebouncedValue } from '@maximeheckel/design-system';
 import { motion } from 'framer-motion';
 import React from 'react';
-import { AnimationCardContent, Form, HighlightedValue } from './Components';
+import { AnimationCardContent, Form, HighlightedValue } from '../Components';
 
 const Orchestration = () => {
   const [key, setKey] = React.useState(0);
@@ -50,6 +50,8 @@ const Orchestration = () => {
         css={{
           margin: '0 auto',
           maxWidth: '400px',
+          height: '500px',
+          paddingBottom: '32px',
         }}
       >
         <Form>
