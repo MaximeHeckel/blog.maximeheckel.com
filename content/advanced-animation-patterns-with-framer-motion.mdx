@@ -2,7 +2,7 @@
 title: 'Advanced animation patterns with Framer Motion'
 subtitle: A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns through curated examples and interactive playgrounds.
 date: '2021-04-20T08:00:00.000Z'
-updated: '2022-03-02T08:00:00.000Z'
+updated: '2022-08-04T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -57,7 +57,7 @@ By clicking on the "perspective" button, you can see what happens under the hood
 
 Thus when hovering this invisible layer, we toggle the "hover" variant and any child motion component having this variant define in their `variants` prop will detect this change and toggle the corresponding behavior.
 
-```js {2-9,13,17} title=Example of propagation pattern with Framer Motion
+```jsx {2-9,13,17} title=Example of propagation pattern with Framer Motion
 const CardWithGlow = () => {
   const glowVariants = {
     initial: {
@@ -102,7 +102,7 @@ Well, in this second part, we'll take a look at the Framer Motion feature that a
 
 I tried to implement some kind of exit animations before learning about `AnimatePresence`, but it was hacky and always required extra code to set a proper "transitional" state (like `isClosing`, `isOpening`) and toggle the corresponding animation of that state. As you can imagine, it was very error-prone.
 
-```js title=A very hacky way to implement an exist animation without AnimatePresence
+```jsx title=A very hacky way to implement an exist animation without AnimatePresence
 /**
 This is mostly pseudo code, do not do this!
 It's not good practice
@@ -142,7 +142,7 @@ const MagicComponent = () => {
 
 On the other hand, `AnimatePresence` is extremely well thought of and easy to use. By simply wrapping any motion component in an `AnimatePresence` component, you'll have the ability to set an `exit` prop!
 
-```js {5,15} title=Example of use case for AnimatePresence
+```jsx {5,15} title=Example of use case for AnimatePresence
 const MagicComponent = () => {
   const [hidden, setHidden] = React.useState(false);
 
@@ -265,7 +265,7 @@ When clicking on one of the emojis in the example above you will notice that:
 
 All we need to do to obtain this seemingly complex animation was to add a prop, that's it! ✨ In this example in particular, all I added is a common `layoutId` called `border` to every instance of the blue circle component.
 
-```js {17} title=Example of shared animate layout using the "layoutId" prop
+```jsx {17} title=Example of shared animate layout using the "layoutId" prop
 const MagicWidgetComponent = () => {
   const [selectedID, setSelectedID] = React.useState('1');
 

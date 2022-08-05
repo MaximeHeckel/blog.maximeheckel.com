@@ -50,6 +50,8 @@ const Orchestration = () => {
         css={{
           margin: '0 auto',
           maxWidth: '400px',
+          height: '500px',
+          paddingBottom: '32px',
         }}
       >
         <Form>
