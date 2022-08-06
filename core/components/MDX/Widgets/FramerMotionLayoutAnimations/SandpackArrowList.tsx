@@ -1,3 +1,4 @@
+import { useTheme } from '@maximeheckel/design-system';
 import Sandpack from '@theme/components/Code/Sandpack';
 
 const ComponentsCode = `import { styled } from '@stitches/react';
@@ -41,6 +42,7 @@ export const ArrowIcon = (props) => (
 const AppCode = `import { motion } from 'framer-motion';
 import React from 'react';
 import { List, Item, ArrowIcon } from './Components';
+import './scene.css';
 
 const ITEMS = [1, 2, 3];
 
@@ -77,7 +79,29 @@ const SelectableList = () => {
 export default SelectableList
 `;
 
+const SceneCSSDark = `
+html {
+    background: #20222B;
+}
+
+canvas {
+    width: 100vw;
+    height: 100vh;
+}`;
+
+const SceneCSSLight = `
+html {
+    background: #F7F7FB;
+}
+
+canvas {
+    width: 100vw;
+    height: 100vh;
+}`;
+
 const SandpackArrowList = () => {
+  const { dark } = useTheme();
+
   return (
     <Sandpack
       template="react"
@@ -91,6 +115,10 @@ const SandpackArrowList = () => {
         },
         '/Components.js': {
           code: ComponentsCode,
+        },
+        '/scene.css': {
+          code: dark ? SceneCSSDark : SceneCSSLight,
+          hidden: true,
         },
       }}
     />

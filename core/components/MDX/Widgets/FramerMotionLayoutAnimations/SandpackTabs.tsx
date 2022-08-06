@@ -1,8 +1,10 @@
+import { useTheme } from '@maximeheckel/design-system';
 import Sandpack from '@theme/components/Code/Sandpack';
 
 const AppCode = `import { motion } from 'framer-motion';
 import React from 'react';
 import { Wrapper, Tab } from './Components';
+import './scene.css';
 
 const Tabs = () => {
   const [focused, setFocused] = React.useState(null);
@@ -103,7 +105,29 @@ export const Tab = styled('li', {
 });
 `;
 
+const SceneCSSDark = `
+html {
+    background: #20222B;
+}
+
+canvas {
+    width: 100vw;
+    height: 100vh;
+}`;
+
+const SceneCSSLight = `
+html {
+    background: #F7F7FB;
+}
+
+canvas {
+    width: 100vw;
+    height: 100vh;
+}`;
+
 const SandpackTabs = () => {
+  const { dark } = useTheme();
+
   return (
     <Sandpack
       template="react"
@@ -117,6 +141,10 @@ const SandpackTabs = () => {
         },
         '/Components.js': {
           code: ComponentsCode,
+        },
+        '/scene.css': {
+          code: dark ? SceneCSSDark : SceneCSSLight,
+          hidden: true,
         },
       }}
     />
