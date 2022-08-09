@@ -23,7 +23,7 @@ import {
   Text,
   TextInput,
   TextArea,
-  Tooltip,
+  // Tooltip,
   Checkbox,
   Switch,
   Radio,
@@ -39,6 +39,8 @@ import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
+
+const Tooltip = (props: any) => <>{props.children}</>;
 
 const SandpackExample = dynamic(
   () => import('@theme/components/MDX/Widgets/WaveAnimation/Sandpack')
