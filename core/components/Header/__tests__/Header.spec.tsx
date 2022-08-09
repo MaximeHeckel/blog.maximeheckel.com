@@ -1,4 +1,4 @@
-import { ThemeContext } from '@maximeheckel/design-system';
+import { ThemeContext, Tooltip } from '@maximeheckel/design-system';
 import { fireEvent, render } from '@testing-library/react';
 import preloadAll from 'jest-next-dynamic';
 import React from 'react';
@@ -12,7 +12,9 @@ describe('Header', () => {
   it('renders the header without the site title or the post title or theme switcher', () => {
     const { queryByTestId } = render(
       <ThemeContext.Provider value={{ dark: false, toggleDark: () => null }}>
-        <Header />
+        <Tooltip.Provider>
+          <Header />
+        </Tooltip.Provider>
       </ThemeContext.Provider>
     );
     expect(queryByTestId('header-title')).toBeNull();
@@ -22,7 +24,9 @@ describe('Header', () => {
   it('renders the header with a title', () => {
     const { getByTestId, queryByTestId } = render(
       <ThemeContext.Provider value={{ dark: false, toggleDark: () => null }}>
-        <Header title="Maxime Heckel" />
+        <Tooltip.Provider>
+          <Header title="Maxime Heckel" />
+        </Tooltip.Provider>
       </ThemeContext.Provider>
     );
     expect(queryByTestId('header-title')).toBeInTheDocument();
@@ -37,7 +41,9 @@ describe('Header', () => {
       <ThemeContext.Provider
         value={{ dark: false, toggleDark: mockToggleDark }}
       >
-        <Header />
+        <Tooltip.Provider>
+          <Header />
+        </Tooltip.Provider>
       </ThemeContext.Provider>
     );
     fireEvent.click(getByTestId('darkmode-switch'));

@@ -6,6 +6,7 @@ import { serialize } from 'next-mdx-remote/serialize';
 import { FrontMatterPostType, PostByType, PostType } from 'types/post';
 import { remarkSectionize } from './remark-sectionize-fork';
 import { remarkFigure } from './remark-figure';
+import { remarkMeta } from './remark-meta';
 
 const typeToPath = {
   [PostType.BLOGPOST]: 'content',
@@ -43,6 +44,7 @@ export const getFileBySlug = async <T extends PostType>(
         remarkSectionize,
         remarkFigure,
       ],
+      rehypePlugins: [remarkMeta],
     },
   });
 

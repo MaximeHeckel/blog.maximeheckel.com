@@ -1,14 +1,16 @@
 import { Language } from 'prism-react-renderer';
+import React from 'react';
 
 export type PrePropsType = {
-  children: {
-    props: {
-      metastring: string;
-      mdxType?: string;
-      className?: string;
-      children: string;
-    };
-  };
+  // children: {
+  //   props: {
+  //     metastring: string;
+  //     mdxType?: string;
+  //     className?: string;
+  //     children: string;
+  //   };
+  // };
+  children?: React.ReactNode;
 };
 
 export interface CodeBlockProps {

@@ -1,4 +1,5 @@
 import { styled, Card, Text } from '@maximeheckel/design-system';
+import React from 'react';
 
 export const NewsletterFormContent = styled(Card.Body, {
   variants: {
@@ -16,7 +17,7 @@ export const NewsletterFormContent = styled(Card.Body, {
   },
 });
 
-export const ErrorMessage: React.FC = (props) => (
+export const ErrorMessage = (props: { children: React.ReactNode }) => (
   <Text
     as="p"
     css={{

@@ -47,25 +47,12 @@ describe('Code', () => {
       },
     };
     expect(preToCodeBlock(preProps)).toMatchSnapshot();
-
-    const prePropsWithNoCode = {
-      children: {
-        props: {
-          children: 'some inline code to render',
-          metastring: 'javascript',
-        },
-      },
-    };
-
-    expect(preToCodeBlock(prePropsWithNoCode)).toBeUndefined();
   });
 
   it('Renders a Codeblock component when the proper preProps are passed', () => {
     const { container, getByTestId } = render(
       <Code>
-        <div metastring="javascript" mdxType="code">
-          var hello="world"
-        </div>
+        <div metastring="javascript">var hello="world"</div>
       </Code>
     );
 
@@ -78,9 +65,7 @@ describe('Code', () => {
   it('Renders a Codeblock with title when the proper preProps are passed', () => {
     const { container, getByTestId } = render(
       <Code>
-        <div metastring="javascript title=test" mdxType="code">
-          some code to render
-        </div>
+        <div metastring="javascript title=test">some code to render</div>
       </Code>
     );
 
@@ -96,7 +81,7 @@ describe('Code', () => {
   it('Renders a Codeblock with title and line highlight when the proper preProps are passed', () => {
     const { container, getAllByTestId } = render(
       <Code>
-        <div metastring="javascript {1-3} title=test" mdxType="code">
+        <div metastring="javascript {1-3} title=test">
           {`some code to render
             some code to render 2
             some code to render 3
@@ -111,18 +96,5 @@ describe('Code', () => {
     expect(getAllByTestId('number-line')).toHaveLength(4);
     expect(getAllByTestId('highlight-line')).toHaveLength(3);
     expect(container.querySelector('button')).toBeInTheDocument();
-  });
-
-  it('Renders null when there are no proper preProps passed', () => {
-    const { container, queryByText } = render(
-      <Code>
-        <div metastring="javascript">var hello="world"</div>
-      </Code>
-    );
-
-    expect(container.querySelector('pre')).toBeDefined();
-    expect(container.querySelector('pre[class="prism-code"]')).toBeNull();
-    expect(container.querySelector('pre'));
-    expect(queryByText('var hello="world"')).not.toBeInTheDocument();
   });
 });

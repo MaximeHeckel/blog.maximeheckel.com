@@ -271,6 +271,7 @@ const LineChart = withTooltip<LineChartProps, FormattedData>(
         </svg>
         {tooltipData && !noTooltip && (
           <div>
+            {/* @ts-ignore */}
             <TooltipWithBounds
               key={Math.random()}
               top={tooltipTop}

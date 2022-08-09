@@ -69,6 +69,7 @@ const HeroImg = (props: HeroImgProps) => (
 class Hero extends React.Component<{
   id?: string;
   className?: string;
+  children: React.ReactNode;
 }> {
   public static Img = HeroImg;
   public static Info = HeroInfo;

@@ -1,6 +1,10 @@
 import Head from 'next/head';
 import { AppProps } from 'next/app';
-import { globalStyles, ThemeProvider } from '@maximeheckel/design-system';
+import {
+  globalStyles,
+  ThemeProvider,
+  Tooltip,
+} from '@maximeheckel/design-system';
 import { DefaultSeo } from '@theme/components/Seo';
 import 'styles/global.css';
 import 'styles/font.css';
@@ -18,7 +22,9 @@ const App = ({ Component, pageProps }: AppProps) => {
         />
       </Head>
       <DefaultSeo />
-      <Component {...pageProps} />
+      <Tooltip.Provider>
+        <Component {...pageProps} />
+      </Tooltip.Provider>
     </ThemeProvider>
   );
 };
