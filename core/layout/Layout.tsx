@@ -27,9 +27,10 @@ interface LayoutProps {
   footer?: boolean;
   header?: boolean;
   headerProps?: HeaderProps;
+  children: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = (props) => {
+const Layout = (props: LayoutProps) => {
   const { children, header, footer, headerProps } = props;
 
   return (

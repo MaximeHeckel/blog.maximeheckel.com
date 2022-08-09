@@ -1,28 +1,14 @@
 import { Language } from 'prism-react-renderer';
+import { JSXElementConstructor, ReactElement } from 'react';
 import { PrePropsType } from './types';
 
-export const preToCodeBlock = (
-  preProps: PrePropsType
-):
-  | {
-      live?: boolean;
-      render?: boolean;
-      className: string;
-      codeString: string;
-      language: Language;
-      metastring: string;
-    }
-  | undefined => {
-  if (
-    preProps.children &&
-    preProps.children.props &&
-    preProps.children.props.mdxType === 'code'
-  ) {
-    const {
-      children: codeString,
-      className = '',
-      ...props
-    } = preProps.children.props;
+export const preToCodeBlock = (preProps: PrePropsType) => {
+  const children = preProps.children as
+    | ReactElement<any, string | JSXElementConstructor<any>>
+    | undefined;
+
+  if (children && children.props) {
+    const { children: codeString, className = '', ...props } = children.props;
 
     const matches = className.match(/language-(?<lang>.*)/);
     return {
