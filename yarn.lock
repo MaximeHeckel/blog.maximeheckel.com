@@ -5641,10 +5641,10 @@ is-callable@^1.1.4, is-callable@^1.2.2, is-callable@^1.2.3:
   resolved "https://registry.npmjs.org/is-callable/-/is-callable-1.2.3.tgz"
   integrity sha512-J1DcMe8UYTBSrKezuIUTUwjXsho29693unXM2YhJUTR2txK/eG47bvNa/wipPFmZFgr/N6f1GA66dv0mEyTIyQ==
 
-is-ci-cli@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.npmjs.org/is-ci-cli/-/is-ci-cli-2.1.2.tgz"
-  integrity sha512-dgGkNUs6ws6RfkjQYwkrFhwkdyNkWxyng1Tz7W7OnkGPhXV9z1ofnzmTmuXpvlCfolB8Z7BBL/Zi3LDB6b2hTg==
+is-ci-cli@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/is-ci-cli/-/is-ci-cli-2.2.0.tgz#2cf6763f98413ff8a8409b400f85ac063e0c8a44"
+  integrity sha512-Xg97ZGDzU0a9gPTAli+TNegMk+PI3x0KLRYCfBa2LAboF1YyuA03Gwdc9vpu3VRNU+lFFNkvXnIQuJ0PgB120Q==
   dependencies:
     cross-spawn "^7.0.0"
     is-ci "^2.0.0"
