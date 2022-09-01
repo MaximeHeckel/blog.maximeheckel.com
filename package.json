@@ -44,7 +44,7 @@
     "d3-array": "2.12.0",
     "date-fns": "2.17.0",
     "detect-gpu": "^4.0.5",
-    "focus-trap-react": "8.3.2",
+    "focus-trap-react": "10.0.0",
     "framer-motion": "7.0.0",
     "globby": "11.0.2",
     "graphql": "15.4.0",
