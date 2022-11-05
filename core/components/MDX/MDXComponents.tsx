@@ -151,6 +151,14 @@ const R3FShaderSandpack = dynamic(
   () => import('./Widgets/ShaderReactThreeFiber/Sandpack')
 );
 
+const AttributesVisualizer = dynamic(
+  () => import('./Widgets/ParticlesReactThreeFiber/AttributesVisualizer')
+);
+
+const ParticlesShaderSandpack = dynamic(
+  () => import('./Widgets/ParticlesReactThreeFiber/Sandpack')
+);
+
 const CSSCompositionSandpack = dynamic(
   () => import('./Widgets/CSSComposition/Sandpack')
 );
@@ -203,6 +211,7 @@ const customComponents = {
   DesignSystemTextShowcase,
   DesignSystemFlexGridShowcase,
   FragmentShaderVisualizer,
+  AttributesVisualizer,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
@@ -214,6 +223,7 @@ const customComponents = {
   FramerMotionArrowListSandpack,
   VaporwaveThreejsSandpacks,
   R3FShaderSandpack,
+  ParticlesShaderSandpack,
 };
 
 const MDXComponents = {
