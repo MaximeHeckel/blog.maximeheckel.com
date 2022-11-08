@@ -11,7 +11,8 @@
     "lib": [
       "dom",
       "es2015",
-      "es2017"
+      "es2017",
+      "es2019",
     ],
     /* Specify library files to be included in the compilation. */
     "jsx": "preserve" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
