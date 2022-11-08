@@ -40,7 +40,7 @@ fontFeatured: '#E8E8FD'
 featured: false
 ---
 
-Since writing [The Study of Shaders with React Three Fiber](/posts/the-study-of-shaders-with-react-three-fiber/), I've continued building new scenes to perfect my shader skills and learn new techniques to achieve even more stunning creations. While shaders on their own unlocked a new realm of what's possible to do on the web, there's one type of 3D object that I've overlooked until recently: **particles**!
+Since writing [The Study of Shaders with React Three Fiber](/posts/the-study-of-shaders-with-react-three-fiber/), I've continued building new scenes to perfect my shader skills and learn new techniques to achieve even more ambitious creations. While shaders on their own unlocked a new realm of what's possible to do on the web, there's one type of 3D object that I've overlooked until recently: **particles**!
 
 Whether it's to create galaxies, stars, smoke, fire, or even some other abstract effects, particles are the best tool to help you create scenes that can feel _truly magical_ 🪄.
 
@@ -56,7 +56,7 @@ Whether it's to create galaxies, stars, smoke, fire, or even some other abstract
 
 However, particles can also feel quite intimidating at first. It takes a lot of practice to get familiar with the core concepts of particle-based scenes such as **attributes** or **buffer geometries** and advanced ones like **combining them with custom shaders** or using **Frame Buffer Objects** to push those scenes even further.
 
-In this article, you will find all the _tips and techniques_ I learned regarding particles, from creating simple particles scenes with **standard and buffer geometries** to customizing how they look, controlling their movement with **shaders**, and techniques to scale the number of particles even further. You'll also get a deeper understanding of **attributes**, a key shader concept I overlooked in my previous blog post that is essential for these use cases.
+In this article, you will find all the _tips and techniques_ I learned regarding particles, from creating simple particle systems with **standard and buffer geometries** to customizing how they look, controlling their movement with **shaders**, and techniques to scale the number of particles even further. You'll also get a deeper understanding of **attributes**, a key shader concept I overlooked in my previous blog post that is essential for these use cases.
 
 <Callout label="Before you start" variant="info">
 
@@ -82,12 +82,12 @@ Before we can jump into creating gorgeous particle-based scenes with React Three
 Each geometry associated with a mesh has a set of pre-defined attributes such as:
 
 - The _position attribute_: an array of data representing all the positions of each vertex of a given geometry.
-- The _uv attribute_ contains the UV coordinates of a given geometry.
+- The _uv attribute_: an array of data representing the UV coordinates of a given geometry.
 
 These are just two examples among many possibilities, but you'll find these in pretty much any geometry you'll use.
 You can easily take a peek at them to see what kind of data it contains:
 
-```jsx
+```jsx {5} title=Logging the attributes of a geometry
 const Scene = () => {
   const mesh = useRef();
 
@@ -113,7 +113,7 @@ If you're feeling confused right now, do not worry 😄. I was too! Seeing data 
 
 ### Playing with attributes
 
-This long array with _lots_ of numbers represents **the value of the x, y, and z coordinates for each vertex of our geometry**. It's one-dimensional (no nested data), where each value x,y, and z of a given vertex is right next to the ones from the other vertex.
+This long array with _lots_ of numbers represents **the value of the x, y, and z coordinates for each vertex of our geometry**. It's one-dimensional (no nested data), where each value x, y, and z of a given vertex is right next to the ones from the other vertex.
 I built the little widget below to illustrate in a more approachable way how the values of that position array translate to points in space:
 
 <AttributesVisualizer />
@@ -126,7 +126,7 @@ We will see later in this article how to define attributes and how we can tell o
 
 </Callout>
 
-Now that we know how to interpret that data, we can start to play with it. You can easily manipulate and modify attributes and create some nice effects without the need to touch shader code.
+Now that we know how to interpret that data, we can start having some fun with it. You can easily manipulate and modify attributes and create some nice effects without the need to touch shader code.
 
 Below is an example where we use attributes to twist a `boxGeometry` along its y-axis.
 
@@ -174,7 +174,7 @@ We saw that **we use uniforms to pass data from our Javascript code to a shader*
 
 <Callout variant="danger">
 
-You can only pass attributes to the vertex shaders! If you want to use them in a fragment shader, you will need to pass the data along via a _varying_.
+You can only pass attributes to the vertex shader! If you want to use them in a fragment shader, you will need to pass the data using a _varying_.
 
 <Image
   src="blog/varyings_3.png"
@@ -186,7 +186,7 @@ You can only pass attributes to the vertex shaders! If you want to use them in a
 
 </Callout>
 
-You can see that attributes allow us to control the vertices of a mesh, but not only! For particle-based scenes, we will heavily rely on them to:
+You can see that attributes allow us **to control each vertex of a mesh**, but not only! For particle-based scenes, we will heavily rely on them to:
 
 - position our particles in space
 - move, scale, or animate our particles through time
@@ -197,8 +197,6 @@ That is why it's necessary to have a somewhat clear understanding of attributes 
 ## Particles in React Three Fiber
 
 Now that we know more about attributes, we can finally bring our focus to the core of this article: **particles**.
-
-You can use particles to create any effect ranging from smoke or fire to simulating galaxies with stars, and the best thing is that you can render _a lot_ of them to make your desired effect even more intricate.
 
 ### Our first scene with Particles
 
@@ -218,7 +216,7 @@ That is also where you'll find all the options documented, as I may skip detaili
 
 </Callout>
 
-Below you'll find an example of a particle system rendered in React Three Fiber. As you can see, we're creating a system in the shape of a sphere by using
+Below you'll find an example of a particle system in React Three Fiber. As you can see, we're creating a system in the shape of a sphere by using
 
 - `points`
 - `sphereGeometry` for our geometry
@@ -242,14 +240,14 @@ Now you may ask me: _this is great, but what if I want to position my particles 
 In Three.js and React Three Fiber, we can create _custom geometries_ thanks to the use of:
 
 - `bufferGeometry`
-- `bufferAttributes`
+- `bufferAttribute`
 - our newly acquired knowledge of attributes 🎉
 
-When working with Particles, using a `bufferGeometry` can be really powerful: it gives us full-control over the placement of each particle, and later we'll also see how this lets us move and animate them.
+When working with Particles, using a `bufferGeometry` can be really powerful: it gives us full-control over the placement of each particle, and later we'll also see how this lets us animate them.
 
-Let's take a look at a code example:
+Let's take a look at how we can define a custom geometry in React Three Fiber with the following code example:
 
-```jsx title=Custom geometry with bufferGeometry and bufferAttributes
+```jsx {8-15} title=Custom geometry with bufferGeometry and bufferAttribute
 const CustomGeometryParticles = () => {
   const particlesPosition = [
     /* ... */
@@ -299,12 +297,12 @@ I did not do it and lost a couple hours due to a silly mistake the first time I 
 
 Now when it comes to creating the attributes array itself, let's look at the `particlePositions` array located in our particle scene code.
 
-```jsx title=Generating a positions attribute array
+```jsx {7,9,16} title=Generating a position attribute array
 const count = 2000;
 
 const particlesPosition = useMemo(() => {
   // Create a Float32Array of count*3 length
-  // -> we are going to generate the x, y, z values for 2000 particles
+  // -> we are going to generate the x, y, and z values for 2000 particles
   // -> thus we need 6000 items in this array
   const positions = new Float32Array(count * 3);
 
@@ -322,11 +320,11 @@ const particlesPosition = useMemo(() => {
 }, [count]);
 ```
 
-1. First, we specify a `Float32Array` with a length of `count * 3`. We're going to render `count` particles, e.g. 2000, and each particle has three values (x,y, and z) associated with its position, i.e. 6000 values in total.
-2. Then, we create a loop, and for each particle, we set all the values for x, y, and z. In this case, we're using some level of randomness to position our particles randomly.
+1. First, we specify a `Float32Array` with a length of `count * 3`. We're going to render `count` particles, e.g. 2000, and each particle has three values (x, y, and z) associated with its position, i.e. **\*6000 values in total**.
+2. Then, we create a loop, and **for each particle, we set all the values for x, y, and z**. In this case, we're using some level of randomness to position our particles randomly.
 3. Finally, we're adding all three values to the array at the position `i * 3` with `positions.set([x,y,z], i*3)`.
 
-The code sandbox below showcases what we can render with this technique of using custom geometries. In this example, I created two different particle attributes arrays that place particles randomly:
+The code sandbox below showcases what we can render with this technique of using custom geometries. In this example, I created two different position attribute arrays that place particles randomly:
 
 - at the surface of a sphere
 - in a box, which you can render by changing the `shape` prop to `box` and hitting reload.
@@ -337,7 +335,7 @@ We can see that using custom geometries lets us get a more organic render for ou
 
 ## Customizing and animating Particles with Shaders
 
-Now that we know how to create a particle system based on custom geometries, we can start looking at the fun part: animating particles! 🎉
+Now that we know how to create a particle system based on custom geometries, we can start focusing on the fun part: animating particles! 🎉
 
 There are two ways to approach animating particles:
 
@@ -354,7 +352,7 @@ We just saw how to create an attributes array; updating it is pretty much the sa
 
 - We loop through the current values of the attributes array. It can be all the values or just some of them.
 - Update them.
-- And finally, the most important: set the `needsUpdate` field of our position attribute to true.
+- And finally, the most important: set the `needsUpdate` field of our position attribute to `true`.
 
 <Callout variant="danger">
 
@@ -389,9 +387,9 @@ Despite being the easiest, **this method is also pretty expensive**: on _every f
 
 ### How to animate our particles with a vertex shader
 
-First and foremost, it's time to say goodbye to our `pointsMaterial` 👋, and replace it with a `shader Material` as follows:
+First and foremost, it's time to say goodbye to our `pointsMaterial` 👋, and replace it with a `shaderMaterial` as follows:
 
-```jsx How to use a custom shaderMaterial with particles and a custom buffer geometry
+```jsx {32-37} title=How to use a custom shaderMaterial with particles and a custom buffer geometry
 const CustomGeometryParticles = (props) => {
   const { count } = props;
   const points = useRef();
@@ -441,13 +439,13 @@ As we learned in [The Study of Shaders with React Three Fiber](/posts/the-study-
 
 <Callout variant="info">
 
-For this example, we're going to make our particles rotate. Some good folks worked on some GLSL packages to abstract these functions away for us like <Anchor href="https://github.com/dmnsgn/glsl-rotate" favicon discreet>dmnsgn/glsl-rotate</Anchor>.
+For this example, we're going to make our particles rotate. Some good folks worked on some GLSL packages to abstract these functions away for us like <Anchor href="https://github.com/dmnsgn/glsl-rotate" favicon>dmnsgn/glsl-rotate</Anchor>.
 
 You can load these functions on your projects using glsify-loader. The code sandbox below will have the code of this project copied over for simplicity.
 
 </Callout>
 
-```glsl
+```glsl {4} title=Vertex shader code that applies a rotation along the y-axis
 uniform float uTime;
 
 void main() {
@@ -466,7 +464,7 @@ As you can see in the snippet above, when it comes to the code, **animating part
 
 Since we're there, let's iterate on that shader code to make the resulting scene even better: make the particles close to the center of the sphere move faster than the ones on the outskirts.
 
-```glsl
+```glsl {5,6} title=Enhanced version of the previous vertex shader
 uniform float uTime;
 uniform float uRadius;
 
@@ -483,15 +481,15 @@ void main() {
 }
 ```
 
-Which renders as the following once we wire these shaders to our React Three Fiber code with a `uTime` uniform:
+Which renders as the following once we wire this shader to our React Three Fiber code with a `uTime` and `uRadius` uniform:
 
 <ParticlesShaderSandpack scene="scene5" />
 
 ### How to change the size and appearance of our particles with shaders
 
-This entire time, our particles were simple tiny squares, which is a bit boring let's be honest. In this part, we'll look at how to fix this with some well-thought-out shader code.
+This entire time, our particles were _simple tiny squares_, which is a bit boring. In this part, we'll look at how to fix this with some well-thought-out shader code.
 
-First, let's look at the size. All our particles are the same size right now which does not really give off an _organic_ vibe to this scene. To address that, we can tweak the `gl_PointSize` property in our vertex shader code.
+First, let's look at the size. All our particles are the _same size_ right now which does not really give off an _organic_ vibe to this scene. To address that, we can tweak the `gl_PointSize` property in our vertex shader code.
 
 We can do multiple things with the point size:
 
@@ -515,17 +513,20 @@ gl_PointSize = size * (1.0 / - viewPosition.z);
 
 </Callout>
 
-Now, when it comes to the **particle pattern** itself, we can modify it in the fragment shader. I like to make my particles look like tiny points of light that we can luckily achieve with a few lines of code.
+Now, when it comes to the **particle pattern** itself, we can modify it in the **fragment shader**. I like to make my particles look like _tiny points of light_ that we can luckily achieve with a few lines of code.
 
-```glsl
+```glsl {5-9,12} title=Fragment shader that changes the appearance of our particles
 varying float vDistance;
 
 void main() {
   vec3 color = vec3(0.34, 0.53, 0.96);
+  // Create a strength variable that's bigger the closer to the center of the particle the pixel is
   float strength = distance(gl_PointCoord, vec2(0.5));
   strength = 1.0 - strength;
+  // Make it decrease in strength *faster* the further from the center by using a power of 3
   strength = pow(strength, 3.0);
 
+  // Ensure the color is only visible close to the center of the particle
   color = mix(vec3(0.0), color, strength);
   gl_FragColor = vec4(color, strength);
 }
@@ -533,7 +534,7 @@ void main() {
 
 We can now make the colors of the particles a parameter of the material through a uniform and also make it a function of the distance to the center, for example:
 
-```glsl
+```glsl {11} title=Enhanced version of the previous fragment shader
 varying float vDistance;
 
 void main() {
@@ -542,6 +543,8 @@ void main() {
   strength = 1.0 - strength;
   strength = pow(strength, 3.0);
 
+  // Make particle close to the *center of the scene* a warmer color
+  // and the ones on the outskirts a cooler color
   color = mix(color, vec3(0.97, 0.70, 0.45), vDistance * 0.5);
   color = mix(vec3(0.0), color, strength);
   // Here we're passing the strength in the alpha channel to make sure the outskirts
@@ -550,9 +553,15 @@ void main() {
 }
 ```
 
-In the end, **we get a beautiful scene with just a few lines of GLSL** sprinkled on top of our particle system 🪄
+In the end, **we get a beautiful set of custom particles with just a few lines of GLSL** sprinkled on top of our particle system 🪄
 
 <ParticlesShaderSandpack scene="scene7" />
+
+<Callout label="Tip: Blending" variant="info">
+
+For a better effect, set the `blending` prop of the `shaderMaterial` to `THREE.AdditiveBlending`. This allows particles that are superposed to add their color to one another and create a beautiful staturated look.
+
+</Callout>
 
 ## Going beyond with Frame Buffer Objects
 
@@ -560,7 +569,7 @@ What if we wanted to render _a lot more particles_ onto our scene? What about **
 
 This technique is named **Frame Buffer Object** ([FBO](https://en.wikipedia.org/wiki/Framebuffer_object)). I stumbled upon it when I wanted to reproduce one of <Anchor href="https://twitter.com/winkerVSbecks" favicon discreet>@winkerVSbecks</Anchor> [attractor](https://en.wikipedia.org/wiki/Attractor) scenes from his blog post [Three ways to create 3D particle effects](https://varun.ca/three-js-particles/).
 
-Long story short, I wanted to build the same attractor effect but with _shaders_. The problem was that in an attractor, the position of a particle is dictated by its previous one, which doesn't work by just relying on the position attributes and a vertex shader: there's no way to get the updated position back to our Javascript code and feed it back to the shader to calculate the next one! Thankfully, using an FBO enabled me to successfully render [this scene](https://r3f.maximeheckel.com/attractor).
+Long story short, I wanted to build the same attractor effect but with _shaders_. The problem was that in an attractor, the position of a particle is dictated by its previous one, which doesn't work by just relying on the position attributes and a vertex shader: there's no way to get the updated position back to our Javascript code after it's been updated in our vertex shader and feed it back to the shader to calculate the next one! Thankfully, thanks to using an FBO, I figured out a way to render [this scene](https://r3f.maximeheckel.com/attractor).
 
 <VideoPlayer
   src="https://d2xl4m2ghaywko.cloudfront.net/attractor.mp4"
@@ -580,32 +589,32 @@ It was mainly thanks to [this Stackoverflow answer](https://stackoverflow.com/a/
 
 ### How does a Frame Buffer Object work with particles?
 
-I've seen many people using this technique in Three.js codebases here is how it goes: instead of initiating our particles positions array and passing it as an attribute to, then render them on the screen, we are going to have 3 phases with two render passes.
+I've seen many people using this technique in Three.js codebases. Here is how it goes: instead of initiating our particles positions array and passing it as an attribute and then render them, we are going to have 3 phases with two render passes.
 
 1. The **simulation pass**. We set the positions of the particles as a **Data Texture** to a shader material. They are then read, returned, and sometimes modified in the material's _fragment shader_ (you heard me right!).
-2. Use a `WebGLRenderTarget`, a "texture" we can render to _off-screen_ where we will create a small scene containing our material from the simulation pass and a small plane geometry. We then set it as the _current render target_, thus rendering our simulation material with its Data Texture.
+2. Create a `WebGLRenderTarget`, a "texture" we can render to _off-screen_ where we will add a small scene containing our material from the simulation pass and a small plane. We then set it as the _current render target_, thus rendering our simulation material with its Data Texture that is filled with position data.
 3. The **render pass**. We can now read the texture rendered in the render target. **The texture data is the positions array of our particles**, which we can now pass as a `uniform` to our particles' `shaderMaterial`.
 
 <Callout label="Clarifications" variant="info">
 
 It may sound counter-intuitive for a fragment shader to store/return position data when, so far, we mainly used it for colors. If you think about it, the meaning of the data doesn't really matter, it's more about _its shape_:
 
-- Colors in a fragment shader are a `vec4` for the R, G, B, and A color components
+- Colors in a fragment shader are a `vec4` for the R, G, B, and A color components.
 - In this case, we're also passing a `vec4` for x, y, and z and a constant value `1.0` for the last component that we do not need.
 
 </Callout>
 
-In the end, we're using the simulation pass as a **buffer** to store data and do a lot of heavy calculations on the GPU by processing our position in a fragment shader, and we do that on _every_ _single_ _frame_. Hence the name Frame Buffer Object. I hope I did not lose you there 😅. Maybe the diagram below, as well as the following code snippet will help 👇:
+In the end, we're using the simulation pass as a **buffer** to store data **and do a lot of heavy calculations** on the GPU by processing our positions in a fragment shader, and we do that on _every_ _single_ _frame_. Hence the name Frame Buffer Object. I hope I did not lose you there 😅. Maybe the diagram below, as well as the following code snippet will help 👇:
 
 <Image
-  src="blog/fbo_2.png"
+  src="blog/fbo_3.png"
   alt="Diagram illustrating how the Frabe Buffer Objects allows to store and update particles position data in a vertex shader and then be read as a texture."
   layout="responsive"
   width={700}
   height={443}
 />
 
-```jsx title=Setting up a simulation material
+```jsx {19-25,30,42} title=Setting up a simulation material
 import { extend } from '@react-three/fiber';
 // ... other imports
 
@@ -650,7 +659,7 @@ class SimulationMaterial extends THREE.ShaderMaterial {
 extend({ SimulationMaterial: SimulationMaterial });
 ```
 
-```jsx title=Setting up an FBO with a simulation material in React Three Fiber
+```jsx {46-52,55-64,79,80,82,84,88,96-115} title=Setting up an FBO with a simulation material in React Three Fiber
 import { useFBO } from '@react-three/drei';
 import { useFrame, createPortal } from '@react-three/fiber';
 
@@ -800,9 +809,9 @@ If you want to learn more about Three.js render targets, you should check out [t
 
 ### Creating magical scenes with FBO
 
-To demonstrate the power of FBO, let's look at two scenes I built with the techniques 👀.
+To demonstrate the power of FBO, let's look at two scenes I built with this technique 👀.
 
-The first one renders a particle system in the shape of a sphere with randomly positioned points. In the `simulationMaterial` I applied a _curl-noise_ to the position data of the particles, which yields the gorgeous effect you can see below ✨
+The first one renders a particle system in the shape of a sphere with randomly positioned points. In the `simulationMaterial`, I applied a _curl-noise_ to the position data of the particles, which yields the gorgeous effect you can see below ✨!
 
 <ParticlesShaderSandpack scene="scene8" />
 
@@ -814,13 +823,13 @@ In this scene, we:
 
 <Callout variant="info">
 
-I kept the number of particles "low" on purpose, so I could be sure it performs well on most computers, but I'd invite you to fork this scene and increase the resolution of the render target!.
+I kept the number of particles "low" on purpose, so I could be sure it performs well on most computers, but I'd invite you to fork this scene and increase the resolution of the render target for an even more impressive effect!
 
 On my laptop, a 2020 M1 Macbook Pro, I can push this demo way over 1 million particles 🤯.
 
 </Callout>
 
-Finally, one last scene is just for fun. I ported to React Three Fiber a Three.js demo from [an article](http://barradeau.com/blog/?p=621) written by [@nicoptere](https://twitter.com/nicoptere) that does a pretty good job at deep diving into the FBO technique.
+Finally, one last scene, just for fun! I ported to React Three Fiber a Three.js demo from [an article](http://barradeau.com/blog/?p=621) written by <Anchor favicon discreet href="https://twitter.com/nicoptere">@nicoptere</Anchor> that does a pretty good job at deep diving into the FBO technique.
 
 <ParticlesShaderSandpack scene="scene9" />
 
@@ -836,7 +845,6 @@ Then in the fragment shader of the `simulationMaterial`, we use GLSL's `mix` fun
 _From zero to FBO_, you now know pretty much everything I know about particles as of writing these words 🎉! There's, of course, still _a lot more_ to explore, but I hope this blog post was **a good introduction to the basics and more advanced techniques** and that it can serve as a guide to get back to during your own journey with Particles and React Three Fiber.
 
 **Techniques like FBO enable almost limitless possibilities for particle-based scenes**, and I can't wait to see what you'll get to create with it ✨. I couldn't resist sharing this with you in this write-up 🪄.
-
 Frame Buffer Objects have a various set of use cases, not just limited to particles that I haven't explored deeply enough yet. That will probably be a topic for a future blog post, who knows?
 
-As a productive next step to push your particle skills even further, I can only recommend to hack on your own. You have all the tools to get started 😄.
+As a productive next step to push your particle skills even further, I can only recommend to hack on your own. You now have all the tools to get started 😄.

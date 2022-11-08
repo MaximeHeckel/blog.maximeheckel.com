@@ -12,7 +12,7 @@ const BasicParticles = () => {
   return (
     <points ref={points}>
       <sphereGeometry args={[1, 48, 48]} />
-      <pointsMaterial size={0.015} color="#5786F5" />
+      <pointsMaterial color="#5786F5" size={0.015} sizeAttenuation />
     </points>
   );
 };

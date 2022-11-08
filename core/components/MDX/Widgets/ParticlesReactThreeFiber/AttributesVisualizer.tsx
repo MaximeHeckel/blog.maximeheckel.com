@@ -9,7 +9,7 @@ import {
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
-const START_PX = 350;
+const START_PX = 280;
 const DIMENSION_ARRAY_ITEM = 40;
 const ITEM_SIZE = 3;
 const LABEL = 'Vertex';
