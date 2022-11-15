@@ -84,7 +84,7 @@ const Cube = () => {
   const mesh = useRef();
 
   return (
-    <mesh ref={ref}>
+    <mesh ref={mesh}>
       <boxGeometry args={[1, 1, 1]} />
       <meshBasicMaterial color={0xffffff} />
     </mesh>
@@ -136,7 +136,7 @@ const Cube = () => {
   const mesh = useRef();
 
   return (
-    <mesh ref={ref}>
+    <mesh ref={mesh}>
       <boxGeometry args={[1, 1, 1]} />
       <shaderMaterial
         fragmentShader={fragmentShader}
@@ -271,7 +271,7 @@ const Cube = () => {
   );
 
   return (
-    <mesh ref={ref}>
+    <mesh ref={mesh}>
       <boxGeometry args={[1, 1, 1]} />
       <shaderMaterial
         fragmentShader={fragmentShader}
@@ -454,7 +454,7 @@ While noise is a fascinating subject, this article will not focus on it:
 - {<Anchor href="https://twitter.com/winkerVSbecks" favicon discreet>
   @winkerVSbecks
   </Anchor>} already wrote an incredible article about this subject, better than I could have
-ever done 😄.
+  ever done 😄.
 
 👉 I highly recommend reading his write-up: [Noise in Creative Coding](https://varun.ca/noise/).
 
@@ -481,7 +481,7 @@ const Sphere = () => {
   const mesh = useRef();
 
   return (
-    <mesh ref={ref}>
+    <mesh ref={mesh}>
       <icosahedronGeometry args={[2, 20]} />
       <shaderMaterial
         fragmentShader={fragmentShader}
@@ -580,7 +580,7 @@ const Cube = () => {
   const mesh = useRef();
 
   return (
-    <mesh ref={ref}>
+    <mesh ref={mesh}>
       <boxGeometry args={[1, 1, 1]} />
       <LayerMaterial>
         {/* Override your default uniforms with props! */}
