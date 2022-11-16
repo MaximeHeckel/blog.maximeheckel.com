@@ -7371,6 +7371,18 @@ playwright-core@1.17.1, playwright-core@=1.17.1:
     yauzl "^2.10.0"
     yazl "^2.5.1"
 
+playwright-core@1.27.1:
+  version "1.27.1"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.27.1.tgz#840ef662e55a3ed759d8b5d3d00a5f885a7184f4"
+  integrity sha512-9EmeXDncC2Pmp/z+teoVYlvmPWUC6ejSSYZUln7YaP89Z6lpAaiaAnqroUt/BoLo8tn7WYShcfaCh+xofZa44Q==
+
+playwright-webkit@^1.27.1:
+  version "1.27.1"
+  resolved "https://registry.yarnpkg.com/playwright-webkit/-/playwright-webkit-1.27.1.tgz#d466fae6d7ace3d2ba7b62b20ccd26a369aea771"
+  integrity sha512-2HM93FdGJxBfvw2wS8z4ntSwCleLbEPj+JN2/RdkS0HanrSKQc9WK+OiJNM3mwMn7IMZzEuRuf4UjnvO7C0MHQ==
+  dependencies:
+    playwright-core "1.27.1"
+
 playwright@1.17.1:
   version "1.17.1"
   resolved "https://registry.npmjs.org/playwright/-/playwright-1.17.1.tgz"
