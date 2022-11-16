@@ -92,7 +92,7 @@ const ContentSecurityPolicy = `
     style-src 'self' 'unsafe-inline' *.googleapis.com;
     img-src * blob: data:;
     media-src 'self' d2xl4m2ghaywko.cloudfront.net;
-    connect-src *;
+    connect-src 'self' https://vitals.vercel-insights.com;
     font-src 'self';
 `;
 
