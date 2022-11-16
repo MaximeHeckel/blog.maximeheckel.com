@@ -11,4 +11,5 @@ export default defineConfig({
     },
     baseUrl: 'http://localhost:3000',
   },
+  experimentalWebKitSupport: true,
 });
