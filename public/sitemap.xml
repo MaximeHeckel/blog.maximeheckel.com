@@ -405,6 +405,14 @@
 
   <url>
     <loc
+      >https://blog.maximeheckel.com/posts/the-magical-world-of-particles-with-react-three-fiber-and-shaders/</loc
+    >
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc
       >https://blog.maximeheckel.com/posts/the-physics-behind-spring-animations/</loc
     >
     <changefreq>daily</changefreq>
