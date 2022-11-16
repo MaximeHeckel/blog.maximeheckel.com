@@ -30,6 +30,7 @@
   "dependencies": {
     "@codesandbox/sandpack-react": "^1.2.2",
     "@maximeheckel/design-system": "^1.1.1",
+    "@vercel/analytics": "^0.1.5",
     "@visx/clip-path": "1.6.1",
     "@visx/curve": "1.6.1",
     "@visx/drag": "2.1.2",

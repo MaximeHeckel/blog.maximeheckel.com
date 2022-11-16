@@ -6,6 +6,7 @@ import {
   Tooltip,
 } from '@maximeheckel/design-system';
 import { DefaultSeo } from '@theme/components/Seo';
+import { Analytics } from '@vercel/analytics/react';
 import 'styles/global.css';
 import 'styles/font.css';
 
@@ -25,6 +26,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <Tooltip.Provider>
         <Component {...pageProps} />
       </Tooltip.Provider>
+      <Analytics />
     </ThemeProvider>
   );
 };
