@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Tue, 09 Aug 2022 01:52:31 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 16 Nov 2022 01:44:27 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[The magical world of Particles with React Three Fiber and Shaders]]></title>
+            <description><![CDATA[An interactive introduction to Particles with React Three Fiber and Shaders where you'll learn anything going from attributes, buffer geometries, and more advanced techniques like Frame Buffer Object through 8 unique 3D scenes.]]></description>
+            <link>https://blog.maximeheckel.com/posts/the-magical-world-of-particles-with-react-three-fiber-and-shaders</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/the-magical-world-of-particles-with-react-three-fiber-and-shaders</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 08 Nov 2022 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[The Study of Shaders with React Three Fiber]]></title>
             <description><![CDATA[A complete guide on how to use shaders with React Three Fiber, work with uniforms and varyings, and build dynamic, interactive and composable materials with them through 8 unique 3D scenes.]]></description>
