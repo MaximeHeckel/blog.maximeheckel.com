@@ -19,9 +19,11 @@ import { format } from 'date-fns';
 import { motion, MotionProps } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import Balancer from 'react-wrap-balancer';
 import Layout from '@theme/layout';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';
+import React from 'react';
 
 const NewsletterForm = dynamic(
   () => import('@theme/components/NewsletterForm')
@@ -89,12 +91,21 @@ const IndexPage = (props: Props) => {
       <Grid columns="medium" gapX={4} gapY={12} className={wrapperGrid()}>
         <Box>
           <H1>
-            Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
-            <Text variant="secondary" size="7" weight="4">
-              Here, I share through my writing my experience as a frontend
-              engineer and everything I'm learning about on React, Typescript,
-              SwiftUI, Serverless, and testing.
-            </Text>
+            <Balancer ratio={0.3}>
+              Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
+              <Text
+                css={{
+                  lineHeight: 'unset',
+                }}
+                variant="secondary"
+                size="7"
+                weight="4"
+              >
+                Here, I share through my writing my experience as a frontend
+                engineer and everything I'm learning about on React, Typescript,
+                SwiftUI, Serverless, and testing.
+              </Text>
+            </Balancer>
           </H1>
           <Flex
             gap={4}

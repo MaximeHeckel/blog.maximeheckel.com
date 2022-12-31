@@ -18,6 +18,7 @@ import Hero from '@theme/components/Hero';
 import WebmentionCount from '@theme/components/Webmentions/WebmentionCount';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
+import Balancer from 'react-wrap-balancer';
 
 interface WebmentionBlogDataProps {
   date: string;
@@ -115,7 +116,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
       <article className="h-entry">
         <Grid columns="small" gapX={4}>
           <Hero>
-            <Box css={{ marginBottom: '24px', fontSize: 'var(--font-size-2)' }}>
+            <Box css={{ marginBottom: '16px', fontSize: 'var(--font-size-2)' }}>
               <Link href="/" passHref>
                 <Anchor arrow="left" data-testid="home-link" discreet>
                   Home
@@ -126,7 +127,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
               className="p-name"
               data-testid={`project-title-${title}`}
             >
-              {title}
+              <Balancer ratio={0.5}>{title}</Balancer>
             </Hero.Title>
             <Hero.Info>
               <Flex
