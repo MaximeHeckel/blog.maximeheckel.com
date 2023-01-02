@@ -28,8 +28,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@codesandbox/sandpack-react": "^1.2.2",
-    "@maximeheckel/design-system": "^1.1.1",
+    "@codesandbox/sandpack-react": "^1.18.4",
+    "@maximeheckel/design-system": "^1.2.0",
     "@vercel/analytics": "^0.1.5",
     "@visx/clip-path": "1.6.1",
     "@visx/curve": "1.6.1",

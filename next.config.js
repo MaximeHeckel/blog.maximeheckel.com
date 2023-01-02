@@ -13,10 +13,18 @@ module.exports = withBundleAnalyzer({
     ],
   },
   webpack(config, { isServer, buildId }) {
-    config.resolve.alias['react'] = path.resolve('./node_modules/react');
-    config.resolve.alias['react-dom'] = path.resolve(
-      './node_modules/react-dom'
-    );
+    const reactPaths = {
+      react: path.join(__dirname, 'node_modules/react'),
+      'react-dom': path.join(__dirname, 'node_modules/react-dom'),
+    };
+
+    config.resolve = {
+      ...config.resolve,
+      alias: {
+        ...config.resolve.alias,
+        ...reactPaths,
+      },
+    };
 
     return config;
   },

@@ -723,18 +723,18 @@
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
-"@codesandbox/sandpack-client@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.npmjs.org/@codesandbox/sandpack-client/-/sandpack-client-1.2.2.tgz"
-  integrity sha512-sTPQVS7mzpEm2ttpHFFSqkGd1A1tBZn7UTZwIjBNCXKHywrt9o7MyrdhUuS03J7MyXN+HSJ55Vz+OGD1Wv4ejQ==
+"@codesandbox/sandpack-client@^1.18.0":
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/@codesandbox/sandpack-client/-/sandpack-client-1.18.0.tgz#757da8189572a2bec27bfb59bfb524ae2419dc41"
+  integrity sha512-VChxkXtA1AipLnlmuzmI8uixtDk0VWkxu5q7ev+TlsTJsiS8sVLDBCBjAyj0zrjtEpfrW8TwjAQxuX7v9Ga8Pw==
   dependencies:
     codesandbox-import-utils "^1.2.3"
     lodash.isequal "^4.5.0"
 
-"@codesandbox/sandpack-react@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.npmjs.org/@codesandbox/sandpack-react/-/sandpack-react-1.2.2.tgz"
-  integrity sha512-XeKmZWeIAx/jGoviTNRzBBEqfx/6UQC/hdFfiA0SoWq/KHvpe3NlOcN4vGzumU9Rygk08K0veuqh+P6GenwWjg==
+"@codesandbox/sandpack-react@^1.18.4":
+  version "1.18.4"
+  resolved "https://registry.yarnpkg.com/@codesandbox/sandpack-react/-/sandpack-react-1.18.4.tgz#460d6d203605c43c3d5f455038219e538221ef75"
+  integrity sha512-h/SBKAl5ykHn/vL6hnRPuCJyYnjJ0Baln9Z94JL4cQbHR2jwHR6cg7mMEtiZzT7rCeqgCW3yVl46AeubV7Jlbw==
   dependencies:
     "@code-hike/classer" "^0.0.0-aa6efee"
     "@codemirror/closebrackets" "^0.19.0"
@@ -750,9 +750,10 @@
     "@codemirror/matchbrackets" "^0.19.3"
     "@codemirror/state" "^0.19.6"
     "@codemirror/view" "^0.19.32"
-    "@codesandbox/sandpack-client" "^1.2.2"
+    "@codesandbox/sandpack-client" "^1.18.0"
     "@react-hook/intersection-observer" "^3.1.1"
     "@stitches/core" "^1.2.6"
+    clean-set "^1.1.2"
     codesandbox-import-util-types "^2.2.3"
     lodash.isequal "^4.5.0"
     lz-string "^1.4.4"
@@ -1143,10 +1144,10 @@
   dependencies:
     "@lezer/common" "^0.15.0"
 
-"@maximeheckel/design-system@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@maximeheckel/design-system/-/design-system-1.1.1.tgz#0612847ab8c31d325b71070db11f9802d5ed714c"
-  integrity sha512-1nKNrE2o4TwjuE/4UWtjiI8OCGVPn/pnuJTnUgsc4wvcNSTGFlgXRQbtOP8DChF+f93xPcbWG8n/FLMYLl2PMQ==
+"@maximeheckel/design-system@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@maximeheckel/design-system/-/design-system-1.2.0.tgz#a560afaaa69bf0f8380c6c3cfea2f9408b2fe1d4"
+  integrity sha512-+EwsiKU5ox4CsUM54lbY02BnsjiQ79L4u3EK+DqEjCjCmoER/YPOU5c8nqBGdjln0AyEfqqf1E2RyZ576QqsGQ==
   dependencies:
     "@radix-ui/react-tooltip" "1.0.0"
     "@stitches/react" "^1.2.7"
@@ -2975,6 +2976,11 @@ classnames@^2.2.5:
   version "2.2.6"
   resolved "https://registry.npmjs.org/classnames/-/classnames-2.2.6.tgz"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
+
+clean-set@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/clean-set/-/clean-set-1.1.2.tgz#76d8bf238c3e27827bfa73073ecdfdc767187070"
+  integrity sha512-cA8uCj0qSoG9e0kevyOWXwPaELRPVg5Pxp6WskLMwerx257Zfnh8Nl0JBH59d7wQzij2CK7qEfJQK3RjuKKIug==
 
 clean-stack@^2.0.0:
   version "2.2.0"

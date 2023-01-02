@@ -536,6 +536,19 @@ export default function Design(props: {
               variant="icon"
               icon={<Icon.Twitter />}
             />
+            <Button
+              aria-label="Follow me on Twitter!"
+              size="small"
+              variant="icon"
+              icon={<Icon.Twitter />}
+            />
+            <Button
+              aria-label="Follow me on Twitter!"
+              disabled
+              size="small"
+              variant="icon"
+              icon={<Icon.Twitter />}
+            />
           </Grid>
         </Box>
         <Box as="section" className={gridItem()} id="anchor">
