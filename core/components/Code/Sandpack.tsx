@@ -4,8 +4,11 @@ import {
   SandpackCodeEditor,
   SandpackLayout,
   SandpackPredefinedTemplate,
+  SandpackConsole,
 } from '@codesandbox/sandpack-react';
-import { Shadows, styled } from '@maximeheckel/design-system';
+import { Box, Flex, Shadows, styled } from '@maximeheckel/design-system';
+import React from 'react';
+import PreviewTabs, { Tab } from './components/PreviewTabs';
 import setupFiles from './SandpackSetupFiles';
 
 // Default Theme
@@ -18,7 +21,7 @@ const theme = {
     error: 'var(--maximeheckel-colors-danger)',
     surface3: 'var(--maximeheckel-colors-emphasis)',
     surface2: 'var(--maximeheckel-border-color)',
-    surface1: 'var(--code-snippet-background)',
+    surface1: 'var(--maximeheckel-card-background-color)',
   },
   syntax: {
     plain: 'var(--token-comment)',
@@ -49,13 +52,14 @@ const defaultEditorOptions = {
 };
 
 // Styles
-const SandpackWrapper = styled('div', {
+const SandpackWrapper = styled(Box, {
   '.sp-layout': {
+    background: 'var(--maximeheckel-card-background-color)',
     position: 'relative',
     marginBottom: '2.25rem',
     borderRadius: 'var(--border-radius-2)',
     boxShadow: Shadows[1],
-    '@media (max-width: 750px)': {
+    '@media (max-width: 770px)': {
       display: 'block',
     },
     '@media (max-width: 1200px)': {
@@ -82,11 +86,11 @@ const SandpackWrapper = styled('div', {
     opacity: '1',
     color: 'var(--maximeheckel-colors-typeface-tertiary)',
   },
-  '.button': {
-    backgroundColor: 'var(--maximeheckel-colors-body)!important',
-    cursor: 'pointer !important',
-    '&:hover': {
-      backgroundColor: 'var(--maximeheckel-colors-body)!important',
+
+  // Hide default console clear button
+  '.sp-console': {
+    '> button': {
+      display: 'none',
     },
   },
 });
@@ -104,9 +108,23 @@ interface SandpackProps {
   files: Record<string, any>;
   dependencies?: Record<string, string>;
   autorun?: boolean;
-  editorOnly?: boolean;
-  renderOnly?: boolean; // TODO Make sure you can't have autorun = true and renderOnly = true
+  defaultTab?: Tab;
 }
+
+const defaultFilesByTemplate: Record<SandpackPredefinedTemplate, any> = {
+  react: setupFiles,
+  // TODO
+  'react-ts': '',
+  vanilla: '',
+  'vanilla-ts': '',
+  angular: '',
+  vue: '',
+  vue3: '',
+  'vue3-ts': '',
+  svelte: '',
+  solid: '',
+  'test-ts': '',
+};
 
 const Sandpack = (props: SandpackProps) => {
   const {
@@ -114,24 +132,11 @@ const Sandpack = (props: SandpackProps) => {
     dependencies,
     template,
     autorun = true,
-    editorOnly = false,
-    renderOnly = false,
+    defaultTab = 'preview',
   } = props;
-  const editorPart = props.options?.editorWidthPercentage || 50;
-  const previewPart = 100 - editorPart;
 
-  const defaultFilesByTemplate: Record<SandpackPredefinedTemplate, any> = {
-    react: setupFiles,
-    // TODO
-    'react-ts': '',
-    vanilla: '',
-    'vanilla-ts': '',
-    angular: '',
-    vue: '',
-    vue3: '',
-    svelte: '',
-    solid: '',
-  };
+  const [consoleKey, setConsoleKey] = React.useState(0);
+  const [selectedTab, setSelectedTab] = React.useState<Tab>(defaultTab);
 
   return (
     <SandpackWrapper>
@@ -150,28 +155,50 @@ const Sandpack = (props: SandpackProps) => {
         }}
       >
         <SandpackLayout>
-          {!editorOnly ? (
+          <Flex
+            direction="column"
+            justifyContent="space-between"
+            css={{
+              height: defaultEditorOptions.editorHeight,
+              width: '50%',
+              gap: 0,
+              '@media (max-width: 770px)': {
+                width: '100%',
+              },
+            }}
+          >
+            <PreviewTabs
+              onClear={() => setConsoleKey(consoleKey + 1)}
+              onTabSelect={(tab) => setSelectedTab(tab)}
+              selectedTab={selectedTab}
+            />
+            <SandpackConsole
+              key={consoleKey}
+              showHeader
+              style={{
+                height: defaultEditorOptions.editorHeight - 40,
+                display: selectedTab === 'console' ? 'flex' : 'none',
+              }}
+            />
             <SandpackPreview
               showNavigator={defaultEditorOptions.showNavigator}
+              showRefreshButton={false}
+              showOpenInCodeSandbox={false}
               style={{
-                height: defaultEditorOptions.editorHeight,
-                flexGrow: previewPart,
-                flexShrink: previewPart,
-                minWidth: 700 * (previewPart / (previewPart + editorPart)),
+                height: defaultEditorOptions.editorHeight - 40,
+                display: selectedTab === 'preview' ? 'flex' : 'none',
               }}
             />
-          ) : null}
-          {!renderOnly ? (
-            <SandpackCodeEditor
-              {...defaultEditorOptions}
-              style={{
-                height: defaultEditorOptions.editorHeight,
-                flexGrow: editorPart,
-                flexShrink: editorPart,
-                minWidth: 700 * (editorPart / (previewPart + editorPart)),
-              }}
-            />
-          ) : null}
+          </Flex>
+          <SandpackCodeEditor
+            {...defaultEditorOptions}
+            showRunButton={false}
+            style={{
+              width: '50%',
+              borderLeft: '1px solid var(--maximeheckel-border-color)',
+              height: defaultEditorOptions.editorHeight,
+            }}
+          />
         </SandpackLayout>
       </SandpackProvider>
     </SandpackWrapper>
