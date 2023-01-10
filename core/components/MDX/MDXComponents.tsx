@@ -160,6 +160,20 @@ const ParticlesShaderSandpack = dynamic(
   () => import('./Widgets/ParticlesReactThreeFiber/Sandpack')
 );
 
+const RGBShiftVisualizer = dynamic(
+  () =>
+    import('./Widgets/RefractionDispersionReactThreeFiber/RGBShiftVisualizer')
+);
+
+const ColorChannelSummary = dynamic(
+  () =>
+    import('./Widgets/RefractionDispersionReactThreeFiber/ColorChannelSummary')
+);
+
+const RefractionDispersionSandpack = dynamic(
+  () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
+);
+
 const CSSCompositionSandpack = dynamic(
   () => import('./Widgets/CSSComposition/Sandpack')
 );
@@ -213,6 +227,8 @@ const customComponents = {
   DesignSystemFlexGridShowcase,
   FragmentShaderVisualizer,
   AttributesVisualizer,
+  RGBShiftVisualizer,
+  ColorChannelSummary,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
@@ -225,6 +241,7 @@ const customComponents = {
   VaporwaveThreejsSandpacks,
   R3FShaderSandpack,
   ParticlesShaderSandpack,
+  RefractionDispersionSandpack,
 };
 
 const MDXComponents = {
