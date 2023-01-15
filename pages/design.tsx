@@ -39,6 +39,7 @@ import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
+import Details from '@theme/components/Details';
 
 const Tooltip = (props: any) => <>{props.children}</>;
 
@@ -117,16 +118,6 @@ export default function Design(props: {
             <Pill variant="warning">Work In Progress</Pill>
             <Pill variant="info">v1.0</Pill>
           </Flex>
-        </Box>
-        <Box as="section" className={gridItem()}>
-          <H2>Name (WIP)</H2>
-          <Text family="numeric" size="4">
-            3X-DS (Explore, Expand, Experiment)
-          </Text>
-          <br />
-          <Text size="2" variant="tertiary">
-            A set of tools and components to build and write content
-          </Text>
         </Box>
         <Box as="section" className={gridItem()} id="logo">
           <H2>Logo</H2>
@@ -1007,6 +998,17 @@ function sayHi(name) {
           />
           <Label>Sandpack Code Block</Label>
           <SandpackExample />
+        </Box>
+        <Box as="section" className={gridItem()} id="details-summary">
+          <H2>Details/Summary</H2>
+          <Details>
+            <Details.Summary>Summary: Some short text</Details.Summary>
+            <Details.Content>
+              Content. Some long text nested inside the component. Useful to
+              avoid long, optional content. It can take some simple strings or
+              some other custom React componen. As you want!
+            </Details.Content>
+          </Details>
         </Box>
         <Box as="section" className={gridItem()} id="command-center">
           <H2>Command Center / Search </H2>

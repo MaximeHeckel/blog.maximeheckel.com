@@ -16,6 +16,7 @@ import {
   H3,
   Strong,
 } from '@maximeheckel/design-system';
+import Details from '@theme/components/Details';
 import Code from '@theme/components/Code';
 import VideoPlayer from '@theme/components/VideoPlayer';
 
@@ -235,6 +236,7 @@ const MDXComponents = {
   Button,
   blockquote: Blockquote,
   Callout,
+  Details,
   em: EM,
   h2: H2,
   h3: H3,
@@ -253,6 +255,7 @@ const MDXComponents = {
   ul: function UL(props: React.HTMLAttributes<HTMLUListElement>) {
     return <List variant="unordered" {...props} />;
   },
+
   VideoPlayer,
   ...customComponents,
 };
