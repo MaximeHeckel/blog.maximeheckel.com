@@ -2,7 +2,7 @@
 title: 'Scrollspy demystified'
 subtitle: A deep dive into how the inner workings of a Scrollspy, Intersection Observers, and how to integrate it with Markdown-based static sites without the need of third party libraries.
 date: '2021-03-09T08:00:00.000Z'
-updated: '2022-08-04T08:00:00.000Z'
+updated: '2023-01-15T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -509,30 +509,30 @@ const BlogPost = () => {
 };
 ```
 
-<Callout variant="info">
-
-<details>
-<summary style={{ display: 'revert' }} markdown="span">
-  <i>But Maxime, I want to build the same table of content as you did</i>
-</summary>
+<Details>
+  <Details.Summary>
+    But Maxime, I want to build the same table of content as you did
+  </Details.Summary>
+  <Details.Content>
 
 Today is your lucky day! I refactored the whole implementation so it's easier and more accessible: [TableOfContent.tsx](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/27074d0d3c390dff3aa50c1cdf96944b98bd72e0/gatsby-theme-maximeheckel/components/TableOfContent/TableOfContent.tsx)
 
 Note: This code is for my upcoming NextJS based blog. It's not deployed/available to the public just yet. I still have 1 or 2 hacks in there to workaround weird race conditions due to server-side rendering/next router, I'll fix those in the future.
 
-</details>
-<br/>
-<details>
-<summary style={{ display: 'revert' }} markdown="span">
-  <i>What about the progress bar next to your table of content? I want the same as you!</i>
-</summary>
+  </Details.Content>
+</Details>
+
+<Details>
+  <Details.Summary>
+    What about the progress bar next to your table of content? I want the same as you!
+  </Details.Summary>
+  <Details.Content>
 
 Same! I refactored it as well and isolated it so it's easier to read: [ProgressBar.tsx](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/27074d0d3c390dff3aa50c1cdf96944b98bd72e0/gatsby-theme-maximeheckel/components/TableOfContent/ProgressBar.tsx)
 Keep an eye on it, I still have some cleanup to do.
 
-</details>
-
-</Callout>
+  </Details.Content>
+</Details>
 
 I hope this blog post brought some light on what a Scrollspy is, Intersection Observers, and also how I implemented my table of content components that so many of you seem to like so much (thank you all for the overall compliments on my blog by the way, I _really_ appreciate them 😄).
 
