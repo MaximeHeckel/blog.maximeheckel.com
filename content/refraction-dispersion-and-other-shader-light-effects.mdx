@@ -1,0 +1,786 @@
+---
+title: Refraction, dispersion, and other shader light effects
+subtitle: A guide on how to reproduce a chromatic dispersion effect for your React Three Fiber and shader projects with FBO, refraction, chromatic aberration, specular, and other tricks through 9 interactive code playgrounds.
+date: '2023-01-24T08:00:00.000Z'
+updated: '2023-01-24T08:00:00.000Z'
+categories: []
+keywords:
+  [
+    three.js,
+    react three fiber,
+    shader,
+    fragment,
+    vertex,
+    material,
+    position,
+    3d,
+    webgl,
+    fbo,
+    frame buffer object,
+    javascript,
+    scene,
+    camera,
+    renderer,
+    light,
+    mesh,
+    meshes,
+    normal,
+    reflection,
+    refraction,
+    dispersion,
+    specular,
+    fresnel,
+    diffuse,
+    colors,
+    rgb,
+    rygcbv,
+    backside,
+    frontside,
+    render loop,
+  ]
+slug: refraction-dispersion-and-other-shader-light-effects
+type: 'blogPost'
+colorFeatured: 'linear-gradient(90deg, #6D9EE7 12.5%, #ADBFE3 26.04%, #F0C9B4 39.06%, #F4BA6E 56.96%, #FFC178 70.83%, #E58334 92.71%);'
+fontFeatured: '#000000'
+featured: true
+---
+
+Since my very first lines of React Three Fiber and shader code, I've been obsessed with light and how to reproduce some of its physical properties to add some _delight_ to my 3D scenes ✨. I gathered countless examples of renders featuring those effects in my inspiration board, but one of them that always struck me as incredible was **chromatic dispersion**.
+
+<Image
+  src="blog/example_dispersion_2.png"
+  alt="Examples of dispersion effects by the Vercel Team, Davo Galavotti, and many other artists"
+  layout="responsive"
+  width={700}
+  height={447}
+/>
+
+While most of those are renders or use specific shaders to emulate the dispersion, I really wanted to see if it was possible to reproduce this light effect along with others on the web by **staying as close as possible to the physics of light** and how it interacts with a mesh while **keeping it real-time**. Despite the complexity of the problem and an increasingly deep rabbit hole, I've since then _somewhat_ [achieved this goal](https://twitter.com/MaximeHeckel/status/1611032902870999040), and I'm going to tell you all about that in this blog post!
+
+<VideoPlayer
+  src="https://d2xl4m2ghaywko.cloudfront.net/dispersionlogo.mp4"
+  autoPlay
+  muted
+  loop
+  controls={true}
+  width={700}
+  height={508}
+/>
+
+In this article, I'll go through the steps I took to build a shader material with a _pleasing_ **dispersion effect** through **refraction**, **chromatic aberration**, **specular**, and other fascinating light effects. You'll see that, with some math and well-positioned light rays, you can get something truly magical 🪄.
+
+<Callout label="Before you start" variant="info">
+
+👉 This article assumes you have basic knowledge about shaders and GLSL, or read [The Study of Shaders with React Three Fiber](/posts/the-study-of-shaders-with-react-three-fiber/).
+
+</Callout>
+
+<Callout variant="info">
+
+The GLSL code in the demos will be displayed as _strings_ as it was easier to make that work with React Three Fiber on Sandpack.
+
+To learn more on how to import `.glsl` files in your React project, check out [glslify-loader](https://github.com/glslify/glslify-loader).
+
+</Callout>
+
+## Bending light with refraction
+
+Achieving a realistic refraction effect requires first to _make our mesh's material transparent_. There are many ways to obtain this transparency effect with shaders, but for this article, I'll focus on one that I like quite a lot: **using Frame Buffer Object**
+
+<Callout variant="info" label="FBO">
+
+I briefly introduced Frame Buffer Objects in my blog post titled [The magic world of Particles with React Three Fiber and Shaders](/posts/the-magical-world-of-particles-with-react-three-fiber-and-shaders/).
+
+There, I showcase how you can use FBO to store the positions of the points within a particle system.
+
+</Callout>
+
+### Transparent mesh with FBO
+
+To make our mesh transparent: we perform "multiple passes" in our render loop, i.e. for each frame. In the diagram below, I illustrated what each phase achieves and what we end up _rendering_ within our Frame Buffer Object:
+
+<Image
+  src="blog/transparent_mesh_fbo_2.png"
+  alt="Diagram showcasing how to make a mesh transparent by hidding it, rendering the scene in an FBO, using the resulting texture on the mesh's material and showing it again."
+  layout="responsive"
+  width={700}
+  height={274}
+/>
+
+1. First, we hide our mesh by setting the visibility prop of our material to `false`.
+2. We set the render target to the Frame Buffer Object.
+3. We _take a snapshot_ of our entire scene (the other meshes, the background, etc.) by rendering it in the render target.
+4. We set the render target back to its original value of null.
+5. We pass the texture data of our Frame Buffer Object to the mesh's material fragment shader using a uniform where it will be read and displayed.
+6. We show our mesh by setting the visibility prop of our material to `true`.
+
+To do that, we can use React Three Fiber's handy `useFrame` hook so we can perform all those operations for _each frame_, allowing us to achieve real-time transparency 😮. The following code snippet showcases how to instantiate the render target and use it to obtain the entire scene as texture data:
+
+```jsx {4-5,25-26,31,35} title=Excerpt of a R3F scene that renders a transparent mesh through an FBO
+// ...
+
+const Dispersion = () => {
+  const mesh = useRef();
+  const mainRenderTarget = useFBO();
+
+  const uniforms = useMemo(
+    () => ({
+      uTexture: {
+        value: null,
+      },
+      winResolution: {
+        value: new THREE.Vector2(
+          window.innerWidth,
+          window.innerHeight
+        ).multiplyScalar(Math.min(window.devicePixelRatio, 2)),
+      },
+    }),
+    []
+  );
+
+  useFrame((state) => {
+    const { gl, scene, camera } = state;
+    // Hide the mesh
+    mesh.current.visible = false;
+    gl.setRenderTarget(mainRenderTarget);
+    // Render into the FBO
+    gl.render(scene, camera);
+
+    // Pass the texture data to our shader material
+    mesh.current.material.uniforms.uTexture.value = mainRenderTarget.texture;
+
+    gl.setRenderTarget(null);
+    // Show the mesh
+    mesh.current.visible = true;
+  });
+
+  return (
+    <mesh ref={mesh}>
+      <icosahedronGeometry args={[2, 20]} />
+      <shaderMaterial
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        uniforms={uniforms}
+      />
+    </mesh>
+  );
+};
+
+// ...
+```
+
+<Callout variant="danger" label="Pixel Ratio">
+
+For our transparency to work, we need to:
+
+- Pass the current resolution as a uniform to our shader material
+- Make sure not to forget to **multiply the width and height by the device's pixel ratio**!
+
+From my experience, I also found that _capping the device pixel ratio_ for your scene to `2` is sometimes necessary. On some iPhone models, it looks like the DPR value can go up to `3`, which can mess up the look and feel of the final render. You can set the `dpr` prop with the allowed values on the `Canvas` component:
+
+```jsx {3}
+const Scene = () => {
+  return (
+    <Canvas camera={{ position: [-3, 0, 6] }} dpr={[1, 2]}>
+      <Dispersion />
+    </Canvas>
+  );
+};
+```
+
+</Callout>
+
+We now need to display our FBO's texture data on our mesh. For that, we'll need to do two things in our fragment shader code:
+
+- Create a `uv` variable representing the texture coordinate. We can obtain it by dividing the screen space coordinates of the current pixel by the size of the viewport.
+
+```glsl {5}
+uniform vec2 winResolution;
+uniform sampler2D uTexture;
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / winResolution.xy;
+  //...
+}
+```
+
+- Use the `texture2D` function to get the color of the texture's pixel for that `uv` coordinate.
+
+```glsl {6}
+uniform vec2 winResolution;
+uniform sampler2D uTexture;
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / winResolution.xy;
+  vec4 color = texture2D(uTexture, uv);
+
+  gl_FragColor = color;
+}
+```
+
+Tada! 🪄 We now have a shader material that can make our mesh "transparent" by simply rendering the scene that's behind it onto it! Since this technique relies on a fragment shader, this gives us the ability to change how the texture _looks_ and apply all sorts of effects, like refraction 👀!
+
+The code playground below showcases this entire scene, rendered, with all the steps we just went through. We will use this code as a base throughout this blog post.
+
+<RefractionDispersionSandpack scene="scene1" />
+
+### Refraction
+
+Now that we have a transparent mesh, it's time to work on our **refraction effect** by manipulating our FBO's texture data! But first, let's refresh our memory with how refraction works.
+
+Refraction occurs when light passes from one environment to another. The ray of light will _bend_ in the new environment due to changes in the density of the material.
+
+<Image
+  src="blog/refraction.png"
+  alt="Simple diagram showcasing how light gets refracted when passing from one environment to another."
+  layout="responsive"
+  width={700}
+  height={336}
+/>
+
+The intensity of that _"bending"_ depends on the [index of refraction](https://en.wikipedia.org/wiki/Refractive_index) (IOR) of that material. E.g. for water, that index is `1.333`, and for diamond `2.42`. The higher the index, the higher the _"bending"_ effect of our refraction will appear.
+
+When it comes to implementing it, we're in luck! GLSL has a `refract` function ready to use. It needs three things:
+
+- An incident vector. In our case, it will be a vector originating from the observer (the camera) pointed toward our mesh.
+- A normal vector. It represents our mesh's surface normal.
+- An ior ratio.
+
+The **vertex shader** of our material can help us get the first two vectors we need. The first one, which we can name `eyeVector`, can be obtained by normalizing the difference between the position of our mesh and the camera's.
+
+```glsl {9} title=Vertex Shader: eyeVector
+varying vec3 worldNormal;
+varying vec3 eyeVector;
+
+void main() {
+  vec4 worldPos = modelMatrix * vec4(position, 1.0);
+  vec4 mvPosition = viewMatrix * worldPos;
+
+  gl_Position = projectionMatrix * mvPosition;
+  eyeVector = normalize(worldPos.xyz - cameraPosition);
+
+  //...
+}
+```
+
+For the second one, we get it by multiplying the `normal` vector of the current vertex by the `normalMatrix` and normalizing it.
+
+```glsl title=Vertex Shader: worldNormal
+varying vec3 worldNormal;
+varying vec3 eyeVector;
+
+void main() {
+  //...
+  vec3 transformedNormal = normalMatrix * normal;
+  worldNormal = normalize(transformedNormal);
+}
+```
+
+<Callout variant="info">
+
+Why do we need to transform our normal vector? There's a mathematical reason behind it. Many shaders I studied did that and I found [a lot](https://computergraphics.stackexchange.com/questions/1502/why-is-the-transposed-inverse-of-the-model-view-matrix-used-to-transform-the-nor) [of answers](https://stackoverflow.com/questions/13654401/why-transform-normals-with-the-transpose-of-the-inverse-of-the-modelview-matrix) detailing why it's needed. Maybe this will be worth a dedicated mini article in the future?
+
+</Callout>
+
+Then, as we learned in [The Study of Shaders with React Three Fiber](/posts/the-study-of-shaders-with-react-three-fiber/), we can pass those vectors from the vertex shader using a variant to have them available in the fragment shader. We now have everything to use the `refract` function and calculate a refraction vector based on the ior ratio and our `eyeVector`.
+
+```glsl {6,9} title=Fragment Shader: refractVec
+//...
+varying vec3 worldNormal;
+varying vec3 eyeVector;
+
+void main() {
+  float iorRatio = 1.0/1.31;
+  vec2 uv = gl_FragCoord.xy / winResolution.xy;
+  vec3 normal = worldNormal;
+  vec3 refractVec = refract(eyeVector, normal, iorRatio);
+
+  //...
+}
+```
+
+With that resulting vector, we can slightly _shift_ each pixel of the texture coordinate, which gives us a relatively convincing refraction effect for our transparent material.
+
+```glsl {10} title=Fragment Shader: apply refractVec to texture
+//...
+varying vec3 worldNormal;
+varying vec3 eyeVector;
+
+void main() {
+  float iorRatio = 1.0/1.31;
+  vec2 uv = gl_FragCoord.xy / winResolution.xy;
+  vec3 normal = worldNormal;
+  vec3 refractVec = refract(eyeVector, normal, iorRatio);
+  vec4 color = texture2D(uTexture, uv + refractVec.xy);
+
+  gl_FragColor = color;
+}
+```
+
+This effect is visible in the playground below 👇. I added `OrbitControl` to the scene so you can drag it around and see our newly built refraction in action! Try to tweak the `iorRatio` variable to increase/decrease the intensity of the refraction 👀!
+
+<RefractionDispersionSandpack scene="scene2" />
+
+## Chromatic Dispersion
+
+**Dispersion happens when the IOR of a material varies with the wavelength of the color**. As a result, the different colors composing light refract at different angles, thus making each color visible.
+
+<Image
+  src="blog/dispersion_2.png"
+  alt="Simple diagram showcasing how light gets refracted and dispersed when passing from one environment to another."
+  layout="responsive"
+  width={700}
+  height={336}
+/>
+
+Thus, with what we learned in the previous part, we should be able to reproduce this effect by **applying individual IOR values for each of the color channels** (which have their own wavelength) composing the background texture.
+
+### Splitting colors with Chromatic Aberration
+
+For this effect, one essential aspect of colors in shaders to remember is that **they are always a `vec4`**, a vector with four components: red, green, blue, and alpha, and like any vector, we can access and manipulate each of those components.
+
+We can thus easily manipulate each value of R, G, and B by **introducing a shift**, thus _splitting_ the color into its components. This effect is also sometimes called **Chromatic Aberration**. The widget below showcases this effect. We split the "white" color into its equivalent RGB colors:
+
+- White has the value `vec4(1.0)` or `rgb(255, 255, 255)`
+- Red has the value `vec4(1.0, 0.0, 0.0, 1.0)` or `rgb(255, 0, 0)`
+- Green has the value `vec4(0.0, 1.0, 0.0, 1.0)` or `rgb(0, 255, 0)`
+- Blue has the value `vec4(0.0, 0.0, 1.0, 1.0)` or `rgb(0, 0, 255)`
+
+You'll notice the colors red, green, and blue being more visible as the intensity of the shift increases.
+
+<RGBShiftVisualizer />
+
+We can reproduce this in our fragment shader code by:
+
+1. Introducing individual IOR for each value of R, G, and B.
+2. Creating unique refraction vectors for R, G, and B.
+3. Applying those refraction vectors for each color channel of the texture
+
+```glsl title=Fragment Shader: simple dispersion
+uniform float uIorR;
+uniform float uIorG;
+uniform float uIorB;
+//...
+
+void main() {
+  float iorRatioRed = 1.0/uIorR;
+  float iorRatioGreen = 1.0/uIorG;
+  float iorRatioBlue = 1.0/uIorB;
+
+  vec3 color = vec3(1.0);
+
+  vec2 uv = gl_FragCoord.xy / winResolution.xy;
+  vec3 normal = worldNormal;
+
+  vec3 refractVecR = refract(eyeVector, normal, iorRatioRed);
+  vec3 refractVecG = refract(eyeVector, normal, iorRatioGreen);
+  vec3 refractVecB = refract(eyeVector, normal, iorRatioBlue);
+
+  float R = texture2D(uTexture, uv + refractVecR.xy).r;
+  float G = texture2D(uTexture, uv + refractVecG.xy).g;
+  float B = texture2D(uTexture, uv + refractVecB.xy).b;
+
+  color.r = R;
+  color.g = G;
+  color.b = B;
+
+  gl_FragColor = vec4(color, 1.0);
+}
+```
+
+Thanks to those few lines of code based on the definition of the dispersion effect, we can easily reproduce it on top of our original refraction scene.
+
+<RefractionDispersionSandpack scene="scene3" />
+
+<Callout variant="info">
+
+Expand the little GUI in the demo to tweak the individual IOR values!
+
+</Callout>
+
+There's, however, one small problem with the look of this effect: it's not really _smooth_ and does not feel natural 😕. Thankfully, there're a few tricks we can use as workarounds to this issue.
+
+### Additional samples for a smoother dispersion
+
+While I was obsessing about reproducing a natural dispersion, <Anchor href="https://twitter.com/ore_ukonpower" favicon discreet>@ore_ukonpower</Anchor> released [https://next.junni.co.jp/](https://next.junni.co.jp/) which featured a beautiful version of that effect. On top of that, it's open source! So after digging around in the code base, I learned this **new technique**: using "samples" to smooth out the RGB shift we introduced above.
+
+To illustrate this technique, let's bring back the widget featuring the RGB shift effect. If we:
+
+- iterate a certain number of times when rendering our dispersion
+- introduce an **extra shift for each color channel for each loop**
+
+We can obtain a better version for our effect.
+
+<RGBShiftVisualizer enableSampling />
+
+As for the glsl implementation, we can achieve it by introducing a for-loop and iterating on our color shift for as many samples as we want.
+
+```glsl title=Fragment Shader: smoother dispersion with samples
+uniform float uRefractPower;
+uniform float uChromaticAberration;
+
+// ...
+
+vec3 color = vec3(0.0);
+
+for ( int i = 0; i < LOOP; i ++ ) {
+  float slide = float(i) / float(LOOP) * 0.1;
+
+  vec3 refractVecR = refract(eyeVector, normal, iorRatioRed);
+  vec3 refractVecG = refract(eyeVector, normal, iorRatioGreen);
+  vec3 refractVecB = refract(eyeVector, normal, iorRatioBlue);
+
+  color.r += texture2D(uTexture, uv + refractVecR.xy * (uRefractPower + slide * 1.0) * uChromaticAberration).r;
+  color.g += texture2D(uTexture, uv + refractVecG.xy * (uRefractPower + slide * 2.0) * uChromaticAberration).g;
+  color.b += texture2D(uTexture, uv + refractVecB.xy * (uRefractPower + slide * 3.0) * uChromaticAberration).b;
+}
+
+// Divide by the number of layers to normalize colors (rgb values can be worth up to the value of LOOP)
+color /= float( LOOP );
+
+//...
+```
+
+In the code above, we introduced two new uniforms:
+
+- `uRefractPower`: which can increase/decrease the refraction effect for each sample
+- `uChromaticAberration`: which controls how intense the split between the different color channels should be
+
+Both of these are related based on the math involved here. I simply haven't found a better formula _yet_ to tweak one without influencing the other while preserving the desired effect.
+
+<Callout variant="info" label="Performance">
+
+This technique does wonders on the Junni website, but it also adds loops to our glsl code which can be a performance pitfall. In our case, the more samples we want to do, the more resource intensive our shader will be.
+
+Use it with caution
+
+</Callout>
+
+If we enhance our dispersion code with the sampling technique we get a smooth and natural dispersion effect:
+
+<RefractionDispersionSandpack scene="scene4" />
+
+Sadly if we were to use it as such, _another set of problems_ surfaces:
+
+- **The colors are desaturated and pale**, far from the colorful renders I showed in the introduction.
+- We're still **limited to tweaking the red, green, and blue color channels** and respective IOR.
+
+## Saturating and expanding our color space
+
+This part focuses more on color theory and how we can leverage some of this more technical knowledge on colors to our advantage to fix those issues.
+
+### How to saturate a color in GLSL
+
+We've all played with color saturation at some point through CSS HSLA colors or photo filters. _But how can we reimplement it in GLSL?_ I went down that small rabbit hole, so you don't have to.
+
+One efficient way I found to saturate a color in GLSL is to rely on the _luminance_ or the grayscale version of that color and _"mix"_ it with the original color. The luminance of a given color with the following formula:
+
+`L = 0.2125 * R + 0.7154 * G + 0.0721 * B`
+
+<Callout variant="info">
+
+I recommend reading this [technical doc](https://ninedegreesbelow.com/photography/srgb-luminance.html) on how to calculate the luminance of a given color.
+
+</Callout>
+
+This formula can be ported to GLSL by using the [dot product](https://maththebeautiful.com/dot-product/) of 2 vectors:
+
+- The first one is our RGB color, a `vec3`.
+- The second one is the vector containing the coefficient of the luminance formula `vec3(0.2125, 0.7154, 0.0721)`.
+
+```glsl {2-3} title=Fragment Shader: saturation function using luminance
+vec3 sat(vec3 rgb, float intensity) {
+  vec3 L = vec3(0.2125, 0.7154, 0.0721);
+  vec3 grayscale = vec3(dot(rgb, L));
+
+  //...
+}
+```
+
+Using GLSL's `mix` function we can linearly interpolate our resulting color between the grayscale version and the original color:
+
+- an intensity value between `0` and `1` will result in a desaturated color.
+- an intensity value above `1` will saturate the resulting color, rendering it more intense.
+
+```glsl {4} title=Fragment Shader: full saturation function
+vec3 sat(vec3 rgb, float intensity) {
+  vec3 L = vec3(0.2125, 0.7154, 0.0721);
+  vec3 grayscale = vec3(dot(rgb, L));
+  return mix(grayscale, rgb, intensity);
+}
+```
+
+We can then use this function in our fragment shader when we're building our color in our for-loop to get a more colorful result 🎨:
+
+<RefractionDispersionSandpack scene="scene5" />
+
+<Callout variant="info">
+
+Try to increase/decrease the saturation from the GUI tool in the rendered scene 👀.
+
+</Callout>
+
+### From RGB to rygcbv and back
+
+In this part, I cover a trick I discovered while researching dispersion that allows us to split the RGB color space into 6 channels **rygcbv** (Red, Yellow, Green, Cyan, Blue, and Violet). I stumbled upon it while looking at [a similar attempt to reproduce the dispersion effect in WebGL by Taylor Petrick](https://taylorpetrick.com/portfolio/webgl/lense), and they were kind enough to send me the research paper that originally introduced this technique. Thank you Taylor 🙏!
+
+<Callout variant="info">
+
+I re-uploaded the research paper in question and made it available at [this link](https://drive.google.com/file/d/1oDLiOOQMdL3RxH-znKhETN5ioHCGa354/view) since the original link was broken.
+
+</Callout>
+
+In this paper, the author, Ravishankar Sundararaman, showcases how we can **obtain more color channels out of RGB** by using a Fourier interpolation (see 3.2). My knowledge of Fourier series is a bit rusty 😅, so I trust them on this one. Here's the formula they propose:
+
+`I = d + e * cosθ + f * sinθ`
+
+From it, we can obtain the values of r, y, g, c, b, and v in terms of RGB. For this part, I re-did the math from scratch to demonstrate the formula they feature in the paper:
+
+`r = R/2` `g = G/2` `b = B/2` `y = (2R + 2G - B)/6` `c = (2G + 2B - R)/6` `v = (2B + 2R - G)/6`
+
+<ColorChannelSummary />
+
+With these new formulas, we can, in theory, define additional IORs to tweak the refraction intensity for these additional color channels and **obtain a more detailed, tweakable dispersion effect!** 🎉
+
+There's, however, one small catch: **GLSL doesn't let us directly express colors in rygcbv**. So **we need to go back to RGB** after modifying/shifting our color channels. Luckily for us, the author also provided us with these formulas (I was sadly too tired to demonstrate them from scratch, so you'll have to trust them on this one 😅)
+
+`R = r + (2v + 2y - c)/3` `G = g + (2y + 2c - v)/3` `B = b + (2c + 2v - y)/3`
+
+Implementing all these formulas in GLSL is long and repetitive, so I'll let you look at and tweak the code directly from the playground below:
+
+<RefractionDispersionSandpack scene="scene6" />
+
+<Callout variant="info">
+
+Notice how now, we can tweak the colors yellow, cyan, and violet independently by tweaking their respective IORs in the GUI 👀. That allows us to have a more unique dispersion effect!
+
+</Callout>
+
+Finally, with these few tricks and some clever math, we managed to:
+
+- Solve the color saturation issue from our dispersion effect 🎉
+- Have additional colors and their corresponding IORs to play with 🎨
+
+## Adding volume and shininess to our dispersion
+
+I'm not going to lie: I was _very_ already happy with my dispersion effect when I reached this point. There were, however, a few things that were still bothering me:
+
+1. **The mesh looks flat** and lacks depth/volume.
+2. **The dispersion effect from the renders I was inspired by came from the mesh themselves**, whereas, in my scene, it came from background meshes.
+
+I want to dedicate this part to how I worked around these issues by learning about and implementing more light effects and using some (maybe clever?) rendering tricks.
+
+### Specular & Diffuse light
+
+A well-placed light and a material that interacts with it properly can do wonders for any React Three Fiber scene.
+For ours, we can use light to give a better sense of depth and volume to our mesh through two effects:
+
+1. **Specular**: simulates how light _reflects_ on the surface of a material.
+2. **Diffuse**: simulates how light _scatters_ on the surface of a material.
+
+One of the simplest light models we can implement to reproduce these effects is the [Blinn-Phong model](https://stackoverflow.com/a/53951172).
+
+<Image
+  src="blog/specular_diffuse.png"
+  alt="Diagram showcasing how the different vectors necessary to reproduce specular and diffuse lighting are obtained."
+  layout="responsive"
+  width={700}
+  height={262}
+/>
+
+1. We know the position of the viewer (eye vector) and the light source (a `vec3` uniform we will name `uLight`) and their respective directions.
+2. The half-vector is obtained by adding together the light vector and eye vector.
+3. The **dot product of the normal and the light vector gives us the diffuse value**.
+
+Which, in GLSL, translates to:
+
+```glsl {13} title=Fragment Shader: Diffuse
+//...
+uniform float uShininess;
+uniform float uDiffuseness;
+uniform vec3 uLight;
+//...
+
+float specular(vec3 light, float shininess, float diffuseness) {
+  vec3 normal = worldNormal;
+  vec3 lightVector = normalize(-light);
+  vec3 halfVector = normalize(eyeVector + lightVector);
+
+  float NdotL = dot(normal, lightVector);
+  float kDiffuse = max(0.0, NdotL);
+  //...
+}
+//...
+```
+
+**For the specular, we can get it through the dot product of the normal and the half-vector**, then using that value to the power of the "shininess" of the material (we can pass this value as a `uShininess` uniform as well).
+
+```glsl {16-17,19} title=Fragment Shader: Specular and Diffuse
+//...
+uniform float uShininess;
+uniform float uDiffuseness;
+uniform vec3 uLight;
+//...
+
+float specular(vec3 light, float shininess, float diffuseness) {
+  vec3 normal = worldNormal;
+  vec3 lightVector = normalize(-light);
+  vec3 halfVector = normalize(eyeVector + lightVector);
+
+  float NdotL = dot(normal, lightVector);
+  float NdotH =  dot(normal, halfVector);
+  float NdotH2 = NdotH * NdotH;
+
+  float kDiffuse = max(0.0, NdotL);
+  float kSpecular = pow(NdotH2, shininess);
+
+  return  kSpecular + kDiffuse * diffuseness;
+}
+//...
+```
+
+I found, however, that I could achieve a better specular by **raising the dot product of the normal and the half-vector to the power of 2**. I can't find exactly where I saw this formula, but I'd love to know your thoughts if you've ever encountered it.
+
+After combining specular and diffuse, our mesh now interacts with (an arbitrarily well-positioned) light, which results in a _beautiful_, _more realistic_ render ✨.
+
+<RefractionDispersionSandpack scene="scene7" />
+
+<Callout variant="info" label="Shininess">
+
+Try to change the position of the light source, the shininess and the diffuse to see how our material interacts with light 💡!
+
+If you tweak the shininess in the GUI of the rendered scene, you might notice that:
+
+- the lower the shininess, the brighter the mesh.
+- the higher the shininess, the more focused the specular is.
+
+I probably misunderstood what "shininess" meant when re-implementing all this, and I'd assume it should be a ratio rather than a simple float.
+
+</Callout>
+
+### Reflection with the Fresnel effect
+
+When we look at an object, the amount of light reflected by that object may vary in function of the **viewing angle**. You can observe this effect in real life when looking at a window for instance:
+
+- when viewed at an angle, **it reflects more light**.
+- when looked at standing in front of it, it's see-through and **reflects little light**.
+
+This reflection effect is called the **Fresnel effect**, and it's one of those effects that can seem subtle but can go long ways to make your material _reflect the ambient light_ more realistically. And it's no different for our dispersion scene!
+
+I'm not going to detail more about the physics of the Fresnel effect, as there are many articles out there that already did it way better than I could do (plus, this blog post would be a bit too long):
+
+- [What is Fresnel (Everything has it)](https://www.youtube.com/watch?v=CkOwvrBzu9I)
+- [Understanding the Fresnel effect](https://www.dorian-iten.com/fresnel/)
+
+The GLSL implementation of this effect can be found in many shader related projects, as it's a pretty popular effect to add to many materials. For this project, I used the following:
+
+```glsl title=Fragment Shader: Fresnel
+//...
+uniform float uFresnelPower;
+//...
+
+float fresnel(vec3 eyeVector, vec3 worldNormal, float power) {
+  float fresnelFactor = abs(dot(eyeVector, worldNormal));
+  float inversefresnelFactor = 1.0 - fresnelFactor;
+
+  return pow(inversefresnelFactor, power);
+}
+```
+
+Which, once added to our scenes, gives us a nice _glow_ on the outskirts of our mesh:
+
+<RefractionDispersionSandpack scene="scene8" />
+
+<Callout variant="info">
+
+Notice how decreasing the Fresnel power uniform will make the effect more scattered around the mesh while increasing it will make it more "focused" 👀.
+
+</Callout>
+
+### Backside rendering
+
+This last part is dedicated to an _accidental_ trick I found while tinkering with this scene, which I later found out was actually featured in an article titled [Real-time Multiside Refraction in Three Steps](https://tympanus.net/codrops/2019/10/29/real-time-multiside-refraction-in-three-steps/comment-page-1/).
+
+My train of thought went as follows:
+
+- Our mesh is transparent
+- We should see through the mesh, thus the background and the rest of the scene
+- But we should also see the "inside" of the mesh itself, i.e. it's backside!
+
+Thus I attempted to **render the backside of the mesh** and then render the frontside, both with the same material and its light effects and dispersion properties. This led to some pretty sweet results bringing me closer to a realistic dispersion effect 🎉.
+
+How does to do so? Here's a diagram that shows you how we can do that in our render loop:
+
+<Image
+  src="blog/backside.png"
+  alt="Diagram showcasing how to render both backside and frontside while maintaining existing transparency and light effects"
+  layout="responsive"
+  width={700}
+  height={269}
+/>
+
+With a few lines of code, we can add these steps to the `useFrame` hook and collocate them with the code we wrote in the first part to make our mesh transparent.
+
+```jsx title=Excerpt of a R3F scene that renders the backside and frontside of a mesh through FBOs
+//...
+const Dispersion = () => {
+  const mesh = useRef();
+  const mainRenderTarget = useFBO();
+  const backRenderTarget = useFBO();
+
+  //...
+
+  useFrame((state) => {
+    const { gl, scene, camera } = state;
+    // Hide the mesh
+    mesh.current.visible = false;
+
+    //...
+
+    gl.setRenderTarget(backRenderTarget);
+    // Render the scene into the "back" FBO
+    gl.render(scene, camera);
+
+    // Pass the FBO texture to the material
+    mesh.current.material.uniforms.uTexture.value = backRenderTarget.texture;
+    // Render the backside and display the mesh
+    mesh.current.material.side = THREE.BackSide;
+    mesh.current.visible = true;
+
+    gl.setRenderTarget(mainRenderTarget);
+    // Render the scene into the "front" FBO
+    gl.render(scene, camera);
+
+    // Pass the FBO texture to the material
+    mesh.current.material.uniforms.uTexture.value = mainRenderTarget.texture;
+    // Render the frontside
+    mesh.current.material.side = THREE.FrontSide;
+
+    gl.setRenderTarget(null);
+  });
+};
+//...
+```
+
+And just like that, something pretty _incredible_ happens through this trick:
+
+- **The back side has its own light effects**, specular, Fresnel, and diffuse.
+- **It also refracts and disperses the rest of the scene**, just like we've seen throughout this article.
+
+But once we add the **front side** on top of that with the same material:
+
+- **The specular of the back side is both refracted and dispersed by the front side** thus creating a beautiful dispersion that's pretty convincing 🎉
+- The same applies to the other light effects ✨
+- The dispersion effect changes with the viewing angle as it would in real life.
+
+Add to that some tweaks to the position of the camera and you get this _stunning_ result ⭐:
+
+<RefractionDispersionSandpack scene="scene9" />
+
+## Conclusion
+
+We now have **a mesh that achieves a _beautiful_ and _somewhat realistic_ dispersion effect** in real time that can be tweaked to your liking through its many inputs/uniforms 🎉. This project was quite fun (and long) and I learned _a lot_. The result is perhaps not as beautiful/colorful as the one from the renders, but the effect is pretty close to what I wanted to achieve! I hope this article will inspire you to implement some shader light effects into your own projects ✨.
+
+While we tried to have a "physically grounded" implementation of this effect, we had to deviate a bit to guarantee that the result would still look good with some tricks. I could have probably done better there, but I was reaching the limits of my shader knowledge.
+
+Another aspect I wish I could improve upon would be **performance**: using a for loop in my shader is probably _a questionable choice_, and the fps can drop a lot the higher the sample number is. That will be the first thing I'll try to improve when I deep-dive into this material again in the future (I need some rest / do other things now). Of course, do not hesitate to reach out if you have ideas on how we could further improve this shader. I'll make sure to include your suggestions in this article 😄.
