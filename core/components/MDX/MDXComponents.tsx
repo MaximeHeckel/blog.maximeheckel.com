@@ -7,6 +7,7 @@ import {
   Button,
   Callout,
   Card,
+  Details,
   InlineCode,
   List,
   Pill,
@@ -16,7 +17,6 @@ import {
   H3,
   Strong,
 } from '@maximeheckel/design-system';
-import Details from '@theme/components/Details';
 import Code from '@theme/components/Code';
 import VideoPlayer from '@theme/components/VideoPlayer';
 

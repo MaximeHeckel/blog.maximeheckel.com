@@ -27,6 +27,7 @@ import {
   Checkbox,
   Switch,
   Radio,
+  Details,
 } from '@maximeheckel/design-system';
 import Logo from '@theme/components/Logo';
 import Glow from '@theme/components/Glow';
@@ -39,7 +40,6 @@ import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { TransformedTweet } from 'types/tweet';
-import Details from '@theme/components/Details';
 
 const Tooltip = (props: any) => <>{props.children}</>;
 
