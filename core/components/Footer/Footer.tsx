@@ -9,6 +9,7 @@ import {
 } from '@maximeheckel/design-system';
 import Logo from '@theme/components/Logo';
 import Link from 'next/link';
+import React from 'react';
 
 const FooterBlock = styled('footer', {
   background: 'var(--maximeheckel-colors-body)',
@@ -47,13 +48,13 @@ const Footer = () => (
           <Box>
             <Text size={1}>
               <Grid>
-                <Link href="/" passHref>
+                <Link href="/" legacyBehavior passHref>
                   <Anchor discreet>Home</Anchor>
                 </Link>
-                <Link href="/design" passHref>
+                <Link href="/design" legacyBehavior passHref>
                   <Anchor discreet>Design</Anchor>
                 </Link>
-                <Link href="/rss.xml" passHref>
+                <Link href="/rss.xml" legacyBehavior passHref>
                   <Anchor discreet>RSS</Anchor>
                 </Link>
               </Grid>

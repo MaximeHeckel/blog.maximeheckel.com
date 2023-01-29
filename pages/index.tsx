@@ -177,69 +177,68 @@ const IndexPage = (props: Props) => {
                     initial="initial"
                     whileHover="hover"
                   >
-                    <Link href={`/posts/${post.slug}/`}>
-                      <a
-                        style={{
-                          textDecoration: 'none',
-                          color:
-                            'var(--maximeheckel-colors-typeface-secondary)',
+                    <Link
+                      href={`/posts/${post.slug}/`}
+                      passHref
+                      style={{
+                        textDecoration: 'none',
+                        color: 'var(--maximeheckel-colors-typeface-secondary)',
+                      }}
+                    >
+                      <Glow
+                        css={{
+                          background: post.colorFeatured,
                         }}
-                      >
-                        <Glow
-                          css={{
-                            background: post.colorFeatured,
-                          }}
-                          variants={glowVariants}
-                          transition={{
-                            type: 'tween',
-                            ease: 'easeOut',
-                            duration: 0.4,
-                          }}
-                        />
-                        <Box
-                          css={{
-                            height: '95%',
-                            width: '105%',
-                            position: 'absolute',
-                            borderRadius: 'var(--border-radius-2)',
-                            top: '50%',
-                            left: '50%',
-                            background: 'var(--maximeheckel-colors-body)',
-                            transform: 'translateY(-50%) translateX(-50%)',
-                            filter: 'blur(20px)',
-                            transition: '0.5s',
+                        variants={glowVariants}
+                        transition={{
+                          type: 'tween',
+                          ease: 'easeOut',
+                          duration: 0.4,
+                        }}
+                      />
+                      <Box
+                        css={{
+                          height: '95%',
+                          width: '105%',
+                          position: 'absolute',
+                          borderRadius: 'var(--border-radius-2)',
+                          top: '50%',
+                          left: '50%',
+                          background: 'var(--maximeheckel-colors-body)',
+                          transform: 'translateY(-50%) translateX(-50%)',
+                          filter: 'blur(20px)',
+                          transition: '0.5s',
 
-                            '@media(max-width: 700px)': {
-                              display: 'none',
-                            },
-                          }}
-                        />
-                        <Card<MotionProps>
-                          as={motion.div}
-                          variants={cardVariants}
-                          transition={{
-                            type: 'tween',
-                            ease: 'easeOut',
-                            duration: 0.4,
-                          }}
-                          depth={1}
-                        >
-                          <Card.Body>
-                            <H3
-                              gradient
-                              css={{
-                                marginBottom: '8px',
-                                backgroundImage: post.colorFeatured!,
-                              }}
-                            >
-                              {post.title}
-                            </H3>
-                            <Text as="p" css={{ marginBottom: '0px' }}>
-                              {post.subtitle}
-                            </Text>
-                          </Card.Body>
-                        </Card>
-                      </a>
+                          '@media(max-width: 700px)': {
+                            display: 'none',
+                          },
+                        }}
+                      />
+                      <Card<MotionProps>
+                        as={motion.div}
+                        variants={cardVariants}
+                        transition={{
+                          type: 'tween',
+                          ease: 'easeOut',
+                          duration: 0.4,
+                        }}
+                        depth={1}
+                      >
+                        <Card.Body>
+                          <H3
+                            gradient
+                            css={{
+                              marginBottom: '8px',
+                              backgroundImage: post.colorFeatured!,
+                            }}
+                          >
+                            {post.title}
+                          </H3>
+                          <Text as="p" css={{ marginBottom: '0px' }}>
+                            {post.subtitle}
+                          </Text>
+                        </Card.Body>
+                      </Card>
                     </Link>
                   </motion.li>
                 );
@@ -291,26 +290,28 @@ const IndexPage = (props: Props) => {
                       {currentYear}
                     </Text>
                   ) : null}
-                  <Link href={`/posts/${post.slug}/`} passHref>
-                    {/* Revisit this component: merge Anchor and block together (extend block from Anchor) */}
-                    <a style={{ textDecoration: 'none', fontWeight: 500 }}>
-                      <Block data-testid="article-link">
-                        <Text
-                          as="p"
-                          size="1"
-                          variant="tertiary"
-                          weight="3"
-                          css={{
-                            minWidth: '52px',
-                            marginRight: '32px',
-                            marginBottom: '0px',
-                          }}
-                        >
-                          {format(new Date(Date.parse(post.date)), 'MMM dd')}
-                        </Text>
-                        {post.title}
-                      </Block>
-                    </a>
+                  {/* Revisit this component: merge Anchor and block together (extend block from Anchor) */}
+                  <Link
+                    href={`/posts/${post.slug}/`}
+                    passHref
+                    style={{ textDecoration: 'none', fontWeight: 500 }}
+                  >
+                    <Block data-testid="article-link">
+                      <Text
+                        as="p"
+                        size="1"
+                        variant="tertiary"
+                        weight="3"
+                        css={{
+                          minWidth: '52px',
+                          marginRight: '32px',
+                          marginBottom: '0px',
+                        }}
+                      >
+                        {format(new Date(Date.parse(post.date)), 'MMM dd')}
+                      </Text>
+                      {post.title}
+                    </Block>
                   </Link>
                 </li>
               );

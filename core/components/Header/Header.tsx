@@ -89,14 +89,14 @@ const Header = (props: HeaderProps) => {
             <Flex className={fixTruncate()}>
               <Tooltip id="hometooltip" content="Home">
                 <span>
-                  <Link href="/">
-                    <a
-                      aria-label="Home"
-                      aria-describedby="hometooltip"
-                      data-testid="header-logo"
-                    >
-                      <Logo alt="Logo" size={44} />
-                    </a>
+                  <Link
+                    aria-label="Home"
+                    aria-describedby="hometooltip"
+                    data-testid="header-logo"
+                    href="/"
+                    passHref
+                  >
+                    <Logo alt="Logo" size={44} />
                   </Link>
                 </span>
               </Tooltip>
