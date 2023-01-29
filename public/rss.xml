@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Mon, 02 Jan 2023 18:17:41 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 29 Jan 2023 17:59:47 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Refraction, dispersion, and other shader light effects]]></title>
+            <description><![CDATA[A guide on how to reproduce a chromatic dispersion effect for your React Three Fiber and shader projects with FBO, refraction, chromatic aberration, specular, and other tricks through 9 interactive code playgrounds.]]></description>
+            <link>https://blog.maximeheckel.com/posts/refraction-dispersion-and-other-shader-light-effects</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/refraction-dispersion-and-other-shader-light-effects</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 24 Jan 2023 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[The magical world of Particles with React Three Fiber and Shaders]]></title>
             <description><![CDATA[An interactive introduction to Particles with React Three Fiber and Shaders where you'll learn anything going from attributes, buffer geometries, and more advanced techniques like Frame Buffer Object through 8 unique 3D scenes.]]></description>
