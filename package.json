@@ -19,6 +19,7 @@
     "generate:og": "node ./scripts/generate-opengraph-images",
     "generate:rss": "node ./scripts/generate-rss",
     "generate:sitemap": "node ./scripts/generate-sitemap",
+    "link-ds": "rm -rf .next && yarn link @maximeheckel/design-system",
     "lint": "eslint --ext=jsx,ts,tsx .",
     "prebuild": "yarn generate:index && yarn generate:og && yarn generate:rss && yarn generate:sitemap",
     "start": "next start",
@@ -29,8 +30,7 @@
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^1.18.4",
-    "@maximeheckel/design-system": "^1.2.0",
-    "@radix-ui/react-collapsible": "^1.0.1",
+    "@maximeheckel/design-system": "^1.3.0",
     "@vercel/analytics": "^0.1.5",
     "@visx/clip-path": "1.6.1",
     "@visx/curve": "1.6.1",
