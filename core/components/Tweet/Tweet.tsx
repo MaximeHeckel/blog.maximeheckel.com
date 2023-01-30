@@ -1,6 +1,6 @@
 import { Anchor, Flex, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { TransformedTweet } from 'types/tweet';
 import { LikeIcon, ReplyIcon, RetweetIcon, TwitterLogo } from './Icons';
 import {

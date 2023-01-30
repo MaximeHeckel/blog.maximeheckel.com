@@ -28,19 +28,15 @@ const CommandCenterStatic = () => (
     </Item>
     <Separator>Navigation</Separator>
     <Item data-testid="navigation" key="home-navigation">
-      <Link href="/">
-        <a>
-          <Icon.Arrow size={4} />
-          <span style={{ marginLeft: '20px' }}>Home</span>
-        </a>
+      <Link href="/" passHref>
+        <Icon.Arrow size={4} />
+        <span style={{ marginLeft: '20px' }}>Home</span>
       </Link>
     </Item>
     <Item data-testid="navigation" key="design-navigation">
-      <Link href="/design/">
-        <a>
-          <Icon.Arrow size={4} />
-          <span style={{ marginLeft: '20px' }}>Design System</span>
-        </a>
+      <Link href="/design/" passHref>
+        <Icon.Arrow size={4} />
+        <span style={{ marginLeft: '20px' }}>Design System</span>
       </Link>
     </Item>
     <Separator>Links</Separator>
@@ -100,14 +96,17 @@ const CommandCenterStatic = () => (
       </a>
     </Item>
     <Item data-testid="link" key="rss-link">
-      <Link href="/rss.xml" data-testid="rss-link" aria-label="RSS Feed">
-        <a title="RSS Feed">
-          <Icon.RSS />
-          <span style={{ marginLeft: '15px' }}>RSS</span>
-          <VisuallyHidden as="p">
-            Link redirects to the rss.xml file.
-          </VisuallyHidden>
-        </a>
+      <Link
+        href="/rss.xml"
+        data-testid="rss-link"
+        aria-label="RSS Feed"
+        passHref
+      >
+        <Icon.RSS />
+        <span style={{ marginLeft: '15px' }}>RSS</span>
+        <VisuallyHidden as="p">
+          Link redirects to the rss.xml file.
+        </VisuallyHidden>
       </Link>
     </Item>
   </div>
