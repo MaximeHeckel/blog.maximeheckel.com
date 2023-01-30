@@ -1,5 +1,5 @@
 import { H1, styled } from '@maximeheckel/design-system';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 import React from 'react';
 import { loader } from '../../../lib/next-image-loader';
 interface HeroImgProps {
@@ -58,10 +58,13 @@ const HeroImg = (props: HeroImgProps) => (
       className={props.className}
       src={props.src}
       alt="cover"
-      layout="fill"
-      objectFit="cover"
       loader={loader}
       priority
+      fill
+      sizes="100vw"
+      style={{
+        objectFit: 'cover',
+      }}
     />
   </HeroImgWrapper>
 );

@@ -213,7 +213,6 @@ When working on a Three.js project, the axes describing the space in which we're
 <Image
   src="blog/axis-helper.png"
   alt='Axes helper. "x" is the horizontal axis to move things left and right from the center. "y" is the vertical axis to move things up and down. "z" is the "depth" axis, it points towards the viewer by default'
-  layout="responsive"
   width={600}
   height={418}
 />
@@ -293,7 +292,6 @@ We now have the _base_ for our scene: a flat plane. Before we start working with
 <Image
   src="blog/annotations.png"
   alt="My original annotations for key elements of the Linear WebGL scene"
-  layout="responsive"
   width={800}
   height={574}
 />
@@ -363,7 +361,6 @@ Here's the displacement map (also called "heightmap") I provided to this scene:
 <Image
   src="blog/displacementmap.png"
   alt="Displacement Map used for our terrain. The lighter the area, the higher the vertices will appear, the darker the lower."
-  layout="responsive"
   width={400}
   height={400}
 />
@@ -457,7 +454,6 @@ We have to find a way to give the user the _impression_ that this terrain goes o
 <Image
   src="blog/terrain-animation.png"
   alt="Diagram showcasing how to trick the viewer to think the animation is endless by using a copy of the plane, and swap its position at the right moment"
-  layout="responsive"
   width={800}
   height={500}
 />
@@ -531,7 +527,6 @@ As you can see from the previous playground, our terrain looks a bit off compare
 <Image
   src="blog/linear-scene-zoomed.png"
   alt="Screenshot of the Linear WebGL animation with a portion zoomed in on the grid showcasing the grid is in fact composed of RGB stripes"
-  layout="responsive"
   width={800}
   height={500}
 />
@@ -611,7 +606,6 @@ When I applied this effect for the first time, the colors ended up looking... qu
 <Image
   src="blog/linear-scene-no-gamma-correction.png"
   alt="Screenshot showcasing our Three.js scene without color correction"
-  layout="responsive"
   width={800}
   height={575}
 />
@@ -635,7 +629,6 @@ After a bit of research, it seemed that spotlights were the only lights that wer
 <Image
   src="blog/spotlights-positions.png"
   alt="Diagram showcasing the position of the two spotlights relative to the first plane that light up our scene at specific targets"
-  layout="responsive"
   width={800}
   height={500}
 />
@@ -691,7 +684,6 @@ To achieve this we can set the `metalnessMap` property of our material: a textur
 <Image
   src="blog/linear-metalnessmap.png"
   alt="Metalness Map used for our terrain. The lighter the area, the more metallic the material will appear in that area, the darker the rougher. "
-  layout="responsive"
   width={800}
   height={800}
 />

@@ -146,6 +146,11 @@ export default LinkWithPreload;
 
 Now, by using this component instead of `Link`, as you can see below, hovering any navigational links in our App should load the chunk associated with the route of that link:
 
-![Gif showcasing the preloading behavior we implemented using React Lazy and Suspense. When hovering, the chunk will load and the transition to the new route is seemless. However, if we don't hover long enough and click on the link, we will see the fallback component from Suspense until the chunk is fully loaded.](/static/images/react-lazy-suspense-preloading.gif)
+<Image
+  src="blog/gifs/react-lazy-suspense-preloading.gif"
+  alt="Gif showcasing the preloading behavior we implemented using React Lazy and Suspense. When hovering, the chunk will load and the transition to the new route is seemless. However, if we don't hover long enough and click on the link, we will see the fallback component from Suspense until the chunk is fully loaded."
+  width={700}
+  height={430}
+/>
 
 Do you want to see the whole code? I made the app showcased in this article available [here](https://github.com/MaximeHeckel/react-lazy-preloading)!

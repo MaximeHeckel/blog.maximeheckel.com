@@ -52,7 +52,12 @@ property children:
  • Or div [1] is incompatible with typeof Content [4].
 ```
 
-![Gif showing that running flow with a non valid sub-component fails](/static/images/1__HqiRL5mQ6tRCONrSivQ5cQ.gif)
+<Image
+  src="blog/gifs/flow-sub-component.gif"
+  alt="Gif showing that running flow with a non valid sub-component fails"
+  width={700}
+  height={400}
+/>
 
 As you can see, Flow is aware of the type of our sub-components (and of any children of `Article` ), and reports that `div` is not compatible with one of these types.
 

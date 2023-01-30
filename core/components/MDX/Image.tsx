@@ -1,6 +1,6 @@
 import { styled, Text } from '@maximeheckel/design-system';
 import { loader } from 'lib/next-image-loader';
-import NextImage, { ImageProps } from 'next/legacy/image';
+import NextImage, { ImageProps } from 'next/image';
 
 const StyledFigure = styled('figure', {
   marginBottom: '2.25rem',
@@ -11,7 +11,15 @@ const StyledFigure = styled('figure', {
 const Image = (props: ImageProps) => {
   return (
     <StyledFigure>
-      <NextImage {...props} loader={loader} quality={50} />
+      <NextImage
+        {...props}
+        loader={loader}
+        quality={50}
+        style={{
+          maxWidth: '100%',
+          height: 'auto',
+        }}
+      />
       <Text
         as="figcaption"
         css={{

@@ -1,6 +1,6 @@
 import { Anchor, Flex, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 import { TransformedTweet } from 'types/tweet';
 import { LikeIcon, ReplyIcon, RetweetIcon, TwitterLogo } from './Icons';
 import {
@@ -58,6 +58,10 @@ const Tweet = (props: Props) => {
               height={46}
               width={46}
               src={author.profile_image_url}
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+              }}
             />
           </Avatar>
           <Name
@@ -127,10 +131,13 @@ const Tweet = (props: Props) => {
             >
               <Image
                 alt={text}
-                layout="intrinsic"
                 height={m.height}
                 width={m.width}
                 src={m.url}
+                style={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                }}
               />
             </div>
           ))}
@@ -146,6 +153,10 @@ const Tweet = (props: Props) => {
               width={m.width}
               src={m.url}
               className={singleImage()}
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+              }}
             />
           ))}
         </SingleImageWrapper>
