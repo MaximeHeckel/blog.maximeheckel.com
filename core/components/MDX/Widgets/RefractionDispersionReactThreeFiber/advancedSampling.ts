@@ -102,12 +102,28 @@ void main() {
 export default vertexShader
 `;
 
+const UtilsCode = `
+  // Range from https://www.joshwcomeau.com/snippets/javascript/range/
+  export const range = (start, end, step = 1) => {
+    let output = [];
+    if (typeof end === "undefined") {
+      end = start;
+      start = 0;
+    }
+    for (let i = start; i <= end; i += step) {
+      output.push(i);
+    }
+    return output;
+  };
+`;
+
 const AppCode = `import { OrbitControls, useFBO } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Leva, folder, useControls } from "leva";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { v4 as uuidv4 } from "uuid";
+import { range } from './utils';
 import './scene.css';
 
 import vertexShader from './vertexShader';
@@ -203,29 +219,24 @@ const Geometries = () => {
     mesh.current.material.uniforms.uRefractPower.value = refraction;
   });
 
+  const columns = range(-7.5, 7.5, 2.5);
+  const rows = range(-7.5, 7.5, 2.5);
+
   return (
     <>
       <color attach="background" args={["black"]} />
       <group ref={backgroundGroup}>
-        <mesh position={[-4, -3, -4]}>
-          <icosahedronGeometry args={[2, 16]} />
-          <meshBasicMaterial color="white" />
-        </mesh>
-        <mesh position={[4, -3, -4]}>
-          <icosahedronGeometry args={[2, 16]} />
-          <meshBasicMaterial color="white" />
-        </mesh>
-        <mesh position={[-5, 3, -4]}>
-          <icosahedronGeometry args={[2, 16]} />
-          <meshBasicMaterial color="white" />
-        </mesh>
-        <mesh position={[5, 3, -4]}>
-          <icosahedronGeometry args={[2, 16]} />
-          <meshBasicMaterial color="white" />
-        </mesh>
+        {columns.map((col, i) =>
+          rows.map((row, j) => (
+            <mesh position={[col, row, -4]}>
+              <icosahedronGeometry args={[0.6, 8]} />
+              <meshStandardMaterial color="white" />
+            </mesh>
+          ))
+        )}
       </group>
       <mesh ref={mesh}>
-        <icosahedronGeometry args={[2.5, 20]} />
+        <icosahedronGeometry args={[2.84, 20]} />
         <shaderMaterial
           key={uuidv4()}
           vertexShader={vertexShader}
@@ -263,6 +274,10 @@ const AdvancedSamplingFiles = {
   '/fragmentShader.js': {
     code: FragmentShader,
     active: true,
+  },
+  '/utils.js': {
+    code: UtilsCode,
+    hidden: true,
   },
 };
 

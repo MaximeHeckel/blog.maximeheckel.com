@@ -20,6 +20,21 @@ void main() {
 export default fragmentShader
 `;
 
+const UtilsCode = `
+  // Range from https://www.joshwcomeau.com/snippets/javascript/range/
+  export const range = (start, end, step = 1) => {
+    let output = [];
+    if (typeof end === "undefined") {
+      end = start;
+      start = 0;
+    }
+    for (let i = start; i <= end; i += step) {
+      output.push(i);
+    }
+    return output;
+  };
+`;
+
 const VertexShader = `const vertexShader = \`
 varying vec3 worldNormal;
 varying vec3 eyeVector;
@@ -46,6 +61,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { v4 as uuidv4 } from "uuid";
+import { range } from './utils'
 import './scene.css';
 
 import vertexShader from './vertexShader';
@@ -83,29 +99,24 @@ const Geometries = () => {
     mesh.current.visible = true;
   });
 
+  const columns = range(-7.5, 7.5, 2.5);
+  const rows = range(-7.5, 7.5, 2.5);
+
   return (
     <>
       <color attach="background" args={["black"]} />
       <group ref={backgroundGroup}>
-        <mesh position={[-4, -3, -4]}>
-          <icosahedronGeometry args={[2, 16]} />
-          <meshStandardMaterial color="white" />
-        </mesh>
-        <mesh position={[4, -3, -4]}>
-          <icosahedronGeometry args={[2, 16]} />
-          <meshStandardMaterial color="white" />
-        </mesh>
-        <mesh position={[-5, 3, -4]}>
-          <icosahedronGeometry args={[2, 16]} />
-          <meshStandardMaterial color="white" />
-        </mesh>
-        <mesh position={[5, 3, -4]}>
-          <icosahedronGeometry args={[2, 16]} />
-          <meshStandardMaterial color="white" />
-        </mesh>
+        {columns.map((col, i) =>
+          rows.map((row, j) => (
+            <mesh position={[col, row, -4]}>
+              <icosahedronGeometry args={[0.333, 8]} />
+              <meshStandardMaterial color="white" />
+            </mesh>
+          ))
+        )}
       </group>
       <mesh ref={mesh}>
-        <icosahedronGeometry args={[2, 20]} />
+        <icosahedronGeometry args={[2.84, 20]} />
         <shaderMaterial
           key={uuidv4()}
           vertexShader={vertexShader}
@@ -119,7 +130,7 @@ const Geometries = () => {
 
 const Scene = () => {
   return (
-    <Canvas camera={{ position: [-3, 0, 6] }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [0, 0, 6] }} dpr={[1, 2]}>
       <ambientLight intensity={1.0} />
       <Geometries />
       <OrbitControls />
@@ -141,6 +152,10 @@ const SimpleRefractionFiles = {
   '/fragmentShader.js': {
     code: FragmentShader,
     active: true,
+  },
+  '/utils.js': {
+    code: UtilsCode,
+    hidden: true,
   },
 };
 
