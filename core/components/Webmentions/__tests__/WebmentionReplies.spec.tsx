@@ -1,12 +1,9 @@
-import preloadAll from 'jest-next-dynamic';
 import { cleanup, render, waitFor } from '@testing-library/react';
 import { mockAllIsIntersecting } from 'react-intersection-observer/test-utils';
 import React from 'react';
 import WebmentionReplies from '../WebmentionReplies';
 
 beforeEach(async () => {
-  await preloadAll();
-
   global.fetch = jest.fn().mockImplementation(() => {
     const p = new Promise((resolve, reject) => {
       resolve({

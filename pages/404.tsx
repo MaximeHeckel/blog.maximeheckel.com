@@ -23,7 +23,7 @@ const NotFoundPage = () => (
         <H3>
           Oh no! You just got lost 😱! <br />
           Don't worry I got you!{' '}
-          <Link href="/" passHref>
+          <Link href="/" legacyBehavior passHref>
             <Anchor underline>Click here</Anchor>
           </Link>{' '}
           to go back home.

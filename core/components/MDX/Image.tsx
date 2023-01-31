@@ -1,6 +1,6 @@
 import { styled, Text } from '@maximeheckel/design-system';
 import { loader } from 'lib/next-image-loader';
-import NextImage, { ImageProps } from 'next/image';
+import NextImage, { ImageProps } from 'next/legacy/image';
 
 const StyledFigure = styled('figure', {
   marginBottom: '2.25rem',

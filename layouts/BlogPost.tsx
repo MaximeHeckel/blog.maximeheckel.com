@@ -117,7 +117,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
         <Grid columns="small" gapX={4}>
           <Hero>
             <Box css={{ marginBottom: '16px', fontSize: 'var(--font-size-2)' }}>
-              <Link href="/" passHref>
+              <Link href="/" legacyBehavior passHref>
                 <Anchor arrow="left" data-testid="home-link" discreet>
                   Home
                 </Anchor>

@@ -278,10 +278,9 @@ const Search = (props: Props) => {
                       href={`/${
                         result.type === 'snippet' ? 'snippets' : 'posts'
                       }/${result.slug}`}
+                      onClick={() => setTimeout(onClose, 600)}
                     >
-                      <a onClick={() => setTimeout(onClose, 600)}>
-                        {result.title}
-                      </a>
+                      {result.title}
                     </Link>
                     <Flex
                       alignItems="center"
