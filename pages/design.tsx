@@ -28,6 +28,7 @@ import {
   Switch,
   Radio,
   Details,
+  keyframes,
 } from '@maximeheckel/design-system';
 import Logo from '@theme/components/Logo';
 import Glow from '@theme/components/Glow';
@@ -35,10 +36,17 @@ import CodeBlock from '@theme/components/Code/CodeBlock';
 import Seo from '@theme/components/Seo';
 import Tweet from '@theme/components/Tweet';
 import Layout from '@theme/layout';
-import { AnimatePresence } from 'framer-motion';
+import {
+  animate,
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useTransform,
+  //  useWillChange,
+} from 'framer-motion';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TransformedTweet } from 'types/tweet';
 
 const Tooltip = (props: any) => <>{props.children}</>;
@@ -57,6 +65,37 @@ const Search = dynamic(() => import('@theme/components/Search'), {
  * - Define specific token for glass card background (foreground is not cutting it)
  * -> hsla(var(--palette-gray-03), 0.2) like code snippet background
  */
+
+// const shine = keyframes({
+//   to: {
+//     backgroundPosition: '200% center',
+//     opacity: 1,
+//   },
+// });
+
+const textShine = keyframes({
+  from: {
+    backgroundPosition: '-100%',
+  },
+  to: {
+    backgroundPosition: '100%',
+  },
+});
+
+const lasergrid = keyframes({
+  '0%': {
+    top: -300,
+    opacity: 1,
+  },
+  '50%': {
+    top: 100,
+    opacity: 0.2,
+  },
+  '100%': {
+    top: 100,
+    opacity: 0.0,
+  },
+});
 
 const gridItem = css({
   gridColumn: 2,
@@ -77,6 +116,277 @@ const HR = styled('hr', {
 const Label = styled('p', {
   marginBottom: '8px',
 });
+
+// Shine.Static
+// Shine.Rotating
+// Shine.Cursor
+
+const StaticShine = () => {
+  return (
+    <Box
+      css={{
+        position: 'absolute',
+        borderRadius: 'inherit',
+        width: '100%',
+        height: '100%',
+
+        '&:after': {
+          content: '""',
+          position: 'absolute',
+          top: '0px',
+          bottom: '0px',
+          left: '0px',
+          right: '0px',
+          backgroundImage:
+            'radial-gradient(200px at 0% 0%, hsla(0, 0%, 100%, 0.05), rgba(255, 255, 255, 0) 60% )',
+          backgroundSize: 'auto',
+          borderRadius: 'inherit',
+          zIndex: 0,
+        },
+      }}
+    >
+      <Box
+        css={{
+          position: 'absolute',
+          borderRadius: 'var(--border-radius-2)',
+          zIndex: -1,
+          top: '-2px',
+          left: '-2px',
+          width: 'calc(100% + 4px)',
+          height: 'calc(100% + 4px)',
+          background:
+            'radial-gradient(70% 100% at 0% 0%, hsl(0, 0%, 40%) 0%, rgba(255, 255, 255, 0) 100%)',
+          '--track-glow': 'var(--glow, 10px)',
+          '--strokeGlow':
+            'radial-gradient(var(--width, 20%) var(--height, 50%) at 0% 0%, hsl(0, 0%, 40%) 0%, rgba(255, 255, 255, 0) 100%)',
+
+          '&:before': {
+            position: 'absolute',
+            content: '',
+            borderRadius: 'inherit',
+            width: 'inherit',
+            height: 'inherit',
+            top: -2,
+            left: -2,
+            transition: 'filter 0.5s ease',
+            filter: 'blur(var(--track-glow))',
+            background: 'var(--strokeGlow)',
+          },
+        }}
+      />
+    </Box>
+  );
+};
+
+const CursorTrackingShine = () => {
+  return (
+    <Box
+      css={{
+        position: 'absolute',
+        borderRadius: 'inherit',
+        width: '100%',
+        height: '100%',
+
+        '&:after': {
+          content: '""',
+          position: 'absolute',
+          top: '0px',
+          bottom: '0px',
+          left: '0px',
+          right: '0px',
+          willChange: 'background, opacity',
+          transitionDuration: '400ms',
+          transitionTimingFunction: 'ease',
+          transitionDelay: '0s',
+          transitionProperty: 'opacity',
+          backgroundImage:
+            'radial-gradient(600px at var(--cursor-x) var(--cursor-y), hsla(0, 0%, 100%, 0.05), rgba(255, 255, 255, 0) 60% )',
+          backgroundSize: 'auto',
+          backgroundOrigin: 'padding-box',
+          borderRadius: 'inherit',
+          zIndex: 0,
+        },
+      }}
+    >
+      <Box
+        css={{
+          position: 'absolute',
+          borderRadius: 'inherit',
+          zIndex: -1,
+          top: '-2px',
+          left: '-2px',
+          width: 'calc(100% + 4px)',
+          height: 'calc(100% + 4px)',
+          background:
+            'radial-gradient( 500px at var(--cursor-x) var(--cursor-y), hsla(0, 0%, 100%, 0.5), rgba(255, 255, 255, 0) 40% )',
+        }}
+      />
+    </Box>
+  );
+};
+
+const RotatingShine = () => {
+  const strokeGlows = [
+    'radial-gradient(var(--width, 20%) var(--height, 50%) at 50% 0%, hsl(0, 0%, 40%) 0%, rgba(255, 255, 255, 0) 100%)',
+    'radial-gradient(var(--width, 20%) var(--height, 50%) at 100% 50%, hsl(0, 0%, 40%) 0%, rgba(255, 255, 255, 0) 100%)',
+    'radial-gradient(var(--width, 20%) var(--height, 50%) at 50% 100%, hsl(0, 0%, 40%) 0%, rgba(255, 255, 255, 0) 100%)',
+    'radial-gradient(var(--width, 20%) var(--height, 50%) at 0% 50%, hsl(0, 0%, 40%) 0%, rgba(255, 255, 255, 0) 100%)',
+    'radial-gradient(var(--width, 20%) var(--height, 50%) at 50% 0%, hsl(0, 0%, 40%) 0%, rgba(255, 255, 255, 0) 100%)',
+  ];
+
+  const backgrounds = [
+    'radial-gradient(var(--widthInnerGlow, 100%) var(--heightInnerGlow, 100%) at 50% 0%, hsla(0, 0%, 100%, 0.05) 0%, rgba(255, 255, 255, 0) 60% )',
+    'radial-gradient(var(--widthInnerGlow, 100%) var(--heightInnerGlow, 100%) at 100% 50%, hsla(0, 0%, 100%, 0.05) 0%, rgba(255, 255, 255, 0) 60% )',
+    'radial-gradient(var(--widthInnerGlow, 100%) var(--heightInnerGlow, 100%) at 50% 100%, hsla(0, 0%, 100%, 0.05) 0%, rgba(255, 255, 255, 0) 60% )',
+    'radial-gradient(var(--widthInnerGlow, 100%) var(--heightInnerGlow, 100%) at 0% 50%, hsla(0, 0%, 100%, 0.05) 0%, rgba(255, 255, 255, 0) 60% )',
+    'radial-gradient(var(--widthInnerGlow, 100%) var(--heightInnerGlow, 100%) at 50% 0%, hsla(0, 0%, 100%, 0.05) 0%, rgba(255, 255, 255, 0) 60% )',
+  ];
+
+  const variants = {
+    initial: {
+      '--width': '20%',
+      '--height': '50%',
+      '--widthInnerGlow': '100%',
+      '--heightInnerGlow': '100%',
+      transition: {
+        duration: 0.8,
+      },
+    },
+    hover: {
+      '--width': '200%',
+      '--height': '200%',
+      '--widthInnerGlow': '200%',
+      '--heightInnerGlow': '200%',
+      transition: { duration: 0.8 },
+    },
+  };
+
+  const [backgroundIndex, setBackgroundIndex] = useState(0);
+  const progress = useMotionValue(backgroundIndex);
+  const strokeGlow = useTransform(progress, [0, 1, 2, 3, 4], strokeGlows);
+  const bg = useTransform(progress, [0, 1, 2, 3, 4], backgrounds);
+
+  useEffect(() => {
+    const animation = animate(progress, backgroundIndex, {
+      duration: 1,
+      ease: 'linear',
+      onComplete: () => {
+        if (backgroundIndex === strokeGlows.length - 1) {
+          setBackgroundIndex(1);
+          progress.set(0);
+        } else {
+          setBackgroundIndex(backgroundIndex + 1);
+        }
+      },
+    });
+    return () => animation.stop();
+  }, [backgroundIndex, strokeGlows.length, progress]);
+
+  return (
+    <Box
+      as={motion.div}
+      initial="initial"
+      animate="initial"
+      css={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        borderRadius: 'inherit',
+
+        // Inner glow
+        // '&:after': {
+        //   content: '""',
+        //   position: 'absolute',
+        //   top: '0px',
+        //   bottom: '0px',
+        //   left: '0px',
+        //   right: '0px',
+        //   backgroundImage: 'var(--bg)',
+        //   borderRadius: 'inherit',
+        // },
+      }}
+      style={{
+        // @ts-ignore
+        '--bg': bg,
+      }}
+      whileHover="hover"
+      variants={variants}
+    >
+      <Box
+        as={motion.div}
+        css={{
+          position: 'absolute',
+          borderRadius: 'inherit',
+          zIndex: -1,
+          top: -2,
+          left: -2,
+          width: 'calc(100% + 4px)',
+          height: 'calc(100% + 4px)',
+          background: 'var(--strokeGlow)',
+          '--track-glow': 'var(--glow, 10px)',
+
+          // Outer Glow
+          '&:before': {
+            position: 'absolute',
+            content: '',
+            borderRadius: 'inherit',
+            width: 'inherit',
+            height: 'inherit',
+            top: -2,
+            left: -2,
+            transition: 'filter 0.5s ease',
+            filter: 'blur(var(--track-glow))',
+            background: 'var(--strokeGlow)',
+          },
+        }}
+        variants={variants}
+        style={{
+          // @ts-ignore
+          '--strokeGlow': strokeGlow,
+        }}
+      />
+    </Box>
+  );
+};
+
+const CursorTrackingBox = (props: any) => {
+  const { children, ...rest } = props;
+  const boxRef = React.useRef<HTMLDivElement>(null);
+
+  const updateCursor = (event: MouseEvent) => {
+    const elements = document.querySelectorAll('[data-cursor-track]');
+    const foo = Array.from(elements)
+      .map((element) => Array.from(element.children))
+      .flat() as HTMLElement[];
+
+    foo.forEach((child) => {
+      const rect = child?.getBoundingClientRect();
+      const x = event.clientX - rect?.left;
+      const y = event.clientY - rect?.top;
+      child?.style.setProperty('--cursor-x', x + 'px');
+      child?.style.setProperty('--cursor-y', y + 'px');
+    });
+  };
+
+  React.useEffect(() => {
+    const currentRef = boxRef.current;
+    if (currentRef) {
+      currentRef.addEventListener('mousemove', updateCursor, false);
+    }
+
+    return () => {
+      if (currentRef) {
+        currentRef.removeEventListener('mousemove', updateCursor, false);
+      }
+    };
+  }, []);
+
+  return (
+    <Box ref={boxRef} {...rest}>
+      {children}
+    </Box>
+  );
+};
 
 export default function Design(props: {
   tweets: Record<string, TransformedTweet>;
@@ -102,592 +412,599 @@ export default function Design(props: {
   const palette = ['gray', 'blue', 'red', 'orange', 'green', 'pink', 'indigo'];
 
   return (
-    <Layout footer>
-      <Seo title="Design" />
-      <Grid columns="medium" gapX={4} gapY={10} className={wrapperGrid()}>
-        <Box as="section" className={gridItem()}>
-          <H1
-            css={{
-              marginBottom: '0px',
-            }}
-          >
-            Components / Design System{' '}
-          </H1>
-          <HR />
-          <Flex justifyContent="space-between">
-            <Pill variant="warning">Work In Progress</Pill>
-            <Pill variant="info">v1.0</Pill>
-          </Flex>
-        </Box>
-        <Box as="section" className={gridItem()} id="logo">
-          <H2>Logo</H2>
-          <Logo />
-        </Box>
-        <Box as="section" className={gridItem()} id="Colors">
-          <H2>Colors</H2>
-          <Grid gap={3}>
-            Brand:
-            <Tooltip id="brand" content="--brand">
-              <Box
-                as="section"
-                css={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '50%',
-                  background: 'var(--maximeheckel-colors-brand)',
-                  border: '2px solid var(--maximeheckel-border-color)',
-                }}
-              />
-            </Tooltip>
-            Background:
-            <Tooltip id="background" content="--background">
-              <Box
-                as="section"
-                css={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '50%',
-                  background: 'var(--maximeheckel-colors-background)',
-                  border: '2px solid var(--maximeheckel-border-color)',
-                }}
-              />
-            </Tooltip>
-            Foreground:
-            <Tooltip id="foreground" content="--foreground">
-              <Box
-                as="section"
-                css={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '50%',
-                  background: 'var(--maximeheckel-colors-foreground)',
-                  border: '2px solid var(--maximeheckel-border-color)',
-                }}
-              />
-            </Tooltip>
-            Typeface:
-            <Grid gap={3} css={{ gridTemplateColumns: 'repeat(3, 44px)' }}>
-              <Tooltip id="typeface-primary" content="--typeface-primary">
+    <>
+      <Layout footer>
+        <Seo title="Design" />
+        <Grid columns="medium" gapX={4} gapY={10} className={wrapperGrid()}>
+          <Box as="section" className={gridItem()}>
+            <H1
+              css={{
+                marginBottom: '0px',
+              }}
+            >
+              Components / Design System{' '}
+            </H1>
+            <HR />
+            <Flex justifyContent="space-between">
+              <Pill variant="warning">Work In Progress</Pill>
+              <Pill variant="info">v1.0</Pill>
+            </Flex>
+          </Box>
+          <Box as="section" className={gridItem()} id="logo">
+            <H2>Logo</H2>
+            <Logo />
+          </Box>
+          <Box as="section" className={gridItem()} id="Colors">
+            <H2>Colors</H2>
+            <Grid gap={3}>
+              Brand:
+              <Tooltip id="brand" content="--brand">
                 <Box
                   as="section"
                   css={{
                     width: '44px',
                     height: '44px',
                     borderRadius: '50%',
-                    background: 'var(--maximeheckel-colors-typeface-primary)',
+                    background: 'var(--maximeheckel-colors-brand)',
                     border: '2px solid var(--maximeheckel-border-color)',
                   }}
                 />
               </Tooltip>
-              <Tooltip id="typeface-secondary" content="--typeface-secondary">
+              Background:
+              <Tooltip id="background" content="--background">
                 <Box
                   as="section"
                   css={{
                     width: '44px',
                     height: '44px',
                     borderRadius: '50%',
-                    background: 'var(--maximeheckel-colors-typeface-secondary)',
+                    background: 'var(--maximeheckel-colors-background)',
                     border: '2px solid var(--maximeheckel-border-color)',
                   }}
                 />
               </Tooltip>
-              <Tooltip id="typeface-tertiary" content="--typeface-teriary">
+              Foreground:
+              <Tooltip id="foreground" content="--foreground">
                 <Box
                   as="section"
                   css={{
                     width: '44px',
                     height: '44px',
                     borderRadius: '50%',
-                    background: 'var(--maximeheckel-colors-typeface-tertiary)',
+                    background: 'var(--maximeheckel-colors-foreground)',
                     border: '2px solid var(--maximeheckel-border-color)',
                   }}
                 />
               </Tooltip>
-            </Grid>
-          </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="Palette">
-          <H2>Palette</H2>
-          <Grid
-            gap={6}
-            css={{
-              gridTemplateColumns: 'repeat(auto-fill, minmax(10rem, 1fr))',
-            }}
-          >
-            {palette.map((paletteItem) => (
-              <Grid
-                key={paletteItem}
-                css={{
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(2rem, 1fr))',
-                  marginRight: '$3',
-                }}
-              >
-                {colorScaleNumbers.map((shade) => (
-                  <Tooltip
-                    id={`${paletteItem}-${shade}`}
-                    key={`${paletteItem}-${shade}`}
-                    content={`--palette-${paletteItem}-${shade}`}
-                  >
-                    <Box
-                      as="section"
-                      css={{
-                        width: '44px',
-                        height: '44px',
-                        borderRadius: '50%',
-                        background: `hsl(var(--palette-${paletteItem}-${shade}))`,
-                        border: '2px solid var(--maximeheckel-border-color)',
-                      }}
-                    />
-                  </Tooltip>
-                ))}
+              Typeface:
+              <Grid gap={3} css={{ gridTemplateColumns: 'repeat(3, 44px)' }}>
+                <Tooltip id="typeface-primary" content="--typeface-primary">
+                  <Box
+                    as="section"
+                    css={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '50%',
+                      background: 'var(--maximeheckel-colors-typeface-primary)',
+                      border: '2px solid var(--maximeheckel-border-color)',
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip id="typeface-secondary" content="--typeface-secondary">
+                  <Box
+                    as="section"
+                    css={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '50%',
+                      background:
+                        'var(--maximeheckel-colors-typeface-secondary)',
+                      border: '2px solid var(--maximeheckel-border-color)',
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip id="typeface-tertiary" content="--typeface-teriary">
+                  <Box
+                    as="section"
+                    css={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '50%',
+                      background:
+                        'var(--maximeheckel-colors-typeface-tertiary)',
+                      border: '2px solid var(--maximeheckel-border-color)',
+                    }}
+                  />
+                </Tooltip>
               </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="typography">
-          <H2>Typography</H2>
-          <Label>Display</Label>
-          <Text size="4">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Numeric (experimenting)</Label>
-          <Text size="3" family="numeric">
-            1 AU = 1,495978707x10<sup>11</sup> m
-          </Text>
-          <Label>Mono</Label>
-          <Text size="3" family="mono">
-            console.log(foobar)
-          </Text>
-          <br />
-          <br />
-          <Label>H1</Label>
-          <Heading as="h1" size="4">
-            Almost before we knew it, we had left the ground.
-          </Heading>
-          <Label>H2</Label>
-          <Heading as="h2" size="3">
-            Almost before we knew it, we had left the ground.
-          </Heading>
-          <Label>H3</Label>
-          <Heading as="h3" size="2">
-            Almost before we knew it, we had left the ground.
-          </Heading>
-          <Label>H4</Label>
-          <Heading as="h4" size="1">
-            Almost before we knew it, we had left the ground.
-          </Heading>
-          <br />
-          <Label>Text size 7</Label>
-          <Text as="p" size="7">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 6</Label>
-          <Text as="p" size="6">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 5</Label>
-          <Text as="p" size="5">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 4</Label>
-          <Text as="p" size="4">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 3</Label>
-          <Text as="p" size="3">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 2</Label>
-          <Text as="p" size="2">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 1</Label>
-          <Text as="p" size="1">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text gradient</Label>
-          <Text
-            as="p"
-            size="3"
-            gradient
-            css={{
-              backgroundImage: `linear-gradient(
+            </Grid>
+          </Box>
+          <Box as="section" className={gridItem()} id="Palette">
+            <H2>Palette</H2>
+            <Grid
+              gap={6}
+              css={{
+                gridTemplateColumns: 'repeat(auto-fill, minmax(10rem, 1fr))',
+              }}
+            >
+              {palette.map((paletteItem) => (
+                <Grid
+                  key={paletteItem}
+                  css={{
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(2rem, 1fr))',
+                    marginRight: '$3',
+                  }}
+                >
+                  {colorScaleNumbers.map((shade) => (
+                    <Tooltip
+                      id={`${paletteItem}-${shade}`}
+                      key={`${paletteItem}-${shade}`}
+                      content={`--palette-${paletteItem}-${shade}`}
+                    >
+                      <Box
+                        as="section"
+                        css={{
+                          width: '44px',
+                          height: '44px',
+                          borderRadius: '50%',
+                          background: `hsl(var(--palette-${paletteItem}-${shade}))`,
+                          border: '2px solid var(--maximeheckel-border-color)',
+                        }}
+                      />
+                    </Tooltip>
+                  ))}
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+          <Box as="section" className={gridItem()} id="typography">
+            <H2>Typography</H2>
+            <Label>Display</Label>
+            <Text size="4">
+              Almost before we knew it, we had left the ground.
+            </Text>
+            <Label>Numeric (experimenting)</Label>
+            <Text size="3" family="numeric">
+              1 AU = 1,495978707x10<sup>11</sup> m
+            </Text>
+            <Label>Mono</Label>
+            <Text size="3" family="mono">
+              console.log(foobar)
+            </Text>
+            <br />
+            <br />
+            <Label>H1</Label>
+            <Heading as="h1" size="4">
+              Almost before we knew it, we had left the ground.
+            </Heading>
+            <Label>H2</Label>
+            <Heading as="h2" size="3">
+              Almost before we knew it, we had left the ground.
+            </Heading>
+            <Label>H3</Label>
+            <Heading as="h3" size="2">
+              Almost before we knew it, we had left the ground.
+            </Heading>
+            <Label>H4</Label>
+            <Heading as="h4" size="1">
+              Almost before we knew it, we had left the ground.
+            </Heading>
+            <br />
+            <Label>Text size 7</Label>
+            <Text as="p" size="7">
+              Almost before we knew it, we had left the ground.
+            </Text>
+            <Label>Text size 6</Label>
+            <Text as="p" size="6">
+              Almost before we knew it, we had left the ground.
+            </Text>
+            <Label>Text size 5</Label>
+            <Text as="p" size="5">
+              Almost before we knew it, we had left the ground.
+            </Text>
+            <Label>Text size 4</Label>
+            <Text as="p" size="4">
+              Almost before we knew it, we had left the ground.
+            </Text>
+            <Label>Text size 3</Label>
+            <Text as="p" size="3">
+              Almost before we knew it, we had left the ground.
+            </Text>
+            <Label>Text size 2</Label>
+            <Text as="p" size="2">
+              Almost before we knew it, we had left the ground.
+            </Text>
+            <Label>Text size 1</Label>
+            <Text as="p" size="1">
+              Almost before we knew it, we had left the ground.
+            </Text>
+            <Label>Text gradient</Label>
+            <Text
+              as="p"
+              size="3"
+              gradient
+              css={{
+                backgroundImage: `linear-gradient(
               91.83deg,
               hsl(var(--palette-pink-50)) -20.26%,
               hsl(var(--palette-blue-20)) 20.55%,
               hsl(var(--palette-indigo-30)) 60.81%
             )`,
-            }}
-          >
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <br />
-          <Label>Strong</Label>
-          <Strong>Almost before we knew it, we had left the ground.</Strong>
-          <Label>EM</Label>
-          <EM>Almost before we knew it, we had left the ground.</EM>
-          <Label>BigNum (WIP)</Label>
-          <Text family="numeric" size="7" weight="4">
-            1 AU = 1,495978707x10<sup>11</sup> m
-          </Text>
-          <Label>BigNum Outline (Experimenting)</Label>
-          <Text
-            family="numeric"
-            size="7"
-            weight="4"
-            css={{
-              WebkitTextStrokeColor: 'var(--maximeheckel-colors-brand)',
-            }}
-            outline
-          >
-            1 AU = 1,495978707x10<sup>11</sup> m
-          </Text>
-          <br />
-          <Text
-            family="numeric"
-            size="7"
-            weight="4"
-            css={{
-              WebkitTextStrokeColor: 'var(--maximeheckel-colors-danger)',
-            }}
-            outline
-          >
-            1 AU = 1,495978707x10<sup>11</sup> m
-          </Text>
-          <br />
-          <br />
-        </Box>
-        <Box as="section" className={gridItem()} id="icons">
-          <H2>Icons</H2>
-          <IconSection />
-        </Box>
-        <Box as="section" className={gridItem()}>
-          <H2>Shadows</H2>
-          <Grid
-            columns={2}
-            gap={4}
-            css={{
-              padding: 'var(--space-5) var(--space-3)',
-            }}
-          >
-            <Card depth={0}>
-              <Card.Body>
-                <Text size="2" variant="secondary">
-                  Shadow 0
-                </Text>
-              </Card.Body>
-            </Card>
-            <Card depth={1}>
-              <Card.Body>
-                <Text size="2" variant="secondary">
-                  Shadow 1
-                </Text>
-              </Card.Body>
-            </Card>
-            <Card depth={2}>
-              <Card.Body>
-                <Text size="2" variant="secondary">
-                  Shadow 2
-                </Text>
-              </Card.Body>
-            </Card>
-            <Card depth={3}>
-              <Card.Body>
-                <Text size="2" variant="secondary">
-                  Shadow 3
-                </Text>
-              </Card.Body>
-            </Card>
-          </Grid>
-          <Grid
-            columns={2}
-            gap={4}
-            css={{
-              background: 'var(--maximeheckel-colors-emphasis)',
-              padding: 'var(--space-5) var(--space-3)',
-            }}
-          >
-            <Card
-              css={{
-                '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
               }}
-              depth={0}
             >
-              <Card.Body>
-                <Text size="2" variant="secondary">
-                  Custom Shadow 0
-                </Text>
-              </Card.Body>
-            </Card>
-            <Card
+              Almost before we knew it, we had left the ground.
+            </Text>
+            <br />
+            <Label>Strong</Label>
+            <Strong>Almost before we knew it, we had left the ground.</Strong>
+            <Label>EM</Label>
+            <EM>Almost before we knew it, we had left the ground.</EM>
+            <Label>BigNum (WIP)</Label>
+            <Text family="numeric" size="7" weight="4">
+              1 AU = 1,495978707x10<sup>11</sup> m
+            </Text>
+            <Label>BigNum Outline (Experimenting)</Label>
+            <Text
+              family="numeric"
+              size="7"
+              weight="4"
               css={{
-                '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+                WebkitTextStrokeColor: 'var(--maximeheckel-colors-brand)',
               }}
-              depth={1}
+              outline
             >
-              <Card.Body>
-                <Text size="2" variant="secondary">
-                  Custom Shadow 1
-                </Text>
-              </Card.Body>
-            </Card>
-            <Card
+              1 AU = 1,495978707x10<sup>11</sup> m
+            </Text>
+            <br />
+            <Text
+              family="numeric"
+              size="7"
+              weight="4"
               css={{
-                '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+                WebkitTextStrokeColor: 'var(--maximeheckel-colors-danger)',
               }}
-              depth={2}
+              outline
             >
-              <Card.Body>
-                <Text size="2" variant="secondary">
-                  Custom Shadow 2
-                </Text>
-              </Card.Body>
-            </Card>
-            <Card
+              1 AU = 1,495978707x10<sup>11</sup> m
+            </Text>
+            <br />
+            <br />
+          </Box>
+          <Box as="section" className={gridItem()} id="icons">
+            <H2>Icons</H2>
+            <IconSection />
+          </Box>
+          <Box as="section" className={gridItem()}>
+            <H2>Shadows</H2>
+            <Grid
+              columns={2}
+              gap={4}
               css={{
-                '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+                padding: 'var(--space-5) var(--space-3)',
               }}
-              depth={3}
             >
-              <Card.Body>
-                <Text size="2" variant="secondary">
-                  Custom Shadow 3
-                </Text>
-              </Card.Body>
-            </Card>
-          </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="lists">
-          <H2>Lists</H2>
-          <Grid columns={2}>
-            <List variant="unordered">
-              <List.Item>First</List.Item>
-              <List.Item>Second</List.Item>
-              <List.Item>Third</List.Item>
-            </List>
-            <List variant="ordered">
-              <List.Item>First</List.Item>
-              <List.Item>Second</List.Item>
-              <List.Item>Third</List.Item>
-            </List>
-            <List variant="unordered">
-              <List.Item>
-                <List variant="ordered">
-                  <List.Item>First</List.Item>
-                  <List.Item>Second</List.Item>
-                  <List.Item>Third</List.Item>
-                </List>
-              </List.Item>
-            </List>
-            <List variant="unordered">
-              <List.Item>
-                <List variant="unordered">
-                  <List.Item>First</List.Item>
-                  <List.Item>Second</List.Item>
-                  <List.Item>Third</List.Item>
-                </List>
-              </List.Item>
-            </List>
-          </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="button">
-          <H2>Buttons</H2>
-          <Grid gap={5}>
-            <Glow>
-              <Button variant="primary">Button</Button>
-            </Glow>
-            <Button variant="primary">Button</Button>
-            <Button variant="primary" endIcon={<Icon.External />}>
-              Portfolio
-            </Button>
-            <Button variant="primary" startIcon={<Icon.Twitter />}>
-              Follow me!
-            </Button>
-            <Button variant="primary" disabled>
-              Button
-            </Button>
-            <Button variant="secondary">Button</Button>
-            <Button variant="secondary" endIcon={<Icon.External />}>
-              Portfolio
-            </Button>
-            <Button variant="secondary" startIcon={<Icon.Twitter />}>
-              Follow me!
-            </Button>
-            <Button variant="secondary" disabled>
-              Button
-            </Button>
-            <Button
-              aria-label="Follow me on Twitter!"
-              variant="icon"
-              icon={<Icon.Twitter />}
-            />
-            <Button
-              aria-label="Follow me on Twitter!"
-              disabled
-              variant="icon"
-              icon={<Icon.Twitter />}
-            />
-            <Button
-              aria-label="Follow me on Twitter!"
-              size="small"
-              variant="icon"
-              icon={<Icon.Twitter />}
-            />
-            <Button
-              aria-label="Follow me on Twitter!"
-              disabled
-              size="small"
-              variant="icon"
-              icon={<Icon.Twitter />}
-            />
-          </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="anchor">
-          <H2>Anchor</H2>
-          <Grid gap={1}>
-            <h3>
-              <Anchor href="https://twitter.com/MaximeHeckel" favicon>
-                @MaximeHeckel
-              </Anchor>
-            </h3>
-            <p>
-              <Anchor href="https://twitter.com/MaximeHeckel" discreet favicon>
-                @MaximeHeckel
-              </Anchor>
-            </p>
-            <h3>
-              <Anchor href="https://github.com/MaximeHeckel" favicon>
-                Github
-              </Anchor>
-            </h3>
-            <p>
-              <Anchor href="https://github.com/MaximeHeckel" discreet favicon>
-                Github
-              </Anchor>
-            </p>
-            <h3>
-              <Anchor href="/" arrow="left">
-                Back
-              </Anchor>
-            </h3>
-            <h3>
-              <Anchor href="https://twitter.com/MaximeHeckel" arrow="right">
-                Twitter
-              </Anchor>
-            </h3>
-            <p>
-              <Anchor
-                href="https://github.com/MaximeHeckel/blog.maximeheckel.com"
-                arrow="right"
-                discreet
+              <Card depth={0}>
+                <Card.Body>
+                  <Text size="2" variant="secondary">
+                    Shadow 0
+                  </Text>
+                </Card.Body>
+              </Card>
+              <Card depth={1}>
+                <Card.Body>
+                  <Text size="2" variant="secondary">
+                    Shadow 1
+                  </Text>
+                </Card.Body>
+              </Card>
+              <Card depth={2}>
+                <Card.Body>
+                  <Text size="2" variant="secondary">
+                    Shadow 2
+                  </Text>
+                </Card.Body>
+              </Card>
+              <Card depth={3}>
+                <Card.Body>
+                  <Text size="2" variant="secondary">
+                    Shadow 3
+                  </Text>
+                </Card.Body>
+              </Card>
+            </Grid>
+            <Grid
+              columns={2}
+              gap={4}
+              css={{
+                background: 'var(--maximeheckel-colors-emphasis)',
+                padding: 'var(--space-5) var(--space-3)',
+              }}
+            >
+              <Card
+                css={{
+                  '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+                }}
+                depth={0}
               >
-                Check out this repo
-              </Anchor>
-            </p>
-            <h3>
-              <Anchor href="/design" underline>
-                Design System
-              </Anchor>
-            </h3>
-            <p>
-              <Anchor discreet href="/design" underline>
-                Design System
-              </Anchor>{' '}
-            </p>
-          </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="form-components">
-          <H2>Form Components</H2>
-          <Flex gap={2}>
-            <TextInput
-              aria-label="Email"
-              id="email-input"
-              type="email"
-              placeholder="hello@maximeheckel.com"
-              onChange={(event) => setEmail(event.currentTarget.value)}
-              value={email}
-            />
-            <Button variant="primary">Subscribe</Button>
-          </Flex>
-          <br />
-          <Grid
-            gap={5}
-            css={{
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            }}
-          >
-            <TextInput
-              label="Name"
-              aria-label="Name"
-              id="name-input"
-              placeholder="Name"
-              onChange={() => {}}
-            />
+                <Card.Body>
+                  <Text size="2" variant="secondary">
+                    Custom Shadow 0
+                  </Text>
+                </Card.Body>
+              </Card>
+              <Card
+                css={{
+                  '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+                }}
+                depth={1}
+              >
+                <Card.Body>
+                  <Text size="2" variant="secondary">
+                    Custom Shadow 1
+                  </Text>
+                </Card.Body>
+              </Card>
+              <Card
+                css={{
+                  '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+                }}
+                depth={2}
+              >
+                <Card.Body>
+                  <Text size="2" variant="secondary">
+                    Custom Shadow 2
+                  </Text>
+                </Card.Body>
+              </Card>
+              <Card
+                css={{
+                  '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+                }}
+                depth={3}
+              >
+                <Card.Body>
+                  <Text size="2" variant="secondary">
+                    Custom Shadow 3
+                  </Text>
+                </Card.Body>
+              </Card>
+            </Grid>
+          </Box>
+          <Box as="section" className={gridItem()} id="lists">
+            <H2>Lists</H2>
+            <Grid columns={2}>
+              <List variant="unordered">
+                <List.Item>First</List.Item>
+                <List.Item>Second</List.Item>
+                <List.Item>Third</List.Item>
+              </List>
+              <List variant="ordered">
+                <List.Item>First</List.Item>
+                <List.Item>Second</List.Item>
+                <List.Item>Third</List.Item>
+              </List>
+              <List variant="unordered">
+                <List.Item>
+                  <List variant="ordered">
+                    <List.Item>First</List.Item>
+                    <List.Item>Second</List.Item>
+                    <List.Item>Third</List.Item>
+                  </List>
+                </List.Item>
+              </List>
+              <List variant="unordered">
+                <List.Item>
+                  <List variant="unordered">
+                    <List.Item>First</List.Item>
+                    <List.Item>Second</List.Item>
+                    <List.Item>Third</List.Item>
+                  </List>
+                </List.Item>
+              </List>
+            </Grid>
+          </Box>
+          <Box as="section" className={gridItem()} id="button">
+            <H2>Buttons</H2>
+            <Grid gap={5}>
+              <Glow>
+                <Button variant="primary">Button</Button>
+              </Glow>
+              <Button variant="primary">Button</Button>
+              <Button variant="primary" endIcon={<Icon.External />}>
+                Portfolio
+              </Button>
+              <Button variant="primary" startIcon={<Icon.Twitter />}>
+                Follow me!
+              </Button>
+              <Button variant="primary" disabled>
+                Button
+              </Button>
+              <Button variant="secondary">Button</Button>
+              <Button variant="secondary" endIcon={<Icon.External />}>
+                Portfolio
+              </Button>
+              <Button variant="secondary" startIcon={<Icon.Twitter />}>
+                Follow me!
+              </Button>
+              <Button variant="secondary" disabled>
+                Button
+              </Button>
+              <Button
+                aria-label="Follow me on Twitter!"
+                variant="icon"
+                icon={<Icon.Twitter />}
+              />
+              <Button
+                aria-label="Follow me on Twitter!"
+                disabled
+                variant="icon"
+                icon={<Icon.Twitter />}
+              />
+              <Button
+                aria-label="Follow me on Twitter!"
+                size="small"
+                variant="icon"
+                icon={<Icon.Twitter />}
+              />
+              <Button
+                aria-label="Follow me on Twitter!"
+                disabled
+                size="small"
+                variant="icon"
+                icon={<Icon.Twitter />}
+              />
+            </Grid>
+          </Box>
+          <Box as="section" className={gridItem()} id="anchor">
+            <H2>Anchor</H2>
+            <Grid gap={1}>
+              <h3>
+                <Anchor href="https://twitter.com/MaximeHeckel" favicon>
+                  @MaximeHeckel
+                </Anchor>
+              </h3>
+              <p>
+                <Anchor
+                  href="https://twitter.com/MaximeHeckel"
+                  discreet
+                  favicon
+                >
+                  @MaximeHeckel
+                </Anchor>
+              </p>
+              <h3>
+                <Anchor href="https://github.com/MaximeHeckel" favicon>
+                  Github
+                </Anchor>
+              </h3>
+              <p>
+                <Anchor href="https://github.com/MaximeHeckel" discreet favicon>
+                  Github
+                </Anchor>
+              </p>
+              <h3>
+                <Anchor href="/" arrow="left">
+                  Back
+                </Anchor>
+              </h3>
+              <h3>
+                <Anchor href="https://twitter.com/MaximeHeckel" arrow="right">
+                  Twitter
+                </Anchor>
+              </h3>
+              <p>
+                <Anchor
+                  href="https://github.com/MaximeHeckel/blog.maximeheckel.com"
+                  arrow="right"
+                  discreet
+                >
+                  Check out this repo
+                </Anchor>
+              </p>
+              <h3>
+                <Anchor href="/design" underline>
+                  Design System
+                </Anchor>
+              </h3>
+              <p>
+                <Anchor discreet href="/design" underline>
+                  Design System
+                </Anchor>{' '}
+              </p>
+            </Grid>
+          </Box>
+          <Box as="section" className={gridItem()} id="form-components">
+            <H2>Form Components</H2>
+            <Flex gap={2}>
+              <TextInput
+                aria-label="Email"
+                id="email-input"
+                type="email"
+                placeholder="hello@maximeheckel.com"
+                onChange={(event) => setEmail(event.currentTarget.value)}
+                value={email}
+              />
+              <Button variant="primary">Subscribe</Button>
+            </Flex>
+            <br />
+            <Grid
+              gap={5}
+              css={{
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              }}
+            >
+              <TextInput
+                label="Name"
+                aria-label="Name"
+                id="name-input"
+                placeholder="Name"
+                onChange={() => {}}
+              />
 
-            <TextInput
-              label="Name"
-              aria-label="Name"
-              id="name-input-disabled"
-              placeholder="Name"
-              disabled
-              onChange={() => {}}
-              value="Maxime Heckel"
-            />
+              <TextInput
+                label="Name"
+                aria-label="Name"
+                id="name-input-disabled"
+                placeholder="Name"
+                disabled
+                onChange={() => {}}
+                value="Maxime Heckel"
+              />
 
-            <TextInput
-              aria-label="Email"
-              id="email-input"
-              type="email"
-              placeholder="hello@maximeheckel.com"
-              onChange={(event) => setEmail(event.currentTarget.value)}
-              value={email}
-              autoComplete="off"
-            />
+              <TextInput
+                aria-label="Email"
+                id="email-input"
+                type="email"
+                placeholder="hello@maximeheckel.com"
+                onChange={(event) => setEmail(event.currentTarget.value)}
+                value={email}
+                autoComplete="off"
+              />
 
-            <TextInput
-              aria-label="Email"
-              id="email-input-disabled"
-              type="email"
-              disabled
-              placeholder="hello@maximeheckel.com"
-              onChange={() => {}}
-              value="hello@maximeheckel.com"
-            />
+              <TextInput
+                aria-label="Email"
+                id="email-input-disabled"
+                type="email"
+                disabled
+                placeholder="hello@maximeheckel.com"
+                onChange={() => {}}
+                value="hello@maximeheckel.com"
+              />
 
-            <TextInput
-              aria-label="Password"
-              id="password-input"
-              type="password"
-              placeholder="Password"
-              onChange={() => {}}
-            />
+              <TextInput
+                aria-label="Password"
+                id="password-input"
+                type="password"
+                placeholder="Password"
+                onChange={() => {}}
+              />
 
-            <TextInput
-              aria-label="Password"
-              id="password-input-disabled"
-              type="password"
-              disabled
-              onChange={() => {}}
-              value="supersecretpassword"
-            />
+              <TextInput
+                aria-label="Password"
+                id="password-input-disabled"
+                type="password"
+                disabled
+                onChange={() => {}}
+                value="supersecretpassword"
+              />
 
-            <TextArea
-              aria-label="Example Text"
-              id="example-text-1"
-              label="Example Text"
-              onChange={() => {}}
-              placeholder="Type some text here"
-              resize="none"
-            />
-            <TextArea
-              aria-label="Example Text"
-              disabled
-              id="example-text-2"
-              label="Example Text"
-              onChange={() => {}}
-              placeholder="Type some text here"
-              resize="none"
-              value={`Here's to the crazy ones.
+              <TextArea
+                aria-label="Example Text"
+                id="example-text-1"
+                label="Example Text"
+                onChange={() => {}}
+                placeholder="Type some text here"
+                resize="none"
+              />
+              <TextArea
+                aria-label="Example Text"
+                disabled
+                id="example-text-2"
+                label="Example Text"
+                onChange={() => {}}
+                placeholder="Type some text here"
+                resize="none"
+                value={`Here's to the crazy ones.
 The misfits.
 The rebels.
 The troublemakers.
@@ -711,268 +1028,522 @@ we see genius.
 
 Because the people who are crazy enough to think
 they can change the world, are the ones who do.`}
-            />
-          </Grid>
-          <br />
-          <Grid
-            gap={3}
-            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
-          >
-            <Checkbox aria-label="Checkbox" id="checkbox1" label="Checkbox" />
-            <Checkbox
-              aria-label="Checkbox"
-              id="checkbox3"
-              label="Checkbox"
-              disabled
-            />
-            <Checkbox
-              aria-label="Checkbox"
-              id="checkbox2"
-              label="Checkbox"
-              onChange={() => {}}
-              checked
-            />
-            <Checkbox
-              aria-label="Checkbox"
-              id="checkbox4"
-              label="Checkbox"
-              onChange={() => {}}
-              checked
-              disabled
-            />
-          </Grid>
-          <br />
-          <Grid
-            gap={3}
-            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
-          >
-            <Switch id="switch1" aria-label="Switch" label="Switch" />
-            <Switch id="switch2" aria-label="Switch" label="Switch" disabled />
-            <Switch
-              id="switch3"
-              aria-label="Switch"
-              label="Switch"
-              onChange={() => {}}
-              toggled
-            />
-            <Switch
-              id="switch4"
-              aria-label="Switch"
-              label="Switch"
-              disabled
-              onChange={() => {}}
-              toggled
-            />
-          </Grid>
-          <br />
-          <Grid
-            gap={3}
-            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
-          >
-            <Radio.Group
-              name="options"
-              direction="vertical"
-              onChange={() => {}}
-            >
-              <Radio.Item
-                id="option-1"
-                value="option1"
-                aria-label="Option 1"
-                label="Option 1"
               />
-              <Radio.Item
-                id="option-2"
-                value="option2"
-                aria-label="Option 2"
-                label="Option 2"
-                checked
-              />
-            </Radio.Group>
-            <Radio.Group
-              name="options-disabled"
-              direction="vertical"
-              onChange={() => {}}
+            </Grid>
+            <br />
+            <Grid
+              gap={3}
+              css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
             >
-              <Radio.Item
-                id="radio-3"
-                value="option3"
-                aria-label="Option 3"
-                label="Option 3"
+              <Checkbox aria-label="Checkbox" id="checkbox1" label="Checkbox" />
+              <Checkbox
+                aria-label="Checkbox"
+                id="checkbox3"
+                label="Checkbox"
                 disabled
               />
-              <Radio.Item
-                id="radio-4"
-                value="option4"
-                aria-label="Option 4"
-                label="Option 4"
+              <Checkbox
+                aria-label="Checkbox"
+                id="checkbox2"
+                label="Checkbox"
+                onChange={() => {}}
+                checked
+              />
+              <Checkbox
+                aria-label="Checkbox"
+                id="checkbox4"
+                label="Checkbox"
+                onChange={() => {}}
+                checked
                 disabled
-                checked
               />
-            </Radio.Group>
-            <Radio.Group
-              name="options-horizontal"
-              direction="horizontal"
-              onChange={() => {}}
+            </Grid>
+            <br />
+            <Grid
+              gap={3}
+              css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
             >
-              <Radio.Item
-                id="option-5"
-                value="option5"
-                aria-label="Option 5"
-                label="Option 5"
+              <Switch id="switch1" aria-label="Switch" label="Switch" />
+              <Switch
+                id="switch2"
+                aria-label="Switch"
+                label="Switch"
+                disabled
               />
-              <Radio.Item
-                id="option-6"
-                value="option6"
-                aria-label="Option 6"
-                label="Option 6"
-                checked
+              <Switch
+                id="switch3"
+                aria-label="Switch"
+                label="Switch"
+                onChange={() => {}}
+                toggled
               />
-            </Radio.Group>
-          </Grid>
-          <br />
-          <Grid
-            gap={3}
-            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
-          >
-            <Range
-              id="range-1"
-              aria-label="Range"
-              label="Range"
-              value={rangeValue}
-              min={0}
-              max={500}
-              onChange={(value) => setRangeValue(value)}
-            />
-            <Range
-              id="range-2"
-              aria-label="Range"
-              label="Range"
-              value={250}
-              min={0}
-              max={500}
-              onChange={() => {}}
-              disabled
-            />
-          </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="cards">
-          <H2>Card</H2>
-          <Grid gapY={6} css={{ width: '100%' }}>
-            <Card>
-              <Card.Body>Base Card</Card.Body>
-            </Card>
-            <Card title="Title for the card">
-              <Card.Body>
-                Card with <InlineCode>title</InlineCode> prop
-              </Card.Body>
-            </Card>
-            <Card>
-              <Card.Header>Some Custom Header</Card.Header>
-              <Card.Body>Card With Custom Header</Card.Body>
-            </Card>
-            <Card>
-              <Flex
-                alignItems="center"
-                justifyContent="center"
+              <Switch
+                id="switch4"
+                aria-label="Switch"
+                label="Switch"
+                disabled
+                onChange={() => {}}
+                toggled
+              />
+            </Grid>
+            <br />
+            <Grid
+              gap={3}
+              css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
+            >
+              <Radio.Group
+                name="options"
+                direction="vertical"
+                onChange={() => {}}
+              >
+                <Radio.Item
+                  id="option-1"
+                  value="option1"
+                  aria-label="Option 1"
+                  label="Option 1"
+                />
+                <Radio.Item
+                  id="option-2"
+                  value="option2"
+                  aria-label="Option 2"
+                  label="Option 2"
+                  checked
+                />
+              </Radio.Group>
+              <Radio.Group
+                name="options-disabled"
+                direction="vertical"
+                onChange={() => {}}
+              >
+                <Radio.Item
+                  id="radio-3"
+                  value="option3"
+                  aria-label="Option 3"
+                  label="Option 3"
+                  disabled
+                />
+                <Radio.Item
+                  id="radio-4"
+                  value="option4"
+                  aria-label="Option 4"
+                  label="Option 4"
+                  disabled
+                  checked
+                />
+              </Radio.Group>
+              <Radio.Group
+                name="options-horizontal"
+                direction="horizontal"
+                onChange={() => {}}
+              >
+                <Radio.Item
+                  id="option-5"
+                  value="option5"
+                  aria-label="Option 5"
+                  label="Option 5"
+                />
+                <Radio.Item
+                  id="option-6"
+                  value="option6"
+                  aria-label="Option 6"
+                  label="Option 6"
+                  checked
+                />
+              </Radio.Group>
+            </Grid>
+            <br />
+            <Grid
+              gap={3}
+              css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
+            >
+              <Range
+                id="range-1"
+                aria-label="Range"
+                label="Range"
+                value={rangeValue}
+                min={0}
+                max={500}
+                onChange={(value) => setRangeValue(value)}
+              />
+              <Range
+                id="range-2"
+                aria-label="Range"
+                label="Range"
+                value={250}
+                min={0}
+                max={500}
+                onChange={() => {}}
+                disabled
+              />
+            </Grid>
+          </Box>
+          <Box as="section" className={gridItem()} id="cards">
+            <H2>Card</H2>
+            <Grid gapY={6} css={{ width: '100%' }}>
+              <Card>
+                <Card.Body>Base Card</Card.Body>
+              </Card>
+              <Box
                 css={{
-                  padding: 'var(--space-7)',
+                  position: 'relative',
+                  background:
+                    'var(--card-background, var(--maximeheckel-card-background-color))',
+                  backdropFilter: 'var(--card-blur, none)',
+                  borderRadius: 'var(--border-radius-2)',
+                  boxShadow: 'var(--card-shadow)',
+                  border: '1px solid hsla(var(--palette-gray-80), 50%)',
                 }}
               >
-                Card With custom Body
+                <StaticShine />
+                <Box
+                  css={{
+                    overflow: 'hidden',
+                    padding: '36px 24px',
+                    position: 'relative',
+                  }}
+                >
+                  Static Shine
+                </Box>
+              </Box>
+              <Box
+                css={{
+                  position: 'relative',
+                  background:
+                    'var(--card-background, var(--maximeheckel-card-background-color))',
+                  backdropFilter: 'var(--card-blur, none)',
+                  borderRadius: 'var(--border-radius-2)',
+                  boxShadow: 'var(--card-shadow)',
+                  border: '1px solid hsla(var(--palette-gray-80), 50%)',
+                }}
+              >
+                <StaticShine />
+                <Box
+                  css={{
+                    overflow: 'hidden',
+                    // padding: '36px 24px',
+                    position: 'relative',
+                    height: 400,
+                  }}
+                >
+                  <Box
+                    css={{
+                      backgroundImage:
+                        'url("/static/images/hero-background-top.png")',
+                      width: '100%',
+                      height: '100%',
+                      backgroundSize: 'contain',
+                      backgroundRepeat: 'no-repeat',
+                    }}
+                  >
+                    <Box
+                      css={{
+                        width: '100%',
+                        height: '100%',
+                        maskImage: 'var(--background-image)',
+                        maskSize: 'contain',
+                        WebkitMaskRepeat: 'no-repeat',
+                      }}
+                      style={{
+                        // @ts-ignore
+                        '--background-image':
+                          'url("/static/images/hero-background-top-mask.png")',
+                      }}
+                    >
+                      <Box
+                        css={{
+                          height: '200px',
+                          position: 'relative',
+                          top: '0',
+                          zIndex: '88888',
+                          background:
+                            'linear-gradient(180deg,rgba(183,164,251,0) 0,#b7a4fb 100%,#8562ff 100%,rgba(133,98,255,0) 0%)',
+                          animation: `${lasergrid} 6s infinite cubic-bezier(.62,.62,.28,.67)`,
+                        }}
+                      ></Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+              <Card>
+                <Card.Body>
+                  <H1
+                    css={{
+                      color: 'var(--maximeheckel-colors-typeface-secondary)',
+                      marginBottom: 0,
+                      position: 'relative',
+                      maxWidth: 500,
+                      '&:before': {
+                        content:
+                          'Almost before we knew it, we had left the ground.',
+                        color: 'transparent',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        WebkitBackgroundClip: 'text',
+                        backgroundSize: '200%',
+                        backgroundImage:
+                          'linear-gradient(45deg,hsla(0,0%,100%,0) 45%,#ffffff 50%,hsla(0,0%,100%,0) 55%,hsla(0,0%,100%,0))',
+                        animation: `${textShine} 2s ease-in-out infinite`,
+                      },
+                    }}
+                  >
+                    Almost before we knew it, we had left the ground.
+                  </H1>
+                </Card.Body>
+              </Card>
+
+              {/* <Box
+                css={{
+                  position: 'relative',
+                  background:
+                    'var(--card-background, var(--maximeheckel-card-background-color))',
+                  backdropFilter: 'var(--card-blur, none)',
+                  borderRadius: 'var(--border-radius-2)',
+                  boxShadow: 'var(--card-shadow)',
+                  // border: '1px solid var(--maximeheckel-border-color)',
+                  border: 0,
+
+                  '&:before': {
+                    position: 'absolute',
+                    content: '',
+                    borderRadius: 'var(--border-radius-2)',
+                    zIndex: -1,
+                    top: '-1px',
+                    left: '-1px',
+                    width: 'calc(100% + 2px)',
+                    height: 'calc(100% + 2px)',
+                    backgroundImage:
+                      'linear-gradient(135deg, hsla(0, 0%, 100%, 0.3),#212226);',
+                    backgroundSize: '200% auto',
+                    animation: `${shine} 3s ease-in-out`,
+                    animationIterationCount: 'infinite',
+                    animationDirection: 'alternate',
+                  },
+                }}
+              >
+                <Box
+                  css={{
+                    overflow: 'hidden',
+                    padding: '36px 24px',
+                    position: 'relative',
+                  }}
+                >
+                  Animated linear shine
+                </Box>
+              </Box> */}
+
+              <Flex
+                alignItems="center"
+                as="button"
+                css={{
+                  position: 'relative',
+                  boxShadow: 'none',
+                  cursor: 'pointer',
+                  width: 166,
+                  height: 55,
+                  borderRadius: 118,
+                  border: '1px solid hsla(var(--palette-gray-80), 50%)',
+                  background:
+                    'var(--card-background, var(--maximeheckel-card-background-color))',
+                }}
+                justifyContent="center"
+              >
+                <RotatingShine />
+                <Text as="span" css={{ margin: 0 }} size="2" weight="3">
+                  Running Stroke
+                </Text>
               </Flex>
-            </Card>
-            <Card depth={0}>
-              <Card.Body>
-                Card <InlineCode>depth={0}</InlineCode>
-              </Card.Body>
-            </Card>
-            <Card depth={1}>
-              <Card.Body>
-                Card <InlineCode>depth={1}</InlineCode>
-              </Card.Body>
-            </Card>
-            <Card depth={2}>
-              <Card.Body>
-                Card <InlineCode>depth={2}</InlineCode>
-              </Card.Body>
-            </Card>
-            <Card depth={3}>
-              <Card.Body>
-                Card <InlineCode>depth={3}</InlineCode>
-              </Card.Body>
-            </Card>
-          </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="tooltip">
-          <H2>Tooltip</H2>
-          <Tooltip
-            id="exampletooltip"
-            content="@MaximeHeckel"
-            visuallyHiddenText="Follow Me on Twitter"
-          >
-            <Flex
-              alignItems="center"
-              justifyContent="space-between"
-              css={{
-                height: '50px',
-                width: '150px',
-                padding: 'var(--space-2)',
-              }}
-              aria-describedby="exampletooltip"
+
+              <Box
+                css={{
+                  position: 'relative',
+                  background:
+                    'var(--card-background, var(--maximeheckel-card-background-color))',
+                  backdropFilter: 'var(--card-blur, none)',
+                  borderRadius: 20,
+                  boxShadow: 'var(--card-shadow)',
+                  border: '1px solid hsla(var(--palette-gray-80), 50%)',
+                }}
+              >
+                <RotatingShine />
+                <Box
+                  css={{
+                    overflow: 'hidden',
+                    padding: '36px 24px',
+                    position: 'relative',
+                    height: 200,
+                  }}
+                >
+                  Animated rotating shine
+                </Box>
+              </Box>
+              <Flex gap="4">
+                <CursorTrackingBox>
+                  <Flex data-cursor-track gap="6">
+                    <Box
+                      css={{
+                        position: 'relative',
+                        background:
+                          'var(--card-background, var(--maximeheckel-card-background-color))',
+                        backdropFilter: 'var(--card-blur, none)',
+                        borderRadius: 20,
+                        boxShadow: 'var(--card-shadow)',
+                        border: '1px solid hsla(var(--palette-gray-80), 50%)',
+                      }}
+                    >
+                      <CursorTrackingShine />
+                      <Box
+                        css={{
+                          overflow: 'hidden',
+                          padding: '36px 24px',
+                          position: 'relative',
+                          height: 200,
+                        }}
+                      >
+                        Cursor tracking shine
+                      </Box>
+                    </Box>
+                    {/* </CursorTrackingBox>
+                <CursorTrackingBox> */}
+                    <Box
+                      css={{
+                        position: 'relative',
+                        background:
+                          'var(--card-background, var(--maximeheckel-card-background-color))',
+                        backdropFilter: 'var(--card-blur, none)',
+                        borderRadius: 20,
+                        boxShadow: 'var(--card-shadow)',
+                        border: '1px solid hsla(var(--palette-gray-80), 50%)',
+                      }}
+                    >
+                      <CursorTrackingShine />
+                      <Box
+                        css={{
+                          overflow: 'hidden',
+                          padding: '36px 24px',
+                          position: 'relative',
+                          height: 200,
+                        }}
+                      >
+                        Cursor tracking shine
+                      </Box>
+                    </Box>
+                  </Flex>
+                </CursorTrackingBox>
+              </Flex>
+              <Card title="Title for the card">
+                <Card.Body>
+                  Card with <InlineCode>title</InlineCode> prop
+                </Card.Body>
+              </Card>
+              <Card>
+                <Card.Header>Some Custom Header</Card.Header>
+                <Card.Body>Card With Custom Header</Card.Body>
+              </Card>
+              <Card>
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  css={{
+                    padding: 'var(--space-7)',
+                  }}
+                >
+                  Card With custom Body
+                </Flex>
+              </Card>
+              <Card depth={0}>
+                <Card.Body>
+                  Card <InlineCode>depth={0}</InlineCode>
+                </Card.Body>
+              </Card>
+              <Card depth={1}>
+                <Card.Body>
+                  Card <InlineCode>depth={1}</InlineCode>
+                </Card.Body>
+              </Card>
+              <Card depth={2}>
+                <Card.Body>
+                  Card <InlineCode>depth={2}</InlineCode>
+                </Card.Body>
+              </Card>
+              <Card depth={3}>
+                <Card.Body>
+                  Card <InlineCode>depth={3}</InlineCode>
+                </Card.Body>
+              </Card>
+            </Grid>
+          </Box>
+          <Box as="section" className={gridItem()} id="tooltip">
+            <H2>Tooltip</H2>
+            <Tooltip
+              id="exampletooltip"
+              content="@MaximeHeckel"
+              visuallyHiddenText="Follow Me on Twitter"
             >
-              <Icon.Twitter stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
-              Hover Me!
-            </Flex>
-          </Tooltip>
-        </Box>
-        <Box as="section" className={gridItem()} id="pill">
-          <H2>Pill</H2>
-          <Grid gapY={5}>
-            <Box>
-              <Pill variant="info">Info Pill</Pill>
-            </Box>
-            <Box>
-              <Pill variant="success">Success Pill</Pill>
-            </Box>
-            <Box>
-              <Pill variant="warning">Warning Pill</Pill>
-            </Box>
-            <Box>
-              <Pill variant="danger">Danger Pill</Pill>
-            </Box>
-          </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="callout">
-          <H2>Callout</H2>
-          <Grid gapY={5}>
-            <Callout variant="info">Info Callout</Callout>
-            <Callout label="Learn more" variant="info">
-              Info Callout
-            </Callout>
-            <Callout variant="danger">Danger Callout</Callout>
-            <Callout label="Be careful!" variant="danger">
-              Danger Callout
-            </Callout>
-          </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="blockquote">
-          <Blockquote>
-            <Text as="p">
-              Almost before we knew it, we had left the ground.
-            </Text>
-          </Blockquote>
-        </Box>
-        <Box as="section" className={gridItem()} id="inline-code">
-          <H2>Inline Code</H2>
-          <InlineCode>{"const foo = () => 'bar'"}</InlineCode>
-        </Box>
-        <Box as="section" className={gridItem()} id="code-block">
-          <H2>Code Block</H2>
-          <Label>Basic</Label>
-          <CodeBlock
-            metastring=""
-            language="javascript"
-            codeString={`console.log("hello world")
+              <Flex
+                alignItems="center"
+                justifyContent="space-between"
+                css={{
+                  height: '50px',
+                  width: '150px',
+                  padding: 'var(--space-2)',
+                }}
+                aria-describedby="exampletooltip"
+              >
+                <Icon.Twitter stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
+                Hover Me!
+              </Flex>
+            </Tooltip>
+          </Box>
+          <Box as="section" className={gridItem()} id="pill">
+            <H2>Pill</H2>
+            <Grid gapY={5}>
+              <Box>
+                <Pill variant="info">Info Pill</Pill>
+              </Box>
+              <Box>
+                <Pill variant="success">Success Pill</Pill>
+              </Box>
+              <Box>
+                <Pill variant="warning">Warning Pill</Pill>
+              </Box>
+              <Box>
+                <Pill variant="danger">Danger Pill</Pill>
+              </Box>
+            </Grid>
+          </Box>
+          <Box as="section" className={gridItem()} id="callout">
+            <H2>Callout</H2>
+            <Grid gapY={5}>
+              <Callout variant="info">Info Callout</Callout>
+              <Callout label="Learn more" variant="info">
+                Info Callout
+              </Callout>
+              <Callout variant="danger">Danger Callout</Callout>
+              <Callout label="Be careful!" variant="danger">
+                Danger Callout
+              </Callout>
+            </Grid>
+          </Box>
+          <Box as="section" className={gridItem()} id="blockquote">
+            <Blockquote>
+              <Text as="p">
+                Almost before we knew it, we had left the ground.
+              </Text>
+            </Blockquote>
+          </Box>
+          <Box as="section" className={gridItem()} id="inline-code">
+            <H2>Inline Code</H2>
+            <InlineCode>{"const foo = () => 'bar'"}</InlineCode>
+          </Box>
+          <Box as="section" className={gridItem()} id="code-block">
+            <H2>Code Block</H2>
+            <Label>Basic</Label>
+            <CodeBlock
+              metastring=""
+              language="javascript"
+              codeString={`console.log("hello world")
 
 /**
  * Some comments
@@ -981,12 +1552,12 @@ function sayHi(name) {
     var message = \`hi \${name}\`
     return message;
 }`}
-          />
-          <Label>With title and highlighting</Label>
-          <CodeBlock
-            metastring="{6-8} title=Code snippet title"
-            language="javascript"
-            codeString={`console.log("hello world")
+            />
+            <Label>With title and highlighting</Label>
+            <CodeBlock
+              metastring="{6-8} title=Code snippet title"
+              language="javascript"
+              codeString={`console.log("hello world")
 
 /**
  * Some comments
@@ -995,38 +1566,39 @@ function sayHi(name) {
     var message = \`hi \${name}\`
     return message;
 }`}
-          />
-          <Label>Sandpack Code Block</Label>
-          <SandpackExample />
-        </Box>
-        <Box as="section" className={gridItem()} id="details-summary">
-          <H2>Details/Summary</H2>
-          <Details>
-            <Details.Summary>Summary: Some short text</Details.Summary>
-            <Details.Content>
-              Content. Some long text nested inside the component. Useful to
-              avoid long, optional content. It can take some simple strings or
-              some other custom React componen. As you want!
-            </Details.Content>
-          </Details>
-        </Box>
-        <Box as="section" className={gridItem()} id="command-center">
-          <H2>Command Center / Search </H2>
-          <Button variant="primary" onClick={() => setShowSearch(true)}>
-            Show Command Center
-          </Button>
-          <AnimatePresence>
-            {showSearch ? (
-              <Search onClose={() => setShowSearch(false)} />
-            ) : null}
-          </AnimatePresence>
-        </Box>
-        <Box as="section" className={gridItem()} id="tweet">
-          <H2>Tweet</H2>
-          <Tweet tweet={props.tweets['1386013361809281024']} />
-        </Box>
-      </Grid>
-    </Layout>
+            />
+            <Label>Sandpack Code Block</Label>
+            <SandpackExample />
+          </Box>
+          <Box as="section" className={gridItem()} id="details-summary">
+            <H2>Details/Summary</H2>
+            <Details>
+              <Details.Summary>Summary: Some short text</Details.Summary>
+              <Details.Content>
+                Content. Some long text nested inside the component. Useful to
+                avoid long, optional content. It can take some simple strings or
+                some other custom React componen. As you want!
+              </Details.Content>
+            </Details>
+          </Box>
+          <Box as="section" className={gridItem()} id="command-center">
+            <H2>Command Center / Search </H2>
+            <Button variant="primary" onClick={() => setShowSearch(true)}>
+              Show Command Center
+            </Button>
+            <AnimatePresence>
+              {showSearch ? (
+                <Search onClose={() => setShowSearch(false)} />
+              ) : null}
+            </AnimatePresence>
+          </Box>
+          <Box as="section" className={gridItem()} id="tweet">
+            <H2>Tweet</H2>
+            <Tweet tweet={props.tweets['1386013361809281024']} />
+          </Box>
+        </Grid>
+      </Layout>
+    </>
   );
 }
 

@@ -4,9 +4,6 @@ import Header, { HeaderProps } from '@theme/components/Header';
 import { styled } from '@maximeheckel/design-system';
 
 const Wrapper = styled('main', {
-  background: 'var(--maximeheckel-colors-body)',
-  transition: '0.5s',
-
   /**
    * Disable outline when user doesn't use keyboard
    */

@@ -20,6 +20,7 @@ body {
   word-wrap: break-word;
   text-rendering: optimizeLegibility;
   margin: 0;
+  transition: 0.5s;
 }
 
 [hidden],
