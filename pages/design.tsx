@@ -1006,7 +1006,7 @@ function sayHi(name) {
             <Details.Content>
               Content. Some long text nested inside the component. Useful to
               avoid long, optional content. It can take some simple strings or
-              some other custom React componen. As you want!
+              some other custom React components. As you want!
             </Details.Content>
           </Details>
         </Box>
