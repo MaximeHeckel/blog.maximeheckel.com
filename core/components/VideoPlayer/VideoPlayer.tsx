@@ -41,7 +41,7 @@ const VideoPlayer = (props: VideoPlayerProps) => {
 
   React.useEffect(() => {
     if (poster) {
-      if (!poster.includes('.png')) {
+      if (!poster.includes('.png') && !poster.includes('https')) {
         setCurrentPoster(getDisplayedPoster(poster, dark));
       } else {
         setCurrentPoster(poster);

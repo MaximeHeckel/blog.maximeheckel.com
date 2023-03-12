@@ -47,7 +47,7 @@ featured: false
 ---
 
 As I'm continuously working on sharpening my skills for creating _beautiful_ and _interactive_ 3D experiences on the
-web, I get constantly exposed to new tools and techniques, from the diverse React Three Fiber scenes and gorgeous shader materials.
+web, I get constantly exposed to new tools and techniques, from the diverse React Three Fiber scenes to gorgeous shader materials.
 However, there's one Three.js tool that's often a common denominator to all these fascinating projects that I keep running into: **Render Targets**.
 
 This term may seem scary, boring, or a bit opaque at first, but once
@@ -66,7 +66,7 @@ You may have already seen render targets mentioned or used in some of my writing
   height={470.15}
 />
 
-In this article, I want to share some of my favorite use cases for render targets. From **creating infinity mirrors**, **portals** to other scenes, **optical illusions**, and **post-processing or transition effects**, you'll learn how to leverage this tool to push your React Three projects above and beyond. 🪄
+In this article, I want to share some of my favorite use cases for render targets. Whether it's for building **infinity mirrors**, **portals** to other scenes, **optical illusions**, and **post-processing/transition effects**, you'll learn how to leverage this amazing tool to push your React Three projects above and beyond. 🪄
 
 <Callout label="Before you start" variant="info">
 
@@ -88,13 +88,14 @@ Before we jump into some of those mind-bending 3D scenes I mentioned above, let'
 
 **A tool to render a scene into an offscreen buffer.**
 
-That is the simplest definition I could come up with 😅. In a nutshell, it lets you take a snapshot of a scene by **rendering it** and gives you access to its pixel as a **texture** for later use. Here are some of the use cases where you may encounter render targets:
+That is the simplest definition I could come up with 😅. In a nutshell, it lets you take a snapshot of a scene by **rendering it** and gives you access to its pixel content as a **texture** for later use. Here are some of the use cases where you may encounter render targets:
 
 - **Post-processing effects**: we can modify that texture using a shader material and GLSL's `texture2D` function.
 - **Apply scenes as textures**: we can take a _snapshot_ of a 3D scene and render it as a texture on a mesh. That lets us create different kinds of effects like the transparency of glass or a portal to another world.
-- **Store data**: we can store anything in a render target, even if not necessarily meant to be "rendered" visually on the screen. For example, in particle-based scenes, we can store the poisition of each particles that require large amounts of computation, as it's been showcased in [The magical world of Particles with React Three Fiber and Shaders](/posts/the-magical-world-of-particles-with-react-three-fiber-and-shaders/#going-beyond-with-frame-buffer-objects).
+- **Store data**: we can store anything in a render target, even if not necessarily meant to be "rendered" visually on the screen. For example, in particle-based scenes,
+  we can use a render target to store the position of an entire set of particles that require large amounts of computation, as it's been showcased in [The magical world of Particles with React Three Fiber and Shaders](/posts/the-magical-world-of-particles-with-react-three-fiber-and-shaders/#going-beyond-with-frame-buffer-objects).
 
-Whether it's for a Three.js or React Three Fiber, creating a render target is straightforward: you need to use the `WebGLRenderTarget` class.
+Whether it's for a Three.js or React Three Fiber, creating a render target is straightforward: all you need to use is the `WebGLRenderTarget` class.
 
 ```js
 const renderTarget = new THREE.WebGLRenderTarget();
@@ -104,7 +105,7 @@ const renderTarget = new THREE.WebGLRenderTarget();
 
 You will find all the options available to set up different aspects of your render targets on the dedicated [WebGLRenderTarget page of the Three.js documentation](https://threejs.org/docs/#api/en/renderers/WebGLRenderTarget).
 
-For the purpose of this article, we'll keep things simple and only use the `width` and `height` options in some of the code playgrounds.
+To keep this article simple, most code playgrounds will not feature these options.
 
 </Callout>
 
@@ -112,22 +113,22 @@ However, if you use the `@react-three/drei` library in combination with React Th
 
 <Callout variant="info">
 
-The source code of the `useFBO` hook is accessible in the [@react-three/drei repository](https://github.com/pmndrs/drei/blob/master/src/core/useFBO.tsx).
+In case you're curious what's under the hood of the `useFBO` hook, its source code is available in the [@react-three/drei repository](https://github.com/pmndrs/drei/blob/master/src/core/useFBO.tsx).
 
 </Callout>
 
-Now, when it comes to _using_ render targets in a React Three Fiber scene, it's luckily pretty straightforward. Once instantiated, every render target-related manipulation will be done within the `useFrame` hook i.e. **the render loop**.
+Now, when it comes to _using_ render targets in a React Three Fiber scene, it's luckily pretty simple. Once instantiated, every render target-related manipulation will be done within the `useFrame` hook i.e. **the render loop**.
 
 ```jsx {1,6-7,9} title=Using a render target within the useFrame hook
-const renderTarget = useFBO();
+const mainRenderTarget = useFBO();
 
 useFrame((state) => {
   const { gl, scene, camera } = state;
 
-  gl.setRenderTarget(renderTarget);
+  gl.setRenderTarget(mainRenderTarget);
   gl.render(scene, camera);
 
-  mesh.current.material.map = renderTarget.texture;
+  mesh.current.material.map = mainRenderTarget.texture;
 
   gl.setRenderTarget(null);
 });
@@ -141,7 +142,7 @@ This first code snippet features four main steps to set up and use our first ren
 4. We map the content of the render target as a texture on a plane.
 5. We set the render target back to `null`, the default render target.
 
-The code playground below showcases what the scene rendered by this code snippet looks like:
+The code playground below showcases what a scene using the code snippet above would look like:
 
 <RenderTargetsSandpack scene="scene1" />
 
@@ -155,7 +156,7 @@ After seeing this first example you might ask yourself _Why is our scene mapped 
 
 <Image
   src="blog/first_render_target_2.png"
-  alt="Diagram showcasing how the texture of a render target is mapped onto a mesh."
+  alt="Diagram showcasing how the texture of a render target is mapped onto a mesh. All these steps are executed on every frame."
   layout="responsive"
   width={700}
   height={290}
@@ -166,9 +167,9 @@ After seeing this first example you might ask yourself _Why is our scene mapped 
 3. We map the render target's texture, pixel by pixel, onto the plane. Notice that we have a snapshot of the scene _before_ we filled the plane with our texture, hence why it appears empty.
 4. We do that for **every frame** 🤯 60 times per second (or 120 if you have a top-of-the-line display).
 
-That means that any updates to the scene will be taken into account and reproduced onto the plane since we run this loop of taking a snapshot and mapping it continuously.
+That means that any updates to the scene, like the position of the camera, will be taken into account and reproduced onto the plane since we run this loop of taking a snapshot and mapping it continuously.
 
-Now, what if we wanted to fix the empty plane issue? There's, luckily, an easy fix to this: **introduce a second render target** that takes a snapshot of the _first one_ and maps the resulting texture of this up-to-date snapshot onto the plane. The result is an infinite mirror of the scene rendering itself over and over again inside itself ✨.
+Now, what if we wanted to fix the empty plane issue? There's actually an easy fix to this! We just need to **introduce a second render target** that takes a snapshot of the _first one_ and maps the resulting texture of this up-to-date snapshot onto the plane. The result is an infinite mirror of the scene rendering itself over and over again inside itself ✨.
 
 <RenderTargetsSandpack scene="scene2" />
 
@@ -205,7 +206,7 @@ const Scene = () => {
 };
 ```
 
-With the code snippet above, we render a sphere in a dedicated scene object called `otherSscene` within `createPortal`. This scene is thus rendered **offscreen** and thus will not be visible in the final render of this component. This has many potential applications, from rendering HUDs or rendering different views angles of the same scene.
+With the code snippet above, we render a sphere in a dedicated scene object called `otherScene` within `createPortal`. This scene is rendered **offscreen** and thus will not be visible in the final render of this component. This has many potential applications, like rendering HUDs or rendering different views angles of the same scene.
 
 <Callout variant="info" label="Cameras">
 
@@ -215,7 +216,7 @@ Portalled scenes can also have their own dedicated camera, with different settin
 
 ### createPortal in combination with render target
 
-You may be wondering why `createPortal` has anything to do with render targets. We can use them to render any portalled/offscreen scene to get its texture without even having it visible on the screen in the first place! With this combination, we can achieve one of the first mind-bending use cases (or at least it was to me when I first encountered it 😅) of render targets: **render a scene, within a scene**.
+You may be wondering why `createPortal` has anything to do with render targets. We can use them together to render any portalled/offscreen scene to get its texture without even having it visible on the screen in the first place! With this combination, we can achieve one of the first mind-bending use cases (or at least it was to me when I first encountered it 😅) of render targets: **render a scene, within a scene**.
 
 ```jsx {12} title=Using createPortal in combination with render targets
 const Scene = () => {
@@ -255,9 +256,7 @@ const Scene = () => {
 };
 ```
 
-There's only one change in this example compared to the first one: instead of calling `gl.render(scene, camera)`, we called `gl.render(otherScene, otherCamera)`. Thus the resulting texture of this render target is of the _portalled scene_ and its custom camera!
-
-_What can you do with this?_ you may ask. Well, what about creating a scene featuring a portal to another scene? 👀🪄
+There's only one change in the render loop of this example compared to the first one: instead of calling `gl.render(scene, camera)`, we called `gl.render(otherScene, otherCamera)`. Thus the resulting texture of this render target is of the _portalled scene_ and its custom camera!
 
 <RenderTargetsSandpack scene="scene3" />
 
@@ -278,7 +277,7 @@ Try to switch the geometry to a `boxGeometry` by checking the `renderBox` option
 
 ### Using shader materials
 
-In all the examples we've seen so far, we used `meshBasicMaterial`'s `map` prop to map our render target's texture onto a mesh for simplicity. However, there are some use cases where you'd want to have more control over how to map this texture (we'll see some examples for that in the last part of this article), and for that, knowing the `shaderMaterial` equivalent can be handy.
+In all the examples we've seen so far, we used `meshBasicMaterial`'s `map` prop to map our render target's texture onto a mesh for simplicity. However, there are some use cases where you'd want to have more control over how to map this texture (we'll see some examples for that in the last part of this article), and for that, knowing jo the `shaderMaterial` equivalent can be handy.
 
 The only thing that this `map` prop is doing is mapping each pixel of the 2D render target's texture onto our 3D mesh which is what we generally refer to as _UV mapping_.
 
@@ -330,9 +329,9 @@ I know we could have taken this route from the get-go, but at least now, you can
 
 ## Render targets with screen coordinates
 
-So far, we only looked at examples using render targets for applying textures to a 3D object using UV mapping, i.e. mapping all the pixels of the portalled scene onto a mesh. Moreover, if you visualized the last code playground with the `renderBox` options turned on, you probably noticed that this rendered the portalled scene on _each face_ of the cube: **our mapping was following the UV coordinates of that specific geometry**.
+So far, we only looked at examples using render targets for applying textures to a 3D object using UV mapping, i.e. mapping all the pixels of the portalled scene onto a mesh. Moreover, if you visualized the last code playground with the `renderBox` options turned on, you probably noticed that the portalled scene was rendered on _each face_ of the cube: **our mapping was following the UV coordinates of that specific geometry**.
 
-We may have use cases where we don't want those effects, and that's where using _screen coordinates_ instead of _uv coordinates_ come into play.
+We may have use cases where we don't want those effects, and that's where using _screen coordinates_ instead of _uv coordinates_ comes into play.
 
 ### UV coordinates VS screen coordinates.
 
@@ -348,7 +347,7 @@ To illustrate the nuance between these two, let's take a look at the diagram bel
 
 You can see that the main difference here lies in how we're sampling our texture onto our 3D object: instead of making the entire scene fit within the mesh, we render it "in place" as if the mesh was some "mask" revealing another scene behind the scene. Code-wise, there's only two lines to modify in our shader to use screen coordinates:
 
-```glsl {2-3, 6} title=Simple fragment shader to sample a texture using screen coordinates
+```glsl {2,6} title=Simple fragment shader to sample a texture using screen coordinates
 // winResolution contains the width/height of the canvas
 uniform vec2 winResolution;
 uniform sampler2D uTexture;
@@ -383,15 +382,17 @@ vec4 fromLinear(vec4 linearRGB) {
 }
 ```
 
+This code has been added in most demo to color-correct our shader materials.
+
 </Callout>
 
-Now you may wonder what are other applications for using screen coordinates with render targets, so here are two of my favorite scenes that showcase how great they work together!
+Now you may wonder what are other applications for using screen coordinates with render targets 👀; that's why the following two parts feature two of my favorite scenes to show you what can be achieved when combining these two concepts!
 
 ### Swapping materials and geometries in the render loop
 
 Since all our render target magic happens within the `useFrame` hook that executes its callback on every frame, it's easy to swap materials or even geometries between render targets to create _optical illusions_ for the viewer.
 
-The code snippet bellow showcases how you can achieve this effect:
+The code snippet bellow details how you can achieve this effect:
 
 ```jsx title=Hidding/showing mesh and swapping materials in the render loop
 //...
@@ -409,9 +410,12 @@ useFrame((state) => {
   const oldMaterialMesh3 = mesh3.current.material;
   const oldMaterialMesh4 = mesh4.current.material;
 
+  // Hide mesh 1
   mesh1.current.visible = false;
+  // Show mesh 2
   mesh2.current.visible = true;
 
+  // Swap the materials of mesh3 and mesh4
   mesh3.current.material = new THREE.MeshBasicMaterial();
   mesh3.current.material.color = new THREE.Color("#000000");
   mesh3.current.material.wireframe = true;
@@ -423,9 +427,15 @@ useFrame((state) => {
   gl.setRenderTarget(renderTarget);
   gl.render(scene, camera);
 
+  // Pass the resulting texture to a shader material
+  lens.current.material.uniforms.uTexture.value = renderTarget.texture;
+
+  // Show mesh 1
   mesh1.current.visible = true;
+  // Hide mesh 2
   mesh2.current.visible = false;
 
+  // Restore the materials of mesh3 and mesh4
   mesh3.current.material = oldMaterialMesh3;
   mesh3.current.material.wireframe = false;
 
@@ -441,8 +451,8 @@ useFrame((state) => {
 1. There are four meshes in this scene: one dodecahedron (mesh1), one torus (mesh2), and two spheres (mesh3 and mesh4).
 2. At the beginning of the render loop, we hide mesh1 and set the material of mesh3 and mesh4 to render as a _wireframe_
 3. We take a snapshot of that scene in our render target.
-4. We then show mesh1, hide mesh2, and restore the material of mesh3 and mesh4.
-5. We finally pass the texture of the render target to another mesh called `lens.
+4. We pass the texture of the render target to another mesh called `lens`.
+5. We then show mesh1, hide mesh2, and restore the material of mesh3 and mesh4.
 
 <Image
   src="blog/lens.png"
@@ -462,7 +472,7 @@ I absolutely _love_ this example of using render targets:
 - it doesn't introduce a lot of code.
 - it is not very complicated if you are familiar with the basics we've covered early.
 
-This scene is originally inspired by the _stunning_ website of [Monopo London](https://monopo.london/), which has been sitting in my "inspiration bookmarks" for over a year now. I can't confirm they used this technique, but by adjusting our demo to use `@react-three/drei`'s `MeshTransmissionMaterial` we can get pretty close 👀:
+This scene is originally inspired by the _stunning_ website of [Monopo London](https://monopo.london/), which has been sitting in my "inspiration bookmarks" for over a year now. I can't confirm they used this technique, but by adjusting our demo to use `@react-three/drei`'s `MeshTransmissionMaterial` we can get pretty close to the original effect 👀:
 
 <RenderTargetsSandpack scene="scene6" />
 
@@ -474,7 +484,7 @@ Notice how `MeshTransmissionMaterial` gives us a `buffer` prop to directly pass 
 
 ### A more advanced Portal scene
 
-Yet another portal! I know, I'm not very original with my examples in this article, but bear with me... this one is pretty magical 🪄. A few months ago <Anchor href="https://twitter.com/jesper_vos" favicon discreet>@jesper_vos</Anchor> came up with a scene where a mesh moves through a frame and comes out on the other side with a completely different geometry! It looked as if the mesh \_transformed\* itself while going through this "portal":
+Yet another portal! I know, I'm not very original with my examples in this article, but bear with me... this one is pretty magical 🪄. A few months ago <Anchor href="https://twitter.com/jesper_vos" favicon discreet>@jesper\*vos</Anchor> came up with a scene where a mesh moves through a frame and comes out on the other side with a completely different geometry! It looked as if the mesh _transformed_ itself while going through this "portal":
 
 <StaticTweet id="1588496087429808128" />
 
@@ -505,7 +515,7 @@ This part focuses on a peculiar use case (or at least it was to me the first tim
 I first encountered render targets in the wild through this use case, perhaps not the best way to get started with them 😅, in <Anchor href="https://twitter.com/pschroen" favicon discreet>@pschroen</Anchor>'s beautiful [hologram scene](https://alien.js.org/examples/three/shader_hologram.html). In it, he uses a series of [layers](https://threejs.org/docs/#api/en/core/Layers), render targets, and custom shader materials in the render loop to create a post-processing effect pipeline. I reached out to ask why would one use that rather than the standard `EffectComposer` and among the reasons were:
 
 - it can be easier to understand
-- some render passes may have unnecessary bloat, thus you _may_ see some performance improvements
+- some render passes when using `EffectComposer` may have unnecessary bloat, thus you _may_ see some performance improvements by using render targets instead
 
 As for the implementation of such pipeline, it works as follows:
 
@@ -569,7 +579,7 @@ const PostProcessing = () => {
 3. We render our main scene in a render target and then use its texture onto the fullscreen triangle.
 4. We apply a series of post-processing effects by using a dedicated render target for each of them and **rendering only the fullscreen triangle mesh to that render target**.
 
-For the fullscreen triangle, we can use a `BufferGeometry` and manually add the position attributes and uv coordinates.
+For the fullscreen triangle, we can use a `BufferGeometry` and manually add the position attributes and uv coordinates to achieve the desired geometry.
 
 ```jsx title=Function returning a triangle geometry
 import { BufferGeometry, Float32BufferAttribute } from 'three';
@@ -626,20 +636,20 @@ As you can see, the result is indistinguishable from an equivalent scene that wo
 
 ## Transition gracefully between scenes
 
-This part is a last-minute addition to this article. I was reading the [case study](https://www.awwwards.com/case-study-atmos.html) of one of my favorite Three.js-based websites: [Atmos](https://atmos.leeroy.ca/) ✨ and in it, there's a section dedicated to the transition effect that occurs towards the bottom of the website: a smooth reveal of the final scene, different than the main one.
+This part is a last-minute addition to this article. I was reading the [case study](https://www.awwwards.com/case-study-atmos.html) of one of my favorite Three.js-based websites ✨ [Atmos](https://atmos.leeroy.ca/) ✨ and in it, there's a section dedicated to the transition effect that occurs towards the bottom of the website: a smooth, noisy reveal of a different scene.
 
 Implementation-wise, the author mentions the following:
 
 > You can really go crazy with transitions, but in order to not break the calm and slow pace of the experience, we wanted something smooth and gradual. We ended up with a rather simple transition, achieved by mixing 2 render passes together using a good ol’ Perlin 2D noise.
 
-Lucky us, we know how to do all this now thanks to our newly acquired render target knowledge and shader skills! ⚡. So I thought this would be a great addition as a last examples to all the amazing use cases we've seen so far!
+Lucky us, we know how to do all this now thanks to our newly acquired render target knowledge and shader skills ⚡! So I thought this would be a great addition as a last examples to all the amazing use cases we've seen so far!
 
-Let's break down the problem. To achieve this kind of transition we need to:
+Let's first break down the problem. To achieve this kind of transition we need to:
 
 - Build two portalled scenes: the original one `sceneA` and the target one `sceneB`.
 - Declare two render targets, one for each scene.
 - In our `useFrame` loop, we render each scene in its respective render target.
-- We can pass both render targets' textures to the shader material of a full-screen triangle (identical to the one we used in our post-processing examples) along with a `uProgress` uniform representing the \*progress of the transition: towards `-1` we render `sceneA`, whereas towards `1` we render`sceneB`.
+- We can pass both render targets' textures to the shader material of a full-screen triangle (identical to the one we used in our post-processing examples) along with a `uProgress` uniform representing the _progress_ of the transition: towards `-1` we render `sceneA`, whereas towards `1` we render`sceneB`.
 
 The shader code itself is actually not that complicated (which was a surprise to me at first, not going to lie). The only line we should really pay attention to here is line `17` where we _mix_ our textures based on the value of `noise`. That value depends on the Perlin noise we applied to the UV coordinates and also the `uProgress` uniform along with some other tweaks:
 
@@ -685,4 +695,4 @@ I kept the original code I came up with as it may be easier to understand for be
 You now know pretty much everything I know about render targets, my favorite tool to create _beautiful_ and _mind-bending_ scenes with React Three Fiber! There are obviously many other use cases for them, but the ones we saw through the many examples featured in this blog post are the ones that I felt represented the best what is possible to achieve with them.
 When used in combination with `useFrame` and `createPortal` **a new world of possibilities opens up for your scenes**, which lets you create and experiment with new interactions or new ways to implement some stunning shader materials and post-processing effects ✨.
 
-Render targets have been challenging to learn for me at first, but since understanding how they work, they have been **the secret tool behind some of my favorite creations**, and I have had a lot of fun working with them so far. I really hope this article will make these concepts _click_ for you to enable you to push your next React Three Fiber/Three.js project further.
+Render targets have been challenging to learn for me at first, but since understanding how they work, they have been **the secret tool behind some of my favorite creations**, and I have had a lot of fun working with them so far. I really hope this article will make these concepts _click_ for you to enable you to push your next React Three Fiber/Three.js project even further.
