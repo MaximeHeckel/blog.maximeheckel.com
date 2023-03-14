@@ -152,7 +152,7 @@ Try to drag the render above with your mouse to rotate it and notice how our sce
 
 </Callout>
 
-After seeing this first example you might ask yourself _Why is our scene mapped onto the plane moving along as we rotate the camera?_ or _Why don't we see an empty plane inside the mapped texture?_. Here's a diagram that explains it all:
+After seeing this first example you might ask yourself _Why is our scene mapped onto the plane moving along as we rotate the camera?_ or _Why do we see an empty plane inside the mapped texture?_. Here's a diagram that explains it all:
 
 <Image
   src="blog/first_render_target_2.png"
@@ -277,7 +277,7 @@ Try to switch the geometry to a `boxGeometry` by checking the `renderBox` option
 
 ### Using shader materials
 
-In all the examples we've seen so far, we used `meshBasicMaterial`'s `map` prop to map our render target's texture onto a mesh for simplicity. However, there are some use cases where you'd want to have more control over how to map this texture (we'll see some examples for that in the last part of this article), and for that, knowing jo the `shaderMaterial` equivalent can be handy.
+In all the examples we've seen so far, we used `meshBasicMaterial`'s `map` prop to map our render target's texture onto a mesh for simplicity. However, there are some use cases where you'd want to have more control over how to map this texture (we'll see some examples for that in the last part of this article), and for that, knowing the `shaderMaterial` equivalent can be handy.
 
 The only thing that this `map` prop is doing is mapping each pixel of the 2D render target's texture onto our 3D mesh which is what we generally refer to as _UV mapping_.
 
