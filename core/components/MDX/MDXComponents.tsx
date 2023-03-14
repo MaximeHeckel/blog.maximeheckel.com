@@ -174,6 +174,10 @@ const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
 
+const RenderTargetsSandpack = dynamic(
+  () => import('./Widgets/RenderTargetsReactThreeFiber/Sandpack')
+);
+
 const CSSCompositionSandpack = dynamic(
   () => import('./Widgets/CSSComposition/Sandpack')
 );
@@ -242,6 +246,7 @@ const customComponents = {
   R3FShaderSandpack,
   ParticlesShaderSandpack,
   RefractionDispersionSandpack,
+  RenderTargetsSandpack,
 };
 
 const MDXComponents = {

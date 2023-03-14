@@ -1,9 +1,15 @@
 type TweetMedia = {
   media_key: string;
-  type: string;
-  url: string;
+  url?: string;
+  preview_image_url: string;
   height: number;
   width: number;
+  type: 'image' | 'video';
+  variants: Array<{
+    bit_rate?: number;
+    content_type: string;
+    url: string;
+  }>;
 };
 
 export type RawTweetType = {

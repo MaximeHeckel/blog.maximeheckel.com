@@ -2,6 +2,7 @@ import { Anchor, Flex, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import Image from 'next/legacy/image';
 import { TransformedTweet } from 'types/tweet';
+import VideoPlayer from '../VideoPlayer';
 import { LikeIcon, ReplyIcon, RetweetIcon, TwitterLogo } from './Icons';
 import {
   TweetWrapper,
@@ -117,37 +118,59 @@ const Tweet = (props: Props) => {
       </Text>
       {media && media.length > 1 ? (
         <ImageGrid>
-          {media.map((m) => (
-            <div
-              key={m.media_key}
-              style={{
-                borderRadius: 'var(--border-radius-1)',
-                overflow: 'hidden',
-              }}
-            >
-              <Image
-                alt={text}
-                layout="intrinsic"
-                height={m.height}
-                width={m.width}
-                src={m.url}
-              />
-            </div>
-          ))}
+          {media.map((m) => {
+            return (
+              <div
+                key={m.media_key}
+                style={{
+                  borderRadius: 'var(--border-radius-1)',
+                  overflow: 'hidden',
+                }}
+              >
+                <Image
+                  alt={text}
+                  layout="intrinsic"
+                  height={m.height}
+                  width={m.width}
+                  src={m.url || m.preview_image_url}
+                />
+              </div>
+            );
+          })}
         </ImageGrid>
       ) : null}
       {media && media.length === 1 ? (
         <SingleImageWrapper>
-          {media.map((m) => (
-            <Image
-              key={m.media_key}
-              alt={text}
-              height={m.height}
-              width={m.width}
-              src={m.url}
-              className={singleImage()}
-            />
-          ))}
+          {media.map((m) => {
+            if (m.type === 'video') {
+              const lastVariant = m.variants[m.variants.length - 1];
+              const videoSrc = lastVariant.url;
+
+              if (!videoSrc || lastVariant.content_type !== 'video/mp4')
+                return null;
+
+              return (
+                <VideoPlayer
+                  controls
+                  muted
+                  key={m.media_key}
+                  src={videoSrc}
+                  poster={m.preview_image_url}
+                />
+              );
+            }
+
+            return (
+              <Image
+                key={m.media_key}
+                alt={text}
+                height={m.height}
+                width={m.width}
+                src={m.url || m.preview_image_url}
+                className={singleImage()}
+              />
+            );
+          })}
         </SingleImageWrapper>
       ) : null}
       {quoteTweet ? <Tweet tweet={{ ...quoteTweet }} /> : null}
@@ -189,5 +212,10 @@ const Tweet = (props: Props) => {
     </TweetWrapper>
   );
 };
+
+/**
+ *
+ * <video preload="none" tabindex="-1" playsinline="" aria-label="Embedded video" disablepictureinpicture="" poster="https://pbs.twimg.com/ext_tw_video_thumb/1588495069816004610/pu/img/58kk6aywUcUbfEGM.jpg" src="blob:https://twitter.com/48e41d66-a11f-46ec-9245-a0c98b3c9421" style="width: 100%; height: 100%; position: absolute; background-color: black; top: 0%; left: 0%; transform: rotate(0deg) scale(1.005);"></video>
+ */
 
 export default Tweet;
