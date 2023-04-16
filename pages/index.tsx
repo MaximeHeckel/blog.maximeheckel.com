@@ -102,8 +102,9 @@ const IndexPage = (props: Props) => {
                 weight="4"
               >
                 Here, I share through my writing my experience as a frontend
-                engineer and everything I'm learning about on React, Typescript,
-                SwiftUI, Serverless, and testing.
+                engineer and everything I'm learning about on React, Shaders,
+                React Three Fiber, Framer Motion and anything that piques my
+                interest.
               </Text>
             </Balancer>
           </H1>

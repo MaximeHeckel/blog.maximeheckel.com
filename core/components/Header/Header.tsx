@@ -45,7 +45,6 @@ const Header = (props: HeaderProps) => {
   const reached = useScrollCounter(offsetHeight / 2);
   const readingProgress = useProgress();
 
-  useKeyboardShortcut('Escape', () => setShowSearch(false));
   useKeyboardShortcut('ctrl+k|meta+k', () => setShowSearch(true));
 
   return (

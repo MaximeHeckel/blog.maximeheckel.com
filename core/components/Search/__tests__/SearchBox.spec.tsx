@@ -6,6 +6,12 @@ jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }));
 
+jest.mock('next-mdx-remote/serialize', () => ({
+  serialize: new Promise(jest.fn()),
+}));
+
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
 describe('SearchBox', () => {
   it('Renders the SearchBox component properly', () => {
     const { container } = render(<SearchBox onClose={jest.fn} />);

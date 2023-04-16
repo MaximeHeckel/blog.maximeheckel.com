@@ -1,4 +1,4 @@
-import { css, keyframes, styled } from '@maximeheckel/design-system';
+import { Box, css, keyframes, styled } from '@maximeheckel/design-system';
 import { GlowProps } from './types';
 
 const pulse = keyframes({
@@ -47,13 +47,13 @@ const glowWrapper = css({
 });
 
 const Glow = (props: GlowProps) => {
-  const { children, ...rest } = props;
+  const { children, css, ...rest } = props;
 
   return (
-    <div className={glowWrapper()} {...rest}>
+    <Box css={{ ...css }} className={glowWrapper()} {...rest}>
       <StyledGlow />
       {props.children}
-    </div>
+    </Box>
   );
 };
 

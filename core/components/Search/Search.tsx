@@ -1,161 +1,205 @@
 import {
   Flex,
-  Icon,
   Label,
   useDebouncedValue,
+  useKeyboardShortcut,
   useTheme,
 } from '@maximeheckel/design-system';
 import FocusTrap from 'focus-trap-react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { CommandCenterStatic } from './CommandCenterStatic';
-import { HEIGHT, MAX_HEIGHT } from './constants';
 import {
   Overlay,
   SearchBox,
   FormWrapper,
-  SearchResults,
-  Result,
+  SearchInput,
+  Wrapper,
 } from './Styles';
 import useBodyScrollLock from '@theme/hooks/useBodyScrollLock';
-
-type Result = {
-  type: 'snippet' | 'blogPost';
-  slug: string;
-  title: string;
-};
+import { AnimatePresence, motion } from 'framer-motion';
+import { Result, SearchError, Source } from './types';
+import StaticSearchResults from './StatucSearchResult';
+import AIPromptResultCard from './AIPromptResultCard';
+import AIPromptInput from './AIPromptInput';
 
 interface Props {
   onClose: () => void;
 }
 
-export type IndexOperator = (nudge?: number) => void;
-
-const clamp = (value: number, min: number, max: number) => {
-  return Math.min(Math.max(value, min), max);
-};
-
-const wrap = (value: number, min: number, max: number) => {
-  const range = max - min;
-
-  return ((((value - min) % range) + range) % range) + min;
-};
-
-function useIndexItem<T>(
-  items: T[],
-  initial = 0
-): [
-  T,
-  IndexOperator,
-  IndexOperator,
-  React.Dispatch<React.SetStateAction<number>>
-] {
-  const [index, setIndex] = React.useState(initial);
-  const itemsRef = React.useRef(items);
-
-  React.useEffect(() => {
-    itemsRef.current = items;
-
-    setIndex((index) => clamp(index, 0, Math.max(items.length - 1, 0)));
-  }, [items]);
-
-  const previousItem = React.useCallback((nudge: number = 1) => {
-    setIndex((index) =>
-      wrap(index - nudge, 0, Math.max(itemsRef.current.length, 0))
-    );
-  }, []);
-
-  const nextItem = React.useCallback((nudge: number = 1) => {
-    setIndex((index) =>
-      wrap(index + nudge, 0, Math.max(itemsRef.current.length, 0))
-    );
-  }, []);
-
-  return [items[index], previousItem, nextItem, setIndex];
-}
-
 const Search = (props: Props) => {
   const { onClose } = props;
 
-  const [loading, setLoading] = React.useState(true);
+  // Search Related states
+  const [status, setStatus] = React.useState<'initial' | 'loading' | 'done'>(
+    'initial'
+  );
   const [results, setResults] = React.useState<Result[]>([]);
   const [searchQuery, setSearchQuery] = React.useState('');
 
+  // AI Related states
+  const [error, setError] = React.useState<SearchError | null>(null);
+  const [AIMode, setAIMode] = React.useState(false);
+  const [AIQuery, setAIQuery] = React.useState('');
+  const [streamData, setStreamData] = React.useState('');
+  const [sources, setSources] = React.useState<Source[]>([]);
+
+  const ref = React.useRef<HTMLElement>();
+  const readerRef = React.useRef<ReadableStreamDefaultReader>();
+  const [mounted, setMounted] = React.useState(false);
+
   useBodyScrollLock();
-  const router = useRouter();
+
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 250);
 
+  const formRef = React.useRef<HTMLFormElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const SearchRef = React.useRef<HTMLDivElement>(null);
-
-  const [
-    selectedResult,
-    previousResult,
-    nextResult,
-    setSelectedResult,
-  ] = useIndexItem(results);
+  const searchRef = React.useRef<HTMLDivElement>(null);
+  const resultCardRef = React.useRef<HTMLDivElement>(null);
 
   const clickOutside = (e: React.BaseSyntheticEvent) => {
     if (
-      SearchRef &&
-      SearchRef.current &&
-      SearchRef.current.contains(e.target)
+      (searchRef &&
+        searchRef.current &&
+        searchRef.current.contains(e.target)) ||
+      (resultCardRef &&
+        resultCardRef.current &&
+        resultCardRef.current.contains(e.target))
     ) {
       return null;
     }
 
+    if (AIMode) {
+      dismissAIMode();
+    }
     return onClose();
   };
 
-  const handlePointer = (index: number) => setSelectedResult(index);
+  const controller = new AbortController();
+  const signal = controller.signal;
 
-  const handleKey = React.useCallback(
-    (event: KeyboardEvent) => {
-      if (debouncedSearchQuery !== '') {
-        switch (event.key) {
-          case 'Enter':
-            const href = `/${
-              selectedResult.type === 'snippet' ? 'snippets' : 'posts'
-            }/${selectedResult.slug}/`;
-            router.push(href).then(() => window.scrollTo(0, 0));
-            setTimeout(onClose, 600);
-            break;
-          case 'ArrowUp':
-            event.preventDefault();
-            previousResult();
-            break;
-          case 'ArrowDown':
-            event.preventDefault();
-            nextResult();
-            break;
-          default:
-        }
+  const dismissAIMode = () => {
+    setStatus('initial');
+    controller.abort();
+    if (readerRef.current) {
+      readerRef.current.cancel();
+    }
+    setError(null);
+    setAIMode(false);
+    setAIQuery('');
+    setStreamData('');
+    setSources([]);
+  };
+
+  const handleItemClick = (item: string) => {
+    if (item === 'aiMode') {
+      setAIMode(true);
+    }
+  };
+
+  const querySemanticSearch = async (query: string) => {
+    // Clear data
+    setError(null);
+    setStreamData('');
+    setSources([]);
+    // Show query of the user at the top of the result card
+    setAIQuery(query);
+    // Set status to loading to show rotating border
+    setStatus('loading');
+
+    const response = await fetch('/api/semanticsearch', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query,
+        // mock: true,
+      }),
+      signal,
+    });
+
+    if (!response.ok) {
+      setStatus('initial');
+      setError({
+        status: response.status,
+        statusText: response.statusText,
+      });
+      return;
+    }
+
+    const data = response.body;
+
+    if (!data) {
+      return;
+    }
+    const reader = data.getReader();
+    readerRef.current = reader;
+
+    const decoder = new TextDecoder();
+    let done = false;
+    let text = '';
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+
+      if (typeof value === 'undefined') {
+        reader.cancel();
+        break;
       }
-    },
-    [
-      debouncedSearchQuery,
-      selectedResult,
-      router,
-      onClose,
-      previousResult,
-      nextResult,
-    ]
-  );
 
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+
+      const invalidOutput = text.includes("Maxime hasn't written about it yet");
+      if (invalidOutput) {
+        break;
+      }
+
+      if (chunkValue.includes('[VECTOR_SEARCH_END]')) {
+        const [, sources] = chunkValue.split('[VECTOR_SEARCH_END]');
+        try {
+          const parsedSources = JSON.parse(sources);
+          setSources(parsedSources);
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('Failed to parse sources', error);
+        }
+      } else {
+        setStreamData((prev) => {
+          text = prev + chunkValue;
+          return prev + chunkValue;
+        });
+      }
+    }
+    reader.cancel();
+    setStatus('done');
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
+
+    const form = event?.target as typeof event.target & {
+      aisearch: { value: string };
+    };
+
+    if (!AIMode || form.aisearch.value === '') return;
+
+    setAIQuery(form.aisearch.value);
+
+    querySemanticSearch(form.aisearch.value);
+    form.aisearch.value = '';
+  };
+
+  // Focus on input on mount
   React.useEffect(() => {
     if (inputRef && inputRef.current) {
       inputRef.current.focus();
     }
-
-    // toggleLockScroll();
-
-    // return () => toggleLockScroll();
   }, []);
 
+  // Handle classic search (TODO: Refactor this => use simple embed search instead)
   React.useEffect(() => {
-    setLoading(true);
+    setStatus('loading');
 
     if (debouncedSearchQuery && debouncedSearchQuery !== '') {
       const searchEndpoint = `/api/search?q=${debouncedSearchQuery.toLowerCase()}`;
@@ -163,154 +207,168 @@ const Search = (props: Props) => {
         .then((res) => res.json())
         .then((res) => {
           setResults(res.results);
-          setLoading(false);
+          setStatus('initial');
         });
     }
 
     if (debouncedSearchQuery === '') {
       setResults([]);
-      setLoading(false);
+      setStatus('initial');
     }
   }, [debouncedSearchQuery]);
 
+  // Make portal only work client side
   React.useEffect(() => {
-    window.addEventListener('keydown', handleKey);
+    ref.current = document.body;
+    setMounted(true);
+  }, []);
 
-    return () => {
-      window.removeEventListener('keydown', handleKey);
-    };
-  }, [handleKey]);
-
-  React.useEffect(() => {
-    if (selectedResult) {
-      document
-        .getElementById(selectedResult.slug)
-        ?.scrollIntoView({ block: 'nearest' });
-    }
-  }, [selectedResult]);
+  useKeyboardShortcut('Escape', AIMode ? dismissAIMode : onClose);
 
   const { dark } = useTheme();
 
-  return createPortal(
-    <FocusTrap>
-      <aside>
-        <Overlay
-          initial={{
-            backgroundColor: dark ? 'rgba(0,0,0,0)' : 'rgba(241, 243, 247, 0)',
-          }}
-          animate={{
-            backgroundColor: dark
-              ? 'rgba(0,0,0,0.8)'
-              : 'rgba(241, 243, 247, 0.8)',
-          }}
-          exit={{
-            backgroundColor: dark ? 'rgba(0,0,0,0)' : 'rgba(241, 243, 247, 0)',
-          }}
-          // transition={{ duration: 0.4 }}
-          onClick={clickOutside}
-          data-testid="search-overlay"
-          aria-label="search"
-          // The dialog container element has aria-modal set to true.
-          aria-modal="true"
-          tabIndex={-1}
-          // All elements required to operate the dialog are descendants of the element that has role dialog.
-          role="dialog"
-        >
-          <SearchBox
-            initial={{ scale: 0.8, opacity: 0, x: '-50%' }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{
-              scale: 0.5,
-              opacity: 0,
-              transition: { duration: 0.15, delay: 0.1 },
-            }}
-            transition={{
-              ease: 'easeOut',
-              duration: 0.2,
-            }}
-          >
-            <FormWrapper data-testid="search" ref={SearchRef}>
-              <form onSubmit={(e) => e.preventDefault()}>
-                <input
-                  ref={inputRef}
-                  autoComplete="off"
-                  type="search"
-                  placeholder="Type keywords to search blog posts..."
-                  data-testid="search-input"
-                  id="search-input"
-                  name="search"
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
+  return mounted
+    ? createPortal(
+        <FocusTrap>
+          <aside>
+            <Overlay
+              initial={{
+                backgroundColor: dark
+                  ? 'rgba(0,0,0,0)'
+                  : 'rgba(241, 243, 247, 0)',
+              }}
+              animate={{
+                backgroundColor: dark
+                  ? 'rgba(0,0,0,0.8)'
+                  : 'rgba(241, 243, 247, 0.8)',
+              }}
+              exit={{
+                backgroundColor: dark
+                  ? 'rgba(0,0,0,0)'
+                  : 'rgba(241, 243, 247, 0)',
+              }}
+              onClick={clickOutside}
+              data-testid="search-overlay"
+              aria-label="search"
+              // The dialog container element has aria-modal set to true.
+              aria-modal="true"
+              tabIndex={-1}
+              // All elements required to operate the dialog are descendants of the element that has role dialog.
+              role="dialog"
+            >
+              <Wrapper>
+                <Flex
+                  css={{
+                    position: 'relative',
+                    flexDirection: 'column',
+                    '@media (max-width: 700px)': {
+                      flexDirection: 'column-reverse',
+                    },
                   }}
-                  value={searchQuery}
-                />
-                <Label
-                  style={{
-                    width: '120px',
-                  }}
+                  direction="column"
+                  gap="4"
                 >
-                  {debouncedSearchQuery !== '' && !loading
-                    ? `${results.length} results`
-                    : null}
-                </Label>
-              </form>
-            </FormWrapper>
-            {debouncedSearchQuery !== '' ? (
-              <SearchResults
-                style={{
-                  height:
-                    results.length * HEIGHT >= MAX_HEIGHT
-                      ? MAX_HEIGHT
-                      : results.length * HEIGHT,
-                  transition: 'height 0.4s ease-out',
-                  willChange: 'height',
-                }}
-              >
-                {results.map((result, index) => (
-                  <Result
-                    data-testid="search-result"
-                    key={result.slug}
-                    id={result.slug}
-                    selected={selectedResult === result}
-                    onPointerEnter={() => handlePointer(index)}
+                  <AnimatePresence>
+                    {AIMode ? (
+                      <AIPromptResultCard
+                        error={error}
+                        onQuestionSelect={(question) => {
+                          querySemanticSearch(question);
+                        }}
+                        query={AIQuery}
+                        ref={resultCardRef}
+                        sources={sources}
+                        status={status}
+                        streamData={streamData}
+                      />
+                    ) : null}
+                  </AnimatePresence>
+                  <SearchBox
+                    id="search-box"
+                    as={motion.div}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{
+                      scale: 0.8,
+                      opacity: 0,
+                      transition: { duration: 0.15, delay: 0.1 },
+                    }}
+                    transition={{
+                      ease: 'easeOut',
+                      duration: 0.2,
+                    }}
+                    ref={searchRef}
                   >
-                    <Link
-                      href={`/${
-                        result.type === 'snippet' ? 'snippets' : 'posts'
-                      }/${result.slug}`}
-                      onClick={() => setTimeout(onClose, 600)}
-                    >
-                      {result.title}
-                    </Link>
-                    <Flex
-                      alignItems="center"
-                      justifyContent="center"
-                      css={{
-                        marginLeft: 'var(--space-4)',
-                        height: '35px',
-                        width: '35px',
-                        backgroundColor: 'var(--maximeheckel-colors-emphasis)',
-                        borderRadius: 'var(--border-radius-1)',
+                    <FormWrapper
+                      data-testid="search"
+                      style={
+                        AIMode
+                          ? {
+                              borderBottomLeftRadius: 'var(--border-radius-2)',
+                              borderBottomRightRadius: 'var(--border-radius-2)',
+                              transition: 'all 0.2s ease-in-out',
 
-                        path: {
-                          stroke: 'var(--maximeheckel-colors-brand)',
-                        },
-                      }}
+                              transform: `scale(${
+                                status === 'loading' ? 0.95 : 1
+                              })`,
+                              opacity: status === 'loading' ? 0.5 : 1,
+                            }
+                          : {}
+                      }
                     >
-                      <Icon.Enter size={4} />
-                    </Flex>
-                  </Result>
-                ))}
-              </SearchResults>
-            ) : (
-              <CommandCenterStatic />
-            )}
-          </SearchBox>
-        </Overlay>
-      </aside>
-    </FocusTrap>,
-    document.body
-  );
+                      <form ref={formRef} onSubmit={handleSubmit}>
+                        {AIMode ? (
+                          <AIPromptInput status={status} />
+                        ) : (
+                          <>
+                            <SearchInput
+                              ref={inputRef}
+                              autoComplete="off"
+                              type="search"
+                              placeholder="Type keywords to search blog posts..."
+                              data-testid="search-input"
+                              id="search-input"
+                              name="search"
+                              onChange={(e) => {
+                                setSearchQuery(e.target.value);
+                              }}
+                              value={searchQuery}
+                            />
+                            <Label
+                              style={{
+                                width: '120px',
+                              }}
+                            >
+                              {debouncedSearchQuery !== '' &&
+                              status !== 'loading'
+                                ? `${results.length} results`
+                                : null}
+                            </Label>
+                          </>
+                        )}
+                      </form>
+                    </FormWrapper>
+                    {debouncedSearchQuery !== '' ? (
+                      <StaticSearchResults
+                        results={results}
+                        onClose={onClose}
+                      />
+                    ) : (
+                      <CommandCenterStatic
+                        collapse={AIMode}
+                        onItemClick={handleItemClick}
+                      />
+                    )}
+                  </SearchBox>
+                </Flex>
+              </Wrapper>
+            </Overlay>
+          </aside>
+        </FocusTrap>,
+        // @ts-ignore
+        ref.current
+      )
+    : null;
 };
 
 export { Search };
