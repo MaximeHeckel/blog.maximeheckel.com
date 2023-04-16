@@ -37,9 +37,9 @@ varying float vDistance;
 ${glslRotate}
 
 void main() {
-  float distanceFactor = pow(uRadius - distance(position, vec3(0.0)), 2.0);
+  float distanceFactor = pow(uRadius - distance(position, vec3(0.0)), 1.5);
   float size = distanceFactor * 10.0 + 10.0;
-  vec3 particlePosition = position * rotation3dY(uTime * 0.2 * distanceFactor);
+  vec3 particlePosition = position * rotation3dY(uTime * 0.3 * distanceFactor);
 
   vDistance = distanceFactor;
 
@@ -80,7 +80,7 @@ const CustomGeometryParticles = (props) => {
     const positions = new Float32Array(count * 3);
     
     for (let i = 0; i < count; i++) {
-      const distance = Math.sqrt((Math.random() - 0.5)) * radius;
+      const distance = Math.sqrt(Math.random()) * radius;
       const theta = THREE.MathUtils.randFloatSpread(360); 
       const phi = THREE.MathUtils.randFloatSpread(360); 
 
@@ -132,7 +132,7 @@ const CustomGeometryParticles = (props) => {
 
 const Scene = () => {
   return (
-    <Canvas camera={{ position: [1.5, 1.5, 1.5] }}>
+    <Canvas camera={{ position: [2.0, 2.0, 2.0] }}>
       <ambientLight intensity={0.5} />
       <CustomGeometryParticles count={4000} />
       <OrbitControls />

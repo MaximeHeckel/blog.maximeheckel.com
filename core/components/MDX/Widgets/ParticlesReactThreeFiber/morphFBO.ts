@@ -87,7 +87,7 @@ const getRandomDataSphere = (width, height) => {
   for (let i = 0; i < length; i++) {
     const stride = i * 4;
 
-    const distance = Math.sqrt((Math.random() - 0.5)) * 2.0;
+    const distance = Math.sqrt((Math.random())) * 2.0;
     const theta = THREE.MathUtils.randFloatSpread(360); 
     const phi = THREE.MathUtils.randFloatSpread(360); 
 
