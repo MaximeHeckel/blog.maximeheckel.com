@@ -3,10 +3,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { Sparkles } from './Icons';
 import { AIInput } from './Styles';
+import { Status } from './types';
 
-const AIPromptInput = (props: any) => {
+const AIPromptInput = (props: { status: Status }) => {
   const { status } = props;
-  const [AIQuery, setAIQuery] = React.useState('');
+  const [value, setValue] = React.useState('');
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -30,14 +31,14 @@ const AIPromptInput = (props: any) => {
         disabled={status === 'loading'}
         type="search"
         placeholder="Ask me anything about my blog posts, a topic, or my projects..."
-        data-testid="search-input"
+        data-testid="ai-prompt-input"
         id="search-input"
         name="aisearch"
-        onChange={(e) => setAIQuery(e.target.value)}
+        onChange={(e) => setValue(e.target.value)}
       />
       <Box css={{ width: 96 }}>
         <AnimatePresence>
-          {AIQuery !== '' && status !== 'loading' ? (
+          {value !== '' && status !== 'loading' ? (
             <Flex
               as={motion.button}
               css={{
@@ -45,6 +46,7 @@ const AIPromptInput = (props: any) => {
                 border: 'none',
                 cursor: 'pointer',
               }}
+              data-testid="ai-prompt-submit-button"
               initial={{ y: -10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{

@@ -51,4 +51,24 @@ describe('Search tests', () => {
     cy.url().should('include', '/posts/');
     cy.get('[data-testid="hero"]').should('be.visible');
   });
+
+  it('Can toggle AI mode and send a query', () => {
+    cy.visit('/');
+    cy.wait(2000);
+    cy.get('body').type('{ctrl}k', { force: true });
+    cy.get('[data-testid="aimode"]').click();
+    cy.get('[data-testid="ai-prompt-input"]')
+      .clear()
+      .type('How to compose CSS variables', { delay: 200 });
+    cy.get('[data-testid="ai-prompt-submit-button"]').click();
+
+    cy.wait(2000);
+
+    cy.get('[data-testid="ai-prompt-serialized-response"]')
+      .should('be.visible')
+      .should(
+        'contain.text',
+        'You can compose CSS variables by assigning apartial value to a variable'
+      );
+  });
 });

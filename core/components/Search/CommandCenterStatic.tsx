@@ -122,7 +122,10 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           <Flex
             as="button"
             css={{ cursor: 'pointer' }}
-            onClick={() => onItemClick('aiMode')}
+            data-testid="aimode-button"
+            onClick={() => {
+              onItemClick('aiMode');
+            }}
           >
             <Sparkles />
             <Text
@@ -149,7 +152,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           </Link>
         </Item>
         <Item
-          data-testid="navigation"
+          data-testid="design"
           data-selected={selectedResult === 'design-navigation'}
           id="design-navigation"
           key="design-navigation"
@@ -161,7 +164,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
         </Item>
         <Separator>Links</Separator>
         <Item
-          data-testid="link"
+          data-testid="twitter-social-link"
           data-selected={selectedResult === 'twitter-social-link'}
           id="twitter-social-link"
           key="twitter-social-link"
@@ -180,7 +183,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           </a>
         </Item>
         <Item
-          data-testid="link"
+          data-testid="email-link"
           data-selected={selectedResult === 'email-link'}
           id="email-link"
           key="email-link"
@@ -199,7 +202,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           </a>
         </Item>
         <Item
-          data-testid="link"
+          data-testid="roadmap-link"
           data-selected={selectedResult === 'roadmap-link'}
           id="roadmap-link"
           key="roadmap-link"
@@ -218,7 +221,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           </a>
         </Item>
         <Item
-          data-testid="link"
+          data-testid="maximeheckelcom-link"
           data-selected={selectedResult === 'maximeheckelcom-link'}
           id="maximeheckelcom-link"
           key="maximeheckelcom-link"
@@ -236,17 +239,12 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           </a>
         </Item>
         <Item
-          data-testid="link"
+          data-testid="rss-link"
           data-selected={selectedResult === 'rss-link'}
           id="rss-link"
           key="rss-link"
         >
-          <Link
-            href="/rss.xml"
-            data-testid="rss-link"
-            aria-label="RSS Feed"
-            passHref
-          >
+          <Link href="/rss.xml" aria-label="RSS Feed" passHref>
             <Icon.RSS />
             <span style={{ marginLeft: '15px' }}>RSS</span>
             <VisuallyHidden as="p">

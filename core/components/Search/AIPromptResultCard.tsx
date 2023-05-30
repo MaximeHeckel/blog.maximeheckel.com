@@ -15,12 +15,12 @@ import React, { ForwardedRef } from 'react';
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import RotatingShine from '../RotatingShine';
 import { Coffee } from './Icons';
-import { SearchError, Source } from './types';
+import { SearchError, Source, Status } from './types';
 import MDXComponents from '../MDX/MDXComponents';
 
 interface AIPromtResultCardProps {
   error: SearchError | null;
-  status: 'initial' | 'loading' | 'done';
+  status: Status;
   query: string;
   sources: Source[];
   streamData: string;
@@ -28,8 +28,8 @@ interface AIPromtResultCardProps {
 }
 
 const SAMPLE_QUESTIONS = [
-  'React Three Fiber',
-  'Framer Motion',
+  // 'React Three Fiber',
+  // 'Framer Motion',
   'Shaders',
   'Code: staggered animations',
   "Example on how to use Framer Motion's LayoutGroup",
@@ -83,7 +83,9 @@ const AIPromptResultCard = React.forwardRef(
         }
       };
 
-      serializeStreamData();
+      if (streamData) {
+        serializeStreamData();
+      }
     }, [streamData, status]);
 
     const list = {
@@ -107,6 +109,7 @@ const AIPromptResultCard = React.forwardRef(
     return (
       <Card
         as={motion.div}
+        data-testid="ai-prompt-result-card"
         initial={{ y: 0, opacity: 0, height: 0 }}
         animate={{
           y: 0,
@@ -153,6 +156,7 @@ const AIPromptResultCard = React.forwardRef(
               maxHeight: 500,
               height: '100%',
             }}
+            data-testid="ai-prompt-serialized-response"
             style={{ overflowY: status === 'loading' ? 'hidden' : 'auto' }}
           >
             <AnimatePresence initial={false}>

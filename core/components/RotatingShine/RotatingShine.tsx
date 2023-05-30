@@ -100,20 +100,17 @@ const RotatingShine = ({
 
   return (
     <Box
-      as={motion.div}
-      initial={false}
-      animate={controls}
       css={{
         position: 'absolute',
         width: '100%',
         height: '100%',
         borderRadius: 'inherit',
       }}
-      variants={variants}
-      custom={status}
     >
       <Box
         as={motion.div}
+        initial={false}
+        animate={controls}
         css={{
           // border shine
           position: 'absolute',

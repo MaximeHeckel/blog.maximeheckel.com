@@ -18,7 +18,7 @@ import {
 } from './Styles';
 import useBodyScrollLock from '@theme/hooks/useBodyScrollLock';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Result, SearchError, Source } from './types';
+import { Result, SearchError, Source, Status } from './types';
 import StaticSearchResults from './StatucSearchResult';
 import AIPromptResultCard from './AIPromptResultCard';
 import AIPromptInput from './AIPromptInput';
@@ -31,9 +31,7 @@ const Search = (props: Props) => {
   const { onClose } = props;
 
   // Search Related states
-  const [status, setStatus] = React.useState<'initial' | 'loading' | 'done'>(
-    'initial'
-  );
+  const [status, setStatus] = React.useState<Status>('initial');
   const [results, setResults] = React.useState<Result[]>([]);
   const [searchQuery, setSearchQuery] = React.useState('');
 
@@ -107,14 +105,15 @@ const Search = (props: Props) => {
     // Set status to loading to show rotating border
     setStatus('loading');
 
-    const response = await fetch('/api/semanticsearch', {
+    const response = await fetch('/api/semanticsearch/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         query,
-        // mock: true,
+        // @ts-ignore
+        mock: window.Cypress ? true : false,
       }),
       signal,
     });
@@ -178,7 +177,8 @@ const Search = (props: Props) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
 
-    const form = event?.target as typeof event.target & {
+    const form = event?.currentTarget
+      .elements as typeof event.currentTarget.elements & {
       aisearch: { value: string };
     };
 

@@ -13,3 +13,5 @@ export type SearchError = {
   status: number;
   statusText: string;
 };
+
+export type Status = 'initial' | 'loading' | 'done';
