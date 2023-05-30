@@ -16,9 +16,7 @@ type OpenAIPayload = {
 
 const OPEN_AI_API_KEY = process.env.OPEN_AI_API_KEY;
 
-export const OpenAIMockStream = async (
-  sources: Array<{ title: string; url: string }>
-) => {
+export const OpenAIMockStream = async () => {
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream({
@@ -30,10 +28,6 @@ export const OpenAIMockStream = async (
 
           for (const line of lines) {
             if (line == '[DONE]') {
-              const queue = encoder.encode(
-                `[VECTOR_SEARCH_END]${JSON.stringify(sources)}`
-              );
-              controller.enqueue(queue);
               controller.close();
               return;
             } else {

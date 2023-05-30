@@ -25,10 +25,11 @@ import AIPromptInput from './AIPromptInput';
 
 interface Props {
   onClose: () => void;
+  forceAIMode?: boolean;
 }
 
 const Search = (props: Props) => {
-  const { onClose } = props;
+  const { onClose, forceAIMode = false } = props;
 
   // Search Related states
   const [status, setStatus] = React.useState<Status>('initial');
@@ -37,7 +38,7 @@ const Search = (props: Props) => {
 
   // AI Related states
   const [error, setError] = React.useState<SearchError | null>(null);
-  const [AIMode, setAIMode] = React.useState(false);
+  const [AIMode, setAIMode] = React.useState(forceAIMode);
   const [AIQuery, setAIQuery] = React.useState('');
   const [streamData, setStreamData] = React.useState('');
   const [sources, setSources] = React.useState<Source[]>([]);

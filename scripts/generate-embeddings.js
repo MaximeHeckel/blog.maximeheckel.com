@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+require('dotenv').config();
+
 const { createClient } = require('@supabase/supabase-js');
 const chalk = require('chalk');
 const fs = require('fs');
@@ -7,7 +9,6 @@ const path = require('path');
 const ProgressBar = require('progress');
 const { fileURLToPath } = require('url');
 const processMdxFile = require('./process-mdx.js');
-const data = require('./example.js');
 
 const SUPABASE_API_KEY = process.env.SUPABASE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;

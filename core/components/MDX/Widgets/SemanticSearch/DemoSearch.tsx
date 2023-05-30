@@ -62,7 +62,6 @@ const DemoSearch = () => {
       },
       body: JSON.stringify({
         query,
-        mock: true,
         completion: false,
         count: 50,
         threshold: 0.6,
@@ -78,7 +77,7 @@ const DemoSearch = () => {
   };
 
   return (
-    <Card css={{ marginTop: '2.25rem' }}>
+    <Card css={{ marginBottom: '2.25rem' }}>
       <Card.Body as={Flex} direction="column" gap="4">
         <Flex as="form" css={{ width: '100%' }} gap="3" onSubmit={onSubmit}>
           <TextInput

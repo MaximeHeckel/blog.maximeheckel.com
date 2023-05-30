@@ -17,6 +17,7 @@ import RotatingShine from '../RotatingShine';
 import { Coffee } from './Icons';
 import { SearchError, Source, Status } from './types';
 import MDXComponents from '../MDX/MDXComponents';
+import Link from 'next/link';
 
 interface AIPromtResultCardProps {
   error: SearchError | null;
@@ -30,7 +31,7 @@ interface AIPromtResultCardProps {
 const SAMPLE_QUESTIONS = [
   // 'React Three Fiber',
   // 'Framer Motion',
-  'Shaders',
+  'Use of shader in R3F',
   'Code: staggered animations',
   "Example on how to use Framer Motion's LayoutGroup",
   'Show me how to compose CSS variables',
@@ -79,13 +80,11 @@ const AIPromptResultCard = React.forwardRef(
               top: responseBody.scrollHeight,
               behavior: 'smooth',
             });
-          }, 200);
+          }, 100);
         }
       };
 
-      if (streamData) {
-        serializeStreamData();
-      }
+      serializeStreamData();
     }, [streamData, status]);
 
     const list = {
@@ -250,9 +249,22 @@ const AIPromptResultCard = React.forwardRef(
                     ))}
                   </Flex>
                   <Text as="p" size="2">
-                    Results are sadly not guarantee to be 100% accurate but
+                    Results are sadly not guaranteed to be 100% accurate but
                     I&apos;ll work on improving the quality of the answers as I
-                    learn more about the underlying technologies.
+                    learn more about the underlying technologies. If you want to
+                    learn more about how I build it you can read my blog post
+                    titled{' '}
+                    <Link
+                      href="/posts/building-magical-ai-powered-semantic-search"
+                      legacyBehavior
+                      passHref
+                    >
+                      <Anchor>
+                        Building a magical AI-powered semantic search from
+                        scratch
+                      </Anchor>
+                    </Link>{' '}
+                    where I go through all the implementation details.
                     <br />
                     <br />
                     Have fun!

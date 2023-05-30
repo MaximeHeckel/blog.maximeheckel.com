@@ -124,7 +124,7 @@ const CosineSimilarity = () => {
 
   return (
     <Card
-      css={{ marginTop: '2.25rem' }}
+      css={{ marginBottom: '2.25rem' }}
       title="Heatmap representing the cosine similarity between multiple sets of sentences"
     >
       <Card.Body as={Flex} direction="column">

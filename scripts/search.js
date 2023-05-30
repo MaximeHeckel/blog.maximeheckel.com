@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import { createClient } from '@supabase/supabase-js';
 import { Configuration, OpenAIApi } from 'openai';
 import GPT3Tokenizer from 'gpt3-tokenizer';

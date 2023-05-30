@@ -9,11 +9,11 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Sun, 21 May 2023 14:13:55 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 01 Jun 2023 23:44:19 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
         <item>
-            <title><![CDATA[Building a magical AI-powered semantic search]]></title>
+            <title><![CDATA[Building a magical AI-powered semantic search from scratch]]></title>
             <description><![CDATA[TBD]]></description>
             <link>https://blog.maximeheckel.com/posts/building-magical-ai-powered-semantic-search</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/building-magical-ai-powered-semantic-search</guid>
