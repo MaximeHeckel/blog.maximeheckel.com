@@ -170,6 +170,14 @@ const ColorChannelSummary = dynamic(
     import('./Widgets/RefractionDispersionReactThreeFiber/ColorChannelSummary')
 );
 
+const CosineSimilarity = dynamic(
+  () => import('./Widgets/SemanticSearch/CosineSimilarity')
+);
+
+const Formatting = dynamic(() => import('./Widgets/SemanticSearch/Formatting'));
+
+const DemoSearch = dynamic(() => import('./Widgets/SemanticSearch/DemoSearch'));
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -233,6 +241,9 @@ const customComponents = {
   AttributesVisualizer,
   RGBShiftVisualizer,
   ColorChannelSummary,
+  CosineSimilarity,
+  Formatting,
+  DemoSearch,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,

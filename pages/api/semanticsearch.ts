@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import { ipAddress } from '@vercel/edge';
+import { kv } from '@vercel/kv';
 import GPT3Tokenizer from 'gpt3-tokenizer';
-import rateLimit from 'lib/rate-limit';
-import OpenAIStream, { OpenAIMockStream } from './openAIStream';
+import OpenAIStream, { OpenAIMockStream } from '../../lib/openAIStream';
 
 const SUPABASE_API_KEY = process.env.SUPABASE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -14,9 +14,18 @@ export const config = {
 };
 
 export default async function handler(req: Request) {
-  const { query, mock } = (await req.json()) as {
+  const {
+    query,
+    mock,
+    completion = true,
+    threshold = 0.7,
+    count = 10,
+  } = (await req.json()) as {
     query: string;
     mock?: boolean;
+    completion?: boolean;
+    threshold?: number;
+    count?: number;
   };
 
   const input = query.replace(/\n/g, ' ');
@@ -32,27 +41,34 @@ export default async function handler(req: Request) {
   }
 
   const MAX_REQUEST_PER_MINUTE_PER_USER = 4; // number of requests per minute per user
-  const MAX_CONCURRENT_USER = 500; // number of concurrent users
   const MIN_RATE_LIMIT_INTERVAL = 60 * 1000; // cache expiration time
+  const ip = ipAddress(req) || '127.0.0.1';
 
-  const limiter = rateLimit({
-    interval: MIN_RATE_LIMIT_INTERVAL,
-    uniqueTokenPerInterval: MAX_CONCURRENT_USER,
-  });
+  const rate: number | null = await kv.get(ip);
 
-  try {
-    await limiter.check(MAX_REQUEST_PER_MINUTE_PER_USER, ipAddress(req)!);
-  } catch (error) {
-    // @ts-ignore
-    const { limit, currentUsage } = error;
+  if (!mock) {
+    try {
+      if (!rate) {
+        await kv.set(ip, 0, { ex: MIN_RATE_LIMIT_INTERVAL, nx: true });
+        await kv.incr(ip);
+      } else {
+        if (rate > MAX_REQUEST_PER_MINUTE_PER_USER) {
+          throw new Error('Rate limit exceeded');
+        }
 
-    return new Response('Rate limit exceeded', {
-      status: 429,
-      headers: {
-        'X-RateLimit-Limit': `${limit}`,
-        'X-RateLimit-Remaining': `${limit - currentUsage}`,
-      },
-    });
+        await kv.incr(ip);
+      }
+    } catch (error) {
+      return new Response(JSON.stringify({ error: 'Rate limit exceeded' }), {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': `${MAX_REQUEST_PER_MINUTE_PER_USER}`,
+          'X-RateMAX_REQUEST_PER_MINUTE_PER_USER-Remaining': `${
+            MAX_REQUEST_PER_MINUTE_PER_USER - (rate || 0)
+          }`,
+        },
+      });
+    }
   }
 
   const embeddingResponse = await fetch(
@@ -81,13 +97,17 @@ export default async function handler(req: Request) {
       'match_documents',
       {
         query_embedding: embedding,
-        similarity_threshold: 0.7, // Choose an appropriate threshold for your data
-        match_count: 10, // Choose the number of matches
+        similarity_threshold: threshold, // Choose an appropriate threshold for your data
+        match_count: count, // Choose the number of matches
       }
     );
 
     if (error) {
       throw new Response(`An error occurred: ${error}`, { status: 500 });
+    }
+
+    if (!completion) {
+      return new Response(JSON.stringify(documents), { status: 200 });
     }
 
     const tokenizer = new GPT3Tokenizer({ type: 'gpt3' });
