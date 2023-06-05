@@ -107,6 +107,12 @@ const Footer = () => (
                 >
                   Roadmap
                 </Anchor>
+                <Anchor
+                  discreet
+                  href="https://www.buymeacoffee.com/maximeheckel"
+                >
+                  Buy me a coffee
+                </Anchor>
               </Grid>
             </Text>
           </Box>

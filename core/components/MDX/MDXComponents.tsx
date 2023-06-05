@@ -18,6 +18,7 @@ import {
   Strong,
 } from '@maximeheckel/design-system';
 import Code from '@theme/components/Code';
+import Fullbleed from '@theme/components/Fullbleed';
 import VideoPlayer from '@theme/components/VideoPlayer';
 
 // MDX only components
@@ -170,6 +171,16 @@ const ColorChannelSummary = dynamic(
     import('./Widgets/RefractionDispersionReactThreeFiber/ColorChannelSummary')
 );
 
+const CosineSimilarity = dynamic(
+  () => import('./Widgets/SemanticSearch/CosineSimilarity')
+);
+
+const Formatting = dynamic(() => import('./Widgets/SemanticSearch/Formatting'));
+
+const DemoSearch = dynamic(() => import('./Widgets/SemanticSearch/DemoSearch'));
+
+const DemoButton = dynamic(() => import('./Widgets/SemanticSearch/DemoButton'));
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -233,6 +244,10 @@ const customComponents = {
   AttributesVisualizer,
   RGBShiftVisualizer,
   ColorChannelSummary,
+  CosineSimilarity,
+  Formatting,
+  DemoSearch,
+  DemoButton,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
@@ -260,6 +275,7 @@ const MDXComponents = {
   Callout,
   Details,
   em: EM,
+  Fullbleed,
   h2: H2,
   h3: H3,
   Image,

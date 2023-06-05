@@ -9,9 +9,25 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Mon, 30 Jan 2023 01:31:01 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 01 Jun 2023 23:44:19 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Building a magical AI-powered semantic search from scratch]]></title>
+            <description><![CDATA[TBD]]></description>
+            <link>https://blog.maximeheckel.com/posts/building-magical-ai-powered-semantic-search</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/building-magical-ai-powered-semantic-search</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 06 Jun 2023 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Beautiful and mind-bending effects with WebGL Render Targets]]></title>
+            <description><![CDATA[A deep dive into WebGL Render Targets and how to leverage their capabilities in combination with the render loop to create scenes with post-processing effects, transition, and many types of optical illusions to trick the viewer's eyes.]]></description>
+            <link>https://blog.maximeheckel.com/posts/beautiful-and-mind-bending-effects-with-webgl-render-targets</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/beautiful-and-mind-bending-effects-with-webgl-render-targets</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 14 Mar 2023 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Refraction, dispersion, and other shader light effects]]></title>
             <description><![CDATA[A guide on how to reproduce a chromatic dispersion effect for your React Three Fiber and shader projects with FBO, refraction, chromatic aberration, specular, and other tricks through 9 interactive code playgrounds.]]></description>

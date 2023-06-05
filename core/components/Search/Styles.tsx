@@ -1,16 +1,17 @@
 import { motion } from 'framer-motion';
-import { Shadows, styled, Text } from '@maximeheckel/design-system';
-import { HEIGHT, MAX_HEIGHT } from './constants';
+import { Box, Shadows, styled, Text } from '@maximeheckel/design-system';
+import { HEIGHT, MAX_HEIGHT, SHORTCUT_HEIGHT } from './constants';
 
 export const Result = styled(motion.li, {
   display: 'flex',
   alignItems: 'center',
   marginBottom: '0px',
   listStyle: 'none',
-  fontSize: 'var(--font-size-2)',
+  fontSize: 'var(--font-size-1)',
+  fontWeight: 'var(--font-weight-3)',
   lineHeight: '24px',
   color: 'var(--maximeheckel-colors-typeface-secondary)',
-  padding: '10px 25px',
+  padding: '10px 16px',
   height: `${HEIGHT}px`,
 
   a: {
@@ -42,38 +43,57 @@ export const Result = styled(motion.li, {
   },
 });
 
+export const SearchResultWrapper = styled(Box, {
+  height: `${MAX_HEIGHT + SHORTCUT_HEIGHT}px`,
+});
+
 export const SearchResults = styled('ul', {
   background: 'var(--maximeheckel-colors-body)',
-  maxHeight: `${MAX_HEIGHT}px`,
+  maxHeight: `${MAX_HEIGHT + SHORTCUT_HEIGHT}px`,
   overflowY: 'scroll',
   margin: '0',
   padding: '0',
+
+  width: '100%',
+
+  boxShadow: Shadows[3],
+  borderBottomLeftRadius: 'var(--border-radius-2)',
+  borderBottomRightRadius: 'var(--border-radius-2)',
+  borderLeft: '1px solid var(--maximeheckel-border-color)',
+  borderRight: '1px solid var(--maximeheckel-border-color)',
+  borderBottom: '1px solid var(--maximeheckel-border-color)',
 
   '@media (max-width: 700px)': {
     maxHeight: '450px',
   },
 });
 
-export const SearchBox = styled(motion.div, {
+export const Wrapper = styled(Box, {
   position: 'fixed',
-  overflow: 'hidden',
-  width: '600px',
-  top: '20%',
   left: '50%',
-  transform: 'translateX(-50%)',
+  top: '50%',
+  transform: 'translateX(-50%) translateY(-50%)',
+  width: '600px',
   borderRadius: 'var(--border-radius-2)',
-  boxShadow: Shadows[3],
-  border: '1px solid var(--maximeheckel-border-color)',
+  // overflow: 'hidden',
 
   '@media (max-width: 700px)': {
     width: '100%',
-    top: '0',
-    borderRadius: '0px',
   },
 });
 
-export const FormWrapper = styled('div', {
+export const SearchBox = styled(Box, {
+  width: '100%',
+  position: 'relative',
+});
+
+export const FormWrapper = styled(Box, {
+  position: 'relative',
+  margin: '0 auto',
   background: 'var(--maximeheckel-colors-body)',
+  border: '1px solid var(--maximeheckel-border-color)',
+  borderTopLeftRadius: 'var(--border-radius-2)',
+  borderTopRightRadius: 'var(--border-radius-2)',
 
   form: {
     margin: '0px',
@@ -81,53 +101,63 @@ export const FormWrapper = styled('div', {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderBottom: '1px solid var(--maximeheckel-border-color)',
+  },
+});
+
+export const SearchInput = styled('input', {
+  background: 'transparent',
+  border: 'none',
+  fontSize: 'var(--font-size-2)',
+  fontFamily: 'inherit',
+  fontWeight: '400',
+  height: '55px',
+  padding: '0px 16px',
+  width: '100%',
+  outline: 'none',
+  color: 'var(--maximeheckel-colors-typeface-primary)',
+
+  '&::placeholder': {
+    color: 'var(--maximeheckel-colors-typeface-secondary)',
+    opacity: '0.54',
+  },
+  '&::-webkit-input-placeholder': {
+    color: 'var(--maximeheckel-colors-typeface-secondary)',
+    opacity: '0.54',
+  },
+  '&:-ms-input-placeholder': {
+    color: 'var(--maximeheckel-colors-typeface-secondary)',
+    opacity: '0.54',
   },
 
-  input: {
-    background: 'transparent',
-    border: 'none',
-    fontSize: 'var(--font-size-2)',
-    fontWeight: '400',
-    height: '55px',
-    padding: '0px 25px',
-    width: '100%',
-    outline: 'none',
-    color: 'var(--maximeheckel-colors-typeface-primary)',
+  WebkitAppearance: 'none',
+  MozAppearance: 'none',
+  outlineOffset: '-2px',
 
-    '&::placeholder': {
-      color: 'var(--maximeheckel-colors-typeface-secondary)',
-      opacity: '0.54',
-    },
-    '&::-webkit-input-placeholder': {
-      color: 'var(--maximeheckel-colors-typeface-secondary)',
-      opacity: '0.54',
-    },
-    '&:-ms-input-placeholder': {
-      color: 'var(--maximeheckel-colors-typeface-secondary)',
-      opacity: '0.54',
-    },
-
+  '&::-webkit-search-cancel-button': {
     WebkitAppearance: 'none',
-    MozAppearance: 'none',
-    outlineOffset: '-2px',
+  },
+  '&::-webkit-search-decoration': {
+    WebkitAppearance: 'none',
+  },
+  '&::-webkit-file-upload-button': {
+    WebkitAppearance: 'button',
+    font: 'inherit',
+  },
 
-    '&::-webkit-search-cancel-button': {
-      WebkitAppearance: 'none',
-    },
-    '&::-webkit-search-decoration': {
-      WebkitAppearance: 'none',
-    },
-    '&::-webkit-file-upload-button': {
-      WebkitAppearance: 'button',
-      font: 'inherit',
-    },
+  '&::-webkit-autofill': {
+    background: 'transparent',
+    color: 'var(--maximeheckel-colors-typeface-primary)',
+  },
 
-    '&::-webkit-autofill': {
-      background: 'transparent',
-      color: 'var(--maximeheckel-colors-typeface-primary)',
-      fontSize: 'var(--font-size-1)',
-    },
+  '@media (max-width: 500px)': {
+    fontSize: '16px',
+  },
+});
+
+export const AIInput = styled(SearchInput, {
+  padding: '0px 8px',
+  '&:disabled': {
+    cursor: 'not-allowed',
   },
 });
 
@@ -141,54 +171,42 @@ export const Overlay = styled(motion.div, {
   outline: 'none',
 });
 
-export const KBD = (props: React.HTMLAttributes<HTMLParagraphElement>) => (
-  <Text
-    {...props}
-    as="kbd"
-    css={{
-      fontFamily: 'var(--font-display)',
-      borderRadius: 'var(--border-radius-1)',
-      padding: '8px',
-      background: 'var(--maximeheckel-colors-emphasis)',
-      '&:not(:last-child)': {
-        marginRight: '12px',
-      },
-    }}
-    size="1"
-    variant="info"
-  />
-);
-
 export const Item = styled('li', {
   height: `${HEIGHT}px`,
   marginBottom: '0px',
   transition: '0.25s',
   listStyle: 'none',
-  fontSize: 'var(--font-size-2)',
+  fontSize: 'var(--font-size-1)',
+  fontWeight: '500',
   color: 'var(--maximeheckel-colors-typeface-secondary)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '10px 25px',
+  padding: '10px 4px',
   userSelect: 'none',
+  borderRadius: 'var(--border-radius-2)',
 
-  a: {
+  'a, button': {
     color: 'unset',
     width: '100%',
+    background: 'none',
+    border: 'none',
+    fontFamily: 'var(--font-display)',
     height: `${HEIGHT}px`,
     display: 'flex',
     alignItems: 'center',
     textDecoration: 'none',
+    padding: '0px 8px',
   },
 
-  '&:hover': {
+  '&:hover, &[data-selected="true"]': {
     backgroundColor: 'var(--maximeheckel-colors-emphasis)',
 
     '&[data-nohover]': {
       backgroundColor: 'inherit',
     },
 
-    a: {
+    'a, button': {
       color: 'var(--maximeheckel-colors-brand)',
     },
 
@@ -198,16 +216,44 @@ export const Item = styled('li', {
   },
 });
 
-export const Separator = styled('li', {
-  height: '30px',
+export const Separator = styled(Box, {
   width: '100%',
   fontSize: 'var(--font-size-1)',
-  backgroundColor: 'var(--maximeheckel-colors-foreground)',
-  color: 'var(--maximeheckel-colors-typeface-tertiary)',
+  color: 'var(--maximeheckel-colors-typeface-primary)',
   fontWeight: '500',
   display: 'flex',
   alignItems: 'center',
-  paddingLeft: '25px',
-  paddingRight: '25px',
   marginBottom: '0',
+  padding: '20px 12px 8px 12px',
 });
+
+export const ShortcutList = styled(Box, {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '24px',
+  backgroundColor: 'var(--maximeheckel-colors-body)',
+  height: SHORTCUT_HEIGHT,
+  padding: '0px 20px',
+  borderTop: '1px solid var(--maximeheckel-border-color)',
+});
+
+export const KBD = (props: React.HTMLAttributes<HTMLParagraphElement>) => (
+  <Text
+    {...props}
+    as="kbd"
+    css={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: 'var(--font-display)',
+      fontWeight: 'var(--font-weight-3)',
+      borderRadius: '6px',
+      height: 24,
+      width: 24,
+      background: 'var(--maximeheckel-colors-emphasis)',
+      marginBottom: 0,
+    }}
+    size="1"
+    variant="info"
+  />
+);

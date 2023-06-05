@@ -16,6 +16,8 @@ require('prismjs/components/prism-glsl');
 export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
   const { codeString, language, highlightLine } = props;
 
+  if (!codeString) return null;
+
   return (
     <Highlight
       {...defaultProps}

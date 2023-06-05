@@ -11,9 +11,10 @@ export const preToCodeBlock = (preProps: PrePropsType) => {
     const { children: codeString, className = '', ...props } = children.props;
 
     const matches = className.match(/language-(?<lang>.*)/);
+
     return {
       className,
-      codeString: codeString.trim(),
+      codeString: codeString?.trim(),
       language:
         matches && matches.groups && matches.groups.lang
           ? (matches.groups.lang as Language)

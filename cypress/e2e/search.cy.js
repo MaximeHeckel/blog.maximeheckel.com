@@ -6,8 +6,13 @@ describe('Search tests', () => {
     cy.get('input[id="search-input"]').clear();
     cy.get('[data-testid="search-overlay"]').should('be.visible');
     cy.get('[data-testid="search"]').should('be.visible');
-    cy.get('[data-testid="link"]').should('have.length', 5);
-    cy.get('[data-testid="shortcut"]').should('have.length', 2);
+    cy.get('[data-testid="navigation"]').should('exist');
+    cy.get('[data-testid="design"]').should('exist');
+    cy.get('[data-testid="aimode"]').should('exist');
+    cy.get('[data-testid="twitter-social-link"]').should('exist');
+    cy.get('[data-testid="maximeheckelcom-link"]').should('exist');
+    cy.get('[data-testid="rss-link"]').should('exist');
+    cy.get('[data-testid="email-link"]').should('exist');
   });
 
   it('Hides the search box when hitting esc', () => {
@@ -50,5 +55,27 @@ describe('Search tests', () => {
     cy.get('[data-testid="search-result"]').eq(0).click();
     cy.url().should('include', '/posts/');
     cy.get('[data-testid="hero"]').should('be.visible');
+
+    // Arbitrary wait because other firefox will interrupt page load and cause some exception that Cypress will catch
+    // and fail the test for.
+    cy.wait(2000);
+  });
+
+  it('Can toggle AI mode and send a query', () => {
+    cy.visit('/');
+    cy.wait(2000);
+    cy.get('body').type('{ctrl}k', { force: true });
+    cy.get('[data-testid="aimode"]').click();
+    cy.get('[data-testid="ai-prompt-input"]')
+      .clear()
+      .type('How to compose CSS variables', { delay: 200 });
+    cy.get('[data-testid="ai-prompt-submit-button"]').click();
+
+    cy.get('[data-testid="ai-prompt-serialized-response"]', { timeout: 60000 })
+      .should('be.visible')
+      .should(
+        'contain.text',
+        'You can compose CSS variables by assigning apartial value to a variable'
+      );
   });
 });

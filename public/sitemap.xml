@@ -141,6 +141,14 @@
 
   <url>
     <loc
+      >https://blog.maximeheckel.com/posts/beautiful-and-mind-bending-effects-with-webgl-render-targets/</loc
+    >
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc
       >https://blog.maximeheckel.com/posts/build-personal-health-api-shortcuts-serverless/</loc
     >
     <changefreq>daily</changefreq>
@@ -166,6 +174,14 @@
   <url>
     <loc
       >https://blog.maximeheckel.com/posts/building-a-graphql-wrapper-for-the-docker-api-2109f2b9c202/</loc
+    >
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc
+      >https://blog.maximeheckel.com/posts/building-magical-ai-powered-semantic-search/</loc
     >
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
