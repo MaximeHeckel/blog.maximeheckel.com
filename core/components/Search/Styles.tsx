@@ -78,7 +78,7 @@ export const Wrapper = styled(Box, {
   // overflow: 'hidden',
 
   '@media (max-width: 700px)': {
-    width: '100%',
+    width: '95%',
   },
 });
 

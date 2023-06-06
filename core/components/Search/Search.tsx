@@ -312,7 +312,7 @@ const Search = (props: Props) => {
                               transform: `scale(${
                                 status === 'loading' ? 0.95 : 1
                               })`,
-                              opacity: status === 'loading' ? 0.5 : 1,
+                              opacity: status === 'loading' ? 0.8 : 1,
                             }
                           : {}
                       }

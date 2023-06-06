@@ -167,15 +167,15 @@ export default async function handler(req: Request) {
       - Do not include extra information that is not in the context sections.
       - If no sections are provided to you, that means I simply didn't write about it. In these cases simply reply as follow:
       "Sorry, I don't know how to help with that. Maxime hasn't written about it yet."
-      - Do not include any links or URLs of my posts in your answer as you are very often wrong about them. This is taken care of, you don't need to worry about it.
-      - Do not write or mention the titles of any of my articles/blog posts as you are very often wrong about them. This is also taken care of.
+      - Do not include any links or URLs of my posts in your answer as you are very often wrong about them. This is taken care of, you don't need to worry about it. You'll get penalized if you do.
+      - Do not write or mention the titles of any of my articles/blog posts as you are very often wrong about them. This is also taken care of. You'll get penalized if you do.
   
       Context sections:
       """
       ${contextText}
       """
 
-      Answer as markdown (including related code snippets if available).
+      Answer in valid markdown syntax (including related code snippets if available).
       `;
 
     // SUGGEST FOLLOW UP QUESTION => MAKE IT CLICKABLE
