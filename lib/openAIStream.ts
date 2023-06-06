@@ -69,10 +69,7 @@ export const OpenAIMockStream = async () => {
   return stream;
 };
 
-const OpenAIStream = async (
-  payload: OpenAIPayload,
-  sources: Array<{ title: string; url: string }>
-) => {
+const OpenAIStream = async (payload: OpenAIPayload, sources: string[]) => {
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
@@ -94,25 +91,20 @@ const OpenAIStream = async (
           const data = event.data;
           const lines = data.split('\n').map((line) => line.trim());
           // eslint-disable-next-line no-console
-          console.log(lines);
           for (const line of lines) {
             if (line == '[DONE]') {
-              // eslint-disable-next-line no-console
-              console.log(`[VECTOR_SEARCH_END]${JSON.stringify(sources)}`);
-              const queue = encoder.encode(
-                `[VECTOR_SEARCH_END]${JSON.stringify(sources)}`
-              );
-              controller.enqueue(queue);
+              for (const sourceToken of sources) {
+                const queue = encoder.encode(sourceToken);
+                controller.enqueue(queue);
+              }
               controller.close();
               return;
             } else {
               let token;
               try {
                 token = JSON.parse(line).choices[0].delta?.content;
-
+                // eslint-disable-next-line no-console
                 if (typeof token !== 'undefined') {
-                  // eslint-disable-next-line no-console
-                  console.log('token', token);
                   const queue = encoder.encode(token);
                   controller.enqueue(queue);
                 }

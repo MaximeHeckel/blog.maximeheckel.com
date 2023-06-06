@@ -18,7 +18,7 @@ import {
 } from './Styles';
 import useBodyScrollLock from '@theme/hooks/useBodyScrollLock';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Result, SearchError, Source, Status } from './types';
+import { Result, SearchError, Status } from './types';
 import StaticSearchResults from './StatucSearchResult';
 import AIPromptResultCard from './AIPromptResultCard';
 import AIPromptInput from './AIPromptInput';
@@ -41,7 +41,7 @@ const Search = (props: Props) => {
   const [AIMode, setAIMode] = React.useState(forceAIMode);
   const [AIQuery, setAIQuery] = React.useState('');
   const [streamData, setStreamData] = React.useState('');
-  const [sources, setSources] = React.useState<Source[]>([]);
+  // const [sources, setSources] = React.useState<Source[]>([]);
 
   const ref = React.useRef<HTMLElement>();
   const readerRef = React.useRef<ReadableStreamDefaultReader>();
@@ -87,7 +87,6 @@ const Search = (props: Props) => {
     setAIMode(false);
     setAIQuery('');
     setStreamData('');
-    setSources([]);
   };
 
   const handleItemClick = (item: string) => {
@@ -100,7 +99,6 @@ const Search = (props: Props) => {
     // Clear data
     setError(null);
     setStreamData('');
-    setSources([]);
     // Show query of the user at the top of the result card
     setAIQuery(query);
     // Set status to loading to show rotating border
@@ -155,23 +153,21 @@ const Search = (props: Props) => {
         break;
       }
 
-      if (chunkValue.includes('[VECTOR_SEARCH_END]')) {
-        // eslint-disable-next-line no-console
-        console.log(chunkValue);
-        const [, sources] = chunkValue.split('[VECTOR_SEARCH_END]');
-        try {
-          const parsedSources = JSON.parse(sources);
-          setSources(parsedSources);
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error('Failed to parse sources', error);
-        }
-      } else {
-        setStreamData((prev) => {
-          text = prev + chunkValue;
-          return prev + chunkValue;
-        });
-      }
+      // if (chunkValue.includes('[VECTOR_SEARCH_END]')) {
+      //   const [, sources] = chunkValue.split('[VECTOR_SEARCH_END]');
+      //   try {
+      //     const parsedSources = JSON.parse(sources);
+      //     setSources(parsedSources);
+      //   } catch (error) {
+      //     // eslint-disable-next-line no-console
+      //     console.error('Failed to parse sources', error);
+      //   }
+      // } else {
+      setStreamData((prev) => {
+        text = prev + chunkValue;
+        return prev + chunkValue;
+      });
+      // }
     }
     reader.cancel();
     setStatus('done');
@@ -280,7 +276,6 @@ const Search = (props: Props) => {
                         }}
                         query={AIQuery}
                         ref={resultCardRef}
-                        sources={sources}
                         status={status}
                         streamData={streamData}
                       />

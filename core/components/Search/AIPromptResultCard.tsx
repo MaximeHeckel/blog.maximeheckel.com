@@ -15,7 +15,7 @@ import React, { ForwardedRef } from 'react';
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import RotatingShine from '../RotatingShine';
 import { Coffee } from './Icons';
-import { SearchError, Source, Status } from './types';
+import { SearchError, Status } from './types';
 import MDXComponents from '../MDX/MDXComponents';
 import Link from 'next/link';
 
@@ -23,7 +23,6 @@ interface AIPromtResultCardProps {
   error: SearchError | null;
   status: Status;
   query: string;
-  sources: Source[];
   streamData: string;
   onQuestionSelect: (question: string) => void;
 }
@@ -46,14 +45,7 @@ const SAMPLE_QUESTIONS = [
 // eslint-disable-next-line react/display-name
 const AIPromptResultCard = React.forwardRef(
   (props: AIPromtResultCardProps, ref: ForwardedRef<HTMLDivElement>) => {
-    const {
-      error,
-      streamData,
-      query,
-      status,
-      sources,
-      onQuestionSelect,
-    } = props;
+    const { error, streamData, query, status, onQuestionSelect } = props;
 
     const [mdxData, setMdxData] = React.useState<MDXRemoteSerializeResult<
       Record<string, unknown>,
@@ -288,7 +280,7 @@ const AIPromptResultCard = React.forwardRef(
               />
             ) : null}
             <AnimatePresence initial={false}>
-              {sources.length > 0 ? (
+              {status === 'done' ? (
                 <Flex alignItems="baseline" direction="column" gap="3">
                   <Box
                     animate="visible"
@@ -301,7 +293,7 @@ const AIPromptResultCard = React.forwardRef(
                     initial="hidden"
                     variants={list}
                   >
-                    {sources.map((source) => (
+                    {/* {sources.map((source) => (
                       <Box as={motion.li} key={source.url} variants={item}>
                         <Anchor
                           href={source.url}
@@ -311,7 +303,7 @@ const AIPromptResultCard = React.forwardRef(
                           {source.title}
                         </Anchor>
                       </Box>
-                    ))}
+                    ))} */}
                     <Box as={motion.li} variants={item}>
                       <Flex alignItems="center" gap="2">
                         <Tooltip content="Copy output to clipboard">
