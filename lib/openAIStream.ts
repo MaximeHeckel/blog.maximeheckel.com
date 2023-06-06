@@ -93,9 +93,12 @@ const OpenAIStream = async (
         if (event.type === 'event') {
           const data = event.data;
           const lines = data.split('\n').map((line) => line.trim());
-
+          // eslint-disable-next-line no-console
+          console.log(lines);
           for (const line of lines) {
             if (line == '[DONE]') {
+              // eslint-disable-next-line no-console
+              console.log(`[VECTOR_SEARCH_END]${JSON.stringify(sources)}`);
               const queue = encoder.encode(
                 `[VECTOR_SEARCH_END]${JSON.stringify(sources)}`
               );
@@ -105,9 +108,14 @@ const OpenAIStream = async (
             } else {
               let token;
               try {
-                token = JSON.parse(line).choices[0].delta.content;
-                const queue = encoder.encode(token);
-                controller.enqueue(queue);
+                token = JSON.parse(line).choices[0].delta?.content;
+
+                if (typeof token !== 'undefined') {
+                  // eslint-disable-next-line no-console
+                  console.log('token', token);
+                  const queue = encoder.encode(token);
+                  controller.enqueue(queue);
+                }
               } catch (error) {
                 controller.error(error);
                 controller.close();

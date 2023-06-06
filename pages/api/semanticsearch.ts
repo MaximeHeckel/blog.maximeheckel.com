@@ -158,6 +158,9 @@ export default async function handler(req: Request) {
 
     const sources = getSources();
 
+    // eslint-disable-next-line no-console
+    console.log(JSON.stringify(sources));
+
     const prompt = `
       You are a very enthusiastic assistant who's an expert at giving short and clear summaries of my blog posts based on the context sections given to you.
       Given the following sections from my blog posts, output a human readable response to the query based only on those sections, in markdown format (including related code snippets if available).

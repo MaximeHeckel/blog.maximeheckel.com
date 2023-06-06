@@ -103,8 +103,7 @@ const IndexPage = (props: Props) => {
               >
                 Here, I share through my writing my experience as a frontend
                 engineer and everything I'm learning about on React, Shaders,
-                React Three Fiber, Framer Motion and anything that piques my
-                interest.
+                React Three Fiber, Framer Motion, and more.
               </Text>
             </Balancer>
           </H1>

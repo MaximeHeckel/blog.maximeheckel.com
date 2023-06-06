@@ -156,6 +156,8 @@ const Search = (props: Props) => {
       }
 
       if (chunkValue.includes('[VECTOR_SEARCH_END]')) {
+        // eslint-disable-next-line no-console
+        console.log(chunkValue);
         const [, sources] = chunkValue.split('[VECTOR_SEARCH_END]');
         try {
           const parsedSources = JSON.parse(sources);
