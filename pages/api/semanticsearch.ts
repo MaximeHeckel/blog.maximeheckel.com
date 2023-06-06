@@ -69,7 +69,7 @@ export default async function handler(req: Request) {
     return new Response('Missing environment', { status: 500 });
   }
 
-  const MAX_REQUEST_PER_MINUTE_PER_USER = 4; // number of requests per minute per user
+  const MAX_REQUEST_PER_MINUTE_PER_USER = 15; // number of requests per minute per user
   const MIN_RATE_LIMIT_INTERVAL = 60; // cache expiration time
   const ip = ipAddress(req) || 'localhost';
 
