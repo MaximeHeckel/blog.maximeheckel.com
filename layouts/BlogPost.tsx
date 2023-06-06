@@ -15,7 +15,7 @@ import Layout from '@theme/layout';
 import TableOfContent from '@theme/components/TableOfContent';
 import Seo from '@theme/components/Seo';
 import Hero from '@theme/components/Hero';
-import WebmentionCount from '@theme/components/Webmentions/WebmentionCount';
+// import WebmentionCount from '@theme/components/Webmentions/WebmentionCount';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
 import Balancer from 'react-wrap-balancer';
@@ -134,6 +134,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
                 css={{
                   marginBottom: 'var(--space-3)',
                 }}
+                gap="3"
                 wrap="wrap"
               >
                 <Text
@@ -144,19 +145,13 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
                   css={{ marginBottom: '0px' }}
                 >
                   {format(new Date(Date.parse(date)), 'MMMM d, yyyy')} /{' '}
-                  {readingTime.text} /
+                  {readingTime.text}
                 </Text>
-                <WebmentionCount target={postUrl} />
-              </Flex>
-              <Flex
-                css={{
-                  marginLeft: '-var(--space-2)',
-                }}
-              >
                 <Pill variant="info">
-                  Last Updated{' '}
+                  Last Updated:{' '}
                   {format(new Date(Date.parse(updated)), 'MMMM d, yyyy')}
                 </Pill>
+                {/* <WebmentionCount target={postUrl} /> */}
               </Flex>
             </Hero.Info>
             {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
