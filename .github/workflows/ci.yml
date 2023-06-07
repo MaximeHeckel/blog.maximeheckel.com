@@ -22,16 +22,13 @@ env:
 jobs:
   install-cache:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16]
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '18.16.0'
       - name: Cache yarn dependencies
         uses: actions/cache@v3
         id: cache-dependencies
@@ -54,9 +51,6 @@ jobs:
           yarn install --force --non-interactive
   lint-format:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [16]
     needs: install-cache
     steps:
       - name: Checkout Commit
@@ -64,7 +58,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '18.16.0'
       - name: Restore yarn dependencies
         uses: actions/cache@v3
         id: cache-dependencies
@@ -81,9 +75,6 @@ jobs:
           yarn format
   type-check:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [16]
     needs: install-cache
     steps:
       - name: Checkout Commit
@@ -91,7 +82,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '18.16.0'
       - name: Restore yarn dependencies
         uses: actions/cache@v3
         id: cache-dependencies
@@ -105,9 +96,6 @@ jobs:
           yarn type-check
   unit-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [16]
     needs: install-cache
     steps:
       - name: Checkout Commit
@@ -115,7 +103,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '18.16.0'
       - name: Restore yarn dependencies
         uses: actions/cache@v3
         id: cache-dependencies
@@ -129,9 +117,6 @@ jobs:
           yarn test
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [16]
     needs: [lint-format, type-check, unit-test]
     steps:
       - name: Checkout Commit
@@ -139,7 +124,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '18.16.0'
       - name: Restore yarn dependencies
         uses: actions/cache@v3
         id: cache-dependencies
@@ -161,9 +146,6 @@ jobs:
           retention-days: 1
   e2e-tests-chrome:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [16]
     needs: build
     steps:
       - name: Checkout Commit
@@ -171,7 +153,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '18.16.0'
       - name: Restore yarn dependencies
         uses: actions/cache@v3
         id: cache-dependencies
@@ -201,9 +183,6 @@ jobs:
           install: false
   e2e-tests-firefox:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [16]
     needs: build
     steps:
       - name: Checkout Commit
@@ -211,7 +190,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '18.16.0'
       - name: Restore yarn dependencies
         uses: actions/cache@v3
         id: cache-dependencies

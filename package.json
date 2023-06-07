@@ -14,7 +14,7 @@
     "cy:run": "cypress run --browser chrome",
     "dev": "next-remote-watch ./content",
     "export": "next export",
-    "format": "prettier --write \"./**/*.{js,jsx,ts,tsx}\"",
+    "format": "prettier --check \"./**/*.{js,jsx,ts,tsx}\"",
     "generate:index": "node ./scripts/generate-index",
     "generate:og": "node ./scripts/generate-opengraph-images",
     "generate:rss": "node ./scripts/generate-rss",
