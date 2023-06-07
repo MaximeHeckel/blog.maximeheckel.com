@@ -9,12 +9,12 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Thu, 01 Jun 2023 23:44:19 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 07 Jun 2023 22:19:07 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
         <item>
             <title><![CDATA[Building a magical AI-powered semantic search from scratch]]></title>
-            <description><![CDATA[TBD]]></description>
+            <description><![CDATA[An end-to-end walkthrough on how to build a semantic search from your own MDX or Markdown based content using Postgres vector similarity search and OpenAI's text embeddings and chat completion APIs.]]></description>
             <link>https://blog.maximeheckel.com/posts/building-magical-ai-powered-semantic-search</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/building-magical-ai-powered-semantic-search</guid>
             <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
