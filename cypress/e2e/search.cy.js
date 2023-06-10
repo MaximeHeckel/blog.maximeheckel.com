@@ -37,22 +37,24 @@ describe('Search tests', () => {
     cy.get('[data-testid="search"]').should('not.exist');
   });
 
-  it('Searches when typing on the input and shows results', () => {
+  it('Queries the semantic search endpoint and returns results that are clickable', () => {
+    cy.intercept('POST', '/api/semanticsearch', [
+      {
+        title: 'Migrating to Next.js',
+        url: 'https://blog.maximeheckel.com/posts/migrating-to-nextjs/',
+      },
+    ]).as('semanticSearch');
+
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
     cy.get('[data-testid="search-overlay"]').should('be.visible');
     cy.get('[data-testid="search"]').should('be.visible');
     cy.get('input[id="search-input"]').clear().type('react');
-    cy.get('[data-testid="search-result"]').should('be.visible');
-  });
 
-  it('Clicking on a result navigates the user to an article', () => {
-    cy.visit('/');
-    cy.wait(2000);
-    cy.get('body').type('{ctrl}k', { force: true });
-    cy.get('input[id="search-input"]').clear().type('react', { delay: 400 });
-    cy.get('[data-testid="search-result"]').eq(0).click();
+    cy.wait('@semanticSearch');
+    cy.get('[data-testid="search-result"]').should('be.visible').eq(0).click();
+
     cy.url().should('include', '/posts/');
     cy.get('[data-testid="hero"]').should('be.visible');
 
@@ -70,6 +72,8 @@ describe('Search tests', () => {
       .clear()
       .type('How to compose CSS variables', { delay: 200 });
     cy.get('[data-testid="ai-prompt-submit-button"]').click();
+
+    cy.wait(2000);
 
     cy.get('[data-testid="ai-prompt-serialized-response"]', { timeout: 60000 })
       .should('be.visible')

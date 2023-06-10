@@ -1,5 +1,5 @@
 import { useTheme } from '@maximeheckel/design-system';
-import Sandpack from '@theme/components/Code/Sandpack';
+import Sandpack from '@core/components/Code/Sandpack';
 
 const AppCode = `import { motion } from 'framer-motion';
 import React from 'react';

@@ -12,7 +12,7 @@ import {
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
 import { useMutation } from 'react-query';
-import Glow from '@theme/components/Glow';
+import Glow from '@core/components/Glow';
 import { NewsletterHeader } from './Icons';
 import { NewsletterFormContent, ErrorMessage } from './Styles';
 import { subscribeCall } from './utils';

@@ -1,6 +1,5 @@
 export type Result = {
-  type: 'snippet' | 'blogPost';
-  slug: string;
+  url: string;
   title: string;
 };
 

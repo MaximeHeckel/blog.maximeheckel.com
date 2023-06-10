@@ -1,5 +1,5 @@
 import { Box, Card, Flex, Grid } from '@maximeheckel/design-system';
-import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
+import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 import React from 'react';
 
 const StyledBox = () => (

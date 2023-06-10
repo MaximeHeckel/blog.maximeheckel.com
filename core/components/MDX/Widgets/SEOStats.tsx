@@ -1,5 +1,5 @@
 import { styled, Flex } from '@maximeheckel/design-system';
-import LineChart from '@theme/components/Charts/LineChart';
+import LineChart from '@core/components/Charts/LineChart';
 import { ParentSize } from '@visx/responsive';
 
 const Wrapper = styled(Flex, {

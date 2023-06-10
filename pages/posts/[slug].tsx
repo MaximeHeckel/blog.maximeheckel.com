@@ -5,8 +5,8 @@ import BlogLayout from 'layouts/BlogPost';
 import getOgImage from 'lib/generate-opengraph-images';
 import { getTweets } from 'lib/tweets';
 import { getFileBySlug, getFiles } from 'lib/mdx';
-import MDXComponents from '@theme/components/MDX/MDXComponents';
-import Tweet from '@theme/components/Tweet';
+import MDXComponents from '@core/components/MDX/MDXComponents';
+import Tweet from '@core/components/Tweet';
 import { FrontMatterPost, PostType } from 'types/post';
 
 interface BlogProps {

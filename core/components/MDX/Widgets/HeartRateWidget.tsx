@@ -1,4 +1,4 @@
-import LineChart from '@theme/components/Charts/LineChart';
+import LineChart from '@core/components/Charts/LineChart';
 import { ParentSize } from '@visx/responsive';
 import { motion } from 'framer-motion';
 import { GraphQLClient, gql } from 'graphql-request';

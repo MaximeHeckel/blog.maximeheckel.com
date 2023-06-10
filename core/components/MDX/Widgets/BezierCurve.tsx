@@ -6,7 +6,7 @@ import {
   Range,
   Tooltip,
 } from '@maximeheckel/design-system';
-import useInterval from '@theme/hooks/useInterval';
+import useInterval from '@core/hooks/useInterval';
 import { Group } from '@visx/group';
 import { ParentSize } from '@visx/responsive';
 import { scaleLinear } from '@visx/scale';

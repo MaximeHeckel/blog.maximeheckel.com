@@ -7,7 +7,7 @@ import {
   Text,
   TextInput,
 } from '@maximeheckel/design-system';
-import CommandCenterButton from '@theme/components/Buttons/CommandCenterButton';
+import CommandCenterButton from '@core/components/Buttons/CommandCenterButton';
 import React from 'react';
 
 const MicroInteractionShowcase = () => {

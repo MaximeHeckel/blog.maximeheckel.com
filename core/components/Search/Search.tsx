@@ -16,10 +16,10 @@ import {
   SearchInput,
   Wrapper,
 } from './Styles';
-import useBodyScrollLock from '@theme/hooks/useBodyScrollLock';
+import useBodyScrollLock from '@core/hooks/useBodyScrollLock';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Result, SearchError, Status } from './types';
-import StaticSearchResults from './StatucSearchResult';
+import SearchResults from './SearchResults';
 import AIPromptResultCard from './AIPromptResultCard';
 import AIPromptInput from './AIPromptInput';
 
@@ -35,13 +35,12 @@ const Search = (props: Props) => {
   const [status, setStatus] = React.useState<Status>('initial');
   const [results, setResults] = React.useState<Result[]>([]);
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [error, setError] = React.useState<SearchError | null>(null);
 
   // AI Related states
-  const [error, setError] = React.useState<SearchError | null>(null);
   const [AIMode, setAIMode] = React.useState(forceAIMode);
   const [AIQuery, setAIQuery] = React.useState('');
   const [streamData, setStreamData] = React.useState('');
-  // const [sources, setSources] = React.useState<Source[]>([]);
 
   const ref = React.useRef<HTMLElement>();
   const readerRef = React.useRef<ReadableStreamDefaultReader>();
@@ -49,7 +48,7 @@ const Search = (props: Props) => {
 
   useBodyScrollLock();
 
-  const debouncedSearchQuery = useDebouncedValue(searchQuery, 250);
+  const debouncedSearchQuery = useDebouncedValue(searchQuery, 400);
 
   const formRef = React.useRef<HTMLFormElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -96,6 +95,36 @@ const Search = (props: Props) => {
   };
 
   const querySemanticSearch = async (query: string) => {
+    setError(null);
+    setStatus('loading');
+
+    try {
+      const response = await fetch('/api/semanticsearch/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+          completion: false,
+          threshold: 0.76,
+        }),
+      });
+
+      if (!response.ok) {
+        setError({
+          status: response.status,
+          statusText: response.statusText,
+        });
+      }
+
+      const data = await response.json();
+      setResults(data);
+      setStatus('done');
+    } catch (error) {}
+  };
+
+  const queryCompletionSemanticSearch = async (query: string) => {
     // Clear data
     setError(null);
     setStreamData('');
@@ -153,21 +182,10 @@ const Search = (props: Props) => {
         break;
       }
 
-      // if (chunkValue.includes('[VECTOR_SEARCH_END]')) {
-      //   const [, sources] = chunkValue.split('[VECTOR_SEARCH_END]');
-      //   try {
-      //     const parsedSources = JSON.parse(sources);
-      //     setSources(parsedSources);
-      //   } catch (error) {
-      //     // eslint-disable-next-line no-console
-      //     console.error('Failed to parse sources', error);
-      //   }
-      // } else {
       setStreamData((prev) => {
         text = prev + chunkValue;
         return prev + chunkValue;
       });
-      // }
     }
     reader.cancel();
     setStatus('done');
@@ -185,7 +203,7 @@ const Search = (props: Props) => {
 
     setAIQuery(form.aisearch.value);
 
-    querySemanticSearch(form.aisearch.value);
+    queryCompletionSemanticSearch(form.aisearch.value);
     form.aisearch.value = '';
   };
 
@@ -198,16 +216,8 @@ const Search = (props: Props) => {
 
   // Handle classic search (TODO: Refactor this => use simple embed search instead)
   React.useEffect(() => {
-    setStatus('loading');
-
     if (debouncedSearchQuery && debouncedSearchQuery !== '') {
-      const searchEndpoint = `/api/search?q=${debouncedSearchQuery.toLowerCase()}`;
-      fetch(searchEndpoint)
-        .then((res) => res.json())
-        .then((res) => {
-          setResults(res.results);
-          setStatus('initial');
-        });
+      querySemanticSearch(debouncedSearchQuery);
     }
 
     if (debouncedSearchQuery === '') {
@@ -272,7 +282,7 @@ const Search = (props: Props) => {
                       <AIPromptResultCard
                         error={error}
                         onQuestionSelect={(question) => {
-                          querySemanticSearch(question);
+                          queryCompletionSemanticSearch(question);
                         }}
                         query={AIQuery}
                         ref={resultCardRef}
@@ -347,10 +357,7 @@ const Search = (props: Props) => {
                       </form>
                     </FormWrapper>
                     {debouncedSearchQuery !== '' ? (
-                      <StaticSearchResults
-                        results={results}
-                        onClose={onClose}
-                      />
+                      <SearchResults results={results} onClose={onClose} />
                     ) : (
                       <CommandCenterStatic
                         collapse={AIMode}

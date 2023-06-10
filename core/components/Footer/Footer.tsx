@@ -7,7 +7,7 @@ import {
   EM,
   Flex,
 } from '@maximeheckel/design-system';
-import Logo from '@theme/components/Logo';
+import Logo from '@core/components/Logo';
 import Link from 'next/link';
 import React from 'react';
 

@@ -17,9 +17,9 @@ import {
   H3,
   Strong,
 } from '@maximeheckel/design-system';
-import Code from '@theme/components/Code';
-import Fullbleed from '@theme/components/Fullbleed';
-import VideoPlayer from '@theme/components/VideoPlayer';
+import Code from '@core/components/Code';
+import Fullbleed from '@core/components/Fullbleed';
+import VideoPlayer from '@core/components/VideoPlayer';
 
 // MDX only components
 import Image from './Image';

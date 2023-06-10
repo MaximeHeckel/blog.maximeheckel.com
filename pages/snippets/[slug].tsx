@@ -2,7 +2,7 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import { MDXRemote } from 'next-mdx-remote';
 import SnippetLayout from 'layouts/Snippet';
 import { getFileBySlug, getFiles } from 'lib/mdx';
-import Code from '@theme/components/Code';
+import Code from '@core/components/Code';
 import { FrontMatterSnippet, PostType } from 'types/post';
 import dynamic from 'next/dynamic';
 
@@ -11,7 +11,7 @@ interface SnippetProps {
 }
 
 const WaveAnimationSandpack = dynamic(
-  () => import('@theme/components/MDX/Widgets/WaveAnimation/Sandpack')
+  () => import('@core/components/MDX/Widgets/WaveAnimation/Sandpack')
 );
 
 export default function Snippet({

@@ -29,12 +29,12 @@ import {
   Radio,
   Details,
 } from '@maximeheckel/design-system';
-import Logo from '@theme/components/Logo';
-import Glow from '@theme/components/Glow';
-import CodeBlock from '@theme/components/Code/CodeBlock';
-import Seo from '@theme/components/Seo';
-import Tweet from '@theme/components/Tweet';
-import Layout from '@theme/layout';
+import Logo from '@core/components/Logo';
+import Glow from '@core/components/Glow';
+import CodeBlock from '@core/components/Code/CodeBlock';
+import Seo from '@core/components/Seo';
+import Tweet from '@core/components/Tweet';
+import Layout from '@core/layout';
 import { AnimatePresence } from 'framer-motion';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
@@ -44,9 +44,9 @@ import { TransformedTweet } from 'types/tweet';
 const Tooltip = (props: any) => <>{props.children}</>;
 
 const SandpackExample = dynamic(
-  () => import('@theme/components/MDX/Widgets/WaveAnimation/Sandpack')
+  () => import('@core/components/MDX/Widgets/WaveAnimation/Sandpack')
 );
-const Search = dynamic(() => import('@theme/components/Search'), {
+const Search = dynamic(() => import('@core/components/Search'), {
   ssr: false,
 });
 
