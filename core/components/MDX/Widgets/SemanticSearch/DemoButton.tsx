@@ -5,7 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
-const Search = dynamic(() => import('@theme/components/Search'));
+const Search = dynamic(() => import('@core/components/Search'));
 
 const DemoButton = () => {
   const [showSearch, setShowSearch] = useState(false);

@@ -11,7 +11,7 @@ interface SnippetProps {
 }
 
 const WaveAnimationSandpack = dynamic(
-  () => import('@theme/components/MDX/Widgets/WaveAnimation/Sandpack')
+  () => import('@core/components/MDX/Widgets/WaveAnimation/Sandpack')
 );
 
 export default function Snippet({

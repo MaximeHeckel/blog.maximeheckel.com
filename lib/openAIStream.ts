@@ -17,6 +17,8 @@ type OpenAIPayload = {
 const OPEN_AI_API_KEY = process.env.OPEN_AI_API_KEY;
 
 export const OpenAIMockStream = async () => {
+  // eslint-disable-next-line no-console
+  console.info('=== MOCK STREAM ===');
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream({

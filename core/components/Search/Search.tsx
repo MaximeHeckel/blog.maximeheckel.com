@@ -107,7 +107,7 @@ const Search = (props: Props) => {
         body: JSON.stringify({
           query,
           completion: false,
-          threshold: 0.78,
+          threshold: 0.76,
         }),
       });
 

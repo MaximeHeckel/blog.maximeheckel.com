@@ -49,8 +49,6 @@ export default async function handler(req: Request) {
   if (input === '') return;
 
   if (mock) {
-    // eslint-disable-next-line no-console
-    console.info('=== MOCK STREAM ===');
     try {
       const stream = await OpenAIMockStream();
 

@@ -2,9 +2,7 @@ import { styled, Anchor, Text } from '@maximeheckel/design-system';
 import WebmentionReplies from '@core/components/Webmentions/WebmentionReplies';
 import dynamic from 'next/dynamic';
 
-const NewsletterForm = dynamic(
-  () => import('@theme/components/NewsletterForm')
-);
+const NewsletterForm = dynamic(() => import('@core/components/NewsletterForm'));
 
 const ColoredBlockWrapper = styled('div', {
   background: 'var(--maximeheckel-colors-emphasis)',

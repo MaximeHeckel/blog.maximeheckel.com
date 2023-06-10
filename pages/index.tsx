@@ -25,9 +25,7 @@ import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';
 import React from 'react';
 
-const NewsletterForm = dynamic(
-  () => import('@theme/components/NewsletterForm')
-);
+const NewsletterForm = dynamic(() => import('@core/components/NewsletterForm'));
 
 interface Props {
   posts: Post[];
