@@ -131,12 +131,14 @@ export default async function handler(req: Request) {
       }
     );
 
+    const sources = removeDuplicates(Object.values(documents));
+
     if (error) {
       throw new Response(`An error occurred: ${error}`, { status: 500 });
     }
 
     if (!completion) {
-      return new Response(JSON.stringify(documents), { status: 200 });
+      return new Response(JSON.stringify(sources), { status: 200 });
     }
 
     const tokenizer = new GPT3Tokenizer({ type: 'gpt3' });
@@ -156,8 +158,6 @@ export default async function handler(req: Request) {
 
       contextText += `${content.trim()}\n---\n`;
     }
-
-    const sources = removeDuplicates(Object.values(documents));
 
     const sourcesTokens = generateMarkdownLinks(sources)
       .split('')

@@ -5,6 +5,7 @@ import { HEIGHT, MAX_HEIGHT, SHORTCUT_HEIGHT } from './constants';
 export const Result = styled(motion.li, {
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'space-between',
   marginBottom: '0px',
   listStyle: 'none',
   fontSize: 'var(--font-size-1)',
@@ -43,11 +44,11 @@ export const Result = styled(motion.li, {
   },
 });
 
-export const SearchResultWrapper = styled(Box, {
+export const ResultListWrapper = styled(Box, {
   height: `${MAX_HEIGHT + SHORTCUT_HEIGHT}px`,
 });
 
-export const SearchResults = styled('ul', {
+export const ResultList = styled('ul', {
   background: 'var(--maximeheckel-colors-body)',
   maxHeight: `${MAX_HEIGHT + SHORTCUT_HEIGHT}px`,
   overflowY: 'scroll',

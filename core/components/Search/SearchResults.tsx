@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { HEIGHT, MAX_HEIGHT } from './constants';
-import { SearchResultWrapper, SearchResults, Result } from './Styles';
+import { ResultListWrapper, ResultList, Result } from './Styles';
 import useIndexItem from './useIndexItem';
 import { Result as ResultType } from './types';
 
@@ -30,9 +30,10 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
     (event: KeyboardEvent) => {
       switch (event.key) {
         case 'Enter':
-          const href = `/${
-            selectedResult.type === 'snippet' ? 'snippets' : 'posts'
-          }/${selectedResult.slug}/`;
+          const href = selectedResult.url.replace(
+            'https://blog.maximeheckel.com',
+            ''
+          );
           router.push(href).then(() => window.scrollTo(0, 0));
           setTimeout(onClose, 600);
           break;
@@ -61,21 +62,21 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
   React.useEffect(() => {
     if (selectedResult) {
       document
-        .getElementById(selectedResult.slug)
+        .getElementById(selectedResult.url)
         ?.scrollIntoView({ block: 'nearest' });
     }
   }, [selectedResult]);
 
   return (
-    <SearchResultWrapper>
-      <SearchResults
+    <ResultListWrapper>
+      <ResultList
         style={{
           height:
             results.length === 0
-              ? 48
-              : results.length * HEIGHT >= MAX_HEIGHT
+              ? HEIGHT
+              : results.length * HEIGHT + 2 >= MAX_HEIGHT
               ? MAX_HEIGHT
-              : results.length * HEIGHT,
+              : results.length * HEIGHT + 2,
           transition: 'height 0.4s ease-out',
           willChange: 'height',
         }}
@@ -83,15 +84,13 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
         {results.map((result, index) => (
           <Result
             data-testid="search-result"
-            key={result.slug}
-            id={result.slug}
+            key={result.url}
+            id={result.url}
             selected={selectedResult === result}
             onPointerEnter={() => handlePointer(index)}
           >
             <Link
-              href={`/${result.type === 'snippet' ? 'snippets' : 'posts'}/${
-                result.slug
-              }`}
+              href={result.url.replace('https://blog.maximeheckel.com', '')}
               onClick={() => setTimeout(onClose, 600)}
             >
               {result.title}
@@ -100,7 +99,6 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
               alignItems="center"
               justifyContent="center"
               css={{
-                marginLeft: 'var(--space-4)',
                 height: '35px',
                 width: '35px',
                 backgroundColor: 'var(--maximeheckel-colors-emphasis)',
@@ -115,8 +113,8 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
             </Flex>
           </Result>
         ))}
-      </SearchResults>
-    </SearchResultWrapper>
+      </ResultList>
+    </ResultListWrapper>
   );
 };
 
