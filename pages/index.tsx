@@ -20,7 +20,7 @@ import { motion, MotionProps } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Balancer from 'react-wrap-balancer';
-import Layout from '@theme/layout';
+import Layout from '@core/layout';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';
 import React from 'react';

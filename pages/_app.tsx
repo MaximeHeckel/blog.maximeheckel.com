@@ -5,7 +5,7 @@ import {
   ThemeProvider,
   Tooltip,
 } from '@maximeheckel/design-system';
-import { DefaultSeo } from '@theme/components/Seo';
+import { DefaultSeo } from '@core/components/Seo';
 import { Analytics } from '@vercel/analytics/react';
 import 'styles/global.css';
 import 'styles/font.css';

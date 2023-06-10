@@ -1,6 +1,6 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
-import Sandpack from '@theme/components/Code/Sandpack';
-import useGPUTier from '@theme/hooks/useGPUTier';
+import Sandpack from '@core/components/Code/Sandpack';
+import useGPUTier from '@core/hooks/useGPUTier';
 import { useInView } from 'react-intersection-observer';
 
 import FlagFiles from './flag';

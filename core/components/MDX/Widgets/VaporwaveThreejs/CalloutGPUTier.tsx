@@ -1,5 +1,5 @@
 import { Callout, Text } from '@maximeheckel/design-system';
-import useGPUTier from '@theme/hooks/useGPUTier';
+import useGPUTier from '@core/hooks/useGPUTier';
 
 const CalloutGPUTier = () => {
   const { tier, loading: tierLoading } = useGPUTier();

@@ -1,4 +1,4 @@
-import Sandpack from '@theme/components/Code/Sandpack';
+import Sandpack from '@core/components/Code/Sandpack';
 import { useInView } from 'react-intersection-observer';
 import { css } from '@maximeheckel/design-system';
 import { script1 } from './script1';
@@ -8,7 +8,7 @@ import { script4 } from './script4';
 import { script5 } from './script5';
 import { script6 } from './script6';
 import { script7 } from './script7';
-import useGPUTier from '@theme/hooks/useGPUTier';
+import useGPUTier from '@core/hooks/useGPUTier';
 
 const htmlSandpack = `<!DOCTYPE html>
 <html lang="en">

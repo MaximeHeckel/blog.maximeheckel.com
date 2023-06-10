@@ -4,9 +4,9 @@ import {
   Tooltip,
   useKeyboardShortcut,
 } from '@maximeheckel/design-system';
-import Logo from '@theme/components/Logo';
-import useProgress from '@theme/hooks/useProgress';
-import useScrollCounter from '@theme/hooks/useScrollCounter';
+import Logo from '@core/components/Logo';
+import useProgress from '@core/hooks/useProgress';
+import useScrollCounter from '@core/hooks/useScrollCounter';
 import { AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';

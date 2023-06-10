@@ -1,10 +1,10 @@
 import { Box, css, Flex, Grid, Pill, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import React from 'react';
-import Layout from '@theme/layout';
-import Seo from '@theme/components/Seo';
+import Layout from '@core/layout';
+import Seo from '@core/components/Seo';
 import { Snippet } from 'types/post';
-import Hero from '@theme/components/Hero';
+import Hero from '@core/components/Hero';
 
 interface Props {
   children: React.ReactNode;

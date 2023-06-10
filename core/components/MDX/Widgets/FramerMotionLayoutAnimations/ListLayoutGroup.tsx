@@ -7,7 +7,7 @@ import {
   Text,
   Switch,
 } from '@maximeheckel/design-system';
-import { HighlightedCodeText } from '@theme/components/Code/CodeBlock';
+import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import Sandpack from '@theme/components/Code/Sandpack';
+import Sandpack from '@core/components/Code/Sandpack';
 import snippet1 from './snippet1';
 import snippet2 from './snippet2';
 import snippet3 from './snippet3';

@@ -8,7 +8,7 @@ import {
   Switch,
   Tooltip,
 } from '@maximeheckel/design-system';
-import useInterval from '@theme/hooks/useInterval';
+import useInterval from '@core/hooks/useInterval';
 import { Drag } from '@visx/drag';
 import { Group } from '@visx/group';
 import { ParentSize } from '@visx/responsive';

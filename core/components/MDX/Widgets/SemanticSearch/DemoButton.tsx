@@ -1,6 +1,6 @@
 import { Button } from '@maximeheckel/design-system';
-import Glow from '@theme/components/Glow';
-import { Sparkles } from '@theme/components/Search/Icons';
+import Glow from '@core/components/Glow';
+import { Sparkles } from '@core/components/Search/Icons';
 import { AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';

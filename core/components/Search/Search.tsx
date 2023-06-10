@@ -16,7 +16,7 @@ import {
   SearchInput,
   Wrapper,
 } from './Styles';
-import useBodyScrollLock from '@theme/hooks/useBodyScrollLock';
+import useBodyScrollLock from '@core/hooks/useBodyScrollLock';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Result, SearchError, Status } from './types';
 import SearchResults from './SearchResults';

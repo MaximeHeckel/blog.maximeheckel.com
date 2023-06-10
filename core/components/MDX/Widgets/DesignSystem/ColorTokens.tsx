@@ -9,7 +9,7 @@ import {
   Tooltip,
   useTheme,
 } from '@maximeheckel/design-system';
-import LightDarkSwitcher from '@theme/components/Buttons/LightDarkSwitcher';
+import LightDarkSwitcher from '@core/components/Buttons/LightDarkSwitcher';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 

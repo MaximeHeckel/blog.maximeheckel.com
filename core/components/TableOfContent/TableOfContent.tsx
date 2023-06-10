@@ -1,6 +1,6 @@
 import { Anchor, Box, styled } from '@maximeheckel/design-system';
-import useProgress from '@theme/hooks/useProgress';
-import useScrollSpy from '@theme/hooks/useScrollSpy';
+import useProgress from '@core/hooks/useProgress';
+import useScrollSpy from '@core/hooks/useScrollSpy';
 import { useReducedMotion, motion } from 'framer-motion';
 import React from 'react';
 import ProgressBar from './ProgressBar';

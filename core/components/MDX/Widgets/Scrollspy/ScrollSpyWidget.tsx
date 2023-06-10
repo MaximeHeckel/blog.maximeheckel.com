@@ -7,7 +7,7 @@ import {
   Range,
   useTheme,
 } from '@maximeheckel/design-system';
-import useScrollSpy from '@theme/hooks/useScrollSpy';
+import useScrollSpy from '@core/hooks/useScrollSpy';
 import React from 'react';
 import { AnimationCardContent, Form, HighlightedValue } from '../Components';
 
