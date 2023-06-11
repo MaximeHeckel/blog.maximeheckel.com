@@ -13,12 +13,12 @@ import React from 'react';
 
 const FooterBlock = styled('footer', {
   background: 'var(--maximeheckel-colors-body)',
-  paddingTop: 'var(--space-8)',
   transition: '0.5s',
   width: '100%',
 
   hr: {
     height: '1px',
+    marginTop: 0,
     width: '100%',
     background: 'var(--maximeheckel-border-color)',
     border: 'none',

@@ -316,7 +316,7 @@ const IndexPage = (props: Props) => {
             })}
           </Grid>
           <br />
-          <Card>
+          <Card css={{ marginBottom: '2.25em' }}>
             <Card.Body>
               <H3>#BlackLivesMatter</H3>
               <Anchor underline href="https://blacklivesmatters.carrd.co/">
