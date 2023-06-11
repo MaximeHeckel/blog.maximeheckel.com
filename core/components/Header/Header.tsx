@@ -49,7 +49,6 @@ const Header = (props: HeaderProps) => {
 
   return (
     <>
-      {/** Do not delete the following! Needed for Webmention.io */}
       <a
         className="hidden h-card"
         data-testid="twitter-link"
