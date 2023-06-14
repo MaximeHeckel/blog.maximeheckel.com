@@ -72,7 +72,7 @@ const RefractionDispersionSandpack = (props: any) => {
             '@react-three/drei': '9.44.1',
             '@react-three/fiber': '8.9.1',
             lamina: '1.1.20',
-            leva: '^0.9.31',
+            leva: '0.9.34',
             three: '0.146.0',
             uuid: '^9.0.0',
           }}
