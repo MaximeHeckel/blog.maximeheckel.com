@@ -8,6 +8,7 @@ import {
   TextInput,
   EM,
   H3,
+  Box,
 } from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React from 'react';
@@ -118,7 +119,6 @@ const NewsletterForm = (props: Props) => {
               </Anchor>{' '}
               to receive a monthly digest containing:
             </Text>
-            <br />
             <List variant="unordered">
               <List.Item>
                 <Text
@@ -140,8 +140,8 @@ const NewsletterForm = (props: Props) => {
                   }}
                   variant="secondary"
                 >
-                  <EM>Exclusive previews of upcoming articles</EM> on frontent
-                  development, React, and SwiftUI
+                  <EM>Exclusive previews of upcoming articles</EM> on frontend
+                  development, React, Shaders, React Three Fiber and more.
                 </Text>
               </List.Item>
               <List.Item>
@@ -174,7 +174,9 @@ const NewsletterForm = (props: Props) => {
             <br />
           </>
         )}
-        <form
+        <Box
+          as="form"
+          css={{ width: '100%' }}
           onSubmit={async (event) => {
             event.preventDefault();
             try {
@@ -251,63 +253,7 @@ const NewsletterForm = (props: Props) => {
               </Button>
             </Glow>
           </Flex>
-        </form>
-        {/* <NewsLetterForm
-            animate={isChecked ? 'checked' : 'unchecked'}
-            variants={formVariant}
-            transition={{
-              ease: 'easeOut',
-              duration: 0.3,
-            }}
-            onSubmit={async (event) => {
-              event.preventDefault();
-              try {
-                await subscribe({ email });
-                setIsChecked(true);
-              } catch (e) {}
-            }}
-          >
-            <NewsLetterInput
-              animate={isChecked ? 'checked' : 'unchecked'}
-              variants={inputVariant}
-              transition={{
-                ease: 'easeOut',
-                duration: 0.3,
-              }}
-              disabled={isChecked || isLoading}
-              name="email"
-              type="email"
-              id="emailInput"
-              placeholder="Your email"
-              autoComplete="off"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-            />
-            <VisuallyHidden>
-              <label htmlFor="emailInput">Your email address</label>
-            </VisuallyHidden>
-            <NewsLetterSubmitButton
-              initial={false}
-              animate={isChecked ? 'checked' : 'unchecked'}
-              variants={buttonVariant}
-              whileHover="hover"
-              whileTap="press"
-              transition={{
-                type: 'spring',
-                stiffness: 200,
-                mass: 1,
-                damping: 8,
-              }}
-              disabled={isChecked || isLoading}
-              custom={isChecked}
-              type="submit"
-              aria-label="Subscribe to my newsletter"
-              title="Subscribe to my newsletter"
-            >
-              
-            </NewsLetterSubmitButton>
-          </NewsLetterForm> */}
+        </Box>
         {error ? (
           // @ts-ignore
           error.message.includes('already subscribed') ? (

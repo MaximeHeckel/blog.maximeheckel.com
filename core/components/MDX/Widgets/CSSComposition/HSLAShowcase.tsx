@@ -11,12 +11,7 @@ const HSLAShowcase = () => {
   const cssBackgroundColor = `background-color: hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha}%)`;
 
   return (
-    <Card
-      depth={1}
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card depth={1}>
       <AnimationCardContent
         css={{
           height: '700px',

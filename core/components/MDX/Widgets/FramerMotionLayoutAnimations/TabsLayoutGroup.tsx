@@ -133,11 +133,7 @@ const TabsLayoutGroup = (props: { layoutGroup: boolean }) => {
   );`;
 
   return (
-    <Card
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card>
       <Card.Body dotMatrix>
         <Flex direction="column" gap="4">
           {layoutGroup ? (

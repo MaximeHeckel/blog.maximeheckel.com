@@ -77,7 +77,7 @@ const DemoSearch = () => {
   };
 
   return (
-    <Card css={{ marginBottom: '2.25rem' }}>
+    <Card>
       <Card.Body as={Flex} direction="column" gap="4">
         <Flex as="form" css={{ width: '100%' }} gap="3" onSubmit={onSubmit}>
           <TextInput
@@ -168,9 +168,7 @@ const DemoSearch = () => {
                     variants={item}
                   >
                     <Flex alignItems="center" justifyContent="space-between">
-                      <Text css={{ marginBottom: 0 }} size="2">
-                        {result.title}
-                      </Text>{' '}
+                      <Text size="2">{result.title}</Text>{' '}
                       <Pill
                         variant={
                           result.similarity > 0.8

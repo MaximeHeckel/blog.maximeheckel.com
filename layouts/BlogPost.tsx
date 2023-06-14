@@ -15,7 +15,6 @@ import Layout from '@core/layout';
 import TableOfContent from '@core/components/TableOfContent';
 import Seo from '@core/components/Seo';
 import Hero from '@core/components/Hero';
-// import WebmentionCount from '@core/components/Webmentions/WebmentionCount';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
 import Balancer from 'react-wrap-balancer';
@@ -54,12 +53,19 @@ const contentClass = css({
   gridColumn: '2',
   color: 'var(--maximeheckel-colors-typeface-secondary)',
 
-  h3: {
+  h2: {
     marginTop: '2em',
   },
 
+  h3: {
+    marginTop: '1.45em',
+  },
+
   section: {
-    marginTop: '5em',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--space-6)',
+    maxWidth: 700,
   },
 });
 
@@ -157,7 +163,14 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
             {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
           </Hero>
           <TableOfContent ids={ids} />
-          <Box className={contentClass()}>{children}</Box>
+          <Flex
+            alignItems="start"
+            direction="column"
+            className={contentClass()}
+            gap="6"
+          >
+            {children}
+          </Flex>
         </Grid>
         <Signature title={title} url={postUrl} />
         <WebmentionBlogData date={date} postUrl={postUrl} subtitle={subtitle} />

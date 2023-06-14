@@ -106,12 +106,7 @@ const SpringPhysics = (props: { withDamping?: boolean }) => {
   );
 
   return (
-    <Card
-      depth={1}
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card depth={1}>
       <AnimationCardContent
         css={{
           height: 700,

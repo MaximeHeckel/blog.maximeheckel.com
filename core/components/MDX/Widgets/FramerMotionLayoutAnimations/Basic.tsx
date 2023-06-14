@@ -28,11 +28,7 @@ const Basic = () => {
 `;
 
   return (
-    <Card
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card>
       <Card.Body dotMatrix>
         <Flex direction="column" gap="5" css={{ width: '100%' }}>
           <Box

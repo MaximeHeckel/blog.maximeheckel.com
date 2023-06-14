@@ -87,7 +87,7 @@ const IndexPage = (props: Props) => {
   return (
     <Layout footer header headerProps={{ offsetHeight: 256 }}>
       <Grid columns="medium" gapX={4} gapY={12} className={wrapperGrid()}>
-        <Box>
+        <Flex alignItems="start" direction="column" gap="5">
           <H1>
             <Balancer ratio={0.3}>
               Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
@@ -138,19 +138,18 @@ const IndexPage = (props: Props) => {
               </VisuallyHidden>
             </a>
           </Flex>
-        </Box>
-        <section>
+        </Flex>
+        <Flex alignItems="start" as="section" direction="column" gap="5">
           <H2>Newsletter</H2>
           <NewsletterForm large />
-        </section>
-        <section>
+        </Flex>
+        <Flex alignItems="start" as="section" direction="column" gap="5">
           <H2>Featured</H2>
           <Grid
             as="ul"
             css={{
-              marginLeft: '0px',
-              marginBottom: '0px',
-              padding: '0px',
+              margin: 0,
+              padding: 0,
             }}
             data-testid="featured-list"
             gapY={4}
@@ -194,7 +193,7 @@ const IndexPage = (props: Props) => {
                           duration: 0.4,
                         }}
                       />
-                      <Box
+                      <Flex
                         css={{
                           height: '95%',
                           width: '105%',
@@ -242,8 +241,8 @@ const IndexPage = (props: Props) => {
                 );
               })}
           </Grid>
-        </section>
-        <section>
+        </Flex>
+        <Flex alignItems="start" as="section" direction="column" gap="5">
           <H2>All articles</H2>
           <Grid
             as="ul"
@@ -266,8 +265,9 @@ const IndexPage = (props: Props) => {
               }
 
               return (
-                <li
-                  style={{
+                <Box
+                  as="li"
+                  css={{
                     listStyle: 'none',
                     cursor: 'pointer',
                     marginBottom: 'calc(1.45rem / 2)',
@@ -282,7 +282,7 @@ const IndexPage = (props: Props) => {
                       as="p"
                       weight="4"
                       css={{
-                        paddingTop: '30px',
+                        padding: 'var(--space-6) 0px',
                       }}
                     >
                       {currentYear}
@@ -303,28 +303,26 @@ const IndexPage = (props: Props) => {
                         css={{
                           minWidth: '52px',
                           marginRight: '32px',
-                          marginBottom: '0px',
                         }}
                       >
                         {format(new Date(Date.parse(post.date)), 'MMM dd')}
                       </Text>
-                      {post.title}
+                      <Text weight="3">{post.title}</Text>
                     </Block>
                   </Link>
-                </li>
+                </Box>
               );
             })}
           </Grid>
-          <br />
-          <Card css={{ marginBottom: '2.25em' }}>
-            <Card.Body>
+          <Card css={{ marginBottom: 'var(--space-9)', width: '100%' }}>
+            <Card.Body alignItems="start" as={Flex} direction="column" gap="5">
               <H3>#BlackLivesMatter</H3>
               <Anchor underline href="https://blacklivesmatters.carrd.co/">
                 Click here to find out how you can help.
               </Anchor>
             </Card.Body>
           </Card>
-        </section>
+        </Flex>
       </Grid>
     </Layout>
   );

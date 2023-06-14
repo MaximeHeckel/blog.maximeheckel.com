@@ -31,11 +31,7 @@ const TextShowcase = () => {
 };`;
 
   return (
-    <Card
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card>
       <Card.Body
         as={Flex}
         alignItems="start"
@@ -43,18 +39,17 @@ const TextShowcase = () => {
         dotMatrix
         gap="4"
       >
-        <Text css={{ marginBottom: 0 }} family="numeric" outline size="7">
+        <Text family="numeric" outline size="7">
           Almost before we knew it, we had left the ground.
         </Text>
         <Flex css={{ maxWidth: 250 }}>
-          <Text css={{ marginBottom: 0 }} truncate>
+          <Text truncate>
             Almost before we knew it, we had left the ground.
           </Text>
         </Flex>
         <Text
           gradient
           css={{
-            marginBottom: 0,
             backgroundImage: `linear-gradient(90deg,#2E83FF -10%,#EB7D9F 50%, #FFCBBE 100%)`,
           }}
           size="6"

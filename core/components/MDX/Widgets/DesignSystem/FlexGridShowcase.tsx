@@ -39,11 +39,7 @@ const FlexGridShowcase = () => {
 };`;
 
   return (
-    <Card
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card>
       <Card.Body as={Flex} direction="column" dotMatrix gap="6">
         <Flex
           alignItems="center"

@@ -108,7 +108,7 @@ const Formatting = () => {
   }, [streamData, status]);
 
   return (
-    <Card css={{ marginBottom: '2.25rem' }}>
+    <Card>
       <Card.Body css={{ width: '100%' }} as={Flex} direction="column" gap="4">
         <Flex css={{ width: '100%' }} justifyContent="start">
           <Tooltip id="playpauseButton" content="Stream data">

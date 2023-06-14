@@ -53,11 +53,7 @@ const Distortions = () => {
 `;
 
   return (
-    <Card
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card>
       <Card.Body dotMatrix css={{ height: '300px', display: 'grid' }}>
         <Box
           as={motion.div}

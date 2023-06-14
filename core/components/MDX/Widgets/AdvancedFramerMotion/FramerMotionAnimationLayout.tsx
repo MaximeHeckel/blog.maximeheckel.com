@@ -72,12 +72,7 @@ const FramerMotionAnimationLayout = () => {
   const [withLayoutID, setWithLayoutID] = React.useState(false);
 
   return (
-    <Card
-      depth={1}
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card depth={1}>
       <AnimationCardContent>
         <Grid
           as="ul"

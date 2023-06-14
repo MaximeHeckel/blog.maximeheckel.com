@@ -170,6 +170,8 @@ const CardWithGlow = () => {
       >
         <CaptureLayer show={inPerspective} variants={topLayerVariants} />
         <H3>Hover me!</H3>
+        <br />
+        <br />
         <CardWrapper>
           <Glow variants={glowVariants} custom={inPerspective} />
           <Card>
@@ -220,12 +222,7 @@ const CardWithGlow = () => {
 
 const FramerMotionPropagation = () => {
   return (
-    <DesignSystemCard
-      depth={1}
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <DesignSystemCard depth={1}>
       <AnimationCardContent>
         <CardWithGlow />
       </AnimationCardContent>

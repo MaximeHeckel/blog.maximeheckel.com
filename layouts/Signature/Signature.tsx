@@ -89,6 +89,7 @@ const Signature = ({ title, url }: { title: string; url: string }) => {
           maxWidth: 700,
           margin: '0 auto',
         }}
+        gap="5"
       >
         <Text as="p">
           Liked this article? {/* @ts-ignore */}
@@ -121,11 +122,11 @@ const Signature = ({ title, url }: { title: string; url: string }) => {
         </Text>
 
         <Box>
-          <Text as="p" css={{ marginBottom: 0 }} variant="primary">
+          <Text as="p" variant="primary">
             Have a wonderful day.
           </Text>
           <Flex alignItems="start">
-            <Text as="p" css={{ marginBottom: 0 }} variant="primary">
+            <Text as="p" variant="primary">
               – Maxime
             </Text>
           </Flex>

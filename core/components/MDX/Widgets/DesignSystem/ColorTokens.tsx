@@ -229,12 +229,7 @@ const ColorTokens = () => {
   };
 
   return (
-    <Card
-      css={{
-        marginBottom: '2.25rem',
-      }}
-      title={`Step ${step + 1}: ${titles[step]}`}
-    >
+    <Card title={`Step ${step + 1}: ${titles[step]}`}>
       <Card.Body css={{ height: 600 }}>
         <Flex
           css={{ height: '100%' }}

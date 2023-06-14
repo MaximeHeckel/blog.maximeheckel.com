@@ -94,7 +94,6 @@ const List = (props: {
                 <Text
                   size="2"
                   css={{
-                    marginBottom: 0,
                     userSelect: 'none',
                   }}
                 >
@@ -135,12 +134,7 @@ const ListLayoutGroup = () => {
 </>`;
 
   return (
-    <Card
-      depth={1}
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card depth={1}>
       <Card.Body
         css={{
           height: '520px',

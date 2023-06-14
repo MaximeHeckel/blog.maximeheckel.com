@@ -5,7 +5,6 @@ import {
   Anchor,
   Blockquote,
   Button,
-  Callout,
   Card,
   Details,
   InlineCode,
@@ -17,6 +16,7 @@ import {
   H3,
   Strong,
 } from '@maximeheckel/design-system';
+import Callout from '@core/components/Callout';
 import Code from '@core/components/Code';
 import Fullbleed from '@core/components/Fullbleed';
 import VideoPlayer from '@core/components/VideoPlayer';

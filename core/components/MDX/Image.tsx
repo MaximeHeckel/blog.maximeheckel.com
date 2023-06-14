@@ -3,9 +3,7 @@ import { loader } from 'lib/next-image-loader';
 import NextImage, { ImageProps } from 'next/legacy/image';
 
 const StyledFigure = styled('figure', {
-  marginBottom: '2.25rem',
-  marginLeft: 0,
-  marginRight: 0,
+  margin: 0,
 });
 
 const Image = (props: ImageProps) => {

@@ -252,7 +252,6 @@ export const KBD = (props: React.HTMLAttributes<HTMLParagraphElement>) => (
       height: 24,
       width: 24,
       background: 'var(--maximeheckel-colors-emphasis)',
-      marginBottom: 0,
     }}
     size="1"
     variant="info"

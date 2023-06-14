@@ -37,7 +37,7 @@ const Cell = (props: CellProps) => {
         (x === 1 && y === 1) ||
         (x === 0 && y === 1) ||
         (x === 1 && y === 0) ? (
-          <Text css={{ marginBottom: 0 }} size="1">
+          <Text size="1">
             {x},{y}
           </Text>
         ) : null}
@@ -176,7 +176,7 @@ const FragmentShaderVisualizer = () => {
     .reverse();
 
   return (
-    <Card css={{ marginBottom: '2.25rem' }}>
+    <Card>
       <Card.Body as={Flex} direction="column" dotMatrix justifyContent="center">
         <Flex
           alignItems="start"

@@ -135,12 +135,7 @@ const ContentDemo = (props: Props) => {
 const FramerMotionAnimatePresence = () => {
   return (
     <TransitionGridWrapper>
-      <DesignSystemCard
-        depth={1}
-        css={{
-          marginBottom: '2.25rem',
-        }}
-      >
+      <DesignSystemCard depth={1}>
         <DesignSystemCard.Header>
           <div>
             Without <InlineCode>AnimatePresence</InlineCode>
@@ -150,12 +145,7 @@ const FramerMotionAnimatePresence = () => {
           <ContentDemo />
         </AnimationCardContent>
       </DesignSystemCard>
-      <DesignSystemCard
-        depth={1}
-        css={{
-          marginBottom: '2.25rem',
-        }}
-      >
+      <DesignSystemCard depth={1}>
         <DesignSystemCard.Header>
           <div>
             With <InlineCode>AnimatePresence</InlineCode>

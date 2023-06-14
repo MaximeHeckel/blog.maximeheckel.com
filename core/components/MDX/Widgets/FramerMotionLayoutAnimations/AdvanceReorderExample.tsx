@@ -73,12 +73,7 @@ const AdvanceReorderExample = () => {
   };
 
   return (
-    <Card
-      depth={1}
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card depth={1}>
       <Card.Body css={{ height: '640px' }}>
         <Flex direction="column" gap="4" alignItems="start">
           <Flex gap={4}>
@@ -166,14 +161,7 @@ const AdvanceReorderExample = () => {
                           checked={item.checked}
                           onChange={() => completeItem(item.id)}
                         />
-                        <Text
-                          size="2"
-                          css={{
-                            marginBottom: 0,
-                          }}
-                        >
-                          {item.text}
-                        </Text>
+                        <Text size="2">{item.text}</Text>
                       </Card.Body>
                     </Card>
                     <AnimatePresence initial={false}>
