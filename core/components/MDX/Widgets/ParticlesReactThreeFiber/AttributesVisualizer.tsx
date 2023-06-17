@@ -34,10 +34,7 @@ const AttributesVisualizer = () => {
   }, []);
 
   return (
-    <Card
-      css={{ marginBottom: '2.25rem' }}
-      title="Position attributes array to vertex visualizer"
-    >
+    <Card title="Position attributes array to vertex visualizer">
       <Card.Body>
         <Box
           css={{

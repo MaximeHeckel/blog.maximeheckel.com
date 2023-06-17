@@ -96,11 +96,7 @@ const HeartRateWidget = () => {
   );
 
   return (
-    <Card
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card css={{ width: '100%' }}>
       <Card.Header>
         <GraphLabel>Heart Rate</GraphLabel>
         {dataPoints.length !== 0 ? (

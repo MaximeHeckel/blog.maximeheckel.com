@@ -63,12 +63,7 @@ const LayoutPosition = () => {
 </motion.div>`;
 
   return (
-    <Card
-      css={{
-        marginBottom: '2.25rem',
-      }}
-      title='Example of practical use case for layout="position"'
-    >
+    <Card title='Example of practical use case for layout="position"'>
       <Card.Body>
         <Flex direction="column" gap="5">
           <Flex css={{ width: '100%' }}>

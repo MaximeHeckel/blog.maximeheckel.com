@@ -29,12 +29,7 @@ const HighlightSection = () => {
   }, [highlight]);
 
   return (
-    <Card
-      depth={1}
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card depth={1}>
       <Card.Body>
         <Switch
           aria-label="Highlight the section tags of this post"

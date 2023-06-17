@@ -1143,10 +1143,10 @@
   dependencies:
     "@lezer/common" "^0.15.0"
 
-"@maximeheckel/design-system@^1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@maximeheckel/design-system/-/design-system-1.3.1.tgz#ec747294c89a315dfe49709200221838cac68f43"
-  integrity sha512-fRCB5VRuwqhbi0O5ldqAdIElKrT/7/LAwbPk5WKJsca9TErAGy6SrrqYJGORbADONQQGvC5Q2iX2yOShWR5zuQ==
+"@maximeheckel/design-system@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@maximeheckel/design-system/-/design-system-1.4.0.tgz#f6d2b9645c2206b228e0a424dab09e8e8802652b"
+  integrity sha512-XIFFAGoqMSyvXAO0OzN5EnCOWFITjDnbJcA99op/n7/jvHpDSozYhAO6ORTsrQeUYYoxUpliyx7FbgN2XZDpmw==
   dependencies:
     "@radix-ui/react-collapsible" "^1.0.1"
     "@radix-ui/react-tooltip" "1.0.0"

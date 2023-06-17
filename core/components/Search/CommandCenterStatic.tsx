@@ -255,12 +255,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
       </div>
       <ShortcutList>
         <Flex alignItems="center">
-          <Text
-            as="span"
-            css={{ marginBottom: 0, opacity: 0.7 }}
-            size="1"
-            variant="tertiary"
-          >
+          <Text as="span" css={{ opacity: 0.7 }} size="1" variant="tertiary">
             Cmd
           </Text>
           <Flex>
@@ -271,12 +266,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           </Flex>
         </Flex>
         <Flex alignItems="center">
-          <Text
-            as="span"
-            css={{ marginBottom: 0, opacity: 0.7 }}
-            size="1"
-            variant="tertiary"
-          >
+          <Text as="span" css={{ opacity: 0.7 }} size="1" variant="tertiary">
             Theme
           </Text>
           <Flex>
@@ -287,12 +277,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           </Flex>
         </Flex>
         <Flex alignItems="center">
-          <Text
-            as="span"
-            css={{ marginBottom: 0, opacity: 0.7 }}
-            size="1"
-            variant="tertiary"
-          >
+          <Text as="span" css={{ opacity: 0.7 }} size="1" variant="tertiary">
             Open
           </Text>
           <Flex>

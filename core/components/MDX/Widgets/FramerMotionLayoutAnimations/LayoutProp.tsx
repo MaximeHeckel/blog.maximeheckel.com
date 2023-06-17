@@ -11,11 +11,7 @@ const LayoutProp = () => {
   // layout size => just the size / moves to position instantly
 
   return (
-    <Box
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Box>
       <Box
         css={{
           margin: '30px 0px',

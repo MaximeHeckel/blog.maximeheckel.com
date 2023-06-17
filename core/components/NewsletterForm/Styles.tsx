@@ -2,6 +2,10 @@ import { styled, Card, Text } from '@maximeheckel/design-system';
 import React from 'react';
 
 export const NewsletterFormContent = styled(Card.Body, {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'start',
+  gap: 'var(--space-5)',
   variants: {
     withOffset: {
       true: {

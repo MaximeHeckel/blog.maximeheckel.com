@@ -17,7 +17,6 @@ const Fullbleed = (props: {
         width: `100vw`,
         background: 'transparent',
         backdropFilter: 'blur(6px)',
-        padding: '24px 0',
 
         '@media(max-width: 850px)': {
           padding: 0,

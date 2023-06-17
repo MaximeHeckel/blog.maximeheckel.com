@@ -1,11 +1,13 @@
 import { css, Shadows, styled } from '@maximeheckel/design-system';
 
 export const TweetWrapper = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 'var(--space-5)',
   color: 'var(--maximeheckel-colors-typeface-primary)',
   borderRadius: 'var(--border-radius-2)',
   backgroundColor: 'var(--maximeheckel-card-background-color)',
   padding: '1rem 1.5rem',
-  marginBottom: '2rem',
   width: '100%',
 
   border: 'solid 1px var(--maximeheckel-border-color)',
@@ -46,14 +48,9 @@ export const ImageGrid = styled('div', {
   gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
   columnGap: '0.5rem',
   rowGrap: '0.5rem',
-  marginTop: '0.5rem',
-  marginBottom: '0.5rem',
 });
 
-export const SingleImageWrapper = styled('div', {
-  marginTop: '0.5rem',
-  marginBottom: '0.5rem',
-});
+export const SingleImageWrapper = styled('div', {});
 
 export const ActionIcons = styled('a', {
   display: 'flex',

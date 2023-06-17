@@ -79,8 +79,10 @@ const CodeBlock = (props: CodeBlockProps) => {
   return (
     <Card
       css={{
-        marginBottom: '32px',
+        // Fix the overflow issue when wrapped in text
+        display: 'grid',
         background: 'unset',
+        width: '100%',
 
         '@media(max-width: 750px)': {
           /**

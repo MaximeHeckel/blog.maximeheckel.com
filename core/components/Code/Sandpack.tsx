@@ -56,7 +56,6 @@ const SandpackWrapper = styled(Box, {
   '.sp-layout': {
     background: 'var(--maximeheckel-card-background-color)',
     position: 'relative',
-    marginBottom: '2.25rem',
     borderRadius: 'var(--border-radius-2)',
     boxShadow: Shadows[1],
     '@media (max-width: 770px)': {

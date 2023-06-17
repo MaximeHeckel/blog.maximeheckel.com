@@ -1,4 +1,4 @@
-import { styled, Card, Grid } from '@maximeheckel/design-system';
+import { styled, Card, Grid, Text } from '@maximeheckel/design-system';
 import { motion } from 'framer-motion';
 import { AnimationCardContent } from '../Components';
 
@@ -13,8 +13,8 @@ const ThemeColor = styled(motion.button, {
   boxShadow: 'none',
   border: 'none',
   cursor: 'pointer',
-  marginBottom: '20px',
   outline: 'none',
+  marginBottom: `var(--space-3)`,
 });
 
 const ButtonWrapper = styled('div', {
@@ -36,12 +36,7 @@ const ThemePicker = () => {
   };
 
   return (
-    <Card
-      depth={1}
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card depth={1}>
       <AnimationCardContent>
         <Grid
           gap={1}
@@ -185,7 +180,7 @@ const ThemePicker = () => {
               type: 'spring',
             }}
           />
-          Reset
+          <Text size="2">Reset</Text>
         </ButtonWrapper>
       </AnimationCardContent>
     </Card>

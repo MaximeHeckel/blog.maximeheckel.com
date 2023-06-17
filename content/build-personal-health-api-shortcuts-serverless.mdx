@@ -2,7 +2,7 @@
 title: 'Using Shortcuts and serverless to build a personal Apple Health API'
 subtitle: Take ownership of your Apple Watch health data with a only few lines of code.
 date: '2020-11-02T08:00:00.000Z'
-updated: '2020-11-02T08:00:00.000Z'
+updated: '2023-06-11T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -33,8 +33,6 @@ Well, good news if you're in this situation as well, I recently figured out a wa
 In this article, I'm going to show you how, by using a combination of [Apple Shortcuts](https://support.apple.com/guide/shortcuts/welcome/ios) and serverless functions, you can implement a way **to transfer recorded Apple Watch health samples to a Fauna database** and, in return, get **a fully-fledged GraphQL API**.
 
 <HeartRateWidget />
-
-<br />
 
 **That same API is what is powering this little widget above**, showcasing my recorded heart rate throughout the day. How cool is that? The chart will automatically refresh every now and then (I'm still finalizing this project) so if you're lucky, you might even catch a live update!
 
@@ -327,7 +325,7 @@ I'd also recommend checking [their documentation on GraphQL](https://docs.fauna.
 
 Before jumping into the complex use cases, let's write the GraphQL schema that will describe how our Apple Health API will work:
 
-```gql title=GraphQL schema for our health data
+```graphql title=GraphQL schema for our health data
 type Item @embedded {
   value: Int!
   timestamp: Time
@@ -384,7 +382,7 @@ Once uploaded we can start querying data right away! We won't get anything back 
 
 In the schema above you can see that we used the `@resolver` directive next to our `addEntry` mutation.
 
-```
+```graphql
 type Mutation {
   addEntry(entries: [EntryInput]): [Entry]
     @resolver(name: "add_entry", paginated: false)

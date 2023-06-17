@@ -68,7 +68,7 @@ const Tweet = (props: Props) => {
             rel="noopener noreferrer"
           >
             <Text
-              css={{ marginBottom: 0, lineHeight: '1.5' }}
+              css={{ lineHeight: '1.5' }}
               title={author.name}
               variant="primary"
               weight="4"
@@ -87,7 +87,7 @@ const Tweet = (props: Props) => {
             ) : null} */}
             </Text>
             <Text
-              css={{ marginBottom: 0, lineHeight: 'initial' }}
+              css={{ lineHeight: 'initial' }}
               variant="tertiary"
               title={`@${author.username}`}
               size="2"
@@ -109,8 +109,6 @@ const Tweet = (props: Props) => {
         as="p"
         variant="primary"
         css={{
-          marginTop: '1rem',
-          marginBottom: '1rem',
           whiteSpace: 'pre-wrap',
         }}
       >
@@ -174,40 +172,42 @@ const Tweet = (props: Props) => {
         </SingleImageWrapper>
       ) : null}
       {quoteTweet ? <Tweet tweet={{ ...quoteTweet }} /> : null}
-      <Anchor
-        discreet
-        href={tweetURL}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <time
-          title={`Time Posted: ${createdAt.toUTCString()}`}
-          dateTime={createdAt.toISOString()}
-        >
-          {format(createdAt, 'h:mm a - MMM d, y')}
-        </time>
-      </Anchor>
-      <Flex
-        css={{
-          marginTop: '1rem',
-        }}
-      >
-        <ActionIcons href={replyURL} target="_blank" rel="noopener noreferrer">
-          <ReplyIcon />
-          <span>{public_metrics.reply_count}</span>
-        </ActionIcons>
-        <ActionIcons
-          href={retweetURL}
+      <Flex alignItems="start" direction="column" gap="2">
+        <Anchor
+          discreet
+          href={tweetURL}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <RetweetIcon />
-          <span>{public_metrics.retweet_count}</span>
-        </ActionIcons>
-        <ActionIcons href={likeURL} target="_blank" rel="noopener noreferrer">
-          <LikeIcon />
-          <span>{public_metrics.like_count}</span>
-        </ActionIcons>
+          <time
+            title={`Time Posted: ${createdAt.toUTCString()}`}
+            dateTime={createdAt.toISOString()}
+          >
+            {format(createdAt, 'h:mm a - MMM d, y')}
+          </time>
+        </Anchor>
+        <Flex>
+          <ActionIcons
+            href={replyURL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <ReplyIcon />
+            <span>{public_metrics.reply_count}</span>
+          </ActionIcons>
+          <ActionIcons
+            href={retweetURL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <RetweetIcon />
+            <span>{public_metrics.retweet_count}</span>
+          </ActionIcons>
+          <ActionIcons href={likeURL} target="_blank" rel="noopener noreferrer">
+            <LikeIcon />
+            <span>{public_metrics.like_count}</span>
+          </ActionIcons>
+        </Flex>
       </Flex>
     </TweetWrapper>
   );

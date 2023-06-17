@@ -106,24 +106,32 @@ export default function Design(props: {
       <Seo title="Design" />
       <Grid columns="medium" gapX={4} gapY={10} className={wrapperGrid()}>
         <Box as="section" className={gridItem()}>
-          <H1
-            css={{
-              marginBottom: '0px',
-            }}
-          >
-            Components / Design System{' '}
-          </H1>
+          <H1>Components / Design System </H1>
           <HR />
           <Flex justifyContent="space-between">
             <Pill variant="warning">Work In Progress</Pill>
             <Pill variant="info">v1.0</Pill>
           </Flex>
         </Box>
-        <Box as="section" className={gridItem()} id="logo">
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="logo"
+        >
           <H2>Logo</H2>
           <Logo />
-        </Box>
-        <Box as="section" className={gridItem()} id="Colors">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="Colors"
+        >
           <H2>Colors</H2>
           <Grid gap={3}>
             Brand:
@@ -205,12 +213,20 @@ export default function Design(props: {
               </Tooltip>
             </Grid>
           </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="Palette">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="Palette"
+        >
           <H2>Palette</H2>
           <Grid
             gap={6}
             css={{
+              width: '100%',
               gridTemplateColumns: 'repeat(auto-fill, minmax(10rem, 1fr))',
             }}
           >
@@ -243,130 +259,184 @@ export default function Design(props: {
               </Grid>
             ))}
           </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="typography">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="typography"
+        >
           <H2>Typography</H2>
-          <Label>Display</Label>
-          <Text size="4">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Numeric (experimenting)</Label>
-          <Text size="3" family="numeric">
-            1 AU = 1,495978707x10<sup>11</sup> m
-          </Text>
-          <Label>Mono</Label>
-          <Text size="3" family="mono">
-            console.log(foobar)
-          </Text>
-          <br />
-          <br />
-          <Label>H1</Label>
-          <Heading as="h1" size="4">
-            Almost before we knew it, we had left the ground.
-          </Heading>
-          <Label>H2</Label>
-          <Heading as="h2" size="3">
-            Almost before we knew it, we had left the ground.
-          </Heading>
-          <Label>H3</Label>
-          <Heading as="h3" size="2">
-            Almost before we knew it, we had left the ground.
-          </Heading>
-          <Label>H4</Label>
-          <Heading as="h4" size="1">
-            Almost before we knew it, we had left the ground.
-          </Heading>
-          <br />
-          <Label>Text size 7</Label>
-          <Text as="p" size="7">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 6</Label>
-          <Text as="p" size="6">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 5</Label>
-          <Text as="p" size="5">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 4</Label>
-          <Text as="p" size="4">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 3</Label>
-          <Text as="p" size="3">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 2</Label>
-          <Text as="p" size="2">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text size 1</Label>
-          <Text as="p" size="1">
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <Label>Text gradient</Label>
-          <Text
-            as="p"
-            size="3"
-            gradient
-            css={{
-              backgroundImage: `linear-gradient(
+          <Box>
+            <Label>Display</Label>
+            <Text size="4">
+              Almost before we knew it, we had left the ground.
+            </Text>
+          </Box>
+          <Box>
+            <Label>Numeric (experimenting)</Label>
+            <Text size="3" family="numeric">
+              1 AU = 1,495978707x10<sup>11</sup> m
+            </Text>
+          </Box>
+          <Box>
+            <Label>Mono</Label>
+            <Text size="3" family="mono">
+              console.log(foobar)
+            </Text>
+          </Box>
+          <Box>
+            <Label>H1</Label>
+            <Heading as="h1" size="4">
+              Almost before we knew it, we had left the ground.
+            </Heading>
+          </Box>
+          <Box>
+            <Label>H2</Label>
+            <Heading as="h2" size="3">
+              Almost before we knew it, we had left the ground.
+            </Heading>
+          </Box>
+          <Box>
+            <Label>H3</Label>
+            <Heading as="h3" size="2">
+              Almost before we knew it, we had left the ground.
+            </Heading>
+          </Box>
+          <Box>
+            <Label>H4</Label>
+            <Heading as="h4" size="1">
+              Almost before we knew it, we had left the ground.
+            </Heading>
+          </Box>
+          <Box>
+            <Label>Text size 7</Label>
+            <Text as="p" size="7">
+              Almost before we knew it, we had left the ground.
+            </Text>
+          </Box>
+          <Box>
+            <Label>Text size 6</Label>
+            <Text as="p" size="6">
+              Almost before we knew it, we had left the ground.
+            </Text>
+          </Box>
+          <Box>
+            <Label>Text size 5</Label>
+            <Text as="p" size="5">
+              Almost before we knew it, we had left the ground.
+            </Text>
+          </Box>
+          <Box>
+            <Label>Text size 4</Label>
+            <Text as="p" size="4">
+              Almost before we knew it, we had left the ground.
+            </Text>
+          </Box>
+          <Box>
+            <Label>Text size 3</Label>
+            <Text as="p" size="3">
+              Almost before we knew it, we had left the ground.
+            </Text>
+          </Box>
+          <Box>
+            <Label>Text size 2</Label>
+            <Text as="p" size="2">
+              Almost before we knew it, we had left the ground.
+            </Text>
+          </Box>
+          <Box>
+            <Label>Text size 1</Label>
+            <Text as="p" size="1">
+              Almost before we knew it, we had left the ground.
+            </Text>
+          </Box>
+          <Box>
+            <Label>Text gradient</Label>
+            <Text
+              as="p"
+              size="3"
+              gradient
+              css={{
+                backgroundImage: `linear-gradient(
               91.83deg,
               hsl(var(--palette-pink-50)) -20.26%,
               hsl(var(--palette-blue-20)) 20.55%,
               hsl(var(--palette-indigo-30)) 60.81%
             )`,
-            }}
-          >
-            Almost before we knew it, we had left the ground.
-          </Text>
-          <br />
-          <Label>Strong</Label>
-          <Strong>Almost before we knew it, we had left the ground.</Strong>
-          <Label>EM</Label>
-          <EM>Almost before we knew it, we had left the ground.</EM>
-          <Label>BigNum (WIP)</Label>
-          <Text family="numeric" size="7" weight="4">
-            1 AU = 1,495978707x10<sup>11</sup> m
-          </Text>
-          <Label>BigNum Outline (Experimenting)</Label>
-          <Text
-            family="numeric"
-            size="7"
-            weight="4"
-            css={{
-              WebkitTextStrokeColor: 'var(--maximeheckel-colors-brand)',
-            }}
-            outline
-          >
-            1 AU = 1,495978707x10<sup>11</sup> m
-          </Text>
-          <br />
-          <Text
-            family="numeric"
-            size="7"
-            weight="4"
-            css={{
-              WebkitTextStrokeColor: 'var(--maximeheckel-colors-danger)',
-            }}
-            outline
-          >
-            1 AU = 1,495978707x10<sup>11</sup> m
-          </Text>
-          <br />
-          <br />
-        </Box>
-        <Box as="section" className={gridItem()} id="icons">
+              }}
+            >
+              Almost before we knew it, we had left the ground.
+            </Text>
+          </Box>
+          <Box>
+            <Label>Strong</Label>
+            <Strong>Almost before we knew it, we had left the ground.</Strong>
+          </Box>
+          <Box>
+            <Label>EM</Label>
+            <EM>Almost before we knew it, we had left the ground.</EM>
+          </Box>
+          <Box>
+            <Label>BigNum (WIP)</Label>
+            <Text family="numeric" size="7" weight="4">
+              1 AU = 1,495978707x10<sup>11</sup> m
+            </Text>
+          </Box>
+          <Box>
+            <Label>BigNum Outline (Experimenting)</Label>
+            <Text
+              family="numeric"
+              size="7"
+              weight="4"
+              css={{
+                WebkitTextStrokeColor: 'var(--maximeheckel-colors-brand)',
+              }}
+              outline
+            >
+              1 AU = 1,495978707x10<sup>11</sup> m
+            </Text>
+          </Box>
+          <Box>
+            <Text
+              family="numeric"
+              size="7"
+              weight="4"
+              css={{
+                WebkitTextStrokeColor: 'var(--maximeheckel-colors-danger)',
+              }}
+              outline
+            >
+              1 AU = 1,495978707x10<sup>11</sup> m
+            </Text>
+          </Box>
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="icons"
+        >
           <H2>Icons</H2>
           <IconSection />
-        </Box>
-        <Box as="section" className={gridItem()}>
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+        >
           <H2>Shadows</H2>
           <Grid
             columns={2}
             gap={4}
             css={{
+              width: '100%',
               padding: 'var(--space-5) var(--space-3)',
             }}
           >
@@ -403,6 +473,7 @@ export default function Design(props: {
             columns={2}
             gap={4}
             css={{
+              width: '100%',
               background: 'var(--maximeheckel-colors-emphasis)',
               padding: 'var(--space-5) var(--space-3)',
             }}
@@ -456,10 +527,17 @@ export default function Design(props: {
               </Card.Body>
             </Card>
           </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="lists">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="lists"
+        >
           <H2>Lists</H2>
-          <Grid columns={2}>
+          <Grid columns={2} gapY="5" css={{ width: '100%' }}>
             <List variant="unordered">
               <List.Item>First</List.Item>
               <List.Item>Second</List.Item>
@@ -489,8 +567,15 @@ export default function Design(props: {
               </List.Item>
             </List>
           </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="button">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="button"
+        >
           <H2>Buttons</H2>
           <Grid gap={5}>
             <Glow>
@@ -541,8 +626,15 @@ export default function Design(props: {
               icon={<Icon.Twitter />}
             />
           </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="anchor">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="anchor"
+        >
           <H2>Anchor</H2>
           <Grid gap={1}>
             <h3>
@@ -595,10 +687,17 @@ export default function Design(props: {
               </Anchor>{' '}
             </p>
           </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="form-components">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="form-components"
+        >
           <H2>Form Components</H2>
-          <Flex gap={2}>
+          <Flex css={{ width: '100%' }} gap={2}>
             <TextInput
               aria-label="Email"
               id="email-input"
@@ -613,6 +712,7 @@ export default function Design(props: {
           <Grid
             gap={5}
             css={{
+              width: '100%',
               gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             }}
           >
@@ -716,7 +816,10 @@ they can change the world, are the ones who do.`}
           <br />
           <Grid
             gap={3}
-            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
+            css={{
+              width: '100%',
+              gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))',
+            }}
           >
             <Checkbox aria-label="Checkbox" id="checkbox1" label="Checkbox" />
             <Checkbox
@@ -744,7 +847,10 @@ they can change the world, are the ones who do.`}
           <br />
           <Grid
             gap={3}
-            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
+            css={{
+              width: '100%',
+              gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))',
+            }}
           >
             <Switch id="switch1" aria-label="Switch" label="Switch" />
             <Switch id="switch2" aria-label="Switch" label="Switch" disabled />
@@ -767,7 +873,10 @@ they can change the world, are the ones who do.`}
           <br />
           <Grid
             gap={3}
-            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
+            css={{
+              width: '100%',
+              gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))',
+            }}
           >
             <Radio.Group
               name="options"
@@ -832,7 +941,10 @@ they can change the world, are the ones who do.`}
           <br />
           <Grid
             gap={3}
-            css={{ gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))' }}
+            css={{
+              width: '100%',
+              gridTemplateColumns: 'repeat(2, minmax(2rem, 1fr))',
+            }}
           >
             <Range
               id="range-1"
@@ -854,8 +966,15 @@ they can change the world, are the ones who do.`}
               disabled
             />
           </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="cards">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="cards"
+        >
           <H2>Card</H2>
           <Grid gapY={6} css={{ width: '100%' }}>
             <Card>
@@ -902,8 +1021,15 @@ they can change the world, are the ones who do.`}
               </Card.Body>
             </Card>
           </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="tooltip">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="tooltip"
+        >
           <H2>Tooltip</H2>
           <Tooltip
             id="exampletooltip"
@@ -924,8 +1050,15 @@ they can change the world, are the ones who do.`}
               Hover Me!
             </Flex>
           </Tooltip>
-        </Box>
-        <Box as="section" className={gridItem()} id="pill">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="pill"
+        >
           <H2>Pill</H2>
           <Grid gapY={5}>
             <Box>
@@ -941,10 +1074,17 @@ they can change the world, are the ones who do.`}
               <Pill variant="danger">Danger Pill</Pill>
             </Box>
           </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="callout">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="callout"
+        >
           <H2>Callout</H2>
-          <Grid gapY={5}>
+          <Grid css={{ width: '100%' }} gapY={8}>
             <Callout variant="info">Info Callout</Callout>
             <Callout label="Learn more" variant="info">
               Info Callout
@@ -954,25 +1094,47 @@ they can change the world, are the ones who do.`}
               Danger Callout
             </Callout>
           </Grid>
-        </Box>
-        <Box as="section" className={gridItem()} id="blockquote">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="blockquote"
+        >
           <Blockquote>
             <Text as="p">
               Almost before we knew it, we had left the ground.
             </Text>
           </Blockquote>
-        </Box>
-        <Box as="section" className={gridItem()} id="inline-code">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="inline-code"
+        >
           <H2>Inline Code</H2>
           <InlineCode>{"const foo = () => 'bar'"}</InlineCode>
-        </Box>
-        <Box as="section" className={gridItem()} id="code-block">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="code-block"
+        >
           <H2>Code Block</H2>
-          <Label>Basic</Label>
-          <CodeBlock
-            metastring=""
-            language="javascript"
-            codeString={`console.log("hello world")
+          <Box css={{ width: '100%' }}>
+            <Label>Basic</Label>
+            <CodeBlock
+              metastring=""
+              language="javascript"
+              codeString={`console.log("hello world")
 
 /**
  * Some comments
@@ -981,12 +1143,14 @@ function sayHi(name) {
     var message = \`hi \${name}\`
     return message;
 }`}
-          />
-          <Label>With title and highlighting</Label>
-          <CodeBlock
-            metastring="{6-8} title=Code snippet title"
-            language="javascript"
-            codeString={`console.log("hello world")
+            />
+          </Box>
+          <Box css={{ width: '100%' }}>
+            <Label>With title and highlighting</Label>
+            <CodeBlock
+              metastring="{6-8} title=Code snippet title"
+              language="javascript"
+              codeString={`console.log("hello world")
 
 /**
  * Some comments
@@ -995,11 +1159,21 @@ function sayHi(name) {
     var message = \`hi \${name}\`
     return message;
 }`}
-          />
-          <Label>Sandpack Code Block</Label>
-          <SandpackExample />
-        </Box>
-        <Box as="section" className={gridItem()} id="details-summary">
+            />
+          </Box>
+          <Box css={{ width: '100%' }}>
+            <Label>Sandpack Code Block</Label>
+            <SandpackExample />
+          </Box>
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="details-summary"
+        >
           <H2>Details/Summary</H2>
           <Details>
             <Details.Summary>Summary: Some short text</Details.Summary>
@@ -1009,8 +1183,15 @@ function sayHi(name) {
               some other custom React components. As you want!
             </Details.Content>
           </Details>
-        </Box>
-        <Box as="section" className={gridItem()} id="command-center">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          id="command-center"
+        >
           <H2>Command Center / Search </H2>
           <Button variant="primary" onClick={() => setShowSearch(true)}>
             Show Command Center
@@ -1020,11 +1201,21 @@ function sayHi(name) {
               <Search onClose={() => setShowSearch(false)} />
             ) : null}
           </AnimatePresence>
-        </Box>
-        <Box as="section" className={gridItem()} id="tweet">
+        </Flex>
+        <Flex
+          alignItems="start"
+          as="section"
+          direction="column"
+          gap="5"
+          className={gridItem()}
+          css={{
+            marginBottom: 'var(--space-9)',
+          }}
+          id="tweet"
+        >
           <H2>Tweet</H2>
           <Tweet tweet={props.tweets['1386013361809281024']} />
-        </Box>
+        </Flex>
       </Grid>
     </Layout>
   );

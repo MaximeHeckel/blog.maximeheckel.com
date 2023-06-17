@@ -15,7 +15,7 @@ const MicroInteractionShowcase = () => {
   const [dummyPassword, setDummyPassword] = React.useState('hello 👋');
 
   return (
-    <Flex css={{ marginBottom: '2.25rem' }} direction="column" gap="3">
+    <Flex direction="column" gap="3">
       <Card css={{ width: '100%' }}>
         <Card.Body
           as={Flex}
@@ -37,7 +37,7 @@ const MicroInteractionShowcase = () => {
               type="email"
               value={dummyEmail}
             />
-            <Text css={{ marginBottom: 0 }} size="1" weight="3">
+            <Text size="1" weight="3">
               Type a fake email like &quot;hello@test.co&quot;.
             </Text>
           </Flex>
@@ -54,7 +54,7 @@ const MicroInteractionShowcase = () => {
               type="password"
               value={dummyPassword}
             />
-            <Text css={{ marginBottom: 0 }} size="1" weight="3">
+            <Text size="1" weight="3">
               Click on the &quot;Reveal Password&quot; button.
             </Text>
           </Flex>
@@ -91,7 +91,7 @@ const MicroInteractionShowcase = () => {
             gap="2"
           >
             <CommandCenterButton onClick={() => {}} />
-            <Text css={{ marginBottom: 0 }} size="1" weight="3">
+            <Text size="1" weight="3">
               Hover, press and hold!
             </Text>
           </Card.Body>

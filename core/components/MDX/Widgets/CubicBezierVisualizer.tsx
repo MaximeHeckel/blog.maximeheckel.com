@@ -701,8 +701,6 @@ const CubicBezierVisualizer = (props: CubicBezierVisualizerProps) => {
   return (
     <Card
       css={{
-        marginBottom: '2.25rem',
-
         '@media (max-width: 750px)': {
           /**
            * Make it fullbleed!

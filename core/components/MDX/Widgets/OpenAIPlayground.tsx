@@ -234,11 +234,7 @@ const OpenAIPlayground = (props: OpenAIPlaygroundProps) => {
   }, []);
 
   return (
-    <Card
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card>
       <Card.Body>
         <TextArea
           aria-label="Prompt"

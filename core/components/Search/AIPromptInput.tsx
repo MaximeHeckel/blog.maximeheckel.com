@@ -65,13 +65,7 @@ const AIPromptInput = (props: { status: Status }) => {
                 size="4"
                 variant="secondary"
               />
-              <Text
-                as="span"
-                css={{ marginBottom: 0 }}
-                size="1"
-                weight="3"
-                variant="secondary"
-              >
+              <Text as="span" size="1" weight="3" variant="secondary">
                 Send
               </Text>
             </Flex>

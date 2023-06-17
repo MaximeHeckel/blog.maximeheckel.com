@@ -15,12 +15,7 @@ const SharedLayoutAnimationDetails = () => {
   const [duration, setDuration] = React.useState(0.3);
 
   return (
-    <Card
-      title="Little shared layout animation debugger"
-      css={{
-        marginBottom: '2.25rem',
-      }}
-    >
+    <Card title="Little shared layout animation debugger">
       <Card.Body>
         <Flex direction="column" gap="5">
           <Flex gap="5" alignItems="start">
