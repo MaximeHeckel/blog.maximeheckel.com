@@ -130,6 +130,9 @@ const AIPromptResultCard = React.forwardRef(
           code: {
             fontSize: 'var(--font-size-1)',
           },
+          'div:has(> pre)': {
+            marginBottom: 'var(--space-5)',
+          },
           overflow: 'visible',
         }}
         transition={{

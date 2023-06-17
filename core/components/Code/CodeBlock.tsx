@@ -82,6 +82,7 @@ const CodeBlock = (props: CodeBlockProps) => {
         // Fix the overflow issue when wrapped in text
         display: 'grid',
         background: 'unset',
+        width: '100%',
 
         '@media(max-width: 750px)': {
           /**
