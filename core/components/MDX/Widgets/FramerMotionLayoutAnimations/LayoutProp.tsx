@@ -24,10 +24,7 @@ const LayoutProp = () => {
           },
         }}
       >
-        <Grid
-          css={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}
-          gap="6"
-        >
+        <Grid gap="6" templateColumns="repeat(auto-fit, minmax(250px, 1fr))">
           <Card glass depth={3} title="layout={true}">
             <Card.Body dotMatrix css={{ height: '300px', display: 'grid' }}>
               <Box

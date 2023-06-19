@@ -254,8 +254,8 @@ const FragmentShaderVisualizer = () => {
             borderRight: '0.5px solid hsla(var(--palette-gray-20), 50%)',
             overflow: 'hidden',
             width: '100%',
-            gridTemplateColumns: `repeat(${size}, 1fr)`,
           }}
+          templateColumns={`repeat(${size}, 1fr)`}
         >
           {matrix.map((row, idy) => (
             <React.Fragment key={idy}>

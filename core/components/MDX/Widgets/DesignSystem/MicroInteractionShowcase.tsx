@@ -60,7 +60,7 @@ const MicroInteractionShowcase = () => {
           </Flex>
         </Card.Body>
       </Card>
-      <Grid css={{ width: '100%' }} columns="2" gap="3">
+      <Grid css={{ width: '100%' }} gap="3" templateColumns="repeat(2, 1fr)">
         <Card>
           <Card.Body
             as={Flex}

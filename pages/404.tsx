@@ -1,24 +1,24 @@
 /* eslint-disable react/no-unescaped-entities */
-import { styled, Anchor, Grid, H1, H3 } from '@maximeheckel/design-system';
+import { Box, styled, Anchor, Grid, H1, H3 } from '@maximeheckel/design-system';
 import { DefaultSeo } from '@core/components/Seo';
 import Link from 'next/link';
 import siteConfig from '../config/site';
+import { templateColumnsMedium } from 'styles/grid';
 
-const Wrapper = styled('div', {
+const Wrapper = styled(Box, {
   margin: '0 auto',
   maxWidth: '1430px',
   display: 'flex',
   height: 'calc(100vh)',
   alignItems: 'center',
   color: 'var(--maximeheckel-colors-typeface-primary)',
-  gridColumn: 2,
 });
 
 const NotFoundPage = () => (
-  <Grid columns="medium" gapX={4}>
+  <Grid gapX={4} templateColumns={templateColumnsMedium}>
     <DefaultSeo title={`404: Not found - ${siteConfig.title}`} />
-    <Wrapper>
-      <div>
+    <Grid.Item as={Wrapper} col={2}>
+      <Box>
         <H1>404 Not Found</H1>
         <H3>
           Oh no! You just got lost 😱! <br />
@@ -28,8 +28,8 @@ const NotFoundPage = () => (
           </Link>{' '}
           to go back home.
         </H3>
-      </div>
-    </Wrapper>
+      </Box>
+    </Grid.Item>
   </Grid>
 );
 

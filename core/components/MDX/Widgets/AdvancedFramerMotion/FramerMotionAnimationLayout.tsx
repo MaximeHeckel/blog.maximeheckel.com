@@ -77,13 +77,13 @@ const FramerMotionAnimationLayout = () => {
         <Grid
           as="ul"
           css={{
-            gridTemplateColumns: 'repeat(4, 48px)',
             height: '250px',
             width: '100%',
             padding: '0',
           }}
           gapX={3}
           justify="center"
+          templateColumns="repeat(4, 48px)"
         >
           {PETS.map((pet) => (
             <li

@@ -614,8 +614,8 @@ const Chart = (props: ChartProps) => {
 
       <Grid
         gap={2}
+        templateColumns="repeat(auto-fit, minmax(0px, 1fr))"
         css={{
-          gridTemplateColumns: 'repeat(auto-fit, minmax(0px, 1fr))',
           marginTop: 'var(--space-4)',
         }}
       >
@@ -636,9 +636,7 @@ const Chart = (props: ChartProps) => {
         <Grid
           gap={2}
           justify="center"
-          css={{
-            gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-          }}
+          templateColumns="repeat(auto-fit, minmax(120px, 1fr))"
         >
           <Switch
             id="show-handles-switch"

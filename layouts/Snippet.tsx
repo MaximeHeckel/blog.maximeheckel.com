@@ -5,6 +5,7 @@ import Layout from '@core/layout';
 import Seo from '@core/components/Seo';
 import { Snippet } from 'types/post';
 import Hero from '@core/components/Hero';
+import { templateColumnsMedium } from 'styles/grid';
 
 interface Props {
   children: React.ReactNode;
@@ -13,7 +14,6 @@ interface Props {
 
 const contentClass = css({
   padding: 'var(--space-5) 0px',
-  gridColumn: '2',
   color: 'var(--maximeheckel-colors-typeface-secondary)',
 
   h2: {
@@ -45,30 +45,34 @@ const SnippetLayout = ({ children, frontMatter }: Props) => {
         date={date}
       />
       <article className="h-entry">
-        <Grid columns="medium" gapX={4}>
-          <Hero>
-            <Hero.Title
-              className="p-name"
-              data-testid={`project-title-${title}`}
-            >
-              {title}
-            </Hero.Title>
-            <Hero.Info>
-              <Flex justifyContent="space-between">
-                <Text
-                  as="p"
-                  size="1"
-                  variant="tertiary"
-                  weight="3"
-                  css={{ marginBottom: '0px' }}
-                >
-                  Created {format(new Date(Date.parse(date)), 'MMM dd yyyy')}
-                </Text>
-                <Pill variant="info">{language.toUpperCase()}</Pill>
-              </Flex>
-            </Hero.Info>
-          </Hero>
-          <Box className={contentClass()}>{children}</Box>
+        <Grid gapX={4} templateColumns={templateColumnsMedium}>
+          <Grid.Item col={2}>
+            <Hero>
+              <Hero.Title
+                className="p-name"
+                data-testid={`project-title-${title}`}
+              >
+                {title}
+              </Hero.Title>
+              <Hero.Info>
+                <Flex justifyContent="space-between">
+                  <Text
+                    as="p"
+                    size="1"
+                    variant="tertiary"
+                    weight="3"
+                    css={{ marginBottom: '0px' }}
+                  >
+                    Created {format(new Date(Date.parse(date)), 'MMM dd yyyy')}
+                  </Text>
+                  <Pill variant="info">{language.toUpperCase()}</Pill>
+                </Flex>
+              </Hero.Info>
+            </Hero>
+          </Grid.Item>
+          <Grid.Item col={2}>
+            <Box className={contentClass()}>{children}</Box>
+          </Grid.Item>
         </Grid>
       </article>
     </Layout>

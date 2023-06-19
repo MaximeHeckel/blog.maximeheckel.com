@@ -1,4 +1,4 @@
-import { H1, styled } from '@maximeheckel/design-system';
+import { Box, H1, styled } from '@maximeheckel/design-system';
 import Image from 'next/legacy/image';
 import React from 'react';
 import { loader } from '../../../lib/next-image-loader';
@@ -23,16 +23,6 @@ const HeroTitle = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
     }}
   />
 );
-
-const HeroWrapper = styled('div', {
-  color: 'var(--maximeheckel-colors-typeface-primary)',
-  gridColumn: '2',
-  // paddingTop: '248px',
-
-  // '@media (max-width: 700px)': {
-  //   paddingTop: '150px',
-  // },
-});
 
 const HeroImgWrapper = styled('div', {
   borderRadius: 'var(--border-radius-2)',
@@ -79,9 +69,9 @@ class Hero extends React.Component<{
   render() {
     const { id, children, className } = this.props;
     return (
-      <HeroWrapper data-testid="hero" id={id} className={className}>
+      <Box data-testid="hero" id={id} className={className}>
         {children}
-      </HeroWrapper>
+      </Box>
     );
   }
 }

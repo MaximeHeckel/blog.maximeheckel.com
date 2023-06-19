@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
 import {
-  css,
   styled,
   Anchor,
   Box,
@@ -24,6 +23,7 @@ import Layout from '@core/layout';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';
 import React from 'react';
+import { templateColumnsMedium } from 'styles/grid';
 
 const NewsletterForm = dynamic(() => import('@core/components/NewsletterForm'));
 
@@ -75,94 +75,201 @@ const glowVariants = {
   },
 };
 
-const wrapperGrid = css({
-  '> *': {
-    gridColumn: 2,
-  },
-});
-
 const IndexPage = (props: Props) => {
   const { posts } = props;
 
   return (
     <Layout footer header headerProps={{ offsetHeight: 256 }}>
-      <Grid columns="medium" gapX={4} gapY={12} className={wrapperGrid()}>
-        <Flex alignItems="start" direction="column" gap="5">
-          <H1>
-            <Balancer ratio={0.3}>
-              Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
-              <Text
-                css={{
-                  lineHeight: 'unset',
-                }}
-                variant="secondary"
-                size="7"
-                weight="4"
+      <Grid gapX={4} gapY={12} templateColumns={templateColumnsMedium}>
+        <Grid.Item col={2}>
+          <Flex alignItems="start" direction="column" gap="5">
+            <H1>
+              <Balancer ratio={0.3}>
+                Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
+                <Text
+                  css={{
+                    lineHeight: 'unset',
+                  }}
+                  variant="secondary"
+                  size="7"
+                  weight="4"
+                >
+                  Here, I share through my writing my experience as a frontend
+                  engineer and everything I'm learning about on React, Shaders,
+                  React Three Fiber, Framer Motion, and more.
+                </Text>
+              </Balancer>
+            </H1>
+            <Flex
+              gap={4}
+              css={{
+                marginLeft: '-var(--space-3)',
+                marginRight: '-var(--space-3)',
+              }}
+            >
+              <a
+                href="https://maximeheckel.com"
+                style={{ textDecoration: 'none' }}
+                tabIndex={-1}
               >
-                Here, I share through my writing my experience as a frontend
-                engineer and everything I'm learning about on React, Shaders,
-                React Three Fiber, Framer Motion, and more.
-              </Text>
-            </Balancer>
-          </H1>
-          <Flex
-            gap={4}
-            css={{
-              marginLeft: '-var(--space-3)',
-              marginRight: '-var(--space-3)',
-            }}
-          >
-            <a
-              href="https://maximeheckel.com"
-              style={{ textDecoration: 'none' }}
-              tabIndex={-1}
-            >
-              <Button variant="secondary" endIcon={<Icon.External />}>
-                About me
-              </Button>
-              <VisuallyHidden as="p">
-                Link redirects to my portfolio https://maximeheckel.com.
-              </VisuallyHidden>
-            </a>
-            <a
-              href="https://twitter.com/MaximeHeckel"
-              style={{ textDecoration: 'none' }}
-              tabIndex={-1}
-            >
-              <Button variant="secondary" endIcon={<Icon.Twitter />}>
-                @MaximeHeckel
-              </Button>
-              <VisuallyHidden as="p">
-                Link redirects to my Twitter profile page
-                https://twitter.com/MaximeHeckel.
-              </VisuallyHidden>
-            </a>
+                <Button variant="secondary" endIcon={<Icon.External />}>
+                  About me
+                </Button>
+                <VisuallyHidden as="p">
+                  Link redirects to my portfolio https://maximeheckel.com.
+                </VisuallyHidden>
+              </a>
+              <a
+                href="https://twitter.com/MaximeHeckel"
+                style={{ textDecoration: 'none' }}
+                tabIndex={-1}
+              >
+                <Button variant="secondary" endIcon={<Icon.Twitter />}>
+                  @MaximeHeckel
+                </Button>
+                <VisuallyHidden as="p">
+                  Link redirects to my Twitter profile page
+                  https://twitter.com/MaximeHeckel.
+                </VisuallyHidden>
+              </a>
+            </Flex>
           </Flex>
-        </Flex>
-        <Flex alignItems="start" as="section" direction="column" gap="5">
-          <H2>Newsletter</H2>
-          <NewsletterForm large />
-        </Flex>
-        <Flex alignItems="start" as="section" direction="column" gap="5">
-          <H2>Featured</H2>
-          <Grid
-            as="ul"
-            css={{
-              margin: 0,
-              padding: 0,
-            }}
-            data-testid="featured-list"
-            gapY={4}
-          >
-            {posts
-              .filter((post) => post.featured)
-              .map((post) => {
+        </Grid.Item>
+        <Grid.Item as="section" col={2}>
+          <Flex alignItems="start" direction="column" gap="5">
+            <H2>Newsletter</H2>
+            <NewsletterForm large />
+          </Flex>
+        </Grid.Item>
+        <Grid.Item as="section" col={2}>
+          <Flex alignItems="start" direction="column" gap="5">
+            <H2>Featured</H2>
+            <Grid
+              as="ul"
+              css={{
+                margin: 0,
+                padding: 0,
+              }}
+              data-testid="featured-list"
+              gapY={4}
+            >
+              {posts
+                .filter((post) => post.featured)
+                .map((post) => {
+                  return (
+                    <motion.li
+                      style={{
+                        position: 'relative',
+                        marginLeft: '-var(--space-1)',
+                        marginRight: '-var(--space-1)',
+                        listStyle: 'none',
+                        cursor: 'pointer',
+                        marginBottom: 'calc(1.45rem / 2)',
+                        lineHeight: '1.9',
+                        letterSpacing: '0.3px',
+                      }}
+                      key={post.slug}
+                      data-testid="featured-article-item"
+                      initial="initial"
+                      whileHover="hover"
+                    >
+                      <Link
+                        href={`/posts/${post.slug}/`}
+                        passHref
+                        style={{
+                          textDecoration: 'none',
+                          color:
+                            'var(--maximeheckel-colors-typeface-secondary)',
+                        }}
+                      >
+                        <Glow
+                          css={{
+                            background: post.colorFeatured,
+                          }}
+                          variants={glowVariants}
+                          transition={{
+                            type: 'tween',
+                            ease: 'easeOut',
+                            duration: 0.4,
+                          }}
+                        />
+                        <Flex
+                          css={{
+                            height: '95%',
+                            width: '105%',
+                            position: 'absolute',
+                            borderRadius: 'var(--border-radius-2)',
+                            top: '50%',
+                            left: '50%',
+                            background: 'var(--maximeheckel-colors-body)',
+                            transform: 'translateY(-50%) translateX(-50%)',
+                            filter: 'blur(20px)',
+                            transition: '0.5s',
+
+                            '@media(max-width: 700px)': {
+                              display: 'none',
+                            },
+                          }}
+                        />
+                        <Card<MotionProps>
+                          as={motion.div}
+                          variants={cardVariants}
+                          transition={{
+                            type: 'tween',
+                            ease: 'easeOut',
+                            duration: 0.4,
+                          }}
+                          depth={1}
+                        >
+                          <Card.Body>
+                            <H3
+                              gradient
+                              css={{
+                                marginBottom: '8px',
+                                backgroundImage: post.colorFeatured!,
+                              }}
+                            >
+                              {post.title}
+                            </H3>
+                            <Text as="p" css={{ marginBottom: '0px' }}>
+                              {post.subtitle}
+                            </Text>
+                          </Card.Body>
+                        </Card>
+                      </Link>
+                    </motion.li>
+                  );
+                })}
+            </Grid>
+          </Flex>
+        </Grid.Item>
+        <Grid.Item col={2} as="section">
+          <Flex alignItems="start" direction="column" gap="5">
+            <H2>All articles</H2>
+            <Grid
+              as="ul"
+              css={{
+                margin: 0,
+                padding: 0,
+              }}
+              data-testid="article-list"
+              gapY={1}
+            >
+              {posts.map((post) => {
+                const currentYear = new Date(post.date).getFullYear();
+                let printYear;
+
+                if (currentYear !== year) {
+                  printYear = true;
+                  year = currentYear;
+                } else {
+                  printYear = false;
+                }
+
                 return (
-                  <motion.li
-                    style={{
-                      position: 'relative',
-                      marginLeft: '-var(--space-1)',
-                      marginRight: '-var(--space-1)',
+                  <Box
+                    as="li"
+                    css={{
                       listStyle: 'none',
                       cursor: 'pointer',
                       marginBottom: 'calc(1.45rem / 2)',
@@ -170,159 +277,60 @@ const IndexPage = (props: Props) => {
                       letterSpacing: '0.3px',
                     }}
                     key={post.slug}
-                    data-testid="featured-article-item"
-                    initial="initial"
-                    whileHover="hover"
+                    data-testid="article-item"
                   >
+                    {printYear ? (
+                      <Text
+                        as="p"
+                        weight="4"
+                        css={{
+                          padding: 'var(--space-6) 0px',
+                        }}
+                      >
+                        {currentYear}
+                      </Text>
+                    ) : null}
+                    {/* Revisit this component: merge Anchor and block together (extend block from Anchor) */}
                     <Link
                       href={`/posts/${post.slug}/`}
                       passHref
-                      style={{
-                        textDecoration: 'none',
-                        color: 'var(--maximeheckel-colors-typeface-secondary)',
-                      }}
+                      style={{ textDecoration: 'none', fontWeight: 500 }}
                     >
-                      <Glow
-                        css={{
-                          background: post.colorFeatured,
-                        }}
-                        variants={glowVariants}
-                        transition={{
-                          type: 'tween',
-                          ease: 'easeOut',
-                          duration: 0.4,
-                        }}
-                      />
-                      <Flex
-                        css={{
-                          height: '95%',
-                          width: '105%',
-                          position: 'absolute',
-                          borderRadius: 'var(--border-radius-2)',
-                          top: '50%',
-                          left: '50%',
-                          background: 'var(--maximeheckel-colors-body)',
-                          transform: 'translateY(-50%) translateX(-50%)',
-                          filter: 'blur(20px)',
-                          transition: '0.5s',
-
-                          '@media(max-width: 700px)': {
-                            display: 'none',
-                          },
-                        }}
-                      />
-                      <Card<MotionProps>
-                        as={motion.div}
-                        variants={cardVariants}
-                        transition={{
-                          type: 'tween',
-                          ease: 'easeOut',
-                          duration: 0.4,
-                        }}
-                        depth={1}
-                      >
-                        <Card.Body>
-                          <H3
-                            gradient
-                            css={{
-                              marginBottom: '8px',
-                              backgroundImage: post.colorFeatured!,
-                            }}
-                          >
-                            {post.title}
-                          </H3>
-                          <Text as="p" css={{ marginBottom: '0px' }}>
-                            {post.subtitle}
-                          </Text>
-                        </Card.Body>
-                      </Card>
+                      <Block data-testid="article-link">
+                        <Text
+                          as="p"
+                          size="1"
+                          variant="tertiary"
+                          weight="3"
+                          css={{
+                            minWidth: '52px',
+                            marginRight: '32px',
+                          }}
+                        >
+                          {format(new Date(Date.parse(post.date)), 'MMM dd')}
+                        </Text>
+                        <Text weight="3">{post.title}</Text>
+                      </Block>
                     </Link>
-                  </motion.li>
+                  </Box>
                 );
               })}
-          </Grid>
-        </Flex>
-        <Flex alignItems="start" as="section" direction="column" gap="5">
-          <H2>All articles</H2>
-          <Grid
-            as="ul"
-            css={{
-              margin: 0,
-              padding: 0,
-            }}
-            data-testid="article-list"
-            gapY={1}
-          >
-            {posts.map((post) => {
-              const currentYear = new Date(post.date).getFullYear();
-              let printYear;
-
-              if (currentYear !== year) {
-                printYear = true;
-                year = currentYear;
-              } else {
-                printYear = false;
-              }
-
-              return (
-                <Box
-                  as="li"
-                  css={{
-                    listStyle: 'none',
-                    cursor: 'pointer',
-                    marginBottom: 'calc(1.45rem / 2)',
-                    lineHeight: '1.9',
-                    letterSpacing: '0.3px',
-                  }}
-                  key={post.slug}
-                  data-testid="article-item"
-                >
-                  {printYear ? (
-                    <Text
-                      as="p"
-                      weight="4"
-                      css={{
-                        padding: 'var(--space-6) 0px',
-                      }}
-                    >
-                      {currentYear}
-                    </Text>
-                  ) : null}
-                  {/* Revisit this component: merge Anchor and block together (extend block from Anchor) */}
-                  <Link
-                    href={`/posts/${post.slug}/`}
-                    passHref
-                    style={{ textDecoration: 'none', fontWeight: 500 }}
-                  >
-                    <Block data-testid="article-link">
-                      <Text
-                        as="p"
-                        size="1"
-                        variant="tertiary"
-                        weight="3"
-                        css={{
-                          minWidth: '52px',
-                          marginRight: '32px',
-                        }}
-                      >
-                        {format(new Date(Date.parse(post.date)), 'MMM dd')}
-                      </Text>
-                      <Text weight="3">{post.title}</Text>
-                    </Block>
-                  </Link>
-                </Box>
-              );
-            })}
-          </Grid>
-          <Card css={{ marginBottom: 'var(--space-9)', width: '100%' }}>
-            <Card.Body alignItems="start" as={Flex} direction="column" gap="5">
-              <H3>#BlackLivesMatter</H3>
-              <Anchor underline href="https://blacklivesmatters.carrd.co/">
-                Click here to find out how you can help.
-              </Anchor>
-            </Card.Body>
-          </Card>
-        </Flex>
+            </Grid>
+            <Card css={{ marginBottom: 'var(--space-9)', width: '100%' }}>
+              <Card.Body
+                alignItems="start"
+                as={Flex}
+                direction="column"
+                gap="5"
+              >
+                <H3>#BlackLivesMatter</H3>
+                <Anchor underline href="https://blacklivesmatters.carrd.co/">
+                  Click here to find out how you can help.
+                </Anchor>
+              </Card.Body>
+            </Card>
+          </Flex>
+        </Grid.Item>
       </Grid>
     </Layout>
   );

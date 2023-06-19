@@ -28,7 +28,7 @@ const FlexGridShowcase = () => {
         <Box css={...} />
         <Box css={...} />
       </Flex>
-      <Grid columns="2" gap="4">
+      <Grid gap="4" templateColumns="repeat(2, 1fr)">
         <Box css={...} />
         <Box css={...} />
         <Box css={...} />
@@ -50,7 +50,7 @@ const FlexGridShowcase = () => {
           <StyledBox />
           <StyledBox />
         </Flex>
-        <Grid columns="2" gap="4">
+        <Grid gap="4" templateColumns="repeat(2, 1fr)">
           <StyledBox />
           <StyledBox />
           <StyledBox />
