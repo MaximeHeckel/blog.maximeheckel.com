@@ -18,6 +18,7 @@ import Hero from '@core/components/Hero';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
 import Balancer from 'react-wrap-balancer';
+import { templateColumnsSmall } from 'styles/grid';
 
 interface WebmentionBlogDataProps {
   date: string;
@@ -50,7 +51,6 @@ interface Props {
 
 const contentClass = css({
   padding: 'var(--space-5) 0px',
-  gridColumn: '2',
   color: 'var(--maximeheckel-colors-typeface-secondary)',
 
   h2: {
@@ -120,57 +120,63 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
         updated={updated}
       />
       <article className="h-entry">
-        <Grid columns="small" gapX={4}>
-          <Hero>
-            <Box css={{ marginBottom: '16px', fontSize: 'var(--font-size-2)' }}>
-              <Link href="/" legacyBehavior passHref>
-                <Anchor arrow="left" data-testid="home-link" discreet>
-                  Home
-                </Anchor>
-              </Link>
-            </Box>
-            <Hero.Title
-              className="p-name"
-              data-testid={`project-title-${title}`}
-            >
-              <Balancer ratio={0.5}>{title}</Balancer>
-            </Hero.Title>
-            <Hero.Info>
-              <Flex
-                css={{
-                  marginBottom: 'var(--space-3)',
-                }}
-                gap="3"
-                wrap="wrap"
+        <Grid gapX={4} templateColumns={templateColumnsSmall}>
+          <Grid.Item col={2}>
+            <Hero>
+              <Box
+                css={{ marginBottom: '16px', fontSize: 'var(--font-size-2)' }}
               >
-                <Text
-                  as="p"
-                  size="1"
-                  variant="tertiary"
-                  weight="3"
-                  css={{ marginBottom: '0px' }}
+                <Link href="/" legacyBehavior passHref>
+                  <Anchor arrow="left" data-testid="home-link" discreet>
+                    Home
+                  </Anchor>
+                </Link>
+              </Box>
+              <Hero.Title
+                className="p-name"
+                data-testid={`project-title-${title}`}
+              >
+                <Balancer ratio={0.5}>{title}</Balancer>
+              </Hero.Title>
+              <Hero.Info>
+                <Flex
+                  css={{
+                    marginBottom: 'var(--space-3)',
+                  }}
+                  gap="3"
+                  wrap="wrap"
                 >
-                  {format(new Date(Date.parse(date)), 'MMMM d, yyyy')} /{' '}
-                  {readingTime.text}
-                </Text>
-                <Pill variant="info">
-                  Last Updated:{' '}
-                  {format(new Date(Date.parse(updated)), 'MMMM d, yyyy')}
-                </Pill>
-                {/* <WebmentionCount target={postUrl} /> */}
-              </Flex>
-            </Hero.Info>
-            {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
-          </Hero>
+                  <Text
+                    as="p"
+                    size="1"
+                    variant="tertiary"
+                    weight="3"
+                    css={{ marginBottom: '0px' }}
+                  >
+                    {format(new Date(Date.parse(date)), 'MMMM d, yyyy')} /{' '}
+                    {readingTime.text}
+                  </Text>
+                  <Pill variant="info">
+                    Last Updated:{' '}
+                    {format(new Date(Date.parse(updated)), 'MMMM d, yyyy')}
+                  </Pill>
+                  {/* <WebmentionCount target={postUrl} /> */}
+                </Flex>
+              </Hero.Info>
+              {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
+            </Hero>
+          </Grid.Item>
           <TableOfContent ids={ids} />
-          <Flex
-            alignItems="start"
-            direction="column"
-            className={contentClass()}
-            gap="6"
-          >
-            {children}
-          </Flex>
+          <Grid.Item col={2}>
+            <Flex
+              alignItems="start"
+              direction="column"
+              className={contentClass()}
+              gap="6"
+            >
+              {children}
+            </Flex>
+          </Grid.Item>
         </Grid>
         <Signature title={title} url={postUrl} />
         <WebmentionBlogData date={date} postUrl={postUrl} subtitle={subtitle} />

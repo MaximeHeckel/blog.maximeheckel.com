@@ -20,6 +20,7 @@ import {
 } from './Styles';
 import HeaderTitle from './Title';
 import { HeaderProps } from './types';
+import { templateColumnsMedium } from 'styles/grid';
 
 // TODO Abstract these out
 const CommandCenterButton = dynamic(
@@ -78,7 +79,7 @@ const Header = (props: HeaderProps) => {
             : 'transparent',
         }}
       >
-        <Grid columns="medium" gapX={4}>
+        <Grid gapX={4} templateColumns={templateColumnsMedium}>
           <HeaderContent
             alignItems="center"
             justifyContent="space-between"

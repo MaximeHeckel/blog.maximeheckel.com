@@ -1,7 +1,6 @@
 import {
   styled,
   Anchor,
-  Box,
   Grid,
   Text,
   EM,
@@ -10,27 +9,13 @@ import {
 import Logo from '@core/components/Logo';
 import Link from 'next/link';
 import React from 'react';
+import { templateColumnsMedium } from 'styles/grid';
 
 const FooterBlock = styled('footer', {
   background: 'var(--maximeheckel-colors-body)',
   transition: '0.5s',
   width: '100%',
-
-  hr: {
-    height: '1px',
-    marginTop: 0,
-    width: '100%',
-    background: 'var(--maximeheckel-border-color)',
-    border: 'none',
-  },
-});
-
-const FooterWrapper = styled(Flex, {
-  paddingTop: 'var(--space-4)',
-  paddingBottom: 'var(--space-4)',
-  width: '100%',
-  margin: '0px auto',
-  gridColumn: '2',
+  borderTop: '1px solid var(--maximeheckel-border-color)',
 });
 
 const FooterContent = styled(Flex, {
@@ -41,11 +26,19 @@ const FooterContent = styled(Flex, {
 // TODO: Make more modular
 const Footer = () => (
   <FooterBlock data-testid="footer">
-    <hr />
-    <Grid columns="medium" gapX={4}>
-      <FooterWrapper direction="column" justifyContent="space-evenly" gap={6}>
-        <Grid columns={3} css={{ width: '100%' }}>
-          <Box>
+    <Grid gapX={4} templateColumns={templateColumnsMedium}>
+      <Flex
+        as={Grid.Item}
+        col={2}
+        css={{
+          padding: 'var(--space-5) 0px',
+        }}
+        direction="column"
+        justifyContent="space-evenly"
+        gap={6}
+      >
+        <Grid css={{ width: '100%' }} templateColumns="repeat(3, 1fr)">
+          <Grid.Item>
             <Text size={1}>
               <Grid>
                 <Link href="/" legacyBehavior passHref>
@@ -59,8 +52,8 @@ const Footer = () => (
                 </Link>
               </Grid>
             </Text>
-          </Box>
-          <Box>
+          </Grid.Item>
+          <Grid.Item>
             <Text size={1}>
               <Grid>
                 <Anchor
@@ -89,8 +82,8 @@ const Footer = () => (
                 </Anchor>
               </Grid>
             </Text>
-          </Box>
-          <Box>
+          </Grid.Item>
+          <Grid.Item>
             <Text size={1}>
               <Grid>
                 <Anchor
@@ -115,7 +108,7 @@ const Footer = () => (
                 </Anchor>
               </Grid>
             </Text>
-          </Box>
+          </Grid.Item>
         </Grid>
         <FooterContent alignItems="center" justifyContent="space-between">
           <Text
@@ -130,9 +123,9 @@ const Footer = () => (
           </Text>
           <Logo alt="Maxime Heckel's logo" size={35} />
         </FooterContent>
-      </FooterWrapper>
+      </Flex>
     </Grid>
   </FooterBlock>
 );
 
-export { Footer };
+export default Footer;

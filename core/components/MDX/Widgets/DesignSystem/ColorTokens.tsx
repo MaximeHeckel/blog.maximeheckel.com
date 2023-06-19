@@ -151,70 +151,70 @@ const ColorGrid = (props) => {
   };
 
   return (
-    <Grid
-      as={motion.div}
-      initial="out"
-      animate="in"
-      gap="2"
-      css={{
-        flexGrow: 1,
-        gridTemplateColumns:
-          step === 2 ? 'none' : 'repeat(auto-fill, minmax(2rem, 1fr))',
-        gridTemplateRows: 'min-content',
-      }}
-    >
-      <AnimatePresence>
-        {/* @ts-ignore */}
-        {colorScale.map((shade, index) => (
-          <motion.div
-            key={shade.color}
-            variants={colorVariants}
-            layout="position"
-            initial="out"
-            animate="in"
-            exit="out"
-            transition={{
-              duration: 0.5,
-              delay: step === 1 ? 1 + index / 10 : 2,
-              layout: {
-                delay: 0.2,
-              },
-            }}
-          >
-            <Flex alignItems="start" direction="column" gap="2">
-              <Tooltip id={shade.color} content={shade.color}>
-                <Box
-                  css={{
-                    flexShrink: 0,
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    background: `hsl(var(${shade.color}))`,
-                    border: '2px solid var(--maximeheckel-border-color)',
-                  }}
-                />
-              </Tooltip>
-              {step === 2 ? (
-                <motion.div
-                  layout="position"
-                  initial="out"
-                  animate="in"
-                  exit="out"
-                  variants={colorVariants}
-                  transition={{
-                    delay: 3,
-                  }}
-                >
-                  <Text family="mono" size="1">
-                    {shade.label}
-                  </Text>
-                </motion.div>
-              ) : null}
-            </Flex>
-          </motion.div>
-        ))}
-      </AnimatePresence>
-    </Grid>
+    <Box as={motion.div} css={{ width: '100%' }} initial="out" animate="in">
+      <Grid
+        gap="2"
+        css={{
+          flexGrow: 1,
+        }}
+        templateColumns={
+          step === 2 ? 'none' : 'repeat(auto-fill, minmax(2rem, 1fr))'
+        }
+        templateRows="min-content"
+      >
+        <AnimatePresence>
+          {/* @ts-ignore */}
+          {colorScale.map((shade, index) => (
+            <motion.div
+              key={shade.color}
+              variants={colorVariants}
+              layout="position"
+              initial="out"
+              animate="in"
+              exit="out"
+              transition={{
+                duration: 0.5,
+                delay: step === 1 ? 1 + index / 10 : 2,
+                layout: {
+                  delay: 0.2,
+                },
+              }}
+            >
+              <Flex alignItems="start" direction="column" gap="2">
+                <Tooltip id={shade.color} content={shade.color}>
+                  <Box
+                    css={{
+                      flexShrink: 0,
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      background: `hsl(var(${shade.color}))`,
+                      border: '2px solid var(--maximeheckel-border-color)',
+                    }}
+                  />
+                </Tooltip>
+                {step === 2 ? (
+                  <motion.div
+                    layout="position"
+                    initial="out"
+                    animate="in"
+                    exit="out"
+                    variants={colorVariants}
+                    transition={{
+                      delay: 3,
+                    }}
+                  >
+                    <Text family="mono" size="1">
+                      {shade.label}
+                    </Text>
+                  </motion.div>
+                ) : null}
+              </Flex>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </Grid>
+    </Box>
   );
 };
 

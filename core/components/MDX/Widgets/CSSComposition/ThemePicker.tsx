@@ -41,11 +41,11 @@ const ThemePicker = () => {
         <Grid
           gap={1}
           css={{
-            gridTemplateColumns: 'repeat(auto-fill, minmax(85px, 1fr))',
             margin: '0 auto',
             width: '80%',
             height: '100px',
           }}
+          templateColumns="repeat(auto-fill, minmax(85px, 1fr))"
         >
           <ButtonWrapper>
             <ThemeColor
