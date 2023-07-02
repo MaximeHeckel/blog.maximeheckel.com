@@ -133,8 +133,6 @@ jobs:
       - name: Run build
         run: |
           npx playwright install && yarn build
-        env:
-          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:

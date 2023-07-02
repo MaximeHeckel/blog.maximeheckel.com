@@ -10,6 +10,7 @@ module.exports = withBundleAnalyzer({
     domains: [
       // Twitter Images
       'pbs.twimg.com',
+      't.co',
     ],
   },
   webpack(config, { isServer, buildId }) {
