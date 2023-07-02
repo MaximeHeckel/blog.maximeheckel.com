@@ -38,7 +38,7 @@ import { AnimatePresence } from 'framer-motion';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
-import { TransformedTweet } from 'types/tweet';
+import { NewTweet } from 'types/tweet';
 import { templateColumnsMedium } from 'styles/grid';
 
 const SandpackExample = dynamic(
@@ -146,9 +146,7 @@ const Label = styled('p', {
   marginBottom: '8px',
 });
 
-export default function Design(props: {
-  tweets: Record<string, TransformedTweet>;
-}) {
+export default function Design(props: { tweets: Record<string, NewTweet> }) {
   const { dark } = useTheme();
   const [showSearch, setShowSearch] = React.useState(false);
   const [email, setEmail] = React.useState('');

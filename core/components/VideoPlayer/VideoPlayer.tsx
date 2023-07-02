@@ -13,7 +13,6 @@ interface VideoPlayerProps {
 }
 
 const Wrapper = styled('div', {
-  marginBottom: '32px',
   display: 'flex',
 
   video: {
