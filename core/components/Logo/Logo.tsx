@@ -6,7 +6,7 @@ const transitionLogo = css({
   willChange: 'stroke, fill',
 });
 
-const Logo = ({ alt, size }: LogoProps) => (
+const Logo = ({ alt, size, stroke }: LogoProps) => (
   <svg
     aria-label={alt}
     className={transitionLogo()}
@@ -14,7 +14,7 @@ const Logo = ({ alt, size }: LogoProps) => (
     viewBox="0 0 600 500"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
-    stroke="var(--maximeheckel-colors-typeface-primary)"
+    stroke={stroke || 'var(--maximeheckel-colors-typeface-primary)'}
   >
     <rect
       x="379.447"
