@@ -20,7 +20,7 @@ module.exports = {
   title: "Maxime Heckel's Blog",
   titleAlt: 'Maxime Heckel | Blog',
   description:
-    "Hi I'm Maxime, and this is my blog. Here, I share through my writing my experience as a frontend engineer and everything I'm learning about on React, Typescript, SwiftUI, Serverless, and testing.",
+    "Hi I'm Maxime, and this is my blog. Here, I share through my writing my experience as a frontend engineer and everything I'm learning about on React, Shaders, React Three Fiber, Framer Motion, and more.",
   url: 'https://blog.maximeheckel.com', // Site domain without trailing slash
   siteUrl: 'https://blog.maximeheckel.com/', // url + pathPrefix
   siteLanguage: 'en', // Language Tag on <html> element
