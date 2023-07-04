@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 // https://phiilu.com/generate-open-graph-images-for-your-static-next-js-site
-const playwright = require('playwright-aws-lambda');
+const playwright = require('playwright-core');
 const chalk = require('chalk');
 const { createHash } = require('crypto');
 const fs = require('fs');
@@ -48,7 +48,6 @@ const ogImageDir = `./public/static/og`;
     const params = {
       title: post.title,
       background: post.colorFeatured,
-      color: post.fontFeatured,
     };
 
     const filteredParams = Object.keys(params).reduce((acc, curr) => {
@@ -61,9 +60,7 @@ const ogImageDir = `./public/static/og`;
       };
     }, {});
 
-    const url = `https://og-image-maximeheckel.netlify.app/ogimage?${qs.stringify(
-      filteredParams
-    )}`;
+    const url = `http://localhost:3000/og?${qs.stringify(filteredParams)}`;
 
     try {
       fs.statSync(imagePath);
@@ -73,10 +70,11 @@ const ogImageDir = `./public/static/og`;
       );
 
       try {
-        const browser = await playwright.launchChromium({ headless: true });
+        const browser = await playwright.chromium.launch({ headless: true });
         const page = await browser.newPage();
-        await page.setViewportSize({ width: 1200, height: 630 });
+        await page.setViewportSize({ width: 2400, height: 1260 });
         await page.goto(url, { waitUntil: 'networkidle' });
+        await page.waitForTimeout(100);
 
         const buffer = await page.screenshot({ type: 'png' });
         await browser.close();
