@@ -67,8 +67,7 @@ const Seo = ({ title, desc, image, path, date, updated }: Props) => {
         <meta name="twitter:image" content={featuredImage.url} />
         <meta name="twitter:image:alt" content={featuredImage.alt} />
         <meta name="twitter:description" content={seo.description} />
-        <meta property="twitter:image:width" content="1280" />
-        <meta property="twitter:image:height" content="720" />
+        <meta property="twitter:domain" content={url} />
         <meta name="googlebot" content="index,follow" />
       </Head>
       <ArticleJsonLd
