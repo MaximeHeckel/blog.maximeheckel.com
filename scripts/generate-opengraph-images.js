@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-// https://phiilu.com/generate-open-graph-images-for-your-static-next-js-site
 const playwright = require('playwright-core');
 const chalk = require('chalk');
 const { createHash } = require('crypto');
@@ -14,14 +13,6 @@ const ogImageDir = `./public/static/og`;
   const root = process.cwd();
 
   console.info(chalk.cyan('info'), ` - Generating Opengraph images`);
-
-  if (process.env.NODE_ENV === 'development') {
-    console.info(
-      chalk.yellow('warn'),
-      ` - Opengraph images will only be generated in production build`
-    );
-    return;
-  }
 
   const files = fs.readdirSync(path.join(root, 'content'));
 
@@ -66,13 +57,15 @@ const ogImageDir = `./public/static/og`;
       fs.statSync(imagePath);
     } catch (error) {
       console.info(
-        chalk.yellowBright(`Generating Opengraph image for ${post.title}`)
+        chalk.yellowBright(
+          `      - Generating Opengraph image for ${post.title}`
+        )
       );
 
       try {
         const browser = await playwright.chromium.launch({ headless: true });
         const page = await browser.newPage();
-        await page.setViewportSize({ width: 2400, height: 1260 });
+        await page.setViewportSize({ width: 1800, height: 945 });
         await page.goto(url, { waitUntil: 'networkidle' });
         await page.waitForTimeout(100);
 

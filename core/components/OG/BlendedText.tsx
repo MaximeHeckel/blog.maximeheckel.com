@@ -6,15 +6,15 @@ const BlendedText = (props: BlendedTextProps) => {
   const { children } = props;
   return (
     <div style={{ position: 'relative' }}>
-      <div
+      {/* <div
         style={{
           color: 'white',
           position: 'absolute',
-          opacity: 0.055,
+          opacity: 0.015,
         }}
       >
         {children}
-      </div>
+      </div> */}
       <div
         style={{
           color: 'white',

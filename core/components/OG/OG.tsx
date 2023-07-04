@@ -4,7 +4,7 @@ import BlendedText from './BlendedText';
 import DotMatrix from './DotMatrix';
 import Shapes from './Shapes';
 
-const Template = () => {
+const OG = () => {
   const router = useRouter();
   const { title, background } = router.query as {
     title: string;
@@ -14,7 +14,7 @@ const Template = () => {
   return (
     <div
       style={{
-        // overflow: 'hidden',
+        overflow: 'hidden',
         fontFamily: 'Inter',
         fontWeight: 600,
         lineHeight: '1.2',
@@ -22,20 +22,18 @@ const Template = () => {
         height: '630px',
         textAlign: 'center',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        transform: 'scale(2)',
+        transform: 'scale(1.5)',
         transformOrigin: 'top left',
         // background:
         //   'linear-gradient(250deg, #7B9FF7 20%, #E995CD 56.25%, #FCB2B2 100%)',
-        background:
-          'linear-gradient(212deg, #37388F 19.79%, #6C60B8 70.31%, #A780B2 100%)',
+        // background:
+        //   'linear-gradient(212deg, #37388F 19.79%, #6C60B8 70.31%, #A780B2 100%)',
         // background:
         //   'linear-gradient(212deg, #37398F 19.79%, #6075B8 70.31%, #B3DFED 100%)',
-        // DEFAULT
-        // background:
-        //   background || 'linear-gradient(214deg, #A0A0A0 0%, #1F2426 96.12%)',
+        background:
+          background || 'linear-gradient(214deg, #A0A0A0 0%, #1F2426 96.12%)',
         position: 'relative',
         gap: '120px',
       }}
@@ -65,11 +63,13 @@ const Template = () => {
             'linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.00) 85.94%)',
         }}
       />
-      <div style={{ maxWidth: '830px', fontSize: 56, paddingTop: 112 }}>
+      <div style={{ maxWidth: '830px', fontSize: 56 }}>
         <BlendedText>{title}</BlendedText>
       </div>
       <div
         style={{
+          position: 'absolute',
+          bottom: 100,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -86,4 +86,4 @@ const Template = () => {
   );
 };
 
-export default Template;
+export default OG;
