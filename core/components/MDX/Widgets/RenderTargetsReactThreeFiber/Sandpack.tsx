@@ -71,7 +71,7 @@ const RenderTargetsSandpack = (props: any) => {
           dependencies={{
             '@react-three/drei': '9.70.4',
             '@react-three/fiber': '8.11.2',
-            leva: '^0.9.31',
+            leva: '0.9.31',
             three: '0.149.0',
             uuid: '^9.0.0',
           }}
