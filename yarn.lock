@@ -2229,10 +2229,10 @@
   dependencies:
     "@upstash/redis" "1.20.6"
 
-"@vercel/og@^0.5.8":
-  version "0.5.8"
-  resolved "https://registry.yarnpkg.com/@vercel/og/-/og-0.5.8.tgz#9b780c0ca0c6b1ce7f2a802fdbe3a7ef84641249"
-  integrity sha512-WlY5q96e2OmQEUsgqKZrCljNHiD05aErsa7u2z2+pkxyoVSWPHXLYFwHPtp7+IubU4gt4JYfgSbzGQg7n6xeAQ==
+"@vercel/og@^0.5.9":
+  version "0.5.9"
+  resolved "https://registry.yarnpkg.com/@vercel/og/-/og-0.5.9.tgz#4c6e7026e12e8af07d7ce7e4dc566ee562dfd225"
+  integrity sha512-CtjaV/BVHtNCjRtxGqn8Q6AKFLqcG34Byxr91+mY+4eqyp/09LVe9jEeY9WXjbaKvu8syWPMteTpY+YQUQYzSg==
   dependencies:
     "@resvg/resvg-wasm" "2.4.1"
     satori "0.10.1"

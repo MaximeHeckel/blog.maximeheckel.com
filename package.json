@@ -34,7 +34,7 @@
     "@vercel/analytics": "^0.1.5",
     "@vercel/edge": "^0.3.4",
     "@vercel/kv": "^0.2.1",
-    "@vercel/og": "^0.5.8",
+    "@vercel/og": "^0.5.9",
     "@visx/clip-path": "1.6.1",
     "@visx/curve": "1.6.1",
     "@visx/drag": "2.1.2",
