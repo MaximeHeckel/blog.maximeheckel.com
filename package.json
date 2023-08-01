@@ -40,7 +40,7 @@
     "@visx/drag": "2.1.2",
     "@visx/event": "1.6.1",
     "@visx/group": "1.6.1",
-    "@visx/heatmap": "^1.6.1",
+    "@visx/heatmap": "^3.3.0",
     "@visx/responsive": "1.6.1",
     "@visx/scale": "1.6.1",
     "@visx/shape": "1.6.1",
