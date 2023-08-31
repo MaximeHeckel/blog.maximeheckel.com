@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Sun, 02 Jul 2023 20:41:44 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 06 Sep 2023 02:17:38 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Painting with Math: A Gentle Study of Raymarching]]></title>
+            <description><![CDATA[TBD]]></description>
+            <link>https://blog.maximeheckel.com/posts/painting-with-math-a-gentle-study-of-raymarching</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/painting-with-math-a-gentle-study-of-raymarching</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 12 Sep 2023 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Building a magical AI-powered semantic search from scratch]]></title>
             <description><![CDATA[An end-to-end walkthrough on how to build a semantic search from your own MDX or Markdown based content using Postgres vector similarity search and OpenAI's text embeddings and chat completion APIs.]]></description>

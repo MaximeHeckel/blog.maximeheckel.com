@@ -34,7 +34,8 @@ export const HighlightedValue = styled('div', {
   padding: '2px 6px',
   fontFamily: 'var(--font-numeric)',
   fontSize: 'var(--font-size-2)',
-  display: 'inline-block',
+  display: 'inline-flex',
+  justifyContent: 'center',
   lineHeight: '1rem',
 });
 

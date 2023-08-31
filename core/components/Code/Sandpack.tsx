@@ -62,9 +62,6 @@ const SandpackWrapper = styled(Box, {
       display: 'block',
     },
     '@media (max-width: 1200px)': {
-      /**
-       * Make it fullbleed!
-       */
       width: '100vw',
       left: '50%',
       right: '50%',
@@ -159,9 +156,9 @@ const Sandpack = (props: SandpackProps) => {
             justifyContent="space-between"
             css={{
               height: defaultEditorOptions.editorHeight,
-              width: '50%',
               gap: 0,
-              '@media (max-width: 770px)': {
+              width: '50%',
+              '@media (max-width: 880px)': {
                 width: '100%',
               },
             }}
@@ -193,7 +190,6 @@ const Sandpack = (props: SandpackProps) => {
             {...defaultEditorOptions}
             showRunButton={false}
             style={{
-              width: '50%',
               borderLeft: '1px solid var(--maximeheckel-border-color)',
               height: defaultEditorOptions.editorHeight,
             }}

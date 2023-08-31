@@ -66,6 +66,7 @@ const contentClass = css({
     flexDirection: 'column',
     gap: 'var(--space-6)',
     maxWidth: 700,
+    width: '100%',
   },
 });
 
