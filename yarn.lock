@@ -2908,7 +2908,7 @@ bluebird@^3.7.2:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
-body-parser@1.19.0, body-parser@^1.19.0:
+body-parser@1.19.0:
   version "1.19.0"
   resolved "https://registry.npmjs.org/body-parser/-/body-parser-1.19.0.tgz"
   integrity sha512-dhEPs72UPbDnAQJ9ZKMNTP6ptJaionhP5cBb541nXPlW60Jepo9RV/a4fX4XWW9CuFNK22krhrj1+rgzifNCsw==
@@ -7411,12 +7411,11 @@ next-mdx-remote@4.1.0:
     vfile "^5.3.0"
     vfile-matter "^3.0.1"
 
-next-remote-watch@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/next-remote-watch/-/next-remote-watch-1.0.0.tgz"
-  integrity sha512-kV+pglCwcnKyqJIXPHUUrnZr9d3rCqCIEQWBkFYC02GDXHyKVmcFytoY6q0+wMIQqh/izIAQL1x6OKXZhksjLA==
+next-remote-watch@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/next-remote-watch/-/next-remote-watch-2.0.0.tgz#416af12af6abc7633429d2c0e09d27a522d4d06d"
+  integrity sha512-FyKDFMwbjKCPdu8ypZ8WTkDBzuxnH6rgfR89vgQwsND4ErrfXnDFZcZJAmSpwND6QA7G9f0DRzYMSdspY6t8Uw==
   dependencies:
-    body-parser "^1.19.0"
     chalk "^4.0.0"
     chokidar "^3.4.0"
     commander "^5.0.0"
