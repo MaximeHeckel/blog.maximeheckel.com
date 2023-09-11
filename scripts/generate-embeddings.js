@@ -92,7 +92,7 @@ const generateEmbeddingsForFile = async (filePath) => {
   try {
     const { chunks, metadata } = await processMdxFile(filePath);
     await generateEmbeddings(chunks, metadata);
-    console.info(chalk.green('success'), ` - Done indexing ${metadata.title}}`);
+    console.info(chalk.green('success'), ` - Done indexing ${metadata.title}`);
   } catch (error) {
     console.error('Error processing MDX file:', error);
   }

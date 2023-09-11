@@ -181,6 +181,10 @@ const DemoSearch = dynamic(() => import('./Widgets/SemanticSearch/DemoSearch'));
 
 const DemoButton = dynamic(() => import('./Widgets/SemanticSearch/DemoButton'));
 
+const RaymarchingVisualizer = dynamic(
+  () => import('./Widgets/Raymarching/RaymarchingVisualizer')
+);
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -205,6 +209,10 @@ const GuideToFramerMotionSandpack = dynamic(
 
 const AdvancedFramerMotionSandpack = dynamic(
   () => import('./Widgets/AdvancedFramerMotion/Sandpack')
+);
+
+const RaymarchingSandpack = dynamic(
+  () => import('./Widgets/Raymarching/Sandpack')
 );
 
 const customComponents = {
@@ -248,6 +256,7 @@ const customComponents = {
   Formatting,
   DemoSearch,
   DemoButton,
+  RaymarchingVisualizer,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
@@ -262,6 +271,7 @@ const customComponents = {
   ParticlesShaderSandpack,
   RefractionDispersionSandpack,
   RenderTargetsSandpack,
+  RaymarchingSandpack,
 };
 
 const MDXComponents = {

@@ -730,7 +730,7 @@
     codesandbox-import-utils "^1.2.3"
     lodash.isequal "^4.5.0"
 
-"@codesandbox/sandpack-react@^1.18.4":
+"@codesandbox/sandpack-react@1.18.4":
   version "1.18.4"
   resolved "https://registry.yarnpkg.com/@codesandbox/sandpack-react/-/sandpack-react-1.18.4.tgz#460d6d203605c43c3d5f455038219e538221ef75"
   integrity sha512-h/SBKAl5ykHn/vL6hnRPuCJyYnjJ0Baln9Z94JL4cQbHR2jwHR6cg7mMEtiZzT7rCeqgCW3yVl46AeubV7Jlbw==

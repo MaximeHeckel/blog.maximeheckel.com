@@ -130,8 +130,12 @@ const Tweet = (props: Props) => {
         <SingleImageWrapper>
           {mediaDetails.map((m) => {
             if (m.type === 'video' && !!m.video_info) {
-              const lastVariant =
-                m.video_info.variants[m.video_info.variants.length - 1];
+              const lastVariant = m.video_info.variants.reduce(
+                (max, obj) => {
+                  return obj.bitrate || 0 > max.bitrate ? obj : max;
+                },
+                { bitrate: 0 } as any
+              );
               const videoSrc = lastVariant.url;
 
               if (!videoSrc || lastVariant.content_type !== 'video/mp4')

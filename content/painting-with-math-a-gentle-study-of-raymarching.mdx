@@ -1,0 +1,945 @@
+---
+title: 'Painting with Math: A Gentle Study of Raymarching'
+subtitle: A compilation of my Raymarching and Signed Distance Field learnings and work. In it, I teach you how to leverage those techniques along with lighting models, smoothmin, soft shadows, and some math to create beautiful 3D raymarched scenes ranging from abstract shapes to infinite realistic-looking landscapes.
+date: '2023-09-12T08:00:00.000Z'
+updated: '2023-09-12T08:00:00.000Z'
+categories: []
+keywords: []
+slug: painting-with-math-a-gentle-study-of-raymarching
+type: 'blogPost'
+featured: false
+---
+
+Most of my experience writing GLSL so far focused on enhancing pre-existing Three.js/React Three Fiber scenes that contain diverse geometries and materials with effects that wouldn't be achievable without shaders, such as my work with [dispersion](/posts/refraction-dispersion-and-other-shader-light-effects/) and [particle effects](/posts/the-magical-world-of-particles-with-react-three-fiber-and-shaders/). However, during my studies of shaders, I always found my way to [Shadertoy](https://https://www.shadertoy.com/), which contains a multitude of impressive 3D scenes featuring landscapes, clouds, fractals, and so much more, **entirely implemented in GLSL**. No geometries. No materials. Just _a single fragment shader_.
+
+One video titled [Painting a Landscape with Math](https://www.youtube.com/watch?v=BFld4EBO2RE&ab_channel=InigoQuilez) from <Anchor favicon discreet href="https://twitter.com/iquilezles">Inigo Quilez</Anchor> pushed me to learn about the thing behind those 3D shader scenes: **Raymarching**. I was very intrigued by the perfect blend of creativity, code, and math involved in this rendering technique that allows anyone to sculpt and paint entire worlds in just a few lines of code, so I decided to spend my summer time studying every aspect of Raymarching I could through building as many scenes as possible such as the ones below which are the result of these past few months of work. (and more importantly, I took my time to do that to not burnout as the subject can be overwhelming, hence the title 🙂)
+
+<VideoPlayer
+  src="https://d2xl4m2ghaywko.cloudfront.net/raymarching-compilation.mp4"
+  autoPlay
+  muted
+  loop
+  controls={true}
+  width={700}
+  height={443}
+/>
+
+In this article, you will find a _condensed version_ of my study of Raymarching to get a gentle head start on building your own shader-powered scenes. It aims to introduce this technique alongside the concept of signed distance functions and give you the tools and building blocks to build increasingly more sophisticated scenes, from simple objects with lighting and shadows to fractals and infinite landscapes.
+
+<Callout label="Before you start" variant="info">
+
+👉 This article assumes you have basic knowledge about shaders, noise, and GLSL, or read [The Study of Shaders with React Three Fiber](/posts/the-study-of-shaders-with-react-three-fiber/).
+
+</Callout>
+
+<Callout variant="info">
+
+This article will quote, and link the work of a lot of authors/creators I relied on to teach myself Raymarching. Among them are:
+
+- [Inigo Quilez](https://iquilezles.org/articles/)
+- [The Art of Code](https://www.youtube.com/@TheArtofCodeIsCool/videos)
+- [Syntopia](http://blog.hvidtfeldts.net/)
+- [SimonDev](https://www.youtube.com/@simondev758) also known as [@iced_coffee_dev
+  ](https://twitter.com/iced_coffee_dev) on Twitter.
+- [The Book of Shaders](https://thebookofshaders.com/13/)
+
+I'm very thankful for the quality content they put out there, without which I would have probably not been able to grasp the concept of Raymarching.
+
+</Callout>
+
+## Snapshots of Math: demystifying the concept of Raymarching
+
+If you're already familiar with Three.js or React Three Fiber 3D scenes, you most likely encountered the concepts of geometry, material, and mesh and maybe even built quite a few scenes with those constructs. Under the hood, rendering with them involves a technique called **Rasterization**, the process of converting 3D geometries to pixels on a screen.
+
+Raymarching on the other hand, is an _alternative rendering technique_ to render a 3D scene, without requiring geometries or meshes...
+
+### Marching rays
+
+Raymarching consists of **marching step-by-step alongside rays cast from an origin point** (a camera, the observer's eye, ...) **through each pixel of an output image until they intersect with objects in the scene within a set maximum number of steps**. When an intersection occurs, we draw the resulting pixel.
+
+That's the simplest explanation I could come up with. However, it never hurts to have a little visualization to go with the definition of a new concept! That's why I built the widget below illustrating:
+
+- The step-by-step aspect of Raymarching: The visualizer below lets you iterate up to 13 steps.
+- The rays cast from a single point of origin (bottom panel)
+- and the intersections of those rays with an object resulting in pixels on the fragment shader (top panel)
+
+<RaymarchingVisualizer />
+
+<Callout variant="info">
+
+Notice how the rays that did not intersect with the sphere in the visualizer above resulted in black pixels 👀. That means there was _nothing_ to draw since there was no intersection with those rays before we reached the maximum amount of steps.
+
+</Callout>
+
+### Defining the World with Signed Distance Fields
+
+The definition I just gave you above is only approximately correct. Usually, when working with Raymarching:
+
+- We won't go step-by-step with a constant step distance along our rays. That would make the process very long.
+- We also won't be relying on the intersection points between the rays and the object.
+
+Instead, we will use **Signed Distance Fields**, functions that calculate the shortest distances between the points reached while marching alongside our rays and the surfaces of the objects in our scene. Relying on the distance to a surface lets us define the entire scene with simple math formulas ✨.
+
+For each step, calculating and marching that resulting distance along the rays lets us approach those objects until we're _close enough_ to consider we've "hit" the surface and can draw a pixel. The diagrams below showcase this process:
+
+<Fullbleed widthPercent={55}>
+  <Image
+    src="blog/raymarching-sdf_inmjmq.png"
+    alt="Diagram showcasing the Raymarching process of 3 rays beamed from a single point and marching step-by-step by a distance d obtained through a Signed Distance Field"
+    layout="responsive"
+    width={700}
+    height={398}
+  />
+</Fullbleed>
+
+Notice how:
+
+- each step of the raymarching (in green) goes as far as the distance to the object.
+- if the distance between a point on our rays and the surface of an object is small enough (under a small value ε) we consider we have a hit (in orange).
+- if the distance is not under that threshold, we continue the process over and over using our SDF until we reach the maximum amount of steps.
+
+By using SDFs, we can define a variety of basic shapes, like spheres, boxes, or toruses that can then be combined to make more sophisticated objects (which we'll see later in this article). Each of these have a specific formula that had to be reverse-engineered from the distance of a point to its surface. For example, the SDF of a sphere is equivalent to:
+
+```glsl title=SDF for a sphere centered at the origin of the scene
+float sdSphere(vec3 p, float radius){
+    return length(p) - radius;
+}
+```
+
+To help you understand why the SDF of a sphere is defined as such, I made the diagram below:
+
+<Fullbleed widthPercent={55}>
+  <Image
+    src="blog/raymarching-points_s6aqzv.png"
+    alt="Diagram showcasing 3 points, P1, P2, and P3, being respectively, at a positive distance, small distance, and inside a sphere."
+    layout="responsive"
+    width={700}
+    height={417}
+  />
+</Fullbleed>
+
+In it:
+
+- `P1` is at a distance `d` from the surface that is positive since the distance between `P1` and the center of the sphere `c` is greater than the radius of the sphere `r`.
+- `P2` is very close to the surface and would be considered a _hit_ since the distance between `P2` and `c` is greater than `r` but lower than `ε`.
+- `P3` lies "within" the sphre, and technically we want our Raymarcher to _never_ end up in such use case (at least for what is presented in this article).
+
+<Callout label="SDFs" variant="info" >
+
+Inigo Quilez [compiled a list of SDFs](https://iquilezles.org/articles/distfunctions/) for most shapes that you may need to get started with Raymarching.
+
+If you wish redemonstrate those formulas yourself to have a deeper understanding of SDFs [The Art of Code has a great video](https://youtu.be/Ff0jJyyiVyw?si=E1cO9wxf7sFLkxy5&t=95) showcasing the process.
+
+</Callout>
+
+This is where the _Math_ in Raymarching resides: through the definition and the combination of SDFs, we can literally **define entire worlds with math**. To showcase that power however, we first need to create our first "Raymarcher" and put in code the different constructs we just introduced.
+
+## Our first Raymarched scene
+
+This introduction to the concept of Raymarching might have left you perplexed as to how one is supposed to get started building anything with it.
+Lucky for us, there are many ways to render a Raymarched scene, and for this article we're going to take the perhaps most obvious approach: use a simple Three.js/React Three Fiber `planeGeometry` as a canvas, and _paint_ our shader on it.
+
+<Callout variant="info">
+
+{<Anchor discreet favicon href="https://twitter.com/winkerVSbecks">@winkerVSbecks</Anchor>} uses a different approach in his blog posts titled [Iridescent crystal
+with raymarching and signed distance fields](https://varun.ca/ray-march-sdf/) where
+he uses `canvas-sketch` which seems more adapted to render simple shaders on the
+web. Regardless of which medium you use, you should definitely check his write-up
+on Raymarching after reading this post 😄.
+
+</Callout>
+
+### The canvas
+
+Rendering a shader on top of a fullscreen `planeGeometry` is the technique I used during this Raymarching study:
+
+- I didn't want too much time investigating more _lightweight_ solutions.
+- I still wanted to have easy access to tools like Leva.
+- I was familiar with React Three Fiber's render loop and still wanted to reuse code I've written over the past two years, like uniforms, `OrbitControls`, mouse movements, etc.
+
+Below is a code snippet of my _canvas_ that served as the basis for my Raymarching work:
+
+```jsx {22-25,29} title=React Three Fiber scene used as canvas for Raymarching
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { useRef, Suspense } from 'react';
+import * as THREE from 'three';
+import { v4 as uuidv4 } from 'uuid';
+import vertexShader from './vertexShader.glsl';
+import fragmentShader from './fragmentShader.glsl';
+
+const DPR = 0.75;
+
+const SDF = (props) => {
+  const mesh = useRef();
+  const { viewport } = useThree();
+
+  const uniforms = {
+    uTime: new THREE.Uniform(0.0),
+    uResolution: new THREE.Uniform(new THREE.Vector2()),
+  };
+
+  useFrame((state) => {
+    const { clock } = state;
+    mesh.current.material.uniforms.uTime.value = clock.getElapsedTime();
+    mesh.current.material.uniforms.uResolution.value = new THREE.Vector2(
+      window.innerWidth * DPR,
+      window.innerHeight * DPR
+    );
+  });
+
+  return (
+    <mesh ref={mesh} scale={[viewport.width, viewport.height, 1]}>
+      <planeBufferGeometry args={[1, 1]} />
+      <shaderMaterial
+        key={uuidv4()}
+        fragmentShader={fragmentShader}
+        vertexShader={vertexShader}
+        uniforms={uniforms}
+        wireframe={false}
+      />
+    </mesh>
+  );
+};
+
+const Scene = () => {
+  return (
+    <Canvas camera={{ position: [0, 0, 6] }} dpr={DPR}>
+      <Suspense fallback={null}>
+        <SDF />
+      </Suspense>
+    </Canvas>
+  );
+};
+
+export default Scene;
+```
+
+I'm also passing a couple of essential uniforms to my `shaderMaterial`, which I advise you include as well in your own work, as they may become pretty handy to have around:
+
+- `uResolution` contains the current resolution of the window.
+- `uTime` represents the time since the scene was rendered on the screen.
+
+<Callout variant="danger" label="DPR">
+
+Here's yet another PSA about device pixel ratio! Raymarching scenes can be really intensive, especially at higher resolutions (you'll see why very soon). That's why I'd recommend running most examples at a DPR of `1`, but if you have a computer more on the weaker end in terms of specs, I'd recommend going even lower.
+
+With a lower DPR, you should be able to appreciate the shader-based scenes from this article at the maximum FPS possible. All demos will be editable so you can fine-tune that value to fit your needs.
+
+</Callout>
+
+We need to do a few tweaks to our fragment shader before we can start implementing our Raymarcher:
+
+1. Normalize our UV coordinates.
+2. Shift our UV coordinates to be centered.
+3. Adjust them to the current aspect ratio of the screen.
+
+These steps allow us to have our coordinate system where the center of the screen is at the coordinates `(0, 0)` while preserving the appearance of our shader regardless of screen resolutions and aspect ratios (it won't appear stretched).
+That process may be hard to understand at first, but here's a diagram to illustrate the math involved:
+
+<Image
+  src="blog/raymarching-uv"
+  alt="Diagram illustrating the normalization, shift, and aspect ratio adjustements of our UV coordinates that make sure that our raymarched scenes will be resizable and at the correct aspect ratio."
+  layout="responsive"
+  width={700}
+  height={1079}
+/>
+
+### Beaming rays
+
+Let's implement our Raymarching algorithm step-by-step from the definition established earlier. We need:
+
+1. A `rayOrigin` from where all our rays will emerge from. E.g. `vec3(0, 0, 5)`.
+2. A `rayDirection` equivalent to `normalize(vec3(uv, -1.0))` to allow us to beam rays in every direction on the screen along the negative z-axis.
+3. A `raymarch` function to march from the `rayOrigin` following the `rayDirection` and _detect_ when we're close enough to a surface to draw it.
+4. An SDF of any kind (we'll use a sphere) that our `raymarch` function will use to calculate how close it is from the surface at any given point of the raymarching loop.
+5. A maximum number `MAX_STEPS` of steps and a surface distance `SURFACE_DISTANCE` from which we can safely assume we're _close enough_ to draw a pixel.
+
+<Image
+  src="blog/raymarching-axis_rxqjxy"
+  alt="Diagram representing the position of a theoretical sphere and our ray origin in relation to the center of the scene."
+  layout="responsive"
+  width={700}
+  height={528}
+/>
+
+Our `raymarch` function will loop for up to `MAX_STEPS` until we reach the step limit, in which case we'll draw _nothing_ or hit the surface of the shape defined by our SDF.
+
+```glsl {17-18,20-22} title=Raymarch function
+#define MAX_STEPS 100
+#define MAX_DIST 100.0
+#define SURFACE_DIST 0.01
+
+float scene(vec3 p) {
+  float distance = sdSphere(p, 1.0);
+  return distance;
+}
+
+float raymarch(vec3 ro, vec3 rd) {
+  float dO = 0.0;
+  vec3 color = vec3(0.0);
+
+  for(int i = 0; i < MAX_STEPS; i++) {
+    vec3 p = ro + rd * dO;
+
+    float dS = scene(p);
+    dO += dS;
+
+    if(dO > MAX_DIST || dS < SURFACE_DIST) {
+        break;
+    }
+  }
+  return dO;
+}
+```
+
+If we try running this code within our canvas, we should obtain the following result 👀
+
+<RaymarchingSandpack scene="scene1" />
+
+### Adding some depth with light
+
+We just drew a sphere with solely GLSL code 🎉. However, it looks more like a _circle_ because our scene has no light or lighting model implemented, which means our scene doesn't have much depth. That is quite similar to the first mesh you render in Three.js using `MeshBasicMaterial`: the lack of shadows and reflections or diffuse makes the result look flat.
+
+If you read my article [Refraction, dispersion, and other shader light effects](/posts/refraction-dispersion-and-other-shader-light-effects/#adding-volume-and-shininess-to-our-dispersion), we had a similar issue, and that's where we introduced the concept of **diffuse light**. Lucky us, we can reuse the same formula and principles from that blog post: by using the dot product of the normal of the surface and a light direction vector, we can get some simple lighting in our raymarched scene 💡.
+
+```glsl title=GLSL implementation of diffuse lighting
+float diffuse = max(dot(normal, lightDirection), 0.0);
+```
+
+<Callout label="Diffuse" variant="info">
+
+You may wonder why we do the dot product to know whether a given point of the surface is hit by light or not, so here's a quick refresher:
+
+- The dot product between 2 vectors a and b is equal to `a · b = |a| × |b| × cos(θ)` where `θ` is the angle between `a` and `b`.
+- When the vectors point in the same direction, their value is positive
+- When the vectors are orthogonal, the dot product is 0.
+
+If we transpose those notions to lighting, we get that any point where the normal is orthogonal or opposite to the light direction (or that the dot product is lower than or equal to `0`) is in darkness, and any other points should receive _some_ light:
+
+<Image
+  src="blog/raymarching-diffuse_utdrew"
+  alt="Diagram showcasing how the dot product is used to obtain the 'amount' of light that a given point receives from a given light source."
+  layout="responsive"
+  width={700}
+  height={513}
+/>
+
+</Callout>
+
+The only issue is that we do not have an easy access to the Normal vector as we do in rasterized scenes. We need to calculate it for each "hit" we get between our rays and a surface. Luckily, [Inigo Quilez already went deep into this subject](https://iquilezles.org/articles/normalsSDF/), and I invite you to read his article on the subject as it will give you a better understanding of the underlying formula which we'll use throughout all the examples of this article:
+
+```glsl title=getNormal function that returns the normal vector of a point p of the surface of an object
+vec3 getNormal(vec3 p) {
+  vec2 e = vec2(.01, 0);
+
+  vec3 n = scene(p) - vec3(
+    scene(p-e.xyy),
+    scene(p-e.yxy),
+    scene(p-e.yyx));
+
+  return normalize(n);
+}
+```
+
+Applying both those formulas gives us a nicely lit raymarched scene 💡. Sprinkle on top some `uTime` for our light position, and we can appreciate a more dynamic composition that reacts to light in real-time:
+
+<RaymarchingSandpack scene="scene2" />
+
+<Callout label="Soft shadows" variant="info">
+
+With SDFs, we easily have access to information about the entire scene, which lets us apply some more advanced lighting/shadowing techniques. Inigo explores this idea in his article on [soft shadows](https://iquilezles.org/articles/rmshadows/), where he presents a way to calculate the _softness_ of shadows through a loop that is akin to the Raymarching loop:
+
+- it uses SDFs to calculate the distance to a surface
+- it decreases the illumation of a given point (which starts at `1.0`) as we go through the iterations of this loop based on the SDF distance and a softness parameter `k`
+- if the distance obtained through the SDF reaches below a certain threshold, the illumination of the point will be set to `0.0`, i.e. completely dark
+
+```glsl title=Soft shadow function from Inigo Quilez
+float softshadow( in vec3 ro, in vec3 rd, float mint, float maxt, float k ) {
+    float res = 1.0;
+    float t = mint;
+    for( int i=0; i<256 && t<maxt; i++ )
+    {
+        float h = map(ro + rd*t);
+        if( h<0.001 )
+            return 0.0;
+        res = min( res, k*h/t );
+        t += h;
+    }
+    return res;
+}
+```
+
+I recommend digging further through Inigo's blog post on the topic, especially as going deeper on that subject would make this article unbearably long. We'll use the function above in some the demos featured in this blog post.
+
+</Callout>
+
+## SDF operations, complex scenes, and fractals
+
+Using SDFs lets us render a plethora of objects in our raymarched scenes, but there's more we can do with them. In this part, we'll go through different applications of SDFs to create more complex compositions by:
+
+- rendering multiple objects
+- combining shapes to create new ones
+- moving, scaling, and rotating objects
+
+### Combining SDFs
+
+To render two objects within a raymarched scene where each object is defined through their respective SDF, we need to return a distance equivalent to **the minimum of both SDFs**. This is perhaps one of the technique you'll use the most throughout your own Raymarching explorations.
+
+```glsl {5} title=Application of min to render 2 objects in a raymarched scene
+float scene(vec3 p) {
+  float plane = p.y;
+  float sphere = sdSphere(p, 1.0);
+
+  float distance = min(sphere, plane);
+  return distance;
+}
+```
+
+**Why is it the min?**
+
+Doing the min of two SDFs consists of _uniting_ the two shapes in a single scene: either object could get hit by the ray, and you're essentially asking which of the two shapes is closer to a given point.
+
+This is represented in the graph below 👇, notice how we march our rays a distance `d`, that is for any given point on that ray, equivalent to the distance to the closest object in the scene.
+
+<Fullbleed widthPercent={55}>
+  <Image
+    src="blog/raymarching-min_scweye.png"
+    alt="Diagram showcasing how Raymarching and SDF are applied when multiple objects are in the scene through the usage of the min operator."
+    layout="responsive"
+    width={700}
+    height={396}
+  />
+</Fullbleed>
+
+Thus, if the objects are far apart, doing the `min` of both SDFs will render both on the scene. If they are close enough, it will look as if they are blending into one another 🫧.
+
+<RaymarchingSandpack scene="scene3" />
+
+Likewise, if we were to do the `max` of two SDFs, we'd render **the intersection of both objects**: you'd be looking for when your ray is inside both SDFs. That one is my favorite operator, as it allows us to build very sophisticated shapes using techniques akin to CSG (Constructive Solid Geometries).
+
+<RaymarchingSandpack scene="scene4" />
+
+However, an issue that is particularly visible in the examples above is that these operators do not yield very _smooth_ unions and intersections. That is due to discontinued derivatives of the surfaces, a.k.a. the slopes. At a single point we have:
+
+- one surface that has a downward slope (negative derivative)
+- another surface that has a upward slope (positive derivative)
+
+<Image
+  src="blog/raymarching-derivative_uwzz62"
+  alt="Chart representing a non-smooth intersection of 2 objects through the function f:x -> abs(x/2) and its derivative which is discontinued."
+  layout="responsive"
+  width={700}
+  height={358}
+/>
+
+We can use a pinch of math to obtain a **smooth minimum/maximum**. Once again, Inigo Quilez [wrote on the subject pretty extensively](https://iquilezles.org/articles/smin/), and his polynomial `smoothmin` variant became the standard in many Shadertoy scenes. [This video from The Art of Code](https://www.youtube.com/watch?v=YJ4iyff7zbk&ab_channel=TheArtofCode) also goes into more details but with a more visual approach on how to get to the formula step-by-step.
+
+<Fullbleed widthPercent={50}>
+  <Image
+    src="blog/raymarching-smoothmin_xjlz5c"
+    alt="Charts representing respectively a curve obtained by using the standard min operator and a curve obtained by using smoothmin."
+    layout="responsive"
+    width={700}
+    height={558}
+  />
+</Fullbleed>
+
+```glsl title=GLSL implementation of the smoothmin function
+float smoothmin(float a, float b, float k) {
+  float h = clamp(0.5 + 0.5 * (b-a)/k, 0.0, 1.0);
+  return mix(b, a, h) - k * h * (1.0 - h);
+}
+```
+
+Thanks to this `smoothmin` function, we can not only get prettier unions, but we can also have objects act more like _liquids_ or more organic when moving and blending together. That's something that is quite difficult to do in a rasterized scene and would require a lot of vertices, but it only requires a few lines of GLSL to obtain a great result with Raymarching!
+
+The scene below is an example of smooth minimum applied to three spheres alongside some Perlin noise, akin to the one I made for [this showcase](https://r3f.maximeheckel.com/sdf4).
+
+<RaymarchingSandpack scene="scene5" />
+
+### Moving, rotating, and scaling
+
+While the union and intersection of SDFs may be straightforward to picture in one's mind, operations such as translations, rotations, and scale can feel a bit less intuitive, especially when having only dealt with rasterized scenes in the past.
+
+To me, to position a sphere in a raymarched scene at a given set of coordinates, it first made more sense to render the SDF, pick it up, and move it to the desired position, which, unfortunately for this intuition, is wrong. In the world of Raymarching, you'd need to **move the sampling point** to the _opposite_ direction you wish to place your SDF object. A simple way to visualize this is to:
+
+- Imagine yourself as a point in a raymarched scene containing a sphere.
+- If you step two steps to the right, your sphere will appear to you two steps further to the left.
+
+```glsl {2-3} title=Example of moving SDFs by moving the sampling point p
+float scene(vec3 p) {
+  float plane = p.y + 1.0;
+  float sphere = sdSphere(p - vec3(0.0, 1.0, 0.0), 1.0);
+
+  float distance = min(sphere, plane);
+  return distance;
+}
+```
+
+Rotating consists of the same way of thinking:
+
+- We don't rotate the SDF itself
+- We apply the rotation on the sampling point instead
+
+```glsl {2-3} title=Example of rotation in a raymarched applied to the sampling point
+float scene(vec3 p) {
+  vec3 p1 = rotate(p, vec3(0.0, 1.0, 0.0), 3.14 * 2.0);
+  float distance = sdSphere(p1, 1.0);
+
+  return distance;
+}
+```
+
+<Callout label="Rotation Matrix" variant="info">
+
+Rotating stuff in GLSL requires the use of rotation matrices. I know those can seem frightening at first, but if you take the time to learn how to get to those formulas, trust me, you'll feel way more comfortable using them 😄.
+
+I'm not going to detail in this blog post how to obtain those matrices (maybe in a dedicated quaternions and rotation matrices article in the future 👀) for brevity, but I'd recommend checking out [this video](https://www.youtube.com/watch?v=lPWfIq5DzqI&t=1038s&ab_channel=KhanAcademy) instead.
+
+In the meantime, you can use the following `rotate2D` and `rotate3D` GLSL snippets:
+
+```glsl title=Example of rotate2D and rotate3D GLSL functions using rotation matrices
+
+// 2D rotation around the origin
+mat2 rotate2D(float angle) {
+    float s = sin(angle);
+    float c = cos(angle);
+    return mat2(c, -s, s, c);
+}
+
+// 3D rotation around the x-axis
+mat3 rotateX3D(float angle) {
+  float s = sin(angle);
+  float c = cos(angle);
+  return mat3(
+    1.0, 0.0, 0.0,
+    0.0, c, -s,
+    0.0, s, c
+  );
+}
+
+// 3D rotation around the z-axis
+mat3 rotateZ3D(float angle) {
+  float s = sin(angle);
+  float c = cos(angle);
+  return mat3(
+    c, -s, 0.0,
+    s, c, 0.0,
+    0.0, 0.0, 1.0
+  );
+}
+
+```
+
+You can also use one of the pre-made rotation helper functions from [glsl-rotate](https://github.com/dmnsgn/glsl-rotate) if you have the setup required to load them.
+
+</Callout>
+
+Scaling is even _weirder_. To scale, you need to multiply your sampling point by a factor:
+
+- Multiplying by two will make the resulting shape half the size
+- Multiplying by 0.5 will make the shape twice as big
+
+However, by multiplying our sampling point, we mess a bit with our raymarcher and may accidentally have it _step inside our object_. To work around this issue, we have to decrease our step size (i.e. the distance returned by the SDF) by the same factor we're scaling our shape of
+
+```glsl {2-3,6} title=Example of scaling a SDF in a raymarched scene
+float scene(vec3 p) {
+  float scale = 2.0;
+  vec3 p1 = p * scale;
+
+  float sphere = sdSphere(p1, 1.5);
+  float distance = sphere / scale;
+
+  return distance;
+}
+```
+
+Combining all those operations and transformations and adding our `utime` uniform to the mix can yield gorgeous results. You can see one such beautifully executed raymarched scene that uses those operations on [Richard Mattka's portfolio](https://richardmattka.com/), which <Anchor favicon discreet href="https://twitter.com/akella">@Akella</Anchor> reproduced in one of [his streams](https://www.youtube.com/watch?v=afc8qabsGYg).
+
+I give you my own simplified implementation of it below, also featured on my [React Three Fiber showcase website](https://r3f.maximeheckel.com/sdf3), which leverages all the building blocks of Raymarching featured in this article so far:
+
+<RaymarchingSandpack scene="scene6" />
+
+### Scaling to infinity
+
+One trippy aspect of Raymarching that really blew my mind early on is the ability to render _infinite-looking_ scenes with very little code. You can achieve that by putting together lots of SDFs, positioning them programmatically, moving your camera, or increasing the maximum number of steps to render further in space. However, the more SDFs we use, the slower our scene gets.
+
+If you've tried to do the same in a classic rasterized scene, you have faced the same issues and worked around them using **mesh instances** instead of rendering discreet meshes. Luckily, Raymarching lets us use a similar principle: **reusing a single SDF** to add as many objects as desired onto our scene.
+
+```glsl title=Repeat function used to periodically duplicate our sampling point
+vec3 repeat(vec3 p, float c) {
+    return mod(p,c) - 0.5 * c; // (0.5 *c centers the tiling around the origin)
+}
+```
+
+The function above is what makes this possible:
+
+- Using the `mod` function (modulo) on the sampling point `p` lets us take a chunk of space defined by the second argument and tile it infinitely in _all_ directions (see diagram below showcasing the `mod` function but applied only to a single dimension).
+- Then, "instantiate" many objects from a single SDF for each _tile_, giving the illusion of infinite shapes stretching to infinity.
+
+<Image
+  src="blog/raymarching-mod_cr2h8i"
+  alt="Chart representing the mod function with a period of 2. Notice the repeating pattern along the x-axis. Now use this model to picture in your mind the same repetition happening along all axis x, y, and z in our raymarched scene."
+  layout="responsive"
+  width={700}
+  height={358}
+/>
+
+The demo scene below showcases how you can include the `repeat` function with any SDF to create infinite instances of an object in every direction in space:
+
+<RaymarchingSandpack scene="scene7" />
+
+Notice that if the second argument of the modulo function is low, the objects will appear closer to one another (more frequent repetitions). If higher, they will appear further apart.
+
+While being able to render scenes that stretch to infinity is impressive, the `mod` function can also have an incredible effect in a more "limited" way: to create **fractals**.
+
+That's what Inigo Quilez explores in [his article](https://iquilezles.org/articles/menger/) about _Menger Fractals_ which are nothing more than "iterated intersection of a cross and a box SDF" that solely relies on the operations we've seen in this part:
+
+- Render a simple box using its SDF.
+
+```glsl
+float sdBox(vec3 p, vec3 b) {
+  vec3 q = abs(p) - b;
+  return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
+}
+
+float scene(vec3 p) {
+  float d = sdBox(p,vec3(6.0));
+
+  return d;
+}
+```
+
+- Render an infinite cross SDF, which is the union of 3 boxes.
+- Intersect them to obtain a box with square holes at the center of each phase using the `max` operator.
+
+```glsl
+float sdBox(vec3 p, vec3 b) {
+  vec3 q = abs(p) - b;
+  return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
+}
+
+// The SDF of this cross is 3 box stretched to infinity along all 3 axis
+float sdCross( in vec3 p ) {
+  float da = sdBox(p.xyz,vec3(inf,1.0,1.0));
+  float db = sdBox(p.yzx,vec3(1.0,inf,1.0));
+  float dc = sdBox(p.zxy,vec3(1.0,1.0,inf));
+  return min(da,min(db,dc));
+}
+
+float scene(vec3 p) {
+  float d = sdBox(p,vec3(6.0));
+  float c = sdCross(p);
+
+  float distance = max(d,c);
+  return distance;
+}
+```
+
+By doing these operations in a loop, and for each iteration, making our combined SDF smaller by scaling down and increasing the number of repetitions, the resulting SDF can output some intricate objects that can display repeating patterns that could theoretically go on forever if we wanted to. Hence, this falls into the category of fractals.
+
+The demo below showcases the Menger fractal implementation from Inigo, using the building blocks we laid out in this article with the inclusion of soft shadows, which really shine (no pun intended) for this specific use case.
+
+<RaymarchingSandpack scene="scene8" />
+
+<Callout variant="info">
+
+In this demo above, try to:
+
+- Increase the number of iterations and notice how each iteration adds ever-smaller details to the fractal.
+- Change the scale factor to bigger numbers and notice how quickly we converge to more intricate SDFs.
+
+</Callout>
+
+## Building Worlds with Raymarching and noise derivatives
+
+We've finally reached the part focusing on the reason I wanted to write this blog post in the first place ✨. Now that we've warmed up and got familiar with the building blocks of Raymarching, we can explore the beautiful art of _painting landscapes_ with those same techniques.
+
+If you spend some time searching on Shadertoy, those raymarched landscapes can feel both breathtaking when looking at the results they yield and quite intimidating at the same time when looking at the code displayed on the right-hand side of the website. That is why I spent a _big deal of time_ analyzing a couple of those landscapes by trying to find the repetitive patterns used by the authors and breaking them down for you into more digestible bits.
+
+### Composing noise with Fractal Brownian Motion
+
+You've probably played quite a bit with noise in your own shader work and are familiar with the ability of the different types to generate more _organic_ patterns.
+
+<Callout label="Refresher" variant="info">
+
+If not, don't worry! You can head to [The Study of Shader with React Three Fiber](/posts/the-study-of-shaders-with-react-three-fiber/#advanced-interactive-shaders), where I give a quick walkthrough of what Perlin or Simplex noises are and how to use them in your own creations.
+
+</Callout>
+
+In that blog post, I also briefly mention the concept of **Fractal Brownian Motion**: a method to _compose noises_ and obtain a more granular resulting noise featuring more fine details:
+
+- The final detailed noise builds itself in a loop.
+- We start with a simple noise with a given amplitude and frequency for the first iteration.
+- Then, for each iteration, we apply the same noise but decrease the amplitude and increase the frequency (and add some transformation if we want to), thus creating sharper details but with less influence on the overall scene.
+
+We can visualize this in 2D by looking at a simple curve. Each iteration is called an **Octave**, and the higher we go in terms of octaves, the sharper and better looking our noise will be:
+
+<Image
+  src="blog/raymarching-fbm_ywg0zh"
+  alt="Charts representing the application of a noise on top of itself through 3 octaves, where at each octave we decrease its amplitude and increase its frequency, thus yielding a more organic-looking and sharper noise the bigger the maximum octave number is."
+  layout="responsive"
+  width={700}
+  height={719}
+/>
+
+Applying that type of noise to the SDF of a plane, like in the code snippet below, can yield some very sharp-looking mountainous landscapes stretching to infinity.
+
+```glsl {17-22} title=Example of Fractal Brownian Motion applied to a raymarched plane
+// importing perlin noise from glsl-noise through glslify
+#pragma glslify: cnoise = require(glsl-noise/classic/2d)
+
+#define PI 3.14159265359
+
+mat2 rotate2D(float a) {
+  float sa = sin(a);
+  float ca = cos(a);
+  return mat2(ca, -sa, sa, ca);
+}
+
+float fbm(vec2 p) {
+  float res = 0.0;
+  float amp = 0.8;
+  float freq = 1.5;
+
+  for(int i = 0; i < 12; i++) {
+    res += amp * cnoise(p * 0.8);
+    amp *= 0.5;
+    freq *= 1.05;
+    p = p * freq * rotate2D(PI / 4.0);
+  }
+  return res;
+}
+
+float scene(vec3 p) {
+  float distance = 0.0;
+  distance += fbm(p.xz * 0.3);
+  distance += p.y + 2.0;
+
+  return distance;
+}
+```
+
+Add to that the diffuse lighting model we looked at in the earlier parts of this article and some soft shadows, and you can get a beautiful raymarched landscape with just a few lines of GLSL. Those are the techniques I used to build [my very first raymarched terrain](https://r3f.maximeheckel.com/sdf6), and I was quite satisfied with the result. Also, look at how the shadows update in real time as we move the position of the light 🤤.
+
+<StaticTweet id="1679319759018418178" />
+
+However, I quickly realized that:
+
+1. **I needed my FBM loop to reach high octaves for a sharp looking result**. That caused the frame rate to drop significantly, as the higher the octaves for my FBM, the higher the complexity of my raymarcher was (nested loops). This scene was pulling a lot of juice from my laptop and even worse at higher resolutions!
+2. Despite using Perlin noise as the base for my FBM, the resulting landscape was just an endless series of mountains. Each looked distinct and unique from its neighbor, but **the overall result looked repetitive**.
+
+### Noise derivatives
+
+By studying [Inigo's own 3D landscape creations](https://www.shadertoy.com/view/MdX3Rr), I noticed that in many of them, he was using a tweaked Fractal Brownian Motion to generate his terrains through the use of **noise derivatives**.
+
+In [his blog posts on the topic](https://iquilezles.org/articles/morenoise/), he presents this technique as an updated version of FBM to generate realistic-looking noise patterns. This technique is, at first glance, a little bit more complicated to explain concisely and also involves a little bit more math than most people might be comfortable with, but here's my own attempt at highlighting its key features:
+
+- It relies on sampling a grayscaled noise texture (we'll get to that in a bit) at various points, i.e. looking at the color value stored at a given location, and interpolating between them.
+- Instead of relying on those "noise values", we're using the derivative between the sampled points representing the steepness or rate of change.
+
+We thus end up with more "data" about the physical properties of our terrain: the higher derivatives correspond to steeper regions of our landscapes, while lower values will result in flat plateaux or downward slopes, resulting in better-looking, more detailed terrains. The GLSL code for that function looks like this 👇
+
+```glsl {14-17} title=Function returning noise value and noise derivative
+// Noise texture passed as a uniform
+uniform sampler2D uTexture;
+
+vec3 noised(vec2 x) {
+  vec2 p = floor(x);
+  vec2 f = fract(x);
+  vec2 u = f * f* (3.0 - 2.0 * f);
+
+  float a = textureLod(uTexture, (p+vec2(.0,.0)) /256.,0.).x;
+  float b = textureLod(uTexture, (p+vec2(1.0,.0)) /256.,0.).x;
+  float c = textureLod(uTexture, (p+vec2(.0,1.0)) /256.,0.).x;
+  float d = textureLod(uTexture, (p+vec2(1.0,1.0)) /256.,0.).x;
+
+  float noiseValue = a + (b - a) * u.x + (c - a) *
+    u.y + (a - b - c + d) * u.x * u.y;
+  vec2 noiseDerivative = 6.0 * f * (1.0 - f) * (vec2(b - a, c - a) +
+    (a - b - c + d) * u.yx);
+
+  return vec3(noiseValue, noiseDerivative);
+}
+```
+
+<Callout variant="info" label="Texture">
+I noticed from several Shadertoy raymarched landscapes that they were all sampling more or less the same texture for their noise derivatives 👇
+
+<Image
+  src="noise1.png"
+  alt="Noise texture used in our noised function. Originally obtained on Shadertoy."
+  layout="responsive"
+  width={500}
+  height={500}
+/>
+
+That gave me better results at lower octaves than using a hash function (we'll talk about that below).
+
+</Callout>
+
+<Details>
+  <Details.Summary>
+    [Optional] Quick Math refresher on how to obtain the derivative
+  </Details.Summary>
+  <Details.Content>
+
+In his article, Inigo presents the noise function as a series of linear interpolation. He mentions that those linear interpolations are based of cubic or quintic polynomes. So far, in my own work on the topic, I've only used the cubic form:
+
+<br />
+
+`u(x) = 3 * x^2 - 2 * x^3` 👉 "cubic" as the highest degree of this polynome is `3`
+
+<br />
+
+Here's a step-by-step process on how to obtain the derivative `u'(x)` that is featured in the `noiseDerivative` returned value of the `noised` function:
+
+<br />
+
+- The derivative of `x^n` is `n * x^(n-1)`, thus `u'(x) = 3 * 2 * x - 2 * 3 * x^2`
+- Which is equivalent to `6 * x - 6 * x^2`
+- Which we can "factorize" to `6 * x * (1 - x)`
+
+<br />
+
+    </Details.Content>
+
+</Details>
+
+From these noise derivatives, we can generate the terrain in a similar fashion to the FBM method. For each iteration:
+
+- We call our `noised` function for our sample point.
+- Accumulate the derivatives, which will accentuate the features of the terrain as we go through the iterations of our loop.
+- Adjust the height `a` of our terrain based on the value of the noise.
+- Reduce and flip the sign of the scaling factor `b`. That will result in each subsequent iteration having less effect on the global aspect of the terrain while also alternating between increases and decreases in the overall height of our terrain.
+- Transform the sampling point for the next loop by multiplying it by a rotation matrix (which results in a slight rotation for the following iteration) and scaling it down.
+
+```glsl title=Alternate FBM process using noise value along side noise derivative
+float terrain(vec2 p){
+  vec2 p1 = p * 0.06;
+  float a = 0.0;
+  float b = 2.5;
+  vec2 d = vec2(0.0);
+  float scl = 2.75;
+
+  for(int i = 0; i < 8; i++ ) {
+    vec3 n = noised(p1);
+    d += n.yz;
+    a += b * n.x / (dot(d,d) + 1.0);
+    b *= -0.4;
+    a *= .85;
+    p1 = m * p1 * scl;
+  }
+
+  return a * 3.0;
+}
+```
+
+The screenshot below showcases the terrain yielded at each octave (i.e. each iteration of our FBM loop) from `2` to `7`:
+
+<Image
+  src="blog/raymarching-fbm-noise-derivative_fx9ecf"
+  alt="Screenshots representing a raymarched terrain view from the top from octaves 2 to 7, obtained through FBM and noise derivatives. Notice the cracks, and slopes forming after the 5th octave is reached."
+  layout="responsive"
+  width={700}
+  height={771}
+/>
+
+Applying this technique on top of everything we've learned through this article gives us a magnificent landscape that is entirely tweakable, more detailed, and less repetitive than its standard FBM counterpart. I'll let you play with the scale factors, noise weight, and height in the demo below so you can experiment with more diverse terrains 👀.
+
+<RaymarchingSandpack scene="scene9" />
+
+### Sky, fog, and Martian landscape
+
+Generating the terrain is not all there is when building landscapes with Raymarching. One of the foremost things I like to add is **fog**: the further in the distance an element of my landscape is, the more faded and enveloped in mist it should appear. This adds a layer of realism to the scene and can also help you color it!
+
+Once again, we can use some math and physics principles to create such an effect. Using [Beer's law](https://en.wikipedia.org/wiki/Beer%E2%80%93Lambert_law) which states that the intensity of light passing through a medium is exponentially related to the distance it travels we can get a realistic fog effect:
+
+`I = I0​ * exp(−α * d)` where `α` is the absorption or attenuation coefficient describing how "thick" or "dense" the medium is.
+
+That's the math that Inigo uses as the base for [his own fog implementation](https://iquilezles.org/articles/fog/) that is a little bit more elaborated and is also featured in most of his own creations.
+
+```glsl title=Inigo Quilez's implementation of fog using exponential decay
+// This fog is presented in Inigo Quilez's article
+// It's a version of the fog function that keeps the "fog" at the
+// bottom of the scene, and doesn't let it go above the horizon/mountains
+vec3 fog(vec3 ro, vec3 rd, vec3 col, float d){
+  vec3 pos = ro + rd * d;
+  float sunAmount = max(dot(rd, lightPosition), 0.0);
+
+  float b = 1.3;
+  // Applying exponential decay to fog based on distance
+  float fogAmount = 0.2 * exp(-ro.y * b) * (1.0 - exp(-d * rd.y * b)) / rd.y;
+  vec3 fogColor = mix(vec3(0.5,0.2,0.15), vec3(1.1,0.6,0.45), pow(sunAmount,2.0));
+
+  return mix(col, fogColor, clamp(fogAmount,0.0,1.0));
+}
+```
+
+When it comes to adding a background color for our sky, it's really straightforward: whatever was not hit by the raymarching loop is our sky and thus can be colored in any way we want!
+
+```glsl {24-30} title=Applying a sky color to the background and fog to a raymarched scene
+vec3 lightPosition = vec3(-1.0, 0.0, 0.5);
+
+void main(){
+  vec2 uv = gl_FragCoord.xy/uResolution.xy;
+  uv -= 0.5;
+  uv.x *= uResolution.x / uResolution.y;
+
+  vec3 color = vec3(0.0);
+  vec3 ro = vec3(0.0, 18.0, 5.0);
+  vec3 rd = normalize(vec3(uv, 1.0));
+
+  float d = raymarch(ro,rd);
+  vec3 p = ro + rd * d;
+
+  vec3 lightDirection = normalize(lightPosition-p);
+
+  if (d<MAX_DIST){
+    vec3 normal = getNormal(p);
+
+    float amb = clamp(0.5 + 0.5 * normal.y, 0.0, 1.0);
+    float diffuse = clamp(dot(normal, lightDirection), 0.0, 1.0);
+    float shadow = softShadows(p, lightDirection, 0.1, 3.0, 64.0);
+
+    color = vec3(1.0) * diffuse * shadow;
+    // apply fog to raymarched landscape
+    color = fog(ro, rd, color, d);
+  } else {
+    // color the background of the scene
+    color = vec3(0.5,0.6,0.7);
+  }
+
+  gl_FragColor = vec4(color, 1.0);
+}
+```
+
+From there, it's up to you to get creative and play with more effects or add more details to your landscapes. I haven't had the time yet to generate a lot of those or explore how to add more details such as clouds or trees. That's next on my list though!
+
+In case you need an example to get you started, here's a demo featuring the Martian landscape I showcased on Twitter in early August inspired by the work of <Anchor favicon discreet href="https://twitter.com/stormoid">@stormoid</Anchor>.
+
+<StaticTweet id="1686032469244645376" />
+
+It features:
+
+- Our good ol' Raymarcher we built in the first part of this article.
+- An application of noise derivatives
+- Soft shadows
+- Fog
+- @Stormoid's atmospherical scattering function that creates this "planetary glow" that's also based on a flavor of exponential decay (like our fog).
+
+<RaymarchingSandpack scene="scene10" />
+
+## Final thoughts
+
+I find those raymarched landscapes really _fascinating_. Through the brevity of the code, and the very realistic terrains that stretches to infinity it outputs, it makes creating large unique worlds almost trivial, which reminded me a lot of the empty, unfathomably big worlds featured in one of [Jacob Geller's videos on Video Games that don't fake space](https://www.youtube.com/watch?v=Q85l1Fenc5w).
+
+On top of all that, the file containing the code bringing those worlds to life _only weighs a couple of kilobytes_, `~5kB` the last time I checked for the Martian landscape excluding the texture which is itself 10x bigger already but it can technically be replaced by a hash function so I'm not counting it in. Even just taking a screenshot of _a single frame_ of the landscape can be close to 100x heavier. I don't know about you but this makes me _think_ a lot 😄, perhaps a bit too much, hence why I really liked working on those scenes.
+
+All of that is made possible by simply stitching a couple of clever math together alongside some simple physics principles, which reminds me of this quote from Zach Lieberman:
+
+<StaticTweet id="1509835538127376386" />
+
+I think this fits well for Raymarching as a whole and also to conclude this (long) article, which I hope you enjoyed.
+
+I'm not 100% done with Raymarching yet though (and will probably never be). If anything, this is just the tip of the iceberg. [I recently got into Volumetric rendering](https://twitter.com/MaximeHeckel/status/1689294787046678529?s=20), the method behind rendering smoke and clouds, which is kind of a spin-off of Raymarching, that I find really fun to build with. That, however, will be a topic for another time 😄.

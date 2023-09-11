@@ -5,7 +5,7 @@ describe('SEO: Verify meta tag integrity', () => {
     cy.get('meta[name="description"]').should(
       'have.attr',
       'content',
-      "Hi I'm Maxime, and this is my blog. Here, I share through my writing my experience as a frontend engineer and everything I'm learning about on React, Typescript, SwiftUI, Serverless, and testing."
+      "Hi I'm Maxime, and this is my blog. Here, I share through my writing my experience as a frontend engineer and everything I'm learning about on React, Shaders, React Three Fiber, Framer Motion, and more."
     );
     cy.get('meta[name="twitter:site"]')
       .should('have.attr', 'content')
@@ -37,7 +37,7 @@ describe('SEO: Verify meta tag integrity', () => {
     cy.get('meta[property="og:description"]').should(
       'have.attr',
       'content',
-      "Hi I'm Maxime, and this is my blog. Here, I share through my writing my experience as a frontend engineer and everything I'm learning about on React, Typescript, SwiftUI, Serverless, and testing."
+      "Hi I'm Maxime, and this is my blog. Here, I share through my writing my experience as a frontend engineer and everything I'm learning about on React, Shaders, React Three Fiber, Framer Motion, and more."
     );
     cy.get('meta[property="og:image"]')
       .should('have.attr', 'content')
