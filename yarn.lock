@@ -2205,10 +2205,10 @@
     "@typescript-eslint/types" "5.50.0"
     eslint-visitor-keys "^3.3.0"
 
-"@upstash/redis@1.20.6":
-  version "1.20.6"
-  resolved "https://registry.yarnpkg.com/@upstash/redis/-/redis-1.20.6.tgz#3d5773f2b463b19f612b6373fe516e6200a1762d"
-  integrity sha512-q1izaYEUsq/WiXNOjf4oOjFZe8fIeBSZN8d5cEyOD4nem+zxc4jccieorQQrNlEahKPE1ZYLzVEkMODRUfch2g==
+"@upstash/redis@1.22.0":
+  version "1.22.0"
+  resolved "https://registry.yarnpkg.com/@upstash/redis/-/redis-1.22.0.tgz#3ae3ef056608c8598f46e8bc3b3f405a94781142"
+  integrity sha512-sXoJDoEqqik0HbrNE7yRWckOySEFsoBxfRdCgOqkc0w6py19ZZG50SpGkDDEUXSnBqP8VgGYXhWAiBpqxrt5oA==
   dependencies:
     isomorphic-fetch "^3.0.0"
 
@@ -2222,12 +2222,12 @@
   resolved "https://registry.yarnpkg.com/@vercel/edge/-/edge-0.3.4.tgz#4b88bc202e1ba3b70096b588219b57fe82c4a5de"
   integrity sha512-dFU+yAUDQRwpuRGxRDlEO1LMq0y1LGsBgkyryQWe4w15/Fy2/lCnpvdIoAhHl3QvIGAxCLHzwRHsqfLRdpxgJQ==
 
-"@vercel/kv@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@vercel/kv/-/kv-0.2.1.tgz#f66bd79dd3ab14c83bcd09f2e4c0049b46f7ee25"
-  integrity sha512-0O1CVh0maG/bduAE6DPKUTfGSnORgrcS5xBYZCb62sOU7PrVZrXhaPbUSBE4q5PXS5DC+cpN6FY2RWNlslUaWQ==
+"@vercel/kv@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@vercel/kv/-/kv-0.2.3.tgz#182419a8e44fcc7ff1638522f8d79a1846d99795"
+  integrity sha512-Wq1+EsRBQmvLlcqCZeYVg1MAARWrnETgLe3Sy3UCqG+zg7LThpkt0YHZe1NN3Aj4IRmCKQamotWrLDdEx+ZB3w==
   dependencies:
-    "@upstash/redis" "1.20.6"
+    "@upstash/redis" "1.22.0"
 
 "@vercel/og@^0.5.8":
   version "0.5.8"
