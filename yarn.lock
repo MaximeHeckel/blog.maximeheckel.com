@@ -2217,10 +2217,10 @@
   resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-0.1.5.tgz#285275b64a5b47cae0e5d11002fb8856b1ec6b0c"
   integrity sha512-/k9N8Ea3Yc5A52GlkjzUEbi2vE/izClrOf++ryBkxEfrZM/OZwtHkdNw/QExZ1h/B67RCZLK7bCOnKKrhG7gTg==
 
-"@vercel/edge@^0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@vercel/edge/-/edge-0.3.4.tgz#4b88bc202e1ba3b70096b588219b57fe82c4a5de"
-  integrity sha512-dFU+yAUDQRwpuRGxRDlEO1LMq0y1LGsBgkyryQWe4w15/Fy2/lCnpvdIoAhHl3QvIGAxCLHzwRHsqfLRdpxgJQ==
+"@vercel/edge@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@vercel/edge/-/edge-1.1.0.tgz#1a0cf6487d45b89a26d70d91e8f34c95a06e7df3"
+  integrity sha512-84H2EavY5Kul9Ef1DnTH0XEG5vChqcXjyqoRLVPjjZjLWw47sMapzXXQH09pybcshR+8AKqULGvFqPTWuRh3Rw==
 
 "@vercel/kv@^0.2.1":
   version "0.2.1"
