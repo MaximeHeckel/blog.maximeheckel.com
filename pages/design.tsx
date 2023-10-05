@@ -40,6 +40,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import { NewTweet } from 'types/tweet';
 import { templateColumnsMedium } from 'styles/grid';
+import BeforeAfterImage from '@core/components/BeforeAfterImage';
 
 const SandpackExample = dynamic(
   () => import('@core/components/MDX/Widgets/WaveAnimation/Sandpack')
@@ -1300,13 +1301,27 @@ function sayHi(name) {
           <Flex
             alignItems="start"
             as="section"
-            css={{ alignSelf: 'stretch', marginBottom: 'var(--space-9)' }}
+            css={{ alignSelf: 'stretch' }}
             direction="column"
             gap="5"
             id="tweet"
           >
             <H2>Tweet</H2>
             <Tweet tweet={props.tweets['1386013361809281024']} />
+          </Flex>
+          <Flex
+            alignItems="start"
+            as="section"
+            css={{ alignSelf: 'stretch', marginBottom: 'var(--space-9)' }}
+            direction="column"
+            gap="5"
+          >
+            <H2>Before / After Image</H2>
+            <BeforeAfterImage
+              alt="Screenshot showcasing the blue noise dithering applied to our cloud scene"
+              beforeSrc="/static/images/before.png"
+              afterSrc="/static/images/after.png"
+            />
           </Flex>
         </Flex>
       </Grid>
