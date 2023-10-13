@@ -171,15 +171,25 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
         onMouseMove={handleMouseMove}
         onTouchMove={handleTouchMove}
         style={{
-          width: width || '100%',
-          height: height || '100%',
           // @ts-ignore
           '--progress': `${wiggleMotion.get()}%`,
         }}
       >
-        <S.Image alt="Before" src={beforeSrc} />
+        <S.Image
+          alt="Before"
+          loading="eager"
+          src={beforeSrc}
+          width={width}
+          height={height}
+        />
         <S.Overlay>
-          <S.Image alt="After" src={afterSrc} />
+          <S.Image
+            alt="After"
+            loading="eager"
+            src={afterSrc}
+            width={width}
+            height={height}
+          />
         </S.Overlay>
         <Slider />
       </S.Wrapper>

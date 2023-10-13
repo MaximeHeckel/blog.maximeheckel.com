@@ -12,6 +12,15 @@ import InfinitySpheres from './infinitySpheres';
 import MengerFractal from './mengerFractal';
 import NoiseDerivatives from './noiseDerivatives';
 import MartianLandscape from './martianLandscape';
+import VolumetricRaymarching from './volumetric';
+import VolumetricRaymarchingWithFBM from './volumetricNoise';
+import DirectionalDerivative from './directionalDerivative';
+import MorphingCloud from './morphingCloud';
+import BlueNoiseDithering from './bluenoiseDithering';
+import BicubicFiltering from './bicubicFiltering';
+import BeersLaw from './beersLaw';
+import LightTransmittance from './lightTransmittance';
+import Phase from './phase';
 
 const CSSCode = `
 html {
@@ -46,6 +55,15 @@ const RenderTargetsSandpack = (props: any) => {
     scene8: MengerFractal,
     scene9: NoiseDerivatives,
     scene10: MartianLandscape,
+    scene11: VolumetricRaymarching,
+    scene12: VolumetricRaymarchingWithFBM,
+    scene13: DirectionalDerivative,
+    scene14: MorphingCloud,
+    scene15: BlueNoiseDithering,
+    scene16: BicubicFiltering,
+    scene17: BeersLaw,
+    scene18: LightTransmittance,
+    scene19: Phase,
   };
 
   return (

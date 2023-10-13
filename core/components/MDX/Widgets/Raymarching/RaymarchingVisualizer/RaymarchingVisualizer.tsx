@@ -66,7 +66,8 @@ const fakeSphereSDF = (_x: number, _y: number, step: number) => {
 
 const SIZE = 17;
 const MAX_STEP = 13;
-const FragmentShaderVisualizer = () => {
+
+const RaymarchingVisualizer = () => {
   const [step, setStep] = useState(0);
 
   const emptyMatrix = useMemo(
@@ -811,4 +812,4 @@ const Diagram = (props: { step: number }) => {
   );
 };
 
-export default FragmentShaderVisualizer;
+export default RaymarchingVisualizer;
