@@ -16,6 +16,7 @@ import {
   H3,
   Strong,
 } from '@maximeheckel/design-system';
+import BeforeAfterImage from '@core/components/BeforeAfterImage';
 import Callout from '@core/components/Callout';
 import Code from '@core/components/Code';
 import Fullbleed from '@core/components/Fullbleed';
@@ -185,6 +186,10 @@ const RaymarchingVisualizer = dynamic(
   () => import('./Widgets/Raymarching/RaymarchingVisualizer')
 );
 
+const VolumetricRaymarchingVisualizer = dynamic(
+  () => import('./Widgets/Raymarching/VolumetricRaymarchingVisualizer')
+);
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -257,6 +262,8 @@ const customComponents = {
   DemoSearch,
   DemoButton,
   RaymarchingVisualizer,
+  VolumetricRaymarchingVisualizer,
+  BeforeAfterImage,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,

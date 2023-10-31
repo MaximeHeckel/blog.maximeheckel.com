@@ -1,0 +1,898 @@
+---
+title: 'Real-time dreamy Cloudscapes with Volumetric Raymarching'
+subtitle: This article is a deep dive into my experimentations with Volumetric rendering and how to leverage it to render beautiful raymarched cloudscapes in React Three Fiber and WebGL. In it, I walk you through everything from the basics of Volumetric Raymarching to the techniques used in video games to render physically accurate clouds.
+date: '2023-10-31T08:00:00.000Z'
+updated: '2023-10-31T08:00:00.000Z'
+categories: []
+slug: real-time-cloudscapes-with-volumetric-raymarching
+type: 'blogPost'
+featured: true
+colorFeatured: 'linear-gradient(267deg, #FAD2A4 10.37%, #ECD5ED 58.94%, #92A6E9 98.35%);'
+---
+
+I spent the past few months diving into the realm of Raymarching and studying some of its applications that may come in handy for future 3D projects, and while I managed to build a pretty diverse set of scenes, all of them consisted of rendering _surfaces or solid objects_. [My blog post on Raymarching](/posts/painting-with-math-a-gentle-study-of-raymarching/) covered some of the many impressive capabilities of this rendering technique, and as I mentioned at the end of that post, that was only the tip of the iceberg; there is _a lot more_ we can do with it.
+
+One fascinating aspect of Raymarching I quickly encountered in my study was its capacity to be tweaked to render **volumes**. Instead of stopping the raymarched loop once the ray hits a surface, we _push through_ and continue the process to sample the _inside_ of an object. That is where my obsession with volumetric clouds started, and I think the countless hours
+I spent exploring the many Sky Islands in Zelda Tears of the Kingdom contributed a lot to my curiosity to learn more about how they work. I thus studied [a lot](https://www.shadertoy.com/view/3dlfWs) [of Shadertoy](https://www.shadertoy.com/view/3sffzj) [scenes](https://www.shadertoy.com/view/tsScDG) leveraging many Volumetric Raymarching techniques to render smoke, clouds, and cloudscapes, which I obviously couldn't resist giving a try rebuilding myself:
+
+<VideoPlayer
+  src="https://d2xl4m2ghaywko.cloudfront.net/clouds.mp4"
+  autoPlay
+  muted
+  loop
+  controls={true}
+  width={700}
+  height={465}
+/>
+
+I spent a great deal of time exploring the different ways I could use Raymarching to render clouds, from fully wrapping my head around **the basics of Volumetric Raymarching** to **leveraging physically based properties of clouds** to try getting a more realistic output while also trying to squeeze as much performance out of my scenes with neat **performance improvement tips** I learned along the way. I cover all of that in this article, which I hope can serve you as a field guide for your own volumetric rendering experiments and learnings.
+
+<Callout label="Before you start" variant="info">
+
+👉 This article assumes you have basic knowledge about shaders, noise, and GLSL, or read [The Study of Shaders with React Three Fiber](/posts/the-study-of-shaders-with-react-three-fiber/) as well as some notions about Raymarching, which you can learn more about in [Painting with Math: A Gentle Study of Raymarching](/posts/painting-with-math-a-gentle-study-of-raymarching/).
+
+</Callout>
+
+<Callout label="Sources" variant="info">
+
+- [EA Forstbite physically based sky atmosphere and cloud rendering](https://www.ea.com/frostbite/news/physically-based-sky-atmosphere-and-cloud-rendering) by Sebastien Hillaire
+- [Physically Based and Scalable Atmospheres in Unreal Engine](https://www.youtube.com/watch?v=SW30QX1wxTY&ab_channel=SIGGRAPHPhysicallyBasedShadingCourse) by Sebastien Hillaire
+- [How Big Budget AAA Games Render Clouds](https://www.youtube.com/watch?v=Qj_tK_mdRc) by SimonDev
+- [Scalar Spatiotemporal Blue Noise Masks](https://www.ea.com/seed/news/egsr-2022-blue-noise)
+- [The Real-tile Volumetric Cloudscapes of Horizon Zero Dawn](https://www.guerrilla-games.com/media/News/Files/The-Real-time-Volumetric-Cloudscapes-of-Horizon-Zero-Dawn.pdf) by Andrew Schneider
+- [Volumetric Rendering](https://wallisc.github.io/rendering/2020/05/02/Volumetric-Rendering-Part-2.html) by Chris Wallis
+- [Directional Derivative](https://iquilezles.org/articles/derivative/) by Inigo Quilez
+
+Special thanks to everyone who posted Volumetric rendering demos on Shadertoy, they helped me a lot!
+
+</Callout>
+
+## Volumetric rendering: Raymarching with a twist
+
+In my previous blog post on Raymarching, we saw that the technique relied on:
+
+- **Signed Distance Fields**: functions that return the distance of a given point in space to the surface of an object
+- **A Raymarching loop** where we **march step-by-step** alongside rays cast **from an origin point** (a camera, the observer's eye) **through each pixel of an output image**, and we calculate the distance to the object's surface using our SDF. Once that distance is small enough, we can draw a pixel.
+
+If you've practiced this technique on some of your own scenes, you're in luck: Volumetric Raymarching relies on _the same principles_: there's a loop, rays cast from an origin, and SDFs. However, since we're rendering volumes instead of surfaces, there's a tiny twist to the technique 👀.
+
+### How to sample a volume
+
+The first time we got introduced to the concept of SDF, we learned that it was important _not to step inside_ the object during our Raymarching loop to have a beautiful render. I even emphasized that fact in one of my diagrams showcasing 3 points relative to an object:
+
+- `P1` is located far from the surface, in green, representing a _positive_ distance to the surface.
+- `P2` is located at a close distance ε to the surface, in orange,
+- `P3` positioned **inside** the object, in red, representing a **negative** distance to the surface.
+
+<Fullbleed widthPercent={55}>
+  <Image
+    src="blog/raymarching-points_s6aqzv.png"
+    alt="Diagram showcasing 3 points, P1, P2, and P3, being respectively, at a positive distance, small distance, and inside a sphere."
+    layout="responsive"
+    width={700}
+    height={417}
+  />
+</Fullbleed>
+
+When sampling a volume, we'll need to actually **raymarch inside our object** and reframe how we think of SDF: instead of representing the distance to the surface, we will now use it as the _density_ of our volume.
+
+- When raymarching outside, the density is null, or `0`.
+- Once we raymarch inside, it is positive.
+
+To illustrate this new way of thinking about Raymarching in the context of volume, here's a modified version of the widget I introduced in my blog post on the topic earlier this year.
+
+<VolumetricRaymarchingVisualizer />
+
+<Callout variant="info">
+
+Notice how now we keep sampling once inside the object, and each step returns a _layer_ of the volume until the ray has entirely cast through it and the density is once again `0`.
+
+</Callout>
+
+That reframing of what an SDF represents ends up changing two core principles in our Raymarching technique that will have to be reflected in our code:
+
+1. We have to march step-by-step with a **constant step size** along our rays. We no longer use the distance returned by the SDF.
+2. Our SDF now returns the **opposite** of the distance to the surface to properly represent the density of our object (positive on the inside, `0` on the outside)
+
+<Fullbleed widthPercent={55}>
+  <Image
+    src="blog/volumetric_raymarching_points"
+    alt="Diagram showcasing 3 points, P1, P2, and P3, being respectively, at a positive distance, small distance, and inside a sphere. Only P3 is considered 'valid' in the context of Volumetric Raymarching"
+    layout="responsive"
+    width={700}
+    height={415}
+  />
+</Fullbleed>
+
+### Our first Volumetric Raymarching scene
+
+Now that we have a grasp of sampling volumes using what we know about Raymarching, we can try implementing it by modifying an existing scene. For brevity, I'm not detailing the setup of a basic of
+Raymarching scenes. If you want a good starting point you can head to [my Raymarching setup](/posts/painting-with-math-a-gentle-study-of-raymarching#our-first-raymarched-scene) I already introduced in a previous article.
+
+The setup of the scene is quite similar to what we're familiar with in classic Raymarching; the modifications we'll need to do are located in:
+
+- Our SDF functions: we'll need to return the opposite of the distance: `-d` instead of `d`.
+
+```glsl {7} title=Example of SDF used in Volumetric Raymarching
+float sdSphere(vec3 p, float radius) {
+    return length(p) - radius;
+}
+
+float scene(vec3 p) {
+  float distance = sdSphere(p, 1.0);
+  return -distance;
+}
+```
+
+- Our `raymarch` function: we'll need to march at a **constant step size** and start drawing only once **the density is over 0**.
+
+```glsl {3,13} title=Volumetric Raymarching loop with constant step size
+#define MAX_STEPS 100
+
+const float MARCH_SIZE = 0.08;
+//...
+
+float depth = 0.0;
+vec3 p = rayOrigin + depth * rayDirection;
+
+vec4 res = vec4(0.0);
+
+for (int i = 0; i < MAX_STEPS; i++) {
+  float density = scene(p);
+  if (density > 0.0) {
+    // ...
+  }
+
+  depth += MARCH_SIZE;
+  p = rayOrigin + depth * rayDirection;
+}
+```
+
+Now comes another question: _what shall we draw once our density is positive to represent a volume?_
+For this first example, we can keep things simple and play with the `alpha` channel of our colors to make it proportional to the density of our volume: the denser our object gets as we march into it, the more opaque/darker it will be.
+
+```glsl {13-17} title=Simple Volumetric Raymarching loop
+const float MARCH_SIZE = 0.08;
+
+vec4 raymarch(vec3 rayOrigin, vec3 rayDirection) {
+  float depth = 0.0;
+  vec3 p = rayOrigin + depth * rayDirection;
+
+  vec4 res = vec4(0.0);
+
+  for (int i = 0; i < MAX_STEPS; i++) {
+    float density = scene(p);
+
+    // We only draw the density if it's greater than 0
+    if (density > 0.0) {
+      vec4 color = vec4(mix(vec3(1.0,1.0,1.0), vec3(0.0, 0.0, 0.0), density), density );
+      color.rgb *= color.a;
+      res += color * (1.0 - res.a);
+    }
+
+    depth += MARCH_SIZE;
+    p = rayOrigin + depth * rayDirection;
+  }
+
+  return res;
+}
+```
+
+If we try to render this code in our React Three Fiber canvas, we should get the following result 👀
+
+<RaymarchingSandpack scene="scene11" />
+
+## Drawing Fluffy Raymarched Clouds
+
+We now know and applied the basics of Volumetric Raymarching. So far, we only rendered a simple volumetric sphere with constant density as we march through the volume, which is a good start. We can now try using that simple scene as a foundation to render something more interesting: **clouds!**
+
+### Noisy Volume
+
+Going from our simple SDF of a sphere to a cloud consists of drawing it with _a bit more noise_. Clouds don't have a uniform shape nor do they have a uniform density, thus we need to introduce some organic randomness through noise in our Raymarching loop. If you read [some of](/posts/the-study-of-shaders-with-react-three-fiber/) [my previous articles](/posts/painting-with-math-a-gentle-study-of-raymarching/), you should already be familiar with the concept of:
+
+1. Noise, Perlin noise, and value noise derivative
+2. Fractal Brownian Motion, or FBM.
+3. Texture based noise.
+
+To generate raymarched landscapes, we used a noise texture, noise derivatives, and FBM to get a detailed organic result. We'll rely on some of those concepts to create organic randomness and obtain a cloud from our SDF ☁️.
+
+```glsl title=Noise function for Raymarched landscape
+vec3 noise(vec2 x) {
+  vec2 p = floor(x);
+  vec2 f = fract(x);
+  vec2 u = f * f * (3. - 2. * f);
+
+  float a = textureLod(uTexture, (p + vec2(.0,.0)) / 256.,0.).x;
+  float b = textureLod(uTexture, (p + vec2(1.0,.0)) / 256.,0.).x;
+  float c = textureLod(uTexture, (p + vec2(.0,1.0)) / 256.,0.).x;
+  float d = textureLod(uTexture, (p + vec2(1.0,1.0)) / 256.,0.).x;
+
+  float noiseValue = a + (b-a) * u.x + (c-a) * u.y + (a - b - c + d) * u.x * u.y;
+  vec2 noiseDerivative = 6. * f * (1. - f) * (vec2(b - a, c - a) + (a - b - c + d) * u.yx);
+
+  return vec3(noiseValue, noiseDerivative);
+}
+```
+
+For clouds, our `noise` function looks a bit different:
+
+```glsl title=Noise function for Volumetric clouds
+float noise(vec3 x ) {
+  vec3 p = floor(x);
+  vec3 f = fract(x);
+  vec2 u = f * f * (3. - 2. * f);
+
+  vec2 uv = (p.xy + vec2(37.0, 239.0) * p.z) + u.xy;
+  vec2 tex = textureLod(uNoise,(uv + 0.5) / 256.0, 0.0).yx;
+
+  return mix( tex.x, tex.y, u.z ) * 2.0 - 1.0;
+}
+```
+
+To tell you the truth, I saw this function in many [Shadertoy demos](https://www.shadertoy.com/view/WdXGRj) without necessarily seeing a credited author or even a link to an explanation; I kept using it throughout my work as it still yielded a convincing cloud noise pattern. Here's an attempt at gathering together some of its specificities from my own understanding:
+
+- Clouds are 3D structures, so our function takes in a `vec3` as input: a point in space within our cloud.
+- The texture lookup differs from its landscape counterpart: we're sampling it as a 2D slice from a 3D position. The `vec2(37.0, 239.0) * p.z` seems a bit arbitrary to me, but from what I gathered, it allows for more variation in the resulting noise.
+- We then mix two noise values from our texture lookup based on the `z` value to generate a smooth noise pattern and rescale it within the `[-1, 1]` range.
+
+<Callout variant="info">
+
+During my research, I found that game devs and other 3D creators use a large variety of noises to get more realistic-looking clouds. If you're interested in reading more on that topic, you can check the following write-ups (also quoted as source):
+
+- [How Big Budget AAA Games Render Clouds](https://youtu.be/Qj_tK_mdRcA?si=BwpgJ_noGu78_9r8&t=399)
+- [This presentation on the EA frostbite engine](https://media.contentapi.ea.com/content/dam/eacom/frostbite/files/s2016-pbs-frostbite-sky-clouds-new.pdf) starting at page 30
+
+</Callout>
+
+Applying this noise along with a Fractal Brownian motion is pretty similar to what we're used to with Raymarched landscapes:
+
+```glsl {21,23} title=Fractal Brownian Motion applied to our Volumetric Raymarching scene
+float fbm(vec3 p) {
+  vec3 q = p + uTime * 0.5 * vec3(1.0, -0.2, -1.0);
+  float g = noise(q);
+
+  float f = 0.0;
+  float scale = 0.5;
+  float factor = 2.02;
+
+  for (int i = 0; i < 6; i++) {
+      f += scale * noise(q);
+      q *= factor;
+      factor += 0.21;
+      scale *= 0.5;
+  }
+
+  return f;
+}
+
+float scene(vec3 p) {
+  float distance = sdSphere(p, 1.0);
+  float f = fbm(p);
+
+  return -distance + f;
+}
+```
+
+If we apply the code above to our previous demo, we do get something that starts to look like a cloud 👀:
+
+<RaymarchingSandpack scene="scene12" />
+
+### Adding light
+
+Once again, we're just "starting" to see something approaching our goal, but a crucial element is missing to make our cloud feel more _cloudy_: **light**.
+
+The demo we just saw in the previous part lacks depth and shadows and thus doesn't feel very realistic overall, and that's due to the lack of diffuse light.
+
+<Callout label="Light goes a long way" variant="info">
+
+We had similar issues in:
+
+- Our [first demo from the Raymarching blog post](/posts/painting-with-math-a-gentle-study-of-raymarching#our-first-raymarched-scene)
+- Our [Dispersion shader](/posts/refraction-dispersion-and-other-shader-light-effects#adding-volume-and-shininess-to-our-dispersion)
+
+Adding diffuse and optionally specular lighting can go a long way to give your shader material or scene a sense of depth.
+
+</Callout>
+
+To add light to our cloud and consequentially obtain better shadows, one may want to apply the same lighting we used in standard Raymarching scenes:
+
+1. Calculate the normal of each sample point using our `scene` function
+2. Use the dot product of the normal and the light direction
+
+```glsl {26-27,29-30} title=Diffuse lighting in Raymarched scene using normals
+vec3 getNormal(vec3 p) {
+  vec2 e = vec2(.01, 0);
+
+  vec3 n = scene(p) - vec3(
+    scene(p-e.xyy),
+    scene(p-e.yxy),
+    scene(p-e.yyx));
+
+  return normalize(n);
+}
+
+void main() {
+  // ...
+
+  vec3 ro = vec3(0.0, 0.0, 5.0);
+  vec3 rd = normalize(vec3(uv, -1.0));
+  vec3 lightPosition = vec3(1.0);
+
+  float d = raymarch(ro, rd);
+  vec3 p = ro + rd * d;
+
+
+  vec3 color = vec3(0.0);
+
+  if(d<MAX_DIST) {
+    vec3 normal = getNormal(p);
+    vec3 lightDirection = normalize(lightPosition - p);
+
+    float diffuse = max(dot(normal, lightDirection), 0.0);
+    color = vec3(1.0, 1.0, 1.0) * diffuse;
+  }
+
+  gl_FragColor = vec4(color, 1.0);
+}
+```
+
+That would work in theory, but it's not the optimal choice for Volumetric Raymarching:
+
+- The `getNormal` function requires a lot of sample points to estimate the "gradient" in every direction. In the code above, we need 4, but there are code snippets that require 6 for a more accurate result.
+- Our volumetric raymarching loop is more resource-intensive: we're walking at a constant step size along our ray to sample the density of our volume.
+
+Thus, we need another method or approximation for our diffuse light. Luckily, Inigo Quilez presents a technique to solve this problem in [his article on directional derivatives](https://iquilezles.org/articles/derivative/). Instead of having to sample our density in every direction like `getNormal`, this method simplifies the problem by sampling the density at our sampling point `p` and at an offset **in the direction of the light** and getting the difference between those values to approximate how the light scatters roughly inside our volume.
+
+<Image
+  src="blog/directional_derivatives"
+  alt="Diagram showcasing 2 sampled points P1 and P2 with both their diffuse lighting calculated by sampling extra points P1' and P2' in the direction of the light"
+  layout="responsive"
+  width={700}
+  height={445}
+/>
+
+In the diagram above, you can see that we're sampling our density at `p1` and at another point `p1'` that's a bit further along the light ray:
+
+- If the density increases along that path, that means the volume gets denser, and light will scatter more
+- If the density gets smaller, our cloud is less thick, and thus, the light will scatter less.
+
+This method only requires 2 sampling points and consequentially requires fewer resources to give us a good approximation of how the light behaves with the volume _around_ `p1`.
+
+<Callout variant="danger">
+
+The directional derivative method to calculate diffuse lighting works only with a few light sources. That is an acceptable limitation, as our scenes only feature one light source: the sun.
+
+</Callout>
+
+We can apply this diffuse formula to our demo as follows:
+
+```glsl {5,7,9} title=Diffuse lighting using directional derivatives
+//...
+if (density > 0.0) {
+  // Directional derivative
+  // For fast diffuse lighting
+  float diffuse = clamp((scene(p) - scene(p + 0.3 * sunDirection)) / 0.3, 0.0, 1.0 );
+
+  vec3 lin = vec3(0.60,0.60,0.75) * 1.1 + 0.8 * vec3(1.0,0.6,0.3) * diffuse;
+  vec4 color = vec4(mix(vec3(1.0, 1.0, 1.0), vec3(0.0, 0.0, 0.0), density), density );
+  color.rgb *= lin;
+
+  color.rgb *= color.a;
+  res += color * (1.0 - res.a);
+}
+//...
+```
+
+That is, once again, very similar to what we were doing in standard Raymarching, except that now, we have to include it _inside the Raymarching loop_ as we're sampling a volume and thus have to run the calculation multiple times throughout the volume as the density may vary whereas a surface required only one diffuse lighting computation (at the surface).
+
+You can observe the difference between our cloud without lighting and with diffuse lighting below 👇
+
+<BeforeAfterImage
+  alt="Before/After comparison of our Volumetric cloud without and with diffuse lighting."
+  beforeSrc="https://res.cloudinary.com/dg5nsedzw/image/upload/v1698192589/blog/diffuse-before.png"
+  afterSrc="https://res.cloudinary.com/dg5nsedzw/image/upload/v1698192589/blog/diffuse-after.png"
+  defaultSliderPosition={40}
+  width={700}
+  height={511}
+/>
+
+And here's the demo featuring the concept and code we just introduced 👀:
+
+<RaymarchingSandpack scene="scene13" />
+
+<Callout variant="info">
+
+In this demo above, try to move the "sun" by modifying the `SUN_POSITION` vector and see the changes in light scattering.
+
+</Callout>
+
+### Morphing clouds
+
+Let's take a little break to tweak our scene and have some fun with what we built so far! Despite the differences between the standard Raymarching and its volumetric counterpart, there are still a lot of SDF-related concepts you can apply when building cloudscapes.
+
+You can try to make a cloud in fun shapes like a cross or a torus, or even better, try to make it morph from one form to another over time:
+
+```glsl {23,25-28} title=Mixing SDF to morph volumetric clouds into different shapes
+mat2 rotate2D(float a) {
+  float s = sin(a);
+  float c = cos(a);
+  return mat2(c, -s, s, c);
+}
+
+float nextStep(float t, float len, float smo) {
+  float tt = mod(t += smo, len);
+  float stp = floor(t / len) - 1.0;
+  return smoothstep(0.0, smo, tt) + stp;
+}
+
+float scene(vec3 p) {
+  vec3 p1 = p;
+  p1.xz *= rotate2D(-PI * 0.1);
+  p1.yz *= rotate2D(PI * 0.3);
+
+  float s1 = sdTorus(p1, vec2(1.3, 0.9));
+  float s2 = sdCross(p1 * 2.0, 0.6);
+  float s3 = sdSphere(p, 1.5);
+  float s4 = sdCapsule(p, vec3(-2.0, -1.5, 0.0), vec3(2.0, 1.5, 0.0), 1.0);
+
+  float t = mod(nextStep(uTime, 3.0, 1.2), 4.0);
+
+  float distance = mix(s1, s2, clamp(t, 0.0, 1.0));
+  distance = mix(distance, s3, clamp(t - 1.0, 0.0, 1.0));
+  distance = mix(distance, s4, clamp(t - 2.0, 0.0, 1.0));
+  distance = mix(distance, s1, clamp(t - 3.0, 0.0, 1.0));
+
+  float f = fbm(p);
+
+  return -distance + f;
+}
+```
+
+<RaymarchingSandpack scene="scene14" />
+
+This demo is a reproduction of [this volumetric rendering related Shadertoy scene](https://www.shadertoy.com/view/mljyzw). I really like this creation because the result is very organic, and it gives the impression that the cloud is _rolling_ into its next shape naturally.
+
+You can also try to render:
+
+- Clouds merging together using the `min` and `smoothmin` of two SDFs
+- Repeating clouds through space using the `mod` function
+
+There are a lot of creative compositions to try!
+
+## Performance optimization
+
+You may notice that running the scenes we built so far may make your computer sound like a jet engine at high resolution or at least not look as smooth as they could. Luckily, we can do something about it and use some **performance optimization techniques to strike the right balance between FPS count and output quality**.
+
+<Callout label="Acknowledgments" variant="info">
+
+Thank you <Anchor discreet favicon href="https://twitter.com/N8Programs">@N8Programs</Anchor> and <Anchor discreet favicon href="https://twitter.com/Cody_J_Bennett">@Cody_J_Bennett</Anchor> for taking the time to introduce me to the techniques showcased in this section and giving me some helpful links and examples. Your help has been essential for the writing of this article!
+
+<StaticTweet id="1688945531546910720" />
+<StaticTweet id="1688951979731562516" />
+
+</Callout>
+
+### Blue noise dithering
+
+One of the main performance pitfalls of our current raymarched cloudscape scene is due to:
+
+- the number of steps we have to perform to sample our volume and the small `marchSize`
+- some heavy computation we have to do within our loop, like our directional derivative or FBM.
+
+This issue will only worsen as we attempt to make more computations to achieve a more physically accurate output in the next part of this article.
+
+One of the first things we could do to make this scene more efficient would be to _reduce the amount of steps_ we perform when sampling our cloud and _increase the step size_. However, if we attempt this on some of our previous examples (I invite you to try), some _layering_ will be visible, and our volume will look more like some kind of milk soup than a fluffy cloud.
+
+<Image
+  src="blog/lowstep_cloud"
+  alt="Screenshot of our rendered Volumetric cloud with a low max step count and higher step size. Notice how those optimizations have degraded the output quality."
+  layout="responsive"
+  width={700}
+  height={551}
+/>
+
+You might have encountered the concept of dithering or some images using dithering styles before.
+This process can create the illusion of more colors or shades in an image than available or purely used for artistic ends.
+I recommend reading [Dithering on the GPU](http://alex-charlton.com/posts/Dithering_on_the_GPU/) from Alex Charlton if you
+want a quick introduction.
+
+In [Ray marching fog with blue noise](https://blog.demofox.org/2020/05/10/ray-marching-fog-with-blue-noise/), the author showcases how you can leverage blue noise dithering in your raymarched scene to erase the _banding_ or _layering_ effect due to a lower step count or less granular loop.
+This technique leverages a blue noise pattern, which has fewer patterns or clumps than other noises and is less visible to the human eye, to obtain a random number each time our fragment shader runs. We then introduce that number as an _offset_ at the beginning of the raymarched loop, moving our sampling start point along our ray for each pixel of our output.
+
+<Image
+  src="blue-noise"
+  alt="Blue noise texture"
+  layout="responsive"
+  width={700}
+  height={700}
+/>
+
+<Image
+  src="blog/blue_noise_dithering"
+  alt="Diagram showcasing the difference between our cloud being sampled without and with blue noise dithering. Notice how each ray is offset when blue noise is introduced and how that 'erases' any obvious layering in the final render."
+  layout="responsive"
+  width={700}
+  height={763}
+/>
+
+```glsl {7,15,17} title=Blue noise dithering introducing an offset in our Raymarching loop
+uniform sampler2D uBlueNoise;
+
+//...
+
+vec4 raymarch(vec3 rayOrigin, vec3 rayDirection, float offset) {
+  float depth = 0.0;
+  depth += MARCH_SIZE * offset;
+  vec3 p = rayOrigin + depth * rayDirection;
+  //...
+}
+
+void(main) {
+  //...
+  float blueNoise = texture2D(uBlueNoise, gl_FragCoord.xy / 1024.0).r;
+  float offset = fract(blueNoise);
+
+  vec4 res = raymarch(ro, rd, offset);
+  //...
+}
+
+```
+
+By introducing some **blue noise dithering** in our fragment shader, we can erase those artifacts and get a high-quality output while maintaining the Raymarching step count low!
+
+However, under some circumstances, the dithering pattern can be pretty noticeable. By looking at some other [Shadertoy examples](https://www.shadertoy.com/view/WsfBDf), I discovered that introducing a _temporal_ aspect to the blue noise can attenuate this issue.
+
+```glsl title=Temporal blue noise dithering offset
+float offset = fract(blueNoise + float(uFrame%32) / sqrt(0.5));
+```
+
+Here's a before/after comparison of our single frame of our raymarched cloud. I guess the results speak for themselves here 😄.
+
+<BeforeAfterImage
+  alt="Before/After comparison of our Volumetric cloud with fewer Raymarching steps and without and with Blue Noise dithering."
+  beforeSrc="https://res.cloudinary.com/dg5nsedzw/image/upload/v1698193254/blog/blue-noise-dithering-before.png"
+  afterSrc="https://res.cloudinary.com/dg5nsedzw/image/upload/v1698193254/blog/blue-noise-dithering-after.png"
+  defaultSliderPosition={40}
+  width={700}
+  height={511}
+/>
+
+And here's the demo showcasing our blue noise dithering in action giving us a softer cloud ⛅:
+
+<RaymarchingSandpack scene="scene15" />
+
+<Callout variant="info">
+
+In the sandbox above, try to remove the temporal aspect of the blue noise dithering to see how it impacts the visibility of the dithering pattern.
+
+</Callout>
+
+### Upscaling with Bicubic filtering
+
+This second improvement recommended by <Anchor discreet favicon href="https://twitter.com/N8Programs">@N8Programs</Anchor> aims to fix some remaining noise artifacts that remain following the introduction of the blue noise dithering to our raymarched scene.
+
+**Bicubic filtering** is used in upscaling and allows smoothing out some noise patterns while retaining details by calculating the value of a new pixel by considering 16 neighboring pixels through a cubic polynomial ([Sources](https://en.wikipedia.org/wiki/Bicubic_interpolation)).
+
+I was lucky to find [an implementation of bicubic filtering on Shadertoy](https://www.shadertoy.com/view/Dl2SDW) made by N8Programs himself! Applying it directly to our existing work however, is not that straightforward. We have to add this improvement as its own step or pass in the rendering process, almost as a post-processing effect.
+
+I introduced an easy way to build this kind of pipeline in my article titled [Beautiful and mind-bending effects with WebGL Render Targets](/posts/beautiful-and-mind-bending-effects-with-webgl-render-targets#an-alternative-to-effectcomposer-for-post-processing-effects) where I showcase how you can use Frame Buffer Objects (FBO) to apply some post-processing effects on an entire scene which we can use for this use case:
+
+1. We render our main raymarched canvas in a **portal**.
+2. The default scene only contains a **fullscreen triangle**.
+3. We render our main scene in a render target.
+4. We pass **the texture of the main scene's render target as a uniform** of our bicubic filtering material.
+5. We use the bicubic filtering material as the material for our fullscreen triangle.
+6. Our bicubic filtering will take our noisy raymarched scene as a texture uniform and output the smoothed out scene.
+
+<Fullbleed widthPercent={55}>
+  <Image
+    src="blog/bicubic_filtering"
+    alt="Diagram showcasing how the bicubic filtering is applied as a post-processing effect to the original scene using Render Targets."
+    layout="responsive"
+    width={700}
+    height={375}
+  />
+</Fullbleed>
+
+Here's a quick comparison of our scene before and after applying the bicubic
+filtering:
+
+<BeforeAfterImage
+  alt="Before/After comparison of our Volumetric cloud with without and with Bicubic Filtering. Notice the noise around at the edges and less dense region of the cloud being smoothed out when the effect is applied."
+  beforeSrc="https://res.cloudinary.com/dg5nsedzw/image/upload/v1698193254/blog/bicubic-before.png"
+  afterSrc="https://res.cloudinary.com/dg5nsedzw/image/upload/v1698193254/blog/bicubic-after.png"
+  defaultSliderPosition={40}
+  width={700}
+  height={555}
+/>
+
+The full implementation is a bit long, and features concepts I already went through in my render target focused blog post, so I invite you to look at it on your own time in the demo below:
+
+<RaymarchingSandpack scene="scene16" />
+
+Leveraging render targets allowed me to play more with the resolution of the original raymarched scene. You can see a little selector that lets you pick at which resolution we render our raymarched cloud. You can notice that there are not a lot of differences between `1x` and `0.5x` which is great: **we can squeeze more FPS without sacrificing the output quality 🎉**.
+
+## Physically accurate cloud
+
+So far, we've managed to build really _beautiful cloudscapes_ with Volumetric Raymarching using some simple techniques and mixing the right colors. The resulting scenes are satisfying enough and give the illusion of large, dense clouds, but what if we wanted a more _realistic_ output?
+
+I spent quite some time digging through talks, videos, and articles on how game engines solve the problem of physically accurate clouds and all the techniques involved in them. It's been a journey, and I wanted to dedicate this last section to this topic because I find the subject fascinating: from a couple of physical principles of actual real-life clouds, we can render clouds in WebGL using Volumetric Raymarching!
+
+<Callout label="Shoutout" variant="info">
+
+I wouldn't have been able to build anything related to physically based clouds without <Anchor discreet favicon href="https://twitter.com/iced_coffee_dev">@iced_coffee_dev</Anchor>'s [video on how AAA game studios use Volumetric Raymarching](https://www.youtube.com/watch?v=Qj_tK_mdRc) as well as his guidance on the topic all of which I truly appreciated.
+
+Most of the code featured in this part is based on principles introduced in this video which I strongly recommend watching: it's really really good.
+
+</Callout>
+
+### Beer's Law
+
+I already introduced the concept of [Beer's Law](https://en.wikipedia.org/wiki/Beer%E2%80%93Lambert_law) in my [Raymarching blog post](/posts/painting-with-math-a-gentle-study-of-raymarching#sky-fog-and-martian-landscape) as a way to render fog in the distance of a scene. It states that the intensity of light passing through a transparent medium is exponentially related to the distance it travels. **The further to the medium light propagates, the more it is being absorbed**. The formula for Beer's Law is as follows:
+
+`I = I0​ * exp(−α * d)`, where `α` is the absorption or attenuation coefficient describing how "thick" or "dense" the medium is. In our demos, we'll consider an absorption coefficient of `0.9`, although I'd invite you to try different values so you can see the impact of this number on the resulting render.
+
+<Image
+  src="blog/beers_law"
+  alt="Diagram showcasing how Beer's Law can be used to represent how much light gets absorbed through a volume"
+  layout="responsive"
+  width={700}
+  height={693}
+/>
+
+We can use this formula in our GLSL code and modify the Raymarching loop to use it instead of the "hacky" transparency hack we used in the first part:
+
+```glsl {19,20,26-30} title=Using Beer's Law to calculate and return the accumulated light energy going through the cloud
+#define MAX_STEPS 50
+#define ABSORPTION_COEFFICIENT 0.9
+
+//...
+
+float BeersLaw (float dist, float absorption) {
+  return exp(-dist * absorption);
+}
+
+const vec3 SUN_POSITION = vec3(1.0, 0.0, 0.0);
+const float MARCH_SIZE = 0.16;
+
+float raymarch(vec3 rayOrigin, vec3 rayDirection, float offset) {
+  float depth = 0.0;
+  depth += MARCH_SIZE * offset;
+  vec3 p = rayOrigin + depth * rayDirection;
+  vec3 sunDirection = normalize(SUN_POSITION);
+
+  float totalTransmittance = 1.0;
+  float lightEnergy = 0.0;
+
+  for (int i = 0; i < MAX_STEPS; i++) {
+    float density = scene(p);
+
+    if (density > 0.0) {
+      float transmittance = BeersLaw(density * MARCH_SIZE, ABSORPTION_COEFFICIENT);
+      float luminance = density;
+
+      totalTransmittance *= transmittance;
+      lightEnergy += totalTransmittance * luminance;
+    }
+
+    depth += MARCH_SIZE;
+    p = rayOrigin + depth * rayDirection;
+  }
+
+  return lightEnergy;
+}
+```
+
+In the code snippet above:
+
+- We gutted the raymarching loop, so it now relies on a more physically based property: **Beer's Law**.
+- We changed the interface of our function: instead of returning a full color, it now returns a `float` representing the _amount of light_ or _light energy_ going through the cloud.
+- As we march through the volume, we accumulate the obtained `transmittance`. The deeper we go, the less light we add.
+- We return the resulting `lightEnergy`
+
+The demo below showcases what using Beers Law yields in our Raymarching loop 👀
+
+<RaymarchingSandpack scene="scene17" />
+
+The resulting cloud is a bit strange:
+
+- its edges do indeed behave like a cloud
+- the center is just a white blob
+
+all of which is, once again, due to the lack of a proper lighting model.
+
+### Sampling light
+
+Our new cloud does not interact with light right now. You can try changing the `SUN_POSITION` vector: the resulting render will remain the same. We not only need a lighting model but also a physically accurate one.
+
+For that, we can try to compute how much light has been absorbed for each sample point of our Raymarching loop by:
+
+- Start a dedicated nested Raymarching loop that goes from the current sample point to the light source (direction of the light)
+- Sample the density and apply Beer's Law like we just did
+
+The diagram below illustrates this technique to make it a bit easier to understand:
+
+<Image
+  src="blog/lightmarching"
+  alt="Diagram showcasing how we sample multiple points of lights in the direction of the light through our volume for each sampled point in the Raymarching loop."
+  layout="responsive"
+  width={700}
+  height={443}
+/>
+
+The code snippet below is one of many implementations of this technique. We'll use this one going forward:
+
+```glsl {15-20,40} title=Dedicated nested raymarching loop to sample the light received at a given sampled point
+#define MAX_STEPS 50
+#define MAX_STEPS_LIGHTS 6
+#define ABSORPTION_COEFFICIENT 0.9
+
+//...
+
+const vec3 SUN_POSITION = vec3(1.0, 0.0, 0.0);
+const float MARCH_SIZE = 0.16;
+
+float lightmarch(vec3 position, vec3 rayDirection) {
+  vec3 lightDirection = normalize(SUN_POSITION);
+  float totalDensity = 0.0;
+  float marchSize = 0.03;
+
+  for (int step = 0; step < MAX_STEPS_LIGHTS; step++) {
+      position += lightDirection * marchSize * float(step);
+
+      float lightSample = scene(position, true);
+      totalDensity += lightSample;
+  }
+
+  float transmittance = BeersLaw(totalDensity, ABSORPTION_COEFFICIENT);
+  return transmittance;
+}
+
+float raymarch(vec3 rayOrigin, vec3 rayDirection, float offset) {
+  float depth = 0.0;
+  depth += MARCH_SIZE * offset;
+  vec3 p = rayOrigin + depth * rayDirection;
+  vec3 sunDirection = normalize(SUN_POSITION);
+
+  float totalTransmittance = 1.0;
+  float lightEnergy = 0.0;
+
+  for (int i = 0; i < MAX_STEPS; i++) {
+    float density = scene(p, false);
+
+    // We only draw the density if it's greater than 0
+    if (density > 0.0) {
+      float lightTransmittance = lightmarch(p, rayDirection);
+      float luminance = density;
+
+      totalTransmittance *= lightTransmittance;
+      lightEnergy += totalTransmittance * luminance;
+    }
+
+    depth += MARCH_SIZE;
+    p = rayOrigin + depth * rayDirection;
+  }
+
+  return lightEnergy;
+}
+```
+
+Because of this nested loop, the algorithmic complexity of our Raymarching loop just increased, so we'll need to define a relatively low number of steps to sample our light while also calculating a less precise density by reducing the number of Octaves in our FBM to preserve a decent frame-rate (that's one easy _win_ I implemented to avoid dropping too many frames).
+
+All these little tweaks and performance considerations have been taken into account in the demo below:
+
+<RaymarchingSandpack scene="scene18" />
+
+<Callout variant="info">
+
+In the demo above, try to:
+
+- Move the light source around and notice how it interacts with our more _"physically-based"_ cloud.
+- Try to tweak the `ABSORPTION_COEFFICIENT` and see how it impacts the resulting cloud.
+- Try to increase or decrease the `MAX_STEPS_LIGHTS` number and notice how more light is accumulated the more we sample it at a given `marchSize`
+
+</Callout>
+
+### Anisotropic scattering and phase function
+
+Until now, we assumed that light gets distributed equally in every direction as it propagates through the cloud. In reality, the light gets scattered in different directions with different intensities due to water droplets. This phenomenon is called **Anisotropic scattering** (vs. Isotropic when light scatters evenly), and to have a realistic cloud, we can try to take this into account within our Raymarching loop.
+
+<Image
+  src="blog/anisotropic_scattering"
+  alt="Diagram showcasing the difference between isotropic scattering and anisotropic scattering when sampling our light energy."
+  layout="responsive"
+  width={700}
+  height={807}
+/>
+
+To simulate Anisotropic scattering in our cloud scene for each sampling point for a given light source, we can use a _phase function_. A common one is the **Henyey-Greenstein phase function**, which I encountered in pretty much all the examples I could find on physically accurate Volumetric Raymarching.
+
+<Callout label="Phase functions" variant="info">
+
+Here's a more detailed read on the [Henyey-Greenstein phase function](https://pbr-book.org/3ed-2018/Volume_Scattering/Phase_Functions) if you want to learn more about it.
+
+It's also important to note that this phase function is one of many. For example, you might encounter [Mie and Rayleigh phase functions](https://developer.nvidia.com/gpugems/gpugems2/part-ii-shading-lighting-and-shadows/chapter-16-accurate-atmospheric-scattering) in many Shadertoy demos for anything related to atmospherical scattering.
+
+</Callout>
+
+The GLSL implementation of this phase function looks as follows:
+
+```glsl title=Implementation of the Henyey-Greenstein phase function
+float HenyeyGreenstein(float g, float mu) {
+  float gg = g * g;
+	return (1.0 / (4.0 * PI))  * ((1.0 - gg) / pow(1.0 + gg - 2.0 * g * mu, 1.5));
+}
+```
+
+We now have to introduce the result of this new function in our Raymarching loop by multiplying it by the density at a given sampled point, and what we obtain is more realistic lighting for our cloud, especially if the light source moves around.
+
+```glsl {10,18} title=Introducing the Henyey-Greenstein phase function inside our Raymarching loop
+float raymarch(vec3 rayOrigin, vec3 rayDirection, float offset) {
+  float depth = 0.0;
+  depth += MARCH_SIZE * offset;
+  vec3 p = rayOrigin + depth * rayDirection;
+  vec3 sunDirection = normalize(SUN_POSITION);
+
+  float totalTransmittance = 1.0;
+  float lightEnergy = 0.0;
+
+  float phase = HenyeyGreenstein(SCATTERING_ANISO, dot(rayDirection, sunDirection));
+
+  for (int i = 0; i < MAX_STEPS; i++) {
+    float density = scene(p, false);
+
+    // We only draw the density if it's greater than 0
+    if (density > 0.0) {
+      float lightTransmittance = lightmarch(p, rayDirection);
+      float luminance = density * phase;
+
+      totalTransmittance *= lightTransmittance;
+      lightEnergy += totalTransmittance * luminance;
+    }
+
+    depth += MARCH_SIZE;
+    p = rayOrigin + depth * rayDirection;
+  }
+
+  return lightEnergy
+}
+```
+
+<BeforeAfterImage
+  alt="Comparison of our physically accurate Volumetric cloud with and without applying the Henyey-Greenstein phase function."
+  beforeSrc="https://res.cloudinary.com/dg5nsedzw/image/upload/v1698193254/blog/phase-before.png"
+  afterSrc="https://res.cloudinary.com/dg5nsedzw/image/upload/v1698193254/blog/phase-after.png"
+  defaultSliderPosition={40}
+  width={700}
+  height={511}
+/>
+
+The final demo of this article below showcases our scene with:
+
+- Blue noise dithering
+- Bicubic filtering
+- Beer's law
+- Our more realistic light sampling
+- Henyey-Greenstein phase function
+
+<RaymarchingSandpack scene="scene19" />
+
+The result is looks really good, although I'll admit I had to add an extra value term to my light energy formula so the cloud wouldn't simply "fade away" when dense parts would end up in the shade.
+
+```glsl title=Extra value added to the luminance formula
+float luminance = 0.025 + density * phase;
+```
+
+The need for a hack probably highlights some issues with my code, most likely due to how I use the resulting light energy value returned by the Raymarching loop or an absorption coefficient that's a bit too high. Not sure. If you find any blatantly wrong assumptions in my code, please let me know so I can make the necessary edits.
+
+Some other optimizations are possible to make the cloud look fluffier and denser, like using the [Beer's Powder approximation (page 64)](https://www.guerrilla-games.com/media/News/Files/The-Real-time-Volumetric-Cloudscapes-of-Horizon-Zero-Dawn.pdf), but it was mentioned to me that those are just used for aesthetic reasons and are not actually physically based (I also honestly couldn't figure out how to apply it without altering significantly my `MAX_STEPS`, `MAX_STEPS_LIGHTS`, and `marchSize` variables 😅 and the result was still not great).
+
+<StaticTweet id="1710675662904709611" />
+
+## Conclusion
+
+We learned several ways to render cloud-like volumes with Raymarching throughout this article, and considering that a few weeks prior to that, I wasn't even able to wrap my head around the concept of Volumetric Raymarching, _I'm happy with the result and proud of myself_ given how complex and daunting this subject can be. I was also pleasantly surprised by the ability to apply some physics principles and port techniques commonly used in triple-A video game productions to WebGL to achieve realistic looking clouds.
+
+With that, I'm excited to attempt combining raymarched clouds with terrain, like the ones introduced in my Raymarching article, or even more complex challenges like rendering a planet with realistic atmospheric scattering. Another idea I had was to build a raymarched galaxy; since we can simplify it to a massive cloud in space and that some of the physics principles introduced in this article should still apply and yield beautiful renders.
+
+I hope this article will inspire you in your own Raymarching endeavors and that it helped make this seemingly hard-to-grasp concept of Volumetric rendering a bit more welcoming 🙂.
