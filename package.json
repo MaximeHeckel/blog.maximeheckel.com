@@ -68,7 +68,7 @@
     "qs": "6.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-intersection-observer": "8.27.1",
+    "react-intersection-observer": "9.5.2",
     "react-query": "2.25.2",
     "react-wrap-balancer": "^0.2.4",
     "reading-time": "1.2.1",
