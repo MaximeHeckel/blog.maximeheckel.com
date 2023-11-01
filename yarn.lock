@@ -3795,10 +3795,10 @@ destroy@~1.0.4:
   resolved "https://registry.npmjs.org/destroy/-/destroy-1.0.4.tgz"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
 
-detect-gpu@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.npmjs.org/detect-gpu/-/detect-gpu-4.0.5.tgz"
-  integrity sha512-ISOECnyONJ1ScrkvfEePnEILtHaipP6vuug9r8shsZA2Ujos4yefh31bZfT3vjYw1y88fXnRv1qA31ysrHXIlA==
+detect-gpu@^5.0.37:
+  version "5.0.37"
+  resolved "https://registry.yarnpkg.com/detect-gpu/-/detect-gpu-5.0.37.tgz#27febe44d478ef4d35cd38007355da795ba075d5"
+  integrity sha512-EraWs84faI4iskB4qvE39bevMIazEvd1RpoyGLOBesRLbiz6eMeJqqRPHjEFClfRByYZzi9IzU35rBXIO76oDw==
   dependencies:
     webgl-constants "^1.1.1"
 
