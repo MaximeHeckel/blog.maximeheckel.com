@@ -2,7 +2,7 @@
 title: 'Real-time dreamy Cloudscapes with Volumetric Raymarching'
 subtitle: This article is a deep dive into my experimentations with Volumetric rendering and how to leverage it to render beautiful raymarched cloudscapes in React Three Fiber and WebGL. In it, I walk you through everything from the basics of Volumetric Raymarching to the techniques used in video games to render physically accurate clouds.
 date: '2023-10-31T08:00:00.000Z'
-updated: '2023-10-31T08:00:00.000Z'
+updated: '2023-11-01T08:00:00.000Z'
 categories: []
 slug: real-time-cloudscapes-with-volumetric-raymarching
 type: 'blogPost'
@@ -13,7 +13,7 @@ colorFeatured: 'linear-gradient(267deg, #FAD2A4 10.37%, #ECD5ED 58.94%, #92A6E9 
 I spent the past few months diving into the realm of Raymarching and studying some of its applications that may come in handy for future 3D projects, and while I managed to build a pretty diverse set of scenes, all of them consisted of rendering _surfaces or solid objects_. [My blog post on Raymarching](/posts/painting-with-math-a-gentle-study-of-raymarching/) covered some of the many impressive capabilities of this rendering technique, and as I mentioned at the end of that post, that was only the tip of the iceberg; there is _a lot more_ we can do with it.
 
 One fascinating aspect of Raymarching I quickly encountered in my study was its capacity to be tweaked to render **volumes**. Instead of stopping the raymarched loop once the ray hits a surface, we _push through_ and continue the process to sample the _inside_ of an object. That is where my obsession with volumetric clouds started, and I think the countless hours
-I spent exploring the many Sky Islands in Zelda Tears of the Kingdom contributed a lot to my curiosity to learn more about how they work. I thus studied [a lot](https://www.shadertoy.com/view/3dlfWs) [of Shadertoy](https://www.shadertoy.com/view/3sffzj) [scenes](https://www.shadertoy.com/view/tsScDG) leveraging many Volumetric Raymarching techniques to render smoke, clouds, and cloudscapes, which I obviously couldn't resist giving a try rebuilding myself:
+I spent exploring the many Sky Islands in Zelda Tears of the Kingdom contributed a lot to my curiosity to learn more about how they work. I thus studied a lot of Shadertoy scenes such as ["Clouds" by Inigo Quilez](https://www.shadertoy.com/view/XslGRr), ["Starry Night" by Arlo](https://www.shadertoy.com/view/3dlfWs), and ["Volumetric Raymarching sample" by Suyoku](https://www.shadertoy.com/view/tsScDG) leveraging many Volumetric Raymarching techniques to render smoke, clouds, and cloudscapes, which I obviously couldn't resist giving a try rebuilding myself:
 
 <VideoPlayer
   src="https://d2xl4m2ghaywko.cloudfront.net/clouds.mp4"
