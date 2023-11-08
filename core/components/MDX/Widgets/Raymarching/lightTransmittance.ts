@@ -340,9 +340,9 @@ extend({ BicubicUpscaleMaterial });
 
 const DPR = 0.5;
 // Blue noise texture
-const BLUE_NOISE_TEXTURE_URL = "https://res.cloudinary.com/dg5nsedzw/image/upload/v1697508737/blue-noise.png";
+const BLUE_NOISE_TEXTURE_URL = "https://dzrk4byzdjsiz.cloudfront.net/noises/blue-noise.png";
 // Noise texture
-const NOISE_TEXTURE_URL = "https://res.cloudinary.com/dg5nsedzw/image/upload/v1697157133/noise2.png";
+const NOISE_TEXTURE_URL = "https://dzrk4byzdjsiz.cloudfront.net/noises/noise2.png";
 
 const Raymarching = () => {
   const mesh = useRef();
