@@ -141,7 +141,7 @@ import fragmentShader from './fragmentShader';
 
 const DPR = 1;
 // Noise Texture
-const NOISE_TEXTURE_URL = "https://dzrk4byzdjsiz.cloudfront.net/noises/noise2.png";
+const NOISE_TEXTURE_URL = "https://cdn.maximeheckel.com/noises/noise2.png";
 
 const Raymarching = () => {
   const mesh = useRef();
