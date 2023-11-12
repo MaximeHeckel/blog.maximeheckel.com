@@ -27,102 +27,6 @@
 
   <url>
     <loc
-      >https://blog.maximeheckel.com/snippets/2020-10-8-simpletesttoensurethatalldependencieshaveapinnedversion/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
-      >https://blog.maximeheckel.com/snippets/2020-11-12-substacksubscriptionserverlessfunction/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
-      >https://blog.maximeheckel.com/snippets/2020-11-27-storing-user-settings-swift/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
-      >https://blog.maximeheckel.com/snippets/2020-12-26-cardwithgloweffectonhover/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
-      >https://blog.maximeheckel.com/snippets/2020-5-19-firstcodesnippet/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
-      >https://blog.maximeheckel.com/snippets/2020-5-22-cancelaxiosrequestsinareactcontextproviderusingrefs/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
-      >https://blog.maximeheckel.com/snippets/2020-6-11-assertrequestpropertieswithcypress/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
-      >https://blog.maximeheckel.com/snippets/2020-7-3-waving-hand-animation-framer-motion/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
-      >https://blog.maximeheckel.com/snippets/2020-8-23-animatelineargradientonstatechangeinswiftui/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
-      >https://blog.maximeheckel.com/snippets/2020-8-23-swiftuitabviewwithpagetabviewstyleandfullscreenbackgroundcolors/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
-      >https://blog.maximeheckel.com/snippets/2020-9-1-semitransparentblurorfrostedglasseffectinswiftui/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
-      >https://blog.maximeheckel.com/snippets/2020-9-26-animatedcopytoclipboardbuttonwithframermotionandsvg/</loc
-    >
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc
       >https://blog.maximeheckel.com/posts/advanced-animation-patterns-with-framer-motion/</loc
     >
     <changefreq>daily</changefreq>
@@ -360,6 +264,14 @@
   <url>
     <loc
       >https://blog.maximeheckel.com/posts/react-sub-components-part-3-whitelisting-sub-components-with-flow-b04f9bcf80c2/</loc
+    >
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc
+      >https://blog.maximeheckel.com/posts/real-time-cloudscapes-with-volumetric-raymarching/</loc
     >
     <changefreq>daily</changefreq>
     <priority>0.7</priority>

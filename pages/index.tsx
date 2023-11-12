@@ -20,7 +20,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Layout from '@core/layout';
 import { getAllFilesFrontMatter } from 'lib/mdx';
-import { Post, PostType } from 'types/post';
+import { Post } from 'types/post';
 import React from 'react';
 import { templateColumnsMedium } from 'styles/grid';
 
@@ -334,7 +334,7 @@ const IndexPage = (props: Props) => {
 };
 
 export async function getStaticProps() {
-  const posts = await getAllFilesFrontMatter(PostType.BLOGPOST);
+  const posts = await getAllFilesFrontMatter();
 
   return { props: { posts } };
 }

@@ -10,19 +10,14 @@ const matter = require('gray-matter');
 
   const root = process.cwd();
 
-  const typeToPath = {
-    blog: 'content',
-    snippet: 'snippets',
-  };
-
-  function getPosts(type) {
+  function getPosts() {
     const files = fs
-      .readdirSync(path.join(root, typeToPath[type]))
+      .readdirSync(path.join(root, 'content'))
       .filter((name) => name !== 'img');
 
     const posts = files.reduce((allPosts, postSlug) => {
       const source = fs.readFileSync(
-        path.join(root, typeToPath[type], postSlug),
+        path.join(root, 'content', postSlug),
         'utf8'
       );
       const { data } = matter(source);
@@ -50,19 +45,16 @@ const matter = require('gray-matter');
       language: 'en',
     });
 
-    const content = [
-      ...getPosts('blog'),
-      ...getPosts('snippet'),
-    ].sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
+    const content = [...getPosts()].sort((post1, post2) =>
+      post1.date > post2.date ? -1 : 1
+    );
 
     content.forEach((post) => {
-      const url = `https://blog.maximeheckel.com/${
-        post.type === 'snippet' ? 'snippets' : 'posts'
-      }/${post.slug}`;
+      const url = `https://blog.maximeheckel.com/posts/${post.slug}`;
 
       feed.item({
         title: post.title,
-        description: post.type === 'snippet' ? '' : post.subtitle,
+        description: post.subtitle,
         date: new Date(post.date),
         author: 'Maxime heckel',
         url,

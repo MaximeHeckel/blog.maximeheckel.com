@@ -9,12 +9,20 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Wed, 06 Sep 2023 02:17:38 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 12 Nov 2023 03:13:37 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
         <item>
+            <title><![CDATA[Real-time dreamy Cloudscapes with Volumetric Raymarching]]></title>
+            <description><![CDATA[This article is a deep dive into my experimentations with Volumetric rendering and how to leverage it to render beautiful raymarched cloudscapes in React Three Fiber and WebGL. In it, I walk you through everything from the basics of Volumetric Raymarching to the techniques used in video games to render physically accurate clouds.]]></description>
+            <link>https://blog.maximeheckel.com/posts/real-time-cloudscapes-with-volumetric-raymarching</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/real-time-cloudscapes-with-volumetric-raymarching</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 31 Oct 2023 08:00:00 GMT</pubDate>
+        </item>
+        <item>
             <title><![CDATA[Painting with Math: A Gentle Study of Raymarching]]></title>
-            <description><![CDATA[TBD]]></description>
+            <description><![CDATA[A compilation of my Raymarching and Signed Distance Field learnings and work. In it, I teach you how to leverage those techniques along with lighting models, smoothmin, soft shadows, and some math to create beautiful 3D raymarched scenes ranging from abstract shapes to infinite realistic-looking landscapes.]]></description>
             <link>https://blog.maximeheckel.com/posts/painting-with-math-a-gentle-study-of-raymarching</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/painting-with-math-a-gentle-study-of-raymarching</guid>
             <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
@@ -157,33 +165,12 @@
             <pubDate>Tue, 19 Jan 2021 08:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Card with glow effect on hover]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-12-26-cardwithgloweffectonhover</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-12-26-cardwithgloweffectonhover</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Sat, 26 Dec 2020 15:38:50 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[Guide to creating animations that spark joy with Framer Motion]]></title>
             <description><![CDATA[An interactive guide introducing everything I've learned about Framer Motion through fun examples and little case studies of animations I built.]]></description>
             <link>https://blog.maximeheckel.com/posts/guide-animations-spark-joy-framer-motion</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/guide-animations-spark-joy-framer-motion</guid>
             <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
             <pubDate>Tue, 15 Dec 2020 08:00:00 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Storing User Settings in a SwiftUI app using UserDefaults]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-11-27-storing-user-settings-swift</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-11-27-storing-user-settings-swift</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Fri, 27 Nov 2020 23:17:26 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Substack subscription serverless function]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-11-12-substacksubscriptionserverlessfunction</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-11-12-substacksubscriptionserverlessfunction</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Thu, 12 Nov 2020 23:17:26 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Using Shortcuts and serverless to build a personal Apple Health API]]></title>
@@ -202,33 +189,12 @@
             <pubDate>Tue, 13 Oct 2020 08:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Simple test to ensure that all dependencies have a pinned version]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-10-8-simpletesttoensurethatalldependencieshaveapinnedversion</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-10-8-simpletesttoensurethatalldependencieshaveapinnedversion</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Thu, 08 Oct 2020 01:28:17 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Animated copy to clipboard button with Framer Motion and SVG]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-9-26-animatedcopytoclipboardbuttonwithframermotionandsvg</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-9-26-animatedcopytoclipboardbuttonwithframermotionandsvg</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Sat, 26 Sep 2020 16:57:07 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[Going native: SwiftUI from the perspective of a React developer]]></title>
             <description><![CDATA[Approaching native iOS development with a React developer mindset]]></description>
             <link>https://blog.maximeheckel.com/posts/swiftui-as-react-developer</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/swiftui-as-react-developer</guid>
             <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
             <pubDate>Wed, 16 Sep 2020 08:00:00 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Semi transparent blur or frosted glass effect in SwiftUI]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-9-1-semitransparentblurorfrostedglasseffectinswiftui</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-9-1-semitransparentblurorfrostedglasseffectinswiftui</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Tue, 01 Sep 2020 23:09:32 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Build your own preview deployment service]]></title>
@@ -239,33 +205,12 @@
             <pubDate>Tue, 25 Aug 2020 08:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Animate LinearGradient on state change in SwiftUI]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-8-23-animatelineargradientonstatechangeinswiftui</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-8-23-animatelineargradientonstatechangeinswiftui</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Sun, 23 Aug 2020 22:32:22 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[SwiftUI TabView with PageTabViewStyle and full screen background colors]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-8-23-swiftuitabviewwithpagetabviewstyleandfullscreenbackgroundcolors</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-8-23-swiftuitabviewwithpagetabviewstyleandfullscreenbackgroundcolors</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Sun, 23 Aug 2020 00:16:40 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[The little guide to CI/CD for frontend developers]]></title>
             <description><![CDATA[How to ship your app faster, more reliably and make your team unstoppable with good testing practices and automation.]]></description>
             <link>https://blog.maximeheckel.com/posts/guide-to-cicd-for-frontend-developers</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/guide-to-cicd-for-frontend-developers</guid>
             <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
             <pubDate>Tue, 28 Jul 2020 08:00:00 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Waving Hand Animation with Framer Motion]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-7-3-waving-hand-animation-framer-motion</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-7-3-waving-hand-animation-framer-motion</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Fri, 03 Jul 2020 15:40:13 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Immigrating to the US: My path from non-immigrant to permanent resident]]></title>
@@ -284,33 +229,12 @@
             <pubDate>Tue, 23 Jun 2020 08:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Assert request properties with cypress]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-6-11-assertrequestpropertieswithcypress</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-6-11-assertrequestpropertieswithcypress</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Thu, 11 Jun 2020 15:44:49 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[Generate screenshots of your code with a serverless function]]></title>
             <description><![CDATA[Programmatic Carbon images generation from a simple API]]></description>
             <link>https://blog.maximeheckel.com/posts/creating-beautiful-screenshots-source-code-with-serverless-function</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/creating-beautiful-screenshots-source-code-with-serverless-function</guid>
             <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
             <pubDate>Tue, 09 Jun 2020 08:00:00 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Cancel axios requests in a React context provider using refs]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-5-22-cancelaxiosrequestsinareactcontextproviderusingrefs</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-5-22-cancelaxiosrequestsinareactcontextproviderusingrefs</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Fri, 22 May 2020 14:59:51 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[First Code Snippet!]]></title>
-            <link>https://blog.maximeheckel.com/snippets/2020-5-19-firstcodesnippet</link>
-            <guid isPermaLink="false">https://blog.maximeheckel.com/snippets/2020-5-19-firstcodesnippet</guid>
-            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
-            <pubDate>Tue, 19 May 2020 00:17:16 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[How to use Framer Motion with Emotion styled-components]]></title>

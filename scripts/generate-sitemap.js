@@ -11,7 +11,6 @@ const prettier = require('prettier');
   const pages = await globby([
     'pages/*.js',
     'pages/*.tsx',
-    'snippets/**/*.mdx',
     'content/**/*.mdx',
     '!pages/_*.js',
     '!pages/_*.tsx',
@@ -26,7 +25,6 @@ const prettier = require('prettier');
               .map((page) => {
                 const path = page
                   .replace('pages', '')
-                  .replace('snippets', '/snippets')
                   .replace('content', '/posts')
                   .replace('.js', '')
                   .replace('.tsx', '')

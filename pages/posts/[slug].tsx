@@ -7,7 +7,7 @@ import { getTweets } from 'lib/tweets';
 import { getFileBySlug, getFiles } from 'lib/mdx';
 import MDXComponents from '@core/components/MDX/MDXComponents';
 import Tweet from '@core/components/Tweet';
-import { FrontMatterPost, PostType } from 'types/post';
+import { FrontMatterPost } from 'types/post';
 
 interface BlogProps {
   post?: FrontMatterPost;
@@ -42,7 +42,7 @@ const Blog = ({ post, ogImage, tweets }: BlogProps) => {
 export default Blog;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await getFiles(PostType.BLOGPOST);
+  const posts = await getFiles();
 
   return {
     paths: posts.map((p) => ({
@@ -56,7 +56,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
-    const post = await getFileBySlug(PostType.BLOGPOST, params!.slug as string);
+    const post = await getFileBySlug(params!.slug as string);
 
     /**
      * Get tweets from API
