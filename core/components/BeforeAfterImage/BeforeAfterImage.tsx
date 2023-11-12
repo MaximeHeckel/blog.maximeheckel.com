@@ -3,6 +3,7 @@ import { useMotionValue, animate } from 'framer-motion';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { BeforeAfterImageProps } from './types';
 import * as S from './BeforeAfterImage.styles';
+import { loader } from 'lib/next-image-loader';
 
 const Slider = () => (
   <Flex
@@ -178,7 +179,9 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
         <S.Image
           alt="Before"
           loading="eager"
+          loader={loader}
           src={beforeSrc}
+          quality={75}
           width={width}
           height={height}
         />
@@ -186,6 +189,8 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
           <S.Image
             alt="After"
             loading="eager"
+            loader={loader}
+            quality={75}
             src={afterSrc}
             width={width}
             height={height}

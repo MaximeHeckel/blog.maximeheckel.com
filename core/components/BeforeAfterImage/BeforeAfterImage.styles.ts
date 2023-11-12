@@ -1,4 +1,5 @@
 import { Box, styled } from '@maximeheckel/design-system';
+import NextImage from 'next/image';
 
 export const Wrapper = styled(Box, {
   position: 'relative',
@@ -17,13 +18,10 @@ export const Wrapper = styled(Box, {
   },
 });
 
-export const Image = styled('img', {
+export const Image = styled(NextImage, {
   pointerEvents: 'none',
   userDrag: 'none',
   userSelect: 'none',
-  objectFit: 'cover',
-  width: '100%',
-  height: '100%',
 });
 
 export const Overlay = styled(Box, {

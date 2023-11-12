@@ -1319,8 +1319,10 @@ function sayHi(name) {
             <H2>Before / After Image</H2>
             <BeforeAfterImage
               alt="Screenshot showcasing the blue noise dithering applied to our cloud scene"
-              beforeSrc="/static/images/before.png"
-              afterSrc="/static/images/after.png"
+              beforeSrc="/blog/blue-noise-dithering-before.png"
+              afterSrc="/blog/blue-noise-dithering-after.png"
+              width={800}
+              height={511}
             />
           </Flex>
         </Flex>
