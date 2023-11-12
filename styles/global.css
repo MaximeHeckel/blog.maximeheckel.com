@@ -5,6 +5,8 @@
 
 html {
   font: 100%/1.2888 var(--font-display);
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {

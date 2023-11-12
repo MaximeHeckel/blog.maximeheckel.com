@@ -11,7 +11,6 @@ export type ReadingTime = {
 
 export type Post = {
   colorFeatured?: string;
-  cover?: string;
   date: string;
   updated: string;
   featured?: boolean;

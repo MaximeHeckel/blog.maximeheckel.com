@@ -18,7 +18,6 @@ import { format } from 'date-fns';
 import { motion, MotionProps } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import Balancer from 'react-wrap-balancer';
 import Layout from '@core/layout';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post, PostType } from 'types/post';
@@ -84,21 +83,19 @@ const IndexPage = (props: Props) => {
         <Grid.Item col={2}>
           <Flex alignItems="start" direction="column" gap="5">
             <H1>
-              <Balancer ratio={0.3}>
-                Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
-                <Text
-                  css={{
-                    lineHeight: 'unset',
-                  }}
-                  variant="secondary"
-                  size="7"
-                  weight="4"
-                >
-                  Here, I share through my writing my experience as a frontend
-                  engineer and everything I'm learning about on React, Shaders,
-                  React Three Fiber, Framer Motion, and more.
-                </Text>
-              </Balancer>
+              Hi <WavingHand /> I'm Maxime, and this is my blog.{' '}
+              <Text
+                css={{
+                  lineHeight: 'unset',
+                }}
+                variant="secondary"
+                size="7"
+                weight="4"
+              >
+                Here, I share through my writing my experience as a frontend
+                engineer and everything I'm learning about on React, Shaders,
+                React Three Fiber, Framer Motion, and more.
+              </Text>
             </H1>
             <Flex
               gap={4}

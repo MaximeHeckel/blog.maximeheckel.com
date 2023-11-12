@@ -6,6 +6,7 @@ import {
   Grid,
   Pill,
   Text,
+  H1,
 } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import Link from 'next/link';
@@ -14,10 +15,8 @@ import siteConfig from 'config/site';
 import Layout from '@core/layout';
 import TableOfContent from '@core/components/TableOfContent';
 import Seo from '@core/components/Seo';
-import Hero from '@core/components/Hero';
 import { Post, ReadingTime } from 'types/post';
 import Signature from './Signature';
-import Balancer from 'react-wrap-balancer';
 import { templateColumnsSmall } from 'styles/grid';
 
 interface WebmentionBlogDataProps {
@@ -75,15 +74,7 @@ const contentClass = css({
 });
 
 const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
-  const {
-    date,
-    updated,
-    slug,
-    subtitle,
-    title,
-    readingTime,
-    cover,
-  } = frontMatter;
+  const { date, updated, slug, subtitle, title, readingTime } = frontMatter;
   const path = `/posts/${slug}/`;
   const postUrl = `${siteConfig.url}${path}`;
 
@@ -127,30 +118,30 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
       <article className="h-entry">
         <Grid gapX={4} templateColumns={templateColumnsSmall}>
           <Grid.Item col={2}>
-            <Hero>
-              <Box
-                css={{ marginBottom: '16px', fontSize: 'var(--font-size-1)' }}
-              >
+            <Flex
+              alignItems="start"
+              css={{
+                marginBottom: 'var(--space-5)',
+              }}
+              direction="column"
+              gap="5"
+            >
+              <Box css={{ fontSize: 'var(--font-size-1)' }}>
                 <Link href="/" legacyBehavior passHref>
                   <Anchor arrow="left" data-testid="home-link" discreet>
                     Home
                   </Anchor>
                 </Link>
               </Box>
-              <Hero.Title
+              <H1
+                css={{ width: '100%', textWrap: 'balance' }}
                 className="p-name"
                 data-testid={`project-title-${title}`}
               >
-                <Balancer ratio={0.5}>{title}</Balancer>
-              </Hero.Title>
-              <Hero.Info>
-                <Flex
-                  css={{
-                    marginBottom: 'var(--space-3)',
-                  }}
-                  gap="3"
-                  wrap="wrap"
-                >
+                {title}
+              </H1>
+              <Box>
+                <Flex gap="3" wrap="wrap">
                   <Text
                     as="p"
                     size="1"
@@ -167,9 +158,8 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
                   </Pill>
                   {/* <WebmentionCount target={postUrl} /> */}
                 </Flex>
-              </Hero.Info>
-              {cover ? <Hero.Img className="u-photo" src={cover} /> : null}
-            </Hero>
+              </Box>
+            </Flex>
           </Grid.Item>
           <TableOfContent ids={ids} />
           <Grid.Item col={2}>

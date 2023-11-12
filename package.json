@@ -70,7 +70,6 @@
     "react-dom": "^18.2.0",
     "react-intersection-observer": "8.27.1",
     "react-query": "2.25.2",
-    "react-wrap-balancer": "^0.2.4",
     "reading-time": "1.2.1",
     "remark-autolink-headings": "6.0.1",
     "remark-slug": "6.0.0",
