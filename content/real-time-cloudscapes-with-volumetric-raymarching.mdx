@@ -68,7 +68,6 @@ The first time we got introduced to the concept of SDF, we learned that it was i
   <Image
     src="blog/raymarching-points_s6aqzv.png"
     alt="Diagram showcasing 3 points, P1, P2, and P3, being respectively, at a positive distance, small distance, and inside a sphere."
-    layout="responsive"
     width={700}
     height={417}
   />
@@ -98,7 +97,6 @@ That reframing of what an SDF represents ends up changing two core principles in
   <Image
     src="blog/volumetric_raymarching_points"
     alt="Diagram showcasing 3 points, P1, P2, and P3, being respectively, at a positive distance, small distance, and inside a sphere. Only P3 is considered 'valid' in the context of Volumetric Raymarching"
-    layout="responsive"
     width={700}
     height={415}
   />
@@ -346,7 +344,6 @@ Thus, we need another method or approximation for our diffuse light. Luckily, In
 <Image
   src="blog/directional_derivatives"
   alt="Diagram showcasing 2 sampled points P1 and P2 with both their diffuse lighting calculated by sampling extra points P1' and P2' in the direction of the light"
-  layout="responsive"
   width={700}
   height={445}
 />
@@ -486,7 +483,6 @@ One of the first things we could do to make this scene more efficient would be t
 <Image
   src="blog/lowstep_cloud"
   alt="Screenshot of our rendered Volumetric cloud with a low max step count and higher step size. Notice how those optimizations have degraded the output quality."
-  layout="responsive"
   width={700}
   height={551}
 />
@@ -500,9 +496,8 @@ In [Ray marching fog with blue noise](https://blog.demofox.org/2020/05/10/ray-ma
 This technique leverages a blue noise pattern, which has fewer patterns or clumps than other noises and is less visible to the human eye, to obtain a random number each time our fragment shader runs. We then introduce that number as an _offset_ at the beginning of the raymarched loop, moving our sampling start point along our ray for each pixel of our output.
 
 <Image
-  src="blue-noise"
+  src="blog/blue-noise-pattern"
   alt="Blue noise texture"
-  layout="responsive"
   width={700}
   height={700}
 />
@@ -510,7 +505,6 @@ This technique leverages a blue noise pattern, which has fewer patterns or clump
 <Image
   src="blog/blue_noise_dithering"
   alt="Diagram showcasing the difference between our cloud being sampled without and with blue noise dithering. Notice how each ray is offset when blue noise is introduced and how that 'erases' any obvious layering in the final render."
-  layout="responsive"
   width={700}
   height={763}
 />
@@ -588,7 +582,6 @@ I introduced an easy way to build this kind of pipeline in my article titled [Be
   <Image
     src="blog/bicubic_filtering"
     alt="Diagram showcasing how the bicubic filtering is applied as a post-processing effect to the original scene using Render Targets."
-    layout="responsive"
     width={700}
     height={375}
   />
@@ -635,7 +628,6 @@ I already introduced the concept of [Beer's Law](https://en.wikipedia.org/wiki/B
 <Image
   src="blog/beers_law"
   alt="Diagram showcasing how Beer's Law can be used to represent how much light gets absorbed through a volume"
-  layout="responsive"
   width={700}
   height={693}
 />
@@ -715,7 +707,6 @@ The diagram below illustrates this technique to make it a bit easier to understa
 <Image
   src="blog/lightmarching"
   alt="Diagram showcasing how we sample multiple points of lights in the direction of the light through our volume for each sampled point in the Raymarching loop."
-  layout="responsive"
   width={700}
   height={443}
 />
@@ -800,7 +791,6 @@ Until now, we assumed that light gets distributed equally in every direction as 
 <Image
   src="blog/anisotropic_scattering"
   alt="Diagram showcasing the difference between isotropic scattering and anisotropic scattering when sampling our light energy."
-  layout="responsive"
   width={700}
   height={807}
 />

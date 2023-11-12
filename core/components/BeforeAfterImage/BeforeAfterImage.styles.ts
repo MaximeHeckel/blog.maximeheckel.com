@@ -22,6 +22,8 @@ export const Image = styled(NextImage, {
   pointerEvents: 'none',
   userDrag: 'none',
   userSelect: 'none',
+  width: '100%',
+  height: 'auto',
 });
 
 export const Overlay = styled(Box, {

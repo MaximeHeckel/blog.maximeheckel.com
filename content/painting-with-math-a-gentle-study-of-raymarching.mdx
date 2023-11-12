@@ -86,7 +86,6 @@ For each step, calculating and marching that resulting distance along the rays l
   <Image
     src="blog/raymarching-sdf_inmjmq.png"
     alt="Diagram showcasing the Raymarching process of 3 rays beamed from a single point and marching step-by-step by a distance d obtained through a Signed Distance Field"
-    layout="responsive"
     width={700}
     height={398}
   />
@@ -112,7 +111,6 @@ To help you understand why the SDF of a sphere is defined as such, I made the di
   <Image
     src="blog/raymarching-points_s6aqzv.png"
     alt="Diagram showcasing 3 points, P1, P2, and P3, being respectively, at a positive distance, small distance, and inside a sphere."
-    layout="responsive"
     width={700}
     height={417}
   />
@@ -239,7 +237,6 @@ That process may be hard to understand at first, but here's a diagram to illustr
 <Image
   src="blog/raymarching-uv"
   alt="Diagram illustrating the normalization, shift, and aspect ratio adjustements of our UV coordinates that make sure that our raymarched scenes will be resizable and at the correct aspect ratio."
-  layout="responsive"
   width={700}
   height={1079}
 />
@@ -257,7 +254,6 @@ Let's implement our Raymarching algorithm step-by-step from the definition estab
 <Image
   src="blog/raymarching-axis_rxqjxy"
   alt="Diagram representing the position of a theoretical sphere and our ray origin in relation to the center of the scene."
-  layout="responsive"
   width={700}
   height={528}
 />
@@ -319,7 +315,6 @@ If we transpose those notions to lighting, we get that any point where the norma
 <Image
   src="blog/raymarching-diffuse_utdrew"
   alt="Diagram showcasing how the dot product is used to obtain the 'amount' of light that a given point receives from a given light source."
-  layout="responsive"
   width={700}
   height={513}
 />
@@ -405,7 +400,6 @@ This is represented in the graph below 👇, notice how we march our rays a dist
   <Image
     src="blog/raymarching-min_scweye.png"
     alt="Diagram showcasing how Raymarching and SDF are applied when multiple objects are in the scene through the usage of the min operator."
-    layout="responsive"
     width={700}
     height={396}
   />
@@ -427,7 +421,6 @@ However, an issue that is particularly visible in the examples above is that the
 <Image
   src="blog/raymarching-derivative_uwzz62"
   alt="Chart representing a non-smooth intersection of 2 objects through the function f:x -> abs(x/2) and its derivative which is discontinued."
-  layout="responsive"
   width={700}
   height={358}
 />
@@ -438,7 +431,6 @@ We can use a pinch of math to obtain a **smooth minimum/maximum**. Once again, I
   <Image
     src="blog/raymarching-smoothmin_xjlz5c"
     alt="Charts representing respectively a curve obtained by using the standard min operator and a curve obtained by using smoothmin."
-    layout="responsive"
     width={700}
     height={558}
   />
@@ -580,7 +572,6 @@ The function above is what makes this possible:
 <Image
   src="blog/raymarching-mod_cr2h8i"
   alt="Chart representing the mod function with a period of 2. Notice the repeating pattern along the x-axis. Now use this model to picture in your mind the same repetition happening along all axis x, y, and z in our raymarched scene."
-  layout="responsive"
   width={700}
   height={358}
 />
@@ -678,7 +669,6 @@ We can visualize this in 2D by looking at a simple curve. Each iteration is call
 <Image
   src="blog/raymarching-fbm_ywg0zh"
   alt="Charts representing the application of a noise on top of itself through 3 octaves, where at each octave we decrease its amplitude and increase its frequency, thus yielding a more organic-looking and sharper noise the bigger the maximum octave number is."
-  layout="responsive"
   width={700}
   height={719}
 />
@@ -769,7 +759,6 @@ I noticed from several Shadertoy raymarched landscapes that they were all sampli
 <Image
   src="noise1.png"
   alt="Noise texture used in our noised function. Originally obtained on Shadertoy."
-  layout="responsive"
   width={500}
   height={500}
 />
@@ -840,7 +829,6 @@ The screenshot below showcases the terrain yielded at each octave (i.e. each ite
 <Image
   src="blog/raymarching-fbm-noise-derivative_fx9ecf"
   alt="Screenshots representing a raymarched terrain view from the top from octaves 2 to 7, obtained through FBM and noise derivatives. Notice the cracks, and slopes forming after the 5th octave is reached."
-  layout="responsive"
   width={700}
   height={771}
 />
