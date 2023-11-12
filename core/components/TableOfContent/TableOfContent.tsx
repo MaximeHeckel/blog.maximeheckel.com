@@ -9,7 +9,7 @@ const Wrapper = styled('div', {
   position: 'fixed',
   top: '266px',
   display: 'flex',
-  left: '30px',
+  left: '10px',
 
   ul: {
     maxWidth: '200px',
@@ -28,7 +28,7 @@ const Wrapper = styled('div', {
     li: {
       listStyle: 'none',
       fontSize: 'var(--font-size-1)',
-      fontWeight: 'var(--font-weight-3)',
+      fontWeight: 'var(--font-weight-400)',
       lineHeight: '1.5',
       letterSpacing: '0.3px',
       marginBottom: '22px',

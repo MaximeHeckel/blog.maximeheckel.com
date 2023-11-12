@@ -58,22 +58,20 @@ const SandpackWrapper = styled(Box, {
     position: 'relative',
     borderRadius: 'var(--border-radius-2)',
     boxShadow: Shadows[1],
-    '@media (max-width: 770px)': {
+    '@media (max-width: 880px)': {
       display: 'block',
-    },
-    '@media (max-width: 1200px)': {
       width: '100vw',
       left: '50%',
       right: '50%',
       marginLeft: '-50vw',
       marginRight: '-50vw',
-      borderRadius: '0px',
     },
-    '@media (min-width: 1200px)': {
+
+    '@media (min-width: 880px)': {
       position: 'relative',
-      width: 'calc(100% + 200px)',
-      marginLeft: '-100px',
-      marginRight: '-100px',
+      width: 'calc(100% + 150px)',
+      marginLeft: '-75px',
+      marginRight: '-75px',
     },
   },
   '.cm-gutterElement': {

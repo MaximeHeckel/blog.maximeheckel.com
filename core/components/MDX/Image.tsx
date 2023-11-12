@@ -9,7 +9,7 @@ const StyledFigure = styled('figure', {
 const Image = (props: ImageProps) => {
   return (
     <StyledFigure>
-      <NextImage {...props} loader={loader} quality={50} />
+      <NextImage {...props} loader={loader} quality={75} />
       <Text
         as="figcaption"
         css={{

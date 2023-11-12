@@ -89,7 +89,7 @@ const AttributesVisualizer = () => {
                   css={{
                     fontFamily: 'var(--font-numeric)',
                     fontSize: 'var(--font-size-1)',
-                    fontWeight: 'var(--font-weight-4)',
+                    fontWeight: 'var(--font-weight-600)',
                   }}
                   initial={{ y: 0 }}
                   animate={{
@@ -175,7 +175,7 @@ const AttributesVisualizer = () => {
                           background: 'var(--maximeheckel-colors-brand)',
                           color: 'var(--maximeheckel-colors-body)',
                           fontSize: 'var(--font-size-1)',
-                          fontWeight: 'var(--font-weight-3)',
+                          fontWeight: 'var(--font-weight-500)',
                           userSelect: 'none',
                           top: -24,
                           left: -20,
@@ -188,7 +188,7 @@ const AttributesVisualizer = () => {
                           padding: 'var(--space-2)',
                           fontFamily: 'var(--font-numeric)',
                           fontSize: 'var(--font-size-1)',
-                          fontWeight: 'var(--font-weight-4)',
+                          fontWeight: 'var(--font-weight-600)',
                         }}
                       >
                         {subItem}

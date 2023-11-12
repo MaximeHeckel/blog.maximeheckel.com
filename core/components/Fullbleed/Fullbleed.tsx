@@ -5,7 +5,7 @@ const Fullbleed = (props: {
   maxWidth?: number;
   widthPercent?: number;
 }) => {
-  const { children, widthPercent = 80, maxWidth = 1200 } = props;
+  const { children, widthPercent = 80, maxWidth = 1000 } = props;
 
   return (
     <Box
@@ -31,7 +31,7 @@ const Fullbleed = (props: {
       <Box
         css={{
           margin: '0 auto',
-          maxWidth: `${maxWidth}`,
+          maxWidth: `${maxWidth}px`,
           width: `${widthPercent}%`,
           minWidth: 700,
           '@media(max-width: 850px)': {

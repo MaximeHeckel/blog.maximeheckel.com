@@ -85,16 +85,12 @@ const CodeBlock = (props: CodeBlockProps) => {
         width: '100%',
 
         '@media(max-width: 750px)': {
-          /**
-           * Make it fullbleed!
-           */
           width: '100vw',
           position: 'relative',
           left: '50%',
           right: '50%',
           marginLeft: '-50vw',
           marginRight: '-50vw',
-          borderRadius: '0px',
         },
       }}
     >

@@ -13,18 +13,18 @@ export const TweetWrapper = styled('div', {
   border: 'solid 1px var(--maximeheckel-border-color)',
   boxShadow: Shadows[1],
 
-  '@media (max-width: 700px)': {
-    /**
-     * Make it fullbleed!
-     */
-    width: '100vw',
-    position: 'relative',
-    left: '50%',
-    right: '50%',
-    marginLeft: '-50vw',
-    marginRight: '-50vw',
-    borderRadius: '0px',
-  },
+  // '@media (max-width: 700px)': {
+  //   /**
+  //    * Make it fullbleed!
+  //    */
+  //   width: '100vw',
+  //   position: 'relative',
+  //   left: '50%',
+  //   right: '50%',
+  //   marginLeft: '-50vw',
+  //   marginRight: '-50vw',
+  //   borderRadius: '0px',
+  // },
 });
 
 export const Avatar = styled('a', {

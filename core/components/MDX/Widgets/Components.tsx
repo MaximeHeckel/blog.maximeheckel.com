@@ -33,7 +33,7 @@ export const HighlightedValue = styled('div', {
   border: '2px solid var(--maximeheckel-colors-brand)',
   padding: '2px 6px',
   fontFamily: 'var(--font-numeric)',
-  fontSize: 'var(--font-size-2)',
+  fontSize: 'var(--font-size-1)',
   display: 'inline-flex',
   justifyContent: 'center',
   lineHeight: '1rem',

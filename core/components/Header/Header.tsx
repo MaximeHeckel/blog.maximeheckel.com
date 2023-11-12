@@ -95,7 +95,7 @@ const Header = (props: HeaderProps) => {
                     href="/"
                     passHref
                   >
-                    <Logo alt="Logo" size={44} />
+                    <Logo alt="Logo" size={40} />
                   </Link>
                 </span>
               </Tooltip>

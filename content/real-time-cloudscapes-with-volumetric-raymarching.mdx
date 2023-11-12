@@ -2,7 +2,7 @@
 title: 'Real-time dreamy Cloudscapes with Volumetric Raymarching'
 subtitle: This article is a deep dive into my experimentations with Volumetric rendering and how to leverage it to render beautiful raymarched cloudscapes in React Three Fiber and WebGL. In it, I walk you through everything from the basics of Volumetric Raymarching to the techniques used in video games to render physically accurate clouds.
 date: '2023-10-31T08:00:00.000Z'
-updated: '2023-11-07T08:00:00.000Z'
+updated: '2023-11-11T08:00:00.000Z'
 categories: []
 slug: real-time-cloudscapes-with-volumetric-raymarching
 type: 'blogPost'
@@ -584,7 +584,7 @@ I introduced an easy way to build this kind of pipeline in my article titled [Be
 5. We use the bicubic filtering material as the material for our fullscreen triangle.
 6. Our bicubic filtering will take our noisy raymarched scene as a texture uniform and output the smoothed out scene.
 
-<Fullbleed widthPercent={55}>
+<Fullbleed widthPercent={70}>
   <Image
     src="blog/bicubic_filtering"
     alt="Diagram showcasing how the bicubic filtering is applied as a post-processing effect to the original scene using Render Targets."

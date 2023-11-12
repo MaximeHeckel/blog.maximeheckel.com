@@ -2,7 +2,7 @@
 title: 'Building a Design System from scratch'
 subtitle: A deep dive into my experience building my own design system that documents my process of defining tokens, creating efficient components, and shipping them as a package.
 date: '2022-05-10T08:00:00.000Z'
-updated: '2023-06-19T08:00:00.000Z'
+updated: '2023-11-11T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -248,7 +248,7 @@ const StyledButton = styled('button', {
   /* Main styles of the component */
   padding: 'var(--space-3) var(--space-4)',
   fontSize: 'var(--font-size-2)',
-  fontWeight: 'var(--font-weight-3)',
+  fontWeight: 'var(--font-weight-500)',
   height: '44px',
   width: 'max-content',
   transition: 'background 0.2s, transform 0.2s, color 0.2s, box-shadow 0.3s',
@@ -454,25 +454,25 @@ const Heading = () => {
   // Overriding some styles of Text based on the new size prop of Heading
   const headingCSS = {
     1: {
-      fontWeight: 'var(--font-weight-4)',
+      fontWeight: 'var(--font-weight-600)',
       lineHeight: '1.6818',
       letterSpacing: '0px',
       marginBottom: '1.45rem',
     },
     2: {
-      fontWeight: 'var(--font-weight-4)',
+      fontWeight: 'var(--font-weight-600)',
       lineHeight: '1.6818',
       letterSpacing: '0px',
       marginBottom: '1.45rem',
     },
     3: {
-      fontWeight: 'var(--font-weight-4)',
+      fontWeight: 'var(--font-weight-600)',
       lineHeight: '1.6818',
       letterSpacing: '0px',
       marginBottom: '1.45rem',
     },
     4: {
-      fontWeight: 'var(--font-weight-4)',
+      fontWeight: 'var(--font-weight-600)',
       lineHeight: '1.6818',
       letterSpacing: '0px',
       marginBottom: '1.45rem',

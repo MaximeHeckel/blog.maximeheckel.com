@@ -12,15 +12,13 @@ interface VideoPlayerProps {
   src: string;
 }
 
-const Wrapper = styled('div', {
-  display: 'flex',
-
-  video: {
-    margin: '0 auto',
-    background: 'var(--maximeheckel-colors-emphasis)',
-    maxWidth: '100%',
-    height: 'auto',
-  },
+const StyledVideo = styled('video', {
+  margin: '0 auto',
+  background: 'var(--maximeheckel-colors-emphasis)',
+  borderRadius: 'var(--border-radius-2)',
+  border: '4px solid var(--maximeheckel-border-color)',
+  maxWidth: '100%',
+  height: 'auto',
 });
 
 const getDisplayedPoster = (poster: string, dark: boolean) => {
@@ -49,19 +47,17 @@ const VideoPlayer = (props: VideoPlayerProps) => {
   }, [dark, poster]);
 
   return (
-    <Wrapper>
-      <video
-        autoPlay={autoPlay}
-        poster={currentPoster}
-        width={width}
-        height={height}
-        controls={controls}
-        loop={loop || false}
-        muted={muted}
-      >
-        <source src={src} type="video/mp4" />
-      </video>
-    </Wrapper>
+    <StyledVideo
+      autoPlay={autoPlay}
+      poster={currentPoster}
+      width={width}
+      height={height}
+      controls={controls}
+      loop={loop || false}
+      muted={muted}
+    >
+      <source src={src} type="video/mp4" />
+    </StyledVideo>
   );
 };
 

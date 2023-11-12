@@ -61,10 +61,14 @@ const contentClass = css({
     marginTop: '1.45em',
   },
 
+  p: {
+    fontWeight: '460',
+  },
+
   section: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 'var(--space-6)',
+    gap: 'var(--space-5)',
     maxWidth: 700,
     width: '100%',
   },
@@ -125,7 +129,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
           <Grid.Item col={2}>
             <Hero>
               <Box
-                css={{ marginBottom: '16px', fontSize: 'var(--font-size-2)' }}
+                css={{ marginBottom: '16px', fontSize: 'var(--font-size-1)' }}
               >
                 <Link href="/" legacyBehavior passHref>
                   <Anchor arrow="left" data-testid="home-link" discreet>
