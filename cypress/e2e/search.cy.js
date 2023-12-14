@@ -56,7 +56,7 @@ describe('Search tests', () => {
     cy.get('[data-testid="search-result"]').should('be.visible').eq(0).click();
 
     cy.url().should('include', '/posts/');
-    cy.get('[data-testid="hero"]').should('be.visible');
+    cy.get('[data-testid="post-title"]').should('be.visible');
 
     // Arbitrary wait because other firefox will interrupt page load and cause some exception that Cypress will catch
     // and fail the test for.

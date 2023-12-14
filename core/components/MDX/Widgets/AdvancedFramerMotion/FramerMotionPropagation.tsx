@@ -34,6 +34,7 @@ const CaptureLayer = styled(motion.div, {
     var(--maximeheckel-colors-emphasis) 5px,
     var(--maximeheckel-colors-emphasis) 10px
   )`,
+  opacity: 0.8,
 
   zIndex: '3',
   transformStyle: 'preserve-3d',
@@ -80,11 +81,11 @@ const Card = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  background: 'hsla(var(--palette-gray-05), 0.55)',
-  boxShadow: Shadows[3],
+  background: 'hsl(from var(--gray-400) h s l / 50%)',
+  boxShadow: Shadows[2],
   height: '100%',
   div: {
-    color: '#4a4a4c',
+    color: 'var(--maximeheckel-colors-typeface-tertiary)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

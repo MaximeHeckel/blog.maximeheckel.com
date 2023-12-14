@@ -59,7 +59,7 @@ const Heart = ({ bpm }: { bpm: number }) => {
       width="20"
       height="20"
       viewBox="0 0 25 24"
-      fill="hsl(var(--palette-pink-50))"
+      fill="var(--pink-600)"
       xmlns="http://www.w3.org/2000/svg"
       initial={{ scale: 0.8 }}
       animate={{

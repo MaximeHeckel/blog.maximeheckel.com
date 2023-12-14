@@ -144,7 +144,7 @@ const Formatting = () => {
             height: 275,
             width: '100%',
             padding: 'var(--space-3)',
-            background: 'hsla(var(--palette-gray-50), 0.05)',
+            background: 'hsl(from var(--gray-400) h s l / 30%)',
           }}
         >
           <Text size="1">{streamData}</Text>
@@ -157,7 +157,7 @@ const Formatting = () => {
             width: '100%',
             padding: 'var(--space-3)',
             overflowY: 'auto',
-            background: 'hsla(var(--palette-gray-50), 0.05)',
+            background: 'hsl(from var(--gray-400) h s l / 30%)',
             'p, li, strong, em': {
               margin: '0px 0px 1rem',
               fontSize: 'var(--font-size-1)!important',

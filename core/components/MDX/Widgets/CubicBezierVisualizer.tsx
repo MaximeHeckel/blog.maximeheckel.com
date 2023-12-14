@@ -278,8 +278,8 @@ const DragHandle = (props: DragHandleProps) => {
             y1={scale(originPoint.y)}
             x2={x}
             y2={y}
-            fill="hsl(var(--palette-gray-50))"
-            stroke="hsl(var(--palette-gray-50))"
+            fill="var(--gray-900)"
+            stroke="var(--gray-900)"
             strokeWidth={3}
             style={{
               opacity: 0.5,
@@ -289,7 +289,7 @@ const DragHandle = (props: DragHandleProps) => {
             cx={x}
             cy={y}
             r={10}
-            fill="hsl(var(--palette-gray-50))"
+            fill="var(--gray-900)"
             stroke={
               isDragging
                 ? 'var(--maximeheckel-colors-brand)'
@@ -413,28 +413,12 @@ const Chart = (props: ChartProps) => {
       >
         <defs>
           <linearGradient id="motion" x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="20%"
-              stopColor="hsl(var(--palette-pink-30))"
-              stopOpacity={1}
-            />
-            <stop
-              offset="99%"
-              stopColor="hsl(var(--palette-indigo-30))"
-              stopOpacity={1}
-            />
+            <stop offset="20%" stopColor="var(--pink-300)" stopOpacity={1} />
+            <stop offset="99%" stopColor="var(--blue-800)" stopOpacity={1} />
           </linearGradient>
           <linearGradient id="speed" x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="1%"
-              stopColor="hsl(var(--palette-green-50))"
-              stopOpacity={1}
-            />
-            <stop
-              offset="99%"
-              stopColor="hsl(var(--palette-orange-50))"
-              stopOpacity={1}
-            />
+            <stop offset="1%" stopColor="var(--green-900)" stopOpacity={1} />
+            <stop offset="99%" stopColor="var(--orange-900)" stopOpacity={1} />
           </linearGradient>
         </defs>
         <Group>
@@ -443,8 +427,8 @@ const Chart = (props: ChartProps) => {
             y1={scale(0)}
             x2={scale(1)}
             y2={scale(1)}
-            fill="hsl(var(--palette-gray-50))"
-            stroke="hsl(var(--palette-gray-50))"
+            fill="var(--gray-900)"
+            stroke="var(--gray-900)"
             strokeWidth={6}
             strokeLinecap="round"
             style={{

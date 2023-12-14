@@ -3,12 +3,12 @@ import { motion } from 'framer-motion';
 import { AnimationCardContent } from '../Components';
 
 const setVariableToGlobalStyles = (variable: string, value: string) =>
-  document.documentElement.style.setProperty(variable, value);
+  document.body.style.setProperty(variable, value);
 
 const ThemeColor = styled(motion.button, {
   width: '50px',
   height: '50px',
-  background: 'hsl(var(--hue), calc(var(--saturation) * 1%), 50%)',
+  background: 'hsl(var(--hue), 89%, 50%)',
   borderRadius: '50px',
   boxShadow: 'none',
   border: 'none',
@@ -55,7 +55,6 @@ const ThemePicker = () => {
               }}
               onClick={() => {
                 setVariableToGlobalStyles('--base-hue', '203');
-                setVariableToGlobalStyles('--base-saturation', '88');
               }}
               variants={buttonVariants}
               whileHover="hover"
@@ -74,7 +73,6 @@ const ThemePicker = () => {
               }}
               onClick={() => {
                 setVariableToGlobalStyles('--base-hue', '38');
-                setVariableToGlobalStyles('--base-saturation', '88');
               }}
               variants={buttonVariants}
               whileHover="hover"
@@ -93,7 +91,6 @@ const ThemePicker = () => {
               }}
               onClick={() => {
                 setVariableToGlobalStyles('--base-hue', '342');
-                setVariableToGlobalStyles('--base-saturation', '88');
               }}
               variants={buttonVariants}
               whileHover="hover"

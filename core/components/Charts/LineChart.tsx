@@ -162,14 +162,10 @@ const LineChart = withTooltip<LineChartProps, FormattedData>(
             <linearGradient id="hr" x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="20%"
-                stopColor="hsl(var(--palette-pink-50))"
+                stopColor="var(--pink-600)"
                 stopOpacity={0.8}
               />
-              <stop
-                offset="99%"
-                stopColor="hsl(var(--palette-pink-50))"
-                stopOpacity={0}
-              />
+              <stop offset="99%" stopColor="var(--pink-600)" stopOpacity={0} />
             </linearGradient>
           </defs>
           <ClipPath id="myClip">
@@ -210,7 +206,7 @@ const LineChart = withTooltip<LineChartProps, FormattedData>(
                         strokeOpacity={0.8}
                         strokeLinecap="round"
                         fill="none"
-                        stroke="hsl(var(--palette-pink-50))"
+                        stroke="var(--pink-300)"
                         initial="initial"
                         animate="animate"
                         variants={pathVariants}

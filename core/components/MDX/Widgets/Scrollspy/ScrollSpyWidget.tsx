@@ -149,7 +149,7 @@ const WidgetRoot = styled('div', {
   },
 
   '&::-webkit-scrollbar-track': {
-    backgroundColor: 'hsla(var(--palette-gray-30), 0.2)',
+    backgroundColor: 'var(--maximeheckel-colors-foreground)',
     borderRadius: '8px',
   },
 

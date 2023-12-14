@@ -109,7 +109,10 @@ const IndexPage = (props: Props) => {
                 style={{ textDecoration: 'none' }}
                 tabIndex={-1}
               >
-                <Button variant="secondary" endIcon={<Icon.External />}>
+                <Button
+                  variant="secondary"
+                  endIcon={<Icon.External size="4" />}
+                >
                   About me
                 </Button>
                 <VisuallyHidden as="p">
@@ -121,7 +124,7 @@ const IndexPage = (props: Props) => {
                 style={{ textDecoration: 'none' }}
                 tabIndex={-1}
               >
-                <Button variant="secondary" endIcon={<Icon.Twitter />}>
+                <Button variant="secondary" endIcon={<Icon.Twitter size="4" />}>
                   @MaximeHeckel
                 </Button>
                 <VisuallyHidden as="p">
@@ -228,7 +231,13 @@ const IndexPage = (props: Props) => {
                             >
                               {post.title}
                             </H3>
-                            <Text as="p" css={{ marginBottom: '0px' }}>
+                            <Text
+                              as="p"
+                              css={{ marginBottom: '0px' }}
+                              size="2"
+                              weight="3"
+                              variant="tertiary"
+                            >
                               {post.subtitle}
                             </Text>
                           </Card.Body>
@@ -269,7 +278,6 @@ const IndexPage = (props: Props) => {
                     css={{
                       listStyle: 'none',
                       cursor: 'pointer',
-                      marginBottom: 'calc(1.45rem / 2)',
                       lineHeight: '1.9',
                       letterSpacing: '0.3px',
                     }}
@@ -357,7 +365,7 @@ const Block = styled(Box, {
   paddingLeft: '10px',
   borderRadius: 'var(--border-radius-2)',
   marginLeft: '-10px',
-  height: '60px',
+  height: '54px',
   boxShadow: 'none',
   backgroundColor: 'var(--article-block-background-color, "transparent")',
   color:

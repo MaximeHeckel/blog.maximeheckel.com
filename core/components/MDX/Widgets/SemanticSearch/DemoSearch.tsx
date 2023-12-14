@@ -125,7 +125,7 @@ const DemoSearch = () => {
             height: 275,
             width: '100%',
             padding: 'var(--space-3)',
-            background: 'hsla(var(--palette-gray-50), 0.05)',
+            background: 'hsl(from var(--gray-400) h s l / 30%)',
             position: 'relative',
           }}
         >

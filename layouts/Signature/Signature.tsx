@@ -5,7 +5,7 @@ import { useRef } from 'react';
 // const NewsletterForm = dynamic(() => import('@core/components/NewsletterForm'));
 
 const StyledSection = styled('section', {
-  background: 'var(--maximeheckel-card-background-color)',
+  background: 'var(--maximeheckel-colors-foreground)',
   color: 'var(--maximeheckel-colors-typeface-primary)',
   paddingBottom: 48,
   paddingTop: 48,

@@ -56,7 +56,7 @@ const CopyToClipboardButton = (props: { text: string; title?: string }) => {
         setIsChecked(true);
       }}
       variant="icon"
-      size="small"
+      size="large"
       icon={
         <motion.svg
           initial="idle"
