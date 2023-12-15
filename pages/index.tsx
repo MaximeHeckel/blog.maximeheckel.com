@@ -310,6 +310,7 @@ const IndexPage = (props: Props) => {
                           css={{
                             minWidth: '52px',
                             marginRight: '32px',
+                            marginTop: '2px',
                           }}
                         >
                           {format(new Date(Date.parse(post.date)), 'MMM dd')}
@@ -361,11 +362,11 @@ const Glow = styled(motion.div, {
 const Block = styled(Box, {
   display: 'flex',
   justifyContent: 'flex-start',
-  alignItems: 'center',
-  paddingLeft: '10px',
+  alignItems: 'start',
+  width: '100%',
   borderRadius: 'var(--border-radius-2)',
-  marginLeft: '-10px',
-  height: '54px',
+  marginLeft: '-8px',
+  padding: '16px 8px',
   boxShadow: 'none',
   backgroundColor: 'var(--article-block-background-color, "transparent")',
   color:
@@ -382,10 +383,6 @@ const Block = styled(Box, {
       '--article-block-background-color': 'var(--maximeheckel-colors-emphasis)',
       '--article-block-color': 'var(--maximeheckel-colors-brand)',
     },
-  },
-
-  '@media (max-width: 700px)': {
-    height: '100px',
   },
 });
 
