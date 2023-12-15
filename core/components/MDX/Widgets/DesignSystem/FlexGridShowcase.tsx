@@ -10,7 +10,7 @@ const StyledBox = () => (
       borderRadius: 'var(--border-radius-2)',
       background: 'white',
       backgroundImage:
-        'radial-gradient(at 30% 20%, hsl(var(--palette-indigo-20)) 0px, transparent 50%), radial-gradient(at 80% -10%, hsl(var(--palette-blue-40)) 0px, transparent 50%), radial-gradient(at 70% 50%, hsl(var(--palette-pink-25)) 0px, transparent 50%), radial-gradient(at -10% 90%, hsl(var(--palette-blue-25)) 0px, transparent 50%), radial-gradient(at 80% 110%, hsl(var(--palette-red-25)) 0px, transparent 50%), radial-gradient(at 0% 0%, hsl(var(--palette-red-25)) 0px, transparent 50%)',
+        'radial-gradient(at 30% 20%, var(--blue-600) 0px, transparent 50%), radial-gradient(at 80% -10%, var(--blue-700) 0px, transparent 50%), radial-gradient(at 70% 50%, var(--pink-300) 0px, transparent 50%), radial-gradient(at -10% 90%, hsl(from var(--maximeheckel-colors-emphasis) h s l / 80%) 0px, transparent 50%), radial-gradient(at 80% 110%, hsl(from var(--maximeheckel-colors-danger-emphasis) h s l / 40%) 0px, transparent 50%), radial-gradient(at 0% 0%, hsl(from var(--maximeheckel-colors-danger-emphasis) h s l / 60%) 0px, transparent 50%)',
     }}
   />
 );

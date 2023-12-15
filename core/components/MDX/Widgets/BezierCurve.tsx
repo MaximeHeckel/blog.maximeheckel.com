@@ -283,8 +283,8 @@ const Cubic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="hsl(var(--palette-red-50))"
-        stroke="hsl(var(--palette-red-50))"
+        fill="var(--maximeheckel-colors-danger)"
+        stroke="var(--maximeheckel-colors-danger)"
         strokeWidth={3}
         transform={`translate(${scale(lerp1[activeStepIndex]?.x)}, ${scale(
           lerp1[activeStepIndex]?.y
@@ -294,8 +294,8 @@ const Cubic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="hsl(var(--palette-red-50))"
-        stroke="hsl(var(--palette-red-50))"
+        fill="var(--maximeheckel-colors-danger)"
+        stroke="var(--maximeheckel-colors-danger)"
         strokeWidth={3}
         transform={`translate(${scale(lerp2[activeStepIndex]?.x)}, ${scale(
           lerp2[activeStepIndex]?.y
@@ -305,8 +305,8 @@ const Cubic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="hsl(var(--palette-red-50))"
-        stroke="hsl(var(--palette-red-50))"
+        fill="var(--maximeheckel-colors-danger)"
+        stroke="var(--maximeheckel-colors-danger)"
         strokeWidth={3}
         transform={`translate(${scale(lerp3[activeStepIndex]?.x)}, ${scale(
           lerp3[activeStepIndex]?.y
@@ -316,8 +316,8 @@ const Cubic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="hsl(var(--palette-green-50))"
-        stroke="hsl(var(--palette-green-50))"
+        fill="var(--maximeheckel-colors-success)"
+        stroke="var(--maximeheckel-colors-success)"
         strokeWidth={3}
         transform={`translate(${scale(lerp4[activeStepIndex]?.x)}, ${scale(
           lerp4[activeStepIndex]?.y
@@ -327,8 +327,8 @@ const Cubic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="hsl(var(--palette-green-50))"
-        stroke="hsl(var(--palette-green-50))"
+        fill="var(--maximeheckel-colors-success)"
+        stroke="var(--maximeheckel-colors-success)"
         strokeWidth={3}
         transform={`translate(${scale(lerp5[activeStepIndex]?.x)}, ${scale(
           lerp5[activeStepIndex]?.y
@@ -445,8 +445,8 @@ const Quadratic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="hsl(var(--palette-red-50))"
-        stroke="hsl(var(--palette-red-50))"
+        fill="var(--maximeheckel-colors-danger)"
+        stroke="var(--maximeheckel-colors-danger)"
         strokeWidth={3}
         transform={`translate(${scale(lerp1[activeStepIndex]?.x)}, ${scale(
           lerp1[activeStepIndex]?.y
@@ -456,8 +456,8 @@ const Quadratic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="hsl(var(--palette-red-50))"
-        stroke="hsl(var(--palette-red-50))"
+        fill="var(--maximeheckel-colors-danger)"
+        stroke="var(--maximeheckel-colors-danger)"
         strokeWidth={3}
         transform={`translate(${scale(lerp2[activeStepIndex]?.x)}, ${scale(
           lerp2[activeStepIndex]?.y
@@ -551,16 +551,8 @@ const Chart = (props: ChartProps) => {
       <svg width={dimension} height={dimension} style={{ overflow: 'visible' }}>
         <defs>
           <linearGradient id="hr" x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="20%"
-              stopColor="hsl(var(--palette-pink-30))"
-              stopOpacity={1}
-            />
-            <stop
-              offset="99%"
-              stopColor="hsl(var(--palette-indigo-30))"
-              stopOpacity={1}
-            />
+            <stop offset="20%" stopColor="var(--pink-300)" stopOpacity={1} />
+            <stop offset="99%" stopColor="var(--blue-800)" stopOpacity={1} />
           </linearGradient>
         </defs>
         {type === 'linear' ? (

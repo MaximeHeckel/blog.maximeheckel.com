@@ -1,4 +1,5 @@
 import {
+  css,
   Button,
   Card,
   Checkbox,
@@ -8,16 +9,7 @@ import {
   Tooltip,
 } from '@maximeheckel/design-system';
 import { AnimatePresence, LayoutGroup, motion, Reorder } from 'framer-motion';
-import { css, styled } from '@maximeheckel/design-system';
 import React from 'react';
-
-const HR = styled('hr', {
-  height: '2px',
-  width: '100%',
-  background: 'hsl(var(--palette-gray-20))',
-  border: 'none',
-  marginBottom: '16px',
-});
 
 const ITEMS = [
   {
@@ -189,7 +181,6 @@ const AdvanceReorderExample = () => {
               </AnimatePresence>
             </Reorder.Group>
             <motion.div layout>
-              <HR />
               <Text size={2}>
                 Check items off the list when you&apos;re done!
               </Text>

@@ -17,7 +17,7 @@ const Wrapper = styled('div', {
     display: 'flex',
     margin: '0 0 1.45rem 1.45rem',
     padding: '0',
-    color: 'inherit',
+    color: 'var(--maximeheckel-colors-typeface-tertiary)',
     listStylePosition: 'outside',
     listStyleImage: 'none',
 

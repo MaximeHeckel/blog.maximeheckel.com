@@ -23,7 +23,7 @@ interface CellProps {
 const Cell = (props: CellProps) => {
   const { value, x, y } = props;
 
-  let color = 'black';
+  let color = 'var(--gray-000)';
 
   if (value > 0.002) {
     color = 'rgb(87, 134, 245)';
@@ -34,8 +34,8 @@ const Cell = (props: CellProps) => {
       alignItems="center"
       css={{
         aspectRatio: '1 / 1',
-        borderBottom: '0.5px solid hsla(var(--palette-gray-20), 50%)',
-        borderLeft: '0.5px solid hsla(var(--palette-gray-20), 50%)',
+        borderBottom: '0.5px solid var(--gray-700)',
+        borderLeft: '0.5px solid var(--gray-700)',
         backgroundColor: color,
         overflow: 'hidden',
       }}
@@ -116,8 +116,8 @@ const RaymarchingVisualizer = () => {
       >
         <Grid
           css={{
-            borderTop: '0.5px solid hsla(var(--palette-gray-20), 50%)',
-            borderRight: '0.5px solid hsla(var(--palette-gray-20), 50%)',
+            borderTop: '0.5px solid var(--gray-700)',
+            borderRight: '0.5px solid var(--gray-700)',
             overflow: 'hidden',
             width: '100%',
           }}
@@ -241,7 +241,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 129.267 75.1306)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -249,7 +249,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 142.195 67.6677)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -257,7 +257,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 155.093 60.2204)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -265,7 +265,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 168.025 52.7546)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -273,7 +273,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 142.187 82.5915)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -281,7 +281,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 155.115 75.1267)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -289,7 +289,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 168.013 67.6794)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -297,7 +297,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 180.945 60.2146)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -305,7 +305,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 103.427 60.2126)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -313,7 +313,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 116.355 52.7487)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -321,7 +321,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 129.253 45.3015)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -329,7 +329,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 142.185 37.8356)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -337,7 +337,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 116.347 67.6716)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -345,7 +345,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 129.275 60.2087)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -353,7 +353,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 142.173 52.7605)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -361,7 +361,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 155.105 45.2946)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -369,7 +369,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 25.8979 75.1345)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -377,7 +377,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 38.8256 67.6716)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -385,7 +385,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 51.7279 60.2224)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -393,7 +393,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 64.6557 52.7585)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -401,7 +401,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 38.8178 82.5954)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -409,7 +409,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 51.7455 75.1306)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -417,7 +417,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 64.6479 67.6814)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -425,7 +425,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 77.5756 60.2185)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -433,7 +433,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 0.0580127 60.2165)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -441,7 +441,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 12.9857 52.7526)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -449,7 +449,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 25.8881 45.3034)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -457,7 +457,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 38.8158 37.8396)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -465,7 +465,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 12.9779 67.6755)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -473,7 +473,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 25.9057 60.2126)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -481,7 +481,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 38.808 52.7624)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -489,7 +489,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 51.7357 45.2985)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -497,7 +497,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 77.5854 45.2937)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -505,7 +505,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 90.5131 37.8298)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -513,7 +513,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 103.412 30.3825)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -521,7 +521,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 116.343 22.9167)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -529,7 +529,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 90.5053 52.7526)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -537,7 +537,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 103.433 45.2888)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -545,7 +545,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 116.331 37.8415)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -553,7 +553,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 129.263 30.3757)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -561,7 +561,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 51.7455 30.3747)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -569,7 +569,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 64.6732 22.9108)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -577,7 +577,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 77.5717 15.4636)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -585,7 +585,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 90.5033 7.99776)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -593,7 +593,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 64.6654 37.8337)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -601,7 +601,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 77.5932 30.3698)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -609,7 +609,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 90.4916 22.9226)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -617,7 +617,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 103.423 15.4567)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -625,7 +625,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 77.5795 104.972)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -633,7 +633,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 90.5072 97.5095)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -641,7 +641,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 103.41 90.0603)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -649,7 +649,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 116.337 82.5954)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -657,7 +657,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 90.4994 112.433)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -665,7 +665,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 103.427 104.968)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -673,7 +673,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 116.329 97.5192)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -681,7 +681,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 129.257 90.0564)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -689,7 +689,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 51.7397 90.0544)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -697,7 +697,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 64.6674 82.5915)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -705,7 +705,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 77.5697 75.1423)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -713,7 +713,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 90.4975 67.6774)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -721,7 +721,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 64.6596 97.5134)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -729,7 +729,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 77.5873 90.0505)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -737,7 +737,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 90.4897 82.6013)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <rect
@@ -745,7 +745,7 @@ const Diagram = (props: { step: number }) => {
         width="15.0633"
         height="15.0675"
         transform="matrix(0.866025 -0.5 0.866025 0.5 103.417 75.1364)"
-        stroke="var(--maximeheckel-colors-typeface-secondary)"
+        stroke="var(--gray-600)"
         strokeWidth="0.5"
       />
       <circle
@@ -765,7 +765,7 @@ const Diagram = (props: { step: number }) => {
 
       <motion.path
         d="M103.953 128L103.999 45"
-        stroke="hsl(var(--palette-orange-45))"
+        stroke="var(--orange-900)"
         strokeWidth="0.5"
         strokeLinecap="round"
         initial="initial"
@@ -774,7 +774,7 @@ const Diagram = (props: { step: number }) => {
       />
       <motion.path
         d="M103.955 128.039L91 30"
-        stroke="hsl(var(--palette-orange-45))"
+        stroke="var(--orange-900)"
         strokeWidth="0.5"
         strokeLinecap="round"
         initial="initial"
@@ -783,7 +783,7 @@ const Diagram = (props: { step: number }) => {
       />
       <motion.path
         d="M103.955 127.963L117 30"
-        stroke="hsl(var(--palette-orange-45))"
+        stroke="var(--orange-900)"
         strokeWidth="0.5"
         strokeLinecap="round"
         initial="initial"
@@ -792,7 +792,7 @@ const Diagram = (props: { step: number }) => {
       />
       <motion.path
         d="M103.955 128.039L73 10"
-        stroke="hsl(var(--palette-orange-45))"
+        stroke="var(--orange-900)"
         strokeWidth="0.5"
         strokeLinecap="round"
         initial="initial"
@@ -801,7 +801,7 @@ const Diagram = (props: { step: number }) => {
       />
       <motion.path
         d="M103.955 127.963L134 10"
-        stroke="hsl(var(--palette-orange-45))"
+        stroke="var(--orange-900)"
         strokeWidth="0.5"
         strokeLinecap="round"
         initial="initial"

@@ -6,7 +6,7 @@ const ProgressBarWrapper = styled(motion.div, {
   height: 'calc(88vh - 40px)',
   maxHeight: '425px',
   width: '2px',
-  backgroundColor: 'hsla(var(--palette-gray-20), 0.3)',
+  backgroundColor: 'var(--maximeheckel-border-color)',
 
   '@media(max-width: 700px)': {
     display: 'none',

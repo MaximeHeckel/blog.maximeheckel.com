@@ -136,7 +136,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
               <H1
                 css={{ width: '100%', textWrap: 'balance' }}
                 className="p-name"
-                data-testid={`project-title-${title}`}
+                data-testid="post-title"
               >
                 {title}
               </H1>

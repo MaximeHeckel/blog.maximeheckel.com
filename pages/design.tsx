@@ -52,9 +52,7 @@ const Search = dynamic(() => import('@core/components/Search'), {
 /**
  * TODO:
  * - Decouple Search in 2 components => Overlay + Dialog and Command Center
- * - Rebuild/Rename Search component
  * - Define specific token for glass card background (foreground is not cutting it)
- * -> hsla(var(--palette-gray-03), 0.2) like code snippet background
  */
 
 // Grid examples
@@ -137,9 +135,9 @@ const Search = dynamic(() => import('@core/components/Search'), {
         </Grid.Item> */
 
 const HR = styled('hr', {
-  height: '2px',
+  height: '1px',
   width: '100%',
-  background: 'hsl(var(--palette-gray-20))',
+  background: 'var(--maximeheckel-border-color)',
   border: 'none',
 });
 
@@ -153,20 +151,22 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
   const [email, setEmail] = React.useState('');
   const [rangeValue, setRangeValue] = React.useState(250);
 
-  const colorScaleNumbers = React.useMemo(
-    () =>
-      Array.from(Array(19).keys()).map((items) => {
-        const num = (items + 1) * 5;
-        if (num === 5) {
-          return `0${num}`;
-        }
+  const colorScaleNumbers = [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900,
+    1000,
+    1100,
+    1200,
+  ];
 
-        return num.toString();
-      }),
-    []
-  );
-
-  const palette = ['gray', 'blue', 'red', 'orange', 'green', 'pink', 'indigo'];
+  const palette = ['gray', 'blue', 'red', 'orange', 'green', 'pink'];
 
   return (
     <Layout footer>
@@ -329,7 +329,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                     <Tooltip
                       id={`${paletteItem}-${shade}`}
                       key={`${paletteItem}-${shade}`}
-                      content={`--palette-${paletteItem}-${shade}`}
+                      content={`--${paletteItem}-${shade}`}
                     >
                       <Box
                         as="section"
@@ -337,7 +337,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                           width: '44px',
                           height: '44px',
                           borderRadius: '50%',
-                          background: `hsl(var(--palette-${paletteItem}-${shade}))`,
+                          background: `var(--${paletteItem}-${shade})`,
                           border: '2px solid var(--maximeheckel-border-color)',
                         }}
                       />
@@ -448,9 +448,9 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                 css={{
                   backgroundImage: `linear-gradient(
               91.83deg,
-              hsl(var(--palette-pink-50)) -20.26%,
-              hsl(var(--palette-blue-20)) 20.55%,
-              hsl(var(--palette-indigo-30)) 60.81%
+              var(--pink-300) -20.26%,
+              var(--blue-600) 20.55%,
+              var(--blue-800) 60.81%
             )`,
                 }}
               >
@@ -670,20 +670,20 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                 <Button variant="primary">Button</Button>
               </Glow>
               <Button variant="primary">Button</Button>
-              <Button variant="primary" endIcon={<Icon.External />}>
+              <Button variant="primary" endIcon={<Icon.External size="4" />}>
                 Portfolio
               </Button>
-              <Button variant="primary" startIcon={<Icon.Twitter />}>
+              <Button variant="primary" startIcon={<Icon.Twitter size="4" />}>
                 Follow me!
               </Button>
               <Button variant="primary" disabled>
                 Button
               </Button>
               <Button variant="secondary">Button</Button>
-              <Button variant="secondary" endIcon={<Icon.External />}>
+              <Button variant="secondary" endIcon={<Icon.External size="4" />}>
                 Portfolio
               </Button>
-              <Button variant="secondary" startIcon={<Icon.Twitter />}>
+              <Button variant="secondary" startIcon={<Icon.Twitter size="4" />}>
                 Follow me!
               </Button>
               <Button variant="secondary" disabled>
@@ -1342,17 +1342,6 @@ const IconSection = () => (
       <Icon.Twitter variant="secondary" size={5} />
       <Icon.Twitter variant="tertiary" size={5} />
     </Grid>
-    <Box
-      css={{
-        color: 'hsl(var(--palette-pink-50))',
-        svg: {
-          strokeWidth: '1',
-          fill: 'hsla(var(--palette-pink-50), 50%) !important',
-        },
-      }}
-    >
-      <Icon.Twitter />
-    </Box>
     <Grid gapY={4} flow="row" align="center" templateColumns="repeat(5, 1fr)">
       <Icon.Twitter variant="default" size={7} />
       <Icon.Twitter variant="default" size={6} />

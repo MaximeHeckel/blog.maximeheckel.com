@@ -132,7 +132,7 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Run build
         run: |
-          npx playwright install && yarn build
+          yarn build
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:

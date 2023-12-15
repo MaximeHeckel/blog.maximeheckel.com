@@ -26,8 +26,8 @@ const Cell = (props: CellProps) => {
         css={{
           aspectRatio: '1 / 1',
           cursor: 'pointer',
-          borderBottom: '0.5px solid hsla(var(--palette-gray-20), 50%)',
-          borderLeft: '0.5px solid hsla(var(--palette-gray-20), 50%)',
+          borderBottom: '0.5px solid var(--gray-700)',
+          borderLeft: '0.5px solid var(--gray-700)',
           backgroundColor: `rgb(${value * 255},${value * 255},${value * 255})`,
           overflow: 'hidden',
         }}
@@ -250,8 +250,8 @@ const FragmentShaderVisualizer = () => {
         </Flex>
         <Grid
           css={{
-            borderTop: '0.5px solid hsla(var(--palette-gray-20), 50%)',
-            borderRight: '0.5px solid hsla(var(--palette-gray-20), 50%)',
+            borderTop: '0.5px solid var(--gray-700)',
+            borderRight: '0.5px solid var(--gray-700)',
             overflow: 'hidden',
             width: '100%',
           }}

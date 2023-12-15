@@ -5,9 +5,9 @@ import { HighlightedValue } from '../Components';
 
 const ITEMS = [1, 2, 3];
 const COLORS = [
-  'hsl(var(--palette-blue-50))',
-  'hsl(var(--palette-pink-50))',
-  'hsl(var(--palette-orange-50))',
+  'var(--maximeheckel-colors-brand)',
+  'var(--pink-300)',
+  'var(--orange-900)',
 ];
 
 const SharedLayoutAnimationDetails = () => {
