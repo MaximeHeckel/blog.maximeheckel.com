@@ -55,6 +55,7 @@ const VideoPlayer = (props: VideoPlayerProps) => {
       controls={controls}
       loop={loop || false}
       muted={muted}
+      playsInline
     >
       <source src={src} type="video/mp4" />
     </StyledVideo>

@@ -124,7 +124,7 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
                 marginBottom: 'var(--space-5)',
               }}
               direction="column"
-              gap="5"
+              gap="4"
             >
               <Box css={{ fontSize: 'var(--font-size-1)' }}>
                 <Link href="/" legacyBehavior passHref>
