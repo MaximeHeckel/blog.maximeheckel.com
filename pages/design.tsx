@@ -41,7 +41,6 @@ import React from 'react';
 import { NewTweet } from 'types/tweet';
 import { templateColumnsMedium } from 'styles/grid';
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
-import Image from '@core/components/MDX/Image';
 
 const SandpackExample = dynamic(
   () => import('@core/components/MDX/Widgets/WaveAnimation/Sandpack')
@@ -348,12 +347,6 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
               ))}
             </Grid>
           </Flex>
-          <Image
-            src="blog/directional_derivatives"
-            alt="Diagram showcasing 2 sampled points P1 and P2 with both their diffuse lighting calculated by sampling extra points P1' and P2' in the direction of the light"
-            width={700}
-            height={445}
-          />
           <Flex
             alignItems="start"
             css={{ width: '100%' }}
