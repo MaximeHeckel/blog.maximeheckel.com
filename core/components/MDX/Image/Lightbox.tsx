@@ -66,5 +66,5 @@ export const Content = styled(Dialog.Content, {
 export const Trigger = styled(Dialog.Trigger, {
   all: 'unset',
   cursor: 'zoom-in',
-  display: 'contents',
+  width: '100%',
 });

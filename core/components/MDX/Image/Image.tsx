@@ -16,7 +16,7 @@ const Image = (props: ImageProps) => {
       <Flex
         as="figure"
         direction="column"
-        css={{ margin: '0 auto' }}
+        css={{ margin: '0', width: '100%' }}
         alignItems="start"
       >
         <Trigger tabIndex={0}>
@@ -24,7 +24,6 @@ const Image = (props: ImageProps) => {
             as={NextImage}
             css={{
               borderRadius: 'var(--border-radius-3)',
-
               width: '100%',
               height: 'auto',
               objectFit: 'cover',
