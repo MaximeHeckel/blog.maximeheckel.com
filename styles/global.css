@@ -17,15 +17,15 @@ body {
   margin: 0;
 }
 
-[hidden],
-[aria-hidden='true'],
-.hidden {
+/* [hidden],
+[aria-hidden='true'], */
+.hidden-layout {
   display: none;
 }
-
+/* 
 [aria-hidden='false'] {
   display: block;
-}
+} */
 
 /* TODO Find a way to remove the following */
 /* Patch gif wrapped in figure tag */

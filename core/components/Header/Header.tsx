@@ -51,7 +51,7 @@ const Header = (props: HeaderProps) => {
   return (
     <>
       <a
-        className="hidden h-card"
+        className="hidden-layout h-card"
         data-testid="twitter-link"
         aria-label="Follow me on Twitter"
         title="Follow me on Twitter"
