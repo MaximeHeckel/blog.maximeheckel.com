@@ -30,14 +30,16 @@ const WebmentionBlogData = (props: WebmentionBlogDataProps) => {
   return (
     <>
       <time
-        className="hidden dt-published"
+        className="hidden-layout dt-published"
         itemProp="datepublished"
         dateTime={date}
       >
         {new Date(date).toISOString().replace('Z', '') + '+01:00'}
       </time>
-      <a className="hidden u-url" href={postUrl} />
-      {subtitle && <p className="hidden p-summary e-content">{subtitle}</p>}
+      <a className="hidden-layout u-url" href={postUrl} />
+      {subtitle && (
+        <p className="hidden-layout p-summary e-content">{subtitle}</p>
+      )}
     </>
   );
 };
