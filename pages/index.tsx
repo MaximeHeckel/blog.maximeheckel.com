@@ -87,6 +87,7 @@ const IndexPage = (props: Props) => {
               <Text
                 css={{
                   lineHeight: 'unset',
+                  letterSpacing: '-0.5px',
                 }}
                 variant="secondary"
                 size="7"

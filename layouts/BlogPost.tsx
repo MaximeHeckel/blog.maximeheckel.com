@@ -66,6 +66,10 @@ const contentClass = css({
     fontWeight: '460',
   },
 
+  li: {
+    fontWeight: '460',
+  },
+
   section: {
     display: 'flex',
     flexDirection: 'column',
