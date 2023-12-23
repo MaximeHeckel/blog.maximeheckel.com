@@ -7,10 +7,17 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withBundleAnalyzer({
   trailingSlash: true,
   images: {
-    domains: [
-      // Twitter Images
-      'pbs.twimg.com',
-      't.co',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'pbs.twimg.com',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 't.co',
+        pathname: '**',
+      },
     ],
   },
   webpack(config, { isServer, buildId }) {
