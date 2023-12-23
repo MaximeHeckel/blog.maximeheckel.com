@@ -1,7 +1,7 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { useRouter } from 'next/router';
 import { MDXRemote } from 'next-mdx-remote';
-import BlogLayout from 'layouts/BlogPost';
+import BlogLayout from '@core/layout/BlogPost';
 import getOgImage from 'lib/generate-opengraph-images';
 import { getTweets } from 'lib/tweets';
 import { getFileBySlug, getFiles } from 'lib/mdx';
