@@ -18,7 +18,7 @@
     "generate:og": "node ./scripts/generate-opengraph-images",
     "generate:rss": "node ./scripts/generate-rss",
     "generate:sitemap": "node ./scripts/generate-sitemap",
-    "link-ds": "rm -rf .next && yarn link @maximeheckel/design-system",
+    "link-ds": "rm -rf .next && bun link @maximeheckel/design-system",
     "lint": "eslint --ext=jsx,ts,tsx .",
     "prebuild": "yarn generate:rss && yarn generate:sitemap",
     "start": "next start",
