@@ -74,11 +74,9 @@ const Footer = () => (
                 </Anchor>
                 <Anchor
                   discreet
-                  href="https://buttondown.email/MaximeHeckel/archive/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="https://www.buymeacoffee.com/maximeheckel"
                 >
-                  Newsletter
+                  Buy me a coffee
                 </Anchor>
               </Grid>
             </Text>
@@ -102,9 +100,11 @@ const Footer = () => (
                 </Anchor>
                 <Anchor
                   discreet
-                  href="https://www.buymeacoffee.com/maximeheckel"
+                  href="https://buttondown.email/MaximeHeckel/archive/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  Buy me a coffee
+                  Newsletter
                 </Anchor>
               </Grid>
             </Text>
