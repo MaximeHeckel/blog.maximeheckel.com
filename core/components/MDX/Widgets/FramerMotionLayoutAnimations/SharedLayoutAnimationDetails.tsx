@@ -6,7 +6,7 @@ import { HighlightedValue } from '../Components';
 const ITEMS = [1, 2, 3];
 const COLORS = [
   'var(--maximeheckel-colors-brand)',
-  'var(--pink-300)',
+  'var(--pink-500)',
   'var(--orange-900)',
 ];
 

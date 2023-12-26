@@ -448,7 +448,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                 css={{
                   backgroundImage: `linear-gradient(
               91.83deg,
-              var(--pink-300) -20.26%,
+              var(--pink-500) -20.26%,
               var(--blue-600) 20.55%,
               var(--blue-800) 60.81%
             )`,

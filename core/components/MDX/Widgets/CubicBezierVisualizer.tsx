@@ -413,7 +413,7 @@ const Chart = (props: ChartProps) => {
       >
         <defs>
           <linearGradient id="motion" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="20%" stopColor="var(--pink-300)" stopOpacity={1} />
+            <stop offset="20%" stopColor="var(--pink-500)" stopOpacity={1} />
             <stop offset="99%" stopColor="var(--blue-800)" stopOpacity={1} />
           </linearGradient>
           <linearGradient id="speed" x1="0" y1="0" x2="0" y2="1">

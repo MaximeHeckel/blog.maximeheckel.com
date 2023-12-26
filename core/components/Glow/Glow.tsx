@@ -28,7 +28,7 @@ const StyledGlow = styled('div', {
   animation: `2.7s ease-in-out 0s infinite normal both running ${pulse}`,
   background: `linear-gradient(
     91.83deg,
-    var(--pink-300) 2.26%,
+    var(--pink-500) 2.26%,
     var(--blue-800) 95.81%
   )`,
   filter: 'blur(1px)',
