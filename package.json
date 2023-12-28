@@ -18,14 +18,15 @@
     "generate:og": "node ./scripts/generate-opengraph-images",
     "generate:rss": "node ./scripts/generate-rss",
     "generate:sitemap": "node ./scripts/generate-sitemap",
-    "link-ds": "rm -rf .next && yarn link @maximeheckel/design-system",
+    "link-ds": "rm -rf .next && pnpm link --global @maximeheckel/design-system",
     "lint": "eslint --ext=jsx,ts,tsx .",
-    "prebuild": "yarn generate:rss && yarn generate:sitemap",
+    "prebuild": "pnpm generate:rss && pnpm generate:sitemap",
     "start": "next start",
     "test": "is-ci \"test:coverage\" \"test:watch\"",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "unlink-ds": "rm -rf .next && pnpm unlink && pnpm install"
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "1.18.4",

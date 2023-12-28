@@ -26,26 +26,29 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.17.0'
-      - name: Cache yarn dependencies
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Cache pnpm dependencies
         uses: actions/cache@v3
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
       - name: Cache Cypress binary
         id: cache-cypress-binary
         uses: actions/cache@v3
         with:
           path: ~/.cache/Cypress
-          key: cypress-binary-${{ hashFiles('**/yarn.lock') }}
+          key: cypress-binary-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             cypress-binary-
       - name: Install Dependencies
         if: steps.cache-dependencies.outputs.cache-hit != 'true' || steps.cache-cypress-binary.outputs.cache-hit != 'true'
         run: |
-          yarn install --force --non-interactive
+          pnpm install
   lint-format:
     runs-on: ubuntu-latest
     needs: install-cache
@@ -56,20 +59,23 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.17.0'
-      - name: Restore yarn dependencies
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Restore pnpm dependencies
         uses: actions/cache@v3
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
       - name: Run lint
         run: |
-          yarn lint
+          pnpm lint
       - name: Run prettier
         run: |
-          yarn format
+          pnpm format
   type-check:
     runs-on: ubuntu-latest
     needs: install-cache
@@ -80,17 +86,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.17.0'
-      - name: Restore yarn dependencies
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Restore pnpm dependencies
         uses: actions/cache@v3
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
       - name: Check types
         run: |
-          yarn type-check
+          pnpm type-check
   unit-test:
     runs-on: ubuntu-latest
     needs: install-cache
@@ -101,17 +110,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.17.0'
-      - name: Restore yarn dependencies
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Restore pnpm dependencies
         uses: actions/cache@v3
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
       - name: Run test
         run: |
-          yarn test
+          pnpm test
   build:
     runs-on: ubuntu-latest
     needs: [lint-format, type-check, unit-test]
@@ -122,17 +134,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.17.0'
-      - name: Restore yarn dependencies
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Restore pnpm dependencies
         uses: actions/cache@v3
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
       - name: Run build
         run: |
-          yarn build
+          pnpm build
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -149,20 +164,23 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.17.0'
-      - name: Restore yarn dependencies
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Restore pnpm dependencies
         uses: actions/cache@v3
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
       - name: Restore Cypress binary
         id: cache-cypress-binary
         uses: actions/cache@v3
         with:
           path: ~/.cache/Cypress
-          key: cypress-binary-${{ hashFiles('**/yarn.lock') }}
+          key: cypress-binary-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             cypress-binary-
       - name: Download build artifacts
@@ -173,7 +191,7 @@ jobs:
       - name: Run cypress
         uses: cypress-io/github-action@v4.2.0
         with:
-          start: yarn start
+          start: pnpm start
           browser: chrome
           install: false
       - name: Upload Screenshots
@@ -200,20 +218,23 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.17.0'
-      - name: Restore yarn dependencies
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Restore pnpm dependencies
         uses: actions/cache@v3
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-pnpm-
       - name: Restore Cypress binary
         id: cache-cypress-binary
         uses: actions/cache@v3
         with:
           path: ~/.cache/Cypress
-          key: cypress-binary-${{ hashFiles('**/yarn.lock') }}
+          key: cypress-binary-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             cypress-binary-
       - name: Download build artifacts
@@ -224,7 +245,7 @@ jobs:
       - name: Run cypress
         uses: cypress-io/github-action@v4.2.0
         with:
-          start: yarn start
+          start: pnpm start
           browser: firefox
           install: false
       - name: Upload Screenshots
