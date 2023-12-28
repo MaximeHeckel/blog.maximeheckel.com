@@ -236,7 +236,7 @@ const LineChart = withTooltip<LineChartProps, FormattedData>(
               <Line
                 from={{ x: tooltipLeft, y: 0 }}
                 to={{ x: tooltipLeft, y: height }}
-                stroke="var(--maximeheckel-colors-typeface-primary)"
+                stroke="var(--text-primary)"
                 strokeWidth={2}
                 pointerEvents="none"
                 strokeDasharray="1,3"

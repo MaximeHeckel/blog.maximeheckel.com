@@ -7,14 +7,14 @@ export const Wrapper = styled(Box, {
   overflow: 'hidden',
   display: 'flex',
   borderRadius: 'var(--border-radius-2)',
-  border: '4px solid var(--maximeheckel-border-color)',
+  border: '4px solid var(--border-color)',
   cursor: 'ew-resize',
   transition: 'box-shadow 0.3s',
   boxShadow: 'var(--shadow, none)',
 
   '&:focus-visible': {
     outline: 'none',
-    boxShadow: '0 2px 20px -2px var(--maximeheckel-form-input-focus)',
+    boxShadow: '0 2px 20px -2px var(--input-focus)',
   },
 });
 

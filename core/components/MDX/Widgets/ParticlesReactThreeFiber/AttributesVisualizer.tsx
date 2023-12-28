@@ -70,12 +70,12 @@ const AttributesVisualizer = () => {
                   height: DIMENSION_ARRAY_ITEM,
                   boxShadow:
                     index === currentIndex
-                      ? '0 2px 20px -2px var(--maximeheckel-form-input-focus)'
+                      ? '0 2px 20px -2px var(--input-focus)'
                       : 'none',
                   borderColor:
                     index === currentIndex
-                      ? 'var(--maximeheckel-form-input-active)'
-                      : 'var(--maximeheckel-border-color)',
+                      ? 'var(--input-active)'
+                      : 'var(--border-color)',
                   borderWidth: '2px',
                   borderStyle: 'solid',
                   borderLeftWidth:
@@ -142,9 +142,9 @@ const AttributesVisualizer = () => {
                 <Flex
                   as={motion.div}
                   css={{
-                    background: 'var(--maximeheckel-colors-emphasis)',
-                    color: 'var(--maximeheckel-colors-brand)',
-                    border: '2px solid var(--maximeheckel-colors-brand)',
+                    background: 'var(--emphasis)',
+                    color: 'var(--accent)',
+                    border: '2px solid var(--accent)',
                     borderRadius: 'var(--border-radius-1)',
                     height: 40,
                     width: ITEM_SIZE * DIMENSION_ARRAY_ITEM,
@@ -172,8 +172,8 @@ const AttributesVisualizer = () => {
                           position: 'absolute',
                           borderRadius: 'var(--border-radius-1)',
                           padding: '4px 6px',
-                          background: 'var(--maximeheckel-colors-brand)',
-                          color: 'var(--maximeheckel-colors-body)',
+                          background: 'var(--accent)',
+                          color: 'var(--background)',
                           fontSize: 'var(--font-size-1)',
                           fontWeight: 'var(--font-weight-500)',
                           userSelect: 'none',

@@ -105,7 +105,7 @@ const FramerMotionAnimationLayout = () => {
                     borderRadius: '50%',
                     width: '48px',
                     height: '48px',
-                    border: '4px solid var(--maximeheckel-colors-brand)',
+                    border: '4px solid var(--accent)',
                   }}
                 />
               )}

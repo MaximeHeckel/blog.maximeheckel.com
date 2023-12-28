@@ -1,6 +1,6 @@
 ::selection {
-  background-color: var(--maximeheckel-colors-emphasis);
-  color: var(--maximeheckel-colors-brand);
+  background-color: var(--emphasis);
+  color: var(--accent);
 }
 
 html {
@@ -10,8 +10,8 @@ html {
 }
 
 body {
-  background: var(--maximeheckel-colors-body);
-  color: var(--maximeheckel-colors-typeface-primary);
+  background: var(--background);
+  color: var(--text-primary);
   word-wrap: break-word;
   text-rendering: optimizeLegibility;
   margin: 0;

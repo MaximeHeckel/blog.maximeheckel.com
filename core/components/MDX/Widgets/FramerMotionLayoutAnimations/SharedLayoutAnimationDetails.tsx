@@ -4,11 +4,7 @@ import React from 'react';
 import { HighlightedValue } from '../Components';
 
 const ITEMS = [1, 2, 3];
-const COLORS = [
-  'var(--maximeheckel-colors-brand)',
-  'var(--pink-500)',
-  'var(--orange-900)',
-];
+const COLORS = ['var(--accent)', 'var(--pink-500)', 'var(--orange-900)'];
 
 const SharedLayoutAnimationDetails = () => {
   const [selected, setSelected] = React.useState(1);
@@ -28,7 +24,7 @@ const SharedLayoutAnimationDetails = () => {
                   cursor: 'pointer',
                   '&:focus': { outline: 'none' },
                   '&:focus-visible': {
-                    outline: '1px solid var(--maximeheckel-colors-brand)',
+                    outline: '1px solid var(--accent)',
                   },
                 }}
                 onClick={() => setSelected(item)}

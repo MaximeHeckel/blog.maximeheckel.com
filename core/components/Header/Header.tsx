@@ -74,9 +74,7 @@ const Header = (props: HeaderProps) => {
         animate={reached ? 'collapsed' : 'open'}
         variants={headerVariants}
         css={{
-          borderColor: reached
-            ? 'var(--maximeheckel-border-color)'
-            : 'transparent',
+          borderColor: reached ? 'var(--border-color)' : 'transparent',
         }}
       >
         <Grid gapX={4} templateColumns={templateColumnsMedium}>

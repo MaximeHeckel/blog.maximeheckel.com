@@ -102,13 +102,11 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
       }}
       transition={{ ease: 'easeInOut' }}
       style={{
-        backgroundColor: 'var(--maximeheckel-colors-body)',
+        backgroundColor: 'var(--background)',
         borderBottomLeftRadius: 'var(--border-radius-2)',
         borderBottomRightRadius: 'var(--border-radius-2)',
         overflow: 'hidden',
-        border: collapse
-          ? 'none'
-          : '1px solid var(--maximeheckel-border-color)',
+        border: collapse ? 'none' : '1px solid var(--border-color)',
       }}
     >
       <div aria-hidden={hidden} className={commandCenterStaticWrapper()}>

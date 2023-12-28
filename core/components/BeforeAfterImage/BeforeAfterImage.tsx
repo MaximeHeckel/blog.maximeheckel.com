@@ -23,7 +23,7 @@ const Slider = () => (
         bottom: 0,
         top: 0,
         width: 3,
-        background: 'var(--maximeheckel-colors-foreground)',
+        background: 'var(--foreground)',
         transform: 'translateX(-50%)',
       },
     }}
@@ -33,11 +33,11 @@ const Slider = () => (
       css={{
         width: 48,
         height: 48,
-        background: 'var(--maximeheckel-colors-foreground)',
+        background: 'var(--foreground)',
         backdropFilter: 'blur(8px)',
         zIndex: 2,
         borderRadius: 'var(--border-radius-2)',
-        border: '3px solid var(--maximeheckel-border-color)',
+        border: '3px solid var(--border-color)',
       }}
       justifyContent="center"
     >

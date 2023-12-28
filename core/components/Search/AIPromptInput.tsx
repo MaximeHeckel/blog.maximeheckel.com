@@ -21,7 +21,7 @@ const AIPromptInput = (props: { status: Status }) => {
       <Flex css={{ width: 24, marginLeft: 16 }}>
         <Sparkles
           style={{
-            color: 'var(--maximeheckel-colors-typeface-secondary)',
+            color: 'var(--text-secondary)',
           }}
         />
       </Flex>

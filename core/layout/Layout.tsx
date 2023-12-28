@@ -4,7 +4,7 @@ import Header, { HeaderProps } from '@core/components/Header';
 import { styled } from '@maximeheckel/design-system';
 
 const Wrapper = styled('main', {
-  background: 'var(--maximeheckel-colors-body)',
+  background: 'var(--background)',
   transition: '0.5s',
 
   /**
@@ -18,8 +18,8 @@ const Wrapper = styled('main', {
    * Custom outline
    */
   '&:focus-visible': {
-    outline: '2px solid var(--maximeheckel-colors-brand)',
-    backgroundColor: 'var(--maximeheckel-colors-foreground)',
+    outline: '2px solid var(--accent)',
+    backgroundColor: 'var(--foreground)',
   },
 });
 

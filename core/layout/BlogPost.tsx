@@ -52,7 +52,7 @@ interface Props {
 
 const contentClass = css({
   padding: 'var(--space-5) 0px',
-  color: 'var(--maximeheckel-colors-typeface-secondary)',
+  color: 'var(--text-secondary)',
 
   h2: {
     marginTop: '2em',

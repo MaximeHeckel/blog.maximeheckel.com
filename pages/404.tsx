@@ -11,7 +11,7 @@ const Wrapper = styled(Box, {
   display: 'flex',
   height: 'calc(100vh)',
   alignItems: 'center',
-  color: 'var(--maximeheckel-colors-typeface-primary)',
+  color: 'var(--text-primary)',
 });
 
 const NotFoundPage = () => (

@@ -14,14 +14,14 @@ import setupFiles from './SandpackSetupFiles';
 // Default Theme
 const theme = {
   colors: {
-    hover: 'var(--maximeheckel-colors-brand)',
-    clickable: 'var(--maximeheckel-colors-typeface-secondary)',
-    accent: 'var(--maximeheckel-colors-brand)',
-    errorSurface: 'var(--maximeheckel-colors-danger-emphasis)',
-    error: 'var(--maximeheckel-colors-danger)',
-    surface3: 'var(--maximeheckel-colors-emphasis)',
-    surface2: 'var(--maximeheckel-border-color)',
-    surface1: 'var(--maximeheckel-card-background-color)',
+    hover: 'var(--accent)',
+    clickable: 'var(--text-secondary)',
+    accent: 'var(--accent)',
+    errorSurface: 'var(--danger-emphasis)',
+    error: 'var(--danger)',
+    surface3: 'var(--emphasis)',
+    surface2: 'var(--border-color)',
+    surface1: 'var(--card-background)',
   },
   syntax: {
     plain: 'var(--token-comment)',
@@ -54,7 +54,7 @@ const defaultEditorOptions = {
 // Styles
 const SandpackWrapper = styled(Box, {
   '.sp-layout': {
-    background: 'var(--maximeheckel-card-background-color)',
+    background: 'var(--card-background)',
     position: 'relative',
     borderRadius: 'var(--border-radius-2)',
     boxShadow: Shadows[1],
@@ -78,7 +78,7 @@ const SandpackWrapper = styled(Box, {
     fontSize: '12px',
     userSelect: 'none',
     opacity: '1',
-    color: 'var(--maximeheckel-colors-typeface-tertiary)',
+    color: 'var(--text-tertiary)',
   },
 
   // Hide default console clear button
@@ -188,7 +188,7 @@ const Sandpack = (props: SandpackProps) => {
             {...defaultEditorOptions}
             showRunButton={false}
             style={{
-              borderLeft: '1px solid var(--maximeheckel-border-color)',
+              borderLeft: '1px solid var(--border-color)',
               height: defaultEditorOptions.editorHeight,
             }}
           />

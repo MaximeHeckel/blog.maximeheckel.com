@@ -283,8 +283,8 @@ const Cubic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="var(--maximeheckel-colors-danger)"
-        stroke="var(--maximeheckel-colors-danger)"
+        fill="var(--danger)"
+        stroke="var(--danger)"
         strokeWidth={3}
         transform={`translate(${scale(lerp1[activeStepIndex]?.x)}, ${scale(
           lerp1[activeStepIndex]?.y
@@ -294,8 +294,8 @@ const Cubic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="var(--maximeheckel-colors-danger)"
-        stroke="var(--maximeheckel-colors-danger)"
+        fill="var(--danger)"
+        stroke="var(--danger)"
         strokeWidth={3}
         transform={`translate(${scale(lerp2[activeStepIndex]?.x)}, ${scale(
           lerp2[activeStepIndex]?.y
@@ -305,8 +305,8 @@ const Cubic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="var(--maximeheckel-colors-danger)"
-        stroke="var(--maximeheckel-colors-danger)"
+        fill="var(--danger)"
+        stroke="var(--danger)"
         strokeWidth={3}
         transform={`translate(${scale(lerp3[activeStepIndex]?.x)}, ${scale(
           lerp3[activeStepIndex]?.y
@@ -316,8 +316,8 @@ const Cubic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="var(--maximeheckel-colors-success)"
-        stroke="var(--maximeheckel-colors-success)"
+        fill="var(--success)"
+        stroke="var(--success)"
         strokeWidth={3}
         transform={`translate(${scale(lerp4[activeStepIndex]?.x)}, ${scale(
           lerp4[activeStepIndex]?.y
@@ -327,8 +327,8 @@ const Cubic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="var(--maximeheckel-colors-success)"
-        stroke="var(--maximeheckel-colors-success)"
+        fill="var(--success)"
+        stroke="var(--success)"
         strokeWidth={3}
         transform={`translate(${scale(lerp5[activeStepIndex]?.x)}, ${scale(
           lerp5[activeStepIndex]?.y
@@ -338,8 +338,8 @@ const Cubic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={5}
-        fill="var(--maximeheckel-colors-brand)"
-        stroke="var(--maximeheckel-colors-brand)"
+        fill="var(--accent)"
+        stroke="var(--accent)"
         transform={`translate(${scale(data[activeStepIndex]?.x)}, ${scale(
           data[activeStepIndex]?.y
         )})`}
@@ -445,8 +445,8 @@ const Quadratic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="var(--maximeheckel-colors-danger)"
-        stroke="var(--maximeheckel-colors-danger)"
+        fill="var(--danger)"
+        stroke="var(--danger)"
         strokeWidth={3}
         transform={`translate(${scale(lerp1[activeStepIndex]?.x)}, ${scale(
           lerp1[activeStepIndex]?.y
@@ -456,8 +456,8 @@ const Quadratic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={4}
-        fill="var(--maximeheckel-colors-danger)"
-        stroke="var(--maximeheckel-colors-danger)"
+        fill="var(--danger)"
+        stroke="var(--danger)"
         strokeWidth={3}
         transform={`translate(${scale(lerp2[activeStepIndex]?.x)}, ${scale(
           lerp2[activeStepIndex]?.y
@@ -467,8 +467,8 @@ const Quadratic = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={5}
-        fill="var(--maximeheckel-colors-brand)"
-        stroke="var(--maximeheckel-colors-brand)"
+        fill="var(--accent)"
+        stroke="var(--accent)"
         strokeWidth={3}
         transform={`translate(${scale(data[activeStepIndex]?.x)}, ${scale(
           data[activeStepIndex]?.y
@@ -511,8 +511,8 @@ const Linear = (props: CurveProps) => {
         cx={0}
         cy={0}
         r={5}
-        fill="var(--maximeheckel-colors-brand)"
-        stroke="var(--maximeheckel-colors-brand)"
+        fill="var(--accent)"
+        stroke="var(--accent)"
         transform={`translate(${scale(data[activeStepIndex]?.x)}, ${scale(
           data[activeStepIndex]?.y
         )})`}

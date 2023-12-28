@@ -144,10 +144,10 @@ const VolumetricRaymarchingVisualizer = () => {
 
         <Flex
           css={{
-            background: 'var(--maximeheckel-colors-emphasis)',
+            background: 'var(--emphasis)',
             width: '100%',
             height: 'fit-content',
-            border: '1px solid var(--maximeheckel-border-color)',
+            border: '1px solid var(--border-color)',
             borderRadius: 'var(--border-radius-2)',
             padding: 'var(--space-5)',
           }}
@@ -254,7 +254,7 @@ const Diagram = (props: { step: number }) => {
           fill="url(#paint1_radial_1066_3930)"
           fillOpacity="0.5"
           strokeOpacity="0.7"
-          stroke="var(--maximeheckel-colors-typeface-secondary)"
+          stroke="var(--text-secondary)"
           strokeWidth="0.5"
           strokeDasharray="2 2"
         />
@@ -307,7 +307,7 @@ const Diagram = (props: { step: number }) => {
           fill="url(#paint3_radial_1066_3930)"
           fillOpacity="0.5"
           strokeOpacity="0.7"
-          stroke="var(--maximeheckel-colors-typeface-secondary)"
+          stroke="var(--text-secondary)"
           strokeWidth="0.5"
           strokeDasharray="2 2"
         />

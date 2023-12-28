@@ -28,9 +28,9 @@ export const AnimationCardContent = styled('div', {
 
 export const HighlightedValue = styled('div', {
   borderRadius: 'var(--border-radius-0)',
-  backgroundColor: 'var(--maximeheckel-colors-emphasis)',
-  color: 'var(--maximeheckel-colors-brand)',
-  border: '2px solid var(--maximeheckel-colors-brand)',
+  backgroundColor: 'var(--emphasis)',
+  color: 'var(--accent)',
+  border: '2px solid var(--accent)',
   padding: '2px 6px',
   fontFamily: 'var(--font-numeric)',
   fontSize: 'var(--font-size-1)',
@@ -68,10 +68,10 @@ export const Form = styled('form', {
   },
 
   select: {
-    border: '1px solid var(--maximeheckel-colors-brand)',
+    border: '1px solid var(--accent)',
     boxShadow: 'none',
-    backgroundColor: 'var(--maximeheckel-colors-emphasis)',
-    color: 'var(--maximeheckel-colors-brand)',
+    backgroundColor: 'var(--emphasis)',
+    color: 'var(--accent)',
     height: '30px',
     borderRadius: 'var(--border-radius-0)',
     padding: '5px',

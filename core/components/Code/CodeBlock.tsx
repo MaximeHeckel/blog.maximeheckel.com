@@ -171,12 +171,12 @@ const Line = styled('div', {
   borderLeft: '3px solid transparent',
 
   '&.highlight-line': {
-    background: 'var(--maximeheckel-colors-emphasis)',
-    borderColor: 'var(--maximeheckel-colors-brand)',
+    background: 'var(--emphasis)',
+    borderColor: 'var(--accent)',
   },
 
   '&:hover': {
-    backgroundColor: 'var(--maximeheckel-colors-emphasis)',
+    backgroundColor: 'var(--emphasis)',
   },
 });
 
@@ -185,7 +185,7 @@ const LineNo = styled('div', {
   padding: '0 12px',
   userSelect: 'none',
   opacity: '1',
-  color: 'var(--maximeheckel-colors-typeface-tertiary)',
+  color: 'var(--text-tertiary)',
 });
 
 const LineContent = styled('span', {
@@ -197,6 +197,6 @@ const CodeSnippetTitle = styled('p', {
   marginBlockStart: '0px',
   fontSize: 'var(--font-size-1)',
   marginBottom: '0px',
-  color: 'var(--maximeheckel-colors-typeface-primary)',
+  color: 'var(--text-primary)',
   fontWeight: '500',
 });

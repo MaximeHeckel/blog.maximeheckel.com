@@ -80,7 +80,7 @@ const List = (props: {
                     background: 'transparent',
                     boxShadow: 'none',
                     border: 'none',
-                    color: 'var(--maximeheckel-colors-typeface-secondary)',
+                    color: 'var(--text-secondary)',
                     cursor: 'pointer',
                   })()}
                   onClick={() =>

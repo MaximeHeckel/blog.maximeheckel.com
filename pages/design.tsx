@@ -137,7 +137,7 @@ const Search = dynamic(() => import('@core/components/Search'), {
 const HR = styled('hr', {
   height: '1px',
   width: '100%',
-  background: 'var(--maximeheckel-border-color)',
+  background: 'var(--border-color)',
   border: 'none',
 });
 
@@ -227,8 +227,8 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                     width: '44px',
                     height: '44px',
                     borderRadius: '50%',
-                    background: 'var(--maximeheckel-colors-brand)',
-                    border: '2px solid var(--maximeheckel-border-color)',
+                    background: 'var(--accent)',
+                    border: '2px solid var(--border-color)',
                   }}
                 />
               </Tooltip>
@@ -240,8 +240,8 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                     width: '44px',
                     height: '44px',
                     borderRadius: '50%',
-                    background: 'var(--maximeheckel-colors-background)',
-                    border: '2px solid var(--maximeheckel-border-color)',
+                    background: 'var(--background)',
+                    border: '2px solid var(--border-color)',
                   }}
                 />
               </Tooltip>
@@ -253,8 +253,8 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                     width: '44px',
                     height: '44px',
                     borderRadius: '50%',
-                    background: 'var(--maximeheckel-colors-foreground)',
-                    border: '2px solid var(--maximeheckel-border-color)',
+                    background: 'var(--foreground)',
+                    border: '2px solid var(--border-color)',
                   }}
                 />
               </Tooltip>
@@ -267,8 +267,8 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                       width: '44px',
                       height: '44px',
                       borderRadius: '50%',
-                      background: 'var(--maximeheckel-colors-typeface-primary)',
-                      border: '2px solid var(--maximeheckel-border-color)',
+                      background: 'var(--text-primary)',
+                      border: '2px solid var(--border-color)',
                     }}
                   />
                 </Tooltip>
@@ -279,9 +279,8 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                       width: '44px',
                       height: '44px',
                       borderRadius: '50%',
-                      background:
-                        'var(--maximeheckel-colors-typeface-secondary)',
-                      border: '2px solid var(--maximeheckel-border-color)',
+                      background: 'var(--text-secondary)',
+                      border: '2px solid var(--border-color)',
                     }}
                   />
                 </Tooltip>
@@ -292,9 +291,8 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                       width: '44px',
                       height: '44px',
                       borderRadius: '50%',
-                      background:
-                        'var(--maximeheckel-colors-typeface-tertiary)',
-                      border: '2px solid var(--maximeheckel-border-color)',
+                      background: 'var(--text-tertiary)',
+                      border: '2px solid var(--border-color)',
                     }}
                   />
                 </Tooltip>
@@ -338,7 +336,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                           height: '44px',
                           borderRadius: '50%',
                           background: `var(--${paletteItem}-${shade})`,
-                          border: '2px solid var(--maximeheckel-border-color)',
+                          border: '2px solid var(--border-color)',
                         }}
                       />
                     </Tooltip>
@@ -478,7 +476,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                 size="7"
                 weight="4"
                 css={{
-                  WebkitTextStrokeColor: 'var(--maximeheckel-colors-brand)',
+                  WebkitTextStrokeColor: 'var(--accent)',
                 }}
                 outline
               >
@@ -491,7 +489,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                 size="7"
                 weight="4"
                 css={{
-                  WebkitTextStrokeColor: 'var(--maximeheckel-colors-danger)',
+                  WebkitTextStrokeColor: 'var(--danger)',
                 }}
                 outline
               >
@@ -557,7 +555,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
               gap={4}
               css={{
                 width: '100%',
-                background: 'var(--maximeheckel-colors-emphasis)',
+                background: 'var(--emphasis)',
                 padding: 'var(--space-5) var(--space-3)',
               }}
               templateColumns="repeat(2, 1fr)"
@@ -1142,8 +1140,7 @@ they can change the world, are the ones who do.`}
                 }}
                 aria-describedby="exampletooltip"
               >
-                <Icon.Twitter stroke="var(--maximeheckel-colors-typeface-tertiary)" />{' '}
-                Hover Me!
+                <Icon.Twitter stroke="var(--text-tertiary)" /> Hover Me!
               </Flex>
             </Tooltip>
           </Flex>

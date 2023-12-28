@@ -29,21 +29,21 @@ const CaptureLayer = styled(motion.div, {
   borderRadius: '32px',
   background: `repeating-linear-gradient(
     -45deg,
-    var(--maximeheckel-colors-foreground),
-    var(--maximeheckel-colors-foreground) 5px,
-    var(--maximeheckel-colors-emphasis) 5px,
-    var(--maximeheckel-colors-emphasis) 10px
+    var(--foreground),
+    var(--foreground) 5px,
+    var(--emphasis) 5px,
+    var(--emphasis) 10px
   )`,
   opacity: 0.8,
 
   zIndex: '3',
   transformStyle: 'preserve-3d',
-  boxShadow: `1px 1px 0 1px var(--maximeheckel-colors-emphasis),
+  boxShadow: `1px 1px 0 1px var(--emphasis),
     -1px 0 28px 0 rgb(34 33 81 / 1%), 28px 28px 28px 0 rgb(34 33 81 / 25%)`,
   transition: '0.4s ease-in-out box-shadow, 0.4s ease-in-out opacity',
 
   '&:hover': {
-    boxShadow: `1px 1px 0 1px var(--maximeheckel-colors-emphasis),
+    boxShadow: `1px 1px 0 1px var(--emphasis),
       -1px 0 28px 0 rgba(34, 33, 81, 0.01),
       54px 54px 28px -10px rgba(34, 33, 81, 0.15)`,
   },
@@ -74,7 +74,7 @@ const Glow = styled(motion.div, {
 
 const Card = styled('div', {
   borderRadius: '32px',
-  border: '1px solid var(--maximeheckel-colors-emphasis)',
+  border: '1px solid var(--emphasis)',
   marginBottom: '0px',
   overflow: 'hidden',
   position: 'relative',
@@ -85,7 +85,7 @@ const Card = styled('div', {
   boxShadow: Shadows[2],
   height: '100%',
   div: {
-    color: 'var(--maximeheckel-colors-typeface-tertiary)',
+    color: 'var(--text-tertiary)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

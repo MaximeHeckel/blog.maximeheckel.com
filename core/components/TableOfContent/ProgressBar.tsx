@@ -6,7 +6,7 @@ const ProgressBarWrapper = styled(motion.div, {
   height: 'calc(88vh - 40px)',
   maxHeight: '425px',
   width: '2px',
-  backgroundColor: 'var(--maximeheckel-border-color)',
+  backgroundColor: 'var(--border-color)',
 
   '@media(max-width: 700px)': {
     display: 'none',
@@ -43,7 +43,7 @@ const ProgressBar = ({ progress }: { progress: number }) => {
           transformOrigin: 'top',
           scaleY: progress,
           width: '2px',
-          backgroundColor: 'var(--maximeheckel-colors-typeface-tertiary)',
+          backgroundColor: 'var(--text-tertiary)',
           height: '100%',
         }}
         data-testid="progress-bar"

@@ -19,10 +19,10 @@ import React from 'react';
 import { HighlightedValue } from './Components';
 
 const select = css({
-  border: '1px solid var(--maximeheckel-colors-brand)',
+  border: '1px solid var(--accent)',
   boxShadow: 'none',
-  backgroundColor: 'var(--maximeheckel-colors-emphasis)',
-  color: 'var(--maximeheckel-colors-brand)',
+  backgroundColor: 'var(--emphasis)',
+  color: 'var(--accent)',
   height: '30px',
   borderRadius: 'var(--border-radius-0)',
   padding: '0px 8px 0px 8px',
@@ -290,11 +290,7 @@ const DragHandle = (props: DragHandleProps) => {
             cy={y}
             r={10}
             fill="var(--gray-900)"
-            stroke={
-              isDragging
-                ? 'var(--maximeheckel-colors-brand)'
-                : 'var(--maximeheckel-colors-foreground)'
-            }
+            stroke={isDragging ? 'var(--accent)' : 'var(--foreground)'}
             strokeWidth={2}
             transform={`translate(${dx}, ${dy})`}
             onMouseMove={dragMove}
@@ -484,8 +480,8 @@ const Chart = (props: ChartProps) => {
                   cx={0}
                   cy={0}
                   r={5}
-                  fill="var(--maximeheckel-colors-brand)"
-                  stroke="var(--maximeheckel-colors-brand)"
+                  fill="var(--accent)"
+                  stroke="var(--accent)"
                   transform={`translate(${speedScale(
                     speed[activeStepIndex]?.x
                   )}, ${speedScale(speed[activeStepIndex]?.y)})`}
@@ -497,8 +493,8 @@ const Chart = (props: ChartProps) => {
             cx={0}
             cy={0}
             r={5}
-            fill="var(--maximeheckel-colors-brand)"
-            stroke="var(--maximeheckel-colors-brand)"
+            fill="var(--accent)"
+            stroke="var(--accent)"
             transform={`translate(${scale(data[activeStepIndex]?.x)}, ${scale(
               data[activeStepIndex]?.y
             )})`}
@@ -516,7 +512,7 @@ const Chart = (props: ChartProps) => {
                       cy={scale(step.y)}
                       r={5}
                       key={step.x}
-                      fill="var(--maximeheckel-colors-brand)"
+                      fill="var(--accent)"
                       initial={{
                         cx: scale(1.1), //traceOnChart ? scale(1.1) : scale(step.x),
                         opacity: 0,

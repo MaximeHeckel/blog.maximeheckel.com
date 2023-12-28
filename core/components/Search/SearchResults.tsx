@@ -101,11 +101,11 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
               css={{
                 height: '35px',
                 width: '35px',
-                backgroundColor: 'var(--maximeheckel-colors-emphasis)',
+                backgroundColor: 'var(--emphasis)',
                 borderRadius: 'var(--border-radius-1)',
 
                 path: {
-                  stroke: 'var(--maximeheckel-colors-brand)',
+                  stroke: 'var(--accent)',
                 },
               }}
             >

@@ -179,8 +179,7 @@ const IndexPage = (props: Props) => {
                         passHref
                         style={{
                           textDecoration: 'none',
-                          color:
-                            'var(--maximeheckel-colors-typeface-secondary)',
+                          color: 'var(--text-secondary)',
                         }}
                       >
                         <Glow
@@ -202,7 +201,7 @@ const IndexPage = (props: Props) => {
                             borderRadius: 'var(--border-radius-2)',
                             top: '50%',
                             left: '50%',
-                            background: 'var(--maximeheckel-colors-body)',
+                            background: 'var(--background)',
                             transform: 'translateY(-50%) translateX(-50%)',
                             filter: 'blur(20px)',
                             transition: '0.5s',
@@ -370,19 +369,18 @@ const Block = styled(Box, {
   padding: '16px 8px',
   boxShadow: 'none',
   backgroundColor: 'var(--article-block-background-color, "transparent")',
-  color:
-    'var(--article-block-color, var(--maximeheckel-colors-typeface-primary))',
+  color: 'var(--article-block-color, var(--text-primary))',
   transition: 'background-color 0.25s, box-shadow 0.25s, color 0.25s',
 
   '&:focus': {
-    '--article-block-background-color': 'var(--maximeheckel-colors-emphasis)',
-    '--article-block-color': 'var(--maximeheckel-colors-brand)',
+    '--article-block-background-color': 'var(--emphasis)',
+    '--article-block-color': 'var(--accent)',
   },
 
   '@media (hover: hover) and (pointer: fine)': {
     '&:hover': {
-      '--article-block-background-color': 'var(--maximeheckel-colors-emphasis)',
-      '--article-block-color': 'var(--maximeheckel-colors-brand)',
+      '--article-block-background-color': 'var(--emphasis)',
+      '--article-block-color': 'var(--accent)',
     },
   },
 });

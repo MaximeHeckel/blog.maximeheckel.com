@@ -17,7 +17,7 @@ const PreviewTabs = (props: PreviewTabsProps) => {
         padding: '0 var(--space-2)',
         height: 40,
         width: '100%',
-        borderBottom: '1px solid var(--maximeheckel-border-color)',
+        borderBottom: '1px solid var(--border-color)',
       }}
       gap="2"
       justifyContent="space-between"
@@ -33,7 +33,7 @@ const PreviewTabs = (props: PreviewTabsProps) => {
 
             '&:hover': {
               '& span': {
-                color: 'var(--maximeheckel-colors-brand) !important',
+                color: 'var(--accent) !important',
               },
             },
           }}
@@ -59,7 +59,7 @@ const PreviewTabs = (props: PreviewTabsProps) => {
             transition: 'color 150ms',
             '&:hover': {
               '& span': {
-                color: 'var(--maximeheckel-colors-brand) !important',
+                color: 'var(--accent) !important',
               },
             },
           }}

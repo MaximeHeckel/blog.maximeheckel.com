@@ -5,8 +5,8 @@ import { useRef } from 'react';
 // const NewsletterForm = dynamic(() => import('@core/components/NewsletterForm'));
 
 const StyledSection = styled('section', {
-  background: 'var(--maximeheckel-colors-foreground)',
-  color: 'var(--maximeheckel-colors-typeface-primary)',
+  background: 'var(--foreground)',
+  color: 'var(--text-primary)',
   paddingBottom: 48,
   paddingTop: 48,
   width: '100%',
@@ -51,7 +51,7 @@ const SignatureSVG = () => {
     <Box
       css={{
         opacity: 0.7,
-        color: 'var(--maximeheckel-colors-typeface-primary)',
+        color: 'var(--text-primary)',
       }}
       ref={ref}
     >

@@ -17,7 +17,7 @@ const Wrapper = styled('div', {
     display: 'flex',
     margin: '0 0 1.45rem 1.45rem',
     padding: '0',
-    color: 'var(--maximeheckel-colors-typeface-tertiary)',
+    color: 'var(--text-tertiary)',
     listStylePosition: 'outside',
     listStyleImage: 'none',
 
@@ -38,7 +38,7 @@ const Wrapper = styled('div', {
       },
 
       '&:focus-visible': {
-        outline: '2px solid var(--maximeheckel-colors-brand)',
+        outline: '2px solid var(--accent)',
         opacity: '1 !important',
       },
     },
@@ -145,7 +145,7 @@ const TableOfContent = ({ ids }: TableOfContentProps) => {
                   currentActiveIndex === index
                     ? {
                         a: {
-                          color: 'var(--maximeheckel-colors-brand)!important',
+                          color: 'var(--accent)!important',
                         },
                       }
                     : {}

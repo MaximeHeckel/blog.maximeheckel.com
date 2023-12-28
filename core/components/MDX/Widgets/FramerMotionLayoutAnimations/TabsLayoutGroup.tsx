@@ -14,10 +14,10 @@ const TabsSharedLayoutAnimation = () => {
       alignItems="center"
       css={{
         padding: 'var(--space-2) var(--space-4)',
-        background: 'var(--maximeheckel-card-background-color)',
+        background: 'var(--card-background)',
         borderRadius: 'var(--border-radius-1)',
         width: 'fit-content',
-        border: '1px solid var(--maximeheckel-border-color)',
+        border: '1px solid var(--border-color)',
       }}
       gap={6}
       onMouseLeave={() => setFocused(null)}
@@ -73,7 +73,7 @@ const TabsSharedLayoutAnimation = () => {
                 right: 0,
                 width: '140%',
                 height: '110%',
-                background: 'var(--maximeheckel-colors-foreground)',
+                background: 'var(--foreground)',
                 borderRadius: 'var(--border-radius-1)',
                 zIndex: 0,
               }}
@@ -89,7 +89,7 @@ const TabsSharedLayoutAnimation = () => {
                 left: '0px',
                 right: 0,
                 height: '4px',
-                background: 'var(--maximeheckel-colors-brand)',
+                background: 'var(--accent)',
                 borderRadius: 'var(--border-radius-1)',
                 zIndex: 0,
               }}

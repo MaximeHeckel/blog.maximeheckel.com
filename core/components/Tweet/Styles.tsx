@@ -4,13 +4,13 @@ export const TweetWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   gap: 'var(--space-5)',
-  color: 'var(--maximeheckel-colors-typeface-primary)',
+  color: 'var(--text-primary)',
   borderRadius: 'var(--border-radius-2)',
-  backgroundColor: 'var(--maximeheckel-card-background-color)',
+  backgroundColor: 'var(--card-background)',
   padding: '1rem 1.5rem',
   width: '100%',
 
-  border: 'solid 1px var(--maximeheckel-border-color)',
+  border: 'solid 1px var(--border-color)',
   boxShadow: Shadows[1],
 
   // '@media (max-width: 700px)': {
@@ -39,7 +39,7 @@ export const Name = styled('a', {
   display: 'flex',
   flexDirection: 'column',
   marginLeft: '1rem',
-  color: 'var(--maximeheckel-colors-typeface-primary)',
+  color: 'var(--text-primary)',
   textDecoration: 'none',
 });
 
@@ -56,7 +56,7 @@ export const ActionIcons = styled('a', {
   display: 'flex',
   alignItems: 'center',
   marginRight: '1rem',
-  color: 'var(--maximeheckel-colors-typeface-tertiary)',
+  color: 'var(--text-tertiary)',
   textDecoration: 'none',
 
   svg: {

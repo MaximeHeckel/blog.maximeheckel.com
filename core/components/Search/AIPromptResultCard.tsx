@@ -121,8 +121,8 @@ const AIPromptResultCard = React.forwardRef(
         }}
         css={{
           width: '100%',
-          color: 'var(--maximeheckel-colors-typeface-secondary)',
-          background: 'var(--maximeheckel-colors-body)',
+          color: 'var(--text-secondary)',
+          background: 'var(--background)',
           'p, li, strong, em': {
             margin: '0px 0px 1rem',
             fontSize: 'var(--font-size-1)!important',

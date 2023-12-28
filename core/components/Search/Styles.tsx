@@ -11,7 +11,7 @@ export const Result = styled(motion.li, {
   fontSize: 'var(--font-size-1)',
   fontWeight: 'var(--font-weight-500)',
   lineHeight: '24px',
-  color: 'var(--maximeheckel-colors-typeface-secondary)',
+  color: 'var(--text-secondary)',
   padding: '10px 16px',
   height: `${HEIGHT}px`,
 
@@ -32,9 +32,9 @@ export const Result = styled(motion.li, {
   variants: {
     selected: {
       true: {
-        backgroundColor: 'var(--maximeheckel-colors-foreground)',
+        backgroundColor: 'var(--foreground)',
         a: {
-          color: 'var(--maximeheckel-colors-brand)',
+          color: 'var(--accent)',
         },
         '> div': {
           opacity: 1,
@@ -49,7 +49,7 @@ export const ResultListWrapper = styled(Box, {
 });
 
 export const ResultList = styled('ul', {
-  background: 'var(--maximeheckel-colors-body)',
+  background: 'var(--background)',
   maxHeight: `${MAX_HEIGHT + SHORTCUT_HEIGHT}px`,
   overflowY: 'scroll',
   margin: '0',
@@ -60,9 +60,9 @@ export const ResultList = styled('ul', {
   boxShadow: Shadows[3],
   borderBottomLeftRadius: 'var(--border-radius-2)',
   borderBottomRightRadius: 'var(--border-radius-2)',
-  borderLeft: '1px solid var(--maximeheckel-border-color)',
-  borderRight: '1px solid var(--maximeheckel-border-color)',
-  borderBottom: '1px solid var(--maximeheckel-border-color)',
+  borderLeft: '1px solid var(--border-color)',
+  borderRight: '1px solid var(--border-color)',
+  borderBottom: '1px solid var(--border-color)',
 
   '@media (max-width: 700px)': {
     maxHeight: '450px',
@@ -91,8 +91,8 @@ export const SearchBox = styled(Box, {
 export const FormWrapper = styled(Box, {
   position: 'relative',
   margin: '0 auto',
-  background: 'var(--maximeheckel-colors-body)',
-  border: '1px solid var(--maximeheckel-border-color)',
+  background: 'var(--background)',
+  border: '1px solid var(--border-color)',
   borderTopLeftRadius: 'var(--border-radius-2)',
   borderTopRightRadius: 'var(--border-radius-2)',
 
@@ -115,18 +115,18 @@ export const SearchInput = styled('input', {
   padding: '0px 16px',
   width: '100%',
   outline: 'none',
-  color: 'var(--maximeheckel-colors-typeface-primary)',
+  color: 'var(--text-primary)',
 
   '&::placeholder': {
-    color: 'var(--maximeheckel-colors-typeface-secondary)',
+    color: 'var(--text-secondary)',
     opacity: '0.54',
   },
   '&::-webkit-input-placeholder': {
-    color: 'var(--maximeheckel-colors-typeface-secondary)',
+    color: 'var(--text-secondary)',
     opacity: '0.54',
   },
   '&:-ms-input-placeholder': {
-    color: 'var(--maximeheckel-colors-typeface-secondary)',
+    color: 'var(--text-secondary)',
     opacity: '0.54',
   },
 
@@ -147,7 +147,7 @@ export const SearchInput = styled('input', {
 
   '&::-webkit-autofill': {
     background: 'transparent',
-    color: 'var(--maximeheckel-colors-typeface-primary)',
+    color: 'var(--text-primary)',
   },
 
   '@media (max-width: 500px)': {
@@ -179,7 +179,7 @@ export const Item = styled('li', {
   listStyle: 'none',
   fontSize: 'var(--font-size-1)',
   fontWeight: '500',
-  color: 'var(--maximeheckel-colors-typeface-secondary)',
+  color: 'var(--text-secondary)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -201,18 +201,18 @@ export const Item = styled('li', {
   },
 
   '&:hover, &[data-selected="true"]': {
-    backgroundColor: 'var(--maximeheckel-colors-emphasis)',
+    backgroundColor: 'var(--emphasis)',
 
     '&[data-nohover]': {
       backgroundColor: 'inherit',
     },
 
     'a, button': {
-      color: 'var(--maximeheckel-colors-brand)',
+      color: 'var(--accent)',
     },
 
     svg: {
-      stroke: 'var(--maximeheckel-colors-brand)',
+      stroke: 'var(--accent)',
     },
   },
 });
@@ -220,7 +220,7 @@ export const Item = styled('li', {
 export const Separator = styled(Box, {
   width: '100%',
   fontSize: 'var(--font-size-1)',
-  color: 'var(--maximeheckel-colors-typeface-primary)',
+  color: 'var(--text-primary)',
   fontWeight: '500',
   display: 'flex',
   alignItems: 'center',
@@ -232,10 +232,10 @@ export const ShortcutList = styled(Box, {
   display: 'flex',
   alignItems: 'center',
   gap: '24px',
-  backgroundColor: 'var(--maximeheckel-colors-body)',
+  backgroundColor: 'var(--background)',
   height: SHORTCUT_HEIGHT,
   padding: '0px 20px',
-  borderTop: '1px solid var(--maximeheckel-border-color)',
+  borderTop: '1px solid var(--border-color)',
 });
 
 export const KBD = (props: React.HTMLAttributes<HTMLParagraphElement>) => (
@@ -251,7 +251,7 @@ export const KBD = (props: React.HTMLAttributes<HTMLParagraphElement>) => (
       borderRadius: '6px',
       height: 24,
       width: 24,
-      background: 'var(--maximeheckel-colors-emphasis)',
+      background: 'var(--emphasis)',
     }}
     size="1"
     variant="info"

@@ -14,7 +14,7 @@ const Logo = ({ alt, size, stroke }: LogoProps) => (
     viewBox="0 0 600 500"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
-    stroke={stroke || 'var(--maximeheckel-colors-typeface-primary)'}
+    stroke={stroke || 'var(--text-primary)'}
   >
     <rect
       x="379.447"

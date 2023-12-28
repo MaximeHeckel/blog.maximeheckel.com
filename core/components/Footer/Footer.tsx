@@ -12,10 +12,10 @@ import React from 'react';
 import { templateColumnsMedium } from 'styles/grid';
 
 const FooterBlock = styled('footer', {
-  background: 'var(--maximeheckel-colors-body)',
+  background: 'var(--background)',
   transition: '0.5s',
   width: '100%',
-  borderTop: '1px solid var(--maximeheckel-border-color)',
+  borderTop: '1px solid var(--border-color)',
 });
 
 const FooterContent = styled(Flex, {

@@ -160,7 +160,7 @@ const ColorGrid = (props) => {
                       height: '32px',
                       borderRadius: '50%',
                       background: `var(${shade.color})`,
-                      border: '2px solid var(--maximeheckel-border-color)',
+                      border: '2px solid var(--border-color)',
                     }}
                   />
                 </Tooltip>

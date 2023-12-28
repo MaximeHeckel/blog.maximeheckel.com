@@ -36,7 +36,7 @@ const ColorChannelSummary = () => {
           <Box
             as="hr"
             css={{
-              borderColor: 'var(--maximeheckel-border-color)',
+              borderColor: 'var(--border-color)',
               width: '100%',
             }}
           />
@@ -52,7 +52,7 @@ const ColorChannelSummary = () => {
           <Box
             as="hr"
             css={{
-              borderColor: 'var(--maximeheckel-border-color)',
+              borderColor: 'var(--border-color)',
               width: '100%',
             }}
           />
@@ -73,7 +73,7 @@ const ColorChannelSummary = () => {
           <Box
             as="hr"
             css={{
-              borderColor: 'var(--maximeheckel-border-color)',
+              borderColor: 'var(--border-color)',
               width: '100%',
             }}
           />
@@ -92,7 +92,7 @@ const ColorChannelSummary = () => {
           <Box
             as="hr"
             css={{
-              borderColor: 'var(--maximeheckel-border-color)',
+              borderColor: 'var(--border-color)',
               width: '100%',
             }}
           />
@@ -116,7 +116,7 @@ const ColorChannelSummary = () => {
           <Box
             as="hr"
             css={{
-              borderColor: 'var(--maximeheckel-border-color)',
+              borderColor: 'var(--border-color)',
               width: '100%',
             }}
           />
@@ -133,7 +133,7 @@ const ColorChannelSummary = () => {
           <Box
             as="hr"
             css={{
-              borderColor: 'var(--maximeheckel-border-color)',
+              borderColor: 'var(--border-color)',
               width: '100%',
             }}
           />
@@ -147,7 +147,7 @@ const ColorChannelSummary = () => {
           <Box
             as="hr"
             css={{
-              borderColor: 'var(--maximeheckel-border-color)',
+              borderColor: 'var(--border-color)',
               width: '100%',
             }}
           />
@@ -167,7 +167,7 @@ const ColorChannelSummary = () => {
           <Box
             as="hr"
             css={{
-              borderColor: 'var(--maximeheckel-border-color)',
+              borderColor: 'var(--border-color)',
               width: '100%',
             }}
           />
@@ -181,7 +181,7 @@ const ColorChannelSummary = () => {
           <Box
             as="hr"
             css={{
-              borderColor: 'var(--maximeheckel-border-color)',
+              borderColor: 'var(--border-color)',
               width: '100%',
             }}
           />

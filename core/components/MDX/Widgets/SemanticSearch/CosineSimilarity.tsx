@@ -173,7 +173,7 @@ const CosineSimilarity = () => {
                           fontWeight: 500,
                           fontFamily: 'Inter',
                           fontSize: '12px',
-                          fill: 'var(--maximeheckel-colors-typeface-secondary)',
+                          fill: 'var(--text-secondary)',
                         }}
                         textAnchor="middle"
                       >
@@ -189,7 +189,7 @@ const CosineSimilarity = () => {
                           fontWeight: 500,
                           fontFamily: 'Inter',
                           fontSize: '12px',
-                          fill: 'var(--maximeheckel-colors-typeface-secondary)',
+                          fill: 'var(--text-secondary)',
                         }}
                         textAnchor="end"
                       >
@@ -250,7 +250,7 @@ const CosineSimilarity = () => {
       </Card.Body>
       <Box
         css={{
-          borderTop: '1px solid var(--maximeheckel-border-color)',
+          borderTop: '1px solid var(--border-color)',
           padding: 'var(--space-3) var(--space-5)',
         }}
       >
@@ -265,10 +265,10 @@ const CosineSimilarity = () => {
               <Box
                 as="select"
                 css={{
-                  border: '1px solid var(--maximeheckel-colors-brand)',
+                  border: '1px solid var(--accent)',
                   boxShadow: 'none',
-                  backgroundColor: 'var(--maximeheckel-colors-emphasis)',
-                  color: 'var(--maximeheckel-colors-brand)',
+                  backgroundColor: 'var(--emphasis)',
+                  color: 'var(--accent)',
                   height: '30px',
                   borderRadius: 'var(--border-radius-0)',
                   padding: '5px',
@@ -300,10 +300,10 @@ const CosineSimilarity = () => {
             <Box
               as="select"
               css={{
-                border: '1px solid var(--maximeheckel-colors-brand)',
+                border: '1px solid var(--accent)',
                 boxShadow: 'none',
-                backgroundColor: 'var(--maximeheckel-colors-emphasis)',
-                color: 'var(--maximeheckel-colors-brand)',
+                backgroundColor: 'var(--emphasis)',
+                color: 'var(--accent)',
                 height: '30px',
                 borderRadius: 'var(--border-radius-0)',
                 padding: '5px',

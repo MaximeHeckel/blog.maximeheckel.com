@@ -8,7 +8,7 @@ export const HeaderWrapper = styled(motion.header, {
   backdropFilter: 'blur(8px)',
   width: '100%',
   transition: 'background-color 0.5s, border-color 0.5s',
-  background: 'var(--maximeheckel-colors-header)',
+  background: 'var(--header)',
   borderBottom: '1px solid',
 
   '@media (max-width: 700px)': {
@@ -47,7 +47,7 @@ export const HeaderProgressBar = styled('div', {
     position: 'absolute',
     top: -2,
     left: 0,
-    background: 'var(--maximeheckel-colors-typeface-tertiary)',
+    background: 'var(--text-tertiary)',
     transition: 'width 0.5s',
     willChange: 'width',
     height: 2,

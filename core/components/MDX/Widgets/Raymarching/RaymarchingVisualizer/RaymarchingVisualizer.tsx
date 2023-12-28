@@ -140,10 +140,10 @@ const RaymarchingVisualizer = () => {
 
         <Flex
           css={{
-            background: 'var(--maximeheckel-colors-emphasis)',
+            background: 'var(--emphasis)',
             width: '100%',
             height: 'fit-content',
-            border: '1px solid var(--maximeheckel-border-color)',
+            border: '1px solid var(--border-color)',
             borderRadius: 'var(--border-radius-2)',
             padding: 'var(--space-5)',
           }}

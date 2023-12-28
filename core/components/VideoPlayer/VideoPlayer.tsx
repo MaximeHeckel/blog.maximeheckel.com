@@ -14,9 +14,9 @@ interface VideoPlayerProps {
 
 const StyledVideo = styled('video', {
   margin: '0 auto',
-  background: 'var(--maximeheckel-colors-emphasis)',
+  background: 'var(--emphasis)',
   borderRadius: 'var(--border-radius-3)',
-  border: '4px solid var(--maximeheckel-border-color)',
+  border: '4px solid var(--border-color)',
   maxWidth: '100%',
   height: 'auto',
 });
