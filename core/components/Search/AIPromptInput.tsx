@@ -1,16 +1,16 @@
 import { Box, Flex, Icon, Text } from '@maximeheckel/design-system';
 import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Sparkles } from './Icons';
-import { AIInput } from './Styles';
+import * as S from './Search.styles';
 import { Status } from './types';
 
 const AIPromptInput = (props: { status: Status }) => {
   const { status } = props;
-  const [value, setValue] = React.useState('');
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const [value, setValue] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (inputRef && inputRef.current) {
       inputRef.current.focus();
     }
@@ -25,7 +25,7 @@ const AIPromptInput = (props: { status: Status }) => {
           }}
         />
       </Flex>
-      <AIInput
+      <S.AIInput
         ref={inputRef}
         autoComplete="off"
         disabled={status === 'loading'}

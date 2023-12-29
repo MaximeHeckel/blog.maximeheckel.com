@@ -34,7 +34,6 @@ import CodeBlock from '@core/components/Code/CodeBlock';
 import Seo from '@core/components/Seo';
 import Tweet from '@core/components/Tweet';
 import Layout from '@core/layout';
-import { AnimatePresence } from 'framer-motion';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -1289,11 +1288,7 @@ function sayHi(name) {
             <Button variant="primary" onClick={() => setShowSearch(true)}>
               Show Command Center
             </Button>
-            <AnimatePresence>
-              {showSearch ? (
-                <Search onClose={() => setShowSearch(false)} />
-              ) : null}
-            </AnimatePresence>
+            <Search onClose={() => setShowSearch(false)} open={showSearch} />
           </Flex>
           <Flex
             alignItems="start"

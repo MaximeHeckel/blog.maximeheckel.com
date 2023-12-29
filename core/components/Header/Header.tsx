@@ -7,10 +7,9 @@ import {
 import Logo from '@core/components/Logo';
 import useProgress from '@core/hooks/useProgress';
 import useScrollCounter from '@core/hooks/useScrollCounter';
-import { AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import React from 'react';
+import { useState } from 'react';
 import {
   fixTruncate,
   HeaderContent,
@@ -42,11 +41,11 @@ const headerVariants = {
 
 const Header = (props: HeaderProps) => {
   const { title, offsetHeight = 120, showProgressBarOnMobile } = props;
-  const [showSearch, setShowSearch] = React.useState(false);
   const reached = useScrollCounter(offsetHeight / 2);
   const readingProgress = useProgress();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  useKeyboardShortcut('ctrl+k|meta+k', () => setShowSearch(true));
+  useKeyboardShortcut('ctrl+k|meta+k', () => setIsSearchOpen(true));
 
   return (
     <>
@@ -60,15 +59,7 @@ const Header = (props: HeaderProps) => {
       >
         @MaximeHeckel
       </a>
-      {/**
-       * Gracefully show the search component when activated
-       *
-       * TODO: Abstract this away from the header
-       */}
-      <AnimatePresence>
-        {showSearch ? <Search onClose={() => setShowSearch(false)} /> : null}
-      </AnimatePresence>
-
+      <Search open={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
       <HeaderWrapper
         initial="open"
         animate={reached ? 'collapsed' : 'open'}
@@ -101,8 +92,8 @@ const Header = (props: HeaderProps) => {
             </Flex>
             <Flex gap={3}>
               <CommandCenterButton
-                isSearchShown={showSearch}
-                onClick={() => setShowSearch(true)}
+                isSearchShown={isSearchOpen}
+                onClick={() => setIsSearchOpen(true)}
               />
               <LightDarkSwitcher />
             </Flex>

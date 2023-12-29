@@ -1,9 +1,9 @@
 import { Flex, Icon } from '@maximeheckel/design-system';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import { useCallback, useEffect } from 'react';
 import { HEIGHT, MAX_HEIGHT } from './constants';
-import { ResultListWrapper, ResultList, Result } from './Styles';
+import * as S from './Search.styles';
 import useIndexItem from './useIndexItem';
 import { Result as ResultType } from './types';
 
@@ -26,7 +26,7 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
 
   const handlePointer = (index: number) => setSelectedResult(index);
 
-  const handleKey = React.useCallback(
+  const handleKey = useCallback(
     (event: KeyboardEvent) => {
       switch (event.key) {
         case 'Enter':
@@ -51,7 +51,7 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
     [selectedResult, router, onClose, previousResult, nextResult]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('keydown', handleKey);
 
     return () => {
@@ -59,7 +59,7 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
     };
   }, [handleKey]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedResult) {
       document
         .getElementById(selectedResult.url)
@@ -68,8 +68,8 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
   }, [selectedResult]);
 
   return (
-    <ResultListWrapper>
-      <ResultList
+    <S.ResultListWrapper>
+      <S.ResultList
         style={{
           height:
             results.length === 0
@@ -82,7 +82,7 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
         }}
       >
         {results.map((result, index) => (
-          <Result
+          <S.Result
             data-testid="search-result"
             key={result.url}
             id={result.url}
@@ -111,10 +111,10 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
             >
               <Icon.Enter size={4} />
             </Flex>
-          </Result>
+          </S.Result>
         ))}
-      </ResultList>
-    </ResultListWrapper>
+      </S.ResultList>
+    </S.ResultListWrapper>
   );
 };
 

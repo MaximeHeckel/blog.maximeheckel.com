@@ -1,6 +1,55 @@
+import {
+  Box,
+  keyframes,
+  Shadows,
+  styled,
+  Text,
+} from '@maximeheckel/design-system';
+import * as Dialog from '@radix-ui/react-dialog';
 import { motion } from 'framer-motion';
-import { Box, Shadows, styled, Text } from '@maximeheckel/design-system';
 import { HEIGHT, MAX_HEIGHT, SHORTCUT_HEIGHT } from './constants';
+
+const overlayShow = keyframes({
+  '0%': { opacity: 0 },
+  '100%': { opacity: 1.0 },
+});
+
+const overlayHide = keyframes({
+  '0%': { opacity: 0.7 },
+  '100%': { opacity: 0 },
+});
+
+export const Overlay = styled(Dialog.Overlay, {
+  opacity: 0.5,
+  position: 'fixed',
+  inset: 0,
+  zIndex: '100',
+  backdropFilter: 'blur(4px)',
+  '@media (prefers-reduced-motion: no-preference)': {
+    '&[data-state="open"]': {
+      animation: `${overlayShow} 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards`,
+    },
+
+    '&[data-state="closed"]': {
+      animation: `${overlayHide} var(--exit-duration, 0ms) ease-in-out forwards`,
+    },
+  },
+});
+
+export const Content = styled(Dialog.Content, {
+  position: 'fixed',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '600px',
+  zIndex: '101',
+
+  '@media (max-width: 700px)': {
+    width: '95%',
+  },
+
+  '&:focus': { outline: 'none' },
+});
 
 export const Result = styled(motion.li, {
   display: 'flex',
@@ -66,20 +115,6 @@ export const ResultList = styled('ul', {
 
   '@media (max-width: 700px)': {
     maxHeight: '450px',
-  },
-});
-
-export const Wrapper = styled(Box, {
-  position: 'fixed',
-  left: '50%',
-  top: '50%',
-  transform: 'translateX(-50%) translateY(-50%)',
-  width: '600px',
-  borderRadius: 'var(--border-radius-2)',
-  // overflow: 'hidden',
-
-  '@media (max-width: 700px)': {
-    width: '95%',
   },
 });
 
@@ -160,16 +195,6 @@ export const AIInput = styled(SearchInput, {
   '&:disabled': {
     cursor: 'not-allowed',
   },
-});
-
-export const Overlay = styled(motion.div, {
-  position: 'fixed',
-  top: '0',
-  left: '0',
-  width: '100%',
-  height: '100%',
-  zIndex: '999',
-  outline: 'none',
 });
 
 export const Item = styled('li', {
