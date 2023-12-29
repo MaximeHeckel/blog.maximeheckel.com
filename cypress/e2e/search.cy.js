@@ -4,7 +4,6 @@ describe('Search tests', () => {
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
     cy.get('input[id="search-input"]').clear();
-    cy.get('[data-testid="search-overlay"]').should('be.visible');
     cy.get('[data-testid="search"]').should('be.visible');
     cy.get('[data-testid="navigation"]').should('exist');
     cy.get('[data-testid="design"]').should('exist');
@@ -22,7 +21,6 @@ describe('Search tests', () => {
     cy.get('input[id="search-input"]').clear();
     cy.wait(1000);
     cy.get('body').type('{esc}');
-    cy.get('[data-testid="search-overlay"]').should('not.exist');
     cy.get('[data-testid="search"]').should('not.exist');
   });
 
@@ -32,8 +30,8 @@ describe('Search tests', () => {
     cy.get('body').type('{ctrl}k');
     cy.get('input[id="search-input"]').clear();
     cy.wait(1000);
-    cy.get('body').click(10, 10);
-    cy.get('[data-testid="search-overlay"]').should('not.exist');
+    cy.get('body').click(10, 10, { force: true });
+
     cy.get('[data-testid="search"]').should('not.exist');
   });
 
@@ -48,10 +46,9 @@ describe('Search tests', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
-    cy.get('[data-testid="search-overlay"]').should('be.visible');
+
     cy.get('[data-testid="search"]').should('be.visible');
     cy.get('input[id="search-input"]').clear().type('react');
-
     cy.wait('@semanticSearch');
     cy.get('[data-testid="search-result"]').should('be.visible').eq(0).click();
 

@@ -11,7 +11,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { MDXRemoteSerializeResult, MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
-import React, { ForwardedRef } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react';
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import RotatingShine from '../RotatingShine';
 import { Coffee } from './Icons';
@@ -43,25 +43,27 @@ const SAMPLE_QUESTIONS = [
 ];
 
 // eslint-disable-next-line react/display-name
-const AIPromptResultCard = React.forwardRef(
+const AIPromptResultCard = forwardRef(
   (props: AIPromtResultCardProps, ref: ForwardedRef<HTMLDivElement>) => {
     const { error, streamData, query, status, onQuestionSelect } = props;
 
-    const [mdxData, setMdxData] = React.useState<MDXRemoteSerializeResult<
+    const [mdxData, setMdxData] = useState<MDXRemoteSerializeResult<
       Record<string, unknown>,
       Record<string, string>
     > | null>(null);
-    const responseBodyRef = React.useRef<HTMLDivElement>(null);
+    const responseBodyRef = useRef<HTMLDivElement>(null);
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (responseBodyRef.current) {
         responseBodyRef.current.scrollTop = 0;
       }
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
       const serializeStreamData = async () => {
-        const mdxSource = await serialize(streamData);
+        const mdxSource = await serialize(streamData, {
+          mdxOptions: { development: process.env.NODE_ENV === 'development' },
+        });
         const responseBody = responseBodyRef.current;
         setMdxData(mdxSource);
 

@@ -3,20 +3,11 @@ import {
   Label,
   useDebouncedValue,
   useKeyboardShortcut,
-  useTheme,
 } from '@maximeheckel/design-system';
-import FocusTrap from 'focus-trap-react';
-import React from 'react';
-import { createPortal } from 'react-dom';
+import * as Dialog from '@radix-ui/react-dialog';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { CommandCenterStatic } from './CommandCenterStatic';
-import {
-  Overlay,
-  SearchBox,
-  FormWrapper,
-  SearchInput,
-  Wrapper,
-} from './Styles';
-import useBodyScrollLock from '@core/hooks/useBodyScrollLock';
+import * as S from './Search.styles';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Result, SearchError, Status } from './types';
 import SearchResults from './SearchResults';
@@ -24,54 +15,32 @@ import AIPromptResultCard from './AIPromptResultCard';
 import AIPromptInput from './AIPromptInput';
 
 interface Props {
+  open?: boolean;
   onClose: () => void;
   forceAIMode?: boolean;
 }
 
 const Search = (props: Props) => {
-  const { onClose, forceAIMode = false } = props;
+  const { onClose, forceAIMode = false, open } = props;
 
   // Search Related states
-  const [status, setStatus] = React.useState<Status>('initial');
-  const [results, setResults] = React.useState<Result[]>([]);
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [error, setError] = React.useState<SearchError | null>(null);
+  const [status, setStatus] = useState<Status>('initial');
+  const [results, setResults] = useState<Result[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [error, setError] = useState<SearchError | null>(null);
 
   // AI Related states
-  const [AIMode, setAIMode] = React.useState(forceAIMode);
-  const [AIQuery, setAIQuery] = React.useState('');
-  const [streamData, setStreamData] = React.useState('');
+  const [AIMode, setAIMode] = useState(forceAIMode);
+  const [AIQuery, setAIQuery] = useState('');
+  const [streamData, setStreamData] = useState('');
 
-  const ref = React.useRef<HTMLElement>();
-  const readerRef = React.useRef<ReadableStreamDefaultReader>();
-  const [mounted, setMounted] = React.useState(false);
-
-  useBodyScrollLock();
+  const readerRef = useRef<ReadableStreamDefaultReader>();
 
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 400);
 
-  const formRef = React.useRef<HTMLFormElement>(null);
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const searchRef = React.useRef<HTMLDivElement>(null);
-  const resultCardRef = React.useRef<HTMLDivElement>(null);
-
-  const clickOutside = (e: React.BaseSyntheticEvent) => {
-    if (
-      (searchRef &&
-        searchRef.current &&
-        searchRef.current.contains(e.target)) ||
-      (resultCardRef &&
-        resultCardRef.current &&
-        resultCardRef.current.contains(e.target))
-    ) {
-      return null;
-    }
-
-    if (AIMode) {
-      dismissAIMode();
-    }
-    return onClose();
-  };
+  const formRef = useRef<HTMLFormElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const resultCardRef = useRef<HTMLDivElement>(null);
 
   const controller = new AbortController();
   const signal = controller.signal;
@@ -86,6 +55,19 @@ const Search = (props: Props) => {
     setAIMode(false);
     setAIQuery('');
     setStreamData('');
+  };
+
+  const onCloseHandler = () => {
+    setAIMode(forceAIMode);
+    setAIQuery('');
+    setStreamData('');
+
+    setError(null);
+    setResults([]);
+    setSearchQuery('');
+    setStatus('initial');
+
+    onClose();
   };
 
   const handleItemClick = (item: string) => {
@@ -191,7 +173,7 @@ const Search = (props: Props) => {
     setStatus('done');
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
 
     const form = event?.currentTarget
@@ -207,15 +189,7 @@ const Search = (props: Props) => {
     form.aisearch.value = '';
   };
 
-  // Focus on input on mount
-  React.useEffect(() => {
-    if (inputRef && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
-
-  // Handle classic search (TODO: Refactor this => use simple embed search instead)
-  React.useEffect(() => {
+  useEffect(() => {
     if (debouncedSearchQuery && debouncedSearchQuery !== '') {
       querySemanticSearch(debouncedSearchQuery);
     }
@@ -226,154 +200,108 @@ const Search = (props: Props) => {
     }
   }, [debouncedSearchQuery]);
 
-  // Make portal only work client side
-  React.useEffect(() => {
-    ref.current = document.body;
-    setMounted(true);
-  }, []);
+  useKeyboardShortcut('Escape', AIMode ? dismissAIMode : onCloseHandler);
 
-  useKeyboardShortcut('Escape', AIMode ? dismissAIMode : onClose);
-
-  const { dark } = useTheme();
-
-  return mounted
-    ? createPortal(
-        <FocusTrap>
-          <aside>
-            <Overlay
-              initial={{
-                backgroundColor: dark
-                  ? 'rgba(0,0,0,0)'
-                  : 'rgba(241, 243, 247, 0)',
-              }}
-              animate={{
-                backgroundColor: dark
-                  ? 'rgba(0,0,0,0.8)'
-                  : 'rgba(241, 243, 247, 0.8)',
-              }}
-              exit={{
-                backgroundColor: dark
-                  ? 'rgba(0,0,0,0)'
-                  : 'rgba(241, 243, 247, 0)',
-              }}
-              onClick={clickOutside}
-              data-testid="search-overlay"
-              aria-label="search"
-              // The dialog container element has aria-modal set to true.
-              aria-modal="true"
-              tabIndex={-1}
-              // All elements required to operate the dialog are descendants of the element that has role dialog.
-              role="dialog"
-            >
-              <Wrapper>
-                <Flex
-                  css={{
-                    position: 'relative',
-                    flexDirection: 'column',
-                    '@media (max-width: 700px)': {
-                      flexDirection: 'column-reverse',
-                    },
+  return (
+    <Dialog.Root open={open}>
+      <Dialog.Portal>
+        <S.Overlay data-testid="search-overlay" />
+        <S.Content onInteractOutside={onCloseHandler}>
+          <Flex
+            css={{
+              position: 'relative',
+              flexDirection: 'column',
+              '@media (max-width: 700px)': {
+                flexDirection: 'column-reverse',
+              },
+            }}
+            direction="column"
+            gap="4"
+          >
+            <AnimatePresence>
+              {AIMode ? (
+                <AIPromptResultCard
+                  error={error}
+                  onQuestionSelect={(question) => {
+                    queryCompletionSemanticSearch(question);
                   }}
-                  direction="column"
-                  gap="4"
-                >
-                  <AnimatePresence>
-                    {AIMode ? (
-                      <AIPromptResultCard
-                        error={error}
-                        onQuestionSelect={(question) => {
-                          queryCompletionSemanticSearch(question);
-                        }}
-                        query={AIQuery}
-                        ref={resultCardRef}
-                        status={status}
-                        streamData={streamData}
-                      />
-                    ) : null}
-                  </AnimatePresence>
-                  <SearchBox
-                    id="search-box"
-                    as={motion.div}
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{
-                      scale: 0.8,
-                      opacity: 0,
-                      transition: { duration: 0.15, delay: 0.1 },
-                    }}
-                    transition={{
-                      ease: 'easeOut',
-                      duration: 0.2,
-                    }}
-                    ref={searchRef}
-                  >
-                    <FormWrapper
-                      data-testid="search"
-                      style={
-                        AIMode
-                          ? {
-                              borderBottomLeftRadius: 'var(--border-radius-2)',
-                              borderBottomRightRadius: 'var(--border-radius-2)',
-                              transition: 'all 0.2s ease-in-out',
+                  query={AIQuery}
+                  ref={resultCardRef}
+                  status={status}
+                  streamData={streamData}
+                />
+              ) : null}
+            </AnimatePresence>
+            <S.SearchBox
+              id="search-box"
+              as={motion.div}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{
+                ease: 'easeOut',
+                duration: 0.2,
+              }}
+              ref={searchRef}
+            >
+              <S.FormWrapper
+                data-testid="search"
+                style={
+                  AIMode
+                    ? {
+                        borderBottomLeftRadius: 'var(--border-radius-2)',
+                        borderBottomRightRadius: 'var(--border-radius-2)',
+                        transition: 'all 0.2s ease-in-out',
 
-                              transform: `scale(${
-                                status === 'loading' ? 0.95 : 1
-                              })`,
-                              opacity: status === 'loading' ? 0.8 : 1,
-                            }
-                          : {}
+                        transform: `scale(${status === 'loading' ? 0.95 : 1})`,
+                        opacity: status === 'loading' ? 0.8 : 1,
                       }
-                    >
-                      <form ref={formRef} onSubmit={handleSubmit}>
-                        {AIMode ? (
-                          <AIPromptInput status={status} />
-                        ) : (
-                          <>
-                            <SearchInput
-                              ref={inputRef}
-                              autoComplete="off"
-                              type="search"
-                              placeholder="Type keywords to search blog posts..."
-                              data-testid="search-input"
-                              id="search-input"
-                              name="search"
-                              onChange={(e) => {
-                                setSearchQuery(e.target.value);
-                              }}
-                              value={searchQuery}
-                            />
-                            <Label
-                              style={{
-                                width: '120px',
-                              }}
-                            >
-                              {debouncedSearchQuery !== '' &&
-                              status !== 'loading'
-                                ? `${results.length} results`
-                                : null}
-                            </Label>
-                          </>
-                        )}
-                      </form>
-                    </FormWrapper>
-                    {debouncedSearchQuery !== '' ? (
-                      <SearchResults results={results} onClose={onClose} />
-                    ) : (
-                      <CommandCenterStatic
-                        collapse={AIMode}
-                        onItemClick={handleItemClick}
+                    : {}
+                }
+              >
+                <form ref={formRef} onSubmit={handleSubmit}>
+                  {AIMode ? (
+                    <AIPromptInput status={status} />
+                  ) : (
+                    <>
+                      <S.SearchInput
+                        autoComplete="off"
+                        type="search"
+                        placeholder="Type keywords to search blog posts..."
+                        data-testid="search-input"
+                        id="search-input"
+                        name="search"
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                        }}
+                        value={searchQuery}
                       />
-                    )}
-                  </SearchBox>
-                </Flex>
-              </Wrapper>
-            </Overlay>
-          </aside>
-        </FocusTrap>,
-        // @ts-ignore
-        ref.current
-      )
-    : null;
+                      <Label
+                        style={{
+                          width: '120px',
+                        }}
+                      >
+                        {debouncedSearchQuery !== '' && status !== 'loading'
+                          ? `${results.length} results`
+                          : null}
+                      </Label>
+                    </>
+                  )}
+                </form>
+              </S.FormWrapper>
+              {debouncedSearchQuery !== '' ? (
+                <SearchResults results={results} onClose={onClose} />
+              ) : (
+                <CommandCenterStatic
+                  collapse={AIMode}
+                  onItemClick={handleItemClick}
+                />
+              )}
+            </S.SearchBox>
+          </Flex>
+        </S.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
 };
 
 export { Search };

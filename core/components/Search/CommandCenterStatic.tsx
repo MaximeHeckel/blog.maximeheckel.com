@@ -8,10 +8,10 @@ import {
 } from '@maximeheckel/design-system';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import React from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { MAX_HEIGHT } from './constants';
 import { Command, Sparkles } from './Icons';
-import { Separator, Item, KBD, ShortcutList } from './Styles';
+import * as S from './Search.styles';
 import useIndexItem from './useIndexItem';
 
 const commandCenterStaticWrapper = css({
@@ -38,7 +38,7 @@ interface CommandCenterStaticProps {
 
 const CommandCenterStatic = (props: CommandCenterStaticProps) => {
   const { collapse, onItemClick } = props;
-  const [hidden, setHidden] = React.useState(false);
+  const [hidden, setHidden] = useState(false);
 
   const [
     selectedResult,
@@ -47,7 +47,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
     // setSelectedResult,
   ] = useIndexItem(items);
 
-  const handleKey = React.useCallback(
+  const handleKey = useCallback(
     (event: KeyboardEvent) => {
       switch (event.key) {
         case 'Enter':
@@ -68,7 +68,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
     [previousResult, nextResult, selectedResult]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedResult) {
       document
         .getElementById(selectedResult)
@@ -76,7 +76,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
     }
   }, [selectedResult]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('keydown', handleKey);
 
     return () => {
@@ -84,7 +84,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
     };
   }, [handleKey]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (collapse) {
       setTimeout(() => {
         setHidden(true);
@@ -110,8 +110,8 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
       }}
     >
       <div aria-hidden={hidden} className={commandCenterStaticWrapper()}>
-        <Separator>Tools</Separator>
-        <Item
+        <S.Separator>Tools</S.Separator>
+        <S.Item
           data-testid="aimode"
           data-selected={selectedResult === 'aimode-tools'}
           id="aimode-tools"
@@ -136,9 +136,9 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
             </Text>
             <Pill variant="success">Experimental</Pill>
           </Flex>
-        </Item>
-        <Separator>Navigation</Separator>
-        <Item
+        </S.Item>
+        <S.Separator>Navigation</S.Separator>
+        <S.Item
           data-testid="navigation"
           data-selected={selectedResult === 'home-navigation'}
           id="home-navigation"
@@ -148,8 +148,8 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
             <Icon.Arrow size={4} />
             <span style={{ marginLeft: '16px' }}>Home</span>
           </Link>
-        </Item>
-        <Item
+        </S.Item>
+        <S.Item
           data-testid="design"
           data-selected={selectedResult === 'design-navigation'}
           id="design-navigation"
@@ -159,9 +159,9 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
             <Icon.Arrow size={4} />
             <span style={{ marginLeft: '16px' }}>Design System</span>
           </Link>
-        </Item>
-        <Separator>Links</Separator>
-        <Item
+        </S.Item>
+        <S.Separator>Links</S.Separator>
+        <S.Item
           data-testid="twitter-social-link"
           data-selected={selectedResult === 'twitter-social-link'}
           id="twitter-social-link"
@@ -179,8 +179,8 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
               https://twitter.com/MaximeHeckel.
             </VisuallyHidden>
           </a>
-        </Item>
-        <Item
+        </S.Item>
+        <S.Item
           data-testid="email-link"
           data-selected={selectedResult === 'email-link'}
           id="email-link"
@@ -198,8 +198,8 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
               hello@maximeheckel.com prefilled.
             </VisuallyHidden>
           </a>
-        </Item>
-        <Item
+        </S.Item>
+        <S.Item
           data-testid="roadmap-link"
           data-selected={selectedResult === 'roadmap-link'}
           id="roadmap-link"
@@ -217,8 +217,8 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
               my upcoming projects and ideas.
             </VisuallyHidden>
           </a>
-        </Item>
-        <Item
+        </S.Item>
+        <S.Item
           data-testid="maximeheckelcom-link"
           data-selected={selectedResult === 'maximeheckelcom-link'}
           id="maximeheckelcom-link"
@@ -235,8 +235,8 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
               Link redirects to my portfolio https://maximeheckel.com.
             </VisuallyHidden>
           </a>
-        </Item>
-        <Item
+        </S.Item>
+        <S.Item
           data-testid="rss-link"
           data-selected={selectedResult === 'rss-link'}
           id="rss-link"
@@ -249,18 +249,18 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
               Link redirects to the rss.xml file.
             </VisuallyHidden>
           </Link>
-        </Item>
+        </S.Item>
       </div>
-      <ShortcutList>
+      <S.ShortcutList>
         <Flex alignItems="center">
           <Text as="span" css={{ opacity: 0.7 }} size="1" variant="tertiary">
             Cmd
           </Text>
           <Flex>
-            <KBD>
+            <S.KBD>
               <Command width="16" height="16" />
-            </KBD>
-            <KBD>K</KBD>
+            </S.KBD>
+            <S.KBD>K</S.KBD>
           </Flex>
         </Flex>
         <Flex alignItems="center">
@@ -268,10 +268,10 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
             Theme
           </Text>
           <Flex>
-            <KBD>
+            <S.KBD>
               <Command width="16" height="16" />
-            </KBD>
-            <KBD>T</KBD>
+            </S.KBD>
+            <S.KBD>T</S.KBD>
           </Flex>
         </Flex>
         <Flex alignItems="center">
@@ -279,12 +279,12 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
             Open
           </Text>
           <Flex>
-            <KBD>
+            <S.KBD>
               <Icon.Enter size="4" />
-            </KBD>
+            </S.KBD>
           </Flex>
         </Flex>
-      </ShortcutList>
+      </S.ShortcutList>
     </motion.div>
   );
 };

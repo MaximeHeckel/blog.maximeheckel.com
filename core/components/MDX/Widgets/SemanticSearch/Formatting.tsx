@@ -81,7 +81,9 @@ const Formatting = () => {
 
   useEffect(() => {
     const serializeStreamData = async () => {
-      const mdxSource = await serialize(streamData);
+      const mdxSource = await serialize(streamData, {
+        mdxOptions: { development: process.env.NODE_ENV === 'development' },
+      });
       const formattedResponse = formattedResponseRef.current;
       const rawResponse = rawResponseRef.current;
       setMdxData(mdxSource);
