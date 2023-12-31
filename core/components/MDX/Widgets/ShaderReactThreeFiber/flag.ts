@@ -1,15 +1,10 @@
-const FragmentShader = `const fragmentShader = \`
-
+const FragmentShader = `
 void main() {
   gl_FragColor = vec4(0.0, 0.3, 1.0, 1.0);
 }
-
-\`
-
-export default fragmentShader
 `;
 
-const VertexShader = `const vertexShader = \`
+const VertexShader = `
 void main() {
   vec4 modelPosition = modelMatrix * vec4(position, 1.0);
   modelPosition.y += sin(modelPosition.x * 4.0) * 0.2;
@@ -19,9 +14,6 @@ void main() {
 
   gl_Position = projectedPosition;
 }
-\`
-
-export default vertexShader
 `;
 
 const AppCode = `import { OrbitControls } from "@react-three/drei";
@@ -30,8 +22,8 @@ import { useMemo, useRef } from "react";
 import { Color } from "three";
 import './scene.css';
 
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader';
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 const Flag = () => {
   // This reference will give us direct access to the mesh
@@ -67,11 +59,11 @@ const FlagFiles = {
   '/App.js': {
     code: AppCode,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
     active: true,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
     hidden: true,
   },

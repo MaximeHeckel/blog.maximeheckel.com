@@ -1,15 +1,10 @@
-const FragmentShader = `const fragmentShader = \`
-void main() {
+const FragmentShader = `void main() {
   vec3 color = vec3(0.34, 0.53, 0.96);
   gl_FragColor = vec4(color, 1.0);
 }
-\`
-
-export default fragmentShader
 `;
 
-const VertexShader = `const vertexShader = \`
-uniform sampler2D uPositions;
+const VertexShader = `uniform sampler2D uPositions;
 uniform float uTime;
 
 void main() {
@@ -25,17 +20,11 @@ void main() {
   // Size attenuation;
   gl_PointSize *= step(1.0 - (1.0/64.0), position.x) + 0.5;
 }
-
-\`
-
-export default vertexShader
 `;
 
 const glslCurlNoise2 = `
 // Source: https://github.com/drcmda/glsl-curl-noise2
 // and: https://github.com/guoweish/glsl-noise-simplex/blob/master/3d.glsl
-
-const glslCurlNoise = \`
 
 //
 // Description : Array and textureless GLSL 2D/3D/4D simplex
@@ -174,23 +163,15 @@ vec3 curlNoise( vec3 p ){
   return normalize( vec3( x , y , z ) * divisor );
 
 }
-
-\`;
-
-export default glslCurlNoise;
 `;
 
-const SimulationFragmentShader = `import glslCurlNoise from './glslCurlNoise';
-
-const fragmentShader = \`
-
-uniform sampler2D positions;
+const SimulationFragmentShader = `uniform sampler2D positions;
 uniform float uTime;
 uniform float uFrequency;
 
 varying vec2 vUv;
 
-\${glslCurlNoise}\
+${glslCurlNoise2}
 
 void main() {
   vec3 pos = texture2D(positions, vUv).rgb;
@@ -202,12 +183,9 @@ void main() {
 
   gl_FragColor = vec4(mix(pos, curlPos, sin(uTime)), 1.0);
 }
-\`
-
-export default fragmentShader
 `;
 
-const SimulationVertexShader = `const vertexShader = \`
+const SimulationVertexShader = `
 varying vec2 vUv;
 
 void main() {
@@ -219,14 +197,10 @@ void main() {
 
   gl_Position = projectedPosition;
 }
-
-\`
-
-export default vertexShader
 `;
 
-const SimulationMaterialCode = `import simulationVertexShader from './simulationVertexShader';
-import simulationFragmentShader from './simulationFragmentShader';
+const SimulationMaterialCode = `import simulationVertexShader from '!!raw-loader!./simulationVertexShader.glsl';
+import simulationFragmentShader from '!!raw-loader!./simulationFragmentShader.glsl';
 import * as THREE from "three";
 
 const getRandomData = (width, height) => {
@@ -287,8 +261,8 @@ import './scene.css';
 
 import SimulationMaterial from './SimulationMaterial';
 
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader';
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 extend({ SimulationMaterial: SimulationMaterial });
 
@@ -405,20 +379,17 @@ const CurlFBOFiles = {
   '/SimulationMaterial.js': {
     code: SimulationMaterialCode,
   },
-  '/simulationVertexShader.js': {
+  '/simulationVertexShader.glsl': {
     code: SimulationVertexShader,
   },
-  '/simulationFragmentShader.js': {
+  '/simulationFragmentShader.glsl': {
     code: SimulationFragmentShader,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
-  },
-  '/glslCurlNoise.js': {
-    code: glslCurlNoise2,
   },
 };
 

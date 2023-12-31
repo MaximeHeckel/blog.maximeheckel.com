@@ -1,5 +1,4 @@
-const FragmentShader = `const fragmentShader = \`
-varying vec2 vUv;
+const FragmentShader = `varying vec2 vUv;
 
 uniform sampler2D textureA;
 uniform sampler2D textureB;
@@ -76,21 +75,14 @@ void main() {
     vec4 color = mix(colorA, colorB, noise);
     gl_FragColor = color;
 }
-\`
-
-export default fragmentShader
 `;
 
-const VertexShader = `const vertexShader = \`
-varying vec2 vUv;
+const VertexShader = `varying vec2 vUv;
 
 void main() {
     vUv = uv;
     gl_Position = vec4(position, 1.0);
 }
-\`
-
-export default vertexShader
 `;
 
 const getFullscreenTriangle = `
@@ -127,8 +119,8 @@ import { v4 as uuidv4 } from "uuid";
 import './scene.css';
 
 import getFullscreenTriangle from './getFullscreenTriangle';
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader'; 
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 const Transition = () => {
   const { progress } = useControls({
@@ -284,10 +276,10 @@ const Transition = {
     code: AppCode,
     active: true,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
   },
   '/getFullscreenTriangle.js': {

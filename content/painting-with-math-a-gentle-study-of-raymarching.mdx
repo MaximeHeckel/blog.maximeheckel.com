@@ -754,14 +754,7 @@ vec3 noised(vec2 x) {
 ```
 
 <Callout variant="info" label="Texture">
-I noticed from several Shadertoy raymarched landscapes that they were all sampling more or less the same texture for their noise derivatives 👇
-
-<Image
-  src="noise1.png"
-  alt="Noise texture used in our noised function. Originally obtained on Shadertoy."
-  width={500}
-  height={500}
-/>
+I noticed from several Shadertoy raymarched landscapes that they were all sampling more or less the [same texture](https://cdn.maximeheckel.com/noises/noise1.png) for their noise derivatives.
 
 That gave me better results at lower octaves than using a hash function (we'll talk about that below).
 

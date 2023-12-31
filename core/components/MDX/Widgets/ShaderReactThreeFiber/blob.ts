@@ -84,8 +84,7 @@ float cnoise(vec3 P) {
 
 // End of Perlin Noise Code`;
 
-const FragmentShader = `const fragmentShader = \`
-uniform float u_intensity;
+const FragmentShader = `uniform float u_intensity;
 uniform float u_time;
 
 varying vec2 vUv;
@@ -98,14 +97,9 @@ void main() {
   
   gl_FragColor = vec4(color ,1.0);
 }
-
-\`
-
-export default fragmentShader
 `;
 
-const VertexShader = `const vertexShader = \`
-uniform float u_intensity;
+const VertexShader = `uniform float u_intensity;
 uniform float u_time;
 
 varying vec2 vUv;
@@ -126,10 +120,6 @@ void main() {
 
   gl_Position = projectedPosition;
 }
-
-\`
-
-export default vertexShader
 `;
 
 const AppCode = `import { OrbitControls } from "@react-three/drei";
@@ -138,8 +128,8 @@ import { useMemo, useRef } from "react";
 import { MathUtils } from "three";
 import './scene.css';
 
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader';
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 const Blob = () => {
   // This reference will give us direct access to the mesh
@@ -205,10 +195,10 @@ const BlobFiles = {
   '/App.js': {
     code: AppCode,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
   },
 };
