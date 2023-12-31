@@ -1,14 +1,10 @@
-const FragmentShader = `const fragmentShader = \`
-void main() {
+const FragmentShader = `void main() {
   vec3 color = vec3(0.34, 0.53, 0.96);
   gl_FragColor = vec4(color, 1.0);
 }
-\`
-
-export default fragmentShader
 `;
 
-const VertexShader = `const vertexShader = \`
+const VertexShader = `
 uniform sampler2D uPositions;
 uniform float uTime;
 
@@ -25,13 +21,9 @@ void main() {
   // Size attenuation;
   gl_PointSize *= step(1.0 - (1.0/64.0), position.x) + 0.5;
 }
-
-\`
-
-export default vertexShader
 `;
 
-const SimulationFragmentShader = `const fragmentShader = \`
+const SimulationFragmentShader = `
 
 uniform sampler2D positionsA;
 uniform sampler2D positionsB;
@@ -50,13 +42,9 @@ void main() {
 
   gl_FragColor = vec4(pos, 1.0);
 }
-\`
-
-export default fragmentShader
 `;
 
-const SimulationVertexShader = `const vertexShader = \`
-varying vec2 vUv;
+const SimulationVertexShader = `varying vec2 vUv;
 
 void main() {
   vUv = uv;
@@ -67,15 +55,11 @@ void main() {
 
   gl_Position = projectedPosition;
 }
-
-\`
-
-export default vertexShader
 `;
 
 const SimulationMaterialCode = `
-import simulationVertexShader from './simulationVertexShader';
-import simulationFragmentShader from './simulationFragmentShader';
+import simulationVertexShader from '!!raw-loader!./simulationVertexShader.glsl';
+import simulationFragmentShader from '!!raw-loader!./simulationFragmentShader.glsl';
 import * as THREE from "three";
 
 const getRandomDataSphere = (width, height) => {
@@ -161,8 +145,8 @@ import './scene.css';
 
 import SimulationMaterial from './SimulationMaterial';
 
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader';
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 extend({ SimulationMaterial: SimulationMaterial });
 
@@ -287,10 +271,10 @@ const MorphFBOFiles = {
   '/simulationFragmentShader.js': {
     code: SimulationFragmentShader,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
   },
 };

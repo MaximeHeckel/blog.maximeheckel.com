@@ -1,5 +1,4 @@
-const FragmentShader = `const fragmentShader = \`
-varying float vDistance;
+const FragmentShader = `varying float vDistance;
 
 void main() {
   vec3 color = vec3(0.34, 0.53, 0.96);
@@ -11,9 +10,6 @@ void main() {
   color = mix(vec3(0.0), color, strength);
   gl_FragColor = vec4(color, strength);
 }
-\`
-
-export default fragmentShader
 `;
 
 const glslRotate = `// Source: https://github.com/dmnsgn/glsl-rotate/blob/main/rotation-3d-y.glsl.js
@@ -28,8 +24,7 @@ mat3 rotation3dY(float angle) {
 }
 `;
 
-const VertexShader = `const vertexShader = \`
-uniform float uTime;
+const VertexShader = `uniform float uTime;
 uniform float uRadius;
 
 varying float vDistance;
@@ -53,10 +48,6 @@ void main() {
   // Size attenuation;
   gl_PointSize *= (1.0 / - viewPosition.z);
 }
-
-\`
-
-export default vertexShader
 `;
 
 const AppCode = `import { OrbitControls } from "@react-three/drei";
@@ -65,8 +56,8 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import './scene.css';
 
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader';
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 const CustomGeometryParticles = (props) => {
   const { count } = props;
@@ -147,10 +138,10 @@ const CustomizePointShaderFiles = {
   '/App.js': {
     code: AppCode,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
     active: true,
   },

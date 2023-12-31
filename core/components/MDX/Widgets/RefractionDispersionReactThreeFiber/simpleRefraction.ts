@@ -1,5 +1,4 @@
-const FragmentShader = `const fragmentShader = \`
-uniform vec2 winResolution;
+const FragmentShader = `uniform vec2 winResolution;
 uniform sampler2D uTexture;
 
 varying vec3 worldNormal;
@@ -15,9 +14,6 @@ void main() {
   
   gl_FragColor = color;
 }
-\`
-
-export default fragmentShader
 `;
 
 const UtilsCode = `
@@ -35,8 +31,7 @@ const UtilsCode = `
   };
 `;
 
-const VertexShader = `const vertexShader = \`
-varying vec3 worldNormal;
+const VertexShader = `varying vec3 worldNormal;
 varying vec3 eyeVector;
 
 void main() {
@@ -50,10 +45,6 @@ void main() {
 
   eyeVector = normalize(worldPos.xyz - cameraPosition);
 }
-
-\`
-
-export default vertexShader
 `;
 
 const AppCode = `import { OrbitControls, useFBO } from "@react-three/drei";
@@ -64,8 +55,8 @@ import { v4 as uuidv4 } from "uuid";
 import { range } from './utils'
 import './scene.css';
 
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader';
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 const Geometries = () => {
   // This reference gives us direct access to our mesh
@@ -146,10 +137,10 @@ const SimpleRefractionFiles = {
   '/App.js': {
     code: AppCode,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
     active: true,
   },

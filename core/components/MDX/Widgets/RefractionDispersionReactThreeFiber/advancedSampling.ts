@@ -1,5 +1,4 @@
-const FragmentShader = `const fragmentShader = \`
-uniform float uIorR;
+const FragmentShader = `uniform float uIorR;
 uniform float uIorY;
 uniform float uIorG;
 uniform float uIorC;
@@ -77,13 +76,9 @@ void main() {
 
   gl_FragColor = vec4(color, 1.0);
 }
-\`
-
-export default fragmentShader
 `;
 
-const VertexShader = `const vertexShader = \`
-varying vec3 worldNormal;
+const VertexShader = `varying vec3 worldNormal;
 varying vec3 eyeVector;
 
 void main() {
@@ -97,9 +92,6 @@ void main() {
 
   eyeVector = normalize(worldPos.xyz - cameraPosition);
 }
-\`
-
-export default vertexShader
 `;
 
 const UtilsCode = `
@@ -126,8 +118,8 @@ import { v4 as uuidv4 } from "uuid";
 import { range } from './utils';
 import './scene.css';
 
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader';
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 const Geometries = () => {
   // This reference gives us direct access to our mesh
@@ -268,10 +260,10 @@ const AdvancedSamplingFiles = {
   '/App.js': {
     code: AppCode,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
     active: true,
   },

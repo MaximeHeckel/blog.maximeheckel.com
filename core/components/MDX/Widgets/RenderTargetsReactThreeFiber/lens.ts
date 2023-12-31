@@ -1,5 +1,4 @@
-const FragmentShader = `const fragmentShader = \`
-uniform vec2 winResolution;
+const FragmentShader = `uniform vec2 winResolution;
 uniform sampler2D uTexture;
 
 vec4 fromLinear(vec4 linearRGB) {
@@ -17,21 +16,15 @@ void main() {
 
   gl_FragColor = color;
 }
-\`
-
-export default fragmentShader
 `;
 
-const VertexShader = `const vertexShader = \`
+const VertexShader = `
 void main() {
   vec4 worldPos = modelMatrix * vec4(position, 1.0);
   vec4 mvPosition = viewMatrix * worldPos;
 
   gl_Position = projectionMatrix * mvPosition;
 }
-\`
-
-export default vertexShader
 `;
 
 const AppCode = `import { OrbitControls, 
@@ -47,8 +40,8 @@ import * as THREE from "three";
 import { v4 as uuidv4 } from "uuid";
 import './scene.css';
 
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader';
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 const Lens = () => {
   const mesh1 = useRef();
@@ -214,10 +207,10 @@ const Lens = {
     code: AppCode,
     active: true,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
   },
 };

@@ -73,9 +73,7 @@ float snoise(vec2 v)
 // End of Simplex Noise Code
 `;
 
-const FragmentShader = `const fragmentShader = \`
-uniform float u_time;
-
+const FragmentShader = `uniform float u_time;
 uniform vec3 u_bg;
 uniform vec3 u_colorA;
 uniform vec3 u_colorB;
@@ -96,14 +94,9 @@ void main() {
   
   gl_FragColor = vec4(color ,1.0);
 }
-
-\`
-
-export default fragmentShader
 `;
 
-const VertexShader = `const vertexShader = \`
-varying vec2 vUv;
+const VertexShader = `varying vec2 vUv;
 
 void main() {
   vUv = uv;
@@ -114,10 +107,6 @@ void main() {
 
   gl_Position = projectedPosition;
 }
-
-\`
-
-export default vertexShader
 `;
 
 const AppCode = `import { OrbitControls } from "@react-three/drei";
@@ -126,8 +115,8 @@ import { useEffect, useMemo, useRef, useCallback } from "react";
 import { Vector2, Color } from "three";
 import './scene.css';
 
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader';
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 const Gradient = () => {
     // This reference will give us direct access to the mesh
@@ -199,10 +188,10 @@ const Gradient2Files = {
   '/App.js': {
     code: AppCode,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
   },
 };

@@ -1,5 +1,4 @@
-const FragmentShader = `const fragmentShader = \`
-uniform vec3 u_colorA;
+const FragmentShader = `uniform vec3 u_colorA;
 uniform vec3 u_colorB;
 varying float vZ;
 
@@ -8,14 +7,9 @@ void main() {
   vec3 color = mix(u_colorA, u_colorB, vZ * 2.0 + 0.5); 
   gl_FragColor = vec4(color, 1.0);
 }
-
-\`
-
-export default fragmentShader
 `;
 
-const VertexShader = `const vertexShader = \`
-uniform float u_time;
+const VertexShader = `uniform float u_time;
 
 varying float vZ;
 
@@ -32,10 +26,6 @@ void main() {
 
   gl_Position = projectedPosition;
 }
-
-\`
-
-export default vertexShader
 `;
 
 const AppCode = `import { Canvas, useFrame } from "@react-three/fiber";
@@ -43,8 +33,8 @@ import { useMemo, useRef } from "react";
 import { Color } from "three";
 import './scene.css';
 
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader';
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 const MovingPlane = () => {
   // This reference will give us direct access to the mesh
@@ -94,10 +84,10 @@ const WobblyColoredPlaneFiles = {
   '/App.js': {
     code: AppCode,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
   },
 };

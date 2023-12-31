@@ -1,5 +1,4 @@
-const VertexShader = `const vertexShader = \`
-varying vec2 vUv;
+const VertexShader = `varying vec2 vUv;
 
 void main() {
   vUv = uv;
@@ -10,14 +9,9 @@ void main() {
 
   gl_Position = projectedPosition;
 }
-\`
-
-export default vertexShader
 `;
 
-const FragmentShader = `const fragmentShader = \`
-               
-uniform float uTime;
+const FragmentShader = `uniform float uTime;
 uniform vec2 uResolution;
 
 #define MAX_STEPS 100
@@ -114,9 +108,6 @@ void main() {
 
   gl_FragColor = vec4(color, 1.0);
 }
-\`
-
-export default fragmentShader;
 `;
 
 const AppCode = `import { Canvas, useFrame, useThree } from "@react-three/fiber";
@@ -125,8 +116,8 @@ import * as THREE from "three";
 import { v4 as uuidv4 } from "uuid";
 import './scene.css';
 
-import vertexShader from './vertexShader';
-import fragmentShader from './fragmentShader'; 
+import vertexShader from "!!raw-loader!./vertexShader.glsl";
+import fragmentShader from "!!raw-loader!./fragmentShader.glsl";
 
 const DPR = 1;
 
@@ -179,11 +170,11 @@ const IntersectingSDF = {
   '/App.js': {
     code: AppCode,
   },
-  '/fragmentShader.js': {
+  '/fragmentShader.glsl': {
     code: FragmentShader,
     active: true,
   },
-  '/vertexShader.js': {
+  '/vertexShader.glsl': {
     code: VertexShader,
   },
 };
