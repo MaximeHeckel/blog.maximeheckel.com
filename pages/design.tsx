@@ -32,7 +32,7 @@ import Logo from '@core/components/Logo';
 import Glow from '@core/components/Glow';
 import CodeBlock from '@core/components/Code/CodeBlock';
 import Seo from '@core/components/Seo';
-import Tweet from '@core/components/Tweet';
+// import Tweet from '@core/components/Tweet';
 import Layout from '@core/layout';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
@@ -144,7 +144,7 @@ const Label = styled('p', {
   marginBottom: '8px',
 });
 
-export default function Design(props: { tweets: Record<string, NewTweet> }) {
+export default function Design(_props: { tweets: Record<string, NewTweet> }) {
   const { dark } = useTheme();
   const [showSearch, setShowSearch] = React.useState(false);
   const [email, setEmail] = React.useState('');
@@ -1290,7 +1290,7 @@ function sayHi(name) {
             </Button>
             <Search onClose={() => setShowSearch(false)} open={showSearch} />
           </Flex>
-          <Flex
+          {/* <Flex
             alignItems="start"
             as="section"
             css={{ alignSelf: 'stretch' }}
@@ -1300,7 +1300,7 @@ function sayHi(name) {
           >
             <H2>Tweet</H2>
             <Tweet tweet={props.tweets['1386013361809281024']} />
-          </Flex>
+          </Flex> */}
           <Flex
             alignItems="start"
             as="section"
