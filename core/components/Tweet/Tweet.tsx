@@ -178,6 +178,7 @@ const Tweet = (props: Props) => {
           <time
             title={`Time Posted: ${createdAt.toUTCString()}`}
             dateTime={createdAt.toISOString()}
+            suppressHydrationWarning
           >
             {format(createdAt, 'h:mm a - MMM d, y')}
           </time>
