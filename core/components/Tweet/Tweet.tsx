@@ -132,10 +132,11 @@ const Tweet = (props: Props) => {
             if (m.type === 'video' && !!m.video_info) {
               const lastVariant = m.video_info.variants.reduce(
                 (max, obj) => {
-                  return obj.bitrate || 0 > max.bitrate ? obj : max;
+                  return (obj.bitrate || 0) > max.bitrate ? obj : max;
                 },
                 { bitrate: 0 } as any
               );
+
               const videoSrc = lastVariant.url;
 
               if (!videoSrc || lastVariant.content_type !== 'video/mp4')
