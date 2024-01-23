@@ -1,0 +1,825 @@
+---
+title: 'Shining a light on Caustics with Shaders and React Three Fiber'
+subtitle: A step-by-step guide on how to build a caustic light effect for your React Three Fiber project using shaders, render targets, normal maps, and custom materials.
+date: '2024-01-23T08:00:00.000Z'
+updated: '2024-01-23T08:00:00.000Z'
+categories: []
+slug: caustics-in-webgl
+type: 'blogPost'
+featured: false
+---
+
+Since my work on [refraction and chromatic dispersion](/post/refraction-dispersion-and-other-shader-light-effects/) from early 2023, I have not ceased to experiment with light effects and shaders, always trying to strike the right balance between realism, aesthetics, and performance.
+However, there's one light effect that I was eager to rebuild this entire time: **Caustics**.
+
+Those beautiful swirls of light can be visible when light rays **travel through a transmissive or transparent curved surface**, such as a glass of water or the surface of a shallow lake, and converge on a surface after being refracted. I've been obsessing with Caustics since day one of working with shaders (ask <Anchor favicon discreet href="https://twitter.com/pixelbeat">@pixelbeat</Anchor>, he'll tell you). I saw countless examples reproducing the effect on Blender, Redshift, or WebGL/WebGPU, each one of them making me more keen to build my own implementation to fully understand how to render them for my React Three Fiber projects.
+
+<Image
+  src="blog/example_caustics.png"
+  alt="Example of caustic patterns made in blender, redshift and webGPU by (left to right) @wes_cream, @active_theory, and @pixelbeat who kindly volunteered some of his time to make a custom/special render with my logo for this blog post 🙏."
+  width={700}
+  height={412}
+/>
+
+I not only wanted to rebuild a Caustic effect with my shader knowledge from scratch, but I also wanted to reproduce one that was both _real-time_ and somewhat _physically based_ while also working with a diverse set of geometries. After working heads down, step-by-step, for a few weeks, I reached this goal and got some very satisfying results 🎉
+
+<StaticTweet id="1732429115641246051" />
+
+While I documented my progress on [Twitter](https://twitter.com/MaximeHeckel/status/1730610699905143248) showcasing all the steps and my train of thought going through this project,
+I wanted to dedicate a blog post to truly _shine a light on caustics_ (🥁) by walking you through the details of the inner workings behind this effect.
+You'll see in this article how, **by leveraging normals, render targets, and some math and shader code**, you can render those beautiful and shiny swirls of light for your own creations.
+
+<Callout label="Acknowledgments" variant="info">
+
+Reproducing this effect without the following resources:
+
+- [Rendering Realtime Caustics in WebGL](https://medium.com/@evanwallace/rendering-realtime-caustics-in-webgl-2a99a29a0b2c) by Evan Wallace
+- [Drei's own Caustic component](https://github.com/pmndrs/drei?tab=readme-ov-file#caustics) which served as my north star
+- [Caustics and the Photon Tracing Kernel](https://help.otoy.com/hc/en-us/articles/14458811751067-Caustics-and-the-Photon-Tracing-Kernel)
+- [What Are Caustics and How to Render Them the Right Way](https://www.chaos.com/blog/what-are-caustics-and-how-to-render-them-the-right-way)
+
+and many thanks to <Anchor favicon discreet href="https://twitter.com/N8Programs">@N8Programs</Anchor> for his [original work on caustics](https://github.com/N8python/caustics) and the guidance which I really needed when starting this project and to <Anchor favicon discreet href="https://twitter.com/Andersonmancini">@Andersonmancini</Anchor> for listening to my rambling when I was getting stuck.
+
+</Callout>
+
+## Anatomy of a Caustic Effect in WebGL
+
+In this first part, we'll look at the high-level concepts behind this project. To set the right expectations from the get-go: **We're absolutely going to cheat our way through this**. Indeed, if we wanted to reproduce Caustics with a high degree of accuracy, that project would probably fall into the domain of **raytracing**, which would be:
+
+- Way out of reach given my current skill set as of writing this article.
+- Very resource-intensive for the average computer out there, especially as we'd want most people to be able to see our work.
+
+Thus, I opted for a _simpler_ yet still somewhat physically based approach for this project:
+
+1. We'll **simulate** in a fragment shader the refracted rays from **a light source** going through a **target mesh**.
+2. We'll render the resulting pattern in a **caustic plane** which we'll then _scale and position_ accordingly based on the position of the light source in relation to our object.
+
+<Image
+  src="blog/caustic_scene.png"
+  alt="Diagram showcasing the high level components of our scene that will serve us to render a caustic effect"
+  width={700}
+  height={440}
+/>
+
+Simulating how the caustic pattern works can seem quite tricky at first. However, if we look back at the definition established in the introduction,
+we can get hints for how to proceed. The light pattern we're aiming to render originates from rays hitting a _curved_ surface, which nudges us toward **relying on the Normal data of our target mesh** (i.e. the surface data). On top of that, based on some preliminary research, knowing whether our rays of light converge or diverge after hitting our surface will determine the final look of our caustics.
+
+<Image
+  src="blog/converging_diverging_rays.png"
+  alt="Diagram showcasing the impact of the shape of the surface on the intensity of the resulting caustic effect"
+  width={700}
+  height={442}
+/>
+<Callout variant="info">
+
+If you're looking for more detailed reading on the effect itself, here are some links that were useful to me during my own research:
+
+- [Caustics and the Photon Tracing Kernel](https://help.otoy.com/hc/en-us/articles/14458811751067-Caustics-and-the-Photon-Tracing-Kernel)
+- [What Are Caustics and How to Render Them the Right Way](https://www.chaos.com/blog/what-are-caustics-and-how-to-render-them-the-right-way)
+
+</Callout>
+
+## Extracting Normals
+
+Let's take a stab at **extracting the Normal data of our target mesh**! With it, we'll know the overall "shape" of our mesh which influences the final look of our caustics. Since we'll need to read that data down the line in a shader to simulate our Caustic effect, we would want to have it available as a _texture_. That means it's time to dedust your good ol' render target skills because we'll need them here.
+
+<Callout label="Render Targets" variant="info">
+
+I wrote a [dedicated blog post on render targets](/posts/beautiful-and-mind-bending-effects-with-webgl-render-targets/) last year that goes through all the use cases alongside many examples and demos. If you have not read it yet or need a little refresher, take a glance at it before continuing 😊.
+
+</Callout>
+
+As always, we'll start by defining our render target, or Framer Buffer Object (FBO), using the `useFBO` hook provided by `@react-three/drei`: this is where we'll render our target mesh with a "normal" material and take a snapshot of it to have that data available as a texture later on.
+
+```jsx {5} title=Instantiating our normalRenderTarget in our Caustics scene
+const Caustics = () => {
+  const mesh = useRef();
+  const causticsPlane = useRef();
+
+  const normalRenderTarget = useFBO(2000, 2000, {});
+
+  useFrame((state) => {
+    const { gl } = state;
+    // ...
+  });
+
+  return (
+    <>
+      <mesh ref={mesh} position={[0, 6.5, 0]}>
+        <torusKnotGeometry args={[10, 3, 16, 100]} />
+        <MeshTransmissionMaterial backside {...rest} />
+      </mesh>
+      <mesh
+        ref={causticsPlane}
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[5, 0, 5]}
+      >
+        <planeGeometry />
+        <meshBasicMaterial />
+      </mesh>
+    </>
+  );
+};
+```
+
+We'll also need **a dedicated camera** for our render target, which I intuitively placed where our light source would be since it will get us a view of the normals our light rays will interact with. That camera will point towards the center of the bounds of our target mesh using the `lookAt` function.
+
+```jsx {14-20} title=Setting up a dedicated camera for our render target
+const light = new THREE.Vector3(-10, 13, -10);
+
+const normalRenderTarget = useFBO(2000, 2000, {});
+
+const [normalCamera] = useState(
+  () => new THREE.PerspectiveCamera(65, 1, 0.1, 1000)
+);
+
+useFrame((state) => {
+  const { gl } = state;
+
+  const bounds = new THREE.Box3().setFromObject(mesh.current, true);
+
+  normalCamera.position.set(light.x, light.y, light.z);
+  normalCamera.lookAt(
+    bounds.getCenter(new THREE.Vector3(0, 0, 0)).x,
+    bounds.getCenter(new THREE.Vector3(0, 0, 0)).y,
+    bounds.getCenter(new THREE.Vector3(0, 0, 0)).z
+  );
+  normalCamera.up = new THREE.Vector3(0, 1, 0);
+
+  //...
+});
+```
+
+<Callout label="Up vector" variant="info">
+
+When I first tried to get this camera setup, I noticed that moving its position could cause unwanted rotations of the camera, leading to weird inverted caustic patterns that didn't make much sense. I found out that _locking_ the `up` vector of the camera to a specific vector, like in this case `THREE.Vector3(0, 1, 0)` helped to prevent this issue from happening
+
+</Callout>
+
+We now have all the elements to capture our Normal data and project it onto the "caustic plane":
+
+- In our `useFrame` hook, we first swap the material of our target mesh with a material that renders the normals of our mesh. In this case, I used a custom `shaderMaterial` (optional, but gives us more flexibility as you'll see in the next part), but you can also use `normalMaterial`.
+
+```jsx
+// Custom Normal Material
+const [normalMaterial] = useState(() => new NormalMaterial());
+
+useFrame(() => {
+  const originalMaterial = mesh.current.material;
+
+  mesh.current.material = normalMaterial;
+  mesh.current.material.side = THREE.BackSide;
+});
+```
+
+- Then, we take a snapshot of our mesh by rendering it in our render target.
+
+```jsx
+gl.setRenderTarget(normalRenderTarget);
+gl.render(mesh.current, normalCamera);
+```
+
+- Finally, we can restore the original material of our mesh and pass the resulting _texture_ in the `map` property of our temporary caustic plane material, allowing us to visualize the output.
+
+```jsx
+mesh.current.material = originalMaterial;
+
+causticsPlane.current.material.map = normalRenderTarget.texture;
+
+gl.setRenderTarget(null);
+```
+
+<br />
+
+<Fullbleed widthPercent={80}>
+  <Image
+    src="blog/normal_projection_fbo.png"
+    alt="Diagram showcasing the process of swapping the material of the target mesh to our normal material to then render it in a dedicated render target to obtain a texture that can be used as input to any material"
+    width={700}
+    height={220}
+  />
+</Fullbleed>
+
+With this small render pipeline, we should be able to see our Normal data visible on our "caustic plane" thanks to the texture data obtained through our render target. This will serve as the foundations of our Caustic effect!
+
+<CausticsSandpack scene="scene1" />
+
+<Callout variant="info">
+
+I included a small widget in the demo above to let you move the position of the light source in this scene. Try to change the different coordinates and see how the normals rendered on the plane change as you update the position vector of the light, i.e., the `normalCamera` used in the render target.
+
+</Callout>
+
+## Building our Caustics material
+
+With what we just accomplished, we have, through our FBO,
+**a texture representing the normals of our target mesh**. Having that data as a texture is very versatile
+because not only can we render it as we just did, but more importantly **we can pass it to other shaders to do some computation**.
+
+Which is exactly what we're going to do in this part!
+
+We will take our Normal data and _simulate_ light rays going through those normals and then interpret the output to create our caustics pattern.
+
+### Calculating caustics intensity
+
+At first, I didn't know how to use my Normal data to obtain the desired effect as an output. I tried my luck with using a weird mix of `sin` functions in the fragment shader of my caustic plane, but that didn't yield something even remotely close to what I wanted to achieve:
+
+<StaticTweet id="1725930611783684188" />
+
+On top of that, I also had this idea for my Caustics effect to be able to take on additional
+effects such as **chromatic aberration** or **blur**, as I really wanted the output not to be _too sharp_
+to look as natural as possible. Hence, I could not directly render the pattern onto the final plane;
+instead, I'd have to **use an intermediate mesh with a custom shader material to do all the necessary
+math and computation I needed**. Then, that would allow me through yet another FBO to apply as many effects to the output as I wanted on the final caustics plane itself.
+
+<Fullbleed widthPercent={70}>
+  <Image
+    src="blog/caustics_normal_fbo.png"
+    alt="Diagram showcasing how, from the normal texture we just obtained, we can compute a caustic pattern that can then be projected as a texture itself onto the caustic plane."
+    width={700}
+    height={220}
+  />
+</Fullbleed>
+
+To do so, we can leverage a `FullScreenQuad` geometry that we will not render within our scene but instead instantiate on its own and use it within our `useFrame` hook.
+
+```jsx title=Setting up our causticsComputeRenderTarget and FullScreenQuad
+const causticsComputeRenderTarget = useFBO(2000, 2000, {});
+const [causticsQuad] = useState(() => new FullScreenQuad());
+```
+
+We then attach to it a custom `shaderMaterial` that will perform the following tasks:
+
+1. Calculate the refracted ray vector from our light source going through the surface of our mesh, represented here by the Normal texture we created in the first part.
+2. Apply to each vertex of the `FullScreenQuad` mesh (passed as varyings to our fragment shader) the refracted ray vector.
+3. Use partial derivatives along the `x` and `y` axes for the original and the refracted position. When multiplied, the result lets us approximate a small surface neighboring the original and refracted vertex.
+4. Compare the resulting surfaces to determine the intensity of the caustics.
+
+<Callout label="Tips from the pros" variant="info">
+
+The method highlighted in steps `2`, `3` and `4` above comes from the article titled [Rendering Realtime Caustics in WebGL](https://medium.com/@evanwallace/rendering-realtime-caustics-in-webgl-2a99a29a0b2c) from Evan Wallace (also cited at the beginning in the sources + I highly recommend you to read it). <Anchor favicon discreet href="https://twitter.com/N8Programs">@N8Programs</Anchor> recommended looking at his technique early in this project.
+
+This is the **key** to making this shader a possibility, which I'm very thankful for, and I hope I didn't butcher his technique too much in here 😄
+
+</Callout>
+
+Obtaining those surfaces before and after refraction is the **key** to rendering our caustic pattern:
+
+- A ratio `oldArea/newArea` above `1` signifies our rays have converged. Thus, the caustic intensity should be higher.
+- On the other hand, a ratio `oldArea/newArea` below `1` means that our rays have diverged and that our caustic intensity should be lower.
+
+<Image
+  src="blog/projection_fragment.png"
+  alt="Diagram showcasing how comparing the surface obtained via partial derivatives before and after the refraction through a surface can tell us whether the intensity of the caustic effect should be weaker (diverging rays -> bigger refracted surface) or brighter (converging rays -> smaller refracted surface)."
+  width={700}
+  height={391}
+/>
+
+Below, you will find the corresponding fragment shader code that performs the steps we just highlighted:
+
+```glsl {20-21,23} title=CausticsComputeMaterial fragment shader
+uniform sampler2D uTexture;
+uniform vec3 uLight;
+
+varying vec2 vUv;
+// Position of the vertex of the current fragment
+varying vec3 vPosition;
+
+void main() {
+  vec2 uv = vUv;
+
+  vec3 normalTexture = texture2D(uTexture, uv).rgb;
+  vec3 normal = normalize(normalTexture);
+  vec3 lightDir = normalize(uLight);
+
+  vec3 ray = refract(lightDir, normal, 1.0 / 1.25);
+
+  vec3 newPos = vPosition.xyz + ray;
+  vec3 oldPos = vPosition.xyz;
+
+  float lightArea = length(dFdx(oldPos)) * length(dFdy(oldPos));
+  float newLightArea = length(dFdx(newPos)) * length(dFdy(newPos));
+
+  float value = lightArea / newLightArea;
+
+  gl_FragColor = vec4(vec3(value), 1.0);
+}
+```
+
+On top of that, I applied a few _tweaks_ as I often do in my shader code. That is more subjective and enables me to reach what I originally had in mind for my Caustic effect, so take those edits with a grain of salt:
+
+```jsx {23-25} title=Extra tweaks to the final value from
+uniform sampler2D uTexture;
+uniform vec3 uLight;
+uniform float uIntensity;
+
+varying vec2 vUv;
+varying vec3 vPosition;
+
+void main() {
+  vec2 uv = vUv;
+
+  vec3 normalTexture = texture2D(uTexture, uv).rgb;
+  vec3 normal = normalize(normalTexture);
+  vec3 lightDir = normalize(uLight);
+
+  vec3 ray = refract(lightDir, normal, 1.0 / 1.25);
+
+  vec3 newPos = vPosition.xyz + ray;
+  vec3 oldPos = vPosition.xyz;
+
+  float lightArea = length(dFdx(oldPos)) * length(dFdy(oldPos));
+  float newLightArea = length(dFdx(newPos)) * length(dFdy(newPos));
+
+  float value = lightArea / newLightArea;
+  float scale = clamp(value, 0.0, 1.0) * uIntensity;
+  scale *= scale;
+
+  gl_FragColor = vec4(vec3(scale), 1.0);
+}
+```
+
+- I added a `uIntensity` uniform so I could manually increase/decrease how _bright_ the resulting caustic effect would render.
+- I made sure to `clamp` the value between 0 and 1 (see warning below).
+- I squared the result to ensure the brighter areas get brighter and the dimmer areas get dimmer, thus allowing for a more striking light effect.
+
+<Callout variant="danger">
+
+Important to note: not clamping the value caused some weird side effect when viewing the caustic plane _through_ a mesh with `MeshTransmissionMaterial`.
+
+<Image
+  src="blog/caustics_clamp_value_issue.png"
+  alt="Screenshot showcasing rendering issue of one early attempt at caustics when the plane was viewed through MeshTransmissionMaterial"
+  width={700}
+  height={590}
+/>
+
+</Callout>
+
+Finally, we can combine all that and assign what I dubbed the `CausticsComputeMaterial` to our `FullScreenQuad` and render it in a dedicated FBO.
+
+```jsx {1,26-29,31-32} title=Using the causticsComputeMaterial in our scene
+const [causticsComputeMaterial] = useState(() => new CausticsComputeMaterial());
+
+useFrame((state) => {
+  const { gl } = state;
+
+  const bounds = new THREE.Box3().setFromObject(mesh.current, true);
+
+  normalCamera.position.set(light.x, light.y, light.z);
+  normalCamera.lookAt(
+    bounds.getCenter(new THREE.Vector3(0, 0, 0)).x,
+    bounds.getCenter(new THREE.Vector3(0, 0, 0)).y,
+    bounds.getCenter(new THREE.Vector3(0, 0, 0)).z
+  );
+  normalCamera.up = new THREE.Vector3(0, 1, 0);
+
+  const originalMaterial = mesh.current.material;
+
+  mesh.current.material = normalMaterial;
+  mesh.current.material.side = THREE.BackSide;
+
+  gl.setRenderTarget(normalRenderTarget);
+  gl.render(mesh.current, normalCamera);
+
+  mesh.current.material = originalMaterial;
+
+  causticsQuad.material = causticsComputeMaterial;
+  causticsQuad.material.uniforms.uTexture.value = normalRenderTarget.texture;
+  causticsQuad.material.uniforms.uLight.value = light;
+  causticsQuad.material.uniforms.uIntensity.value = intensity;
+
+  gl.setRenderTarget(causticsComputeRenderTarget);
+  causticsQuad.render(gl);
+
+  causticsPlane.current.material.map = causticsComputeRenderTarget.texture;
+
+  gl.setRenderTarget(null);
+});
+```
+
+The resulting code lets us observe a glimpse of Caustics projected onto the ground ✨
+
+<CausticsSandpack scene="scene2" />
+
+<Callout variant="info">
+
+- Try to tweak the intensity of the effect using the widget embedded in the scene.
+- Try to modify the position of the light source and notice how the brighter spots of the caustics change as the pattern moves.
+
+</Callout>
+
+### Creating beautiful swirls of light
+
+The result we just obtained looks great but presents a few _subjective_ issues that are bothering me:
+
+- **It looks a bit too sharp** to my taste, and because of that, we also see a lot of artifacts/grain in the final render (probably from the mesh not having enough vertices).
+- **The caustic plane does not blend with the ground**: that black frame surrounding the pattern really has to go.
+
+We can alleviate these issues by creating a final `causticsPlaneMaterial` that takes the texture we obtained from our `causticsComputeRenderTarget` and gently modifies it before rendering it on our plane.
+
+I first decided to implement a **chromatic aberration** effect on top of our caustic effect. If you're familiar with some of my work around light effects, I'm a big fan of chromatic aberration, and when applied correctly, I think it really goes a long way to make your scene/mesh look gorgeous.
+
+<Callout variant="info">
+
+For this specific case, I opted to re-apply some of my shader code from a past project on [refraction](https://r3f.maximeheckel.com/refraction).
+
+<StaticTweet id="1583476200118358016" />
+
+</Callout>
+
+```glsl title=Refraction and Chromatic Aberration fragment shader
+uniform sampler2D uTexture;
+uniform float uAberration;
+
+varying vec2 vUv;
+
+const int SAMPLES = 16;
+
+float random(vec2 p){
+  return fract(sin(dot(p.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+vec3 sat(vec3 rgb, float adjustment) {
+  const vec3 W = vec3(0.2125, 0.7154, 0.0721);
+  vec3 intensity = vec3(dot(rgb, W));
+  return mix(intensity, rgb, adjustment);
+}
+
+void main() {
+  vec2 uv = vUv;
+  vec4 color = vec4(0.0);
+
+  vec3 refractCol = vec3(0.0);
+
+  for ( int i = 0; i < SAMPLES; i ++ ) {
+    float noiseIntensity = 0.01;
+    float noise = random(uv) * noiseIntensity;
+    float slide = float(i) / float(SAMPLES) * 0.1 + noise;
+
+
+    refractCol.r += texture2D(uTexture, uv + (uAberration * slide * 1.0) ).r;
+    refractCol.g += texture2D(uTexture, uv + (uAberration * slide * 2.0) ).g;
+    refractCol.b += texture2D(uTexture, uv + (uAberration * slide * 3.0) ).b;
+  }
+  // Divide by the number of layers to normalize colors (rgb values can be worth up to the value of SAMPLES)
+  refractCol /= float(SAMPLES);
+  refractCol = sat(refractCol, 1.265);
+
+  color = vec4(refractCol.r, refractCol.g, refractCol.b, 1.0);
+
+  gl_FragColor = vec4(color.rgb, 1.0);
+}
+```
+
+While this shader worked as expected, it presented some issues: it created visible stripes as it moved each color channel of each texture fragment in the same direction. To work around this, I added code to _flip_ the direction of the aberration through each loop to create _some_ randomness.
+
+```glsl {8-9,11} title=Flipping the direction of the chromatic aberration
+float flip = -0.5;
+
+for ( int i = 0; i < SAMPLES; i ++ ) {
+  float noiseIntensity = 0.01;
+  float noise = random(uv) * noiseIntensity;
+  float slide = float(i) / float(SAMPLES) * 0.1 + noise;
+
+  float mult = i % 2 == 0 ? 1.0 : -1.0;
+  flip *= mult;
+
+  vec2 dir = i % 2 == 0 ? vec2(flip, 0.0) : vec2(0.0, flip);
+
+  // Apply the color shift and refraction to each color channel (r,g,b) of the texture passed in uSceneTex;
+  refractCol.r += texture2D(uTexture, uv + (uAberration * slide * dir * 1.0) ).r;
+  refractCol.g += texture2D(uTexture, uv + (uAberration * slide * dir * 2.0) ).g;
+  refractCol.b += texture2D(uTexture, uv + (uAberration * slide * dir * 3.0) ).b;
+}
+```
+
+<BeforeAfterImage
+  alt="Before/After comparison of our caustics with chromatic aberration with/without the 'flip'. The resulting chromatic aberration is more subtle and the blur better distributed."
+  beforeSrc="blog/caustics_chromatic_before.png"
+  afterSrc="blog/caustics_chromatic_after.png"
+  defaultSliderPosition={40}
+  width={700}
+  height={485}
+/>
+
+Notice how this simple "flip" operation had multiple benefits:
+
+1. It solved the issue of the stripes that were degrading the quality of the output.
+2. **It blurred the output**, making our light patterns less sharp and more natural-looking.
+
+That is what we precisely wanted! Although in some cases, if we look a bit closer, we can see some artifacts from the chromatic aberration, but from afar, it looks quite alright (at least it does to me 😅).
+
+The last thing to tackle is to make our caustic plane _blend_ with the surroundings. We can remove the black frame visible around our light patterns by setting a couple of blending options for our `causticsPlaneMaterial` after instantiating it:
+
+```jsx title=Setting the proper blending option for our caustic plane to blend in
+const [causticsPlaneMaterial] = useState(() => new CausticsPlaneMaterial());
+causticsPlaneMaterial.transparent = true;
+causticsPlaneMaterial.blending = THREE.CustomBlending;
+causticsPlaneMaterial.blendSrc = THREE.OneFactor;
+causticsPlaneMaterial.blendDst = THREE.SrcAlphaFactor;
+```
+
+And just like that, the black frame is gone, and our caustic plane blends perfectly with its surroundings! You can see all the combined code in the code sandbox below 👇.
+
+<CausticsSandpack scene="scene3" />
+
+## Scaling and positioning our Caustic Plane
+
+We now have a convincing caustic effect that creates a pattern of light based on the Normal data of the target mesh. However, if we move the position of our light in the demo we just saw above, the whole scene does not feel natural. That's because we still need to do some work to _position and scale_ our caustic plane **based on the position of that light source relative to our mesh**.
+
+To approach this problem, I first attempted to **project the bounds of our target mesh on the ground**. By knowing where on the ground the bounds of our mesh are, I could deduce
+
+1. The center of the bounds: the vector that we'll need to pass as the **position** of the caustics plane.
+2. The distance from the center to the furthest projected vertex, which we could pass as the **scale** of the caustics plane.
+
+Doing this will make sure that the resulting size and position of the plane not only _make sense_ but also _fit_ our caustics pattern within its bounds.
+
+<Callout variant="info">
+
+`@react-three/drei`'s own `Cautics` component uses the same technique to scale and position itself! Although the team behind it did a way better job at handling some edge case and avoiding the light pattern to be cut by the bounds of the plane (we'll touch upon that later).
+
+</Callout>
+
+### Building a "bounding cube" for our mesh
+
+The first step consists of building a _bounding cube_ around our mesh. We luckily did half the work already in the first part of this article when working on getting our Normal data using the following Three.js function:
+
+```jsx
+useFrame((state) => {
+  const { gl } = state;
+
+  const bounds = new THREE.Box3().setFromObject(mesh.current, true);
+
+  //...
+});
+```
+
+The `bounds` variable contains a `min` and `max` field representing the coordinates of the minimum and maximum corners of the smallest cube containing our mesh. From there, we can extrapolate the remaining six corners/vertices of the bounding cube as follows:
+
+```jsx title=Getting the bounds vertices of our target mesh
+useFrame((state) => {
+  const { gl } = state;
+
+  const bounds = new THREE.Box3().setFromObject(mesh.current, true);
+
+  let boundsVertices = [];
+  boundsVertices.push(
+    new THREE.Vector3(bounds.min.x, bounds.min.y, bounds.min.z)
+  );
+  boundsVertices.push(
+    new THREE.Vector3(bounds.min.x, bounds.min.y, bounds.max.z)
+  );
+  boundsVertices.push(
+    new THREE.Vector3(bounds.min.x, bounds.max.y, bounds.min.z)
+  );
+  boundsVertices.push(
+    new THREE.Vector3(bounds.min.x, bounds.max.y, bounds.max.z)
+  );
+  boundsVertices.push(
+    new THREE.Vector3(bounds.max.x, bounds.min.y, bounds.min.z)
+  );
+  boundsVertices.push(
+    new THREE.Vector3(bounds.max.x, bounds.min.y, bounds.max.z)
+  );
+  boundsVertices.push(
+    new THREE.Vector3(bounds.max.x, bounds.max.y, bounds.min.z)
+  );
+  boundsVertices.push(
+    new THREE.Vector3(bounds.max.x, bounds.max.y, bounds.max.z)
+  );
+
+  //...
+});
+```
+
+<Image
+  src="blog/bounding_box.png"
+  alt="Diagram showcasing the vertices of the bounding box of a given mesh."
+  width={700}
+  height={443}
+/>
+
+### Projecting the vertices of the bounding cube and positioning our plane
+
+Here, we want to use the vertices of our bounding cube and calculate their projected coordinates _in the direction of the light_ to intersect with the ground.
+
+The generalized formula for such projection looks as follows:
+
+`projectedVertex = vertex + lightDir * ((planeY - vertex.y) / lightDir.y)`
+
+If we transpose that formula to our code and consider our `planeY` value to be 0, since we're aiming to project on the ground, we get the following code:
+
+```jsx title=Projected bounding box vertices
+const lightDir = new THREE.Vector3(light.x, light.y, light.z).normalize();
+
+// Calculates the projected coordinates of the vertices onto the plane
+// perpendicular to the light direction
+const newVertices = boundsVertices.map((v) => {
+  const newX = v.x + lightDir.x * (-v.y / lightDir.y);
+  const newY = v.y + lightDir.y * (-v.y / lightDir.y);
+  const newZ = v.z + lightDir.z * (-v.y / lightDir.y);
+
+  return new THREE.Vector3(newX, newY, newZ);
+});
+```
+
+By leveraging the projected vertices, we can now obtain the **center** position by combining those coordinates and dividing them by the total number of vertices, i.e., just doing a **weighted average** of all coordinates.
+
+<Image
+  src="blog/center_caustics_plane.png"
+  alt="Diagram showcasing how we get the weighted center of our caustic plane."
+  width={700}
+  height={465}
+/>
+
+We can then assign that center coordinate as the position vector of our plane, which translates to the following code:
+
+```jsx title=Calculating the weighted center of our caustic plane
+const centerPos = newVertices
+  .reduce((a, b) => a.add(b), new THREE.Vector3(0, 0, 0))
+  .divideScalar(newVertices.length);
+
+causticsPlane.current.position.set(centerPos.x, centerPos.y, centerPos.z);
+```
+
+### Fitting our caustic pattern inside the plane
+
+Now comes the last step of this tedious process: we need to scale our plane so that no matter the position of the light, the resulting caustic pattern always _fits_ in it.
+
+That is tricky, and to be honest the solution I'm about to give you doesn't work 100% of the time, but it covers most of the use cases I encountered, although I could sometimes notice the pattern being subtly cut by the bounds of the plane.
+
+My train of thought to solve this went as follows:
+
+- We have the projected vertices.
+- We got the center position from those vertices.
+- Hence, we can assume that the **safest scale** of the plane, the largest that could for sure fit our caustics, should be the distance from the center to the furthest projected vertices.
+
+<Image
+  src="blog/scale_caustic_plane.png"
+  alt="Diagram showcasing how we obtain a safe scale of our caustic plane so it fits our light pattern."
+  width={700}
+  height={465}
+/>
+
+Which can be implemented in code using the Euclidean distance formula:
+
+```jsx title=Calculating the safest scale for our plane to fit the caustic pattern
+const scale = newVertices
+  .map((p) =>
+    Math.sqrt(Math.pow(p.x - centerPos.x, 2), Math.pow(p.z - centerPos.z, 2))
+  )
+  .reduce((a, b) => Math.max(a, b), 0);
+
+// The scale of the plane is multiplied by this correction factor to
+// avoid the caustics pattern to be cut / overflow the bounds of the plane
+// my normal projection or my math must be a bit off, so I'm trying to be very conservative here
+const scaleCorrection = 1.75;
+
+causticsPlane.current.scale.set(
+  scale * scaleCorrection,
+  scale * scaleCorrection,
+  scale * scaleCorrection
+);
+```
+
+<Callout variant="info">
+
+As said above, this technique doesn't seem to be bulletproof. I once again had to add a custom tweak by multiplying my scale by a _semi-random_ value of my choosing to handle _most_ cases 🥲
+
+We'll reflect on what could have gone wrong here in the conclusion
+
+</Callout>
+
+If we put all this together within our `useFrame` hook on top of what we've built in the previous part, we finally obtain the long-awaited adjustable caustic pattern ✨.
+
+<CausticsSandpack scene="scene4" />
+
+Our caustic pattern looks gorgeous and behaves as expected as we move the light source around the target mesh! I hope this was worth the trouble so far because there's yet one last thing to explore to make this effect even better...
+
+## Dynamic Caustics
+
+I would lie to you if I said I wasn't happy with the result above. However, there was still something I wanted to try, and that was to see if the Caustic effect we just built could also handle **a moving/displaced mesh** and thus feel more **dynamic**.
+
+On top of that, our effect only really works on shapes that are either very complex or have a lot of intricate, rounded corners, limiting the pool of meshes we can use for a great looking light pattern.
+
+<Image
+  src="blog/caustics_simple_mesh.png"
+  alt="Screenshot of a caustic pattern obtained from a sphereGeometry. The resulting effect is unfortunately not very interesting."
+  width={700}
+  height={485}
+/>
+
+Thus, I had the idea to add a bit of displacement to those meshes to increase their complexity and hope for a better caustic effect. When adding displacement to the vertices of a mesh in a vertex shader, there's one tiny aspect I had overlooked until now: **the normals are not recomputed based on the displacement of the vertices out of the box**. Thus, if we were to take our target mesh and add some noise to displace its vertices, the resulting Caustic effect would unfortunately remain _unchanged_.
+
+To solve that, we need to **recompute our normals** on the fly based on the displacement we apply to the vertices of our mesh in our vertex shader. Luckily, the question of "how to do this" has already been answered by [Marco Fugaro](https://discourse.threejs.org/u/marcofugaro/summary) from the Three.js community!
+
+<Callout variant="info">
+
+You can learn more details about his method in his post [Calculating vertex normals after displacement in the vertex shader](https://discourse.threejs.org/t/calculating-vertex-normals-after-displacement-in-the-vertex-shader/16989). We'll use the code he introduces here in our examples.
+
+Moreover, this method has many more applications. Recomputing normals can help making the displacement applied to materials that rely a lot on lighting look much more realistic. In the final example of this article, you'll see that I forked and modified `@react-three/drei`'s `MeshTransmissionMaterial` to do just that.
+The resulting displaced mesh looks way better thanks to the normals at the origin of the many light effects of this material taking into account the displacement in real-time.
+
+Shoutout to <Anchor discreet favicon href="https://twitter.com/brainFnCl">@brainFnCl</Anchor> who published some of his own work customizing `MeshTransmissionMaterial` with custom GLSL code last year.
+
+</Callout>
+
+I decided to try his method alongside a [classic Perlin 3D noise](https://github.com/hughsk/glsl-noise/blob/master/classic/3d.glsl). We can add the desired displacement and the Normal recomputation code to the vertex shader of our original Normal material we introduced in the first part.
+
+```glsl {7-10,12-17,31-37,39-40,42} title=Updated Normal material fragment shader
+uniform float uFrequency;
+uniform float uAmplitude;
+uniform float time;
+
+// cnoise definition ...
+
+vec3 orthogonal(vec3 v) {
+  return normalize(abs(v.x) > abs(v.z) ? vec3(-v.y, v.x, 0.0)
+  : vec3(0.0, -v.z, v.y));
+}
+
+float displace(vec3 point) {
+  if(uDisplace) {
+      return cnoise(point * uFrequency + vec3(time)) * uAmplitude;
+  }
+  return 0.0;
+}
+
+void main() {
+  vUv = uv;
+
+  vec3 displacedPosition = position + normal * displace(position);
+  vec4 modelPosition = modelMatrix * vec4(displacedPosition, 1.0);
+
+  vec4 viewPosition = viewMatrix * modelPosition;
+  vec4 projectedPosition = projectionMatrix * viewPosition;
+
+  gl_Position = projectedPosition;
+
+  float offset = 4.0/256.0;
+  vec3 tangent = orthogonal(normal);
+  vec3 bitangent = normalize(cross(normal, tangent));
+  vec3 neighbour1 = position + tangent * offset;
+  vec3 neighbour2 = position + bitangent * offset;
+  vec3 displacedNeighbour1 = neighbour1 + normal * displace(neighbour1);
+  vec3 displacedNeighbour2 = neighbour2 + normal * displace(neighbour2);
+
+  vec3 displacedTangent = displacedNeighbour1 - displacedPosition;
+  vec3 displacedBitangent = displacedNeighbour2 - displacedPosition;
+
+  vec3 displacedNormal = normalize(cross(displacedTangent, displacedBitangent));
+
+  vNormal = displacedNormal * normalMatrix;
+}
+```
+
+Since a time component is required for the noise to move, we need to ensure:
+
+- To add a `time` component to our Normal material. That will influence the entire pipeline we built in the previous parts, down to the final caustic effect.
+- To add a `time` component and displacement to the original material. Otherwise, it wouldn't make sense that a static mesh would create moving caustics. (see final example)
+
+```jsx title=Wiring up the target mesh's material and normal material with time, amplitude and frequency to enable dynamic caustics
+//...
+
+mesh.current.material = normalMaterial;
+mesh.current.material.side = THREE.BackSide;
+
+mesh.current.material.uniforms.time.value = clock.elapsedTime;
+mesh.current.material.uniforms.uDisplace.value = displace;
+mesh.current.material.uniforms.uAmplitude.value = amplitude;
+mesh.current.material.uniforms.uFrequency.value = frequency;
+
+gl.setRenderTarget(normalRenderTarget);
+gl.render(mesh.current, normalCamera);
+
+mesh.current.material = originalMaterial;
+mesh.current.material.uniforms.time.value = clock.elapsedTime;
+mesh.current.material.uniforms.uDisplace.value = displace;
+mesh.current.material.uniforms.uAmplitude.value = amplitude;
+mesh.current.material.uniforms.uFrequency.value = frequency;
+
+//...
+```
+
+We now have wired together all the parts necessary to handle dynamic caustics! Let's take some time to make a beautiful scene with some staging by adding a `Spotlight` from `@react-three/drei` and a ground plane that can bounce some light for more realism 🤌 and voilà! We have the perfect scene to showcase our beautiful moving caustics ✨.
+
+<CausticsSandpack scene="scene5" />
+
+<Callout variant="info">
+
+You can see that the displacement introduced through the Perlin noise influences our final caustic pattern as we use that same displacement when recomputing the normals that are the defining factor of this effect.
+
+Try to select different meshes and turn on/off the displacement/rotation to see the different results you can get.
+
+</Callout>
+
+## Conclusion
+
+Whether you want them subtle, shiny, or colorful, **you now know everything about what's behind caustics in WebGL**! Or at least, one way to do it! What we saw is obviously _one of many_ possible solutions to building such an effect for the web, and with the advent of WebGPU, I'm hopeful that we'll see more ways to showcase complex light effects like this one with higher quality/physical accuracy and without sacrificing performance. You can already see glimpses of this in one of @active_theory's [latest work](https://twitter.com/active_theory/status/1721543611987148870).
+
+There are a further improvements I had in mind to make the result of this effect look even better, such as **getting a texture of the front side and back side normals** of the target mesh to take into account both faces when computing the caustic intensity and potentially a more elegant/performant way to do chromatic aberration that is less resource hungry and provides better output.
+
+I'm happy with the caustics I built, although it doesn't seem to result in a beautiful effect for every mesh and I had to resort to last-minute tweaks to fix issues that are most likely due to limitations in my implementation, bad choices in my render pipeline, or simply erroneous math. If you find obvious mistakes: please let me know, and let's work together to fix them! In the meantime, if you wish to have caustics running on your own project, I can't recommend `@react-three/drei`'s own `Caustics` component enough, which is far more production-grade than the implementation I went through here and will most likely cater to your project much better than this.
+
+I hope this article can spark some creativity in your shader/React Three Fiber work and make the process of building effects or materials you have in mind from scratch less daunting 🙂.

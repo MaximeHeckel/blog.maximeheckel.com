@@ -220,6 +220,8 @@ const RaymarchingSandpack = dynamic(
   () => import('./Widgets/Raymarching/Sandpack')
 );
 
+const CausticsSandpack = dynamic(() => import('./Widgets/Caustics/Sandpack'));
+
 const customComponents = {
   AnimationTypes,
   ClipboardAnimationDetails,
@@ -279,6 +281,7 @@ const customComponents = {
   RefractionDispersionSandpack,
   RenderTargetsSandpack,
   RaymarchingSandpack,
+  CausticsSandpack,
 };
 
 const MDXComponents = {
