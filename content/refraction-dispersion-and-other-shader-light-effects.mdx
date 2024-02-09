@@ -49,7 +49,7 @@ Since my very first lines of React Three Fiber and shader code, I've been obsess
 
 <Image
   border={false}
-  src="blog/example_dispersion_2.png"
+  src="blog/example_dispersion_2"
   alt="Examples of dispersion effects by the Vercel Team, Davo Galavotti, and many other artists"
   width={700}
   height={447}
@@ -100,7 +100,7 @@ There, I showcase how you can use FBO to store the positions of the points withi
 To make our mesh transparent: we perform "multiple passes" in our render loop, i.e. for each frame. In the diagram below, I illustrated what each phase achieves and what we end up _rendering_ within our Frame Buffer Object:
 
 <Image
-  src="blog/transparent_mesh_fbo_2.png"
+  src="blog/transparent_mesh_fbo_2"
   alt="Diagram showcasing how to make a mesh transparent by hidding it, rendering the scene in an FBO, using the resulting texture on the mesh's material and showing it again."
   width={700}
   height={274}
@@ -230,7 +230,7 @@ Now that we have a transparent mesh, it's time to work on our **refraction effec
 Refraction occurs when light passes from one environment to another. The ray of light will _bend_ in the new environment due to changes in the density of the material.
 
 <Image
-  src="blog/refraction.png"
+  src="blog/refraction"
   alt="Simple diagram showcasing how light gets refracted when passing from one environment to another."
   width={700}
   height={336}
@@ -324,7 +324,7 @@ This effect is visible in the playground below 👇. I added `OrbitControl` to t
 **Dispersion happens when the IOR of a material varies with the wavelength of the color**. As a result, the different colors composing light refract at different angles, thus making each color visible.
 
 <Image
-  src="blog/dispersion_2.png"
+  src="blog/dispersion_2"
   alt="Simple diagram showcasing how light gets refracted and dispersed when passing from one environment to another."
   width={700}
   height={336}
@@ -578,7 +578,7 @@ For ours, we can use light to give a better sense of depth and volume to our mes
 One of the simplest light models we can implement to reproduce these effects is the [Blinn-Phong model](https://stackoverflow.com/a/53951172).
 
 <Image
-  src="blog/specular_diffuse.png"
+  src="blog/specular_diffuse"
   alt="Diagram showcasing how the different vectors necessary to reproduce specular and diffuse lighting are obtained."
   width={700}
   height={262}
@@ -708,7 +708,7 @@ Thus I attempted to **render the backside of the mesh** and then render the fron
 How does to do so? Here's a diagram that shows you how we can do that in our render loop:
 
 <Image
-  src="blog/backside.png"
+  src="blog/backside"
   alt="Diagram showcasing how to render both backside and frontside while maintaining existing transparency and light effects"
   width={700}
   height={269}

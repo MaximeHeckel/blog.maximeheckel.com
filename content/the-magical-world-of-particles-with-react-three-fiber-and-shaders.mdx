@@ -102,7 +102,7 @@ const Scene = () => {
 You should see something like this:
 
 <Image
-  src="blog/console_attributes.png"
+  src="blog/console_attributes"
   alt="Screenshot showcasing the output printed when logging the attributes of a geometry"
   width={700}
   height={482}
@@ -176,7 +176,7 @@ We saw that **we use uniforms to pass data from our Javascript code to a shader*
 You can only pass attributes to the vertex shader! If you want to use them in a fragment shader, you will need to pass the data using a _varying_.
 
 <Image
-  src="blog/varyings_3.png"
+  src="blog/varyings_3"
   alt="Diagram illustrating how to pass the attributes from a geometry from the vertex shader to the fragment shader using varyings."
   width={700}
   height={368}
@@ -605,7 +605,7 @@ It may sound counter-intuitive for a fragment shader to store/return position da
 In the end, we're using the simulation pass as a **buffer** to store data **and do a lot of heavy calculations** on the GPU by processing our positions in a fragment shader, and we do that on _every_ _single_ _frame_. Hence the name Frame Buffer Object. I hope I did not lose you there 😅. Maybe the diagram below, as well as the following code snippet will help 👇:
 
 <Image
-  src="blog/fbo_3.png"
+  src="blog/fbo_3"
   alt="Diagram illustrating how the Frabe Buffer Objects allows to store and update particles position data in a vertex shader and then be read as a texture."
   width={700}
   height={443}

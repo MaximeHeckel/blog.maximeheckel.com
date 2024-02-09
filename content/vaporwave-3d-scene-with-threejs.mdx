@@ -211,7 +211,7 @@ Here we define our **camera**, an object representing the _point of view_ we hav
 When working on a Three.js project, the axes describing the space in which we're working are set as follows:
 
 <Image
-  src="blog/axis-helper.png"
+  src="blog/axis-helper"
   alt='Axes helper. "x" is the horizontal axis to move things left and right from the center. "y" is the vertical axis to move things up and down. "z" is the "depth" axis, it points towards the viewer by default'
   width={600}
   height={418}
@@ -290,7 +290,7 @@ We now have the _base_ for our scene: a flat plane. Before we start working with
 ### Deconstructing the original scene
 
 <Image
-  src="blog/annotations.png"
+  src="blog/annotations"
   alt="My original annotations for key elements of the Linear WebGL scene"
   width={800}
   height={574}
@@ -310,7 +310,7 @@ Now that we've analyzed our scene we can start building 🤘.
 
 First and foremost, let's make our `PlaneGeometry` look more like the final render. We can see from the Linear scene that the terrain is mostly some kind of grid. To achieve that effect we will need to do 3 things:
 
-1. Draw the grid and export it as a `.jpg` or `.png` on a software like Figma for example
+1. Draw the grid and export it as a `.jpg` or `` on a software like Figma for example
 2. Load this file as a **texture** in our scene
 3. Put that texture on our plane, and _voilà_ ✨ we'll have our _vaporwave grid_ effect!
 
@@ -325,7 +325,7 @@ const gridTexture = textureLoader.load(TEXTURE_PATH);
 
 <Callout variant="info">
 
-You can download the texture I made on my own [here](https://res.cloudinary.com/dg5nsedzw/image/upload/v1641657168/blog/vaporwave-threejs-textures/grid.png). It's pretty heavy, but I'll talk about that a bit later.
+You can download the texture I made on my own [here](https://res.cloudinary.com/dg5nsedzw/image/upload/v1641657168/blog/vaporwave-threejs-textures/grid). It's pretty heavy, but I'll talk about that a bit later.
 
 </Callout>
 
@@ -359,7 +359,7 @@ Now that we have our material set up we need to shape the terrain by _displacing
 Here's the displacement map (also called "heightmap") I provided to this scene:
 
 <Image
-  src="blog/displacementmap.png"
+  src="blog/displacementmap"
   alt="Displacement Map used for our terrain. The lighter the area, the higher the vertices will appear, the darker the lower."
   width={400}
   height={400}
@@ -452,7 +452,7 @@ You will notice that there's one issue with our scene now: the plane moves towar
 We have to find a way to give the user the _impression_ that this terrain goes on forever. For obvious reasons, we can't make our terrain infinite, it's just impossible, but we can use a few tricks!
 
 <Image
-  src="blog/terrain-animation.png"
+  src="blog/terrain-animation"
   alt="Diagram showcasing how to trick the viewer to think the animation is endless by using a copy of the plane, and swap its position at the right moment"
   width={800}
   height={500}
@@ -525,7 +525,7 @@ We did it! 🎉 We managed to animate our scene in an infinite loop and we're sl
 As you can see from the previous playground, our terrain looks a bit off compared to what the Linear team came up with. I didn't really know what it was at first, it was almost as if our terrain looked _too sharp_. However, after looking at the original scene _very_ closely I noticed the following:
 
 <Image
-  src="blog/linear-scene-zoomed.png"
+  src="blog/linear-scene-zoomed"
   alt="Screenshot of the Linear WebGL animation with a portion zoomed in on the grid showcasing the grid is in fact composed of RGB stripes"
   width={800}
   height={500}
@@ -604,7 +604,7 @@ You can see some new elements were introduced here:
 When I applied this effect for the first time, the colors ended up looking... quite _off_:
 
 <Image
-  src="blog/linear-scene-no-gamma-correction.png"
+  src="blog/linear-scene-no-gamma-correction"
   alt="Screenshot showcasing our Three.js scene without color correction"
   width={800}
   height={575}
@@ -627,7 +627,7 @@ I had to look for hints to figure out what to do here. By looking at the reflect
 After a bit of research, it seemed that spotlights were the only lights that were fit for that so I defined them as follows:
 
 <Image
-  src="blog/spotlights-positions.png"
+  src="blog/spotlights-positions"
   alt="Diagram showcasing the position of the two spotlights relative to the first plane that light up our scene at specific targets"
   width={800}
   height={500}
@@ -682,7 +682,7 @@ In our case, however, our material doesn't behave consistently:
 To achieve this we can set the `metalnessMap` property of our material: a texture to indicate the parts of our mesh should be metallic and the ones that should not.
 
 <Image
-  src="blog/linear-metalnessmap.png"
+  src="blog/linear-metalnessmap"
   alt="Metalness Map used for our terrain. The lighter the area, the more metallic the material will appear in that area, the darker the rougher. "
   width={800}
   height={800}
