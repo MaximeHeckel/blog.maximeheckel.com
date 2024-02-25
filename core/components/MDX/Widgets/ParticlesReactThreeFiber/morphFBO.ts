@@ -265,10 +265,10 @@ const MorphFBOFiles = {
   '/SimulationMaterial.js': {
     code: SimulationMaterialCode,
   },
-  '/simulationVertexShader.js': {
+  '/simulationVertexShader.glsl': {
     code: SimulationVertexShader,
   },
-  '/simulationFragmentShader.js': {
+  '/simulationFragmentShader.glsl': {
     code: SimulationFragmentShader,
   },
   '/vertexShader.glsl': {
