@@ -1,0 +1,1024 @@
+---
+title: 'Moebius-style post-processing and other stylized shaders'
+subtitle: A detailed essay on the process of building a post-processing stylized shader reproducing the style of legendary artist Jean Giraud a.k.a Moebius for your React Three Fiber projects. In it, I detail the process of drawing outlines with a Sobel Filter as well as custom shadow and lighting patterns to bring a unique style to your WebGL scene.
+date: '2024-03-24T08:00:00.000Z'
+updated: '2024-03-24T08:00:00.000Z'
+categories: []
+slug: moebius-style-post-processing
+type: 'blogPost'
+featured: false
+---
+
+**P**hysically **B**ased **R**endering (PBR) is often the _defacto_ stylistic guideline for 3D developers to follow for their creations as
+tools/frameworks, for the most part, optimize for realistic materials, shadows, and lighting out-of-the-box.
+However, in an industry constantly pushing for realism, adopting stylized shaders while still following physical principles can
+really make your project stand out.
+
+There's been a recent resurgence in distinct artistic directions through the use of stylized shaders in many games.
+At least since Zelda BOTW came out, it's becoming more prevalent. While Hi-Fi Rush or the Persona series are great examples of _Non-Photorealistic Rendering_,
+there are a few indie games out there (e.g. [Sable](https://www.ign.com/games/sable) and [Synergy](https://www.ign.com/games/synergy-2024)) doing wonders by emulating
+a flavor of a hand-drawn art style which I particularly enjoy from legendary artist [Jean Giraud](https://en.wikipedia.org/wiki/Jean_Giraud) aka **Moebius**.
+
+So far, I've only ever tried reproducing physically accurate lighting effects or base my scene in the "real world" with no styling at all, and I wanted to see whether
+reproducing some aspect of it in a WebGL environment was possible. Luckily, <Anchor discreet favicon href="https://twitter.com/UselessGameDev">@UselessGameDev</Anchor>
+made a [great video on reproducing the Moebius style](https://www.youtube.com/watch?v=jlKNOirh66E&ab_channel=UselessGameDev). In it, he deconstructs the key characteristics
+that make Jean Giraud's style so unique and rebuilds each of them in Unity. After carefully studying each subject covered in that video and spending a couple of days on the problem,
+I managed to build what is to me a very satisfying **Moebius post-processing pass** on top of a React Three Fiber scene ✨. It features not only all the elements of Moebius'
+style (outlines, crosshatched shadows, and specular) but also elements usually featured in Moebius' more sci-fi-focused comic books: _desert_, _spaceships_, and _alien planets_
+looming in the distance.
+
+<VideoPlayer
+  src="https://d2xl4m2ghaywko.cloudfront.net/moebius-demo.mp4"
+  autoPlay
+  muted
+  loop
+  controls={true}
+  width={700}
+  height={445}
+/>
+
+In this article, we will deconstruct this art style and reproduce it step-by-step as a post-processing pass that you can put on top of any React Three Fiber scene. We will learn
+how to output hand-drawn outlines by leveraging an edge detection filter and stylize our final render while preserving physical elements like lighting and shadows with an extra touch
+of creativity. Finally, we'll look at some of the shortcomings of this render pipeline and how I worked around them in my own creations.
+
+<Callout label="Sources" variant="info">
+
+- [How Persona Combines 2D and 3D Art](https://www.youtube.com/watch?v=dVWkPADNdJ4&ab_channel=Acerola) by {<Anchor discreet favicon href="https://twitter.com/acerola_t">@Acerola_t</Anchor>}
+- [Unlocking The Power Of Unity's Scriptable Render Pipeline](https://www.youtube.com/watch?v=9fa4uFm1eCE&ab_channel=GameDevGuide) by Game Dev Guide
+- [Moebius-style 3D Rendering](https://www.youtube.com/watch?v=jlKNOirh66E&ab_channel=UselessGameDev) by {<Anchor discreet favicon href="https://twitter.com/UselessGameDev">@UselessGameDev</Anchor>}
+- [Sketchy Pencil Effect with Three.js Post-Processing](https://tympanus.net/codrops/2022/11/29/sketchy-pencil-effect-with-three-js-post-processing/) by {<Anchor discreet favicon href="https://twitter.com/maya_ndljk">@maya_ndljk</Anchor>}
+- {<Anchor discreet favicon href="https://twitter.com/txstc55">
+  txstc55
+  </Anchor>} who [explored as well this effect](https://twitter.com/txstc55/status/1686478266654130176)
+  last year
+
+</Callout>
+
+## Setting up the stage for post-processing
+
+We want to apply the Moebius style to a React Three Fiber scene _as a whole_, not just as a material of the individual meshes that compose it. Knowing that, we'll need to use a **post-processing effect** that can apply this style to an already rendered scene.
+A post-processing effect acts like an "image filter" on top of your scene to apply any modifications you'd like. `@react-three/postprocessing` has many effects like Bloom, Vignette, or Depth of Field built in,
+which you can find on many popular 3D websites. However, none of the prebuilt ones are even close to what we want to achieve, so we'll have to build it ourselves by implementing our own `Pass` based on a custom shader.
+
+<Callout label="Docs" variant="info">
+
+Not familiar with post-processing effects in React Three Fiber? Head to [the documentation](https://docs.pmnd.rs/react-postprocessing/introduction) first for a quick catch-up!
+
+</Callout>
+
+Unfortunately `@react-three/postprocessing` does not allow for custom passes, so we'll need to go "vanilla" and use more Three.js flavored code for this part. You may be familiar with how Three.js projects set up their post-processing pipeline
+using `effectcomposer` and the many flags that we need to turn on for each pass to take effect, but thanks to `@react-three/drei`'s `Effects` component, this entire setup is now a bit simpler:
+
+```jsx {7,17,56-58} title=Our scene and a skeleton post-processing pass
+import { Effects } from '@react-three/drei';
+import { extend } from '@react-three/fiber';
+import { useRef } from 'react';
+import { Pass } from 'postprocessing';
+import * as THREE from 'three';
+
+class MoebiusPass extends Pass {
+  constructor(args) {
+    super();
+  }
+
+  dispose() {}
+
+  render(renderer, writeBuffer, readBuffer) {}
+}
+
+extend({ MoebiusPass });
+
+const MoebiusScene = () => {
+  const mesh = useRef();
+  const ground = useRef();
+
+  const lightPosition = [10, 10, 10];
+
+  return (
+    <>
+      <directionalLight
+        castShadow
+        position={lightPosition}
+        intensity={4.5}
+        color="#fff"
+        target={ground.current}
+      />
+      <mesh castShadow receiveShadow position={[-1, 2, 1]}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshStandardMaterial color="orange" />
+      </mesh>
+      <mesh
+        castShadow
+        receiveShadow
+        rotation={[0, Math.PI / 3, 0]}
+        position={[2, 0.75, 2]}
+      >
+        <boxGeometry args={[1.5, 1.5, 1.5]} />
+        <meshStandardMaterial color="hotpink" />
+      </mesh>
+      <mesh
+        ref={ground}
+        receiveShadow
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 0, 0]}
+      >
+        <planeGeometry args={[10, 10, 100, 100]} />
+        <meshStandardMaterial color="white" />
+      </mesh>
+      <Effects>
+        <moebiusPass />
+      </Effects>
+    </>
+  );
+};
+
+// ...
+```
+
+You can see in the code snippet above that:
+
+1. We created a `MoebiusPass` class that extends from `Pass`. This class will let us define everything we need for our Moebius style.
+2. We "extended" React Three Fiber's namespace with our `MoebiusPass` allowing us to use it as a standard JSX component.
+3. Finally, we used our newly created pass inside the `Effects` component.
+
+Now that we wired this together, let's create a custom shader for our post-processing pass to render on the screen. We'll first create a very simple shader to make sure that everything functions as intended:
+
+```jsx {34-35,44} title=Sample post-processing pass using a custom shader material
+//...
+import { FullScreenQuad } from "three-stdlib";
+
+const moebiusShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+  },
+  vertexShader: \`
+    varying vec2 vUv;
+
+    void main() {
+      vUv = uv;
+
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  \`,
+  fragmentShader: \`
+    varying vec2 vUv;
+    uniform sampler2D tDiffuse;
+
+    void main() {
+      vec2 uv = vUv;
+      vec4 color = texture2D(tDiffuse, uv);
+
+      gl_FragColor = vec4(color.r + 0.2, color.g, color.b, color.a);
+    }
+  \`,
+}
+
+class MoebiusPass extends Pass {
+  constructor(args) {
+    super();
+
+    this.material = new THREE.ShaderMaterial(moebiusShader);
+    this.fsQuad = new FullScreenQuad(this.material);
+  }
+
+  dispose() {
+    this.material.dispose();
+    this.fsQuad.dispose();
+  }
+
+  render(renderer, writeBuffer, readBuffer) {
+    this.material.uniforms.tDiffuse.value = readBuffer.texture;
+
+    if (this.renderToScreen) {
+      renderer.setRenderTarget(null);
+      this.fsQuad.render(renderer);
+    } else {
+      renderer.setRenderTarget(writeBuffer);
+      if (this.clear) renderer.clear();
+      this.fsQuad.render(renderer);
+    }
+  }
+}
+//...
+```
+
+Much like I explored last year in [my blog post on render targets](/posts/beautiful-and-mind-bending-effects-with-webgl-render-targets/#an-alternative-to-effectcomposer-for-post-processing-effects), our pass consists of a simple `FullScreenQuad` that overlays
+the scene and a material that takes the underlying scene as input, modifies it, and then renders it on our screen. In this case, you should see that the scene now has a red tint, as we increased the intensity of the red
+channel in the fragment shader of our post-processing pass.
+
+<MoebiusSandpack scene="scene1" />
+
+## Drawing outlines with shaders for our React Three Fiber scene
+
+With our post-processing pass now implemented, we can start making our way toward building some of the key aspects of the Moebius style. One of the first striking elements of this art style is its consistent outlines,
+as most of Jean Giraud's creations are drawings. Thus, we will need to find a way to draw outlines around all the objects of our React Three Fiber scenes and to do that, we'll need to implement an **edge detection filter**.
+
+An edge detection filter enables us to **identify points in our scene where the brightness changes sharply**, for instance, between the pixels of an object in the foreground and the background, which should result in us being able
+to place our outline around each object pretty accurately. In our case:
+
+- We'll implement a **Solbel Filter**, a type of edge detection filter.
+- We'll feed our filter both the Depth data and Normal data of our scene and combine the result obtained.
+
+### Getting the Depth Buffer of our scene
+
+_Why would we need the "depth data" of our scene?_ This data will tell us on which plane the objects of our scene belong and thus find any "depth discontinuities" and help us find the _outer_ outlines of the overall scene.
+
+First things first, let's work our way towards getting the depth information of our scene. We can use our good ol' `useFBO` hook to create a render target, but this time, we will also pass a `depth texture` onto it and flip the `depth buffer` option to `true.
+
+```jsx title=Setting up our depthTexture
+const depthTexture = new THREE.DepthTexture(
+  window.innerWidth,
+  window.innerHeight
+);
+
+const depthRenderTarget = useFBO(window.innerWidth, window.innerHeight, {
+  depthTexture,
+  depthBuffer: true,
+});
+```
+
+<Callout label="DepthTexture" variant="info">
+
+In the code snippet above, we're defining a specific type of texture: a `DepthTexture`. It lets us store the depth information of the scene for a given camera, and that information will be available to us as a grayscale representation of the scene where:
+
+- The lighter the pixels, the further away from the camera they are.
+- The darker the pixels, the closer to the camera they are.
+
+</Callout>
+
+We then use our render target within our `useFrame` hook to render the current scene onto it and pass its resulting depthTexture to our post-processing pass.
+
+```jsx title=Passing the Depth data of the scene to our post-processing pass
+const MoebiusScene = () => {
+  //...
+  const { camera } = useThree();
+
+  useFrame((state) => {
+    const { gl, scene, camera } = state;
+
+    gl.setRenderTarget(depthRenderTarget);
+    gl.render(scene, camera);
+
+    gl.setRenderTarget(null);
+  });
+
+  return (
+    <>
+      {/*...*/}
+      <Effects>
+        <moebiusPass
+          args={[
+            {
+              depthRenderTarget,
+              camera,
+            },
+          ]}
+        />
+      </Effects>
+    </>
+  );
+};
+```
+
+We can now try to visualize our depth texture by rendering it through the fragment shader of our custom post-processing pass. However, we'll first need to know how to "read" this texture within our fragment shader, as this is not your typical `sampler2D`
+data that you can read with `texture2D` in GLSL. Luckily, <Anchor discreet favicon href="https://twitter.com/mattdesl">@mattdesl</Anchor> provided a great example on how to read depth texture in [one example](https://threejs.org/examples/?q=depth#webgl_depth_texture)
+that he built for the Three.js documentation. Here's the function called `readDepth` that he provides:
+
+```glsl title=readDepth glsl function made my @mattdesl
+#include <packing>
+
+float readDepth( sampler2D depthTexture, vec2 coord ) {
+  float fragCoordZ = texture2D( depthTexture, coord ).x;
+  float viewZ = perspectiveDepthToViewZ( fragCoordZ, cameraNear, cameraFar );
+  return viewZToOrthographicDepth( viewZ, cameraNear, cameraFar );
+}
+```
+
+With this function, we obtain the value of the "depth" of the pixel represented by a grayscale color, which we can then return as an output of our fragment shader:
+
+```glsl title=Fragment shader returning the depth of every pixel represented by a grayscale color
+#include <packing>
+varying vec2 vUv;
+uniform sampler2D tDiffuse;
+uniform sampler2D tDepth;
+uniform float cameraNear;
+uniform float cameraFar;
+
+float readDepth( sampler2D depthTexture, vec2 coord ) {
+  float fragCoordZ = texture2D( depthTexture, coord ).x;
+  float viewZ = perspectiveDepthToViewZ( fragCoordZ, cameraNear, cameraFar );
+  return viewZToOrthographicDepth( viewZ, cameraNear, cameraFar );
+}
+
+void main() {
+  vec2 uv = vUv;
+
+  float depth = readDepth( tDepth, vUv );
+
+  gl_FragColor = vec4(vec3(depth), 1.0);
+}
+```
+
+The demo below showcases the output of our post-processing pass returning the "depth data" of our scene 👇
+
+<MoebiusSandpack scene="scene2" />
+
+<Callout>
+
+Notice how the pixels closer to the camera appear darker than the ones further away. Also, notice how our depth buffer renders the background of the scene plain white, as the pixels composing it are the furthest from our viewpoint.
+
+Since all the objects of our main scene are close to one another, I added an extra sphere in this demo at `z=-150,` so the grayscale depth color would be more striking.
+
+</Callout>
+
+### Getting the Normal Buffer of our scene
+
+While the depth data gives us information on the outer boundaries of our scenes, the Normal data will help us find the inner outlines within our scene:
+
+- If our edge detection filter finds higher differences in normals, that will mean there's a very sharp corner, thus a very pronounced outline.
+- If the difference in normals is not that significant, we'll get a more subtle outline or no outline under a certain threshold.
+
+If you read my [blog post on Caustics](/posts/caustics-in-webgl/#extracting-normals-section), you might be familiar with the exercise of "capturing the normals" in a render target. While this is a valid technique, it is a bit too "brute force" for our post-processing use case: we'd have to
+manually apply a `NormalMaterial` for _each_ mesh composing our scene 😮‍💨. But we don't have time for that and have better things to do! Instead, we'll override the _entire_ scene with a `NormalMaterial`
+(or `CustomNormalMaterial` in our case because we'll need to tweak it in the later parts) using the `scene.overrideMaterial` property:
+
+```jsx title=Example of usage of the overrideMaterial property of the scene object
+scene.matrixWorldNeedsUpdate = true;
+scene.overrideMaterial = NormalMaterial;
+```
+
+As with the depth texture, we'll define a dedicated render target for our render target, render our scene outputting its Normal data, and pass the result as an argument of our post-processing pass.
+
+```jsx {12,14-15,31} title=Passing the Normal data of our scene to our post-processing pass
+const MoebiusScene = () => {
+  const normalRenderTarget = useFBO();
+  //...
+
+  useFrame((state) => {
+    const { gl, scene, camera } = state;
+
+    gl.setRenderTarget(depthRenderTarget);
+    gl.render(scene, camera);
+
+    const originalSceneMaterial = scene.overrideMaterial;
+    gl.setRenderTarget(normalRenderTarget);
+
+    scene.matrixWorldNeedsUpdate = true;
+    scene.overrideMaterial = CustomNormalMaterial;
+
+    gl.render(scene, camera);
+    scene.overrideMaterial = originalSceneMaterial;
+
+    gl.setRenderTarget(null);
+  });
+
+  return (
+    <>
+      {/*...*/}
+      <Effects>
+        <moebiusPass
+          args={[
+            {
+              depthRenderTarget,
+              normalRenderTarget,
+              camera,
+            },
+          ]}
+        />
+      </Effects>
+    </>
+  );
+};
+```
+
+Finally, if needed, we can visualize the Normal data by returning it as output of our custom post-processing shader pass. There are no tricks here: we can use the standard `texture2D` function to read the data of our "Normal texture."
+
+```glsl title=Fragment shader from our post-processing pass outputting the Normal data of the scene
+varying vec2 vUv;
+uniform sampler2D tNormal;
+
+void main() {
+  vec2 uv = vUv;
+
+  vec3 normal = texture2D(tNormal, vUv).rgb;
+
+  gl_FragColor = vec4(normal, 1.0);
+}
+```
+
+The resulting scene is visible below 👇 with just a few lines of code, we got the Normal data of our entire scene!
+
+<MoebiusSandpack scene="scene3" />
+
+### Edge detection with Sobel filters
+
+We have all the data necessary to detect edges and draw the outlines of our scene! As stated in the introduction of this section, we'll use an **edge detection filter** and, more specifically, **a Sobel filter** for this task.
+
+As we read the pixels of our scene in our post-processing pass, we'll use this filter (which is nothing more than an image filter) to detect sharp changes in _intensity_ (intensity here can be a difference in depth or normals). The Sobel filter is a specific filter that has a few specificities that will help us:
+
+- It's a **convolution filter**: we'll perform the edge detection by sliding over each pixel a small 3x3 matrix (also known as **kernel**).
+- The matrix itself has specific values (also known as **weights**) specifically set to detect differences in pixel intensity.
+- Those weights are applied on the pixel itself and its neighbors.
+- It has two kernels: one to detect edges along each x/y-axis.
+
+The matrix is defined as follows:
+
+`Sx = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]`
+
+`Sy = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]]`
+
+<Callout label="Convolution filters" variant="info">
+
+Convolution filters have many more applications for image processing:
+
+- Blurring
+- Sharpening
+- Noise reduction (Gaussian blur)
+
+You can find more details about convolution filters in this [video](https://www.youtube.com/watch?v=C_zFhWdM4ic&t=0s&ab_channel=Computerphile), which I found very helpful.
+
+</Callout>
+
+You may ask how we're supposed to apply this matrix/kernel to our pixel. Luckily, the math involved is not too complex here, and we can visualize it easily:
+
+- For each pixel, we'll "overlay" the center of the kernel
+- We'll multiply each value of the kernel with the value of the pixel it overlays
+
+<Fullbleed widthPercent={80}>
+  <Image
+    src="blog/sobel_matrix_kernel"
+    alt="Diagram showcasing the process of applying the Sobel matrix on a given kernel"
+    width={700}
+    height={349}
+  />
+</Fullbleed>
+
+By adding up the result of this operation, we get a _gradient_ or "rate of change," which corresponds to the difference in intensity between pixels processed by the filter (overlayed by the matrix to keep the explanation as visual as possible). If that output is non-zero and above a certain treshold; we detected a potential edge! The widget below aims to showcase this with some simple examples:
+
+<SobelVisualizer />
+
+<Callout variant="info">
+
+Notice that:
+
+- Each x/y direction kernel detects edges in a specific direction. For example, the top/bottom edges of the square can only have a non-zero gradient when using the y-direction kernel, whereas its x-direction counterpart detects the right/left edges.
+- To find the edges of more complex patterns, we have to combine the result of both x and y-direction kernels.
+- A gradient output of 0 for both kernels means the filter has not detected any edges.
+
+</Callout>
+
+<Image
+  src="blog/sobel_matrix_directions"
+  alt="Diagram showcasing how each of x-direction/y-direction Sobel Matrices respectively detect vertical/horizontal edges"
+  width={700}
+  height={402}
+/>
+
+Code-wise, this is how we can define and apply the Sobel filter in our fragment shader:
+
+```glsl {25-31,34,38} title=Applying the Sobel filter to our Depth data
+//...
+const mat3 Sx = mat3( -1, -2, -1, 0, 0, 0, 1, 2, 1 );
+const mat3 Sy = mat3( -1, 0, 1, -2, 0, 2, -1, 0, 1 );
+
+void main() {
+  vec2 texel = vec2( 1.0 / resolution.x, 1.0 / resolution.y );
+  float outlineThickness = 3.0;
+  vec4 outlineColor = vec4(0.0, 0.0, 0.0, 1.0);
+  vec4 pixelColor = texture2D(tDiffuse, vUv);
+
+  // Getting the value of each pixel of our kernel -> depth11 is our current pixel
+  float depth00 = readDepth(tDepth, vUv + outlineThickness * texel * vec2(-1, 1));
+  float depth01 = readDepth(tDepth, vUv + outlineThickness * texel * vec2(-1, 0));
+  float depth02 = readDepth(tDepth, vUv + outlineThickness * texel * vec2(-1, -1));
+
+  float depth10 = readDepth(tDepth, vUv + outlineThickness * texel * vec2(0, -1));
+  float depth11 = readDepth(tDepth, vUv + outlineThickness * texel * vec2(0, 0));
+  float depth12 = readDepth(tDepth, vUv + outlineThickness * texel * vec2(0, 1));
+
+  float depth20 = readDepth(tDepth, vUv + outlineThickness * texel * vec2(1, -1));
+  float depth21 = readDepth(tDepth, vUv + outlineThickness * texel * vec2(1, 0));
+  float depth22 = readDepth(tDepth, vUv + outlineThickness * texel * vec2(1, 1));
+
+  // Calculating the output of the filter applied to each pixels of the kernel
+  float xSobelValue = Sx[0][0] * depth00 + Sx[1][0] * depth01 + Sx[2][0] * depth02 +
+                      Sx[0][1] * depth10 + Sx[1][1] * depth11 + Sx[2][1] * depth12 +
+                      Sx[0][2] * depth20 + Sx[1][2] * depth21 + Sx[2][2] * depth22;
+
+  float ySobelValue = Sy[0][0] * depth00 + Sy[1][0] * depth01 + Sy[2][0] * depth02 +
+                      Sy[0][1] * depth10 + Sy[1][1] * depth11 + Sy[2][1] * depth12 +
+                      Sy[0][2] * depth20 + Sy[1][2] * depth21 + Sy[2][2] * depth22;
+
+  // Combining both Vertical and Horizontal output to detect all edges
+  float gradientDepth = sqrt(pow(xSobelValue, 2.0) + pow(ySobelValue, 2.0));
+
+  float outline = gradientDepth;
+
+  vec4 color = mix(pixelColor, outlineColor, outline);
+
+  gl_FragColor = color;
+}
+```
+
+Here, we apply the Sobel filter to the depth data we acquired in the previous section. If we were to visualize the output of this post-processing pass, this is what we get:
+
+<MoebiusSandpack scene="scene4" />
+
+We only see the outer outline of the scene! To get the complete set of outlines, we must apply the same Sobel filter to our Normal data and then combine its resulting gradient with the gradient we just obtained from the depth data. The code to do this is luckily not that different, albeit repetitive, so you may want to abstract it:
+
+```glsl {15-23,27} title=Applying the Sobel filter to both our Depth data and Normal data
+//...
+float luma(vec3 color) {
+  const vec3 magic = vec3(0.2125, 0.7154, 0.0721);
+  return dot(magic, color);
+}
+
+void main() {
+  //...
+  // Get the grayscale output of each pixel of our kernel
+  float normal00 = luma(texture2D(tNormal, vUv + outlineThickness * texel * vec2(-1, -1)).rgb);
+  float normal01 = luma(texture2D(tNormal, vUv + outlineThickness * texel * vec2(-1, 0)).rgb);
+  // ... and so on
+
+  float xSobelNormal =
+    Sx[0][0] * normal00 + Sx[1][0] * normal10 + Sx[2][0] * normal20 +
+    Sx[0][1] * normal01 + Sx[1][1] * normal11 + Sx[2][1] * normal21 +
+    Sx[0][2] * normal02 + Sx[1][2] * normal12 + Sx[2][2] * normal22;
+
+  float ySobelNormal =
+    Sy[0][0] * normal00 + Sy[1][0] * normal10 + Sy[2][0] * normal20 +
+    Sy[0][1] * normal01 + Sy[1][1] * normal11 + Sy[2][1] * normal21 +
+    Sy[0][2] * normal02 + Sy[1][2] * normal12 + Sy[2][2] * normal22;
+
+  float gradientNormal = sqrt(pow(xSobelNormal, 2.0) + pow(ySobelNormal, 2.0));
+
+  float outline = gradientDepth + gradientNormal;
+
+  vec4 color = mix(pixelColor, outlineColor, outline);
+
+  gl_FragColor = color;
+}
+```
+
+<Fullbleed widthPercent={80}>
+  <Image
+    src="blog/sobel_depth_normal_v2"
+    alt="Diagram showcasing how combining the outputs of the Sobel filters for both Depth and Normal data gives us the outlines for the entire scene and each meshes within it"
+    width={700}
+    height={222}
+  />
+</Fullbleed>
+
+<Callout variant="danger">
+
+Sometimes, the Normal gradient is not enough to draw an outline on the inside of the scene (try to move the camera to point down in the Normal demo and notice that the top of the square blends with the ground). That surfaces in the final scene has "missing outlines." To work around that, we can give "more weight" to the depth gradient.
+
+```glsl
+float outline = gradientDepth * 25.0 + gradientNormal;
+```
+
+</Callout>
+
+If we run the code we just implemented, our current post-processing pipeline will output our original scene, overlayed with an outline surrounding each mesh!
+
+<MoebiusSandpack scene="scene5" />
+
+## Stylized outlines, shadows, and lighting patterns
+
+From the looks of the render of our scene in the previous demo, it's clear that the outlines "alone" are not enough to convey the art style of Jean Giraud. In his video, <Anchor discreet favicon href="https://twitter.com/UselessGameDev">@UselessGameDev</Anchor> highlights a couple of specificities from the artist's technique that makes his creations so unique:
+
+1. The outlines are supposed to be hand-drawn. Ours are perfectly straight, which doesn't give that "handmade" feel.
+2. The shadows in Moebius' creations follow a crosshatched pattern: the darker the shadow, the denser the pattern is. Currently, our scene still renders the standard "physically based" shadows.
+3. The artist also usually depicts specular lighting with plain white dots surrounded an outline.
+
+In this part, we'll examine and re-implement each of these specificities in our custom post-processing shader pass and try our hand at other stylized shaders along the way.
+
+### Giving our outlines an hand-drawn look in GLSL
+
+We want our post-processing effect to make our scene look like a drawing, and those perfect straight outlines won't cut it. Let's make them look more _wiggly_ by applying a slight displacement using:
+
+- Some trigonometric functions like `sin` or `cos.`
+- A _wiggle_ factor for us to increase or decrease the frequency and amplitude of the outline.
+- A `random` function to apply some irregularities to the outline.
+
+```glsl
+vec2 displacement = vec2(
+  (hash(gl_FragCoord.xy) * sin(gl_FragCoord.y * frequency)) ,
+  (hash(gl_FragCoord.xy) * cos(gl_FragCoord.x * frequency))
+) * amplitude /resolution.xy;
+```
+
+We defined our displacement as a pair sinusoidal function along the x and y-axis. We made the frequency low at `0.08` as we want our outline to look like elongated waves. For the randomness, I picked up a simple `hash` function from this [shadertoy project from markjarzynski ](https://www.shadertoy.com/view/XlGcRh). Now, we need to add this displacement `vec2 ` to each depth and normal buffer pixels processed in our Sobel filter:
+
+```glsl {19-20,23-24} title=Adding displacement when reading the Depth and Normal data for our outlines to appear hand-drawn
+//...
+float hash(vec2 p) {
+  vec3 p3  = fract(vec3(p.xyx) * .1031);
+  p3 += dot(p3, p3.yzx + 33.33);
+
+  return fract((p3.x + p3.y) * p3.z);
+}
+
+void main() {
+  //...
+  vec2 displacement = vec2(
+    (hash(gl_FragCoord.xy) * sin(gl_FragCoord.y * frequency)) ,
+    (hash(gl_FragCoord.xy) * cos(gl_FragCoord.x * frequency))
+  ) * amplitude /resolution.xy;
+
+  vec4 pixelColor = texture2D(tDiffuse, vUv);
+
+  // Apply the displacement when reading the value of each pixel in the kernel
+  float depth00 = readDepth(tDepth, vUv + displacement + outlineThickness * texel * vec2(-1, 1));
+  float depth01 = readDepth(tDepth, vUv + displacement + outlineThickness * texel * vec2(-1, 0));
+  // and so on..
+
+  float normal00 = luma(texture2D(tNormal, vUv + displacement + outlineThickness * texel * vec2(-1, -1)).rgb);
+  float normal01 = luma(texture2D(tNormal, vUv + displacement + outlineThickness * texel * vec2(-1, 0)).rgb);
+  // and so on...
+
+}
+```
+
+This displacement is subtle, yet it changes the entire look and feel of the scene. It now starts looking more like a drawing!
+
+<BeforeAfterImage
+  alt="Subtle but efficient displacement applied to the outlines of our scene."
+  beforeSrc="blog/outline_before"
+  afterSrc="blog/outline_after"
+  defaultSliderPosition={50}
+  width={700}
+  height={405}
+/>
+
+The demo below implements the displacement we just went through and allows you to tweak our outline through:
+
+- The frequency of the sinusoid functions.
+- The amplitude of the wiggles.
+
+<MoebiusSandpack scene="scene6" />
+
+<Callout label="Another way" variant="info">
+
+In her article titled, [Sketchy Pencil Effect with Three.js Post-Processing](https://tympanus.net/codrops/2022/11/29/sketchy-pencil-effect-with-three-js-post-processing/) {<Anchor discreet favicon href="https://twitter.com/maya_ndljk">@maya_ndljk</Anchor>}
+explores a similar way to achieve a hand-drawn look for Three.js scene via post-processing effect. In it, she proposes an alternative way to handle the displacement of the outline by getting her random value from a texture instead of a hash function. You'll also find a clever technique to do pencil-like shadows 👀.
+
+I recommend reading it if you want to explore more ways to stylize your post-processing shader passes. The Three.js and shader-related content she wrote are among my favorite write-ups on the internet.
+
+</Callout>
+
+### Adding custom shadow patterns to our post-processing effect
+
+To achieve a convincing Moebius style, we want to apply a custom shadow pattern to the shadows and the darker parts of the scene overall. That means that those patterns need to be _coded_ within our post-processing fragment shader, where we'll need to:
+
+1. Detect whether a given pixel is part of a "dark" area.
+2. Color the pixel based on a given pattern.
+
+To detect whether a pixel is part of a "dark" area of the overall scene, we can rely on the **luminance** of the pixel returned by the `luma` function we used earlier in this project to grayscale our Normal data. That is far from a bulletproof way to achieve this, but it's "good enough".
+
+```glsl
+float pixelLuma = luma(pixelColor.rgb);
+```
+
+With this, we can build a simple **tonal shadow pattern**. If the luma of a given pixel falls under a specific luma value, we change its color to a darker shade. Below is an example where:
+
+- We declare three different thresholds under which we change the pixel color.
+- Each threshold has a specific color: the lower the luma, the darker the color shade.
+
+```glsl title=Custom tonal shadow pattern applied to pixels under a certain luma threshold
+//...
+
+if(pixelLuma <= 0.35) {
+  pixelColor = vec4(0.0, 0.0, 0.0, 1.0);
+}
+
+if (pixelLuma <= 0.45) {
+  pixelColor = pixelColor * vec4(0.25, 0.25, 0.25, 1.0);
+}
+
+if (pixelLuma <= 0.6) {
+  pixelColor = pixelColor * vec4(0.5, 0.5, 0.5, 1.0);
+}
+
+if (pixelLuma <= 0.75) {
+  pixelColor = pixelColor * vec4(0.7, 0.7, 0.7, 1.0);
+}
+
+//...
+```
+
+However, there's a catch! Our post-processing pass applies this shadow pattern to _every_ pixel on the screen, including the background! That means that if we were to choose a background color with a low enough luminance, it would end up shaded.
+To solve this, we can reuse the depth buffer we introduced in the first part! We know at which _depth_ a given pixel is through this texture and thus selectively apply the shadow pattern based on that value:
+
+```glsl title=Making our tonal shadow pattern take into account the depth value of the pixel
+//...
+float depth = readDepth(tDepth, vUv);
+
+if(pixelLuma <= 0.35 && depth <= 0.99) {
+  pixelColor = vec4(0.0, 0.0, 0.0, 1.0);
+}
+
+if (pixelLuma <= 0.45 && depth <= 0.99) {
+  pixelColor = pixelColor * vec4(0.25, 0.25, 0.25, 1.0);
+}
+
+if (pixelLuma <= 0.6 && depth <= 0.99) {
+  pixelColor = pixelColor * vec4(0.5, 0.5, 0.5, 1.0);
+}
+
+if (pixelLuma <= 0.75 && depth <= 0.99) {
+  pixelColor = pixelColor * vec4(0.7, 0.7, 0.7, 1.0);
+}
+//...
+```
+
+That gives us a first simple custom shadow pattern we can use as a foundation to build more complex ones in the next part!
+
+<MoebiusSandpack scene="scene7" />
+
+### Crosshatched and raster shadow patterns
+
+We'll define our Moebius shadow following what <Anchor discreet favicon href="https://twitter.com/UselessGameDev">@UselessGameDev</Anchor> established it in his video:
+
+- The lightest shadow will have diagonal stripes.
+- The second threshold will add vertical stripes.
+- Finally, the darkest shadows will have an extra set of horizontal stripes.
+
+To draw the stripes, we can use GLSL's modulo function `mod` that lets us color pixels at a regular interval. For instance:
+
+```glsl title=Crosshatched shadow pattern implemented by drawing stripes at given luma threshold
+//...
+float modVal = 8.0;
+
+if (pixelLuma <= 0.35 && depth <= 0.99) {
+  if (mod((vUv.y + displacement.y) * resolution.y , modVal)  < 1.0) {
+    pixelColor = outlineColor;
+  };
+}
+if (pixelLuma <= 0.55 && depth <= 0.99) {
+  if (mod((vUv.x + displacement.x) * resolution.x , modVal)  < 1.0) {
+    pixelColor = outlineColor;
+  };
+
+}
+if (pixelLuma <= 0.80 && depth <= 0.99) {
+  if (mod((vUv.x + displacement.x) * resolution.y + (vUv.y + displacement.y) * resolution.x, modVal) <= 1.0) {
+    pixelColor = outlineColor;
+  };
+}
+//...
+```
+
+1. `vUv.x * uResolution.x` converts the UV coordinate to a pixel coordinate on the screen.
+2. The modulo function `mod` returns the remainder of the pixel's position along the x-axis divided by a specific value of `8.0.`
+3. The `<= 1.0` condition is `true` for the first 2 pixels (0 and 1) of every 8-pixel set. The value `1.0` corresponds to the _outline thickness_ we established earlier: the larger the value, the bigger the shadow stripe.
+4. Thus, for every 8 pixels along the `x-axis,` we will set the first 2 pixels to black, creating a pattern of vertical stripes.
+
+The widget below showcases this pattern on a small set of pixels for you to fully grasp the logic. It defines the full crosshatched shadow pattern with three luminance thresholds. As you decrease the `luma` value, more stripe patterns appear on the screen.
+
+<ShadingVisualizer />
+
+Similarly, while working on my Moebius-style post-processing effect, I explored other shadow patterns like **Raster**, which I found used in [this Shadertoy scene](https://www.shadertoy.com/view/ttXSzl) from cdyk. This pattern creates a grid of circles
+in the darker regions of our scene, and the size of those circles grows as the `luma` value decreases. This alternative shadow pattern is also featured in the widget above for you to visualize.
+
+If we add the concepts and techniques we just explored to our post-processing custom shader pass, we get the following render output 👇:
+
+<BeforeAfterImage
+  alt="Comparison of our scene before and after applying a crosshatched shadow pattern to the darker areas."
+  beforeSrc="blog/shadow_before"
+  afterSrc="blog/shadow_after"
+  defaultSliderPosition={50}
+  width={700}
+  height={405}
+/>
+
+<MoebiusSandpack scene="scene8" />
+
+<Callout variant="info">
+
+I re-implemented all three shadow patterns we explored in this section:
+
+- tonal
+- raster
+- crosshatched
+
+The stripes in the crosshatched pattern have the same displacement and outline thickness as the rest of the scene to feel consistent with the art style we're aiming for.
+
+Try to toggle each of them on and off to see how easy it is to give a completely different style to your scene with a couple of changes in our fragment shader code.
+
+</Callout>
+
+### Custom Stylized Lighting
+
+We have outlines. We have shadows. But we miss yet one final aspect for our Moebius-style post-processing pass to feel complete: **hand-drawn specular reflections**! As showcased in <Anchor discreet favicon href="https://twitter.com/UselessGameDev">@UselessGameDev</Anchor>'s video, those reflections are pretty distinctive in Moebius' drawings:
+
+- They are plain white.
+- They also have outlines.
+
+The second point is the most interesting one: if we need our specular to have an outline, we'll need to figure out a way for it to get caught by our Sobel filter. That means that, unlike our shadow, we'll have to render those specular upstream from the post-processing shader pass.
+
+{<Anchor discreet favicon href="https://twitter.com/UselessGameDev">@UselessGameDev</Anchor>} mentions that we can achieve this by doing the necessary computation and
+coloring of the specular in our Normal material. (Hence why I said in the first part
+that using a custom shader material _may_ come in handy at some point 😁)
+
+<Callout variant="info">
+
+I covered in [Refraction, dispersion, and other shader light effects](/posts/refraction-dispersion-and-other-shader-light-effects/#adding-volume-and-shininess-to-our-dispersion) how to get specular and diffuse lighting for a given object in a fragment shader using the [Blinn-Phong lighting model](https://stackoverflow.com/a/53951172). We'll use a similar implementation here, but if you need more details on the topic, I recommend reading this article as well 😊.
+
+</Callout>
+
+Below is the updated code of the vertex shader of our custom Normal material:
+
+```glsl {30-32}
+varying vec3 vNormal;
+varying vec3 eyeVector;
+
+void main() {
+  vec4 worldPos = modelMatrix * vec4(position, 1.0);
+  vec4 mvPosition = viewMatrix * worldPos;
+
+  gl_Position = projectionMatrix * mvPosition;
+
+  vec3 transformedNormal = normalMatrix * normal;
+  vNormal = normalize(transformedNormal);
+  eyeVector = normalize(worldPos.xyz - cameraPosition);
+}
+```
+
+And here's the updated code of its fragment shader:
+
+```glsl
+varying vec3 vNormal;
+varying vec3 eyeVector;
+uniform vec3 lightPosition;
+
+const float shininess = 600.0;
+const float diffuseness = 0.5;
+
+vec2 phong() {
+  vec3 normal = normalize(vNormal);
+  vec3 lightDirection = normalize(lightPosition);
+  vec3 halfVector = normalize(eyeVector - lightDirection);
+
+  float NdotL = dot(normal, lightDirection);
+  float NdotH =  dot(normal, halfVector);
+  float NdotH2 = NdotH * NdotH;
+
+  float kDiffuse = max(0.0, NdotL) * diffuseness;
+  float kSpecular = pow(NdotH2, shininess);
+
+  return vec2(kSpecular, kDiffuse);
+}
+
+void main() {
+  vec3 color = vec3(vNormal);
+  vec2 phongLighting = phong();
+
+  float specularLight = phongLighting.x;
+  float diffuseLight = phongLighting.y;
+
+  if(specularLight >= 0.25) {
+    color = vec3(1.0, 1.0, 1.0);
+  }
+
+  gl_FragColor = vec4(color, diffuseLight);
+}
+```
+
+Notice how:
+
+- When the specular is over a certain threshold, the output of the fragment shader is `vec4(1.0).` Otherwise, we still return the standard Normal color data.
+- I also sneaked in an extra bit of data in place of the alpha: **the diffuse light**.
+
+For that last point, it's more a subjective workaround to the issue I highlighted about using `luma` to detect shaded areas of our scene. However, it falls quickly apart for darker colors. Thus, I included the amount of **diffuse** light when checking the luminance of a pixel with an arbitrary factor (you know me at this point if you've read my shader content, there's always a hacky number somewhere) to ensure that areas with a darker color but lit by our light do not show _too much_ shadow patterns.
+
+```glsl title=Tweaking our pixelLuma value with the diffuseLight obtained from our Normal data
+float diffuseLight = normal.a;
+float pixelLuma = luma(pixelColor.rgb + diffuseLight * 0.65);
+```
+
+The white specular reflections that result from this updated code stand out enough from the standard Normal colors enough to get detected by our Sobel filter, giving us lovely outlines around these reflections! The demo below showcases the result of this final touch to our Moebius post-processing pass, which now features:
+
+- Hand-drawn outlines
+- Crosshatched shadow pattern with consistent displacement and thickness
+- Specular reflections
+
+<MoebiusSandpack scene="scene9" />
+
+## A Moebius-worthy WebGL scene and some final thoughts
+
+<Image
+  src="blog/spaceship_outline"
+  alt="Render of the spaceship mesh used in the final scene (originally made by Sousinho) with a custom version of our Moebius post-processing pipeline returning a blueprint style output"
+  width={700}
+  height={382}
+/>
+
+As a conclusion to this post, I wanted to cover some aspects of [my Moebius-inspired React Three Fiber scene](https://r3f.maximeheckel.com/moebius) I showcased on Twitter in early March 2024. It was interesting to apply the post-processing effect we went through in this article and also uncover _some_ weaknesses of the implementation that I think are worth mentioning.
+
+My original idea was to build sort of an homage to Jean Giraud's sci-fi drawings and his obsession with desert landscapes by featuring a spaceship speeding over sand dunes through the desert with planets in the distance. Here's a list aspects of this scene worth highlighting:
+
+1. The spaceship was found on [Sketchfab](https://sketchfab.com/3d-models/rusty-spaceship-orange-18541ebed6ce44a9923f9b8dc30d87f5) and is originally made by [Sousinho](https://sketchfab.com/sousinho). I ran it through `gltf-transform` to compress some of the texture and the mesh to bring it from `30MB` to about `1.6MB`.
+2. The motion is 80% fake. The hover of the spaceship is real, but besides that, it's completely static. I wanted the scene to feel both fast but also be able to run perpetually. To avoid building a gigantic plane for the desert, I simply introduced some **Perlin noise** in my ground mesh, moving in the opposite direction. (I'm proud of that one 😄)
+3. The material of the ground was tricky to build. I wanted to displace it with Perlin noise to create _rolling_ dunes while keeping the lighting model/shadows. I ended up basing it on `MeshStandardMaterial` and modifying the vertex shader using the `onBeforeCompile` method. Below, you'll see an excerpt of that vertex shader code:
+
+```jsx {15-17,19-25} title=Excerpt of my implementation of GroundMaterial
+class GroundMaterial extends THREE.MeshStandardMaterial {
+  constructor() {
+    super();
+    this.uniforms = {
+      uTime: { value: 0.0 },
+    };
+  }
+
+  this.onBeforeCompile = (shader) => {
+    shader.uniforms = {
+      ...shader.uniforms,
+      ...this.uniforms,
+    };
+
+    shader.vertexShader = `
+      // Adding extra code here, Perlin noise, orthogonal, displacement,...
+    ` + shader.vertexShader;
+
+    shader.vertexShader = shader.vertexShader.replace(
+        "#include <clipping_planes_vertex>",
+        `#include <clipping_planes_vertex>
+
+        // Adding my own displacement and normal recalculation here
+        `;
+    );
+  }
+}
+
+```
+
+If you've read [Shining a light on Caustics with Shaders and React Three Fiber](/posts/caustics-in-webgl#dynamic-caustics), you may notice something familiar in that code: I'm using the same Normal recomputation logic. Doing this allows the shadows and lights to account for the Perlin noise displacement of the terrain. That is why you see the shadow cast by the spaceship onto the ground follow the shape of the dunes as the scene moves.
+
+At this moment, however, I hit a roadblock:
+
+- We're displacing the ground mesh with Perlin noise.
+- We're recomputing the normals so that the shadows and lighting models of `MeshStandard` material follow that displacement.
+- However, our scene's Normal data (used to draw outlines) does not contain this displacement information.
+
+<BeforeAfterImage
+  alt="Comparison of our rendered scene with displaced ground mesh VS what the Normal data used by the Sobel Filter looks like."
+  beforeSrc="blog/scene_outline"
+  afterSrc="blog/normal_outline"
+  defaultSliderPosition={50}
+  width={700}
+  height={405}
+/>
+
+Thus, the Sobel filter had no way to draw all the outlines of the displaced ground mesh 🫠 which, to its own point of few, was nothing more than a flat plane. That is a clear pitfall of our implementation, and moreover one I only noticed it while building the final showcase of this project...
+
+{<Anchor discreet favicon href="https://twitter.com/Cody_J_Bennett">@Cody_J_Bennett</Anchor>} gave me a couple of alternatives like deriving the Normals from the depth data, or using a `gbuffer` but those seemed a bit too daunting for me at this stage (and to be honest quite tired as well) so I ended up choosing an "the easy way out": **manually traversing the scene and assigning the ground its own custom Normal material**
+
+```jsx title=Traversing the scene manually to override materials with more flexibility
+//...
+const materials = [];
+
+gl.setRenderTarget(normalRenderTarget);
+
+scene.traverse((obj) => {
+  if (obj.isMesh) {
+    materials.push(obj.material);
+    if (obj.name === 'ground') {
+      obj.material = GroundNormalMaterial; // <- takes displacement into account
+      obj.material.uniforms.uTime.value = clock.elapsedTime;
+      obj.material.uniforms.lightPosition.value = lightPosition;
+    } else {
+      obj.material = CustomNormalMaterial; // <- our standard normal material we built earlier
+      obj.material.uniforms.lightPosition.value = lightPosition;
+    }
+  }
+});
+
+gl.render(scene, camera);
+
+scene.traverse((obj) => {
+  if (obj.isMesh) {
+    obj.material = materials.shift();
+  }
+});
+//...
+```
+
+I'm not the most proud of that one 😅, but it works!
+
+<BeforeAfterImage
+  alt="Comparison of our rendered scene with displaced ground mesh VS the displaced GroundNormalMaterial and CustomNormalMaterial passed to the Sobel filter."
+  beforeSrc="blog/scene_outline_fixed"
+  afterSrc="blog/normal_outline_fixed"
+  defaultSliderPosition={50}
+  width={700}
+  height={405}
+/>
+
+The demo below features all the techniques and workarounds I mentioned in this last part and showcases a reconstitution of my take on what a Moebius-worthy scene for the web would be.
+
+<MoebiusSandpack scene="scene10" />
+
+Through this attempt at reproducing the Moebius style, we learned how to build **very pleasing stylized shaders** and how we can apply them via post-processing, and on top of that, **with custom shadows, outlines, and lighting patterns**! I hope this exercise gave you confidence and inspiration to go beyond the _physically based_ and emulate different art styles through your shader skills 😄.
+
+Hope you'll have a lot of fun playing with this effect! In the meantime, I'll start exploring other kinds of stylized shaders that are on my bucket list.
