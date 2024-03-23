@@ -16,7 +16,7 @@ const fetchTweetData = async (ids: string[]): Promise<NewTweet[]> => {
       results.push(tweet);
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('Error fetching tweet', error);
+      console.error(`Error fetching tweet ${id}`, error);
     }
   }
 
