@@ -189,7 +189,7 @@ jobs:
           name: build-output
           path: .next
       - name: Run cypress
-        uses: cypress-io/github-action@v4.2.0
+        uses: cypress-io/github-action@v6.6.1
         with:
           start: pnpm start
           browser: chrome
@@ -243,7 +243,7 @@ jobs:
           name: build-output
           path: .next
       - name: Run cypress
-        uses: cypress-io/github-action@v4.2.0
+        uses: cypress-io/github-action@v6.6.1
         with:
           start: pnpm start
           browser: firefox
