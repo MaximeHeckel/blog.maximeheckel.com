@@ -190,6 +190,14 @@ const VolumetricRaymarchingVisualizer = dynamic(
   () => import('./Widgets/Raymarching/VolumetricRaymarchingVisualizer')
 );
 
+const SobelVisualizer = dynamic(
+  () => import('./Widgets/Moebius/SobelVisualizer')
+);
+
+const ShadingVisualizer = dynamic(
+  () => import('./Widgets/Moebius/ShadingVisualizer')
+);
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -221,6 +229,8 @@ const RaymarchingSandpack = dynamic(
 );
 
 const CausticsSandpack = dynamic(() => import('./Widgets/Caustics/Sandpack'));
+
+const MoebiusSandpack = dynamic(() => import('./Widgets/Moebius/Sandpack'));
 
 const customComponents = {
   AnimationTypes,
@@ -266,6 +276,8 @@ const customComponents = {
   RaymarchingVisualizer,
   VolumetricRaymarchingVisualizer,
   BeforeAfterImage,
+  SobelVisualizer,
+  ShadingVisualizer,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
@@ -282,6 +294,7 @@ const customComponents = {
   RenderTargetsSandpack,
   RaymarchingSandpack,
   CausticsSandpack,
+  MoebiusSandpack,
 };
 
 const MDXComponents = {
