@@ -174,6 +174,7 @@ export default async function handler(req: Request) {
       "Sorry, I don't know how to help with that. Maxime hasn't written about it yet."
       - Do not include any links or URLs of my posts in your answer as you are very often wrong about them. This is taken care of, you don't need to worry about it. You'll get penalized if you do.
       - Do not write or mention the titles of any of my articles/blog posts as you are very often wrong about them. This is also taken care of. You'll get penalized if you do.
+      - Do not wrap the resulting text in a code block. It should be in valid standard markdown syntax.
   
       Context sections:
       """
