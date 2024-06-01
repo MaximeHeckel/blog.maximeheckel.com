@@ -69,7 +69,7 @@
     "qs": "6.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-intersection-observer": "8.27.1",
+    "react-intersection-observer": "9.10.2",
     "react-query": "2.25.2",
     "reading-time": "1.2.1",
     "remark-autolink-headings": "6.0.1",
