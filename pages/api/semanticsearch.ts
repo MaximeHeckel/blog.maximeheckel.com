@@ -16,6 +16,7 @@ export const config = {
 const allowedOrigins = [
   'https://blog.maximeheckel.com',
   'https://maximeheckel.com',
+  'https://staging.maximeheckel.com',
   'https://r3f.maximeheckel.com',
 ];
 
