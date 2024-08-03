@@ -24,6 +24,7 @@ import VideoPlayer from '@core/components/VideoPlayer';
 
 // MDX only components
 import Image from './Image';
+import SupportCallout from '../Callout/SupportCallout';
 
 // Widgets (used in blog post for interactive experiences)
 const ClipboardAnimationDetails = dynamic(
@@ -339,7 +340,7 @@ const MDXComponents = {
   ul: function UL(props: React.HTMLAttributes<HTMLUListElement>) {
     return <List variant="unordered" {...props} />;
   },
-
+  SupportCallout,
   VideoPlayer,
   ...customComponents,
 };
