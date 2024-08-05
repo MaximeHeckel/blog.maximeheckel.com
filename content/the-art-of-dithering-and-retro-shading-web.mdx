@@ -9,10 +9,10 @@ type: 'blogPost'
 featured: false
 ---
 
-I spent the past few months building my [personal website](https://maximeheckel.com) from the ground up, finally taking the time to incorporate some 3D work to showcase what I can do with shaders as soon as it loads.
+I spent the past few months building my [personal website](https://maximeheckel.com) from the ground up, finally taking the time to incorporate some 3D work to showcase my shader and WebGL skills.
 Throughout this work, I got to truly understand the crucial role that **post-processing** plays in making a scene actually _look good_, which brought some resolutions to long-term frustrations I had with my past React Three Fiber and shader projects where my vision wouldn't materialize regardless of the amount of work and care I was putting into them.
 
-Taking the time to build, combine, and experiment with custom post-processing effects gave me an additional creative outlet, and among the many types I got to iterate on, I always had a particular affection for the several "retro" effects I came up with. With subtle details such as **dithering**, **color quantization**, or **pixelization/CRT RGB cells**, they bring a pleasant contrast between the modern web landscape and a long-gone era of technology we 90s/early 2000s kids are longing for.
+Taking the time to build, combine, and experiment with custom post-processing effects gave me an additional creative outlet, and among the many types I got to iterate on, I always had a particular affection for the several "retro" effects I came up with. With subtle details such as **dithering**, **color quantization**, or **pixelization/CRT RGB cells**, they bring a pleasant contrast between the modern web landscape and a long-gone era of technology we 90s/early 2000s kids are sometime longing for.
 
 <VideoPlayer
   src="https://d2xl4m2ghaywko.cloudfront.net/retro.mp4"
@@ -24,7 +24,7 @@ Taking the time to build, combine, and experiment with custom post-processing ef
   height={476}
 />
 
-Given the time I invested dissecting every aspect of these effects, I wanted to dive deep with you into the concepts powering them and the shader techniques I learned along the way. Through this article, I hope to convince you of the power of post-processing effects and that nothing beats an elegant retro vibe applied to a website 👌✨. In it, we'll also look into examples of dithering and pixel art from very talented folks who use the same processes that I'll be introducing later on, as well as some of my own creations that I built while learning about all this.
+Given the time I invested dissecting every aspect of these effects, I wanted to dive deep with you into the concepts powering them and the shader techniques I learned along the way. In this article, I hope to convince you of the power of post-processing effects and that nothing beats an elegant retro vibe applied to a website 👌✨. We'll also look into examples of dithering and pixel art from very talented folks who use the same processes that I'll be introducing later on, as well as some of my own creations that I built while learning about all this.
 
 <Callout variant="info" label="Sources">
 
@@ -38,11 +38,12 @@ Given the time I invested dissecting every aspect of these effects, I wanted to 
 
 ## Dithering techniques
 
-Dithering originated as an early graphics technique to _trick_ the viewer's brain into seeing more color or smoothness in gradients/shadows that the machines back in the day could output by intentionally introducing noise on top of an image or a render. Some of us may have spent some of our childhood fiddling with the graphics settings of early versions of Windows, setting the "number of colors" necessary to run our favorite games. To work around limited color palettes such as 256 or 16 colors, game designers relied a lot on dithering to do the heavy lifting and guarantee that their creations would still render something coherent on the screen and erase any large-scale pattern that may appear such as color banding.
+Dithering originated as an early graphics technique to _trick_ the viewer's brain into seeing more color or smoothness in gradients/shadows that the machines back in the day could output by intentionally introducing noise on top of an image or a render.
+Color palettes were very limited back then, thus relying on techniques like these was vital for game designers to realize their vision. This gave, as a result, a unique look and feel to games and media from that specific moment in time where computers became ubiquitous, but advanced graphic capabilities were not yet there.
 
-Today, dithering is more an artistic choice than a workaround. Many artists or game designers use this technique as a creative outlet to give their work a unique _retro vibe_ or work within the realms of self-imposed limits in colors. Some great examples of such use of dithering include:
+Today, dithering is more an artistic choice than a workaround. Many artists or game designers use this technique as a creative outlet to give their work a unique _retro vibe_, calling out to that early gaming era, or work within the realms of self-imposed limits in colors. Some great examples of such use of dithering include:
 
-- Basement Studio's [Basement Chronicle](https://chronicles.basement.studio/) game: a well-executed \*point-and-click game that reminds me a lot of my own early gaming experience.
+- Basement Studio's [Basement Chronicle](https://chronicles.basement.studio/) game: a well-executed _point-and-click_ game that reminds me a lot of my own early gaming experience.
 - {<Anchor favicon discreet href="https://twitter.com/loackme_">
   @loackme
   </Anchor>}'s art, which I'm an absolute fan of.
@@ -59,12 +60,6 @@ a sublime dithering effect.
 />
 
 The latter is how we will approach dithering in this blog post: to give our React Three Fiber/Three.js projects a unique style! In this first part, we'll explore how the dithering technique works, implement it as a shader, and build a first iteration of a custom dithering post-processing effect that we can apply on top of any 3D scene.
-
-<Callout variant="info" label="Erratum">
-
-In my article on the Moebius stylized shader, I opted for a post-processing **pass** instead of an **effect**, justifying this choice by saying that `@react-three/postprocessing` did not support custom shaders as effects. Unfortunately, this was incorrect, so I made the necessary changes to the article.
-
-</Callout>
 
 ### A first pass at dithering in React Three Fiber
 
@@ -124,7 +119,7 @@ const Retro = () => {
 };
 ```
 
-As a first step to building our effect, we'll start with a simple **luminance-based** white noise dithering. The idea behind this is to:
+As a first step to building our effect, we'll start with a simple **luminance-based white noise dithering**. The idea behind this is to:
 
 - Look at the _luminance_ of each pixel.
 - Compare it to a random number (hence the "white noise" in the name).
@@ -165,7 +160,7 @@ You can observe the effect that this code would yield on the widget below which 
   You will notice throughout this article that the syntax for the fragment shader of our effect differs from what you may be used to when working with passes or materials.
 
 Here, you'll find no `main` but instead a `mainImage` function which contains the `inputColor` and `uv` coordinates the current pixel.
-No need to set the `glFragColor`, that is taken care of by the `outputColor` variable that you simply need to set for your effect to be applied on top of your scene.
+No need to set the `gl_FragColor` value at the end, that is taken care of by the `outputColor` variable that you simply need to set for your effect to be applied on top of your scene.
 
 On top of that, effects come with a series of preset variables that can come very handy such as:
 
@@ -185,7 +180,20 @@ Doing this will result in a grayscale version of our scene where any pixel not p
 
 The effect we just built works, but it relies on white noise for its dithering threshold, leading to a messy result. We can bring order to all this (🥁) using a technique commonly known as **ordered dithering** due to the _ordered_ pattern it yields when applied.
 
-This technique relies on a threshold map defined via a **Bayer Matrix** that contains values used to determine whether we should adjust the color of a given pixel.
+This technique relies on a threshold map defined via a **Bayer Matrix** that contains values used to determine whether we should adjust the color of a given pixel to black or white.
+
+<Callout variant="info"z label="Bayer Matrix">
+
+The generic formula of the Bayer Matrix is
+
+`M(2n) = 1/(2n)^2 * [[(2n)^2 * M(n), (2n)^2 * M(n) + 2],[(2n)^2 * M(n) + 3, (2n)^2 * M(n) + 1]]`
+
+However, in many examples I found online, developers tended to define those matrixes pre-computed. We will do the same in all the examples introduced in this article by using the following definitions:
+
+- 2 x 2: `1/4 * [[0.0, 2.0,], [3.0, 1.0]]`
+- 4 x 4: `1/16 * [[0.0, 8.0, 2.0, 10.0], [12.0, 4.0, 14.0, 6.0], [3.0, 11.0, 1.0, 9.0], [15.0, 7.0, 13.0, 5.0]]`
+
+</Callout>
 
 <Fullbleed widthPercent={80}>
   <Image
@@ -213,19 +221,6 @@ As you can see through the examples I showcased above, we get some pretty distin
   width={700}
   height={364}
 />
-
-<Callout variant="info"z label="Bayer Matrix">
-
-The generic formula of the Bayer Matrix is
-
-`M(2n) = 1/(2n)^2 * [[(2n)^2 * M(n), (2n)^2 * M(n) + 2],[(2n)^2 * M(n) + 3, (2n)^2 * M(n) + 1]]`
-
-However, in many examples I found online, developers tended to define those matrixes pre-computed. We will do the same in all the examples introduced in this article by using the following definitions:
-
-- 2 x 2: `1/4 * [[0.0, 2.0,], [3.0, 1.0]]`
-- 4 x 4: `1/16 * [[0.0, 8.0, 2.0, 10.0], [12.0, 4.0, 14.0, 6.0], [3.0, 11.0, 1.0, 9.0], [15.0, 7.0, 13.0, 5.0]]`
-
-</Callout>
 
 To implement this in GLSL, we need to get the luminance of each pixel and compare its value with the corresponding threshold value for that same pixel obtained from the Bayer Matrix:
 
@@ -276,7 +271,7 @@ Notice how:
 
 We got ourselves a satisfying ordered dithering effect! While this is the most popular dithering technique, as well as the main one we'll leverage in this article, I still wanted to touch upon an additonal way to dither that you perhaps remember seeing in my article on [Volumetric Raymarching](/posts/real-time-cloudscapes-with-volumetric-raymarching/): **blue noise dithering**.
 
-I used this technique in my raymarched cloud scenes to _"erase the banding or layering effect due to a less granular [raymarching] loop"_ which funny enough is the same use case we need dithering for in our Retro post-processing effect. Unlike the previous techniques, this one relies on a texture that we'll pass to the shader of our custom post-processing effect via a uniform and then sampling it as follows:
+I used this technique in my raymarched cloud scenes to _"erase the banding or layering effect due to a less granular [raymarching] loop"_ which funny enough is the same use case we need dithering for in our Retro post-processing effect. Unlike the previous techniques, this one relies on a texture that we'll pass to the shader of our custom post-processing effect via a uniform and then sample it as follows:
 
 ```glsl
 vec4 noise = texture2D(uNoise, gl_FragCoord.xy / 128.0);
@@ -287,7 +282,7 @@ where `128.0` is the width/height of said texture. We also define the threshold 
 
 <Callout variant="warn">
 
-Don't forget to set your texture wrapping properties after loading the blue noise texture wraps both horizontally and vertically:
+Don't forget to set your texture wrapping properties after loading the blue noise texture so it wraps both horizontally and vertically:
 
 ```jsx
 const texture = useTexture('/path/to/my/texture');
@@ -306,7 +301,7 @@ As you can see, it feels less repetitive and structured than ordered dithering w
 
 <Callout variant="info">
 
-There are many other dithering techniques that I wanted to explore. Unfortunately some of the most interesting ones like **error diffusion** or **Floyd–Steinberg dithering** are not _fragment shader friendly_ due to their sequential nature.
+There are many other dithering techniques that I wanted to explore and detail in this article. Unfortunately some of the most interesting ones like **error diffusion** or **Floyd–Steinberg dithering** are not _fragment shader friendly_ due to their sequential nature.
 
 </Callout>
 
@@ -314,7 +309,7 @@ There are many other dithering techniques that I wanted to explore. Unfortunatel
 
 So far, all our dithering examples also converted the underlying scene to black and white, thus making us lose a lot of information and color. That is because:
 
-- We calculated our dithering threshold based on the pixel luminance pixel, thus relying on a grayscale version of our scene.
+- We calculated our dithering threshold based on the pixel luminance, thus relying on a grayscale version of our scene.
 - We manually returned a black or white pixel based on the threshold value relative to the luminance.
 
 That technique is commonly referred to as **luminance-based dithering** and the color conversion used here compresses the color palette to 2-bit: each pixel of the resulting scene with our post-processing effect applied is either black or white, and any shade in-between appears to us through dithering.
@@ -323,7 +318,7 @@ This _color compression_ is known as **color quantization**, and it supports mor
 
 ### Shades of gray and colors
 
-Manually setting the colors of our dithering pattern can quickly get out of hand, especially with large color palettes. Instead, we'll use a formula to find the nearest neighboring color of a given pixel color based on the total number of colors we want to output in our effect.
+Manually setting the colors of our dithering pattern can quickly get out of hand, especially with large color palettes. Instead, to get more than just a black or white pixel and leverage shades of gray, we'll use a formula to find the nearest neighboring color of a given pixel color based on the total number of colors we want to output in our effect:
 
 `floor(color * (n - 1) + 0.5)/n - 1` where `n` is the total number of color.
 
@@ -398,7 +393,7 @@ This quantization technique lets us approximate the look and feel of older graph
 
 We now know a technique to reduce the number of colors in our final render to an arbitrary number, but what about reducing it to an arbitrary set of colors?
 
-In his [video on quantization and dithering](https://www.youtube.com/watch?v=8wOUe32Pt-E&ab_channel=Acerola), <Anchor favicon discreet href="https://twitter.com/Acerola_t">@Acerola_t</Anchor> introduces a technique to map to do just that by using the value of a grayscale color palette to sample a texture defining a custom color palette.
+In his [video on quantization and dithering](https://www.youtube.com/watch?v=8wOUe32Pt-E&ab_channel=Acerola), <Anchor favicon discreet href="https://twitter.com/Acerola_t">@Acerola_t</Anchor> introduces a technique to do just that by using the value of a grayscale color palette to sample a texture defining a custom color palette.
 
 For example, if our last grayscale example scene from earlier sets the color number to four, we will get the following grayscale values:
 
@@ -439,7 +434,7 @@ I'd encourage you to fork this demo and try with:
 - different textures
 - different number of colors
 
-The only thing to pay attention to is that the number of color blocks in your palette texture needs to match the number of color you set in your custom effect.
+The only thing to pay attention to is to keep the number of color blocks in your palette texture the same as the number of color you set in your custom effect.
 
 ### Hue-lightness-based color quantization
 
@@ -454,7 +449,7 @@ To do so, he proceeds as follows:
 5. Get the distance between the two closest lightness that match the original pixel's color.
 6. Compare this distance with the threshold value from the Bayer Matrix and, based on the result pick the first or second lightness to set in the final color.
 
-I vividly recommend taking the time to read the full article as it goes in-depth into an original and more artistic dithering process. Below you'll find the demo I re-implemented from the blog post which also features some of the missing functions the author did not include in their post.
+I vividly recommend taking the time to read the full article as it goes in-depth into an original and more artistic dithering process. Below you'll find the demo I re-implemented from the process showcased in the article. It also features some of the missing functions the author did not include in their post.
 
 <RetroSandpack scene="scene7" />
 
@@ -485,8 +480,8 @@ In the code snippet above:
 
 - We define the size of our pixel via the `pixelSize` uniform.
 - We divide this value by the resolution of our scene to convert it to a normalized texture coordinate ranging from 0 to 1.
-- We snap the UV coordinate to the grid defined by `uv/pixelUV` using the `floor` function.
-- We rescale the snapped UV coordinates to the original UV space by multiplying the result by `pixelUV`.
+- We snap the UV coordinate to the grid defined by `uv/normalizedPixelSize` using the `floor` function.
+- We rescale the snapped UV coordinates to the original UV space by multiplying the result by `normalizedPixelSize`.
 
 The demo below adds this process along with an additional uniform for you to tweak the pixel size used in our scene:
 
@@ -494,10 +489,10 @@ The demo below adds this process along with an additional uniform for you to twe
 
 Notice how the higher the value of `pixelSize` is, the more pixelated our scene becomes.
 
-Also, we can see that our dithering pattern becomes more visible at a pixel size of 4 and 8, but then, as the scene gets scaled down in resolution, there are not enough pixels in the final output to get any pattern at all.
+On top of that, we can see that our dithering pattern becomes less and less visible as the pixel size increases: there are not enough pixels in the final output to get any pattern at all.
 We'll have to strike the right balance between dithering pattern and pixel size to get the most compelling effect.
 
-With this added to our effect, we have all the ingredients to produce gorgeous pixel art pieces or pixelated 3D scenes! One thing I immediately tried upon wrapping up this post-processing effect was to try it on top of some of my earlier shader work, like in [my scene titled Dithering Waves](https://r3f.maximeheckel.com/dithered-waves) where I applied a grayscale version of it on top of a simple scene rendering a domain distortion texture using Fractal Brownian Motion, inspired by [Inigo Quilez' article](https://iquilezles.org/articles/warp/) on the matter.
+With this added to our effect, we have all the ingredients to produce gorgeous pixel art pieces or pixelated 3D scenes! One thing I immediately tried upon wrapping up this post-processing effect was to try it on top of some of my earlier shader work, like in [my scene titled Dithering Waves](https://r3f.maximeheckel.com/dithered-waves) where I applied a grayscale version of it on top of a simple scene rendering a domain wrapping texture using Fractal Brownian Motion, inspired by [Inigo Quilez' article](https://iquilezles.org/articles/warp/) on the matter.
 
 <RetroSandpack scene="scene9" />
 
@@ -533,7 +528,7 @@ To experiment with [contrasting aesthetics](https://rauno.me/craft/contrasting-a
 
 While pixelization brings us one step closer to an accurate retro post-processing effect, there is one essential aspect of this effect that's missing: emulating the look of a good ol' CRT monitor.
 
-CRTs work differently than our current displays. Thus, the best we can do here is to approach the look and feel of those old monitors by stacking a series of effects in our custom shader effect. The first and most fundamental effect that we'll work on that also highlights the inner workings of CRTs is the RGB cell pattern from the display.
+CRTs work differently than our current displays. Thus, the best we can do here is to approach the look and feel of those old monitors by stacking a series of effects in our custom shader effect. The first and most fundamental effect that we'll work on, that also highlights the inner workings of CRTs, is the RGB cell pattern from the display.
 
 <Callout variant="info" label="Credit">
 
@@ -545,9 +540,9 @@ I also highly recommend [the newsletter](https://mini.gmshaders.com/) as a must-
 
 ### RGB Cells
 
-First and foremost, let's look at how CRT displays work so we can reproduce the effect as accurately as possible. Those monitors have 3 electron guns for each of the color channels (red, green, and blue) that run across the screen and excite their corresponding phosphors on the screen, which in return emit light to form an image. To prevent those beams from hitting the wrong phosphor dots and causing color issues on the final image, CRTs use a **shadow mask** with a metal plate with tiny holes. They can have many different configurations which yield different _mask types_.
+First and foremost, let's look at how CRT displays work so we can reproduce the effect as accurately as possible. Those monitors have 3 electron guns for each of the color channels (red, green, and blue) that run across the screen and excite their corresponding phosphors, which in return emit light to form an image. To prevent those beams from hitting the wrong phosphor dots and causing color issues on the final image, CRTs use a **shadow mask** with a metal plate made of tiny holes. They can have many different configurations which yield different _mask types_.
 
-In this section, we'll attempt to emulate the schiltzmaske: an aperture grill where each column is staggered by half a cell height.
+In this section, we'll attempt to emulate the Schiltzmaske: an aperture grill where each column is staggered by half a cell height.
 
 <Image
   src="blog/rgbcells"
@@ -569,7 +564,7 @@ vec2 subcoord = coord * vec2(3,1);
 vec2 cellOffset = vec2(0, mod(floor(coord.x), 3.0) * 0.5);
 ```
 
-- We create a cell "offset" for every two cells: some will have an offset of `vec2(0.0)` and some of `vec2(0.0, 0.5)`, thus creating the _staggered effect_ of our shadow mask.
+- We create a cell "offset" for every two cells: some will have an offset of `vec2(0.0)` and some of `vec2(0.0, 0.5)`, thus creating the vertical _staggered effect_ of our shadow mask.
 
 ```glsl
 vec2 cellOffset = vec2(0, mod(floor(coord.x), 3.0) * 0.5);
@@ -723,7 +718,7 @@ float lines = sin(uv.y * 2000.0 + time * 100.0);
 color *= lines + 1.0;
 ```
 
-We can also include some additional distortion to the UV coordinates of our effect by adding code to the `mainUv` function of our shader. Adding some slight imperfections like these can make our CRT look even more accurate. Below is a simple example, but you can further experiment at your heart's content!
+We can also include some additional distortion to the UV coordinates of our effect by adding code to the `mainUv` function of our shader. Adding some slight imperfections like these can make our CRT look even more accurate. Below is a simple example, but feel free to further experiment with more complex distortion patterns:
 
 ```glsl title=Adding distortion in mainUv
 float noise (in vec2 st) {
@@ -775,7 +770,7 @@ You can find more information about it in the [Custom Effect documentation](http
 
 </Callout>
 
-We're finally done! Or at least I was satisfied enough to make this the stopping point of this article, you can still experiment and continue to tweak this shader at your heart's content!. You can admire the final version of our retro post-processing effect below, which includes:
+We're finally done! Or at least I was satisfied enough to make this the stopping point of this article, you can still experiment and continue to tweak this shader at your heart's content! You can admire the final version of our retro post-processing effect below, which includes:
 
 - Color quantization to reduce the number of colors in our final output.
 - Pixelization and RGB Cell shadow mask effect to create realistic downsampling typically visible in old CRT displays.

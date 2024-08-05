@@ -196,16 +196,16 @@ const Retro = () => {
   const mesh = useRef();
   const effect = useRef();
 
-  const { colorNum } = useControls({
-    colorNum: {
-      value: "2.0",
-      options: ["2.0", "4.0", "8.0"],
-    },
-  });
+  // const { colorNum } = useControls({
+  //   colorNum: {
+  //     value: "2.0",
+  //     options: ["2.0", "4.0", "8.0"],
+  //   },
+  // });
 
-  useFrame(() => {
-    effect.current.colorNum = parseInt(colorNum, 10);
-  })
+  // useFrame(() => {
+  //   effect.current.colorNum = parseInt(colorNum, 10);
+  // })
 
   return (
     <>

@@ -2,7 +2,7 @@
 title: 'Moebius-style post-processing and other stylized shaders'
 subtitle: A detailed essay on the process of building a post-processing stylized shader reproducing the style of legendary artist Jean Giraud a.k.a Moebius for your React Three Fiber projects. In it, I detail the process of drawing outlines with a Sobel Filter as well as custom shadow and lighting patterns to bring a unique style to your WebGL scene.
 date: '2024-03-26T08:00:00.000Z'
-updated: '2024-03-26T08:00:00.000Z'
+updated: '2024-08-05T08:00:00.000Z'
 categories: []
 slug: moebius-style-post-processing
 type: 'blogPost'
@@ -49,7 +49,7 @@ of creativity. Finally, we'll look at some of the shortcomings of this render pi
 - [Sketchy Pencil Effect with Three.js Post-Processing](https://tympanus.net/codrops/2022/11/29/sketchy-pencil-effect-with-three-js-post-processing/) by {<Anchor discreet favicon href="https://twitter.com/maya_ndljk">@maya_ndljk</Anchor>}
 - {<Anchor discreet favicon href="https://twitter.com/txstc55">
   txstc55
-    </Anchor>} who [explored as well this effect](https://twitter.com/txstc55/status/1686478266654130176)
+  </Anchor>} who [explored as well this effect](https://twitter.com/txstc55/status/1686478266654130176)
 last year
 
 </Callout>
@@ -134,6 +134,14 @@ const MoebiusScene = () => {
 
 // ...
 ```
+
+<Callout variant="info">
+
+Update: at the time of writing this article I was not familiar with the possibility of writing custom post-processing **effects** which could have also been a solution here to build our stylized shader.
+
+If you want to learn more about effects and how to use custom shaders with them, my article [The Art of Dithering and Retro Shading for the Web](/posts/the-art-of-dithering-and-retro-shading-web/) covers this topic.
+
+</Callout>
 
 You can see in the code snippet above that:
 
