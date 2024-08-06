@@ -183,21 +183,28 @@ const DitheringVisualizer = (props: { type: DitheringType }) => {
         gap="6"
       >
         <Flex
-          alignItems="center"
           justifyContent="space-between"
-          css={{ width: '100%' }}
+          css={{
+            width: '100%',
+            flexDirection: 'row',
+            alignItems: 'center',
+            '@media (max-width: 750px)': {
+              flexDirection: 'column',
+              alignItems: 'start',
+            },
+          }}
+          gap="4"
         >
-          <Flex alignItems="start" direction="column" gap="4">
-            <Switch
-              id={`dither-${type}`}
-              aria-label="Dither"
-              label="Enable Dithering"
-              onChange={toggleDithering}
-              checked={ditheringEnabled}
-            />
-          </Flex>
+          <Switch
+            id={`dither-${type}`}
+            aria-label="Dither"
+            label="Enable Dithering"
+            onChange={toggleDithering}
+            checked={ditheringEnabled}
+          />
+
           {type === 'ordered' ? (
-            <Flex alignItems="end" direction="column">
+            <Flex alignItems="start" direction="column">
               <Label htmlFor="direction">Bayer Matrix size</Label>
               <Radio.Group
                 id={`bayer-matrix-${type}`}
