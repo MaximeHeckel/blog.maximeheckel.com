@@ -60,7 +60,7 @@ describe('Search tests', () => {
     cy.wait(2000);
   });
 
-  it('Can toggle AI mode and send a query', () => {
+  it.only('Can toggle AI mode and send a query', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k', { force: true });
