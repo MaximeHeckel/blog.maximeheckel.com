@@ -2,7 +2,7 @@
 title: 'The Art of Dithering and Retro Shading for the Web'
 subtitle: A detailed walkthrough of the inner workings of dithering and other shading techniques to give a retro look and feel to your WebGL and React Three Fiber work.
 date: '2024-08-06T08:00:00.000Z'
-updated: '2024-08-06T08:00:00.000Z'
+updated: '2024-08-08T08:00:00.000Z'
 categories: []
 slug: the-art-of-dithering-and-retro-shading-web
 type: 'blogPost'
@@ -19,7 +19,6 @@ Taking the time to build, combine, and experiment with custom post-processing ef
   autoPlay
   muted
   loop
-  controls={true}
   width={700}
   height={476}
 />
@@ -49,7 +48,7 @@ Today, dithering is more an artistic choice than a workaround. Many artists or g
   </Anchor>}'s art, which I'm an absolute fan of.
 - {<Anchor favicon discreet href="https://twitter.com/aweusmeuh">
   @aweusmeuh
-    </Anchor>}'s use of the original Game Boy camera for experimental photography which features
+  </Anchor>}'s use of the original Game Boy camera for experimental photography which features
 a sublime dithering effect.
 
 <Image
@@ -505,21 +504,21 @@ I also used [this scene to try using a custom texture to define an arbitrary col
 To experiment with [contrasting aesthetics](https://rauno.me/craft/contrasting-aesthetics), I also wanted to try out ordered dithering and color quantization on some of my Raymarching work from last year. The ordered pattern contrasts nicely with the more organic nature of some of those scenes, especially at lower resolutions. Below are two examples that I particularily enjoyed:
 
 <VideoPlayer
+  alt="Example of dithering, 8-bit color quantization, and pixelization applied on top of a Volumetric Raymarched scene"
   src="https://d2xl4m2ghaywko.cloudfront.net/dithered-clouds.mp4"
   autoPlay
   muted
   loop
-  controls={true}
   width={700}
   height={425}
 />
 
 <VideoPlayer
+  alt="Example of dithering, 2-bit color quantization, and pixelization applied on top of a Raymarched scene"
   src="https://d2xl4m2ghaywko.cloudfront.net/dithered-blob.mp4"
   autoPlay
   muted
   loop
-  controls={true}
   width={700}
   height={425}
 />
