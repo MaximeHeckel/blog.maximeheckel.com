@@ -34,7 +34,7 @@ const Image = (props: ImageProps) => {
             sizes="100vw"
             style={{
               border: border
-                ? '3px solid oklch(from var(--gray-500) l c h / 70%)'
+                ? '2px solid oklch(from var(--gray-500) l c h / 70%)'
                 : 'none',
             }}
           />
