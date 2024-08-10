@@ -11,13 +11,17 @@ import { remarkMeta } from './remark-meta';
 const root = process.cwd();
 
 export const getFiles = async () => {
-  return fs.readdirSync(path.join(root, 'content'));
+  return fs
+    .readdirSync(path.join(root, 'content'))
+    .filter((file) => file.endsWith('.mdx'));
 };
 
 // Regex to find all the custom static tweets in a MDX file
 const TWEET_RE = /<StaticTweet\sid="[0-9]+"\s\/>/g;
 
 export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
+  // eslint-disable-next-line no-console
+
   const source = fs.readFileSync(
     path.join(root, 'content', `${slug}.mdx`),
     'utf8'
@@ -82,6 +86,7 @@ export const getAllFilesFrontMatter = async (): Promise<Array<Post>> => {
   const files = fs.readdirSync(path.join(root, 'content'));
 
   const posts = files
+    .filter((file) => file.endsWith('.mdx'))
     .map((postSlug: string) => {
       const source = fs.readFileSync(
         path.join(root, 'content', postSlug),
