@@ -7,15 +7,16 @@ import ProgressBar from './ProgressBar';
 
 const Wrapper = styled('div', {
   position: 'fixed',
-  top: '266px',
+  top: '50%',
   display: 'flex',
   left: '10px',
+  transform: 'translateY(-50%)',
 
   ul: {
     maxWidth: '200px',
     flexDirection: 'column',
     display: 'flex',
-    margin: '0 0 1.45rem 1.45rem',
+    margin: '0 0 var(--space-3) var(--space-3)',
     padding: '0',
     color: 'var(--text-tertiary)',
     listStylePosition: 'outside',
@@ -29,9 +30,8 @@ const Wrapper = styled('div', {
       listStyle: 'none',
       fontSize: 'var(--font-size-1)',
       fontWeight: 'var(--font-weight-400)',
-      lineHeight: '1.5',
       letterSpacing: '0.3px',
-      marginBottom: '22px',
+      marginBottom: 'var(--space-3)',
 
       '&:focus:not(:focus-visible)': {
         outline: 0,
@@ -79,7 +79,7 @@ const TableOfContent = ({ ids }: TableOfContentProps) => {
    * of the page scrolled.
    */
   const shouldShowTableOfContent =
-    readingProgress > 0.07 && readingProgress < 0.95;
+    readingProgress > 0.05 && readingProgress < 0.95;
 
   /**
    * Variants handling hidding/showing the table of content

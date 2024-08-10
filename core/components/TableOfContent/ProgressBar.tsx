@@ -26,7 +26,7 @@ const ProgressBar = ({ progress }: { progress: number }) => {
     }),
   };
 
-  React.useEffect(() => setVisibility(progress >= 0.07 && progress <= 0.95), [
+  React.useEffect(() => setVisibility(progress >= 0.05 && progress <= 0.95), [
     progress,
   ]);
 

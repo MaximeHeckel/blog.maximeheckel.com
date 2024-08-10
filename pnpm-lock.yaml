@@ -9,8 +9,8 @@ dependencies:
     specifier: 1.18.4
     version: 1.18.4(react-dom@18.2.0)(react@18.2.0)
   '@maximeheckel/design-system':
-    specifier: ^2.1.0
-    version: 2.1.0(@types/react-dom@18.2.18)(@types/react@18.2.45)(framer-motion@7.0.0)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^2.1.4
+    version: 2.1.4(@types/react-dom@18.2.18)(@types/react@18.2.45)(framer-motion@7.0.0)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-dialog':
     specifier: ^1.0.3
     version: 1.0.5(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)
@@ -1206,8 +1206,8 @@ packages:
       '@lezer/common': 0.15.12
     dev: false
 
-  /@maximeheckel/design-system@2.1.0(@types/react-dom@18.2.18)(@types/react@18.2.45)(framer-motion@7.0.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-T3rrpx9uhrkir57FsQgfgPit9ItqNcYtUQYZ/WCrkCpK2b5MwN8wXIRtbb6BQ2Nq84EqtpVbdj6ixCyGbyxNXg==}
+  /@maximeheckel/design-system@2.1.4(@types/react-dom@18.2.18)(@types/react@18.2.45)(framer-motion@7.0.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Iip+UcrHrI8CjiFbIr1iBCWP6ZY5hocS3Ni3iJN/Iqr9Gebxr8kKUVIA0THcL+Nbee3MqyX9M1EXuXnZtKzbFQ==}
     peerDependencies:
       framer-motion: ^7.0.0
       react: ^18.2.0

@@ -60,11 +60,11 @@ const SandpackWrapper = styled(Box, {
     boxShadow: Shadows[1],
     '@media (max-width: 880px)': {
       display: 'block',
-      width: '100vw',
+      width: '95vw',
       left: '50%',
       right: '50%',
-      marginLeft: '-50vw',
-      marginRight: '-50vw',
+      marginLeft: '-47.5vw',
+      marginRight: '-47.5vw',
     },
 
     '@media (min-width: 880px)': {

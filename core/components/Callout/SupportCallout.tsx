@@ -3,14 +3,7 @@ import Callout from './Callout';
 
 const SupportCallout = () => {
   return (
-    // @ts-ignore
-    <Callout
-      label="Support my work"
-      css={{
-        '--icon-background': 'var(--orange-900) !important',
-        '--callout-background': 'var(--orange-400)',
-      }}
-    >
+    <Callout label="Support my work" variant="warning">
       <Text>
         <Text as="span" weight="4">
           Enjoying the content and feeling like supporting my work?

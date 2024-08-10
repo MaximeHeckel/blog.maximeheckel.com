@@ -63,11 +63,11 @@ const contentClass = css({
   },
 
   p: {
-    fontWeight: '460',
+    fontWeight: '440',
   },
 
   li: {
-    fontWeight: '460',
+    fontWeight: '440',
   },
 
   section: {

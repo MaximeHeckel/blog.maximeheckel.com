@@ -10,7 +10,7 @@ export const Video = styled('video', {
 export const VideoContainer = styled('figure', {
   position: 'relative',
   margin: '0 auto',
-  background: 'var(--emphasis)',
+  background: 'var(--foreground)',
   borderRadius: 'var(--border-radius-3)',
   border: '2px solid var(--border-color)',
   width: '100%',
