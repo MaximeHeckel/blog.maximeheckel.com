@@ -40,6 +40,7 @@ import React from 'react';
 import { NewTweet } from 'types/tweet';
 import { templateColumnsMedium } from 'styles/grid';
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
+import Image from '@core/components/MDX/Image/Image';
 
 const SandpackExample = dynamic(
   () => import('@core/components/MDX/Widgets/WaveAnimation/Sandpack')
@@ -1304,9 +1305,26 @@ function sayHi(name) {
           <Flex
             alignItems="start"
             as="section"
+            css={{ alignSelf: 'stretch' }}
+            direction="column"
+            gap="5"
+            id="image"
+          >
+            <H2>Image</H2>
+            <Image
+              src="blog/bayermatrix"
+              alt="Diagram showcasing the process of applying the 4x4 Bayer Matrix on the input buffer of a scene and obtaining the dithering pattern based on the threshold value matching each pixel"
+              width={700}
+              height={298}
+            />
+          </Flex>
+          <Flex
+            alignItems="start"
+            as="section"
             css={{ alignSelf: 'stretch', marginBottom: 'var(--space-9)' }}
             direction="column"
             gap="5"
+            id="before-after"
           >
             <H2>Before / After Image</H2>
             <BeforeAfterImage
