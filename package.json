@@ -29,7 +29,7 @@
     "unlink-ds": "rm -rf .next && pnpm unlink && pnpm install"
   },
   "dependencies": {
-    "@codesandbox/sandpack-react": "1.18.4",
+    "@codesandbox/sandpack-react": "2.19.1",
     "@maximeheckel/design-system": "^2.1.4",
     "@radix-ui/react-dialog": "^1.0.3",
     "@supabase/supabase-js": "^2.12.0",
