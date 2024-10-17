@@ -152,6 +152,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-output
+          include-hidden-files: true
+          if-no-files-found: error
           path: .next
           retention-days: 1
   e2e-tests-chrome:
@@ -189,7 +191,7 @@ jobs:
           name: build-output
           path: .next
       - name: Run cypress
-        uses: cypress-io/github-action@v6.6.1
+        uses: cypress-io/github-action@v6.7.6
         with:
           start: pnpm start
           browser: chrome
@@ -243,7 +245,7 @@ jobs:
           name: build-output
           path: .next
       - name: Run cypress
-        uses: cypress-io/github-action@v6.6.1
+        uses: cypress-io/github-action@v6.7.6
         with:
           start: pnpm start
           browser: firefox
