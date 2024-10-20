@@ -152,6 +152,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-output
+          include-hidden-files: true
+          if-no-files-found: error
           path: .next
           retention-days: 1
   e2e-tests-chrome:
