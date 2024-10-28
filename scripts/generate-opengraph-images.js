@@ -14,7 +14,9 @@ const ogImageDir = `./public/static/og`;
 
   console.info(chalk.cyan('info'), ` - Generating Opengraph images`);
 
-  const files = fs.readdirSync(path.join(root, 'content'));
+  const files = fs
+    .readdirSync(path.join(root, 'content'))
+    .filter((file) => file !== 'LICENSE' && file.endsWith('.mdx'));
 
   const posts = files.reduce((allPosts, postSlug) => {
     const source = fs.readFileSync(
@@ -34,6 +36,7 @@ const ogImageDir = `./public/static/og`;
   for (let index = 0; index < posts.length; index++) {
     const post = posts[index];
     const hash = createHash('md5').update(post.title).digest('hex');
+
     const imagePath = `${ogImageDir}/${hash}.png`;
 
     const params = {

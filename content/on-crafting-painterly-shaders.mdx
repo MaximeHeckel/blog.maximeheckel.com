@@ -1,0 +1,982 @@
+---
+title: 'On Crafting Painterly Shaders'
+subtitle: A detailed essay on my research and process of building a shader to mimic paint, watercolor, and aquarelle by exploring various implementations of the Kuwahara image smoothing filter.
+date: '2024-10-29T08:00:00.000Z'
+updated: '2024-10-29T08:00:00.000Z'
+categories: []
+slug: on-crafting-painterly-shaders
+type: 'blogPost'
+featured: false
+---
+
+Writing a shader that can reproduce the look and feel of aquarelle, watercolor, or gouache to obtain a more _painterly_
+output for my WebGL scenes has always been a long-term goal of mine.
+Inspired by the work of very talented 3D artists such
+as <Anchor favicon discreet href="https://twitter.com/simonxxoo">@simonxxoo</Anchor> or <Anchor favicon discreet href="https://twitter.com/arpeegee">@arpeegee</Anchor>, the contrast between paintings and the added dimension allowed by 3D renderers
+was always very appealing to me. On top of that, my recent work with [stylized
+shaders to mimic the hand-drawn Moebius art
+style](/posts/moebius-style-post-processing/) emphasized not only that obtaining such stylized output was possible but also that post-processing
+was more likely than not the key to emulating any artistic style.
+
+After several months of on/off research that frankly was not leading to much, I stumbled upon a smoothing filter I never heard about before: the **Kuwahara filter**. Lucky for me, it turned out that many (very smart) people published papers about it and its ability to transform any image input into a painting-like work of art. By implementing it into a custom post-processing pass and going through many ups and downs in the process, I got very close to my original objective by building what is essentially **a real-time 3D painting running in the browser**:
+
+<VideoPlayer
+  src="https://d2xl4m2ghaywko.cloudfront.net/kuwahara_tree.mp4"
+  autoPlay
+  muted
+  loop
+  width={700}
+  height={476}
+/>
+
+This article is the culmination of months of work, trial and error, and research to **craft the perfect painterly shader** for your next WebGL project. In it, we will deep dive into **the characteristics of the Kuwahara filter** that make it so great at transforming our work into paintings, as well as look
+into several techniques highlighted in the many papers I read to improve the original implementation and have it return **a sharper, and more anisotropic output**. Finally, we'll go through a bit of color correction and the use of textures to achieve a satisfying and accurate painting effect.
+
+<Callout variant="info" label="Sources">
+
+- [Watercolor-like compositing in Blender](https://www.youtube.com/watch?v=chfGe0aTDjs) a great video by {<Anchor favicon discreet href="https://twitter.com/arpeegee">@arpeegee</Anchor>} who showcases Blender's Kuwahara filter node.
+- [Artistic Edge and Corner Enhancing Smoothing](https://core.ac.uk/download/pdf/148194268.pdf) by Papari, Giuseppe, Petkov Nicolai, and Campisi Patrizio who are behind the extended version of the Kuwahara filter.
+- [Anisotropic Kuwahara Filtering with PolynomialWeighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf) by Jan Eric Kyprianidis, Amir Semmo, Henry Kang, and Jürgen Döllner who wrote a paper on using a polynomial weighting function instead of a Gaussian and also gave a lot of details necessary for my implementation of the anisotropic Kuwahara filter.
+- [Anisotropic image segmentation by a gradient structure tensor](https://docs.opencv.org/4.x/d4/d70/tutorial_anisotropic_image_segmentation_by_a_gst.html) by Karpushin Vladislav who details how to obtain and use the structure tensor of an image to compute its local orientation.
+
+</Callout>
+
+<SupportCallout />
+
+## Painterly post-processing with the Kuwahara filter
+
+Up until then, my only attempts at painterly shader consisted of several implementations of custom materials focused on emulating specific aspects of paint that I instinctively listed as _essential_ to get a convincing output:
+
+- The absence of texture/normal detail
+- Preserved edges
+- Quantized colors
+
+Below is an example of one of my "best" iterations from that exploratory work. It notably uses a Voronoi noise to _smudge normals_ and a paintbrush texture for a more realistic look and feel.
+
+<KuwaharaSandpack scene="scene0" />
+
+However, despite my best efforts, this work was dead in the water as my implementation was severely flawed and only worked with a subset of meshes. From then on, I knew I had to go the post-processing route to solve most of those issues, but I didn't know how. Then, one day, I stumbled upon the beautiful work of <Anchor favicon discreet href="https://twitter.com/arpeegee">@arpeegee</Anchor>, who gave me the keywords I was missing all this time: **Kuwahara filter**.
+
+<StaticTweet id="1825974541958422592" />
+
+### Characteristics of the Kuwahara filter
+
+Originally intended to remove noise through smoothing from medical images, the Kuwahara filter is most commonly used today to transform any input into stylistic paintings through post-processing.
+
+Unlike other smoothing filters that reduce noise but also, on the way, blur our edges, the Kuwahara filter is capable of preserving edges and corners. That specificity is what makes it so good at achieving painting-like artistic effects by getting us two crucial visual properties of paintings:
+
+- The smoothing erases some of the texture details.
+- The filter preserves the edges and, in some cases, increases the sharpness compared to the original input.
+
+It achieves this by executing the following steps on each pixel of our input, which in our case would be our underlying 3D scene:
+
+1. We center a box around a pixel.
+2. We divide the box into 4 "sub-boxes" or **Sectors**.
+3. **We calculate the average color and variance for each Sector**.
+4. We set our pixel to the average color of the Sector with the **lowest variance**.
+
+<Callout variant="info" label="Reminder">
+
+In case you need a refresher, here are the formulas for the mean (average) and variance which are concepts we're going to use throughout this article:
+
+- **Mean**: `μ = (1/n) * Σ(xi)` for `i = 1` to `n`
+- **Variance**: `σ² = (1/n) * Σ((xi - μ)²)` for `i = 1` to `n`
+
+For our filter, the lower the variance, the more likely the colors in the sectors are close to the average.
+
+</Callout>
+
+I built the widget below to visually represent those sectors surrounding a given pixel at work:
+
+<KernelVisualizer />
+
+You can see by selecting the edge examples that:
+
+- when a pixel sits just outside an edge, the Sector with the lowest variance will always be outside the edge
+- when a pixel sits just inside an edge, the Sector with the lowest variance will be inside the edge
+
+highlighting the _edge-preserving_ capabilities of this filter.
+
+<Callout variant="info">
+
+Going forward, we will refer to the size of the Sector as the **kernel size**.
+
+</Callout>
+
+The widget below showcases how this process of picking the average color of the Sector with the lowest variance impacts an entire image:
+
+<KuwaharaVisualizer method="basic" />
+
+Notice how, with a reasonable kernel size, we maintain the overall shapes featured in the underlying image but erase many details like, in this case, transparency. However, we can also observe that with a higher kernel size, the image filter, unfortunately, falls apart and denatures quite drastically our input, indicating that we will have to strike the right balance between kernel size and the strength of our painterly post-processing effect.
+
+### Our first implementation of the Kuwahara filter as a post-processing effect
+
+Now that we have a good understanding of the inner workings of the Kuwahara filter, let's implement it as a post-processing effect on top of a React Three Fiber scene. Much like the work done in [Moebius-style post-processing and other stylized shaders](/posts/moebius-style-post-processing/), we will define our custom post-processing pass using the `Pass` class from the `post-processing` package.
+
+<Callout variant="info">
+
+Not familiar with setting up a custom post-processing pass for a React Three Fiber scene? I highly recommend checking out the article link above, where I go through that process with more details. I will not cover those steps again in this article.
+
+We could also define this first implementation as a custom `Effect`, however, given that we will need multiple passes at some point to improve our filter, I chose to use `Pass` throughout all the examples for consistency.
+
+</Callout>
+
+This post-processing pass will:
+
+- Take our underlying scene as an input.
+- Implement the Kuwahara filter in its fragment shader.
+- Output the resulting scene.
+
+The implementation of it in GLSL goes as follows:
+
+```glsl {18-22,27-28,33-34,44-49} title=Implementation of the Kuwahara filter in GLSL
+#define SECTOR_COUNT 4
+
+uniform int kernelSize;
+uniform sampler2D inputBuffer;
+uniform vec4 resolution;
+uniform sampler2D originalTexture;
+
+varying vec2 vUv;
+
+void getSectorVarianceAndAverageColor(vec2 offset, int boxSize, out vec3 avgColor, out float variance) {
+    vec3 colorSum = vec3(0.0);
+    vec3 squaredColorSum = vec3(0.0);
+    float sampleCount = 0.0;
+
+
+    for (int y = 0; y < boxSize; y++) {
+        for (int x = 0; x < boxSize; x++) {
+            vec2 sampleOffset = offset + vec2(float(x), float(y));
+            vec3 color = sampleColor(sampleOffset);
+            colorSum += color;
+            squaredColorSum += color * color;
+            sampleCount += 1.0;
+        }
+    }
+
+    // Calculate average color and variance
+    avgColor = colorSum / sampleCount;
+    vec3 varianceRes = (squaredColorSum / sampleCount) - (avgColor * avgColor);
+    variance = dot(varianceRes, vec3(0.299, 0.587, 0.114));
+}
+
+void main() {
+    vec3 boxAvgColors[SECTOR_COUNT];
+    float boxVariances[SECTOR_COUNT];
+
+    getSectorVarianceAndAverageColor(vec2(-kernelSize, -kernelSize), kernelSize, boxAvgColors[0], boxVariances[0]);
+    getSectorVarianceAndAverageColor(vec2(0, -kernelSize), kernelSize, boxAvgColors[1], boxVariances[1]);
+    getSectorVarianceAndAverageColor(vec2(-kernelSize, 0), kernelSize, boxAvgColors[2], boxVariances[2]);
+    getSectorVarianceAndAverageColor(vec2(0, 0), kernelSize, boxAvgColors[3], boxVariances[3]);
+
+    float minVariance = boxVariances[0];
+    vec3 finalColor = boxAvgColors[0];
+
+    for (int i = 1; i < SECTOR_COUNT; i++) {
+        if (boxVariances[i] < minVariance) {
+            minVariance = boxVariances[i];
+            finalColor = boxAvgColors[i];
+        }
+    }
+
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+```
+
+In the code featured above, we can see that:
+
+1. We're allocating an array of `vec3` and `float` to store the average color and variance for each of our Sectors, respectively.
+2. We're computing those stats by sampling the color for every pixel in a given Sector along the x-axis and y-axis and calculating the average and variance using the formulas we saw in the previous part.
+3. We then set `minVariance` and `finalColor` as the variance and average color of the first Sector by default.
+4. We then loop through the other Sectors to find the Sector with the lowest variance and set its corresponding average color as the output of our fragment shader.
+
+<Callout variant="info" label="Variance">
+
+Notice how the variance is initially calculated for each color channel (R, G, B), resulting in a `vec3`. By converting it to luminance, we reduce it to a single float value, which is easier to work with and compare.
+
+</Callout>
+
+Doing this will result in a version of our scene with fewer texture details while preserving the overall shape of our geometries and also introducing artifacts that **look somewhat like brush strokes**:
+
+<KuwaharaSandpack scene="scene1" />
+
+<Callout variant="info">
+
+Notice how:
+
+- Reducing the kernel size makes our output less "painterly" while increasing its value too high makes the image lose all texture detail.
+- The brush strokes introduced through the filter look too _boxy_ due to the shape of our kernel.
+
+</Callout>
+
+## The Papari extension
+
+Through our initial implementation of the Kuwahara filter as a custom post-processing pass, we already achieved a somewhat convincing paint effect. However, it suffers from several drawbacks at high kernel sizes that may make our underlying scene not discernable by the viewer, and the appearance of our "brush strokes" could most likely be improved.
+
+Ideally, we could fix both these issues in one go by allowing larger kernel sizes for a more intense stylized effect for our scene and also have more natural-looking artifacts with a slight tweak of our Kuwahara filter. That is what Giuseppe Papari proposes in his paper **Artistic Edge and Corner Enhancing Smoothing**. In it, he presents an _extension_ to the Kuwahara filter that:
+
+1. Removes the square-shaped kernel in favor of a circular one.
+2. Improves the weight influence that each pixel has on the filter.
+
+In this part, we will implement some of those improvements with an additional section on potential performance improvements. It may sound absurd but; I like my paintings to run as close to 60fps as possible.
+
+### Circular kernel
+
+A circular-shaped kernel allows us to increase the number of Sectors when evaluating the color of a given pixel. Its box-shaped counterpart can only allow for up to four Sectors making more complex edge lines not well-preserved. Through his experiments, Papari found that _eight Sectors_ were the ideal amount to balance output quality and good performance.
+
+<Image
+  src="blog/Kernel_Comparison"
+  alt="Diagram showcasing both box-shaped and circular kernels and highlighting which parts of the image are being smoothed while maintaining the sharpness of the edges."
+  width={700}
+  height={323}
+/>
+
+The widget below showcases the impact that this subtle modification in the implementation of our filter has on a simple image:
+
+<KuwaharaVisualizer method="papari" />
+
+Here, we can see that, compared to what we observed in the first part, this version of the Kuwahara filter yields a way better output even at a larger kernel size! The circular shape and the higher number of Sectors allow us to preserve edge lines for more complex angles and patterns.
+
+We can tweak the fragment shader code to implement Papari's circular kernel into our post-processing pass by modifying the parts that compute variance and average color by Sector:
+
+```glsl {8-10,29-32} title=Switching to a circular kernel in our Kuwahara filter implementation
+//...
+
+void getSectorVarianceAndAverageColor(float angle, float radius, out vec3 avgColor, out float variance) {
+    vec3 colorSum = vec3(0.0);
+    vec3 squaredColorSum = vec3(0.0);
+    float sampleCount = 0.0;
+
+    for (float r = 1.0; r <= radius; r += 1.0) {
+        for (float a = -0.392699; a <= 0.392699; a += 0.196349) {
+            vec2 sampleOffset = r * vec2(cos(angle + a), sin(angle + a));
+            vec3 color = sampleColor(sampleOffset);
+            colorSum += color;
+            squaredColorSum += color * color;
+            sampleCount += 1.0;
+        }
+    }
+
+    // Calculate average color and variance
+    avgColor = colorSum / sampleCount;
+    vec3 varianceRes = (squaredColorSum / sampleCount) - (avgColor * avgColor);
+    variance = dot(varianceRes, vec3(0.299, 0.587, 0.114));
+}
+
+
+void main() {
+    vec3 sectorAvgColors[SECTOR_COUNT];
+    float sectorVariances[SECTOR_COUNT];
+
+    for (int i = 0; i < SECTOR_COUNT; i++) {
+      float angle = float(i) * 6.28318 / float(SECTOR_COUNT);
+      getSectorVarianceAndAverageColor(angle, float(radius), sectorAvgColors[i], sectorVariances[i]);
+    }
+
+   //...
+}
+```
+
+In the end, the filter's principle is roughly the same. What changes here is which pixel is picked for a given sector and included in the average and variance.
+
+<Image
+  src="blog/Circular_Kernel_Details"
+  alt="Diagram showcasing how the sampling of a slice of the circular kernel is split."
+  width={700}
+  height={430}
+/>
+
+The demo below uses this extended version of the Kuwahara filter on top of our scene. It lets us use a larger kernel size, yielding a more stylized output while keeping our scene discernable:
+
+<KuwaharaSandpack scene="scene2" />
+
+### A better weighting of colors
+
+The artifacts left by the filter are still quite visible at large kernel sizes. According to Papari's study, this effect is due to the _weighting_ of the colors when calculating the average and the variance of a given Sector, as it does not discriminate any pixel. If a pixel is in a sector, it contributes the same amount to the calculations.
+
+Using **Gaussian weights** fixes this issue:
+
+- It provides a gradual fall-off from the center of the Sector to its edges.
+- This results in more natural-looking transitions from one Sector to another, thus avoiding abrupt changes that would otherwise make those artifacts very visible.
+- It _emphasizes_ the central pixels more likely to represent the **most accurate** sector color, giving them more importance when calculating the average color.
+
+<Image
+  src="blog/Weighting_Comparison"
+  alt="Diagram comparing standard weighting vs Gaussian weighting. The darker the color of a pixel is, the 'heavier' the weight for said pixel is."
+  width={700}
+  height={398}
+/>
+
+<Callout variant="info" label="Gaussian">
+In case you need a refresher, here's the formula for a 2D Gaussian function:
+
+`f(x,y) = e^(-(x² + y²) / (2σ²))`
+
+</Callout>
+
+To use Gaussian weighting in our filter, we only need to change a few lines from the previous implementation:
+
+```glsl {18,20-22} title=Using Gaussian weighting in our Kuwahara filter implementation
+// ...
+
+float gaussianWeight(float distance, float sigma) {
+    return exp(-(distance * distance) / (2.0 * sigma * sigma));
+}
+
+void getSectorVarianceAndAverageColor(float angle, float radius, out vec3 avgColor, out float variance) {
+    vec3 weightedColorSum = vec3(0.0);
+    vec3 weightedSquaredColorSum = vec3(0.0);
+    float totalWeight = 0.0;
+
+    float sigma = radius / 3.0;
+
+    for (float r = 1.0; r <= radius; r += 1.0) {
+        for (float a = -0.392699; a <= 0.392699; a += 0.196349) {
+            vec2 sampleOffset = r * vec2(cos(angle + a), sin(angle + a));
+            vec3 color = sampleColor(sampleOffset);
+            float weight = gaussianWeight(length(sampleOffset), sigma);
+
+            weightedColorSum += color * weight;
+            weightedSquaredColorSum += color * color * weight;
+            totalWeight += weight;
+        }
+    }
+
+    // Calculate average color and variance
+    avgColor = weightedColorSum / totalWeight;
+    vec3 varianceRes = (weightedSquaredColorSum / totalWeight) - (avgColor * avgColor);
+    variance = dot(varianceRes, vec3(0.299, 0.587, 0.114)); // Convert to luminance
+}
+
+// ...
+```
+
+As we can see in the code snippet above:
+
+1. We compute the weight using the Gaussian formula.
+2. We then take the resulting weight into account when calculating our **weighted color sum** and **weighted squared color sum**.
+3. Those weights are then reflected in the final result of the variance and average color for each Sector.
+
+Now, you may wonder whether adding all those nitty-gritty improvements to a filter that already performed quite well is worth it. You can see the result for yourself in the comparison below between a frame of our first scene using the original implementation of the Kuwahara filter and one using the Papari extension:
+
+<BeforeAfterImage
+  alt="Comparing the output of our extended Kuwahara filter without and with Gaussian weighting."
+  beforeSrc="blog/Kuwahara-Spaceship-before-gaussian_cfx1fy"
+  afterSrc="blog/Kuwahara-Spaceship-after-gaussian_zphvl2"
+  defaultSliderPosition={50}
+  width={700}
+  height={376}
+/>
+
+The result looks already better than previously, even at a low kernel size! Let's observe now the difference between both implementations for a higher value:
+
+<BeforeAfterImage
+  alt="Comparing the output of our extended Kuwahara filter without and with Gaussian weighting at a high kernel size."
+  beforeSrc="blog/Kuwahara-Plant-before-gaussian_oqjiwu"
+  afterSrc="blog/Kuwahara-Plant-after-gaussian_nsscnb"
+  defaultSliderPosition={50}
+  width={700}
+  height={529}
+/>
+
+<KuwaharaSandpack scene="scene3" />
+
+### Fixing a performance pitfall
+
+The Gaussian function used to calculate the weights of our pixel is, unfortunately, quite expensive to run, even more so in all those nested loops necessary to sample each pixel of a given Sector. This improvement is costing us a lot of frames, and it would be very tempting to disregard it and revert to the original weighting method.
+
+However, a team of _smart individuals_ found a way to squeeze more performance out of the filter while maintaining the advantages given by the Gaussian. In [Anisotropic Kuwahara Filtering with PolynomialWeighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf), they propose to replace the Gaussian with a polynomial that roughly approximates it.
+
+`[(x + ζ) − ηy^2]^2`
+
+```glsl title=Using Polynomial weighting in our Kuwahara filter implementation
+// ...
+
+float polynomialWeight(float x, float y, float eta, float lambda) {
+    float polyValue = (x + eta) - lambda * (y * y);
+    return max(0.0, polyValue * polyValue);
+}
+
+void getSectorVarianceAndAverageColor(float angle, float radius, out vec3 avgColor, out float variance) {
+    vec3 colorSum = vec3(0.0);
+    vec3 squaredColorSum = vec3(0.0);
+    float weightSum = 0.0;
+
+    float eta = 0.1;
+    float lambda = 0.5;
+
+    for (float r = 1.0; r <= radius; r += 1.0) {
+        for (float a = -0.392699; a <= 0.392699; a += 0.196349) {
+
+            vec2 sampleOffset = vec2(r * cos(angle + a), r * sin(angle + a));
+            vec3 color = sampleColor(sampleOffset);
+            float weight = polynomialWeight(sampleOffset.x, sampleOffset.y, eta, lambda);
+            //...
+        }
+    }
+    // ...
+}
+
+// ...
+```
+
+When trying out this formula, I noticed the performance improvements highlighted in the paper but also that I could get a satisfying output at a smaller kernel size compared to what we've implemented so far. I'm still not exactly sure why 🤷‍♂️, but I'll take it.
+
+## From Structure Tensor to Anisotropic Kuwahara filter
+
+<Callout variant="info">
+
+If you've made it this far, congratulations! You know how to achieve a very satisfying painterly look for your next WebGL project!
+
+This upcoming part takes the difficulty up a notch to improve the filter by leveraging linear algebra concepts that not everyone may be familiar with. I did my best to explain/simplify those as much as possible, but nonetheless, you may want to take a short break before continuing.
+
+</Callout>
+
+Papari's extension of the Kuwahara filter is already a step towards a lovely painterly shader, however, (I must sound like a broken record at this point) we still can perceive some artifacts left by the filter on the resulting scene. Indeed, the painting effect is applied indiscriminately to the input without any consideration for the overall structure of the current frame. In the case of a true painting, the artist would adapt the _flow of the brush_ based on the direction of the edge. We're not getting this here.
+
+Luckily, [Anisotropic Kuwahara Filtering with PolynomialWeighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf) answers this problem by building upon the concepts of the extended Kuwahara filter we just saw.
+
+<Callout variant="info" label="Definitions">
+
+Isotropic = uniform
+
+Anisotropic = one dominant direction of change
+
+</Callout>
+
+In this paper, the authors suggest that we could adapt our circular kernel to the local features of the input during sampling by **squeezing** and **rotating** it, thus letting us sample our Sectors more accurately. As a result, our kernel would look more like an ellipsis rather than a circle.
+
+<Image
+  src="blog/Anisotropic_Kernel"
+  alt="Diagram comparing isotropic kernels vs anisotropic kernels."
+  width={700}
+  height={382}
+/>
+
+Implementing this improvement will require us to follow several steps and make our post-processing effect **multi-pass**:
+
+1. The first pass will take the underlying scene as input and return the **structure of the scene**.
+2. Then based on this structure as input we'll apply our Kuwahara filter to the underlying scene.
+3. Finally, we'll add one extra pass to apply some tone mapping and other details that will make our painterly shader shine.
+
+<Fullbleed widthPercent={80}>
+  <Image
+    src="blog/Kuwahara_Pipeline"
+    alt="Diagram showcasing the multi-pass post-processing pipeline details in this section."
+    width={700}
+    height={203}
+  />
+</Fullbleed>
+
+### Sobel operator and partial derivatives
+
+To obtain the structure of our scene, we can leverage a **Sobel operator** which I introduced in [Moebius-style post-processing and other stylized shaders](/posts/moebius-style-post-processing/) earlier this year.
+
+`Sx = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]`
+
+`Sy = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]]`
+
+However, this time we won't use it for edge detection like we did back then. We will apply our Sobel Matrix for every pixel but instead of a rapid change in intensity, which is characteristic of edges, we want to extract the partial derivatives along the x/y axis representing the _rate of change_.
+
+```glsl title=Applying our Sobel Matrices when sampling
+varying vec2 vUv;
+uniform sampler2D inputBuffer;
+uniform vec4 resolution;
+
+// Sobel kernels
+const mat3 Gx = mat3( -1, -2, -1, 0, 0, 0, 1, 2, 1 ); // x direction kernel
+const mat3 Gy = mat3( -1, 0, 1, -2, 0, 2, -1, 0, 1 ); // y direction kernel
+
+vec4 computeStructureTensor(sampler2D inputTexture, vec2 uv) {
+    vec3 tx0y0 = texture2D(inputTexture, uv + vec2(-1, -1) / resolution.xy).rgb;
+    vec3 tx0y1 = texture2D(inputTexture, uv + vec2(-1,  0) / resolution.xy).rgb;
+    vec3 tx0y2 = texture2D(inputTexture, uv + vec2(-1,  1) / resolution.xy).rgb;
+    vec3 tx1y0 = texture2D(inputTexture, uv + vec2( 0, -1) / resolution.xy).rgb;
+    vec3 tx1y1 = texture2D(inputTexture, uv + vec2( 0,  0) / resolution.xy).rgb;
+    vec3 tx1y2 = texture2D(inputTexture, uv + vec2( 0,  1) / resolution.xy).rgb;
+    vec3 tx2y0 = texture2D(inputTexture, uv + vec2( 1, -1) / resolution.xy).rgb;
+    vec3 tx2y1 = texture2D(inputTexture, uv + vec2( 1,  0) / resolution.xy).rgb;
+    vec3 tx2y2 = texture2D(inputTexture, uv + vec2( 1,  1) / resolution.xy).rgb;
+
+    //...
+}
+
+// ...
+```
+
+With those partial derivatives, we can obtain a **structure tensor**
+
+<Callout variant="info" label="Tensor">
+
+A structure tensor is a mathematical tool used in image processing and computer vision to describe the local structure and orientation of an image.
+
+It is defined via the following matrix:
+
+`J = [[Jxx, Jxy], [Jxy, Jyy]]`
+
+with `Jxx = dot(Sx, Sx)`, `Jyy = dot(Sy, Sy)`, and `Jxy = dot(Sx, Sy)` and where:
+
+- `Jxx` is the average of the squared x-derivatives, representing the magnitude of the gradient on the x-axis.
+- `Jyy` represents the average of the squared y-derivatives, representing the magnitude of the gradient on the y-axis.
+- `Jxy` represents the average of the product of x and y derivatives, representing how much the gradients are aligned or orthogonal to each other.
+
+</Callout>
+
+In the following fragment shader code, we apply both Sobel matrices at a given pixel, compute the structure tensor, and return it as an output.
+
+```glsl {21-23,25-27,29,33} title=Using Sobel Matrices to obtain the structure tensor
+varying vec2 vUv;
+uniform sampler2D inputBuffer;
+uniform vec4 resolution;
+
+// Sobel kernels
+const mat3 Gx = mat3( -1, -2, -1, 0, 0, 0, 1, 2, 1 ); // x direction kernel
+const mat3 Gy = mat3( -1, 0, 1, -2, 0, 2, -1, 0, 1 ); // y direction kernel
+
+
+vec4 computeStructureTensor(sampler2D inputTexture, vec2 uv) {
+    vec3 tx0y0 = texture2D(inputTexture, uv + vec2(-1, -1) / resolution.xy).rgb;
+    vec3 tx0y1 = texture2D(inputTexture, uv + vec2(-1,  0) / resolution.xy).rgb;
+    vec3 tx0y2 = texture2D(inputTexture, uv + vec2(-1,  1) / resolution.xy).rgb;
+    vec3 tx1y0 = texture2D(inputTexture, uv + vec2( 0, -1) / resolution.xy).rgb;
+    vec3 tx1y1 = texture2D(inputTexture, uv + vec2( 0,  0) / resolution.xy).rgb;
+    vec3 tx1y2 = texture2D(inputTexture, uv + vec2( 0,  1) / resolution.xy).rgb;
+    vec3 tx2y0 = texture2D(inputTexture, uv + vec2( 1, -1) / resolution.xy).rgb;
+    vec3 tx2y1 = texture2D(inputTexture, uv + vec2( 1,  0) / resolution.xy).rgb;
+    vec3 tx2y2 = texture2D(inputTexture, uv + vec2( 1,  1) / resolution.xy).rgb;
+
+    vec3 Sx = Gx[0][0] * tx0y0 + Gx[1][0] * tx1y0 + Gx[2][0] * tx2y0 +
+              Gx[0][1] * tx0y1 + Gx[1][1] * tx1y1 + Gx[2][1] * tx2y1 +
+              Gx[0][2] * tx0y2 + Gx[1][2] * tx1y2 + Gx[2][2] * tx2y2;
+
+    vec3 Sy = Gy[0][0] * tx0y0 + Gy[1][0] * tx1y0 + Gy[2][0] * tx2y0 +
+              Gy[0][1] * tx0y1 + Gy[1][1] * tx1y1 + Gy[2][1] * tx2y1 +
+              Gy[0][2] * tx0y2 + Gy[1][2] * tx1y2 + Gy[2][2] * tx2y2;
+
+    return vec4(dot(Sx, Sx), dot(Sy, Sy), dot(Sx, Sy), 1.0);
+}
+
+void main() {
+    vec4 tensor = computeStructureTensor(inputBuffer, vUv);
+
+    gl_FragColor = tensor;
+}
+```
+
+If we were to visualize our scene with this tensor pass applied on top, this is what we'd obtain:
+
+<KuwaharaSandpack scene="scene4" />
+
+<Callout variant="info">
+
+You will notice that we get a series of edge lines with 3 possible colors:
+
+- Red, represents a strong vertical rate of change.
+- Green, represents a strong horizontal rate of change.
+- Yellow, indicates a rate of change in both the x and y-axis.
+
+</Callout>
+
+### From Structure Tensor to flow
+
+Thanks to the Structure Tensor we just obtained, we can derive the information we need to adapt our filter to the local features of our scene. This process is rather tedious and involves some notions of linear algebra that can seem daunting at first. Thus, we'll proceed step-by-step and avoid taking unnecessary shortcuts.
+
+We want to know in which _direction_ a given pixel points towards, i.e. the **dominant direction and orientation of the tensor at a given position**. Luckily, there is a mathematical concept that represents just that: **eigenvalues** and **eigenvectors**.
+
+<Callout variant="info" label="Definitions">
+
+In linear algebra, **eigenvectors** represent directions where a transformation or a matrix results in those vectors stretching or shrinking without changing directions.
+In other words, there exists a non-zero vector `v` satisfying the following conditions:
+
+`A * v = λ * v` where `A` is a transformation matrix, and `λ` is the eigenvalue for that vector.
+
+The **eigenvalues** represent the _intensity_ of the stretching/shrinking of the transformation.
+
+It is also important to note that in our use case:
+
+1. There are two eigenvalues for our Structure Tensor: `λ1` and `λ2`.
+2. They represent the strength of the gradient in the direction of the strongest intensity change, usually indicating an edge, and the strength of the gradient in the direction orthogonal to the strongest intensity of change respectively.
+3. Each eigenvector is associated with an eigenvalue, representing respectively the strongest and weakest rate of change.
+
+</Callout>
+
+<Callout variant="info" label="Formulas">
+
+First, here's a reminder of some handy matrix formulas we'll use below.
+
+Given a matrix `[[a, b], [b,c]]` we can define:
+
+- its trace as `a + d`
+- its determinant as `a * d - b^2`
+
+</Callout>
+
+Through our structure tensor, we'd like to obtain `λ1` and derive its corresponding eigenvector, giving us the _dominant_ direction of the _local structure_, to adapt our filter.
+We can do so by starting from the definition of an eigenvector `A * v = λ * v`. Given a Matrix `[[a, b], [b,c]]`, we have:
+
+- `A * v = λ * v`
+- `A * v - λ * v = 0`
+- `A * v - λ * I * v` where `I` is the identity matrix
+- `(A - λ * I) * v = 0`
+- Since we established that `v` is non-null, the only way for a product of a matrix transformation and non-zero vector to be null is if the transformation completely squishes space. This can be represented by a zero determinant for that matrix transformation, hence `det(A - λ * I) = 0`
+- `det([[a - λ, b], [b, d - λ]]) = 0`
+- By applying the formula of the determinant we highlighted above we get: `(a - λ) * (d - λ) - b^2 = 0`
+- Finally, if we simplify this equation, we get the following quadratic equation to solve for lambda: `λ^2 - (a + d)λ + (ad - b^2) = 0`
+
+<Callout variant="info">
+
+In case you need it, here's a refresher (or first look for some?) on how you can derive the solution of a quadratic [link](https://en.wikipedia.org/wiki/Quadratic_equation).
+
+</Callout>
+
+The solution of this quadratic equation gives us two possible values for lambda as we expected:
+
+`λ = [(a + d) ± √((a + d)^2 - 4*(ad - b^2))] / 2`
+
+Doing all these steps in our fragment shader code would be relatively intensive. If you look a bit closer at the formula above, you will notice that we can replace some bits with the ones of **the determinant and the trace of the transformation matrix**:
+
+`λ = [trace ± √(trace² - 4*determinant)] / 2`
+
+thus making us not have to perform all the steps we just went through in our shader code: we can directly use this formula to compute both eigenvalues.
+
+```glsl title=Computing the eigenvalues of our structuretensor
+float Jxx = structureTensor.r;
+float Jyy = structureTensor.g;
+float Jxy = structureTensor.b;
+
+float trace = Jxx + Jyy;
+float determinant = Jxx * Jyy - Jxy * Jxy;
+
+float lambda1 = trace * 0.5 + sqrt(trace * trace * 0.25 - determinant);
+float lambda2 = trace * 0.5 - sqrt(trace * trace * 0.25 - determinant);
+```
+
+Now that we have our eigenvalues, we can pick the largest one to derive our **eigenvector** following this definition:
+
+- `(A - λ * I) * v = 0`
+- `[Jxx - λ, Jxy] [vx] = [0]` and `[Jxy, Jyy - λ]* [vy] [0]`
+- `(Jxx - λ) * vx + Jxy * vy = 0` and `Jxy * vx + (Jyy - λ) * vy = 0`
+- `vx = -Jxy * vy / (Jxx - λ)`, and by setting `vy` to `1` for simplicity we get: `vx = -Jxy / (Jxx - λ)`
+- we can then multiply both components by `Jxx - λ` and obtain the final value for our eigenvector: `v = (-Jxy, Jxx - λ)`
+
+We can use it as is in our code, however, through many rounds of trial and error, I had to resort to using this eigenvector only if Jxy relative to the other components of the tensor matrix was above zero.
+
+```glsl {9-10,17} title=Computing the eigenvector of our structure tensor
+vec4 getDominantOrientation(vec4 structureTensor) {
+    float Jxx = structureTensor.r;
+    float Jyy = structureTensor.g;
+    float Jxy = structureTensor.b;
+
+    float trace = Jxx + Jyy;
+    float determinant = Jxx * Jyy - Jxy * Jxy;
+
+    float lambda1 = trace * 0.5 + sqrt(trace * trace * 0.25 - determinant);
+    float lambda2 = trace * 0.5 - sqrt(trace * trace * 0.25 - determinant);
+
+    float jxyStrength = abs(Jxy) / (abs(Jxx) + abs(Jyy) + abs(Jxy) + 1e-7);
+
+    vec2 v;
+
+    if (jxyStrength > 0.0) {
+        v = normalize(vec2(-Jxy, Jxx - lambda1));
+    } else {
+        v = vec2(0.0, 1.0);
+    }
+
+    return vec4(normalize(v), lambda1, lambda2);
+}
+```
+
+### Deriving and applying anisotropy to our filter
+
+From the Structure Tensor of our underlying scene, we derived both its eigenvalues and eigenvector. We could have also merely headed over to [Anisotropic image segmentation by a gradient structure tensor](https://docs.opencv.org/4.x/d4/d70/tutorial_anisotropic_image_segmentation_by_a_gst.html) to find those formulas, however, we're grown-ups and it's nice to step out of our comfort zone to learn how to derive/define the tools and formulas we use in our shaders from time to time 🙂.
+
+In [Anisotropic Kuwahara Filtering with PolynomialWeighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf), the authors define the anisotropy `A` using those eigenvalues as follows:
+
+`A = (λ1 - λ2) / (λ1 + λ2 + 1e-7)`
+
+<Callout variant="info">
+
+I added `1e-7` to the denominator to avoid any potential 0 values that could break our shader.
+
+</Callout>
+
+With this formula, we can derive that:
+
+- `A` ranges from `0` to `1`
+- when `λ1 = λ2`, the anisotropy is `0`, representing a **isotropic** region.
+- when `λ1 > λ2`, the anisotropy tends towards `1`, representing an **anisotropic** region.
+
+With the anisotropy now defined, we can use it to shape the circular kernel from the Kuwahara filter along the x-axis and y-axis with
+
+```glsl {12,15-16} title=Excentricity of the circular kernel
+//...
+
+void main() {
+    vec4 structureTensor = texture2D(inputBuffer, vUv);
+
+    vec3 sectorAvgColors[SECTOR_COUNT];
+    float sectorVariances[SECTOR_COUNT];
+
+    vec4 orientationAndAnisotropy = getDominantOrientation(structureTensor);
+    vec2 orientation = orientationAndAnisotropy.xy;
+
+    float anisotropy = (orientationAndAnisotropy.z - orientationAndAnisotropy.w) / (orientationAndAnisotropy.z + orientationAndAnisotropy.w + 1e-7);
+
+    float alpha = 1.0;
+    float scaleX = alpha / (anisotropy + alpha);
+    float scaleY = (anisotropy + alpha) / alpha;
+
+   //...
+}
+```
+
+<Callout variant="info">
+  The parameter `alpha` represent the "intensity" of the anisotropy of our
+  filter. The paper quoted above suggests that in most cases `alpha = 1.0`,
+  however, I noticed that setting it at this value makes the filter very noisy
+  at high kernel size 🤷‍♂️. I bumped it all up to `25` by trial and error to get a
+  good looking output. By experience, any value above `10` yielded something
+  relatively satisfying.
+</Callout>
+
+Notice how:
+
+- As the anisotropy approaches `1`, the ellipsis becomes more elongated along the x-axis, stretching our circular kernel.
+- When we have a relatively isotropic region, the scale factors are `1` resulting in our kernel remaining circular.
+
+We now know how to stretch and scale our kernel based on the anisotropy, the remaining task we need to achieve is to _orient_ it accordingly using the eigenvector we computed previously and defining a **rotation matrix** from it.
+
+```glsl {14,38,42} title=Adapt our kernel using anisotropy and the eigenvector from our structure tensor
+//...
+
+void getSectorVarianceAndAverageColor(mat2 anisotropyMat, float angle, float radius, out vec3 avgColor, out float variance) {
+    vec3 weightedColorSum = vec3(0.0);
+    vec3 weightedSquaredColorSum = vec3(0.0);
+    float totalWeight = 0.0;
+
+    float eta = 0.1;
+    float lambda = 0.5;
+
+    for (float r = 1.0; r <= radius; r += 1.0) {
+        for (float a = -0.392699; a <= 0.392699; a += 0.196349) {
+            vec2 sampleOffset = r * vec2(cos(angle + a), sin(angle + a));
+            sampleOffset *= anisotropyMat;
+
+            //...
+        }
+        //...
+    }
+    //...
+}
+
+void main() {
+    vec4 structureTensor = texture2D(inputBuffer, vUv);
+
+    vec3 sectorAvgColors[SECTOR_COUNT];
+    float sectorVariances[SECTOR_COUNT];
+
+    vec4 orientationAndAnisotropy = getDominantOrientation(structureTensor);
+    vec2 orientation = orientationAndAnisotropy.xy;
+
+    float anisotropy = (orientationAndAnisotropy.z - orientationAndAnisotropy.w) / (orientationAndAnisotropy.z + orientationAndAnisotropy.w + 1e-7);
+
+    float alpha = 25.0;
+    float scaleX = alpha / (anisotropy + alpha);
+    float scaleY = (anisotropy + alpha) / alpha;
+
+    mat2 anisotropyMat = mat2(orientation.x, -orientation.y, orientation.y, orientation.x) * mat2(scaleX, 0.0, 0.0, scaleY);
+
+    for (int i = 0; i < SECTOR_COUNT; i++) {
+      float angle = float(i) * 6.28318 / float(SECTOR_COUNT); // 2π / SECTOR_COUNT
+      getSectorVarianceAndAverageColor(anisotropyMat, angle, float(radius), sectorAvgColors[i], sectorVariances[i]);
+    }
+
+    //...
+}
+```
+
+As you can see above, the last step simply consists of applying this matrix to our `sampleOffset`. Voilà! We adapted our Kuwahara filter to be anisotropic!
+
+I acknowledge that this process is rather tedious, however, the techniques described in the paper about the anisotropic Kuwahara filter that we reimplemented here are interesting and demonstrate the power that a few matrix transformations can have on an image and all the information we can derive from these.
+
+The result in itself is subtle, and you'll mostly notice the advantages when:
+
+- analyzing some specific and complex details of your scene from up close once the filter is applied
+- having a very high kernel size
+
+<BeforeAfterImage
+  alt="Comparing the output of our isotropic and anisotropic Kuwahara filter."
+  beforeSrc="blog/Kuwahara-Anisotropic-Spaceship-before_fzlops"
+  afterSrc="blog/Kuwahara-Anisotropic-Spaceship-after_peebcb"
+  defaultSliderPosition={50}
+  width={700}
+  height={460}
+/>
+
+<BeforeAfterImage
+  alt="Comparing the output of our isotropic and anisotropic Kuwahara filter."
+  beforeSrc="blog/Kuwahara-Anisotropic-Plant-before_qx9lza"
+  afterSrc="blog/Kuwahara-Anisotropic-Plant-after_hank5e"
+  defaultSliderPosition={50}
+  width={700}
+  height={661}
+/>
+
+Below is the full implementation of our multi-pass anisotropic Kuwahara filter:
+
+<KuwaharaSandpack scene="scene5" />
+
+## Final touches and conclusion
+
+To bring out the best of our painterly shader, we can add a final post-processing pass to our scene to perform a few tweaks such as:
+
+- quantization
+- color interpolation
+- saturation
+- tone mapping
+- adding some texture to the output
+
+Quantization will help reduce the number of colors our output will feature. I covered this method in length in [The Art of Dithering and Retro Shading for the Web](/posts/the-art-of-dithering-and-retro-shading-web/). As a reminder, the formula behind quantization is:
+
+`floor(color * (n - 1) + 0.5)/n - 1` where n is the total number of colors.
+
+In our fragment shader for our final pass, we can add quantization by:
+
+1. Calculating the grayscale value of the current pixel.
+2. Setting the number of colors `n`. In my examples, I picked `16`.
+3. Using the formula established above.
+4. Clamp the range to avoid extreme values which wouldn't yield a realistic painting effect.
+
+```glsl title=Applying quantization in our final post-processing pass
+void main() {
+    vec3 color = texture2D(inputBuffer, vUv).rgb;
+    vec3 grayscale = vec3(dot(color, vec3(0.299, 0.587, 0.114)));
+
+    // color quantization
+    int n = 16;
+    float x = grayscale.r;
+    float qn = floor(x * float(n - 1) + 0.5) / float(n - 1);
+    qn = clamp(qn, 0.2, 0.7); // Reducing the spread of the grayscale spectrum on purpose
+
+    //...
+
+}
+```
+
+On top of that, to obtain a more painterly color output, we can use a **Two Point Interpolation** to blend our colors with our grayscale quantized image:
+
+- For a darker quantized pixel, we'd opt to interpolate from black (or close to black) to the image color based on that quantization value.
+- For a lighter quantized pixel, we'd interpolate from the image to white.
+
+```glsl title=Adding two point color interpolation
+//...
+
+if (qn < 0.5) {
+    color = mix(vec3(0.1), color.rgb, qn * 2.0);
+} else {
+    color = mix(color.rgb, vec3(1.0), (qn - 0.5) * 2.0);
+}
+
+//...
+
+```
+
+This method emphasizes the contrast between light (represented by white space) and dark areas (more painted, darker colors).
+
+To make our output _pop_ more, I also chose to increase the saturation of our colors:
+
+```glsl title=Saturating our color output
+// ...
+
+vec3 sat(vec3 rgb, float adjustment) {
+    vec3 W = vec3(0.2125, 0.7154, 0.0721); // Luminance weights
+    vec3 intensity = vec3(dot(rgb, W));
+    return mix(intensity, rgb, adjustment);
+}
+
+// ...
+
+color = sat(color, 1.5);
+
+// ...
+```
+
+And, finally, I added some tone mapping for better color balance:
+
+```glsl title=Applying tone mapping to our scene
+// ...
+
+vec3 ACESFilm(vec3 x) {
+    float a = 2.51;
+    float b = 0.03;
+    float c = 2.43;
+    float d = 0.59;
+    float e = 0.14;
+    return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
+}
+
+// ...
+void main() {
+    //...
+
+    color = sat(color, 1.5);
+    color = ACESFilm(color);
+
+    vec4 outputColor = vec4(color, 1.0);
+    gl_FragColor = outputColor;
+}
+```
+
+You can see that these little color improvements compound into significant changes highlighting the best features of our painterly shader:
+
+<BeforeAfterImage
+  alt="Comparing the output of our post-processing pipeline without/with the final pass."
+  beforeSrc="blog/Kuwahara-without-final-pass_d2ag3x"
+  afterSrc="blog/Kuwahara-with-final-padd_gwu0s8"
+  defaultSliderPosition={50}
+  width={700}
+  height={465}
+/>
+
+To wrap it all up, and give our output some _physicality_ and _realism_, we can add a paper-like texture and blend it with the color output of our fragment shader, exactly as <Anchor favicon discreet href="https://twitter.com/arpeegee">@arpeegee</Anchor> did in the example that originally inspired this article.
+This is a very easy trick that adds a _lot_ of details to our scene and makes it look like a real painting.
+
+The demo below bundles all those improvements together on top of the anisotropic Kuwahara filter making an otherwise standard scene look like a beautiful painting with many features reminiscent of watercolor which is the effect I was originally trying to achieve.
+
+<KuwaharaSandpack scene="scene6" />
+
+As we saw throughout this article, making a satisfying painterly shader seemed simple on the surface thanks to the standard implementation of the Kuwahara filter. However, it turned out to be much more intricate once we started to dig deeper, trying to fix the artifacts that each technique yielded. If you were to ask me my take on the topic, **I'd consider the Papari extension of the Kuwahara filter with polynomial weighting to be enough** in most cases, while also being relatively performant compared to its anisotropic counterpart. At the end of the day, it's almost more a question of personal taste/creative choice as the different iterations of this image filter can produce drastically different results given an underlying scene/image.
+
+Nonetheless, deep diving into how to obtain the structure tensor of an image and deriving anisotropy through many layers of linear algebra is far from useless as the technique can be ported to _many_ other post-processing effects (one of which I'm considering writing about here). Consider it as one additional tool in your ever-growing shader toolbelt.
+
+To finish this article, which was quite the undertaking not going to lie, here are a couple more shots/paintings of some of the test scenes I used while building this custom post-processing shader:
+
+<Image
+  src="blog/orangetree-painting2-min_zvrziz"
+  alt="Orange Tree 1 - Anisotropic Kuwahara filter"
+  width={700}
+  height={426}
+/>
+
+<Image
+  src="blog/clouds-painting-min_bqf2ia"
+  alt="Raymarched Clouds - Extended Kuwahara filter"
+  width={700}
+  height={388}
+/>
+
+<Image
+  src="blog/orangetree-painting1-min_ljlg7l"
+  alt="Orange Tree 2 - Anisotropic Kuwahara filter"
+  width={700}
+  height={426}
+/>
+
+<Image
+  src="blog/spaceship-formation-painting-min_egrake"
+  alt="Spaceship formation - Extended Kuwahara filter"
+  width={700}
+  height={410}
+/>
