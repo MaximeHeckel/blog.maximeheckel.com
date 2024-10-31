@@ -9,9 +9,41 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Fri, 29 Dec 2023 11:00:51 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 31 Oct 2024 13:49:06 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[On Crafting Painterly Shaders]]></title>
+            <description><![CDATA[A detailed essay on my research and process of building a shader to mimic paint, watercolor, and aquarelle by exploring various implementations of the Kuwahara image smoothing filter.]]></description>
+            <link>https://blog.maximeheckel.com/posts/on-crafting-painterly-shaders</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/on-crafting-painterly-shaders</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 29 Oct 2024 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[The Art of Dithering and Retro Shading for the Web]]></title>
+            <description><![CDATA[A detailed walkthrough of the inner workings of dithering and other shading techniques to give a retro look and feel to your WebGL and React Three Fiber work.]]></description>
+            <link>https://blog.maximeheckel.com/posts/the-art-of-dithering-and-retro-shading-web</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/the-art-of-dithering-and-retro-shading-web</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 06 Aug 2024 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Moebius-style post-processing and other stylized shaders]]></title>
+            <description><![CDATA[A detailed essay on the process of building a post-processing stylized shader reproducing the style of legendary artist Jean Giraud a.k.a Moebius for your React Three Fiber projects. In it, I detail the process of drawing outlines with a Sobel Filter as well as custom shadow and lighting patterns to bring a unique style to your WebGL scene.]]></description>
+            <link>https://blog.maximeheckel.com/posts/moebius-style-post-processing</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/moebius-style-post-processing</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 26 Mar 2024 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Shining a light on Caustics with Shaders and React Three Fiber]]></title>
+            <description><![CDATA[A step-by-step guide on how to build a caustic light effect for your React Three Fiber project using shaders, render targets, normal maps, and custom materials.]]></description>
+            <link>https://blog.maximeheckel.com/posts/caustics-in-webgl</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/caustics-in-webgl</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 23 Jan 2024 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Real-time dreamy Cloudscapes with Volumetric Raymarching]]></title>
             <description><![CDATA[This article is a deep dive into my experimentations with Volumetric rendering and how to leverage it to render beautiful raymarched cloudscapes in React Three Fiber and WebGL. In it, I walk you through everything from the basics of Volumetric Raymarching to the techniques used in video games to render physically accurate clouds.]]></description>
@@ -213,7 +245,7 @@
             <pubDate>Tue, 28 Jul 2020 08:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Immigrating to the US: My path from non-immigrant to permanent resident]]></title>
+            <title><![CDATA[Immigrating to the US]]></title>
             <description><![CDATA[US immigration explained for American citizens by an immigrant.]]></description>
             <link>https://blog.maximeheckel.com/posts/immigrating-to-the-us-my-path</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/immigrating-to-the-us-my-path</guid>
@@ -403,6 +435,13 @@
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/running-golang-tests-with-jest-b5d8f3d43a7</guid>
             <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
             <pubDate>Wed, 10 Jan 2018 17:00:17 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://blog.maximeheckel.com/posts/LICENSE</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/LICENSE</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Invalid Date</pubDate>
         </item>
     </channel>
 </rss>

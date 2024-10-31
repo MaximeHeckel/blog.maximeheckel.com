@@ -106,6 +106,12 @@
   </url>
 
   <url>
+    <loc>https://blog.maximeheckel.com/posts/caustics-in-webgl/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc
       >https://blog.maximeheckel.com/posts/creating-beautiful-screenshots-source-code-with-serverless-function/</loc
     >
@@ -233,6 +239,22 @@
 
   <url>
     <loc
+      >https://blog.maximeheckel.com/posts/moebius-style-post-processing/</loc
+    >
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc
+      >https://blog.maximeheckel.com/posts/on-crafting-painterly-shaders/</loc
+    >
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc
       >https://blog.maximeheckel.com/posts/painting-with-math-a-gentle-study-of-raymarching/</loc
     >
     <changefreq>daily</changefreq>
@@ -348,6 +370,14 @@
   <url>
     <loc
       >https://blog.maximeheckel.com/posts/switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website/</loc
+    >
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc
+      >https://blog.maximeheckel.com/posts/the-art-of-dithering-and-retro-shading-web/</loc
     >
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
