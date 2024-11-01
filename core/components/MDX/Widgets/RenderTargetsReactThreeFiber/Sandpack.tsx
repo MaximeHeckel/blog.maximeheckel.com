@@ -69,10 +69,10 @@ const RenderTargetsSandpack = (props: any) => {
           autorun={autorun}
           template="react"
           dependencies={{
-            '@react-three/drei': '9.70.4',
-            '@react-three/fiber': '8.11.2',
+            '@react-three/drei': '9.102.2',
+            '@react-three/fiber': '8.15.11',
             leva: '0.9.31',
-            three: '0.149.0',
+            three: '0.159.0',
             uuid: '^9.0.0',
           }}
           files={{

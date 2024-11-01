@@ -69,11 +69,11 @@ const RefractionDispersionSandpack = (props: any) => {
           autorun={autorun}
           template="react"
           dependencies={{
-            '@react-three/drei': '9.44.1',
-            '@react-three/fiber': '8.9.1',
+            '@react-three/drei': '9.102.2',
+            '@react-three/fiber': '8.15.11',
             lamina: '1.1.20',
             leva: '0.9.34',
-            three: '0.146.0',
+            three: '0.159.0',
             uuid: '^9.0.0',
           }}
           files={{

@@ -2,7 +2,7 @@
 title: 'Beautiful and mind-bending effects with WebGL Render Targets'
 subtitle: A deep dive into WebGL Render Targets and how to leverage their capabilities in combination with the render loop to create scenes with post-processing effects, transition, and many types of optical illusions to trick the viewer's eyes.
 date: '2023-03-14T08:00:00.000Z'
-updated: '2023-06-08T08:00:00.000Z'
+updated: '2024-11-01T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -368,16 +368,11 @@ If you've read my article [Refraction, dispersion, and other shader light effect
 
 When sampling textures using a shader material, you may notice that the colors of the texture from our render target may look a bit _darker_. It looks like, by default `useFBO` uses the default color encoding of the scene, which is `sRGBEncoding`, but the colors of the shader are using `LinearEncoding` (for reasons that I do not fully understand yet).
 
-To work around this issue, [I found the following function to adjust the color encoding](https://gamedev.stackexchange.com/a/148088) from linear to sRGB in the fragment shader code:
+To work around this issue, you'd need to include the following "includes":
 
 ```glsl
-vec4 fromLinear(vec4 linearRGB) {
-    bvec3 cutoff = lessThan(linearRGB.rgb, vec3(0.0031308));
-    vec3 higher = vec3(1.055)*pow(linearRGB.rgb, vec3(1.0/2.4)) - vec3(0.055);
-    vec3 lower = linearRGB.rgb * vec3(12.92);
-
-    return vec4(mix(higher, lower, cutoff), linearRGB.a);
-}
+#include <tonemapping_fragment>
+#include <colorspace_fragment>
 ```
 
 This code has been added in most demo to color-correct our shader materials.

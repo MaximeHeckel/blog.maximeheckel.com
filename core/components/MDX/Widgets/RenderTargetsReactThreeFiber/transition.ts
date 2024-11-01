@@ -74,6 +74,9 @@ void main() {
 
     vec4 color = mix(colorA, colorB, noise);
     gl_FragColor = color;
+    
+    #include <tonemapping_fragment>
+    #include <colorspace_fragment>
 }
 `;
 

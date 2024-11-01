@@ -13,6 +13,8 @@ void main() {
   vec4 color = texture2D(uTexture, uv + refractVec.xy);
   
   gl_FragColor = color;
+  #include <tonemapping_fragment>
+#include <colorspace_fragment>
 }
 `;
 

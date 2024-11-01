@@ -6,6 +6,8 @@ void main() {
   vec4 color = texture2D(uTexture, uv);
   
   gl_FragColor = color;
+  #include <tonemapping_fragment>
+#include <colorspace_fragment>
 }
 `;
 

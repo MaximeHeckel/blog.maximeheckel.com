@@ -23,6 +23,9 @@ void main() {
     float b = texture2D(uTexture, uv * (1.0 + bOffset) - (bOffset / 2.0)).b;
 
     gl_FragColor = vec4(r, g, b, 1.0);
+
+    #include <tonemapping_fragment>
+    #include <colorspace_fragment>
 }
 \`;
 
@@ -164,6 +167,9 @@ void main() {
   if (floor(mod(gl_FragCoord.y * 0.25, 2.0)) == 0.0) {
       gl_FragColor.rgb *= 1.0 - (0.15 * noise);
   }
+
+  #include <tonemapping_fragment>
+  #include <colorspace_fragment>
 }
 \`;
 
