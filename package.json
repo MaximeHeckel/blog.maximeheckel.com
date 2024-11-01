@@ -61,7 +61,7 @@
     "lodash.merge": "4.6.2",
     "next": "^14.0.4",
     "next-mdx-remote": "4.2.1",
-    "next-seo": "5.5.0",
+    "next-seo": "6.6.0",
     "openai": "^3.3.0",
     "playwright-core": "1.17.1",
     "prism-react-renderer": "^1.3.5",
