@@ -63,7 +63,7 @@
     "next-mdx-remote": "4.2.1",
     "next-seo": "5.5.0",
     "openai": "^3.3.0",
-    "playwright-core": "1.17.1",
+    "playwright-core": "1.48.2",
     "prism-react-renderer": "^1.3.5",
     "prismjs": "^1.29.0",
     "qs": "6.9.4",
