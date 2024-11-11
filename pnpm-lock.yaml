@@ -12,8 +12,8 @@ importers:
         specifier: 1.18.4
         version: 1.18.4(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@maximeheckel/design-system':
-        specifier: ^2.1.8
-        version: 2.1.8(@types/react-dom@18.2.18)(@types/react@18.2.45)(framer-motion@10.12.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: 2.1.9
+        version: 2.1.9(@types/react-dom@18.2.18)(@types/react@18.2.45)(framer-motion@10.12.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@radix-ui/react-dialog':
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -649,8 +649,8 @@ packages:
   '@lezer/lr@0.15.8':
     resolution: {integrity: sha512-bM6oE6VQZ6hIFxDNKk8bKPa14hqFrV07J/vHGOeiAbJReIaQXmkVb6xQu4MR+JBTLa5arGRyAAjJe1qaQt3Uvg==}
 
-  '@maximeheckel/design-system@2.1.8':
-    resolution: {integrity: sha512-rXBgBs8iL0/+ne1M5U+LU54Vk5m8r9EdtTyN5X0ZMft85IlEjpvNPul5sZkLhZ5SvsRmVGEcsaGrpk4SNWpRCA==}
+  '@maximeheckel/design-system@2.1.9':
+    resolution: {integrity: sha512-UU9xZhko5onQyeWOsh4lNa9c/O18VXwbj6U0FqUPyZKAtDBputAepYuLXlV0ieNKpvb24e8Y11UJ9gJPDM7ucw==}
     peerDependencies:
       framer-motion: ^7.0.0
       react: ^18.2.0
@@ -5684,7 +5684,7 @@ snapshots:
     dependencies:
       '@lezer/common': 0.15.12
 
-  '@maximeheckel/design-system@2.1.8(@types/react-dom@18.2.18)(@types/react@18.2.45)(framer-motion@10.12.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@maximeheckel/design-system@2.1.9(@types/react-dom@18.2.18)(@types/react@18.2.45)(framer-motion@10.12.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@radix-ui/react-collapsible': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@radix-ui/react-tooltip': 1.0.0(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
