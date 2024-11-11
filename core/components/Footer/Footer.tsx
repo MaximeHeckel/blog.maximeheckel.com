@@ -58,6 +58,14 @@ const Footer = () => (
               <Grid>
                 <Anchor
                   discreet
+                  href="https://bsky.app/profile/maxime.bsky.social"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Bluesky
+                </Anchor>
+                <Anchor
+                  discreet
                   href="https://twitter.com/MaximeHeckel"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -71,12 +79,6 @@ const Footer = () => (
                   rel="noopener noreferrer"
                 >
                   Github
-                </Anchor>
-                <Anchor
-                  discreet
-                  href="https://www.buymeacoffee.com/maximeheckel"
-                >
-                  Buy me a coffee
                 </Anchor>
               </Grid>
             </Text>
@@ -94,18 +96,25 @@ const Footer = () => (
                 </Anchor>
                 <Anchor
                   discreet
+                  href="https://www.buymeacoffee.com/maximeheckel"
+                >
+                  Buy me a coffee
+                </Anchor>
+
+                <Anchor
+                  discreet
                   href="https://www.figma.com/file/uvkUCtxXs7Vvmj58sHh0TE/Maxime's-Public-Roadmap?node-id=0%3A1"
                 >
                   Roadmap
                 </Anchor>
-                <Anchor
+                {/* <Anchor
                   discreet
                   href="https://buttondown.email/MaximeHeckel/archive/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   Newsletter
-                </Anchor>
+                </Anchor> */}
               </Grid>
             </Text>
           </Grid.Item>

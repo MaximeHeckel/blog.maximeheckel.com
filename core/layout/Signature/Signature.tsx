@@ -78,7 +78,8 @@ const SignatureSVG = () => {
 };
 
 const Signature = ({ title, url }: { title: string; url: string }) => {
-  const text = `${title} by @MaximeHeckel ${url}`;
+  const textTwitter = `${title} by @MaximeHeckel ${url}`;
+  const textBluesky = `${title} by @maxime.bsky.social ${url}`;
 
   return (
     <StyledSection data-testid="signature">
@@ -92,14 +93,26 @@ const Signature = ({ title, url }: { title: string; url: string }) => {
         gap="5"
       >
         <Text as="p">
-          Liked this article? {/* @ts-ignore */}
+          Liked this article? Share it with a friend on{' '}
           <Anchor
-            favicon
-            href={`https://twitter.com/intent/tweet?text=${encodeURI(text)}`}
+            href={`https://bsky.app/intent/compose?text=${encodeURI(
+              textBluesky
+            )}`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Share it with a friend on Twitter
+            Bluesky
+          </Anchor>{' '}
+          or{' '}
+          <Anchor
+            favicon
+            href={`https://twitter.com/intent/tweet?text=${encodeURI(
+              textTwitter
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Twitter
           </Anchor>{' '}
           or{' '}
           <Anchor

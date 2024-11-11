@@ -120,19 +120,6 @@ const IndexPage = (props: Props) => {
                   Link redirects to my portfolio https://maximeheckel.com.
                 </VisuallyHidden>
               </a>
-              <a
-                href="https://twitter.com/MaximeHeckel"
-                style={{ textDecoration: 'none' }}
-                tabIndex={-1}
-              >
-                <Button variant="secondary" endIcon={<Icon.Twitter size="4" />}>
-                  @MaximeHeckel
-                </Button>
-                <VisuallyHidden as="p">
-                  Link redirects to my Twitter profile page
-                  https://twitter.com/MaximeHeckel.
-                </VisuallyHidden>
-              </a>
             </Flex>
           </Flex>
         </Grid.Item>
