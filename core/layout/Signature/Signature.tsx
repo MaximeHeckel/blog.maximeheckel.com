@@ -95,6 +95,7 @@ const Signature = ({ title, url }: { title: string; url: string }) => {
         <Text as="p">
           Liked this article? Share it with a friend on{' '}
           <Anchor
+            favicon
             href={`https://bsky.app/intent/compose?text=${encodeURI(
               textBluesky
             )}`}

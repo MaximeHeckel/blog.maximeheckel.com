@@ -738,6 +738,23 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                 </Anchor>
               </p>
               <h3>
+                <Anchor
+                  href="https://bsky.app/profile/maxime.bsky.social"
+                  favicon
+                >
+                  @maxime.bsky.social
+                </Anchor>
+              </h3>
+              <p>
+                <Anchor
+                  href="https://bsky.app/profile/maxime.bsky.social"
+                  favicon
+                  discreet
+                >
+                  @maxime.bsky.social
+                </Anchor>
+              </p>
+              <h3>
                 <Anchor href="https://github.com/MaximeHeckel" favicon>
                   Github
                 </Anchor>
@@ -1358,6 +1375,11 @@ const IconSection = () => (
       <Icon.Twitter variant="default" size={5} />
       <Icon.Twitter variant="default" size={4} />
       <Icon.Twitter variant="default" size={3} />
+      <Icon.Bluesky variant="default" size={7} />
+      <Icon.Bluesky variant="default" size={6} />
+      <Icon.Bluesky variant="default" size={5} />
+      <Icon.Bluesky variant="default" size={4} />
+      <Icon.Bluesky variant="default" size={3} />
       <Icon.Github variant="default" size={7} />
       <Icon.Github variant="default" size={6} />
       <Icon.Github variant="default" size={5} />
