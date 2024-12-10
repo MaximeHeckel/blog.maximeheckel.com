@@ -12,8 +12,8 @@ importers:
         specifier: 1.18.4
         version: 1.18.4(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@maximeheckel/design-system':
-        specifier: 2.1.10
-        version: 2.1.10(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: 2.1.11
+        version: 2.1.11(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@radix-ui/react-dialog':
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -92,14 +92,11 @@ importers:
       gray-matter:
         specifier: 4.0.2
         version: 4.0.2
-      lodash.merge:
-        specifier: 4.6.2
-        version: 4.6.2
       motion:
         specifier: ^11.13.3
         version: 11.13.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       next:
-        specifier: ^14.2.6
+        specifier: ^14.2.20
         version: 14.2.20(@babel/core@7.12.10)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       next-mdx-remote:
         specifier: 4.2.1
@@ -647,8 +644,8 @@ packages:
   '@lezer/lr@0.15.8':
     resolution: {integrity: sha512-bM6oE6VQZ6hIFxDNKk8bKPa14hqFrV07J/vHGOeiAbJReIaQXmkVb6xQu4MR+JBTLa5arGRyAAjJe1qaQt3Uvg==}
 
-  '@maximeheckel/design-system@2.1.10':
-    resolution: {integrity: sha512-FzQ0yfvZv/1uTrglyKMH+zpR/SEaBUhtde44tpSgVe9Z5FnYPjMZCxo+eBg+t9gLU09Fbjlgfy/NeibU5KyEIQ==}
+  '@maximeheckel/design-system@2.1.11':
+    resolution: {integrity: sha512-mHQFqDossBoJiTKwOk2dX84Ng6Zimuh17i581fpjAVWDjwsbB5VZ+hC4WL2Vq4jziu5LOAFYqukFl8weYiZbXQ==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -5763,7 +5760,7 @@ snapshots:
     dependencies:
       '@lezer/common': 0.15.12
 
-  '@maximeheckel/design-system@2.1.10(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@maximeheckel/design-system@2.1.11(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@radix-ui/react-collapsible': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@radix-ui/react-tooltip': 1.0.0(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
