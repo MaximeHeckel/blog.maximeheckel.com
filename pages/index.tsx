@@ -15,7 +15,7 @@ import {
   H3,
 } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
-import { motion, MotionProps } from 'framer-motion';
+import { motion, MotionProps } from 'motion/react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Layout from '@core/layout';

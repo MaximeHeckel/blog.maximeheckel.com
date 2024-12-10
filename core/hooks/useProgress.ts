@@ -1,4 +1,4 @@
-import { useScroll } from 'framer-motion';
+import { useScroll } from 'motion/react';
 import React from 'react';
 
 const useProgress = () => {

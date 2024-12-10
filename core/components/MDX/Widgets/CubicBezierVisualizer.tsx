@@ -14,7 +14,7 @@ import { Group } from '@visx/group';
 import { ParentSize } from '@visx/responsive';
 import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
 import { HighlightedValue } from './Components';
 

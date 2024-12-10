@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@maximeheckel/design-system';
 import LightDarkSwitcher from '@core/components/Buttons/LightDarkSwitcher';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
 
 const titles = [

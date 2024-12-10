@@ -1,5 +1,5 @@
 import { Box, Flex, Icon, Text } from '@maximeheckel/design-system';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { Sparkles } from './Icons';
 import * as S from './Search.styles';

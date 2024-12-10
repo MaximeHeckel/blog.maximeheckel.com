@@ -1,6 +1,6 @@
 import LineChart from '@core/components/Charts/LineChart';
 import { ParentSize } from '@visx/responsive';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { GraphQLClient, gql } from 'graphql-request';
 import { styled, Card } from '@maximeheckel/design-system';
 import { useQuery } from 'react-query';

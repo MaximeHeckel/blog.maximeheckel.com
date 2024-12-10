@@ -10,7 +10,7 @@ import {
   H3,
   Box,
 } from '@maximeheckel/design-system';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'motion/react';
 import React from 'react';
 import { useMutation } from 'react-query';
 import Glow from '@core/components/Glow';

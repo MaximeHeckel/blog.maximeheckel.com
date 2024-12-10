@@ -4,7 +4,7 @@ import NextImage, { ImageProps as NextImageProps } from 'next/image';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Content, Overlay, Trigger } from './Lightbox';
 import { memo, useId, useState } from 'react';
-import { motion, MotionConfig } from 'framer-motion';
+import { motion, MotionConfig } from 'motion/react';
 
 interface ImageProps extends NextImageProps {}
 

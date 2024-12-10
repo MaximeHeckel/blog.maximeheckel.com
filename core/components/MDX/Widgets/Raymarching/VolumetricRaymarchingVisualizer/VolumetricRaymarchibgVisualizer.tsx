@@ -9,7 +9,7 @@ import {
   Text,
   Tooltip,
 } from '@maximeheckel/design-system';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import React, { useMemo, useState } from 'react';
 import { HighlightedValue } from '../../Components';
 

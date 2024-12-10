@@ -1,5 +1,5 @@
 import { Box } from '@maximeheckel/design-system';
-import { useAnimationControls, useMotionTemplate, motion } from 'framer-motion';
+import { useAnimationControls, useMotionTemplate, motion } from 'motion/react';
 import { useEffect } from 'react';
 
 const RotatingShine = ({
