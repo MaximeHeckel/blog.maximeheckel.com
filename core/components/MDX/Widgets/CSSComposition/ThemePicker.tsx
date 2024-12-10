@@ -1,5 +1,5 @@
 import { styled, Card, Grid, Text } from '@maximeheckel/design-system';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { AnimationCardContent } from '../Components';
 
 const setVariableToGlobalStyles = (variable: string, value: string) =>

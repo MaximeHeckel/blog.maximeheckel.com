@@ -6,7 +6,7 @@ import {
   Text,
 } from '@maximeheckel/design-system';
 import * as Dialog from '@radix-ui/react-dialog';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { HEIGHT, MAX_HEIGHT, SHORTCUT_HEIGHT } from './constants';
 
 const overlayShow = keyframes({

@@ -8,7 +8,7 @@ import {
   Button,
   Text,
 } from '@maximeheckel/design-system';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { MDXRemoteSerializeResult, MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react';

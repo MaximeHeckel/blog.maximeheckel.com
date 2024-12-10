@@ -6,7 +6,7 @@ import {
   InlineCode,
   styled,
 } from '@maximeheckel/design-system';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
 import { AnimationCardContent, TransitionGridWrapper } from '../Components';
 

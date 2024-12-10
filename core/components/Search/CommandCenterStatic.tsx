@@ -6,7 +6,7 @@ import {
   Text,
   VisuallyHidden,
 } from '@maximeheckel/design-system';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import Link from 'next/link';
 import { useEffect, useState, useCallback } from 'react';
 import { MAX_HEIGHT } from './constants';

@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from '@maximeheckel/design-system';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import React from 'react';
 
 const IconButton = styled(motion.button, {

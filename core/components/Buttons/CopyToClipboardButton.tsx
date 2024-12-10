@@ -1,5 +1,5 @@
 import { Button } from '@maximeheckel/design-system';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'motion/react';
 import React from 'react';
 
 const CopyToClipboardButton = (props: { text: string; title?: string }) => {

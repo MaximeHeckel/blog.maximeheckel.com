@@ -1,5 +1,5 @@
 import { Flex, Icon, Text } from '@maximeheckel/design-system';
-import { useMotionValue, animate } from 'framer-motion';
+import { useMotionValue, animate } from 'motion/react';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { BeforeAfterImageProps } from './types';
 import * as S from './BeforeAfterImage.styles';

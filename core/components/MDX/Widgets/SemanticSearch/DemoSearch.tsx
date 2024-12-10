@@ -9,7 +9,7 @@ import {
   Text,
   TextInput,
 } from '@maximeheckel/design-system';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { FormEvent, startTransition, useState } from 'react';
 
 type Result = {

@@ -7,7 +7,7 @@ import { ClipPath } from '@visx/clip-path';
 import { Group } from '@visx/group';
 import { bisector, extent } from 'd3-array';
 import { format } from 'date-fns';
-import { motion, useMotionValue } from 'framer-motion';
+import { motion, useMotionValue } from 'motion/react';
 import React from 'react';
 
 type Data = {

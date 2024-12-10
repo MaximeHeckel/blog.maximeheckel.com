@@ -1,6 +1,6 @@
 import { Box, Card, Flex, Radio, Switch } from '@maximeheckel/design-system';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import React from 'react';
 
 const Basic = () => {

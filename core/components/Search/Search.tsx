@@ -8,7 +8,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { CommandCenterStatic } from './CommandCenterStatic';
 import * as S from './Search.styles';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { Result, SearchError, Status } from './types';
 import SearchResults from './SearchResults';
 import AIPromptResultCard from './AIPromptResultCard';

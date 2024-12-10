@@ -1,5 +1,5 @@
 import { styled, Anchor, Text, Box, Flex } from '@maximeheckel/design-system';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 
 // const NewsletterForm = dynamic(() => import('@core/components/NewsletterForm'));

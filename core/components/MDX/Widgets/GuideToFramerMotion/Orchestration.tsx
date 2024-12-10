@@ -1,5 +1,5 @@
 import { Card, Range, useDebouncedValue } from '@maximeheckel/design-system';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import React from 'react';
 import { AnimationCardContent, Form, HighlightedValue } from '../Components';
 

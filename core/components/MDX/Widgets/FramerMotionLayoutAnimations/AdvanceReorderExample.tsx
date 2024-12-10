@@ -8,7 +8,7 @@ import {
   Text,
   Tooltip,
 } from '@maximeheckel/design-system';
-import { AnimatePresence, LayoutGroup, motion, Reorder } from 'framer-motion';
+import { AnimatePresence, LayoutGroup, motion, Reorder } from 'motion/react';
 import React from 'react';
 
 const ITEMS = [
