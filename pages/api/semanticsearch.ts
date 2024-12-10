@@ -40,20 +40,6 @@ function generateMarkdownLinks(arr: Array<{ title: string; url: string }>) {
 export default async function handler(req: Request) {
   const origin = req.headers.get('Origin');
 
-  const {
-    query,
-    mock,
-    completion = true,
-    threshold = 0.7,
-    count = 10,
-  } = (await req.json()) as {
-    query: string;
-    mock?: boolean;
-    completion?: boolean;
-    threshold?: number;
-    count?: number;
-  };
-
   if (req.method === 'OPTIONS') {
     if (origin && allowedOrigins.includes(origin)) {
       return new Response(null, {
@@ -70,7 +56,22 @@ export default async function handler(req: Request) {
     }
   }
 
+  const {
+    query,
+    mock,
+    completion = true,
+    threshold = 0.7,
+    count = 10,
+  } = (await req.json()) as {
+    query: string;
+    mock?: boolean;
+    completion?: boolean;
+    threshold?: number;
+    count?: number;
+  };
+
   const input = query.replace(/\n/g, ' ');
+
   if (input === '') return;
 
   if (mock) {
