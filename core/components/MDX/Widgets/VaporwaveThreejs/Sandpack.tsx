@@ -19,7 +19,9 @@ const htmlSandpack = `<!DOCTYPE html>
     <title>Linear</title>
 </head>
 <body>
-    <canvas class="webgl"></canvas>
+    <div id="app">
+      <canvas class="webgl"></canvas>
+    </div>
 </body>
 </html>
 `;
@@ -73,7 +75,7 @@ const VaporwaveThreejsSandpack = (props: any) => {
             three: '0.134.0',
           }}
           files={{
-            '/src/index.js': {
+            '/index.js': {
               // @ts-ignore
               code: SCRIPTS[script],
             },

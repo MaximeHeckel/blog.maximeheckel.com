@@ -105,7 +105,9 @@ interface SandpackProps {
   defaultTab?: Tab;
 }
 
-const defaultFilesByTemplate: Record<SandpackPredefinedTemplate, any> = {
+const defaultFilesByTemplate: Partial<
+  Record<SandpackPredefinedTemplate, any>
+> = {
   react: setupFiles,
   // TODO
   'react-ts': '',
@@ -113,8 +115,7 @@ const defaultFilesByTemplate: Record<SandpackPredefinedTemplate, any> = {
   'vanilla-ts': '',
   angular: '',
   vue: '',
-  vue3: '',
-  'vue3-ts': '',
+  'vue-ts': '',
   svelte: '',
   solid: '',
   'test-ts': '',
@@ -175,7 +176,6 @@ const Sandpack = (props: SandpackProps) => {
               }}
             />
             <SandpackPreview
-              showNavigator={defaultEditorOptions.showNavigator}
               showRefreshButton={false}
               showOpenInCodeSandbox={false}
               style={{
