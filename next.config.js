@@ -103,6 +103,7 @@ module.exports = withBundleAnalyzer({
 // https://nextjs.org/docs/advanced-features/security-headers
 const ContentSecurityPolicy = `
     default-src 'self';
+    object-src 'self' data:;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' *.youtube.com *.twitter.com; 
     child-src *.youtube.com *.google.com *.twitter.com *.codesandbox.io;
     style-src 'self' 'unsafe-inline' *.googleapis.com;
