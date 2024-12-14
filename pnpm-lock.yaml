@@ -72,8 +72,8 @@ importers:
         specifier: 2.17.0
         version: 2.17.0
       detect-gpu:
-        specifier: ^4.0.50
-        version: 4.0.50
+        specifier: ^5.0.60
+        version: 5.0.60
       eventsource-parser:
         specifier: ^1.1.1
         version: 1.1.1
@@ -2105,8 +2105,8 @@ packages:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
 
-  detect-gpu@4.0.50:
-    resolution: {integrity: sha512-T67HE5+ONONN8rPXCBJPupyCg2QT8+l2NUUMuPxAppsMJBDPG/Jg0URLs6GyDzLm2niUE+oncIHSuy3VinoPeQ==}
+  detect-gpu@5.0.60:
+    resolution: {integrity: sha512-HOUiexaACwaeTBelnR3OrUN0mxgPadneTf7VndBEieQa3cx7xzrsQ/pm3niim4hZhN8gaDpAbTdCrjveGnNToQ==}
 
   detect-newline@3.1.0:
     resolution: {integrity: sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==}
@@ -7448,7 +7448,7 @@ snapshots:
 
   dequal@2.0.3: {}
 
-  detect-gpu@4.0.50:
+  detect-gpu@5.0.60:
     dependencies:
       webgl-constants: 1.1.1
 
@@ -8854,11 +8854,7 @@ snapshots:
       pretty-format: 26.6.2
       throat: 5.0.0
     transitivePeerDependencies:
-      - bufferutil
-      - canvas
       - supports-color
-      - ts-node
-      - utf-8-validate
 
   jest-leak-detector@26.6.2:
     dependencies:
