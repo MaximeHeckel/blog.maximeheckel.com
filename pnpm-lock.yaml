@@ -33,35 +33,35 @@ importers:
         specifier: ^0.5.20
         version: 0.5.20
       '@visx/clip-path':
-        specifier: 1.6.1
-        version: 1.6.1(react@18.2.0)
+        specifier: 3.12.0
+        version: 3.12.0(react@18.2.0)
       '@visx/curve':
-        specifier: 1.6.1
-        version: 1.6.1
+        specifier: 3.12.0
+        version: 3.12.0
       '@visx/drag':
-        specifier: 2.1.2
-        version: 2.1.2(react@18.2.0)
+        specifier: 3.12.0
+        version: 3.12.0(react@18.2.0)
       '@visx/event':
-        specifier: 1.6.1
-        version: 1.6.1
+        specifier: 3.12.0
+        version: 3.12.0
       '@visx/group':
-        specifier: 1.6.1
-        version: 1.6.1(react@18.2.0)
+        specifier: 3.12.0
+        version: 3.12.0(react@18.2.0)
       '@visx/heatmap':
-        specifier: ^1.17.1
-        version: 1.17.1(react@18.2.0)
+        specifier: 3.12.0
+        version: 3.12.0(react@18.2.0)
       '@visx/responsive':
-        specifier: 1.6.1
-        version: 1.6.1(react@18.2.0)
+        specifier: 3.12.0
+        version: 3.12.0(react@18.2.0)
       '@visx/scale':
-        specifier: 1.6.1
-        version: 1.6.1
+        specifier: 3.12.0
+        version: 3.12.0
       '@visx/shape':
-        specifier: 1.6.1
-        version: 1.6.1(react@18.2.0)
+        specifier: 3.12.0
+        version: 3.12.0(react@18.2.0)
       '@visx/tooltip':
-        specifier: 1.6.1
-        version: 1.6.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: 3.12.0
+        version: 3.12.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       chalk:
         specifier: 4.1.1
         version: 4.1.1
@@ -1130,33 +1130,41 @@ packages:
   '@types/babel__traverse@7.20.4':
     resolution: {integrity: sha512-mSM/iKUk5fDDrEV/e83qY+Cr3I1+Q3qqTuEn++HAWYjEa1+NxZr6CNrcJGf2ZTnq4HoFGC3zaTPZTobCzCFukA==}
 
-  '@types/classnames@2.3.1':
-    resolution: {integrity: sha512-zeOWb0JGBoVmlQoznvqXbE0tEC/HONsnoUNH19Hc96NFsTAwTXbTqb8FMYkru1F/iqp7a18Ws3nWJvtA1sHD1A==}
-    deprecated: This is a stub types definition. classnames provides its own type definitions, so you do not need this installed.
-
   '@types/d3-array@2.9.0':
     resolution: {integrity: sha512-sdBMGfNvLUkBypPMEhOcKcblTQfgHbqbYrUqRE31jOwdDHBJBxz4co2MDAq93S4Cp++phk4UiwoEg/1hK3xXAQ==}
 
-  '@types/d3-color@1.4.5':
-    resolution: {integrity: sha512-5sNP3DmtSnSozxcjqmzQKsDOuVJXZkceo1KJScDc1982kk/TS9mTPc6lpli1gTu1MIBF1YWutpHpjucNWcIj5g==}
+  '@types/d3-array@3.0.3':
+    resolution: {integrity: sha512-Reoy+pKnvsksN0lQUlcH6dOGjRZ/3WRwXR//m+/8lt1BXeI4xyaUZoqULNjyXXRuh0Mj4LNpkCvhUpQlY3X5xQ==}
 
-  '@types/d3-interpolate@1.4.5':
-    resolution: {integrity: sha512-k9L18hXXv7OvK4PqW1kSFYIzasGOvfhPUWmHFkoZ8/ci99EAmY4HoF6zMefrHl0SGV7XYc7Qq2MNh8dK3edg5A==}
+  '@types/d3-color@3.1.0':
+    resolution: {integrity: sha512-HKuicPHJuvPgCD+np6Se9MQvS6OCbJmOjGvylzMJRlDwUXjKTTXs6Pwgk79O09Vj/ho3u1ofXnhFOaEWWPrlwA==}
+
+  '@types/d3-delaunay@6.0.1':
+    resolution: {integrity: sha512-tLxQ2sfT0p6sxdG75c6f/ekqxjyYR0+LwPrsO1mbC9YDBzPJhs2HbJJRrn8Ez1DBoHRo2yx7YEATI+8V1nGMnQ==}
+
+  '@types/d3-format@3.0.1':
+    resolution: {integrity: sha512-5KY70ifCCzorkLuIkDe0Z9YTf9RR2CjBX1iaJG+rgM/cPP+sO+q9YdQ9WdhQcgPj1EQiJ2/0+yUkkziTG6Lubg==}
+
+  '@types/d3-geo@3.1.0':
+    resolution: {integrity: sha512-856sckF0oP/diXtS4jNsiQw/UuK5fQG8l/a9VVLeSouf1/PPbBE1i1W852zVwKwYCBkFJJB7nCFTbk6UMEXBOQ==}
+
+  '@types/d3-interpolate@3.0.1':
+    resolution: {integrity: sha512-jx5leotSeac3jr0RePOH1KdR9rISG91QIE4Q2PYTu4OymLTZfA3SrnURSLzKH48HmXVUru50b8nje4E79oQSQw==}
 
   '@types/d3-path@1.0.11':
     resolution: {integrity: sha512-4pQMp8ldf7UaB/gR8Fvvy69psNHkTpD/pVw3vmEi8iZAB9EPMBruB1JvHO4BIq9QkUUd2lV1F5YXpMNj7JPBpw==}
 
-  '@types/d3-scale@3.3.5':
-    resolution: {integrity: sha512-YOpKj0kIEusRf7ofeJcSZQsvKbnTwpe1DUF+P2qsotqG53kEsjm7EzzliqQxMkAWdkZcHrg5rRhB4JiDOQPX+A==}
+  '@types/d3-scale@4.0.2':
+    resolution: {integrity: sha512-Yk4htunhPAwN0XGlIwArRomOjdoBFXC3+kCxK2Ubg7I9shQlVSJy/pG/Ht5ASN+gdMIalpk8TJ5xV74jFsetLA==}
 
   '@types/d3-shape@1.3.12':
     resolution: {integrity: sha512-8oMzcd4+poSLGgV0R1Q1rOlx/xdmozS4Xab7np0eamFFUYq71AU9pOCJEFnkXW2aI/oXdVYJzw6pssbSut7Z9Q==}
 
-  '@types/d3-time@1.1.4':
-    resolution: {integrity: sha512-JIvy2HjRInE+TXOmIGN5LCmeO0hkFZx5f9FZ7kiN+D+YTcc8pptsiLiuHsvwxwC7VVKmJ2ExHUgNlAiV7vQM9g==}
+  '@types/d3-time-format@2.1.0':
+    resolution: {integrity: sha512-/myT3I7EwlukNOX2xVdMzb8FRgNzRMpsZddwst9Ld/VFe6LyJyRp0s32l/V9XoUzk+Gqu56F/oGk6507+8BxrA==}
 
-  '@types/d3-time@2.1.4':
-    resolution: {integrity: sha512-BTfLsxTeo7yFxI/haOOf1ZwJ6xKgQLT9dCp+EcmQv87Gox6X+oKl4mLKfO6fnWm3P22+A6DknMNEZany8ql2Rw==}
+  '@types/d3-time@3.0.0':
+    resolution: {integrity: sha512-sZLCdHvBUcNby1cB6Fd3ZBrABbjz3v1Vm90nysCQ6Vt7vd6e/h9Lt7SiJUoEX0l4Dzc7P5llKyhqSi1ycSf1Hg==}
 
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
@@ -1166,6 +1174,9 @@ packages:
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+
+  '@types/geojson@7946.0.15':
+    resolution: {integrity: sha512-9oSxFzDCT2Rj6DfcHF8G++jxBKS7mBqXl5xrRW+Kbvjry6Uduya2iiwqHPhVXpasAVMBYKkEPGgKhd3+/HZ6xA==}
 
   '@types/graceful-fs@4.1.9':
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
@@ -1349,70 +1360,62 @@ packages:
     resolution: {integrity: sha512-zi+ZXSx/peXA+1lq7s/5Vzmm/TTfTSf/5P1qNYnh42+7X+pZmahWoXt0i7SWiq3WagfsNUNA4hUDapDiHRoXqA==}
     engines: {node: '>=16'}
 
-  '@visx/bounds@1.6.1':
-    resolution: {integrity: sha512-VR1vbLrNTtiuoYWb/TKjn3JeR6lpNE3MS/d6rXu8k4amQetyGE6YzDBM7AHqu6Jic9D1CvR+tyegsWblt3ZNFQ==}
+  '@visx/bounds@3.12.0':
+    resolution: {integrity: sha512-peAlNCUbYaaZ0IO6c1lDdEAnZv2iGPDiLIM8a6gu7CaMhtXZJkqrTh+AjidNcIqITktrICpGxJE/Qo9D099dvQ==}
     peerDependencies:
-      react: ^15.0.0-0 || ^16.0.0-0
-      react-dom: ^15.0.0-0 || ^16.0.0-0
+      react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
+      react-dom: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
 
-  '@visx/clip-path@1.6.1':
-    resolution: {integrity: sha512-v8OSRiJEOK5QIdXhjEs488EYfH76COx6C7cCPCQwALJ8LKVR/lBFqT0kXNlKJ0XN6Wwnkuj6nEL4rkYos19RQQ==}
+  '@visx/clip-path@3.12.0':
+    resolution: {integrity: sha512-pjpjyoQ15lhOrgpDhxfWKAxC4IswzREHGOHhrdWtxQbPoGzVZvFH8HHvwRi4afL11uYDO10z235MDnaDwP8GnQ==}
     peerDependencies:
-      react: ^15.0.0-0 || ^16.0.0-0
+      react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
 
-  '@visx/curve@1.6.1':
-    resolution: {integrity: sha512-Uv2WUzNKfluWtfS1zjn0bzENxEXJrx6aqyty8qHtiq8RdgJzLcNXE2b1/8CVVGqnbI/4jrM6aRa2pX9rBbo9WA==}
+  '@visx/curve@3.12.0':
+    resolution: {integrity: sha512-Ng1mefXIzoIoAivw7dJ+ZZYYUbfuwXgZCgQynShr6ZIVw7P4q4HeQfJP3W24ON+1uCSrzoycHSXRelhR9SBPcw==}
 
-  '@visx/drag@2.1.2':
-    resolution: {integrity: sha512-dCSgrklV6sZqeVylONTdstBEW5MIPaEUHLYuaGdSjoovq51DNov21utVvJRfznobHrBRpKnLobSRVYDp9s49NQ==}
+  '@visx/drag@3.12.0':
+    resolution: {integrity: sha512-LXOoPVw//YPjpYhDJYBsCYDuv1QimsXjDV98duH0aCy4V94ediXMQpe2wHq4pnlDobLEB71FjOZMFrbFmqtERg==}
     peerDependencies:
-      react: ^16.8.0-0 || ^17.0.0-0
+      react: ^16.8.0-0 || ^17.0.0-0 || ^18.0.0-0
 
-  '@visx/event@1.6.1':
-    resolution: {integrity: sha512-JeZXW5lE2xWYEbwTJn7srVQfEcxu1Li8K6GeCBtMJ7MbeMkSUgd0SaJcGuf40VBMsG2qxAF7h1N/Rm5pTufowg==}
+  '@visx/event@3.12.0':
+    resolution: {integrity: sha512-9Lvw6qJ0Fi+y1vsC1WspfdIKCxHTb7oy59Uql1uBdPGT8zChP0vuxW0jQNQRDbKgoefj4pCXAFi8+MF1mEtVTw==}
 
-  '@visx/event@2.1.2':
-    resolution: {integrity: sha512-x3gAQ9DB4zDA6qqGpzlpGacGuOtmzFi/m5Zq7BJ0OJ7PjNfkIazCsznc9epCT/g9IIhwhs+UN/Ijww4YnFHqHw==}
-
-  '@visx/group@1.17.1':
-    resolution: {integrity: sha512-g8pSqy8TXAisiOzypnVycDynEGlBhfxtVlwDmsbYB+XSFGEjnOheQSDohDI+ia7ek54Mw9uYe05tx5kP1hRMYw==}
+  '@visx/group@3.12.0':
+    resolution: {integrity: sha512-Dye8iS1alVXPv7nj/7M37gJe6sSKqJLH7x6sEWAsRQ9clI0kFvjbKcKgF+U3aAVQr0NCohheFV+DtR8trfK/Ag==}
     peerDependencies:
-      react: ^15.0.0-0 || ^16.0.0-0
+      react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
 
-  '@visx/group@1.6.1':
-    resolution: {integrity: sha512-9pr7ifq+PJQoiLgpWHih4FUJleZ0uwZsa/9YM8BYtE1+IYk1gCUtB2VN1+UKYT1nMPswLvkmyEFNd+dTHYV/0A==}
+  '@visx/heatmap@3.12.0':
+    resolution: {integrity: sha512-+YhXHfMvwQOMf9xMd15FUOoiKqf84o1UF0zsmnNsCC75MqFMpjvzc3DeoC37fi69iBIKchU8DjhVubvCE9N4jA==}
     peerDependencies:
-      react: ^15.0.0-0 || ^16.0.0-0
+      react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
 
-  '@visx/heatmap@1.17.1':
-    resolution: {integrity: sha512-pSyConA9zoK9NwO2XAyIYZJQ3K+1zjF1P5MQ4Az9DZkFeL02Kp2puXTlBg/5ohpvWMRjpUmyPxxjnE7B2paEPQ==}
+  '@visx/point@3.12.0':
+    resolution: {integrity: sha512-I6UrHoJAEVbx3RORQNupgTiX5EzjuZpiwLPxn8L2mI5nfERotPKi1Yus12Cq2WtXqEBR/WgqTnoImlqOXBykcA==}
+
+  '@visx/responsive@3.12.0':
+    resolution: {integrity: sha512-GV1BTYwAGlk/K5c9vH8lS2syPnTuIqEacI7L6LRPbsuaLscXMNi+i9fZyzo0BWvAdtRV8v6Urzglo++lvAXT1Q==}
     peerDependencies:
-      react: ^16.3.0-0
+      react: ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
 
-  '@visx/point@1.6.1':
-    resolution: {integrity: sha512-jVZPyYg9kXB/4bdlh0XxZGamCU/cMu9+JD1PI+kLirZtLJ62DEJfK/UkAMSqB/sGkUojXwR4cTBHn45afcis8g==}
+  '@visx/scale@3.12.0':
+    resolution: {integrity: sha512-+ubijrZ2AwWCsNey0HGLJ0YKNeC/XImEFsr9rM+Uef1CM3PNM43NDdNTrdBejSlzRq0lcfQPWYMYQFSlkLcPOg==}
 
-  '@visx/point@2.1.0':
-    resolution: {integrity: sha512-vVnfI7oqjjttkn05Xi/ooR0UqQRoGf68lyT3SOl0WPHvIQBGNh3XoVUBHDr15/NUkfErgK6TNlfXY763YncPWg==}
-
-  '@visx/responsive@1.6.1':
-    resolution: {integrity: sha512-n/AC7/8tZ2pdQtWJe2P3FwfxcIf77kKFJGCJgSvTR9HXbn/aIKmcpN89dqUJwZz3UwEG8dEHgMY+Z5aa/vC8jw==}
+  '@visx/shape@3.12.0':
+    resolution: {integrity: sha512-/1l0lrpX9tPic6SJEalryBKWjP/ilDRnQA+BGJTI1tj7i23mJ/J0t4nJHyA1GrL4QA/bM/qTJ35eyz5dEhJc4g==}
     peerDependencies:
-      react: ^15.0.0-0 || ^16.0.0-0
+      react: ^16.3.0-0 || ^17.0.0-0 || ^18.0.0-0
 
-  '@visx/scale@1.6.1':
-    resolution: {integrity: sha512-EkvXHYxcy1VDJsTLUyRhJtjEaUTQpcREH1XhMGdfCl+6vgMkqrtUL6cHz7MTpxH730MGnOVa1oSwG31Hiv709w==}
-
-  '@visx/shape@1.6.1':
-    resolution: {integrity: sha512-o4ntQfc5qJcOJWaoUQW5ugrQI27s4wJs4Flu/wF3YdGMjAn3NSXn7XP0UMzED7D89lpMccWyfUlp5YtfxOjN0A==}
+  '@visx/tooltip@3.12.0':
+    resolution: {integrity: sha512-pWhsYhgl0Shbeqf80qy4QCB6zpq6tQtMQQxKlh3UiKxzkkfl+Metaf9p0/S0HexNi4vewOPOo89xWx93hBeh3A==}
     peerDependencies:
-      react: ^16.3.0-0
+      react: ^16.8.0-0 || ^17.0.0-0 || ^18.0.0-0
+      react-dom: ^16.8.0-0 || ^17.0.0-0 || ^18.0.0-0
 
-  '@visx/tooltip@1.6.1':
-    resolution: {integrity: sha512-tPYjycaY2D8H0e6Su2oQmVZD0O8K25ThNcv9lGBLa6VLWRwH5R7gdBJDChUzvcHpSandFGFPEbsKpAt7w27P4Q==}
-    peerDependencies:
-      react: ^16.8.0-0
-      react-dom: ^16.8.0-0
+  '@visx/vendor@3.12.0':
+    resolution: {integrity: sha512-SVO+G0xtnL9dsNpGDcjCgoiCnlB3iLSM9KLz1sLbSrV7RaVXwY3/BTm2X9OWN1jH2a9M+eHt6DJ6sE6CXm4cUg==}
 
   abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
@@ -1983,32 +1986,47 @@ packages:
   d3-array@2.12.0:
     resolution: {integrity: sha512-T6H/qNldyD/1OlRkJbonb3u3MPhNwju8OPxYv0YSjDb/B2RUeeBEHzIpNrYiinwpmz8+am+puMrpcrDWgY9wRg==}
 
-  d3-color@1.4.1:
-    resolution: {integrity: sha512-p2sTHSLCJI2QKunbGb7ocOh7DgTAn8IrLx21QRc/BSnodXM4sv6aLQlnfpvehFMLZEfBc6g9pH9SWQccFYfJ9Q==}
+  d3-array@3.2.1:
+    resolution: {integrity: sha512-gUY/qeHq/yNqqoCKNq4vtpFLdoCdvyNpWoC/KNjhGbhDuQpAM9sIQQKkXSNpXa9h5KySs/gzm7R88WkUutgwWQ==}
+    engines: {node: '>=12'}
 
-  d3-format@2.0.0:
-    resolution: {integrity: sha512-Ab3S6XuE/Q+flY96HXT0jOXcM4EAClYFnRGY5zsjRGNy6qCYrQsMffs7cV5Q9xejb35zxW5hf/guKw34kvIKsA==}
+  d3-color@3.1.0:
+    resolution: {integrity: sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==}
+    engines: {node: '>=12'}
 
-  d3-interpolate@1.4.0:
-    resolution: {integrity: sha512-V9znK0zc3jOPV4VD2zZn0sDhZU3WAE2bmlxdIwwQPPzPjvyLkd8B3JUVdS1IDUFDkWZ72c9qnv1GK2ZagTZ8EA==}
+  d3-delaunay@6.0.2:
+    resolution: {integrity: sha512-IMLNldruDQScrcfT+MWnazhHbDJhcRJyOEBAJfwQnHle1RPh6WDuLvxNArUju2VSMSUuKlY5BGHRJ2cYyoFLQQ==}
+    engines: {node: '>=12'}
+
+  d3-format@3.1.0:
+    resolution: {integrity: sha512-YyUI6AEuY/Wpt8KWLgZHsIU86atmikuoOmCfommt0LYHiQSPjvX2AcFc38PX0CBpr2RCyZhjex+NS/LPOv6YqA==}
+    engines: {node: '>=12'}
+
+  d3-geo@3.1.0:
+    resolution: {integrity: sha512-JEo5HxXDdDYXCaWdwLRt79y7giK8SbhZJbFWXqbRTolCHFI5jRqteLzCsq51NKbUoX0PjBVSohxrx+NoOUujYA==}
+    engines: {node: '>=12'}
+
+  d3-interpolate@3.0.1:
+    resolution: {integrity: sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==}
+    engines: {node: '>=12'}
 
   d3-path@1.0.9:
     resolution: {integrity: sha512-VLaYcn81dtHVTjEHd8B+pbe9yHWpXKZUC87PzoFmsFrJqgFwDe/qxfp5MlfsfM1V5E/iVt0MmEbWQ7FVIXh/bg==}
 
-  d3-scale@3.3.0:
-    resolution: {integrity: sha512-1JGp44NQCt5d1g+Yy+GeOnZP7xHo0ii8zsQp6PGzd+C1/dl0KGsp9A7Mxwp+1D1o4unbTTxVdU/ZOIEBoeZPbQ==}
+  d3-scale@4.0.2:
+    resolution: {integrity: sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ==}
+    engines: {node: '>=12'}
 
   d3-shape@1.3.7:
     resolution: {integrity: sha512-EUkvKjqPFUAZyOlhY5gzCxCeI0Aep04LwIRpsZ/mLFelJiUfnK56jo5JMDSE7yyP2kLSb6LtF+S5chMk7uqPqw==}
 
-  d3-time-format@3.0.0:
-    resolution: {integrity: sha512-UXJh6EKsHBTjopVqZBhFysQcoXSv/5yLONZvkQ5Kk3qbwiUYkdX17Xa1PT6U1ZWXGGfB1ey5L8dKMlFq2DO0Ag==}
+  d3-time-format@4.1.0:
+    resolution: {integrity: sha512-dJxPBlzC7NugB2PDLwo9Q8JiTR3M3e4/XANkreKSUxF8vvXKqm1Yfq4Q5dl8budlunRVlUUaDUgFt7eA8D6NLg==}
+    engines: {node: '>=12'}
 
-  d3-time@1.1.0:
-    resolution: {integrity: sha512-Xh0isrZ5rPYYdqhAVk8VLnMEidhz5aP7htAADH6MfzgmmicPkTo8LhkLxci61/lCB7n7UmE3bN0leRt+qvkLxA==}
-
-  d3-time@2.1.1:
-    resolution: {integrity: sha512-/eIQe/eR4kCQwq7yxi7z4c6qEXf2IYGcjoWB5OOQy4Tq9Uv39/947qlDcN2TLkiTzQWzvnsuYPB9TrWaNfipKQ==}
+  d3-time@3.1.0:
+    resolution: {integrity: sha512-VqKjzBLejbSMT4IgbmVgDjpkYrNWUYJnbCGo874u7MMKIWsILRX+OpX/gTk8MqjpT1A/c6HY2dCA77ZN0lkQ2Q==}
+    engines: {node: '>=12'}
 
   d@1.0.1:
     resolution: {integrity: sha512-m62ShEObQ39CfralilEQRjH6oAMtNCV1xJyEx5LpRYUVN+EviphDgUc/F3hnYbADmkiNs67Y+3ylmlG7Lnu+FA==}
@@ -2107,6 +2125,9 @@ packages:
   define-property@2.0.2:
     resolution: {integrity: sha512-jwK2UV4cnPpbcG7+VRARKTZPUWowwXA8bzH5NP6ud0oeAxyYPuGZUAC7hMugpCdz4BeSZl2Dl9k66CHJ/46ZYQ==}
     engines: {node: '>=0.10.0'}
+
+  delaunator@5.0.1:
+    resolution: {integrity: sha512-8nvh+XBe96aCESrGOqMp/84b13H9cdKbG5P2ejQCh4d4sK9RL4371qou9drQjMhvnPmhWl5hnmqbEE0fXr9Xnw==}
 
   delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
@@ -2901,6 +2922,10 @@ packages:
 
   internmap@1.0.1:
     resolution: {integrity: sha512-lDB5YccMydFBtasVtxnZ3MRBHuaoE8GKsppq+EchKL2U4nK/DmEpPHNH8MZe5HkMtpSiTSOZwfN0tzYjO/lJEw==}
+
+  internmap@2.0.3:
+    resolution: {integrity: sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==}
+    engines: {node: '>=12'}
 
   intersection-observer@0.10.0:
     resolution: {integrity: sha512-fn4bQ0Xq8FTej09YC/jqKZwtijpvARlRp6wxL5WTA6yPe2YWSJ5RJh7Nm79rK2qB0wr6iDQzH60XGq5V/7u8YQ==}
@@ -4247,9 +4272,6 @@ packages:
   requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
 
-  resize-observer-polyfill@1.5.1:
-    resolution: {integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==}
-
   resolve-cwd@3.0.0:
     resolution: {integrity: sha512-OrZaX2Mb+rJCpH/6CpSqt9xFVpN++x01XnN2ie9g6P5/3xelLAkXWVADpdz1IHD/KFfEXyE6V0U01OQ3UO2rEg==}
     engines: {node: '>=8'}
@@ -4299,6 +4321,9 @@ packages:
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
     hasBin: true
+
+  robust-predicates@3.0.2:
+    resolution: {integrity: sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==}
 
   rss@1.2.2:
     resolution: {integrity: sha512-xUhRTgslHeCBeHAqaWSbOYTydN2f0tAzNXvzh3stjz7QDhQMzdgHf3pfgNIngeytQflrFPfy6axHilTETr6gDg==}
@@ -6343,31 +6368,37 @@ snapshots:
     dependencies:
       '@babel/types': 7.23.6
 
-  '@types/classnames@2.3.1':
-    dependencies:
-      classnames: 2.5.0
-
   '@types/d3-array@2.9.0': {}
 
-  '@types/d3-color@1.4.5': {}
+  '@types/d3-array@3.0.3': {}
 
-  '@types/d3-interpolate@1.4.5':
+  '@types/d3-color@3.1.0': {}
+
+  '@types/d3-delaunay@6.0.1': {}
+
+  '@types/d3-format@3.0.1': {}
+
+  '@types/d3-geo@3.1.0':
     dependencies:
-      '@types/d3-color': 1.4.5
+      '@types/geojson': 7946.0.15
+
+  '@types/d3-interpolate@3.0.1':
+    dependencies:
+      '@types/d3-color': 3.1.0
 
   '@types/d3-path@1.0.11': {}
 
-  '@types/d3-scale@3.3.5':
+  '@types/d3-scale@4.0.2':
     dependencies:
-      '@types/d3-time': 2.1.4
+      '@types/d3-time': 3.0.0
 
   '@types/d3-shape@1.3.12':
     dependencies:
       '@types/d3-path': 1.0.11
 
-  '@types/d3-time@1.1.4': {}
+  '@types/d3-time-format@2.1.0': {}
 
-  '@types/d3-time@2.1.4': {}
+  '@types/d3-time@3.0.0': {}
 
   '@types/debug@4.1.12':
     dependencies:
@@ -6378,6 +6409,8 @@ snapshots:
       '@types/estree': 1.0.5
 
   '@types/estree@1.0.5': {}
+
+  '@types/geojson@7946.0.15': {}
 
   '@types/graceful-fs@4.1.9':
     dependencies:
@@ -6583,7 +6616,7 @@ snapshots:
       satori: 0.10.9
       yoga-wasm-web: 0.3.3
 
-  '@visx/bounds@1.6.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@visx/bounds@3.12.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@types/react': 18.2.45
       '@types/react-dom': 18.2.18
@@ -6591,89 +6624,68 @@ snapshots:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  '@visx/clip-path@1.6.1(react@18.2.0)':
+  '@visx/clip-path@3.12.0(react@18.2.0)':
     dependencies:
       '@types/react': 18.2.45
       prop-types: 15.8.1
       react: 18.2.0
 
-  '@visx/curve@1.6.1':
+  '@visx/curve@3.12.0':
     dependencies:
       '@types/d3-shape': 1.3.12
       d3-shape: 1.3.7
 
-  '@visx/drag@2.1.2(react@18.2.0)':
+  '@visx/drag@3.12.0(react@18.2.0)':
     dependencies:
       '@types/react': 18.2.45
-      '@visx/event': 2.1.2
+      '@visx/event': 3.12.0
+      '@visx/point': 3.12.0
       prop-types: 15.8.1
       react: 18.2.0
 
-  '@visx/event@1.6.1':
+  '@visx/event@3.12.0':
     dependencies:
       '@types/react': 18.2.45
-      '@visx/point': 1.6.1
+      '@visx/point': 3.12.0
 
-  '@visx/event@2.1.2':
-    dependencies:
-      '@types/react': 18.2.45
-      '@visx/point': 2.1.0
-
-  '@visx/group@1.17.1(react@18.2.0)':
+  '@visx/group@3.12.0(react@18.2.0)':
     dependencies:
       '@types/react': 18.2.45
       classnames: 2.5.0
       prop-types: 15.8.1
       react: 18.2.0
 
-  '@visx/group@1.6.1(react@18.2.0)':
+  '@visx/heatmap@3.12.0(react@18.2.0)':
     dependencies:
-      '@types/classnames': 2.3.1
       '@types/react': 18.2.45
+      '@visx/group': 3.12.0(react@18.2.0)
       classnames: 2.5.0
       prop-types: 15.8.1
       react: 18.2.0
 
-  '@visx/heatmap@1.17.1(react@18.2.0)':
-    dependencies:
-      '@types/react': 18.2.45
-      '@visx/group': 1.17.1(react@18.2.0)
-      classnames: 2.5.0
-      prop-types: 15.8.1
-      react: 18.2.0
+  '@visx/point@3.12.0': {}
 
-  '@visx/point@1.6.1': {}
-
-  '@visx/point@2.1.0': {}
-
-  '@visx/responsive@1.6.1(react@18.2.0)':
+  '@visx/responsive@3.12.0(react@18.2.0)':
     dependencies:
       '@types/lodash': 4.14.202
       '@types/react': 18.2.45
       lodash: 4.17.21
       prop-types: 15.8.1
       react: 18.2.0
-      resize-observer-polyfill: 1.5.1
 
-  '@visx/scale@1.6.1':
+  '@visx/scale@3.12.0':
     dependencies:
-      '@types/d3-interpolate': 1.4.5
-      '@types/d3-scale': 3.3.5
-      '@types/d3-time': 1.1.4
-      d3-interpolate: 1.4.0
-      d3-scale: 3.3.0
-      d3-time: 1.1.0
+      '@visx/vendor': 3.12.0
 
-  '@visx/shape@1.6.1(react@18.2.0)':
+  '@visx/shape@3.12.0(react@18.2.0)':
     dependencies:
-      '@types/classnames': 2.3.1
       '@types/d3-path': 1.0.11
       '@types/d3-shape': 1.3.12
       '@types/lodash': 4.14.202
       '@types/react': 18.2.45
-      '@visx/curve': 1.6.1
-      '@visx/group': 1.6.1(react@18.2.0)
-      '@visx/scale': 1.6.1
+      '@visx/curve': 3.12.0
+      '@visx/group': 3.12.0(react@18.2.0)
+      '@visx/scale': 3.12.0
       classnames: 2.5.0
       d3-path: 1.0.9
       d3-shape: 1.3.7
@@ -6681,16 +6693,37 @@ snapshots:
       prop-types: 15.8.1
       react: 18.2.0
 
-  '@visx/tooltip@1.6.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@visx/tooltip@3.12.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@types/classnames': 2.3.1
       '@types/react': 18.2.45
-      '@visx/bounds': 1.6.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@visx/bounds': 3.12.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       classnames: 2.5.0
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-use-measure: 2.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+
+  '@visx/vendor@3.12.0':
+    dependencies:
+      '@types/d3-array': 3.0.3
+      '@types/d3-color': 3.1.0
+      '@types/d3-delaunay': 6.0.1
+      '@types/d3-format': 3.0.1
+      '@types/d3-geo': 3.1.0
+      '@types/d3-interpolate': 3.0.1
+      '@types/d3-scale': 4.0.2
+      '@types/d3-time': 3.0.0
+      '@types/d3-time-format': 2.1.0
+      d3-array: 3.2.1
+      d3-color: 3.1.0
+      d3-delaunay: 6.0.2
+      d3-format: 3.1.0
+      d3-geo: 3.1.0
+      d3-interpolate: 3.0.1
+      d3-scale: 4.0.2
+      d3-time: 3.1.0
+      d3-time-format: 4.1.0
+      internmap: 2.0.3
 
   abab@2.0.6: {}
 
@@ -7337,35 +7370,45 @@ snapshots:
     dependencies:
       internmap: 1.0.1
 
-  d3-color@1.4.1: {}
-
-  d3-format@2.0.0: {}
-
-  d3-interpolate@1.4.0:
+  d3-array@3.2.1:
     dependencies:
-      d3-color: 1.4.1
+      internmap: 2.0.3
+
+  d3-color@3.1.0: {}
+
+  d3-delaunay@6.0.2:
+    dependencies:
+      delaunator: 5.0.1
+
+  d3-format@3.1.0: {}
+
+  d3-geo@3.1.0:
+    dependencies:
+      d3-array: 2.12.0
+
+  d3-interpolate@3.0.1:
+    dependencies:
+      d3-color: 3.1.0
 
   d3-path@1.0.9: {}
 
-  d3-scale@3.3.0:
+  d3-scale@4.0.2:
     dependencies:
       d3-array: 2.12.0
-      d3-format: 2.0.0
-      d3-interpolate: 1.4.0
-      d3-time: 2.1.1
-      d3-time-format: 3.0.0
+      d3-format: 3.1.0
+      d3-interpolate: 3.0.1
+      d3-time: 3.1.0
+      d3-time-format: 4.1.0
 
   d3-shape@1.3.7:
     dependencies:
       d3-path: 1.0.9
 
-  d3-time-format@3.0.0:
+  d3-time-format@4.1.0:
     dependencies:
-      d3-time: 2.1.1
+      d3-time: 3.1.0
 
-  d3-time@1.1.0: {}
-
-  d3-time@2.1.1:
+  d3-time@3.1.0:
     dependencies:
       d3-array: 2.12.0
 
@@ -7473,6 +7516,10 @@ snapshots:
     dependencies:
       is-descriptor: 1.0.3
       isobject: 3.0.1
+
+  delaunator@5.0.1:
+    dependencies:
+      robust-predicates: 3.0.2
 
   delayed-stream@1.0.0: {}
 
@@ -8502,6 +8549,8 @@ snapshots:
 
   internmap@1.0.1: {}
 
+  internmap@2.0.3: {}
+
   intersection-observer@0.10.0: {}
 
   invariant@2.2.4:
@@ -8925,7 +8974,11 @@ snapshots:
       pretty-format: 26.6.2
       throat: 5.0.0
     transitivePeerDependencies:
+      - bufferutil
+      - canvas
       - supports-color
+      - ts-node
+      - utf-8-validate
 
   jest-leak-detector@26.6.2:
     dependencies:
@@ -10329,8 +10382,6 @@ snapshots:
 
   requires-port@1.0.0: {}
 
-  resize-observer-polyfill@1.5.1: {}
-
   resolve-cwd@3.0.0:
     dependencies:
       resolve-from: 5.0.0
@@ -10371,6 +10422,8 @@ snapshots:
   rimraf@3.0.2:
     dependencies:
       glob: 7.2.3
+
+  robust-predicates@3.0.2: {}
 
   rss@1.2.2:
     dependencies:

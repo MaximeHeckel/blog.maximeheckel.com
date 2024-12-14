@@ -1,7 +1,7 @@
 import { Box, Card, Flex, EM, Text } from '@maximeheckel/design-system';
 import { Group } from '@visx/group';
 import { HeatmapRect } from '@visx/heatmap';
-import ParentSize from '@visx/responsive/lib/components/ParentSizeModern';
+import { ParentSize } from '@visx/responsive';
 import { scaleLinear, scaleBand } from '@visx/scale';
 import { useMemo, useState } from 'react';
 import vectors from './vectors.json';
