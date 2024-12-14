@@ -1,12 +1,13 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
-import { useInView } from 'react-intersection-observer';
+import { useInView } from 'motion/react';
 import normalProjection from './normalProjection';
 import simpleCaustics from './simpleCaustics';
 import beautifulCaustics from './beautifulCaustics';
 import causticsPlane from './causticsPlane';
 import dynamicCaustics from './dynamicCaustics';
+import { useRef } from 'react';
 
 const SceneCSSDark = `
 html {
@@ -40,7 +41,9 @@ canvas {
 
 const CausticsSandpack = (props: any) => {
   const { scene } = props;
-  const [ref, inView] = useInView();
+
+  const ref = useRef(null);
+  const inView = useInView(ref);
   const { dark } = useTheme();
   const { tier, loading: tierLoading } = useGPUTier();
 

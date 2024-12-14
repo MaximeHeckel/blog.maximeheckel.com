@@ -1,7 +1,8 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
-import { useInView } from 'react-intersection-observer';
+import { useRef } from 'react';
+import { useInView } from 'motion/react';
 
 import FlagFiles from './flag';
 import WobblyColoredPlaneFiles from './wobblyColoredPlane';
@@ -45,7 +46,9 @@ canvas {
 
 const R3FShaderSandpack = (props: any) => {
   const { scene } = props;
-  const [ref, inView] = useInView();
+
+  const ref = useRef(null);
+  const inView = useInView(ref);
   const { dark } = useTheme();
   const { tier, loading: tierLoading } = useGPUTier();
 

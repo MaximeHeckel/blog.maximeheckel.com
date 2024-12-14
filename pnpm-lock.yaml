@@ -122,9 +122,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      react-intersection-observer:
-        specifier: 8.27.1
-        version: 8.27.1(react@18.2.0)
       react-query:
         specifier: 2.25.2
         version: 2.25.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -4117,11 +4114,6 @@ packages:
     peerDependencies:
       react: ^18.2.0
 
-  react-intersection-observer@8.27.1:
-    resolution: {integrity: sha512-s70LKz+hm8wQY/4pvGVWs/gAfiLPlivyZiiUU1JdWDZj7vN8jbHYzJ8H1HWGvWpcudRg7g7kBWUUbcRjlloD0Q==}
-    peerDependencies:
-      react: ^15.0.0 || ^16.0.0 || ^17.0.0
-
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -4699,9 +4691,6 @@ packages:
 
   tiny-inflate@1.0.3:
     resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
-
-  tiny-invariant@1.3.1:
-    resolution: {integrity: sha512-AD5ih2NlSssTCwsMznbvwMZpJ1cbhkGd2uueNxzv2jDlEeZdU04JQfRnggJQ8DrcVBGjAsCKwFBbDlVNtEMlzw==}
 
   tmp@0.2.3:
     resolution: {integrity: sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==}
@@ -10193,11 +10182,6 @@ snapshots:
       react: 18.2.0
       scheduler: 0.23.0
 
-  react-intersection-observer@8.27.1(react@18.2.0):
-    dependencies:
-      react: 18.2.0
-      tiny-invariant: 1.3.1
-
   react-is@16.13.1: {}
 
   react-is@17.0.2: {}
@@ -10852,8 +10836,6 @@ snapshots:
   through@2.3.8: {}
 
   tiny-inflate@1.0.3: {}
-
-  tiny-invariant@1.3.1: {}
 
   tmp@0.2.3: {}
 

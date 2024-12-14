@@ -5,9 +5,9 @@ import {
   useDebouncedValue,
 } from '@maximeheckel/design-system';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
-import { motion } from 'motion/react';
-import React from 'react';
-import { useInView } from 'react-intersection-observer';
+import { motion, useInView } from 'motion/react';
+import React, { useRef } from 'react';
+
 import {
   AnimationCardContent,
   Form,
@@ -17,7 +17,8 @@ import {
 } from '../Components';
 
 const AnimationTypes = () => {
-  const [ref, inView] = useInView();
+  const ref = useRef(null);
+  const inView = useInView(ref);
   const [tweenAnimation, setTweenAnimation] = React.useState('easeInOut');
   const [mass, setMass] = React.useState(3);
   const [damping, setDamping] = React.useState(1);
