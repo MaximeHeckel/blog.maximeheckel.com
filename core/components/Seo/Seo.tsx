@@ -48,6 +48,7 @@ const Seo = ({ title, desc, image, path, date, updated }: Props) => {
         canonical={seo.url}
         openGraph={{
           type: 'article',
+          site_name: configTitle,
           article: {
             publishedTime: formattedDate,
             modifiedTime: formattedUpdatedDate,
@@ -64,9 +65,9 @@ const Seo = ({ title, desc, image, path, date, updated }: Props) => {
         }}
       />
       <Head>
-        <meta name="twitter:image" content={featuredImage.url} />
-        <meta name="twitter:image:alt" content={featuredImage.alt} />
-        <meta name="twitter:description" content={seo.description} />
+        <meta property="twitter:image" content={featuredImage.url} />
+        <meta property="twitter:image:alt" content={featuredImage.alt} />
+        <meta property="twitter:description" content={seo.description} />
         <meta property="twitter:domain" content={url} />
         <meta name="googlebot" content="index,follow" />
       </Head>
