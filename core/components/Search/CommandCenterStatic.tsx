@@ -9,9 +9,10 @@ import {
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import { useEffect, useState, useCallback } from 'react';
-import { MAX_HEIGHT } from './constants';
+
 import { Command, Sparkles } from './Icons';
 import * as S from './Search.styles';
+import { MAX_HEIGHT } from './constants';
 import useIndexItem from './useIndexItem';
 
 const commandCenterStaticWrapper = css({
@@ -51,8 +52,9 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
     (event: KeyboardEvent) => {
       switch (event.key) {
         case 'Enter':
-          (document.getElementById(selectedResult)
-            ?.children[0] as HTMLElement).click();
+          (
+            document.getElementById(selectedResult)?.children[0] as HTMLElement
+          ).click();
           break;
         case 'ArrowUp':
           event.preventDefault();

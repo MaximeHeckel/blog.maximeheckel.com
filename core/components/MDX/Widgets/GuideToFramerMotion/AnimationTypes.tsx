@@ -4,9 +4,10 @@ import {
   Range,
   useDebouncedValue,
 } from '@maximeheckel/design-system';
-import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 import { motion, useInView } from 'motion/react';
 import React, { useRef } from 'react';
+
+import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 
 import {
   AnimationCardContent,

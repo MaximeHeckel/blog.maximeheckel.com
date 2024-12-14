@@ -1,7 +1,8 @@
 import { Box, Card, Flex, Switch } from '@maximeheckel/design-system';
-import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 import { motion } from 'motion/react';
 import React from 'react';
+
+import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 
 const Distortions = () => {
   const [expanded, setExpanded] = React.useState(false);

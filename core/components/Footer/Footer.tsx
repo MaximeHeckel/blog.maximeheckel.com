@@ -6,10 +6,11 @@ import {
   EM,
   Flex,
 } from '@maximeheckel/design-system';
-import Logo from '@core/components/Logo';
 import Link from 'next/link';
 import React from 'react';
 import { templateColumnsMedium } from 'styles/grid';
+
+import Logo from '@core/components/Logo';
 
 const FooterBlock = styled('footer', {
   background: 'var(--background)',

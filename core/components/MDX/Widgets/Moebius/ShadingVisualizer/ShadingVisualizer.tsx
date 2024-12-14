@@ -1,4 +1,3 @@
-import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 import {
   Box,
   Card,
@@ -8,6 +7,9 @@ import {
   Range,
 } from '@maximeheckel/design-system';
 import React, { useMemo, useState } from 'react';
+
+import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+
 import { HighlightedValue } from '../../Components';
 
 interface CellProps {

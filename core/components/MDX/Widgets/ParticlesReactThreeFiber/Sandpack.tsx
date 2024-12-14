@@ -1,18 +1,19 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
+import { useInView } from 'motion/react';
+import { useRef } from 'react';
+
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
 
-import Twist from './twist';
-import Basic from './basic';
-import CustomGeometry from './customGeometry';
 import AnimateAttributes from './animateAttributes';
 import AnimateShader from './animateShader';
-import CustomizeSizeShader from './customizeSizeShader';
-import CustomizePointShader from './customPointShader';
+import Basic from './basic';
 import CurlFBO from './curlFBO';
+import CustomGeometry from './customGeometry';
+import CustomizePointShader from './customPointShader';
+import CustomizeSizeShader from './customizeSizeShader';
 import MorphFBO from './morphFBO';
-import { useRef } from 'react';
-import { useInView } from 'motion/react';
+import Twist from './twist';
 
 const SCENES = {
   scene1: Twist,

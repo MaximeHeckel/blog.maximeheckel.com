@@ -1,4 +1,5 @@
 import { useTheme } from '@maximeheckel/design-system';
+
 import Sandpack from '@core/components/Code/Sandpack';
 
 const AppCode = `import { motion, AnimatePresence } from 'framer-motion';

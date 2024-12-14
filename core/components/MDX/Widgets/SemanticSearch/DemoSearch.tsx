@@ -174,8 +174,8 @@ const DemoSearch = () => {
                           result.similarity > 0.8
                             ? 'success'
                             : result.similarity > 0.75
-                            ? 'warning'
-                            : 'danger'
+                              ? 'warning'
+                              : 'danger'
                         }
                       >
                         {result.similarity.toFixed(3)}

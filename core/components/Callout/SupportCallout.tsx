@@ -1,4 +1,5 @@
 import { Anchor, Text } from '@maximeheckel/design-system';
+
 import Callout from './Callout';
 
 const SupportCallout = () => {

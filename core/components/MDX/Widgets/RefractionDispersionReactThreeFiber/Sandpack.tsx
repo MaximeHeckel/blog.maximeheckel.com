@@ -1,19 +1,19 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
+import { useInView } from 'motion/react';
+import { useRef } from 'react';
+
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
 
-import { useRef } from 'react';
-import { useInView } from 'motion/react';
-
-import Transparency from './transparency';
-import SimpleRefraction from './simpleRefraction';
-import SimpleDispersion from './simpleDispersion';
-import SimpleSampling from './simpleSampling';
-import Saturation from './saturation';
 import AdvancedSampling from './advancedSampling';
-import Specular from './specular';
-import Fresnel from './fresnel';
 import Final from './final';
+import Fresnel from './fresnel';
+import Saturation from './saturation';
+import SimpleDispersion from './simpleDispersion';
+import SimpleRefraction from './simpleRefraction';
+import SimpleSampling from './simpleSampling';
+import Specular from './specular';
+import Transparency from './transparency';
 
 const SceneCSSDark = `
 html {

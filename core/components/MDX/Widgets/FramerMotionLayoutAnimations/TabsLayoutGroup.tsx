@@ -1,7 +1,8 @@
 import { Box, Card, Flex, Text } from '@maximeheckel/design-system';
-import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 import { LayoutGroup, motion } from 'motion/react';
 import React from 'react';
+
+import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 
 const TabsSharedLayoutAnimation = () => {
   const [focused, setFocused] = React.useState<string | null>(null);

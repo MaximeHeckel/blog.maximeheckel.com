@@ -1,5 +1,6 @@
 import { Card, Flex, Grid, Range, Switch } from '@maximeheckel/design-system';
 import React, { useMemo, useState } from 'react';
+
 import { HighlightedValue } from '../../Components';
 
 const WIDTH = 63;

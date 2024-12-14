@@ -1,9 +1,10 @@
-import LineChart from '@core/components/Charts/LineChart';
-import { ParentSize } from '@visx/responsive';
-import { motion } from 'motion/react';
-import { GraphQLClient, gql } from 'graphql-request';
 import { styled, Card } from '@maximeheckel/design-system';
+import { ParentSize } from '@visx/responsive';
+import { GraphQLClient, gql } from 'graphql-request';
+import { motion } from 'motion/react';
 import { useQuery } from 'react-query';
+
+import LineChart from '@core/components/Charts/LineChart';
 
 const GraphLabel = styled('div', {
   fontSize: '14px',
@@ -24,25 +25,23 @@ function useData() {
   return useQuery(
     'data',
     async () => {
-      const { allEntriesSortedByDate } = await graphQLClient.request(
-        gql`
-          query {
-            allEntriesSortedByDate(_size: 1) {
-              data {
-                date
-                heartRate {
-                  value
-                  timestamp
-                }
-                steps {
-                  value
-                  timestamp
-                }
+      const { allEntriesSortedByDate } = await graphQLClient.request(gql`
+        query {
+          allEntriesSortedByDate(_size: 1) {
+            data {
+              date
+              heartRate {
+                value
+                timestamp
+              }
+              steps {
+                value
+                timestamp
               }
             }
           }
-        `
-      );
+        }
+      `);
 
       return allEntriesSortedByDate.data;
     },

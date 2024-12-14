@@ -1,6 +1,7 @@
 import { NextSeo, ArticleJsonLd } from 'next-seo';
 import Head from 'next/head';
 import React from 'react';
+
 import siteConfig from '../../../config/site';
 
 interface Props {

@@ -1,5 +1,3 @@
-import dynamic from 'next/dynamic';
-
 // Components
 import {
   Anchor,
@@ -16,15 +14,17 @@ import {
   H3,
   Strong,
 } from '@maximeheckel/design-system';
+import dynamic from 'next/dynamic';
+
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
 import Callout from '@core/components/Callout';
 import Code from '@core/components/Code';
 import Fullbleed from '@core/components/Fullbleed';
 import VideoPlayer from '@core/components/VideoPlayer';
 
+import SupportCallout from '../Callout/SupportCallout';
 // MDX only components
 import Image from './Image';
-import SupportCallout from '../Callout/SupportCallout';
 
 // Widgets (used in blog post for interactive experiences)
 const ClipboardAnimationDetails = dynamic(

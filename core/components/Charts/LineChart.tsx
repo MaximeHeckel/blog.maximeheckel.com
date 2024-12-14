@@ -1,10 +1,10 @@
-import { scaleTime, scaleLinear } from '@visx/scale';
+import { ClipPath } from '@visx/clip-path';
 import { curveBasisOpen } from '@visx/curve';
+import { localPoint } from '@visx/event';
+import { Group } from '@visx/group';
+import { scaleTime, scaleLinear } from '@visx/scale';
 import { LinePath, AreaClosed, Bar, Line } from '@visx/shape';
 import { defaultStyles, TooltipWithBounds, withTooltip } from '@visx/tooltip';
-import { localPoint } from '@visx/event';
-import { ClipPath } from '@visx/clip-path';
-import { Group } from '@visx/group';
 import { bisector, extent } from 'd3-array';
 import { format } from 'date-fns';
 import { motion, useMotionValue } from 'motion/react';

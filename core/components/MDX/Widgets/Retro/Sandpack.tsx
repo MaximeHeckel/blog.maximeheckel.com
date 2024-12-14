@@ -1,22 +1,22 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
+import { useInView } from 'motion/react';
+import { useRef } from 'react';
+
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
 
-import { useRef } from 'react';
-import { useInView } from 'motion/react';
-
-import effect from './effect';
-import ordered from './ordered';
 import blueNoise from './blueNoise';
-import grayscale from './grayscale';
 import color from './color';
-import palette from './palette';
-import hue from './hue';
-import pixel from './pixel';
-import waves from './waves';
-import rgb from './rgb';
 import curve from './curve';
+import effect from './effect';
 import final from './final';
+import grayscale from './grayscale';
+import hue from './hue';
+import ordered from './ordered';
+import palette from './palette';
+import pixel from './pixel';
+import rgb from './rgb';
+import waves from './waves';
 
 const SceneCSSDark = `
 html {

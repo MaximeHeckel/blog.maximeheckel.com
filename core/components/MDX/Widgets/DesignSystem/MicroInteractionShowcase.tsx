@@ -7,8 +7,9 @@ import {
   Text,
   TextInput,
 } from '@maximeheckel/design-system';
-import CommandCenterButton from '@core/components/Buttons/CommandCenterButton';
 import React from 'react';
+
+import CommandCenterButton from '@core/components/Buttons/CommandCenterButton';
 
 const MicroInteractionShowcase = () => {
   const [dummyEmail, setDummyEmail] = React.useState('');

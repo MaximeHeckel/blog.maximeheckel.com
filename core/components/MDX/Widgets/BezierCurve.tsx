@@ -6,12 +6,14 @@ import {
   Range,
   Tooltip,
 } from '@maximeheckel/design-system';
-import useInterval from '@core/hooks/useInterval';
 import { Group } from '@visx/group';
 import { ParentSize } from '@visx/responsive';
 import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
 import React from 'react';
+
+import useInterval from '@core/hooks/useInterval';
+
 import { HighlightedValue } from './Components';
 
 type ChartType = 'linear' | 'quadratic' | 'cubic';

@@ -19,7 +19,7 @@ function useIndexItem<T>(
   T,
   IndexOperator,
   IndexOperator,
-  React.Dispatch<React.SetStateAction<number>>
+  React.Dispatch<React.SetStateAction<number>>,
 ] {
   const [index, setIndex] = React.useState(initial);
   const itemsRef = React.useRef(items);

@@ -1,6 +1,7 @@
 import { Box, Card, Flex, Icon, Range } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React from 'react';
+
 import { HighlightedValue } from '../Components';
 
 const ITEMS = [1, 2, 3];

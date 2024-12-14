@@ -1,5 +1,6 @@
 import { Card, Flex, InlineCode, Range } from '@maximeheckel/design-system';
 import React from 'react';
+
 import { AnimationCardContent, Form, HighlightedValue } from '../Components';
 
 const lightness = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10];

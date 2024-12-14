@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { render, waitFor } from '@testing-library/react';
 import React from 'react';
+
 import Code from '../';
 import { preToCodeBlock, calculateLinesToHighlight, hasTitle } from '../utils';
 

@@ -7,6 +7,7 @@ import {
   Box,
 } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
+
 import { HighlightedValue } from '../../Components';
 
 const WIDTH = 36;
@@ -54,15 +55,8 @@ const luminance = (color: Color): number => {
 const SECTOR_COUNT = 8;
 
 const Cell = (props: CellProps) => {
-  const {
-    value,
-    x,
-    y,
-    matrix,
-    kuwaharaEnabled,
-    kernelSize,
-    filterType,
-  } = props;
+  const { value, x, y, matrix, kuwaharaEnabled, kernelSize, filterType } =
+    props;
 
   const computeBoxStats = (
     offset: { x: number; y: number },

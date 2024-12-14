@@ -1,17 +1,17 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
+import { useInView } from 'motion/react';
+import { useRef } from 'react';
+
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
 
-import { useRef } from 'react';
-import { useInView } from 'motion/react';
-
 import basic from './basic';
 import circular from './circular';
-import weights from './weights';
+import final from './final';
 import material from './material';
 import multi from './multi';
 import tensor from './tensor';
-import final from './final';
+import weights from './weights';
 
 const SceneCSSDark = `
 html {

@@ -28,19 +28,20 @@ import {
   Radio,
   Details,
 } from '@maximeheckel/design-system';
-import Logo from '@core/components/Logo';
-import Glow from '@core/components/Glow';
-import CodeBlock from '@core/components/Code/CodeBlock';
-import Seo from '@core/components/Seo';
-import Tweet from '@core/components/Tweet';
-import Layout from '@core/layout';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
-import { NewTweet } from 'types/tweet';
 import { templateColumnsMedium } from 'styles/grid';
+import { NewTweet } from 'types/tweet';
+
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
+import CodeBlock from '@core/components/Code/CodeBlock';
+import Glow from '@core/components/Glow';
+import Logo from '@core/components/Logo';
 import Image from '@core/components/MDX/Image/Image';
+import Seo from '@core/components/Seo';
+import Tweet from '@core/components/Tweet';
+import Layout from '@core/layout';
 
 const SandpackExample = dynamic(
   () => import('@core/components/MDX/Widgets/WaveAnimation/Sandpack')
@@ -152,18 +153,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
   const [rangeValue, setRangeValue] = React.useState(250);
 
   const colorScaleNumbers = [
-    100,
-    200,
-    300,
-    400,
-    500,
-    600,
-    700,
-    800,
-    900,
-    1000,
-    1100,
-    1200,
+    100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200,
   ];
 
   const palette = ['gray', 'blue', 'red', 'orange', 'green', 'pink'];

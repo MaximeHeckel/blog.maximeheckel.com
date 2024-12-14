@@ -1,5 +1,5 @@
-import { motion, useReducedMotion } from 'motion/react';
 import { styled } from '@maximeheckel/design-system';
+import { motion, useReducedMotion } from 'motion/react';
 import React from 'react';
 
 const ProgressBarWrapper = styled(motion.div, {
@@ -26,9 +26,10 @@ const ProgressBar = ({ progress }: { progress: number }) => {
     }),
   };
 
-  React.useEffect(() => setVisibility(progress >= 0.05 && progress <= 0.95), [
-    progress,
-  ]);
+  React.useEffect(
+    () => setVisibility(progress >= 0.05 && progress <= 0.95),
+    [progress]
+  );
 
   return (
     <ProgressBarWrapper

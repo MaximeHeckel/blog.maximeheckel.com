@@ -1,8 +1,8 @@
-require('dotenv').config();
-
 import { createClient } from '@supabase/supabase-js';
-import { Configuration, OpenAIApi } from 'openai';
 import GPT3Tokenizer from 'gpt3-tokenizer';
+import { Configuration, OpenAIApi } from 'openai';
+
+require('dotenv').config();
 
 const SUPABASE_API_KEY = process.env.SUPABASE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;

@@ -1,9 +1,9 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
+import { useInView } from 'motion/react';
+import { useRef } from 'react';
+
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
-
-import { useRef } from 'react';
-import { useInView } from 'motion/react';
 
 import BasicRenderTarget from './basic';
 import InfinityMirror from './infinityMirror';

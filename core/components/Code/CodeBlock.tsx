@@ -1,5 +1,6 @@
 import { Card, styled } from '@maximeheckel/design-system';
 import { Highlight, Prism } from 'prism-react-renderer';
+
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import { CodeBlockProps, HighlightedCodeTextProps } from './types';
 import { calculateLinesToHighlight, hasTitle } from './utils';
@@ -130,21 +131,24 @@ const Pre = styled('pre', {
   fontSize: 'var(--font-size-1)',
   lineHeight: '26px',
 
-  '.token.parameter,.token.imports,.token.plain,.token.comment,.token.prolog,.token.doctype,.token.cdata': {
-    color: 'var(--token-comment)',
-  },
+  '.token.parameter,.token.imports,.token.plain,.token.comment,.token.prolog,.token.doctype,.token.cdata':
+    {
+      color: 'var(--token-comment)',
+    },
 
   '.token.punctuation': {
     color: 'var(--token-punctuation)',
   },
 
-  '.token.property,.token.tag,.token.boolean,.token.number,.token.constant,.token.symbol,.token.deleted': {
-    color: 'var(--token-symbol)',
-  },
+  '.token.property,.token.tag,.token.boolean,.token.number,.token.constant,.token.symbol,.token.deleted':
+    {
+      color: 'var(--token-symbol)',
+    },
 
-  '.token.selector,.token.attr-name,.token.char,.token.builtin,.token.number,.token.string,.token.inserted': {
-    color: 'var(--token-selector)',
-  },
+  '.token.selector,.token.attr-name,.token.char,.token.builtin,.token.number,.token.string,.token.inserted':
+    {
+      color: 'var(--token-selector)',
+    },
 
   '.token.operator,.token.entity,.token.url,.language-css .style': {
     color: 'var(--token-operator)',

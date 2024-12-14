@@ -64,8 +64,8 @@ const getBayerMatrixValue = (x: number, y: number, bayerMatrix: number) => {
     bayerMatrix === 2
       ? normalizedBayerMatrix2
       : bayerMatrix === 4
-      ? normalizedBayerMatrix4
-      : normalizedBayerMatrix8;
+        ? normalizedBayerMatrix4
+        : normalizedBayerMatrix8;
 
   const matrixSize = matrix.length;
   const value = matrix[y % matrixSize][x % matrixSize];

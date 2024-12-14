@@ -2,10 +2,11 @@ import { Flex, Icon } from '@maximeheckel/design-system';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
-import { HEIGHT, MAX_HEIGHT } from './constants';
+
 import * as S from './Search.styles';
-import useIndexItem from './useIndexItem';
+import { HEIGHT, MAX_HEIGHT } from './constants';
 import { Result as ResultType } from './types';
+import useIndexItem from './useIndexItem';
 
 interface StaticSearchResultsProps {
   results: ResultType[];
@@ -17,12 +18,8 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
 
   const router = useRouter();
 
-  const [
-    selectedResult,
-    previousResult,
-    nextResult,
-    setSelectedResult,
-  ] = useIndexItem(results);
+  const [selectedResult, previousResult, nextResult, setSelectedResult] =
+    useIndexItem(results);
 
   const handlePointer = (index: number) => setSelectedResult(index);
 
@@ -75,8 +72,8 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
             results.length === 0
               ? HEIGHT
               : results.length * HEIGHT + 2 >= MAX_HEIGHT
-              ? MAX_HEIGHT
-              : results.length * HEIGHT + 2,
+                ? MAX_HEIGHT
+                : results.length * HEIGHT + 2,
           transition: 'height 0.4s ease-out',
           willChange: 'height',
         }}
