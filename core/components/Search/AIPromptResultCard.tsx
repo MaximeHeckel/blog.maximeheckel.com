@@ -49,7 +49,7 @@ const AIPromptResultCard = forwardRef(
 
     const [mdxData, setMdxData] = useState<MDXRemoteSerializeResult<
       Record<string, unknown>,
-      Record<string, string>
+      Record<string, unknown>
     > | null>(null);
     const responseBodyRef = useRef<HTMLDivElement>(null);
 
