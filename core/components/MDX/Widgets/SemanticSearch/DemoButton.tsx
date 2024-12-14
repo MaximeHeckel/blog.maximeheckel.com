@@ -1,9 +1,9 @@
 import { Button } from '@maximeheckel/design-system';
-import Glow from '@core/components/Glow';
-import { Sparkles } from '@core/components/Search/Icons';
-
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
+
+import Glow from '@core/components/Glow';
+import { Sparkles } from '@core/components/Search/Icons';
 
 const Search = dynamic(() => import('@core/components/Search'));
 

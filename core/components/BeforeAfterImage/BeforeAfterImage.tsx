@@ -1,9 +1,10 @@
 import { Flex, Icon, Text } from '@maximeheckel/design-system';
+import { loader } from 'lib/next-image-loader';
 import { useMotionValue, animate } from 'motion/react';
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { BeforeAfterImageProps } from './types';
+
 import * as S from './BeforeAfterImage.styles';
-import { loader } from 'lib/next-image-loader';
+import { BeforeAfterImageProps } from './types';
 
 const Slider = () => (
   <Flex
@@ -52,14 +53,8 @@ const Slider = () => (
 );
 
 const BeforeAfterImage = (props: BeforeAfterImageProps) => {
-  const {
-    alt,
-    defaultSliderPosition,
-    beforeSrc,
-    afterSrc,
-    width,
-    height,
-  } = props;
+  const { alt, defaultSliderPosition, beforeSrc, afterSrc, width, height } =
+    props;
   const [sliderPosition, setSliderPosition] = useState(
     defaultSliderPosition || 50
   );

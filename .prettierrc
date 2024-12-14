@@ -1,5 +1,15 @@
 {
   "semi": true,
   "singleQuote": true,
-  "trailingComma": "es5"
+  "trailingComma": "es5",
+  "importOrderParserPlugins": ["jsx", "typescript"],
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "@core/(.*)$",
+    "<ABSOLUTE_IMPORT>",
+    "^src/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }

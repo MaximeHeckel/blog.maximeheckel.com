@@ -5,14 +5,15 @@ import {
   useKeyboardShortcut,
 } from '@maximeheckel/design-system';
 import * as Dialog from '@radix-ui/react-dialog';
+import { AnimatePresence, motion } from 'motion/react';
 import { FormEvent, useEffect, useRef, useState } from 'react';
+
+import AIPromptInput from './AIPromptInput';
+import AIPromptResultCard from './AIPromptResultCard';
 import { CommandCenterStatic } from './CommandCenterStatic';
 import * as S from './Search.styles';
-import { AnimatePresence, motion } from 'motion/react';
-import { Result, SearchError, Status } from './types';
 import SearchResults from './SearchResults';
-import AIPromptResultCard from './AIPromptResultCard';
-import AIPromptInput from './AIPromptInput';
+import { Result, SearchError, Status } from './types';
 
 interface Props {
   open?: boolean;

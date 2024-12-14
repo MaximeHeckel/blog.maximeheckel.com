@@ -1,9 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Box, styled, Anchor, Grid, H1, H3 } from '@maximeheckel/design-system';
-import { DefaultSeo } from '@core/components/Seo';
 import Link from 'next/link';
-import siteConfig from '../config/site';
 import { templateColumnsMedium } from 'styles/grid';
+
+import { DefaultSeo } from '@core/components/Seo';
+
+import siteConfig from '../config/site';
 
 const Wrapper = styled(Box, {
   margin: '0 auto',

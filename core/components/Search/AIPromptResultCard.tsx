@@ -11,13 +11,14 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { MDXRemoteSerializeResult, MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
+import Link from 'next/link';
 import { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react';
+
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
+import MDXComponents from '../MDX/MDXComponents';
 import RotatingShine from '../RotatingShine';
 import { Coffee } from './Icons';
 import { SearchError, Status } from './types';
-import MDXComponents from '../MDX/MDXComponents';
-import Link from 'next/link';
 
 interface AIPromtResultCardProps {
   error: SearchError | null;

@@ -4,12 +4,15 @@ import {
   Tooltip,
   useKeyboardShortcut,
 } from '@maximeheckel/design-system';
-import Logo from '@core/components/Logo';
-import useProgress from '@core/hooks/useProgress';
-import useScrollCounter from '@core/hooks/useScrollCounter';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
+import { templateColumnsMedium } from 'styles/grid';
+
+import Logo from '@core/components/Logo';
+import useProgress from '@core/hooks/useProgress';
+import useScrollCounter from '@core/hooks/useScrollCounter';
+
 import {
   fixTruncate,
   HeaderContent,
@@ -19,7 +22,6 @@ import {
 } from './Styles';
 import HeaderTitle from './Title';
 import { HeaderProps } from './types';
-import { templateColumnsMedium } from 'styles/grid';
 
 // TODO Abstract these out
 const CommandCenterButton = dynamic(

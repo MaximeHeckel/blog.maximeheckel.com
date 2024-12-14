@@ -1,6 +1,7 @@
 import { ThemeContext, Tooltip } from '@maximeheckel/design-system';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import React from 'react';
+
 import Header from '../';
 
 describe('Header', () => {

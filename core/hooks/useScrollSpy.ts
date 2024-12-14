@@ -32,10 +32,8 @@ const useScrollSpy = (
     root?: Element;
   }
 ): [number, Element[]] => {
-  const [
-    currentActiveSectionIndex,
-    setCurrentActiveSectionIndex,
-  ] = React.useState(-1);
+  const [currentActiveSectionIndex, setCurrentActiveSectionIndex] =
+    React.useState(-1);
 
   const rootMargin = `-${(options && options.offset) || 0}px 0px 0px 0px`;
 

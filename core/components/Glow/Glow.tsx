@@ -1,4 +1,5 @@
 import { Box, css, keyframes, styled } from '@maximeheckel/design-system';
+
 import { GlowProps } from './types';
 
 const pulse = keyframes({

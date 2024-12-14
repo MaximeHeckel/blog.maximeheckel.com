@@ -8,6 +8,7 @@ import {
   Text,
 } from '@maximeheckel/design-system';
 import React, { useMemo, useState, useCallback } from 'react';
+
 import { HighlightedValue } from '../../Components';
 
 interface CellProps {
@@ -164,9 +165,8 @@ const SobelVisualizer = () => {
   const [selectedCell, setSelectedCell] = useState<[number, number]>([8, 8]);
   const [matrixDir, setMatrixDir] = useState<'x' | 'y'>('x');
   const sobelMatrix = matrixDir === 'x' ? sobelMatrixX : sobelMatrixY;
-  const [shader, setShader] = React.useState<keyof typeof shaderFunction>(
-    'shader2'
-  );
+  const [shader, setShader] =
+    React.useState<keyof typeof shaderFunction>('shader2');
 
   const emptyMatrix = useMemo(
     () =>

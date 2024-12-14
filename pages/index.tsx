@@ -15,14 +15,15 @@ import {
   H3,
 } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
+import { getAllFilesFrontMatter } from 'lib/mdx';
 import { motion, MotionProps } from 'motion/react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import Layout from '@core/layout';
-import { getAllFilesFrontMatter } from 'lib/mdx';
-import { Post } from 'types/post';
 import React from 'react';
 import { templateColumnsMedium } from 'styles/grid';
+import { Post } from 'types/post';
+
+import Layout from '@core/layout';
 
 const NewsletterForm = dynamic(() => import('@core/components/NewsletterForm'));
 

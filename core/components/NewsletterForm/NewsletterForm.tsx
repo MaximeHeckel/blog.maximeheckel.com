@@ -13,7 +13,9 @@ import {
 import { motion, useMotionValue, useTransform } from 'motion/react';
 import React from 'react';
 import { useMutation } from 'react-query';
+
 import Glow from '@core/components/Glow';
+
 import { NewsletterHeader } from './Icons';
 import { NewsletterFormContent, ErrorMessage } from './Styles';
 import { subscribeCall } from './utils';
@@ -59,9 +61,8 @@ const NewsletterForm = (props: Props) => {
   const pathLength = useTransform(opacity, [0.05, 0.5], [1, 0]);
   const opacityTextIn = useTransform(opacity, [0, 0.1], [1, 0]);
 
-  const [subscribe, { isError, isLoading, isSuccess, error }] = useMutation(
-    subscribeCall
-  );
+  const [subscribe, { isError, isLoading, isSuccess, error }] =
+    useMutation(subscribeCall);
 
   React.useEffect(() => {
     setIsChecked(false);

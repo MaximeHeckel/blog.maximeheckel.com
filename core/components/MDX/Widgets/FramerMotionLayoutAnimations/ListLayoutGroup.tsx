@@ -7,9 +7,10 @@ import {
   Text,
   Switch,
 } from '@maximeheckel/design-system';
-import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import React from 'react';
+
+import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 
 const ITEMS = [
   {

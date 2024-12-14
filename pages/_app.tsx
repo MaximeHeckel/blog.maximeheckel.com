@@ -1,14 +1,15 @@
-import Head from 'next/head';
-import { AppProps } from 'next/app';
 import {
   globalStyles,
   ThemeProvider,
   Tooltip,
 } from '@maximeheckel/design-system';
-import { DefaultSeo } from '@core/components/Seo';
 import { Analytics } from '@vercel/analytics/react';
-import 'styles/global.css';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
 import 'styles/font.css';
+import 'styles/global.css';
+
+import { DefaultSeo } from '@core/components/Seo';
 
 const App = ({ Component, pageProps }: AppProps) => {
   globalStyles();

@@ -184,9 +184,10 @@ const OpenAIPlayground = (props: OpenAIPlaygroundProps) => {
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [selectedSet, setSelectedSet] = React.useState(set);
 
-  const prompt = React.useMemo(() => responsesSet[selectedSet].prompt, [
-    selectedSet,
-  ]);
+  const prompt = React.useMemo(
+    () => responsesSet[selectedSet].prompt,
+    [selectedSet]
+  );
 
   const completions = React.useMemo(
     () => responsesSet[selectedSet].completions,

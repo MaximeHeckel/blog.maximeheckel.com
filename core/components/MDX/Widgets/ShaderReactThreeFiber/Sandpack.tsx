@@ -1,17 +1,18 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
+import { useInView } from 'motion/react';
+import { useRef } from 'react';
+
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
-import { useRef } from 'react';
-import { useInView } from 'motion/react';
 
-import FlagFiles from './flag';
-import WobblyColoredPlaneFiles from './wobblyColoredPlane';
-import FragmentFiles from './fragment';
-import WobblyPlaneFiles from './wobblyPlane';
 import BlobFiles from './blob';
+import FlagFiles from './flag';
+import FragmentFiles from './fragment';
 import GradientFiles from './gradient';
 import Gradient2Files from './gradient2';
 import PlanetFiles from './planet';
+import WobblyColoredPlaneFiles from './wobblyColoredPlane';
+import WobblyPlaneFiles from './wobblyPlane';
 
 const SCENES = {
   scene1: FlagFiles,

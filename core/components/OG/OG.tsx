@@ -1,5 +1,7 @@
-import Logo from '@core/components/Logo';
 import { useRouter } from 'next/router';
+
+import Logo from '@core/components/Logo';
+
 import BlendedText from './BlendedText';
 import DotMatrix from './DotMatrix';
 import Shapes from './Shapes';

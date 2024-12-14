@@ -2,6 +2,7 @@ import { Anchor, Flex, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import Image from 'next/legacy/image';
 import { NewTweet } from 'types/tweet';
+
 import VideoPlayer from '../VideoPlayer';
 import { LikeIcon, ReplyIcon, TwitterLogo } from './Icons';
 import {

@@ -3,11 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  extends: [
-    'next',
-    'plugin:prettier/recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-  ],
+  extends: ['next', 'plugin:@typescript-eslint/eslint-recommended'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -26,10 +22,5 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'react/prop-types': 0,
     'no-console': 'error',
-  },
-  settings: {
-    react: {
-      version: 'latest',
-    },
   },
 };

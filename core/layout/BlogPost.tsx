@@ -8,16 +8,18 @@ import {
   Text,
   H1,
 } from '@maximeheckel/design-system';
+import siteConfig from 'config/site';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import React from 'react';
-import siteConfig from 'config/site';
-import Layout from '@core/layout';
-import TableOfContent from '@core/components/TableOfContent';
-import Seo from '@core/components/Seo';
-import { Post, ReadingTime } from 'types/post';
-import Signature from './Signature';
 import { templateColumnsSmall } from 'styles/grid';
+import { Post, ReadingTime } from 'types/post';
+
+import Seo from '@core/components/Seo';
+import TableOfContent from '@core/components/TableOfContent';
+import Layout from '@core/layout';
+
+import Signature from './Signature';
 
 interface WebmentionBlogDataProps {
   date: string;

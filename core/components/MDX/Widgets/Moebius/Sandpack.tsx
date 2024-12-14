@@ -1,20 +1,20 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
+import { useInView } from 'motion/react';
+import { useRef } from 'react';
+
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
 
-import { useRef } from 'react';
-import { useInView } from 'motion/react';
-
-import postprocessing from './postprocessing';
 import depth from './depth';
-import normal from './normal';
-import sobelDepth from './sobelDepth';
-import sobel from './sobel';
-import handdrawn from './handdrawn';
-import tonal from './tonal';
-import shadows from './shadows';
-import light from './light';
 import final from './final';
+import handdrawn from './handdrawn';
+import light from './light';
+import normal from './normal';
+import postprocessing from './postprocessing';
+import shadows from './shadows';
+import sobel from './sobel';
+import sobelDepth from './sobelDepth';
+import tonal from './tonal';
 
 const SceneCSSDark = `
 html {

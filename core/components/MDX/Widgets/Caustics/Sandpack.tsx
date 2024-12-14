@@ -1,13 +1,15 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
+import { useInView } from 'motion/react';
+import { useRef } from 'react';
+
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
-import { useInView } from 'motion/react';
-import normalProjection from './normalProjection';
-import simpleCaustics from './simpleCaustics';
+
 import beautifulCaustics from './beautifulCaustics';
 import causticsPlane from './causticsPlane';
 import dynamicCaustics from './dynamicCaustics';
-import { useRef } from 'react';
+import normalProjection from './normalProjection';
+import simpleCaustics from './simpleCaustics';
 
 const SceneCSSDark = `
 html {

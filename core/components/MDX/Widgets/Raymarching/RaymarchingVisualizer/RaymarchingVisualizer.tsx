@@ -11,6 +11,7 @@ import {
 } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React, { useMemo, useState } from 'react';
+
 import { HighlightedValue } from '../../Components';
 
 interface CellProps {

@@ -1,5 +1,6 @@
 import { Language } from 'prism-react-renderer';
 import { JSXElementConstructor, ReactElement } from 'react';
+
 import { PrePropsType } from './types';
 
 export const preToCodeBlock = (preProps: PrePropsType) => {

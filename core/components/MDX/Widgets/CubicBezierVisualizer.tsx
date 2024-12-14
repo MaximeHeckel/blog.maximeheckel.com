@@ -8,7 +8,6 @@ import {
   Switch,
   Tooltip,
 } from '@maximeheckel/design-system';
-import useInterval from '@core/hooks/useInterval';
 import { Drag } from '@visx/drag';
 import { Group } from '@visx/group';
 import { ParentSize } from '@visx/responsive';
@@ -16,6 +15,9 @@ import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
+
+import useInterval from '@core/hooks/useInterval';
+
 import { HighlightedValue } from './Components';
 
 const select = css({
@@ -523,8 +525,8 @@ const Chart = (props: ChartProps) => {
                           index === activeStepIndex
                             ? 1
                             : index > activeStepIndex
-                            ? 0
-                            : 0.4,
+                              ? 0
+                              : 0.4,
                       }}
                       transition={{
                         opacity: { ease: 'linear', duration: 0 },

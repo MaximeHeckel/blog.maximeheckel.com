@@ -10,6 +10,7 @@ import {
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { useEffect, useRef, useState } from 'react';
+
 import MDXComponents from '../../MDXComponents';
 
 const Formatting = () => {

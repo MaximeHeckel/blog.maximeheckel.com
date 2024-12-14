@@ -9,9 +9,10 @@ import {
   Tooltip,
   useTheme,
 } from '@maximeheckel/design-system';
-import LightDarkSwitcher from '@core/components/Buttons/LightDarkSwitcher';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
+
+import LightDarkSwitcher from '@core/components/Buttons/LightDarkSwitcher';
 
 const titles = [
   'Pick base colors',

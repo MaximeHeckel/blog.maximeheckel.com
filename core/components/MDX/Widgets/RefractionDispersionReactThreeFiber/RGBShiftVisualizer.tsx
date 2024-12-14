@@ -1,5 +1,6 @@
 import { Box, Card, Flex, Range, Text, css } from '@maximeheckel/design-system';
 import React from 'react';
+
 import { HighlightedValue } from '../Components';
 
 const channelSplit = css({

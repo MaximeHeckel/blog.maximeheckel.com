@@ -8,8 +8,9 @@ import {
 } from '@codesandbox/sandpack-react';
 import { Box, Flex, Shadows, styled } from '@maximeheckel/design-system';
 import React from 'react';
-import PreviewTabs, { Tab } from './components/PreviewTabs';
+
 import setupFiles from './SandpackSetupFiles';
+import PreviewTabs, { Tab } from './components/PreviewTabs';
 
 // Default Theme
 const theme = {
@@ -105,21 +106,20 @@ interface SandpackProps {
   defaultTab?: Tab;
 }
 
-const defaultFilesByTemplate: Partial<
-  Record<SandpackPredefinedTemplate, any>
-> = {
-  react: setupFiles,
-  // TODO
-  'react-ts': '',
-  vanilla: '',
-  'vanilla-ts': '',
-  angular: '',
-  vue: '',
-  'vue-ts': '',
-  svelte: '',
-  solid: '',
-  'test-ts': '',
-};
+const defaultFilesByTemplate: Partial<Record<SandpackPredefinedTemplate, any>> =
+  {
+    react: setupFiles,
+    // TODO
+    'react-ts': '',
+    vanilla: '',
+    'vanilla-ts': '',
+    angular: '',
+    vue: '',
+    'vue-ts': '',
+    svelte: '',
+    solid: '',
+    'test-ts': '',
+  };
 
 const Sandpack = (props: SandpackProps) => {
   const {

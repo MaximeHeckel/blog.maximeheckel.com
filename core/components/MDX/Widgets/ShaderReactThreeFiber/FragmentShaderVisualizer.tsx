@@ -8,8 +8,9 @@ import {
   Text,
   Tooltip,
 } from '@maximeheckel/design-system';
-import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 import React from 'react';
+
+import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 
 interface CellProps {
   value: number;
@@ -152,9 +153,8 @@ const shaderCode = {
 
 const FragmentShaderVisualizer = () => {
   const [size, setSize] = React.useState(16);
-  const [shader, setShader] = React.useState<keyof typeof shaderFunction>(
-    'shader2'
-  );
+  const [shader, setShader] =
+    React.useState<keyof typeof shaderFunction>('shader2');
 
   const emptyMatrix = React.useMemo(
     () =>

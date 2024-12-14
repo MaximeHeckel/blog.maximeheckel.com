@@ -8,6 +8,7 @@ import {
 } from '@maximeheckel/design-system';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
+
 import { AnimationCardContent, TransitionGridWrapper } from '../Components';
 
 const CardWrapper = styled('div', {
