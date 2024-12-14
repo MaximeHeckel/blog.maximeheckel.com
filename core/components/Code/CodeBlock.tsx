@@ -1,5 +1,5 @@
 import { Card, styled } from '@maximeheckel/design-system';
-import Highlight, { Prism, defaultProps } from 'prism-react-renderer';
+import { Highlight, Prism } from 'prism-react-renderer';
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import { CodeBlockProps, HighlightedCodeTextProps } from './types';
 import { calculateLinesToHighlight, hasTitle } from './utils';
@@ -10,6 +10,7 @@ import { calculateLinesToHighlight, hasTitle } from './utils';
 /**
  * This imports the syntax highlighting style for the Swift and GLSLlanguage
  */
+
 require('prismjs/components/prism-swift');
 require('prismjs/components/prism-glsl');
 
@@ -20,10 +21,8 @@ export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
 
   return (
     <Highlight
-      {...defaultProps}
       theme={{ plain: {}, styles: [] }}
       code={codeString}
-      // @ts-ignore let glsl be a valid language
       language={language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
