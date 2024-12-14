@@ -1,7 +1,7 @@
 import { Box } from '@maximeheckel/design-system';
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
-import { useInView } from 'react-intersection-observer';
+
 import FirstRaymarchedScene from './firstRaymarchedScene';
 import DiffuseLighting from './diffuseLighting';
 import CombingingSDF from './combiningSDF';
@@ -21,6 +21,8 @@ import BicubicFiltering from './bicubicFiltering';
 import BeersLaw from './beersLaw';
 import LightTransmittance from './lightTransmittance';
 import Phase from './phase';
+import { useRef } from 'react';
+import { useInView } from 'motion/react';
 
 const CSSCode = `
 html {
@@ -39,7 +41,9 @@ canvas {
 
 const RenderTargetsSandpack = (props: any) => {
   const { scene } = props;
-  const [ref, inView] = useInView();
+
+  const ref = useRef(null);
+  const inView = useInView(ref);
   const { tier, loading: tierLoading } = useGPUTier();
 
   const autorun = tier > 2;

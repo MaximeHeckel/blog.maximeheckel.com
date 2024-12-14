@@ -1,5 +1,4 @@
 import Sandpack from '@core/components/Code/Sandpack';
-import { useInView } from 'react-intersection-observer';
 import { css } from '@maximeheckel/design-system';
 import { script1 } from './script1';
 import { script2 } from './script2';
@@ -9,6 +8,8 @@ import { script5 } from './script5';
 import { script6 } from './script6';
 import { script7 } from './script7';
 import useGPUTier from '@core/hooks/useGPUTier';
+import { useInView } from 'motion/react';
+import { useRef } from 'react';
 
 const htmlSandpack = `<!DOCTYPE html>
 <html lang="en">
@@ -55,7 +56,9 @@ const SCRIPTS = {
 
 const VaporwaveThreejsSandpack = (props: any) => {
   const { script } = props;
-  const [ref, inView] = useInView();
+
+  const ref = useRef(null);
+  const inView = useInView(ref);
   const { tier, loading: tierLoading } = useGPUTier();
 
   const autorun = tier > 1;

@@ -115,7 +115,6 @@ const SpringPhysics = (props: { withDamping?: boolean }) => {
         <Form
           style={{
             margin: '20px 0',
-            height: '190px',
             maxWidth: '400px',
             display: 'flex',
             flexDirection: 'column',

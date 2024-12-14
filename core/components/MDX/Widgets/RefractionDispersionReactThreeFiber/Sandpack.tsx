@@ -1,7 +1,10 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
-import { useInView } from 'react-intersection-observer';
+
+import { useRef } from 'react';
+import { useInView } from 'motion/react';
+
 import Transparency from './transparency';
 import SimpleRefraction from './simpleRefraction';
 import SimpleDispersion from './simpleDispersion';
@@ -44,7 +47,9 @@ canvas {
 
 const RefractionDispersionSandpack = (props: any) => {
   const { scene } = props;
-  const [ref, inView] = useInView();
+
+  const ref = useRef(null);
+  const inView = useInView(ref);
   const { dark } = useTheme();
   const { tier, loading: tierLoading } = useGPUTier();
 

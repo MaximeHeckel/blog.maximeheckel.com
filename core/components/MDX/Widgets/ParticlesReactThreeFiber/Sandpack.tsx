@@ -1,7 +1,7 @@
 import { Box, useTheme } from '@maximeheckel/design-system';
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
-import { useInView } from 'react-intersection-observer';
+
 import Twist from './twist';
 import Basic from './basic';
 import CustomGeometry from './customGeometry';
@@ -11,6 +11,8 @@ import CustomizeSizeShader from './customizeSizeShader';
 import CustomizePointShader from './customPointShader';
 import CurlFBO from './curlFBO';
 import MorphFBO from './morphFBO';
+import { useRef } from 'react';
+import { useInView } from 'motion/react';
 
 const SCENES = {
   scene1: Twist,
@@ -46,7 +48,9 @@ canvas {
 
 const ParticlesShaderSandpack = (props: any) => {
   const { scene } = props;
-  const [ref, inView] = useInView();
+
+  const ref = useRef(null);
+  const inView = useInView(ref);
   const { dark } = useTheme();
   const { tier, loading: tierLoading } = useGPUTier();
 
