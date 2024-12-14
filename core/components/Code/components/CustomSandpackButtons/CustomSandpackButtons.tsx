@@ -1,8 +1,8 @@
 import {
   useSandpack,
-  useSandpackConsole,
   useSandpackNavigation,
   UnstyledOpenInCodeSandboxButton,
+  useSandpackConsole,
 } from '@codesandbox/sandpack-react';
 import { Button, Box, Tooltip, Icon } from '@maximeheckel/design-system';
 
@@ -64,7 +64,9 @@ export const CustomClearConsoleButton = ({
 }: {
   onClear: () => void;
 }) => {
-  const { reset } = useSandpackConsole();
+  const { reset } = useSandpackConsole({
+    resetOnPreviewRestart: true,
+  });
 
   return (
     <Tooltip content="Clear console" side="top">
