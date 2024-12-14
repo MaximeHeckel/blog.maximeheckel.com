@@ -19,7 +19,7 @@ const Formatting = () => {
   const [streamData, setStreamData] = useState('');
   const [mdxData, setMdxData] = useState<MDXRemoteSerializeResult<
     Record<string, unknown>,
-    Record<string, string>
+    Record<string, unknown>
   > | null>(null);
 
   const rawResponseRef = useRef<HTMLDivElement>(null);
