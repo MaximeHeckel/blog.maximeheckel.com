@@ -62,7 +62,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const wiggleMotion = useMotionValue(sliderPosition);
-  let hoverTimer = null as NodeJS.Timer | null;
+  let hoverTimer = null as NodeJS.Timeout | null;
 
   const calculateSliderPosition = (clientX: number) => {
     if (hoverTimer) clearTimeout(hoverTimer);
