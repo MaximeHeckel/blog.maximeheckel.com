@@ -3,20 +3,20 @@ import React from 'react';
 
 import SearchBox from '..';
 
-jest.mock('next/router', () => ({
-  useRouter: jest.fn(),
+vi.mock('next/router', () => ({
+  useRouter: vi.fn(),
 }));
 
-jest.mock('next-mdx-remote/serialize', () => ({
-  serialize: jest.fn(() => Promise.resolve()),
+vi.mock('next-mdx-remote/serialize', () => ({
+  serialize: vi.fn(() => Promise.resolve()),
 }));
 
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 describe('SearchBox', () => {
   it('Renders the SearchBox component properly', () => {
     const { getByTestId, container } = render(
-      <SearchBox open onClose={jest.fn} />
+      <SearchBox open onClose={vi.fn} />
     );
 
     expect(container.querySelector('input[name="search"]')).toBeDefined();
@@ -30,8 +30,8 @@ describe('SearchBox', () => {
   });
 
   it('Can toggle AI mode and send a request', async () => {
-    global.fetch = jest.fn().mockResolvedValue({ ok: true });
-    const { getByTestId } = render(<SearchBox open onClose={jest.fn} />);
+    global.fetch = vi.fn().mockResolvedValue({ ok: true });
+    const { getByTestId } = render(<SearchBox open onClose={vi.fn} />);
     expect(getByTestId('aimode')).toBeDefined();
 
     act(() => {
@@ -67,7 +67,7 @@ describe('SearchBox', () => {
 
   it('Can toggle AI mode off by pressing escape', () => {
     const { queryByTestId, getByTestId } = render(
-      <SearchBox open onClose={jest.fn} />
+      <SearchBox open onClose={vi.fn} />
     );
     expect(getByTestId('aimode')).toBeDefined();
 
