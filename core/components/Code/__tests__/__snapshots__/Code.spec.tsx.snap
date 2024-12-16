@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Code preToCodeBlock returns the proper set of props for our code block components if the children are of type <code> 1`] = `
-Object {
+exports[`Code > preToCodeBlock returns the proper set of props for our code block components if the children are of type <code> 1`] = `
+{
   "className": "",
   "codeString": "some code to render",
   "language": "",

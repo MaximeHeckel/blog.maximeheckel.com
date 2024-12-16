@@ -1,4 +1,5 @@
 import { ThemeContext, Tooltip } from '@maximeheckel/design-system';
+import '@testing-library/jest-dom';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import React from 'react';
 
@@ -6,7 +7,7 @@ import Header from '../';
 
 describe('Header', () => {
   it('renders the header without the site title or the post title or theme switcher', async () => {
-    const { queryByTestId, debug } = render(
+    const { queryByTestId } = render(
       <ThemeContext.Provider value={{ dark: false, toggleDark: () => null }}>
         <Tooltip.Provider>
           <Header />
@@ -36,7 +37,7 @@ describe('Header', () => {
   });
 
   it('clicking on the theme switcher calls the toggle dark function', async () => {
-    const mockToggleDark = jest.fn();
+    const mockToggleDark = vi.fn();
 
     const { getByTestId } = render(
       <ThemeContext.Provider
