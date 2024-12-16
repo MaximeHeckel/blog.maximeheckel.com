@@ -93,8 +93,8 @@ importers:
         specifier: 4.0.2
         version: 4.0.2
       motion:
-        specifier: ^11.13.3
-        version: 11.13.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: ^11.15.0
+        version: 11.15.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       next:
         specifier: ^14.2.20
         version: 14.2.20(@babel/core@7.26.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -344,6 +344,10 @@ packages:
 
   '@babel/runtime@7.23.6':
     resolution: {integrity: sha512-zHd0eUrf5GZoOWVCXp6koAKQTfZV07eit6bGPmJgnZdnSAvvZee6zniW2XMF7Cmc4ISOOnPy3QaSiIJGJkVEDQ==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/runtime@7.26.0':
+    resolution: {integrity: sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.25.9':
@@ -1774,6 +1778,10 @@ packages:
     resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==}
     engines: {node: '>=8'}
 
+  braces@3.0.3:
+    resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
+    engines: {node: '>=8'}
+
   browserslist@4.24.3:
     resolution: {integrity: sha512-1CPmv8iobE2fyRMV97dAcMVegvvWKxmq94hkLiAkUGwKVTyDLw33K+ZxiFrREKmmps4rIw6grcCFCnTMSZ/YiA==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
@@ -2485,6 +2493,10 @@ packages:
     resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}
     engines: {node: '>=8'}
 
+  fill-range@7.1.1:
+    resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
+    engines: {node: '>=8'}
+
   find-up@5.0.0:
     resolution: {integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==}
     engines: {node: '>=10'}
@@ -2523,12 +2535,12 @@ packages:
     resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
     engines: {node: '>= 6'}
 
-  framer-motion@11.13.3:
-    resolution: {integrity: sha512-3ZSNuYpDFeNxqVKUyYipOm5A1fXSbMje1XIfEWxKTJ4ughl5FEjvkp6gKmFHLjzwijCVU/PjsMNlTMVCmi+Twg==}
+  framer-motion@11.15.0:
+    resolution: {integrity: sha512-MLk8IvZntxOMg7lDBLw2qgTHHv664bYoYmnFTmE0Gm/FW67aOJk0WM3ctMcG+Xhcv+vh5uyyXwxvxhSeJzSe+w==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
-      react: ^18.0.0
-      react-dom: ^18.0.0
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
       '@emotion/is-prop-valid':
         optional: true
@@ -3269,6 +3281,10 @@ packages:
     resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==}
     engines: {node: '>=8.6'}
 
+  micromatch@4.0.8:
+    resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
+    engines: {node: '>=8.6'}
+
   mime-db@1.25.0:
     resolution: {integrity: sha512-5k547tI4Cy+Lddr/hdjNbBEWBwSl8EBc5aSdKvedav8DReADgWJzcYiktaRIw3GtGC1jjwldXtTzvqJZmtvC7w==}
     engines: {node: '>= 0.6'}
@@ -3312,18 +3328,18 @@ packages:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
 
-  motion-dom@11.13.0:
-    resolution: {integrity: sha512-Oc1MLGJQ6nrvXccXA89lXtOqFyBmvHtaDcTRGT66o8Czl7nuA8BeHAd9MQV1pQKX0d2RHFBFaw5g3k23hQJt0w==}
+  motion-dom@11.14.3:
+    resolution: {integrity: sha512-lW+D2wBy5vxLJi6aCP0xyxTxlTfiu+b+zcpVbGVFUxotwThqhdpPRSmX8xztAgtZMPMeU0WGVn/k1w4I+TbPqA==}
 
-  motion-utils@11.13.0:
-    resolution: {integrity: sha512-lq6TzXkH5c/ysJQBxgLXgM01qwBH1b4goTPh57VvZWJbVJZF/0SB31UWEn4EIqbVPf3au88n2rvK17SpDTja1A==}
+  motion-utils@11.14.3:
+    resolution: {integrity: sha512-Xg+8xnqIJTpr0L/cidfTTBFkvRw26ZtGGuIhA94J9PQ2p4mEa06Xx7QVYZH0BP+EpMSaDlu+q0I0mmvwADPsaQ==}
 
-  motion@11.13.3:
-    resolution: {integrity: sha512-7WCtns1245mdDRpm50PpIGrRySmIfXDFDmWJtVO+zoevwGTOR4gw3irsA7TIdJzbBKptDaZ26Fk2c4v4z/Da/g==}
+  motion@11.15.0:
+    resolution: {integrity: sha512-iZ7dwADQJWGsqsSkBhNHdI2LyYWU+hA1Nhy357wCLZq1yHxGImgt3l7Yv0HT/WOskcYDq9nxdedyl4zUv7UFFw==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
-      react: ^18.0.0
-      react-dom: ^18.0.0
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
       '@emotion/is-prop-valid':
         optional: true
@@ -4675,6 +4691,10 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
+  '@babel/runtime@7.26.0':
+    dependencies:
+      regenerator-runtime: 0.14.1
+
   '@babel/template@7.25.9':
     dependencies:
       '@babel/code-frame': 7.26.2
@@ -5599,7 +5619,7 @@ snapshots:
   '@testing-library/dom@10.4.0':
     dependencies:
       '@babel/code-frame': 7.26.2
-      '@babel/runtime': 7.23.6
+      '@babel/runtime': 7.26.0
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       chalk: 4.1.1
@@ -6284,6 +6304,11 @@ snapshots:
   braces@3.0.2:
     dependencies:
       fill-range: 7.0.1
+
+  braces@3.0.3:
+    dependencies:
+      fill-range: 7.1.1
+    optional: true
 
   browserslist@4.24.3:
     dependencies:
@@ -7195,6 +7220,11 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
 
+  fill-range@7.1.1:
+    dependencies:
+      to-regex-range: 5.0.1
+    optional: true
+
   find-up@5.0.0:
     dependencies:
       locate-path: 6.0.0
@@ -7233,10 +7263,10 @@ snapshots:
       combined-stream: 1.0.8
       mime-types: 2.1.35
 
-  framer-motion@11.13.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  framer-motion@11.15.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
-      motion-dom: 11.13.0
-      motion-utils: 11.13.0
+      motion-dom: 11.14.3
+      motion-utils: 11.14.3
       tslib: 2.6.2
     optionalDependencies:
       react: 18.2.0
@@ -7733,7 +7763,7 @@ snapshots:
       '@types/stack-utils': 2.0.3
       chalk: 4.1.1
       graceful-fs: 4.2.11
-      micromatch: 4.0.5
+      micromatch: 4.0.8
       pretty-format: 29.7.0
       slash: 3.0.0
       stack-utils: 2.0.6
@@ -8237,6 +8267,12 @@ snapshots:
       braces: 3.0.2
       picomatch: 2.3.1
 
+  micromatch@4.0.8:
+    dependencies:
+      braces: 3.0.3
+      picomatch: 2.3.1
+    optional: true
+
   mime-db@1.25.0: {}
 
   mime-db@1.52.0: {}
@@ -8267,13 +8303,13 @@ snapshots:
 
   minipass@7.1.2: {}
 
-  motion-dom@11.13.0: {}
+  motion-dom@11.14.3: {}
 
-  motion-utils@11.13.0: {}
+  motion-utils@11.14.3: {}
 
-  motion@11.13.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  motion@11.15.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
-      framer-motion: 11.13.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      framer-motion: 11.15.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       tslib: 2.6.2
     optionalDependencies:
       react: 18.2.0
