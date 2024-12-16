@@ -21,16 +21,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Commit
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.17.0'
+          node-version: '20.17.0'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
       - name: Cache pnpm dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-dependencies
         with:
           path: node_modules
@@ -39,7 +39,7 @@ jobs:
             ${{ runner.os }}-pnpm-
       - name: Cache Cypress binary
         id: cache-cypress-binary
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/Cypress
           key: cypress-binary-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -54,16 +54,16 @@ jobs:
     needs: install-cache
     steps:
       - name: Checkout Commit
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.17.0'
+          node-version: '20.17.0'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
       - name: Restore pnpm dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-dependencies
         with:
           path: node_modules
@@ -81,16 +81,16 @@ jobs:
     needs: install-cache
     steps:
       - name: Checkout Commit
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.17.0'
+          node-version: '20.17.0'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
       - name: Restore pnpm dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-dependencies
         with:
           path: node_modules
@@ -105,16 +105,16 @@ jobs:
     needs: install-cache
     steps:
       - name: Checkout Commit
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.17.0'
+          node-version: '20.17.0'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
       - name: Restore pnpm dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-dependencies
         with:
           path: node_modules
@@ -129,16 +129,16 @@ jobs:
     needs: [lint-format, type-check, unit-test]
     steps:
       - name: Checkout Commit
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.17.0'
+          node-version: '20.17.0'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
       - name: Restore pnpm dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-dependencies
         with:
           path: node_modules
@@ -161,16 +161,16 @@ jobs:
     needs: build
     steps:
       - name: Checkout Commit
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.17.0'
+          node-version: '20.17.0'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
       - name: Restore pnpm dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-dependencies
         with:
           path: node_modules
@@ -179,7 +179,7 @@ jobs:
             ${{ runner.os }}-pnpm-
       - name: Restore Cypress binary
         id: cache-cypress-binary
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/Cypress
           key: cypress-binary-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -215,16 +215,16 @@ jobs:
     needs: build
     steps:
       - name: Checkout Commit
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.17.0'
+          node-version: '20.17.0'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
       - name: Restore pnpm dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-dependencies
         with:
           path: node_modules
@@ -233,7 +233,7 @@ jobs:
             ${{ runner.os }}-pnpm-
       - name: Restore Cypress binary
         id: cache-cypress-binary
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/Cypress
           key: cypress-binary-${{ hashFiles('**/pnpm-lock.yaml') }}

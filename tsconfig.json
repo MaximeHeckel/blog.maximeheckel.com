@@ -3,11 +3,16 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@core/*": ["core/*"]
+      "@core/*": [
+        "core/*"
+      ]
     },
     "target": "esnext",
     "module": "esnext",
-    "lib": ["dom", "es2022"],
+    "lib": [
+      "dom",
+      "es2022"
+    ],
     "jsx": "preserve",
     "sourceMap": false,
     "strict": true,
@@ -20,13 +25,22 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
+    "types": [
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ]
   },
-  "include": ["./**/**.*"],
-  "exclude": ["node_modules", "./**/*.spec.ts", "./**/*.spec.tsx"]
+  "include": [
+    "./**/**.*"
+  ],
+  "exclude": [
+    "node_modules",
+    "./**/*.spec.ts",
+    "./**/*.spec.tsx"
+  ]
 }
