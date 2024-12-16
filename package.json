@@ -23,8 +23,8 @@
     "lint": "eslint --ext=jsx,ts,tsx .",
     "prebuild": "pnpm generate:rss && pnpm generate:sitemap",
     "start": "next start",
-    "test": "is-ci \"test:coverage\" \"test:watch\"",
-    "test:coverage": "TZ=utc vitest --coverage",
+    "test": "is-ci \"test:run\" \"test:watch\"",
+    "test:run": "TZ=utc vitest run",
     "test:watch": "TZ=utc vitest",
     "type-check": "tsc --noEmit",
     "unlink-ds": "rm -rf .next && pnpm unlink && pnpm install"
@@ -78,9 +78,8 @@
     "unist-util-visit-parents": "3.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.12.10",
     "@next/bundle-analyzer": "10.0.5",
-    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/jest-dom": "6.1.5",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
     "@trivago/prettier-plugin-sort-imports": "^5.2.0",
@@ -93,8 +92,7 @@
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "@vitest/expect": "^2.1.8",
-    "babel-plugin-transform-dynamic-import": "2.1.0",
+    "@vitest/expect": "1.1.0",
     "cross-env": "7.0.3",
     "cypress": "^13.15.0",
     "dotenv": "^16.3.1",
@@ -110,8 +108,7 @@
     "prettier": "^3.2.5",
     "progress": "^2.0.3",
     "typescript": "^5.7.2",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "2.1.1"
+    "vitest": "^2.1.8"
   },
   "license": "MIT",
   "repository": {

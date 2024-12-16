@@ -25,8 +25,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "include": ["./**/**.*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "./**/*.spec.ts", "./**/*.spec.tsx"]
 }
