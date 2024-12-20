@@ -3,11 +3,14 @@ import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
 import path from 'path';
 import readingTime from 'reading-time';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeSlug from 'rehype-slug';
 import { FrontMatterPost, Post } from 'types/post';
 
+import { rehypeMeta } from './rehype-meta';
+// import { remarkSectionize } from './remark-sectionize-fork';
+import { rehypeSectionize } from './rehype-sectionize-fork';
 import { remarkFigure } from './remark-figure';
-import { remarkMeta } from './remark-meta';
-import { remarkSectionize } from './remark-sectionize-fork';
 
 const root = process.cwd();
 
@@ -33,17 +36,19 @@ export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
   const data = parsedFile.data;
   const content = parsedFile.content;
 
-  const mdxSource = await serialize(content, {
+  const options = {
     mdxOptions: {
-      remarkPlugins: [
-        require('remark-slug'),
-        require('remark-autolink-headings'),
-        remarkSectionize,
-        remarkFigure,
+      remarkPlugins: [remarkFigure],
+      rehypePlugins: [
+        rehypeSlug,
+        rehypeSectionize,
+        rehypeMeta,
+        rehypeAutolinkHeadings,
       ],
-      rehypePlugins: [remarkMeta],
     },
-  });
+  };
+
+  const mdxSource = await serialize(content, options);
 
   // TODO: maybe we want to extract this in its own lib?
   /**
@@ -76,11 +81,6 @@ export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
   };
 
   return result as unknown as FrontMatterPost;
-
-  return {
-    mdxSource,
-    frontMatter: data,
-  } as unknown as FrontMatterPost;
 };
 
 export const getAllFilesFrontMatter = async (): Promise<Array<Post>> => {
