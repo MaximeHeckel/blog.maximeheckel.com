@@ -7,10 +7,9 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import { FrontMatterPost, Post } from 'types/post';
 
+import { rehypeFigure } from './rehype-figure';
 import { rehypeMeta } from './rehype-meta';
-// import { remarkSectionize } from './remark-sectionize-fork';
 import { rehypeSectionize } from './rehype-sectionize-fork';
-import { remarkFigure } from './remark-figure';
 
 const root = process.cwd();
 
@@ -38,12 +37,12 @@ export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
 
   const options = {
     mdxOptions: {
-      remarkPlugins: [remarkFigure],
       rehypePlugins: [
         rehypeSlug,
         rehypeSectionize,
         rehypeMeta,
         rehypeAutolinkHeadings,
+        rehypeFigure,
       ],
     },
   };
