@@ -17,15 +17,12 @@ import {
 import { format } from 'date-fns';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { motion, MotionProps } from 'motion/react';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React from 'react';
 import { templateColumnsMedium } from 'styles/grid';
 import { Post } from 'types/post';
 
 import Layout from '@core/layout';
-
-const NewsletterForm = dynamic(() => import('@core/components/NewsletterForm'));
 
 interface Props {
   posts: Post[];
@@ -124,12 +121,12 @@ const IndexPage = (props: Props) => {
             </Flex>
           </Flex>
         </Grid.Item>
-        <Grid.Item as="section" col={2}>
+        {/* <Grid.Item as="section" col={2}>
           <Flex alignItems="start" direction="column" gap="5">
             <H2>Newsletter</H2>
             <NewsletterForm large />
           </Flex>
-        </Grid.Item>
+        </Grid.Item> */}
         <Grid.Item as="section" col={2}>
           <Flex alignItems="start" direction="column" gap="5">
             <H2>Featured</H2>

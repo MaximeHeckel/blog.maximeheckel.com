@@ -30,8 +30,6 @@ I've been an Apple Watch owner for a couple of years now, and the ability to get
 Well, good news if you're in this situation as well, I recently figured out a way to build a personal Apple Health API!
 In this article, I'm going to show you how, by using a combination of [Apple Shortcuts](https://support.apple.com/guide/shortcuts/welcome/ios) and serverless functions, you can implement a way **to transfer recorded Apple Watch health samples to a Fauna database** and, in return, get **a fully-fledged GraphQL API**.
 
-<HeartRateWidget />
-
 **That same API is what is powering this little widget above**, showcasing my recorded heart rate throughout the day. How cool is that? The chart will automatically refresh every now and then (I'm still finalizing this project) so if you're lucky, you might even catch a live update!
 
 [Heart Rate Widget source code](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/8fe1795fb25064eecdf202d318afb51218e7b5a4/core/components/MDX/Widgets/HeartRateWidget.tsx)
@@ -494,7 +492,7 @@ const handler = async (
   console.log(entry);
 
   const mutation = gql`
-    mutation($entries: [EntryInput]) {
+    mutation ($entries: [EntryInput]) {
       addEntry(entries: $entries) {
         heartRate {
           value
