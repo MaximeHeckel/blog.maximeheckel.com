@@ -1,8 +1,8 @@
-/* eslint-disable no-console */
-const chalk = require('chalk');
-const fs = require('fs');
-const globby = require('globby');
+import chalk from 'chalk';
+import fs from 'fs';
+import { globby } from 'globby';
 
+/* eslint-disable no-console */
 (async () => {
   console.info(chalk.cyan('info'), ` - Generating sitemap`);
 

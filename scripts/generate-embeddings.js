@@ -1,14 +1,17 @@
 /* eslint-disable no-console */
-require('dotenv').config();
+import { createClient } from '@supabase/supabase-js';
+import chalk from 'chalk';
+import 'dotenv/config';
+import fs from 'fs';
+import OpenAI from 'openai';
+import path from 'path';
+import ProgressBar from 'progress';
+import { fileURLToPath } from 'url';
 
-const { createClient } = require('@supabase/supabase-js');
-const chalk = require('chalk');
-const fs = require('fs');
-const { Configuration, OpenAIApi } = require('openai');
-const path = require('path');
-const ProgressBar = require('progress');
-const { fileURLToPath } = require('url');
-const processMdxFile = require('./process-mdx.js');
+import processMdxFile from './process-mdx.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const SUPABASE_API_KEY = process.env.SUPABASE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -17,9 +20,7 @@ const OPEN_AI_API_KEY = process.env.OPEN_AI_API_KEY;
 const OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL;
 
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_API_KEY);
-
-const configuration = new Configuration({ apiKey: OPEN_AI_API_KEY });
-const openAI = new OpenAIApi(configuration);
+const openAI = new OpenAI({ apiKey: OPEN_AI_API_KEY });
 
 const generateEmbeddings = async (chunks, metadata) => {
   console.info(
@@ -66,11 +67,12 @@ const generateEmbeddings = async (chunks, metadata) => {
     };
 
     try {
-      const { data: embed } = await openAI.createEmbedding({
+      const embeddingResponse = await openAI.embeddings.create({
         input: vector.input,
         model: OPENAI_EMBEDDING_MODEL,
       });
-      const embedding = embed.data[0].embedding;
+
+      const embedding = embeddingResponse.data[0].embedding;
 
       await supabaseClient.from('documents').insert({
         title: vector.metadata.title,

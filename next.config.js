@@ -1,10 +1,15 @@
-const path = require('path');
+import bundleAnalyzer from '@next/bundle-analyzer';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
-module.exports = withBundleAnalyzer({
+const output = withBundleAnalyzer({
   trailingSlash: true,
   images: {
     remotePatterns: [
@@ -99,6 +104,8 @@ module.exports = withBundleAnalyzer({
     ];
   },
 });
+
+export default output;
 
 // https://nextjs.org/docs/advanced-features/security-headers
 const ContentSecurityPolicy = `

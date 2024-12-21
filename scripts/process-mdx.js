@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
-const matter = require('gray-matter');
-const GPT3Tokenizer = require('gpt3-tokenizer');
+import fs from 'fs';
+import GPT3Tokenizer from 'gpt3-tokenizer';
+import matter from 'gray-matter';
+import path from 'path';
 
 const MAX_TOKEN = 100;
 
@@ -161,4 +161,4 @@ async function processMdxFile(filePath) {
   }
 }
 
-module.exports = processMdxFile;
+export default processMdxFile;

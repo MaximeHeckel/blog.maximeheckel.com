@@ -1,9 +1,13 @@
 /* eslint-disable no-console */
-const chalk = require('chalk');
-const fs = require('fs');
-const path = require('path');
-const RSS = require('rss');
-const matter = require('gray-matter');
+import chalk from 'chalk';
+import fs from 'fs';
+import matter from 'gray-matter';
+import path from 'path';
+import RSS from 'rss';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 (async () => {
   console.info(chalk.cyan('info'), ` - Generating RSS feed`);

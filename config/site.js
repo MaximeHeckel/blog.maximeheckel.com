@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   pathPrefix: '/',
   keywords: [
     'Software Engineer',
@@ -35,3 +35,5 @@ module.exports = {
   twitterDesc:
     'Maxime Heckel is a lead frontend engineer and space enthusiast currently based in New York.',
 };
+
+export default config;
