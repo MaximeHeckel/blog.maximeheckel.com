@@ -30,7 +30,7 @@ import Image from './Image';
 const ClipboardAnimationDetails = dynamic(
   () => import('./Widgets/GuideToFramerMotion/ClipboardAnimationDetails')
 );
-const HeartRateWidget = dynamic(() => import('./Widgets/HeartRateWidget'));
+
 const SEOStats = dynamic(() => import('./Widgets/SEOStats'));
 const FramerMotionPropagation = dynamic(
   () => import('./Widgets/AdvancedFramerMotion/FramerMotionPropagation')
@@ -262,7 +262,6 @@ const customComponents = {
   Orchestration,
   PaletteGenerator,
   ThemePicker,
-  HeartRateWidget,
   Card,
   CardBody: Card.Body,
   ScrollSpyWidget,
