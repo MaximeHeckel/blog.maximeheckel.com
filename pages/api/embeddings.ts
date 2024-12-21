@@ -1,4 +1,4 @@
-import { ipAddress } from '@vercel/edge';
+import { ipAddress } from '@vercel/functions';
 import { kv } from '@vercel/kv';
 
 export const config = {
