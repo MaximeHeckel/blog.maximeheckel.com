@@ -329,7 +329,6 @@ const AIPromptResultCard = forwardRef(
                             <Button
                               aria-label="Support my work: buy me a coffee!"
                               icon={<Coffee />}
-                              size="small"
                               variant="icon"
                             />
                           </Anchor>
