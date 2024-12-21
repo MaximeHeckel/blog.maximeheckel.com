@@ -1,8 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
+import 'dotenv/config';
 import GPT3Tokenizer from 'gpt3-tokenizer';
-import { Configuration, OpenAIApi } from 'openai';
-
-require('dotenv').config();
+import OpenAI from 'openai';
 
 const SUPABASE_API_KEY = process.env.SUPABASE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -10,20 +9,19 @@ const OPEN_AI_API_KEY = process.env.OPEN_AI_API_KEY;
 const OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL;
 
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_API_KEY);
-const configuration = new Configuration({ apiKey: OPEN_AI_API_KEY });
-const openAI = new OpenAIApi(configuration);
+const openAI = new OpenAI({ apiKey: OPEN_AI_API_KEY });
 
 // This is mainly used for testing purposes,
 const search = async () => {
   const query = process.argv[2];
   const input = query.replace(/\n/g, ' ');
 
-  const { data: embed } = await openAI.createEmbedding({
+  const embeddingResponse = await openAI.embeddings.create({
     input,
     model: OPENAI_EMBEDDING_MODEL,
   });
 
-  const embedding = embed.data[0].embedding;
+  const embedding = embeddingResponse.data[0].embedding;
 
   // eslint-disable-next-line no-console
   console.log(embedding);
@@ -84,9 +82,9 @@ const search = async () => {
     `;
 
     try {
-      const completion = await openAI.createChatCompletion(
+      const stream = await openAI.chat.completions.create(
         {
-          model: 'gpt-3.5-turbo',
+          model: 'gpt-4o-mini',
           messages: [
             {
               role: 'assistant',
@@ -101,25 +99,12 @@ const search = async () => {
         { responseType: 'stream' }
       );
 
-      completion.data.on('data', (data) => {
-        const lines = data
-          .toString('utf8')
-          .split('\n')
-          .filter((line) => line.trim().startsWith('data: '));
-
-        for (const line of lines) {
-          const message = line.replace(/^data: /, '');
-          if (message === '[DONE]') {
-            return;
-          }
-
-          const json = JSON.parse(message);
-          const token = json.choices[0].delta.content;
-          if (token) {
-            process.stdout.write(token);
-          }
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content;
+        if (content) {
+          process.stdout.write(content);
         }
-      });
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Chat completion error', error);

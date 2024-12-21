@@ -1,13 +1,17 @@
 /* eslint-disable no-console */
-const playwright = require('playwright-core');
-const chalk = require('chalk');
-const { createHash } = require('crypto');
-const fs = require('fs');
-const matter = require('gray-matter');
-const path = require('path');
-const qs = require('qs');
+import chalk from 'chalk';
+import { createHash } from 'crypto';
+import fs from 'fs';
+import matter from 'gray-matter';
+import path from 'path';
+import playwright from 'playwright-core';
+import qs from 'qs';
+import { fileURLToPath } from 'url';
 
 const ogImageDir = `./public/static/og`;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 (async () => {
   const root = process.cwd();

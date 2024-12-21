@@ -1,6 +1,7 @@
 describe('Header Tests', () => {
   it('The post title is visible when navigating to a project and scrolling', () => {
     cy.visit('/posts/how-to-build-first-eslint-rule/');
+    cy.wait(1000);
     cy.scrollTo(0, 2000);
     cy.get('[data-testid="header-title"]').should('be.visible').click();
     cy.wait(1000).then(() => {
