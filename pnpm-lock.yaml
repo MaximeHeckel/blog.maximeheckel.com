@@ -69,8 +69,8 @@ importers:
         specifier: 4.1.0
         version: 4.1.0
       detect-gpu:
-        specifier: ^5.0.61
-        version: 5.0.61
+        specifier: ^5.0.63
+        version: 5.0.63
       eventsource-parser:
         specifier: ^3.0.0
         version: 3.0.0
@@ -2177,8 +2177,8 @@ packages:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
 
-  detect-gpu@5.0.61:
-    resolution: {integrity: sha512-7fe6+weEj1JAQl4ys/pcuCtR0m70FCpsgAb4oox6udPUzBD44U+kMBfudCZWv3ytJZnbKT9hxaQto3jbIeJttQ==}
+  detect-gpu@5.0.63:
+    resolution: {integrity: sha512-S4ZOf2tI5nwFyhzGvsaRA86IvctD6JQtq4+NPSseO6E1AWW66qTDFHdAMBPlFiD7Dfe9TETy0Q7pa/kHcIYYMQ==}
 
   detect-node-es@1.1.0:
     resolution: {integrity: sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==}
@@ -6764,7 +6764,7 @@ snapshots:
 
   dequal@2.0.3: {}
 
-  detect-gpu@5.0.61:
+  detect-gpu@5.0.63:
     dependencies:
       webgl-constants: 1.1.1
 
