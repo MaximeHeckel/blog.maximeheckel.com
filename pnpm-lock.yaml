@@ -208,8 +208,8 @@ importers:
         specifier: 1.17.1
         version: 1.17.1
       playwright-webkit:
-        specifier: ^1.40.1
-        version: 1.40.1
+        specifier: ^1.49.1
+        version: 1.49.1
       prettier:
         specifier: ^3.2.5
         version: 3.4.2
@@ -3668,14 +3668,14 @@ packages:
     engines: {node: '>=12'}
     hasBin: true
 
-  playwright-core@1.40.1:
-    resolution: {integrity: sha512-+hkOycxPiV534c4HhpfX6yrlawqVUzITRKwHAmYfmsVreltEl6fAZJ3DPfLMOODw0H3s1Itd6MDCWmP1fl/QvQ==}
-    engines: {node: '>=16'}
+  playwright-core@1.49.1:
+    resolution: {integrity: sha512-BzmpVcs4kE2CH15rWfzpjzVGhWERJfmnXmniSyKeRZUs9Ws65m+RGIi7mjJK/euCegfn3i7jvqWeWyHe9y3Vgg==}
+    engines: {node: '>=18'}
     hasBin: true
 
-  playwright-webkit@1.40.1:
-    resolution: {integrity: sha512-cDGvBV63PE0nrsnlHWCpCCKZN7EQ5x4aEyJ7tKeEMyjH/Z1dk9ECX/7496LyqxmUOY+GMzbzhOJs2Y1z07CoPA==}
-    engines: {node: '>=16'}
+  playwright-webkit@1.49.1:
+    resolution: {integrity: sha512-mk5C0OSjfrwIU8VZiZXD2w2KLuVroxBVRI5df6AnQA6e0U+1P1lX7MTeDKVKtfoUujEZF5EmFxNKKlybcXJREQ==}
+    engines: {node: '>=18'}
     hasBin: true
 
   playwright@1.17.1:
@@ -8746,11 +8746,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  playwright-core@1.40.1: {}
+  playwright-core@1.49.1: {}
 
-  playwright-webkit@1.40.1:
+  playwright-webkit@1.49.1:
     dependencies:
-      playwright-core: 1.40.1
+      playwright-core: 1.49.1
 
   playwright@1.17.1:
     dependencies:
