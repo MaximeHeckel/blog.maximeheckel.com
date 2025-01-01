@@ -205,8 +205,8 @@ importers:
         specifier: 1.17.1
         version: 1.17.1
       playwright-core:
-        specifier: 1.17.1
-        version: 1.17.1
+        specifier: 1.49.1
+        version: 1.49.1
       playwright-webkit:
         specifier: ^1.40.1
         version: 1.40.1
@@ -3671,6 +3671,11 @@ packages:
   playwright-core@1.40.1:
     resolution: {integrity: sha512-+hkOycxPiV534c4HhpfX6yrlawqVUzITRKwHAmYfmsVreltEl6fAZJ3DPfLMOODw0H3s1Itd6MDCWmP1fl/QvQ==}
     engines: {node: '>=16'}
+    hasBin: true
+
+  playwright-core@1.49.1:
+    resolution: {integrity: sha512-BzmpVcs4kE2CH15rWfzpjzVGhWERJfmnXmniSyKeRZUs9Ws65m+RGIi7mjJK/euCegfn3i7jvqWeWyHe9y3Vgg==}
+    engines: {node: '>=18'}
     hasBin: true
 
   playwright-webkit@1.40.1:
@@ -8747,6 +8752,8 @@ snapshots:
       - utf-8-validate
 
   playwright-core@1.40.1: {}
+
+  playwright-core@1.49.1: {}
 
   playwright-webkit@1.40.1:
     dependencies:
