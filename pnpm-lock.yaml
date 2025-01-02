@@ -81,11 +81,11 @@ importers:
         specifier: ^1.1.5
         version: 1.1.5
       graphql:
-        specifier: 15.4.0
-        version: 15.4.0
+        specifier: 15.9.0
+        version: 15.9.0
       graphql-request:
         specifier: 3.3.0
-        version: 3.3.0(graphql@15.4.0)
+        version: 3.3.0(graphql@15.9.0)
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
@@ -2753,8 +2753,8 @@ packages:
     peerDependencies:
       graphql: 14.x || 15.x
 
-  graphql@15.4.0:
-    resolution: {integrity: sha512-EB3zgGchcabbsU9cFe1j+yxdzKQKAbGUWRb13DsrsMN1yyfmmIq+2+L5MqVWcDCE4V89R5AyUOi7sMOGxdsYtA==}
+  graphql@15.9.0:
+    resolution: {integrity: sha512-GCOQdvm7XxV1S4U4CGrsdlEN37245eC8P9zaYCMr6K1BG0IPGy5lUwmJsEOGyl1GD6HXjOtl2keCP9asRBwNvA==}
     engines: {node: '>= 10.x'}
 
   gray-matter@4.0.3:
@@ -7619,16 +7619,16 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  graphql-request@3.3.0(graphql@15.4.0):
+  graphql-request@3.3.0(graphql@15.9.0):
     dependencies:
       cross-fetch: 3.1.8
       extract-files: 9.0.0
       form-data: 3.0.1
-      graphql: 15.4.0
+      graphql: 15.9.0
     transitivePeerDependencies:
       - encoding
 
-  graphql@15.4.0: {}
+  graphql@15.9.0: {}
 
   gray-matter@4.0.3:
     dependencies:
