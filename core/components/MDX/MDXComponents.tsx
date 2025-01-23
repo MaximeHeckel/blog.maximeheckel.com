@@ -219,6 +219,10 @@ const PixelizationVisualizer = dynamic(
   () => import('./Widgets/PostProcessing/PixelizationVisualizer')
 );
 
+const ThresholdVisualizer = dynamic(
+  () => import('./Widgets/PostProcessing/ThresholdVisualizer')
+);
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -309,6 +313,7 @@ const customComponents = {
   KuwaharaVisualizer,
   KernelVisualizer,
   PixelizationVisualizer,
+  ThresholdVisualizer,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
