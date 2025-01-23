@@ -208,11 +208,15 @@ const QuantizationVisualizer = dynamic(
 );
 
 const KuwaharaVisualizer = dynamic(
-  () => import('./Widgets/PainterlyShaders/KuwaharaVisualizer')
+  () => import('./Widgets/PostProcessing/PixelizationVisualizer')
 );
 
 const KernelVisualizer = dynamic(
   () => import('./Widgets/PainterlyShaders/KernelVisualizer')
+);
+
+const PixelizationVisualizer = dynamic(
+  () => import('./Widgets/PostProcessing/PixelizationVisualizer')
 );
 
 const RefractionDispersionSandpack = dynamic(
@@ -304,6 +308,7 @@ const customComponents = {
   QuantizationVisualizer,
   KuwaharaVisualizer,
   KernelVisualizer,
+  PixelizationVisualizer,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
