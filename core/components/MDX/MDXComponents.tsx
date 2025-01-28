@@ -263,6 +263,10 @@ const KuwaharaSandpack = dynamic(
   () => import('./Widgets/PainterlyShaders/Sandpack')
 );
 
+const PostProcessingSandpack = dynamic(
+  () => import('./Widgets/PostProcessing/Sandpack')
+);
+
 const customComponents = {
   AnimationTypes,
   ClipboardAnimationDetails,
@@ -333,6 +337,7 @@ const customComponents = {
   MoebiusSandpack,
   RetroSandpack,
   KuwaharaSandpack,
+  PostProcessingSandpack,
 };
 
 const MDXComponents = {
