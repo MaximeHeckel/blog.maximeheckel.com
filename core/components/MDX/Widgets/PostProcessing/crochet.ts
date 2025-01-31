@@ -49,17 +49,15 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     cellUV.x += rowOffset; 
     vec2 centered = cellUV - 0.5;
 
-
     float noiseAmount = 0.18;
     vec2 noisyCenter = centered + (vec2(
         random(cellPosition + centered ),
         random(cellPosition + centered)
     ) - 0.5) * noiseAmount;
-    
 
     float isAlternate = mod(cellPosition.x, 2.0);
- 
     float angle = isAlternate == 0.0 ? radians(-65.0) : radians(65.0);
+    
     vec2 rotated = vec2(
         noisyCenter.x * cos(angle) - noisyCenter.y * sin(angle),
         noisyCenter.x * sin(angle) + noisyCenter.y * cos(angle)

@@ -9,20 +9,891 @@ type: 'blogPost'
 featured: false
 ---
 
-// ADD CREDITS FOR MODELS
+Spending the better part of 2024 learning new shader techniques and concepts through the lens of post-processing has been the spark I needed to come up with ever more intricate, detailed, and ambitious creative work.
+Not only do I now know the inner workings of specific styles like [Moebius](/posts/moebius-style-post-processing/), [Painting](/posts/on-crafting-painterly-shaders/), or [Retro](/posts/the-art-of-dithering-and-retro-shading-web/), but it also got me to a point where I strengthened the many shader mental models
+I built along the years enough to experiment with new styles that I see online or that I envision in my mind.
 
-// INTRO
+That led me on a sort of _creative spree_ for the past few months that originated from many creative developers, artists, and designers on Bluesky and Twitter such as: <Anchor favicon discreet href="https://twitter.com/dghez_">
+@dghez\_</Anchor>, <Anchor favicon discreet href="https://twitter.com/Polygon1993">Polygon1993</Anchor>, <Anchor favicon discreet href="https://twitter.com/darkroomdevs">@darkroomdevs</Anchor>, <Anchor favicon discreet href="https://twitter.com/hahajohnx">@hahajohnx</Anchor>, <Anchor favicon discreet href="https://twitter.com/samdape">@samdape</Anchor>, [27-b](https://27-b.com) (and many others sources listed throughout this article),
+whose works have, quite frankly, nerd-sniped me into reproducing or expanding
+their ideas into stylized shaders. Whether those featured **complex pixelated
+patterns, trompe l'oeil, optical illusions, or surprising interactions**, transcribing their art
+styles into shaders allowed me to not only sharpen my shader skills but also experiment with combining those effects in unique ways.
+
+<VideoPlayer
+  src="https://d2xl4m2ghaywko.cloudfront.net/post-processing-creative-medium.mp4"
+  autoPlay
+  muted
+  loop
+  width={700}
+  height={476}
+/>
+
+Through this process, I collected a few new shading tricks in my toolbox to share with you and, more importantly, new ways to reuse what I had learned in previous years in a new context.
+This is the reason why I wanted to write this article. In it, you'll see the many sources of inspiration that led to those beautiful post-processing effects, my train of thought to re-implement them, and the full-on recipe behind them so you can reproduce them, expand them, or simply get inspired to create your own.
+
+<Callout variant="info" label="Models">
+
+I relied on many 3D models for the many post-processing effects I built, and some of them are featured in the demos of this article. Among them are:
+
+- [Venus de Milo](https://sketchfab.com/3d-models/venus-de-milo-statuestexturingchallenge-smk-2983d92ac4e744f485492580ca7629f2) by SMK – National Gallery of Denmark
+- [The Creation of Adam](https://sketchfab.com/3d-models/the-creation-of-adam-4d1727c7b83e4e6284bbadb63dbb537e) by Loïc Norgeot
+- [Teenage Engineering TP-7](https://sketchfab.com/3d-models/teenage-engineering-tp-7-4a5a271d00164d1b81bb4451a065c085) by zachernuk
+- [Rusty Orange Spaceship](https://sketchfab.com/3d-models/rusty-spaceship-orange-18541ebed6ce44a9923f9b8dc30d87f5) by Sousinho
+
+</Callout>
+
+<SupportCallout />
 
 ## Intricate Pixel Patterns
 
-<PostProcessingSandpack scene="scene12" />
+I already explored **pixelation** in [The Art of Dithering and Retro Shading for the Web](/posts/the-art-of-dithering-and-retro-shading-web/) where I introduced it alongside color quantization and dithering as it was a necessary effect to achieve a "retro style" akin to old video games on CRT displays.
+
+However, this time I want to go beyond that and show you some of the many effects you can craft with this technique by literally _sculpting pixels_ and creating intricate and elaborate patterns.
+
+### Pixelating your scene
+
+As a reminder, let's re-examine the code that I used and still use to this day for all my pixelation work:
+
+```glsl title=Sampling and pixelating a texture
+vec2 normalizedPixelSize = pixelSize / resolution;
+vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
+
+vec4 color = texture2D(inputBuffer, uvPixel);
+```
+
+1. We first define a `pixelSize` as the number of pixels in height or width we want in a single **"new pixel"** for our final render/sampling. I tend to keep those as powers of 2: `1, 2, 4, 8, 16, ...`
+2. We then _normalize_ the `pixelSize` based on the resolution, which gives us the size of a single pixel in "UV coordinates" (ranging `[(0, 0), (1, 1)]`). This is necessary to keep our **"new pixels"** square no matter the window size.
+3. We define a grid of cells by dividing our UV coordinates by the `normalizedPixelSize`.
+4. Adding the `floor` creates the `block` effect: the UV coordinates no longer vary smoothly across the screen but instead jump between fixed points.
+5. Finally, we multiply by the `normalizedPixelSize` to convert the grid of cells to UV coordinates.
+6. We can then use our newly mapped UV coordinates to sample our texture.
+
+If this formula still feels overwhelming, the best is to break it down with an example:
+
+```txt title=Breakdown of pixelation code
+Example: If we have:
+resolution = vec2(800, 600)    // Screen size in pixels
+pixelSize = vec2(8, 8)         // We want 8x8 pixel blocks
+uv = vec2(0.374, 0.567)        // Current texture coordinate
+
+1. Calculate the size of each pixel block in normalized coordinates (0 to 1)
+normalizedPixelSize = (8, 8) / (800, 600) = (0.01, 0.0133)
+
+
+2. Snap the UV coordinate to the nearest pixel block grid
+floor(uv / normalizedPixelSize) = floor((0.374, 0.567) / (0.01, 0.0133))
+                                = floor((37.4, 42.6)) = (37, 42)
+
+Then multiply back by normalizedPixelSize
+uvPixel = (0.37, 0.559)
+```
+
+I also built the widget below for you to _see_ what happens when you apply this code to a texture/scene:
 
 <PixelizationVisualizer />
+
+<Callout variant="info">
+
+We can see that what this pixelation effect accomplishes can be summarized as **remapping the UV coordinates** used to sample the `inputBuffer` of said effect.
+
+Moreover, each new pixel, or _cell_, now contains many pixels within them that we can leverage to create anything that we want (foreshadowing 👀)
+
+</Callout>
+
+### Shaping pixels
+
+We could leave our pixelated output as such, but squares quickly get boring. Moreover, our cells have a lot of pixels we can use to draw interesting patterns, or even better, _sculpt_ any shape we may want.
+
+I saw this very cool [Japanese receipt website](https://sams-receipt.vercel.app) made by <Anchor favicon discreet href="https://twitter.com/samdape">@samdape</Anchor> last month, and I liked it so much that [I recreated this pattern](https://r3f.maximeheckel.com/receipt) as a post-processing effect. I not only wanted it to work on top of everything and be dynamic but also thought
+it would be a great first example for this article, as it's an easy effect to break down with a lovely/original output.
+
+<StaticTweet id="1864642635652075694" />
+
+Here is how I interpreted this effect by just looking at the screenshots of Sam's website:
+
+- We have a pretty blocky-looking output, so we'll need to pixelate our `inputBuffer` by quite a bit.
+- Each cell is composed of horizontal black _bars_.
+- The darker the area, the longer the bar.
+- The lighter the area, the shorter the bar (or no bar).
+
+With this in mind, we can leverage the pixelation formula we dissected just above and the `luma` of a given pixel to build this _receipt effect_.
+
+<Image
+  src="blog/Bar_Pattern"
+  alt="Diagram showcasing the bar pattern rendered on each cell based on the luma"
+  width={700}
+  height={702}
+/>
+
+```glsl {8,10,41-45} title=Receipt Bar fragment shader
+void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
+  vec2 normalizedPixelSize = pixelSize / resolution;
+  float rowIndex = floor(uv.x / normalizedPixelSize.x);
+  vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
+
+  vec4 color = texture2D(inputBuffer, uvPixel);
+
+  float luma = dot(vec3(0.2126, 0.7152, 0.0722), color.rgb);
+
+  vec2 cellUV = fract(uv / normalizedPixelSize);
+
+  float lineWidth = 0.0;
+
+  if (luma > 0.0) {
+    lineWidth = 1.0;
+  }
+
+  if (luma > 0.3) {
+    lineWidth = 0.7;
+  }
+
+  if (luma > 0.5) {
+    lineWidth = 0.5;
+  }
+
+  if (luma > 0.7) {
+    lineWidth = 0.3;
+  }
+
+  if (luma > 0.9) {
+    lineWidth = 0.1;
+  }
+
+  if (luma > 0.99) {
+    lineWidth = 0.0;
+  }
+
+  float yStart = 0.05;
+  float yEnd = 0.95;
+
+  if (cellUV.y > yStart && cellUV.y < yEnd && cellUV.x > 0.0 && cellUV.x < lineWidth) {
+    color = vec4(0.0, 0.0, 0.0, 1.0);
+  } else {
+    color = vec4(0.70,0.74,0.73, 1.0);
+  }
+  outputColor = color;
+}
+```
+
+One thing that we should highlight in the code snippet above is this line:
+
+```glsl
+vec2 cellUV = fract(uv / normalizedPixelSize);
+```
+
+It returns the `cellUV` coordinates ranging again from `[(0, 0), (1, 1)]`, giving us the relative position of a given pixel within each cell. This is the "magic line" that allows us to _step inside_ each cell
+and start shaping and sculpting them the way we want. In this specific case, we are conditionally turning the pixels within each cells black or white based on the `lineWidth` that's defined through the `luma` of the pixelated texture.
+
+We will use similar techniques to define many patterns, some of which are depicted in the widget below which uses a similar principle to display those features:
+
 <PixelizationVisualizer showPatterns />
+
+Thanks to both the pixelation formula and this use of the `fract` glsl function, we established what is to me the two main pillars that we're going to keep encountering in most post-processing shaders:
+
+1. **Remapping or distorting the UV coordinates**
+2. **Shape, sculpt, or tweak each cell individually to create a pattern**
+
+Both of these points are at work in the receipt effect in the demo below:
+
+<PostProcessingSandpack scene="scene1" />
+
+<br />
+
+We can port this example to render a completely different effect while keeping
+approximately 90% of the code above unchanged. This time, let's try to build
+this dotted/halftone pattern used in this picture that I saw on Twitter a few
+months ago from once again <Anchor favicon discreet href="https://twitter.com/samdape">@samdape</Anchor>:
+
+<StaticTweet id="1859945404806451494" />
+
+The principle is the same, but with a few notable differences:
+
+- We render circles in each cell
+- For cells with luma above a certain threshold, we render a wide white circle centered in the middle of the cell
+- For the rest, a smaller circle centered this time in the bottom left corner of the cell
+
+<PostProcessingSandpack scene="scene2" />
+
+Finally, as our final example for this section, why not try to rebuild Three.js' ASCII effect? This time, instead of creating our pattern within our fragment shader code, we will get it from an external texture containing all the characters for our ASCII palette where each character maps to a given cell luma:
+
+<Fullbleed widthPercent={80}>
+  <Image
+    src="blog/ASCII_Pattern"
+    alt="Diagram showcasing a simplified version of the ASCII texture passed as an argument of the ASCII effect. It also breaks down the UV coordinates used to sample each character individually."
+    width={700}
+    height={357}
+  />
+</Fullbleed>
+
+As for the implementation, we can create the texture of ASCII characters within our React Three Fiber code.
+
+```jsx title=Creating our ASCII palette within our React Three Fiber scene
+//...
+
+const ASCII_CHARS = './ノハメラマ木';
+
+const ASCIIEffect = () => {
+
+  //...
+
+  useEffect(() => {
+    const CHAR_SIZE = pixelSize;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = CHAR_SIZE * asciiChars.length;
+    canvas.height = CHAR_SIZE;
+
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = 'white';
+    ctx.font = \`\${CHAR_SIZE}px \${fontFamily}\`;
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+
+    asciiChars.split('').forEach((char, i) => {
+      ctx.fillText(char, (i + 0.5) * CHAR_SIZE, CHAR_SIZE / 2);
+    });
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.minFilter = THREE.NearestFilter;
+    texture.magFilter = THREE.NearestFilter;
+
+    if (effectRef.current) {
+      effectRef.current.asciiTexture = texture;
+      effectRef.current.charCount = [asciiChars.length, 1];
+      effectRef.current.charSize = CHAR_SIZE;
+    }
+  }, [pixelSize, asciiChars]);
+
+  //...
+}
+
+```
+
+And then translate the luma of a given cell to an ASCII character by:
+
+- converting the brightness (luma) to a character index
+- creating UV coordinates from this index to sample the ASCII texture
+
+```glsl {2,8} title=Sampling ASCII character from the ASCII texture
+float charIndex = clamp(
+  floor(luma * (charCount.x - 1.0)),
+  0.0,
+  charCount.x - 1.0
+);
+
+vec2 asciiUV = vec2(
+  (charIndex + cellUV.x) / charCount.x,
+  cellUV.y
+);
+
+float character = texture2D(asciiTexture, asciiUV).r;
+```
+
+On top of that, we can get inspired by the talented folks at <Anchor favicon discreet href="https://twitter.com/darkroomdevs">@darkroomdevs</Anchor>, who, over the past few months, have shared a lot of ASCII work:
+
+<StaticTweet id="1831987410713866614" />
+
+The demo below implements their take on ASCII and lets you define the characters you want to render in the effect.
+
+<PostProcessingSandpack scene="scene3" />
+
+This example is mainly here to show you that the source of your pattern can be varied:
+
+- defined within your fragment shader
+- defined in a texture and sampled within your fragment shader
+
+### Complex pixel patterns
+
+Now that we’ve covered the basics from the previous section, let’s explore more complex patterns.
+
+This time, we'll be looking at some of John Provencher's (<Anchor favicon discreet href="https://twitter.com/hahajohnx">@hahajohnx</Anchor>) artwork, which we can adapt to glsl in multiple ways, a few of which involve concepts you may have seen in other contexts or other articles of mine:
+
+- Signed Distance Functions (SDFs)
+- Threshold Matrices
+
+<StaticTweet id="1842264895099724009" />
+
+Like the previous demos, we can base the pixel pattern featured in John Provencher's work on the luma of a given cell:
+
+<Image
+  src="blog/Pixel_Pattern"
+  alt="Diagram showcasing the Provencher style circle pattern rendered on each cell based on the luma"
+  width={700}
+  height={702}
+/>
+
+This time, let’s use signed distance functions—specifically, the SDF of a circle—to reproduce the pattern:
+
+```glsl {7,10,18} title=Leveraging SDFs to render patterns within our cells
+float circleSDF(vec2 p) {
+    return length(p - 0.5);
+}
+
+// ...
+
+float d = circleSDF(cellUV);
+
+if (luma > 0.2) {
+  if (d < 0.3) {
+    color = vec4(0.0,0.31,0.933,1.0);
+  } else {
+    color = vec4(1.0,1.0,1.0,1.0);
+  }
+}
+
+if(luma > 0.75) {
+  if(d < 0.3) {
+    color = vec4(1.0,1.0,1.0,1.0);
+  } else {
+    color = vec4(0.0,0.31,0.933,1.0);
+  }
+}
+```
+
+<Callout variant="info">
+
+Wondering what Raymarching or SDFs are? I covered all these topics in [Painting with Math: A Gentle Study of Raymarching](/posts/painting-with-math-a-gentle-study-of-raymarching/).
+
+</Callout>
+
+This way of defining pixel patterns allows for a large set of patterns. With enough pixels to work within a cell, we can display any shape with an equivalent 2D SDF. You can try it yourself in the demo below, where I defined several extra functions like `crossSDF` or `triangleSDF`:
+
+<PostProcessingSandpack scene="scene4" />
+
+If you want to define patterns that are impossible to write via an SDF or simply enjoy the elegance of having a single matrix to render all the patterns you need: you may be interested in leveraging **custom threshold matrices** for your effect.
+
+Akin to dithering, this method lets you define the luma thresholds within one or multiple matrices, which we can then use to compare with the luma of the pixel within a given cell. If the pixel's luma is above the threshold value defined in the matrix, it's _turned on_; otherwise, it remains _turned off_.
+
+<Callout variant="info" label="Dithering">
+
+I covered the concept of threshold matrix in [my article on Dithering](/posts/the-art-of-dithering-and-retro-shading-web/) in case you need a refresher.
+
+</Callout>
+
+The widget below lets you visualize this principle and edit the values defined within the threshold matrix to create any pattern you want.
+
 <ThresholdVisualizer />
+
+Using this technique, we can expand upon Provencher's work and create more patterns. Among those I enjoyed implementing were the following:
+
+- `stripes` which uses two threshold matrices
+- `weave` which creates a complex pattern with only a single threshold matrix!
+
+```glsl {2,13,36} title=Defining custom threshold matrices to render different cell patterns based on luma
+if(pattern == 0) {
+  const float stripesMatrix[64] = float[64](
+    0.2, 1.0, 1.0, 0.2, 0.2, 1.0, 1.0, 0.2,
+    0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 1.0, 1.0,
+    1.0, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 1.0,
+    1.0, 1.0, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2,
+    0.2, 1.0, 1.0, 0.2, 0.2, 1.0, 1.0, 0.2,
+    0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 1.0, 1.0,
+    1.0, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 1.0,
+    1.0, 1.0, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2
+  );
+
+  const float crossStripeMatrix[64] = float[64](
+    1.0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 1.0,
+    0.2, 1.0, 0.2, 0.2, 0.2, 0.2, 1.0, 0.2,
+    0.2, 0.2, 1.0, 0.2, 0.2, 1.0, 0.2, 0.2,
+    0.2, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 0.2,
+    0.2, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 0.2,
+    0.2, 0.2, 1.0, 0.2, 0.2, 1.0, 0.2, 0.2,
+    0.2, 1.0, 0.2, 0.2, 0.2, 0.2, 1.0, 0.2,
+    1.0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 1.0
+  );
+
+  int x = int(cellUV.x * 8.0);
+  int y = int(cellUV.y * 8.0);
+  int index = y * 8 + x;
+
+  if(luma < 0.6) {
+    color = (stripesMatrix[index] > luma) ? vec4(1.0) : vec4(0.0, 0.31, 0.933, 1.0);
+  } else {
+    color = (crossStripeMatrix[index] > luma) ? vec4(1.0) : vec4(0.0, 0.31, 0.933, 1.0);
+  }
+}
+
+if(pattern == 1) {
+  const float sineMatrix[64] = float[64](
+    0.99, 0.75,  0.2,  0.2,  0.2,  0.2, 0.99, 0.99,
+    0.99, 0.99, 0.75,  0.2,  0.2, 0.99, 0.99, 0.75,
+    0.2, 0.99, 0.99, 0.75, 0.99, 0.99,  0.2,  0.2,
+    0.2,  0.2, 0.99, 0.99, 0.99,  0.2,  0.2,  0.2,
+    0.2,  0.2,  0.2, 0.99, 0.99, 0.99,  0.2,  0.2,
+    0.2,  0.2, 0.99, 0.99, 0.75, 0.99, 0.99,  0.2,
+    0.75, 0.99, 0.99,  0.2,  0.2, 0.75, 0.99, 0.99,
+    0.99, 0.99,  0.2,  0.2,  0.2,  0.2, 0.75, 0.99
+  );
+
+  int x = int(cellUV.x * 8.0);
+  int y = int(cellUV.y * 8.0);
+  int index = y * 8 + x;
+  color = (sineMatrix[index] > luma) ? vec4(1.0) : vec4(0.0, 0.31, 0.933, 1.0);
+}
+```
+
+We can see the result of those matrices yield in the demo below:
+
+<PostProcessingSandpack scene="scene5" />
 
 ## Trompe l'œil and other optical illusions
 
+Mimicking close to real life/physical textures and effects is my favorite thing to achieve with post-processing. With a few simple techniques, we can make our output appear to have depth, texture, and lighting. Applied right, these techniques can transform our scenes, making them appear as if they were made out of Legos or woven like Crochet, to look like they are displayed on an LED panel or behind a slick pane of frosted glass.
+
+This section goes through the details behind a few of my favorite post-processing effects that I came up with recently.
+We'll dissect each technique used, and see how combining them and tweaking them the right way can yield beautiful [trompe l'oeil](https://en.wikipedia.org/wiki/Trompe-l'%C5%93il) or optical illusion effects running right in your browser.
+
+### Stagged LED cell panel
+
+This section features the technique behind my [Pixel Statue demo](https://r3f.maximeheckel.com/pixel-statue), which aimed to mimic a staggered LED cell panel. I was originally inspired by the many LED panels I saw during my recent trip to Japan, whether used on trains or in public spaces to display ads.
+
+The main trick for this scene is to **stagger our cells**, and eventually pixels within our cells, to create a more elaborate LED cell matrix. This is done by offsetting the UV coordinates _before_ remapping them.
+
+```glsl {6,9} title=Staggering pixels
+float maskStagger = 0.5;
+
+vec2 normalizedPixelSize = pixelSize / resolution;
+vec2 coord = uv/normalizedPixelSize;
+
+float columnStagger = mod(floor(coord.x), 2.0) * maskStagger;
+
+vec2 offsetUV = uv;
+offsetUV.y += columnStagger * normalizedPixelSize.y;
+
+vec2 uvPixel = normalizedPixelSize * floor(offsetUV / normalizedPixelSize);
+```
+
+This specific code adds an arbitrary vertical offset to every odd column of cells.
+
+<BeforeAfterImage
+  alt="Comparing the simple pixelated output with the staggered one"
+  beforeSrc="blog/statue-pixel"
+  afterSrc="blog/statue-pixel-stagger"
+  defaultSliderPosition={50}
+  width={700}
+  height={478}
+/>
+
+Yet, we can push things further and introduce offsets at the _"sub-cell level"_ to create an even more intricate effect. We could, for instance, split our cell into three **sub-cells** as we did for the CRT effect in my Dithering article and stagger each of those sub-cells.
+
+```glsl {6-8,11} title=Defining sub-pixels with offset
+vec2 normalizedPixelSize = pixelSize / resolution;
+vec2 coord = uv/normalizedPixelSize;
+
+float columnStagger = mod(floor(coord.x), 2.0) * maskStagger;
+
+vec2 subcoord = coord * vec2(3,1);
+float subPixelIndex = mod(floor(subcoord.x), 3.0);
+float subPixelStagger = subPixelIndex * maskStagger;
+
+vec2 offsetUV = uv;
+offsetUV.y += (columnStagger + subPixelStagger) * normalizedPixelSize.y;
+```
+
+Once we remap those staggered UVs, it will look as if you cut each of the cells into three vertical thin slices that you can manipulate at will.
+
+<BeforeAfterImage
+  alt="Comparing the pixelated staggered output with the sub-pixel staggered one"
+  beforeSrc="blog/statue-pixel-stagger"
+  afterSrc="blog/statue-sub-pixel-stagger"
+  defaultSliderPosition={50}
+  width={700}
+  height={478}
+/>
+
+We can also use this offset within each cell of our effect to introduce the same staggered offset to any pattern we may want to render within them. In this case, we want our LED cells to be relatively visible, thus having a **mask border** around each sub-pixel is necessary. The trick to adding this border is to create a `subCellUV` vector by taking the fractional of the `subcoord` that ranges from `(-1, -1)` to `(1, 1)` to create a symmetrical border that surrounds the cell.
+
+```glsl {1-2,5} title=Drawing a black border around each staggered sub-cell
+vec2 cellOffset = vec2(0.0, columnStagger + subPixelStagger);
+vec2 subCellUV = fract(subcoord + cellOffset) * 2.0 - 1.0;
+
+float mask = 1.0;
+vec2 border = 1.0 - subCellUV * subCellUV * (MASK_BORDER - luma * 0.25);
+mask *= border.x * border.y;
+float maskStrength = smoothstep(0.0, 0.95, mask);
+
+color += 0.005;
+color.rgb *=  1.0 + (maskStrength - 1.0) * MASK_INTENSITY;
+```
+
+Finally, to polish this LED panel illusion, we can make the darker pixels in the background somewhat visible by increasing all color channels by a small amount.
+
+<PostProcessingSandpack scene="scene6" />
+
+<Callout variant="info">
+
+Notice how, as you rotate the model, the individual cells _turn on/off_ or get slightly lighter/dimmer like an actual monochrome LED panel.
+
+</Callout>
+
+### Woven Crochet Effect
+
+Speaking of staggered columns/rows and offsets, my [crochet post-processing effect](https://r3f.maximeheckel.com/crochet) uses a similar technique to create a more _organic_ look and feel for its knitted fabric illusion. This time, however, the offset is applied to the `cellUV` coordinates themselves.
+The inspiration behind this effect comes from a very neat Blender plugin that I saw on Twitter way back in November 2024:
+
+<StaticTweet id="1853495825185247291" />
+
+Unlike the LED panel effect, where we want to physically move pixels by offsetting the sampling coordinates, the crochet effect maintains the underlying pixelated texture grid while only shifting the pattern mask that creates the knitted appearance.
+
+```glsl {8-9} title=Offset defined for our crochet effect
+ vec2 normalizedPixelSize = pixelSize / resolution;
+vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
+vec4 color = texture(inputBuffer, uvPixel);
+
+vec2 cellPosition = floor(uv / normalizedPixelSize); // coordinate of the current cell
+vec2 cellUV = fract(uv / normalizedPixelSize);
+
+float rowOffset = sin((random(vec2(0.0, uvPixel.y)) - 0.5) * 0.25);
+cellUV.x += rowOffset;
+```
+
+As for the pattern, I opted for a simple **ellipsis** rotated `-65` degrees for even cells and `65` degrees for odd cells.
+
+<Image
+  src="blog/Crochet_Pattern"
+  alt="Diagram showcasing a simplified depiction of the ellipsis pattern used in the crochet post-processing effect"
+  width={700}
+  height={473}
+/>
+
+Getting an ellipsis rotated as such in GLSL is luckily straightforward:
+
+- We use a standard rotation matrix around the center of the cell to have it positioned at an angle
+
+```glsl
+float isAlternate = mod(cellPosition.x, 2.0);
+float angle = isAlternate == 0.0 ? radians(-65.0) : radians(65.0);
+
+vec2 rotated = vec2(
+  center.x * cos(angle) - center.y * sin(angle),
+  center.x * sin(angle) + center.y * cos(angle)
+);
+```
+
+- We create the ellipsis around said center by calculating the distance between the current pixel and the center of the cell, stretching the shape vertically and shifting it up. Eventually, we use that distance with the `smoothstep` function to create the elliptical shape with soft edges.
+
+```glsl
+float aspectRatio = 1.55;
+float ellipse = length(vec2(rotated.x, rotated.y * aspectRatio - 0.075));
+color.rgb *= smoothstep(0.2, 1.0, 1.0 - ellipse);
+```
+
+Once we reach that stage, 90% of the work is done, we just need to add a few more details. Here's a list of functions and effects that compound once added to the pattern and make our crochet shader look like fabric:
+
+- Apply noise to the center of each cell in the crochet pattern so that the edges of each ellipsis look more _rough_.
+- Create a stripe pattern for each ellipsis to mimic the fabric. Far from perfect but good enough
+- Add a slight hue shift to the color of each ellipse to give it a more organic look, as the thread color may vary.
+
+<PostProcessingSandpack scene="scene7" />
+
+### Lego bricks
+
+This one was a fun effect to build. For one, it has to do with Legos, which I love, but also, it is a simple yet elegant post-processing effect:
+
+- It uses your classic pixelation logic that we went through in the first part
+- The stud at the center of each cell is a **lighting illusion**.
+
+<Callout variant="info" label="Demo">
+
+Head to [my React Three Fiber playground](https://r3f.maximeheckel.com/lego) to check out and play with this effect.
+
+</Callout>
+
+To create the stud at the center of the cell, we can reuse what we learned about the Blinn-Phong lighting model in [Refraction, dispersion, and other shader light effects](/posts/refraction-dispersion-and-other-shader-light-effects/).
+
+```glsl title=Defining diffuse lighting for our 2D lego brick effect
+float lighting = dot(normalize(cellUV - vec2(0.5)), lightPosition) * 0.7;
+float dis = abs(distance(cellUV, vec2(0.5)) * 2.0 - 0.5);
+color.rgb *= smoothstep(0.1, 0.0, dis) * lighting + 1.0;
+```
+
+Then, from the center of the cell:
+
+- We calculate the distance between each point and the center.
+- Create a soft circular edge using `smoothstep`.
+- Combine it with the lighting value.
+
+<Image
+  src="blog/Lego_Pattern"
+  alt="Diagram showcasing how the lighting technique used in this effect draws the stud at the center of each cell"
+  width={700}
+  height={443}
+/>
+
+With this, each of our cells features a circular shaded stud in the center, just like a 1x1 Lego brick! To polish the effect, we can reuse constructs we've seen previously in this article or other pieces of content I got to write in the past:
+
+- We can use **color quantization** to limit the color palette of this effect. Lego pieces come in a limited set of colors so it is fair to impose a limit here. I showcased how color quantization works in [The Art of Dithering and Retro Shading for the Web](/posts/the-art-of-dithering-and-retro-shading-web/)
+- We can add a subtle border around each cell by reusing the same logic introduced in the LED panel effect, giving the impression that the final output is a mosaic of single-stud Lego pieces.
+- Finally, we can add a dash of hue shift to bring some variety in the colors used, especially for the scene's background, which may only feature a single color.
+- To top it all off, we can clamp the min and max of each color channel slightly to avoid having Lego pieces that are either too dark or too bright, as the stud would not be very visible in those cases.
+
+<PostProcessingSandpack scene="scene8" />
+
+<Callout variant="info">
+
+This effect is not only very efficient on 3D scenes, but even more so on images, photos, or paintings. It's the perfect example that illustrates how post-processing shaders can also act as great image filters.
+
+</Callout>
+
+### Fluted & frosted glass
+
+There has been a recent trend in art and media, whether digital or printed, to use **fluted glass** to add what I'd call _physically-based distortions_ to an image. As a post-processing effect, it's really enticing as it truly feels like a layer of frosted glass is placed between you the viewer and the scene.
+
+<Callout variant="info" label="Demo">
+
+You can judge [my own attempt at building this fluted/frosted glass effect](https://r3f.maximeheckel.com/fluted-glass).
+It also features additional patterns like glass bubbles and lenses.
+
+</Callout>
+
+This effect might feel like a departure from the ones we've seen so far, as it's the only one in this post that will not feature pixelation. Yet, the techniques and principles behind it are similar to the ones used in some of our previous examples:
+
+- UV Distortion
+- Blinn-Phong lighting model
+
+To build this effect, let's first see how the _shape_ of the pane of glass gives us the mathematical function that describes the distortion. We want fluted glass so our distortion will look like a **sine wave** such as: `sin(uv.x * PI)`. When looking at this shape, we can expect that the distortion will be as follows:
+
+- Minimum at the **peaks and valleys** of the wave as the surface is flat.
+- Maximum in between **when the curve grows or decreases**.
+
+Through this reasoning, we can define the distortion as the **derivative** of the function defining our fluted glass shape, which, in this case, would be: `cos(uv.x * PI) * PI`.
+
+<Image
+  src="blog/Fluted_Glass_Derivative"
+  alt="Diagram showcasing the sine wave representing our fluted glass shape in relation to its derivative which represents the amount of distortion the fluted glass creates at any given point. (Apologies for the inaccuracy of this chart I have yet to find a good plugin on Figma to draw them. It should be good enough to help you visualize the math behind this effect.)"
+  width={700}
+  height={358}
+/>
+
+Translating those mathematical concepts into code yields the following result:
+
+<BeforeAfterImage
+  alt="Comparing the non-distorted output of our effect with the distorted variant"
+  beforeSrc="blog/tp-7-no-distortion"
+  afterSrc="blog/tp-7-with-distortion"
+  defaultSliderPosition={50}
+  width={700}
+  height={478}
+/>
+
+```glsl title=Simple fluted glass-like distortion
+float fluteCount = 25.0;
+float flutePosition = fract(uv.x * fluteCount + 0.5);
+
+vec2 distortion = vec2(cos(flutePosition * PI * 2.0) * PI * 0.15, 0.0);
+
+vec2 distortedUV = uv + distortion * distortionAmount;
+```
+
+This is great, but, we're not seeing any glass yet. The illusion we're trying to build relies on light to give it its glass texture, so we need to convert our derivative, which tells us "how steep is the surface/how intense is the distortion", into a vector that tells "which way does the surface point?", i.e. a `normal`, which is what we need for light calculations. Our effect is a curved piece of glass, so the normal vector will point towards _us_ the viewer, slightly sideways in the slopes and straight towards us in the valleys and peaks of the curve.
+
+We already have the `x` component of our `normal` vector, the `y` component is `0` for our case, so we can deduce the `z` component using the formula `normal.x² + normal.y² + normal.z² = 1`.
+
+```glsl {4-8,14} title=From distortion to lighting
+float fluteCount = 25.0;
+float flutePosition = fract(uv.x * fluteCount + 0.5);
+
+vec3 normal = vec3(0.0);
+normal.x = cos(flutePosition * PI * 2.0) * PI * 0.15;
+normal.y = 0.0;
+normal.z = sqrt(1.0 - normal.x * normal.x);
+normal = normalize(normal);
+
+vec3 lightDir = normalize(vec3(lightPosition));
+float diffuse = max(dot(normal, lightDir), 0.0);
+float specular = pow(max(dot(reflect(-lightDir, normal), vec3(0.0, 0.0, 1.0)), 0.0), 32.0);
+
+vec2 distortedUV = uv + normal.xy * distortionAmount;
+```
+
+Finally, to polish things up, we can add a couple of effects to this shader to make it as realistic as possible:
+
+- [Gaussian Blur](https://en.wikipedia.org/wiki/Gaussian_blur), to give some more depth.
+- A dash of noise to create a _frosted glass_ effect.
+- Some slight [chromatic dispersion](/posts/refraction-dispersion-and-other-shader-light-effects/), because _why not_.
+
+<PostProcessingSandpack scene="scene9" />
+
+<Callout variant="info">
+
+Notice how we took intuitive steps to craft this effect:
+
+- We started with a simple shape.
+- Then, we used a bit of math to derive (🥁) the distortion.
+- Finally, combined those with some shader basics and techniques learned previously.
+
+This effect is 100% built through combining concepts that are relatively simple when approached separately from one another but yet yield a very complex/elaborate effect when put together.
+
+</Callout>
+
 ## Dynamic and interactive post-processing
 
+So far, we have considered post-processing effects solely as mere _image filters_, but we can achieve more with them. Adding **a dash of interactivity** into the mix, whether time-based or by leveraging the cursor of the user for example, can yield some very unique and delightful results and make your effects really stand out.
+
+### Progressive Depixelation
+
+I like leveraging pixelation in many of my post-processing experiments, so it felt natural to start my journey into dynamic effects with [this progressive pixel loading one](https://r3f.maximeheckel.com/pixel-loading). We can easily make the `pixelSize` depend on `time` or an arbitrary `progress` uniform, but even more challenging is to have the effect _progressively de-pixelated the screen_ row-by-row, pixel-by-pixel.
+The diagram below illustrates my original sketch showcasing how this effect would eventually work:
+
+<Image
+  src="blog/Depixelation"
+  alt="Diagram showcasing a sketch breaking down the process behind the Depixelation effect."
+  width={700}
+  height={497}
+/>
+
+To achieve this, the trick consists of:
+
+1. Setting a concept of `level` based on the original `basePixelSize` and how far along in the transition we are.
+2. Each level representing "a power of 2" and going down 1 level at a time as the `basePixelSize` is decreasing.
+3. Calculating the number of pixels per row/column and the current row/column processed at the current level.
+4. Get the row and position within the row for a given UV.
+
+```glsl title=Main variables defined for our depixelation effect
+float LEVELS = 5.0;
+
+float basePixelSize = pow(2.0, LEVELS);
+float currentLevel = floor(progress * LEVELS);
+
+float currentPixelSize = max(basePixelSize / pow(2.0, currentLevel), 1.0);
+
+float currentPixelsPerRow = ceil(resolution.x / currentPixelSize);
+float currentPixelsPerCol = ceil(resolution.y / currentPixelSize);
+float currentTotalPixels = currentPixelsPerRow * currentPixelsPerCol;
+
+float levelProgress = fract(progress * LEVELS) * currentTotalPixels;
+float currentRowInLevel = floor(levelProgress / currentPixelsPerRow);
+float currentPixelInRow = mod(levelProgress, currentPixelsPerRow);
+
+vec2 gridPos = floor(uv * resolution / currentPixelSize);
+float row = floor(currentPixelsPerCol - gridPos.y - 1.0);
+float posInRow = floor(gridPos.x);
+```
+
+Once we have all that defined, it's just a matter of reusing our pixelation effect from part 1, but this time conditionally:
+
+- If the a row of pixels is within any previous row that's already been processed: **we should use the updated pixel size** (e.g. if we started at `128`, then it should be `64`).
+- If we're on the currently processing row AND the pixel's horizontal position is less than or equal to how far we've processed in this row: **we should use the updated pixel size as well** (e.g. if we started at `128`, then it should be `64`).
+- **Else we should be on the old pixel size** (`128`).
+- We can also add a final case for when we reach a pixel size inferior to or equal to `1`.
+
+The demo below showcases the effect linked to a `progress` uniform. You could also hook it up to a `time` uniform if you ever wished to have it trigger on page load or any other event without needing a user interaction.
+
+<PostProcessingSandpack scene="scene10" />
+
+### Pixelating Mouse Trail
+
+For this section, I have to shoutout the incredible work of <Anchor favicon discreet href="https://twitter.com/dghez_">@dghez\_</Anchor> for his work on [rosehip.xyz](rosehip.xyz) and [27b's](https://27-b.com) lab section, who both had a take on a **pixelating mouse trail** effect that increases the pixel size and distorts the underlying image as you move your cursor across the screen.
+
+I had previously built a reusable `MouseTrail` component that I used in some of my shader experiments and I thought to myself that, to achieve a similar effect as the one in the examples above, I could repurpose it and put its output inside a **Frame Buffer Object (FBO)** to feed the resulting texture as an argument to my pixelating effect. The texutre itself would be visible as the user moves the cursor, so I'd only have to make the pixel size and distortion a function of the speed and direction of said cursor.
+
+<Callout variant="info" label="Mouse trail">
+
+Going through the `MouseTrail` code with as many details as I want would make this article too long for my liking. To give you the gist of it, my current implementation uses:
+
+- Two FBOs.
+- A method called _ping pong rendering_.
+- The position and speed of the cursor: the faster, the brighter.
+
+You can take time to go through the code separately from this article. The only thing that you need to remember is that we'll use this output as a texture input for our effect.
+
+Note: the demo below will require you to move your cursor on the canvas to see its output.
+
+</Callout>
+
+<PostProcessingSandpack scene="scene11" />
+
+Using React Three Fiber's `createPortal` function, we can render the `MouseTrail` component demoed above in a separate scene, and dedicate a FBO to store its output as a texture:
+
+```jsx {2,16-18,27-29} title=Rendering the MouseTrail component in a portal and storing its output as a texture
+const PixelatingMouseTrail = () => {
+  const mouseTrail = useMemo(() => new THREE.Scene(), []);
+  const mouseTrailFBO = useFBO({
+    minFilter: THREE.LinearFilter,
+    magFilter: THREE.LinearFilter,
+    format: THREE.RGBAFormat,
+    type: THREE.FloatType,
+  });
+
+  //...
+  useFrame((state) => {
+    const { gl, camera } = state;
+
+    //...
+
+    gl.setRenderTarget(mouseTrailFBO);
+    gl.render(mouseTrail, camera);
+    gl.setRenderTarget(null);
+
+    //...
+  });
+
+  const { camera } = useThree();
+
+  return (
+    <>
+      {createPortal(<MouseTrail mouse={smoothedMouse} />, mouseTrail, {
+        camera,
+      })}
+      <group ref={spaceshipRef}>
+        <Spaceship />
+      </group>
+      <PixelatingMouseTrailEffect
+        mouseTrailTexture={mouseTrailFBO.texture}
+        mouse={smoothedMouse.current}
+        mouseDirection={smoothedMouseDirection.current}
+      />
+    </>
+  );
+};
+```
+
+We can then pass this `mouseTrailTexture` as a uniform to our shader effect, and use it to have a variable pixelization based on:
+
+- The distance between the current pixel and the mouse, ranging from `1.0` if it is close to the mouse to `0.0` if it is far away.
+- The intensity of the mouse trail, its `rg` color channel, since its color ranges from `red` (vertical mouse movements) to `green` (horizontal mouse movements)
+- With this, we can sample a pixelated version of the mouse trail, which we can use to offset our main UV coordinates. Once again, we'll reuse the pixelation logic we detailed in the first section.
+
+```glsl {7,9,16} title=Pixelation based on the mouse trail texture
+uniform sampler2D mouseTrailTexture;
+uniform vec2 mouse;
+uniform vec2 mouseDirection;
+
+void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
+  vec4 mouseTrailOG = texture2D(mouseTrailTexture, uv);
+  float distanceToCenter = 1.-distance(uv, mouse);
+
+  float pixelSize = 32.0 + length(mouseTrailOG.rg) * distanceToCenter;
+  vec2 normalizedPixelSize = pixelSize / resolution;
+  vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
+  vec4 mouseTrail = texture2D(mouseTrailTexture, uvPixel);
+
+  // Disort the texture based on the mouse direction
+  vec2 textureUV = uv;
+  textureUV -= mouseTrail.rg * distanceToCenter * mouseDirection;
+
+  vec4 color = texture2D(inputBuffer, textureUV);
+  vec4 trailColor = vec4(0.9, 0.9, 0.9, 0.1);
+  outputColor = max(color, mix(color, trailColor, mouseTrail.r));
+}
+```
+
+Finally, those distorted/offset UV coordinates can be used to sample the main scene:
+
+<PostProcessingSandpack scene="scene12" />
+
+This is one of the many examples of incorporating dynamic/variable pixelation as an effect. You could pass _any texture_ to this, such as a Perlin Noise, a Fractal Brownian Motion noise, etc. The possibilities in terms of dynamic post-processing are truly endless. The best thing to do, as you may have guessed by now, is simply to **try more things you've learned on your own shader journey and to combine them with the ideas of this article in a fun and unique way**.
+
 ## Final Thoughts
+
+Each post-processing effect detailed in this post could have deserved its own article, but I thought it would be more interesting to look at them as a whole, as **they share the same tricks and techniques** despite yielding different outputs. This highlights the value of blending ideas and concepts to see what emerges as you learn more about shaders, develop your style, and discover the aesthetics that resonate with you.
+
+When people come to me and ask, _"How do you learn about/build those things?"_ what you saw in this blog post (waving arms around) is what I spend some of my free time doing. The added bonus of doing it with post-processing is that it allows me to experiment with ideas quicker, as it's a simple 2D canvas on which you can paint pixels in any way you want.
+
+A follow-up goal of mine for post-processing would be to make those shader bits more composable, à la [Lygia](https://github.com/patriciogonzalezvivo/lygia), and who knows, maybe build my own FX package (?). For now, my main focus will be to transition some of those effects to WebGPU as it would be a nice entry point into learning about **compute shaders** and the other new concepts brought by this new API. That topic, however, will be for another time 😄 in the meantime, I'll be on the lookout for
+**your own creative post-processing effects** to show up on my Twitter or Bluesky timeline using everything you learned in this post, and if done well enough, maybe you'll get me to spend some of my time trying to reproduce them.

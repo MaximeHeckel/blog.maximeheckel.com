@@ -9,7 +9,7 @@ float circleSDF(vec2 p) {
     return length(p - 0.5);
 }
 
-float trangleSDF(vec2 p) {
+float triangleSDF(vec2 p) {
     const float r = 1.0;
     const float k = sqrt(3.0);
     p.x = abs(p.x) - r;

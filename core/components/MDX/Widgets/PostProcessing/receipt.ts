@@ -20,7 +20,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   float luma = dot(vec3(0.2126, 0.7152, 0.0722), color.rgb);
 
   vec2 cellUV = fract(uv / normalizedPixelSize);
-  float lineWidth = 0.0; // Width varies with luminance
+  float lineWidth = 0.0;
 
   if (luma > 0.0) {
     lineWidth = 1.0;
@@ -46,15 +46,13 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     lineWidth = 0.0;
   }
 
-  float yStart = 0.05; // (1.0 - 0.8) * 0.5 to center vertically
-  float yEnd = 0.95;   // yStart + 0.8
-  // Adjust line height based on luminance
+  float yStart = 0.05;
+  float yEnd = 0.95;
 
-  // Draw vertical line
   if (cellUV.y > yStart && cellUV.y < yEnd && cellUV.x > 0.0 && cellUV.x < lineWidth) {
-    color = vec4(0.0, 0.0, 0.0, 1.0); // Black line
+    color = vec4(0.0, 0.0, 0.0, 1.0);
   } else {
-    color = vec4(0.70,0.74,0.73, 1.0); // White background
+    color = vec4(0.70,0.74,0.73, 1.0);
   }
   outputColor = color;
 }

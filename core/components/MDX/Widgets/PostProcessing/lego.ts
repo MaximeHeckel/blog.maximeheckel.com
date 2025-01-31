@@ -40,14 +40,14 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     vec2 cellUV = fract(uv / normalizedPixelSize);
     
     float lighting = dot(normalize(cellUV - vec2(0.5)), lightPosition) * 0.7;
-    float dis = abs(distance(cellUV,vec2(0.5)) * 2.0 - 0.5);
+    float dis = abs(distance(cellUV, vec2(0.5)) * 2.0 - 0.5);
     color.rgb *= smoothstep(0.1,0.0,dis) * lighting + 1.0;
 
     vec2 centeredCellUV = cellUV * 2.0 - 1.0;
-    vec3 maskColor = vec3(1.0, 0.0, 0.0);
+    float mask = 1.0; 
     vec2 border = 1.05 - pow(centeredCellUV, vec2(8.0)) * MASK_BORDER;
-    maskColor.rgb *= border.x * border.y;
-    float maskStrength = smoothstep(0.0, 0.8, maskColor.r);
+    mask *= border.x * border.y;
+    float maskStrength = smoothstep(0.0, 0.8, mask);
     color.rgb *=  0.8 + (maskStrength * 0.1);
 
 
@@ -60,7 +60,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 }
 `;
 
-const AppCode = `import { OrbitControls, OrthographicCamera, Image } from '@react-three/drei';
+const AppCode = `import { OrthographicCamera, Image } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { EffectComposer, wrapEffect } from '@react-three/postprocessing';
 import { Leva, useControls } from 'leva';
@@ -173,7 +173,6 @@ const Scene = () => {
           <color attach='background' args={['#74B7FF']} />
           <ambientLight intensity={0.5} />
           <directionalLight position={[5, 10, -5]} intensity={10.0} />
-          <OrbitControls />
           <Lego />
         </Suspense>
       </Canvas>

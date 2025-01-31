@@ -8,7 +8,6 @@ const float LEVELS = 5.0;
 
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
   float basePixelSize = pow(2.0, LEVELS);
-
   float currentLevel = floor(progress * LEVELS);  
 
   float currentPixelSize = max(basePixelSize / pow(2.0, currentLevel), 1.0);
@@ -16,10 +15,8 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   float currentPixelsPerRow = ceil(resolution.x / currentPixelSize);
   float currentPixelsPerCol = ceil(resolution.y / currentPixelSize);
   float currentTotalPixels = currentPixelsPerRow * currentPixelsPerCol;
-
   
   float levelProgress = fract(progress * LEVELS) * currentTotalPixels;
-
   float currentRowInLevel = floor(levelProgress / currentPixelsPerRow);
   float currentPixelInRow = mod(levelProgress, currentPixelsPerRow);
   

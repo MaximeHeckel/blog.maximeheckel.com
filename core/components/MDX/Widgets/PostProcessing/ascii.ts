@@ -22,8 +22,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
         (charIndex + cellUV.x) / charCount.x,
         cellUV.y
     );
-    
-
+  
     float character = texture2D(asciiTexture, asciiUV).r;
 
     vec3 backgroundColor = vec3(0.0, 0.0, 0.0);
@@ -141,36 +140,29 @@ export const ASCIIEffect = () => {
   const fontFamily = 'mono';
 
   useEffect(() => {
-    const CHAR_SIZE = pixelSize * 1.0;
+    const CHAR_SIZE = pixelSize;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
-    // Set canvas size to fit all characters in one row
-    const adjustedCharSize = CHAR_SIZE * (16 / pixelSize);
-    canvas.width = adjustedCharSize * asciiChars.length;
-    canvas.height = adjustedCharSize;
+    canvas.width = CHAR_SIZE * asciiChars.length;
+    canvas.height = CHAR_SIZE;
 
-    // Black background
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // White characters
     ctx.fillStyle = 'white';
-    ctx.font = \`\${adjustedCharSize}px \${fontFamily}\`;
+    ctx.font = \`\${CHAR_SIZE}px \${fontFamily}\`;
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'center';
 
-    // Draw each character
     asciiChars.split('').forEach((char, i) => {
-      ctx.fillText(char, (i + 0.5) * adjustedCharSize, adjustedCharSize / 2);
+      ctx.fillText(char, (i + 0.5) * CHAR_SIZE, CHAR_SIZE / 2);
     });
 
-    // Create texture
     const texture = new THREE.CanvasTexture(canvas);
     texture.minFilter = THREE.NearestFilter;
     texture.magFilter = THREE.NearestFilter;
 
-    // Pass texture to shader
     if (effectRef.current) {
       effectRef.current.asciiTexture = texture;
       effectRef.current.charCount = [asciiChars.length, 1];
