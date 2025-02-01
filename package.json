@@ -33,7 +33,7 @@
   "dependencies": {
     "@codesandbox/sandpack-react": "2.19.10",
     "@maximeheckel/design-system": "2.1.11",
-    "@radix-ui/react-dialog": "^1.1.4",
+    "@radix-ui/react-dialog": "^1.1.5",
     "@supabase/supabase-js": "^2.47.10",
     "@vercel/analytics": "^1.4.1",
     "@vercel/functions": "^1.5.2",
