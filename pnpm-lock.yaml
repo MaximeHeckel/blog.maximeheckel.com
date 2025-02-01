@@ -205,8 +205,8 @@ importers:
         specifier: 1.17.1
         version: 1.17.1
       playwright-core:
-        specifier: 1.17.1
-        version: 1.17.1
+        specifier: 1.50.1
+        version: 1.50.1
       playwright-webkit:
         specifier: ^1.40.1
         version: 1.40.1
@@ -328,8 +328,8 @@ packages:
     resolution: {integrity: sha512-zHd0eUrf5GZoOWVCXp6koAKQTfZV07eit6bGPmJgnZdnSAvvZee6zniW2XMF7Cmc4ISOOnPy3QaSiIJGJkVEDQ==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/runtime@7.26.0':
-    resolution: {integrity: sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==}
+  '@babel/runtime@7.26.7':
+    resolution: {integrity: sha512-AOPI3D+a8dXnja+iwsUqGRjr1BbZIe771sXdapOtYI531gSqpi92vXivKcq2asu/DFpdl1ceFAKZyRzK2PCVcQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.25.9':
@@ -3564,6 +3564,11 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
+  playwright-core@1.50.1:
+    resolution: {integrity: sha512-ra9fsNWayuYumt+NiM069M6OkcRb1FZSK8bgi66AtpFoWkg2+y0bJSNmkFrWhMbEBbVKC/EruAHH3g0zmtwGmQ==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   playwright-webkit@1.40.1:
     resolution: {integrity: sha512-cDGvBV63PE0nrsnlHWCpCCKZN7EQ5x4aEyJ7tKeEMyjH/Z1dk9ECX/7496LyqxmUOY+GMzbzhOJs2Y1z07CoPA==}
     engines: {node: '>=16'}
@@ -4625,7 +4630,7 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
-  '@babel/runtime@7.26.0':
+  '@babel/runtime@7.26.7':
     dependencies:
       regenerator-runtime: 0.14.1
 
@@ -5581,7 +5586,7 @@ snapshots:
   '@testing-library/dom@10.4.0':
     dependencies:
       '@babel/code-frame': 7.26.2
-      '@babel/runtime': 7.26.0
+      '@babel/runtime': 7.26.7
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       chalk: 4.1.2
@@ -8431,6 +8436,8 @@ snapshots:
       - utf-8-validate
 
   playwright-core@1.40.1: {}
+
+  playwright-core@1.50.1: {}
 
   playwright-webkit@1.40.1:
     dependencies:
