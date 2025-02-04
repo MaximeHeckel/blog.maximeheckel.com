@@ -208,11 +208,19 @@ const QuantizationVisualizer = dynamic(
 );
 
 const KuwaharaVisualizer = dynamic(
-  () => import('./Widgets/PainterlyShaders/KuwaharaVisualizer')
+  () => import('./Widgets/PostProcessing/PixelizationVisualizer')
 );
 
 const KernelVisualizer = dynamic(
   () => import('./Widgets/PainterlyShaders/KernelVisualizer')
+);
+
+const PixelizationVisualizer = dynamic(
+  () => import('./Widgets/PostProcessing/PixelizationVisualizer')
+);
+
+const ThresholdVisualizer = dynamic(
+  () => import('./Widgets/PostProcessing/ThresholdVisualizer')
 );
 
 const RefractionDispersionSandpack = dynamic(
@@ -253,6 +261,10 @@ const RetroSandpack = dynamic(() => import('./Widgets/Retro/Sandpack'));
 
 const KuwaharaSandpack = dynamic(
   () => import('./Widgets/PainterlyShaders/Sandpack')
+);
+
+const PostProcessingSandpack = dynamic(
+  () => import('./Widgets/PostProcessing/Sandpack')
 );
 
 const customComponents = {
@@ -304,6 +316,8 @@ const customComponents = {
   QuantizationVisualizer,
   KuwaharaVisualizer,
   KernelVisualizer,
+  PixelizationVisualizer,
+  ThresholdVisualizer,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
@@ -323,6 +337,7 @@ const customComponents = {
   MoebiusSandpack,
   RetroSandpack,
   KuwaharaSandpack,
+  PostProcessingSandpack,
 };
 
 const MDXComponents = {

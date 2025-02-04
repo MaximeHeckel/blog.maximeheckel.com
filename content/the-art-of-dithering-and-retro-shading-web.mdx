@@ -49,7 +49,7 @@ Today, dithering is more an artistic choice than a workaround. Many artists or g
 - {<Anchor favicon discreet href="https://twitter.com/aweusmeuh">
   @aweusmeuh
   </Anchor>}'s use of the original Game Boy camera for experimental photography which features
-  a sublime dithering effect.
+a sublime dithering effect.
 
 <Image
   src="blog/dithering-examples"
@@ -89,6 +89,7 @@ import { wrapEffect, EffectComposer } from '@react-three/postprocessing';
 import { Effect } from 'postprocessing';
 import { Suspense, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
 import fragmentShader from './fragmentShader.glsl';
 
 class RetroEffectImpl extends Effect {
@@ -732,26 +733,7 @@ float noise (in vec2 st) {
   vec2 u = f*f*(3.0-2.0*f);
 
   return mix(a, b, u.x) +
-  (cfloat noise (in vec2 st) {
-  vec2 i = floor(st);
-  vec2 f = fract(st);
-
-  float a = random(i);
-  float b = random(i + vec2(1.0, 0.0));
-  float c = random(i + vec2(0.0, 1.0));
-  float d = random(i + vec2(1.0, 1.0));
-
-  vec2 u = f*f*(3.0-2.0*f);
-
-  return mix(a, b, u.x) +
   (c - a)* u.y * (1.0 - u.x) +
-  (d - b) * u.x * u.y;
-}
-
-void mainUv(inout vec2 uv) {
-  float shake = (noise(vec2(uv.y) * sin(time * 400.0) * 100.0) - 0.5) * 0.0025;
-  uv.x += shake * 1.5;
-} - a)* u.y * (1.0 - u.x) +
   (d - b) * u.x * u.y;
 }
 
