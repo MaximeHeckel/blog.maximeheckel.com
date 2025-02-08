@@ -120,7 +120,7 @@ Here is how I interpreted this effect by just looking at the screenshots of Sam'
 With this in mind, we can leverage the pixelation formula we dissected just above and the `luma` of a given pixel to build this _receipt effect_.
 
 <Image
-  src="blog/Bar_Pattern"
+  src="blog/Bar_Pattern.png"
   alt="Diagram showcasing the bar pattern rendered on each cell based on the luma"
   width={700}
   height={702}
@@ -219,7 +219,7 @@ Finally, as our final example for this section, why not try to rebuild Three.js'
 
 <Fullbleed widthPercent={80}>
   <Image
-    src="blog/ASCII_Pattern"
+    src="blog/ASCII_Pattern.png"
     alt="Diagram showcasing a simplified version of the ASCII texture passed as an argument of the ASCII effect. It also breaks down the UV coordinates used to sample each character individually."
     width={700}
     height={357}
@@ -308,7 +308,7 @@ This example is mainly here to show you that the source of your pattern can be v
 
 ### Complex pixel patterns
 
-Now that we’ve covered the basics from the previous section, let’s explore more complex patterns.
+Now that we've covered the basics from the previous section, let's explore more complex patterns.
 
 This time, we'll be looking at some of John Provencher's (<Anchor favicon discreet href="https://twitter.com/hahajohnx">@hahajohnx</Anchor>) artwork, which we can adapt to glsl in multiple ways, a few of which involve concepts you may have seen in other contexts or other articles of mine:
 
@@ -320,13 +320,13 @@ This time, we'll be looking at some of John Provencher's (<Anchor favicon discre
 Like the previous demos, we can base the pixel pattern featured in John Provencher's work on the luma of a given cell:
 
 <Image
-  src="blog/Pixel_Pattern"
+  src="blog/Pixel_Pattern.png"
   alt="Diagram showcasing the Provencher style circle pattern rendered on each cell based on the luma"
   width={700}
   height={702}
 />
 
-This time, let’s use signed distance functions—specifically, the SDF of a circle—to reproduce the pattern:
+This time, let's use signed distance functions—specifically, the SDF of a circle—to reproduce the pattern:
 
 ```glsl {7,10,18} title=Leveraging SDFs to render patterns within our cells
 float circleSDF(vec2 p) {
@@ -443,7 +443,7 @@ We can see the result of those matrices yield in the demo below:
 
 ## Trompe l'œil and other optical illusions
 
-Mimicking close to real life/physical textures and effects is my favorite thing to achieve with post-processing. With a few simple techniques, we can make our output appear to have depth, texture, and lighting. Applied right, these techniques can transform our scenes, making them appear as if they were made out of Legos or woven like Crochet, to look like they are displayed on an LED panel or behind a slick pane of frosted glass.
+Mimicking close to real life/physical textures and effects is my favorite thing to achieve with post-processing. With a few simple techniques, we can make our output appear to have depth, texture, and lighting. Applied right, these techniques can transform our scenes, making them appear as if they were made out of Legos or woven like Crochet, to look like they are displayed on an LED panel or behind a slick pane of frosted glass.
 
 This section goes through the details behind a few of my favorite post-processing effects that I came up with recently.
 We'll dissect each technique used, and see how combining them and tweaking them the right way can yield beautiful [trompe l'oeil](https://en.wikipedia.org/wiki/Trompe-l'%C5%93il) or optical illusion effects running right in your browser.
@@ -472,8 +472,8 @@ This specific code adds an arbitrary vertical offset to every odd column of cell
 
 <BeforeAfterImage
   alt="Comparing the simple pixelated output with the staggered one"
-  beforeSrc="blog/statue-pixel"
-  afterSrc="blog/statue-pixel-stagger"
+  beforeSrc="blog/statue-pixel.png"
+  afterSrc="blog/statue-pixel-stagger.png"
   defaultSliderPosition={50}
   width={700}
   height={478}
@@ -499,8 +499,8 @@ Once we remap those staggered UVs, it will look as if you cut each of the cells 
 
 <BeforeAfterImage
   alt="Comparing the pixelated staggered output with the sub-pixel staggered one"
-  beforeSrc="blog/statue-pixel-stagger"
-  afterSrc="blog/statue-sub-pixel-stagger"
+  beforeSrc="blog/statue-pixel-stagger.png"
+  afterSrc="blog/statue-sub-pixel-stagger.png"
   defaultSliderPosition={50}
   width={700}
   height={478}
@@ -538,7 +538,7 @@ The inspiration behind this effect comes from a very neat Blender plugin that I 
 
 <StaticTweet id="1853495825185247291" />
 
-Unlike the LED panel effect, where we want to physically move pixels by offsetting the sampling coordinates, the crochet effect maintains the underlying pixelated texture grid while only shifting the pattern mask that creates the knitted appearance.
+Unlike the LED panel effect, where we want to physically move pixels by offsetting the sampling coordinates, the crochet effect maintains the underlying pixelated texture grid while only shifting the pattern mask that creates the knitted appearance.
 
 ```glsl {8-9} title=Offset defined for our crochet effect
  vec2 normalizedPixelSize = pixelSize / resolution;
@@ -555,7 +555,7 @@ cellUV.x += rowOffset;
 As for the pattern, I opted for a simple **ellipsis** rotated `-65` degrees for even cells and `65` degrees for odd cells.
 
 <Image
-  src="blog/Crochet_Pattern"
+  src="blog/Crochet_Pattern.png"
   alt="Diagram showcasing a simplified depiction of the ellipsis pattern used in the crochet post-processing effect"
   width={700}
   height={473}
@@ -585,7 +585,7 @@ color.rgb *= smoothstep(0.2, 1.0, 1.0 - ellipse);
 
 Once we reach that stage, 90% of the work is done, we just need to add a few more details. Here's a list of functions and effects that compound once added to the pattern and make our crochet shader look like fabric:
 
-- Apply noise to the center of each cell in the crochet pattern so that the edges of each ellipsis look more _rough_.
+- Apply noise to the center of each cell in the crochet pattern so that the edges of each ellipsis look more _rough_.
 - Create a stripe pattern for each ellipsis to mimic the fabric. Far from perfect but good enough
 - Add a slight hue shift to the color of each ellipse to give it a more organic look, as the thread color may vary.
 
@@ -619,7 +619,7 @@ Then, from the center of the cell:
 - Combine it with the lighting value.
 
 <Image
-  src="blog/Lego_Pattern"
+  src="blog/Lego_Pattern.png"
   alt="Diagram showcasing how the lighting technique used in this effect draws the stud at the center of each cell"
   width={700}
   height={443}
@@ -664,7 +664,7 @@ To build this effect, let's first see how the _shape_ of the pane of glass gives
 Through this reasoning, we can define the distortion as the **derivative** of the function defining our fluted glass shape, which, in this case, would be: `cos(uv.x * PI) * PI`.
 
 <Image
-  src="blog/Fluted_Glass_Derivative"
+  src="blog/Fluted_Glass_Derivative.png"
   alt="Diagram showcasing the sine wave representing our fluted glass shape in relation to its derivative which represents the amount of distortion the fluted glass creates at any given point. (Apologies for the inaccuracy of this chart I have yet to find a good plugin on Figma to draw them. It should be good enough to help you visualize the math behind this effect.)"
   width={700}
   height={358}
@@ -674,8 +674,8 @@ Translating those mathematical concepts into code yields the following result:
 
 <BeforeAfterImage
   alt="Comparing the non-distorted output of our effect with the distorted variant"
-  beforeSrc="blog/tp-7-no-distortion"
-  afterSrc="blog/tp-7-with-distortion"
+  beforeSrc="blog/tp-7-no-distortion.png"
+  afterSrc="blog/tp-7-with-distortion.png"
   defaultSliderPosition={50}
   width={700}
   height={478}
@@ -690,7 +690,7 @@ vec2 distortion = vec2(cos(flutePosition * PI * 2.0) * PI * 0.15, 0.0);
 vec2 distortedUV = uv + distortion * distortionAmount;
 ```
 
-This is great, but, we're not seeing any glass yet. The illusion we're trying to build relies on light to give it its glass texture, so we need to convert our derivative, which tells us "how steep is the surface/how intense is the distortion", into a vector that tells "which way does the surface point?", i.e. a `normal`, which is what we need for light calculations. Our effect is a curved piece of glass, so the normal vector will point towards _us_ the viewer, slightly sideways in the slopes and straight towards us in the valleys and peaks of the curve.
+This is great, but, we're not seeing any glass yet. The illusion we're trying to build relies on light to give it its glass texture, so we need to convert our derivative, which tells us "how steep is the surface/how intense is the distortion", into a vector that tells "which way does the surface point?", i.e. a `normal`, which is what we need for light calculations. Our effect is a curved piece of glass, so the normal vector will point towards _us_ the viewer, slightly sideways in the slopes and straight towards us in the valleys and peaks of the curve.
 
 We already have the `x` component of our `normal` vector, the `y` component is `0` for our case, so we can deduce the `z` component using the formula `normal.x² + normal.y² + normal.z² = 1`.
 
@@ -706,7 +706,7 @@ normal = normalize(normal);
 
 vec3 lightDir = normalize(vec3(lightPosition));
 float diffuse = max(dot(normal, lightDir), 0.0);
-float specular = pow(max(dot(reflect(-lightDir, normal), vec3(0.0, 0.0, 1.0)), 0.0), 32.0);
+float specular = pow(max(dot(reflect(-lightDir, normal), vec3(0.0, 0.0, 1.0)), 32.0);
 
 vec2 distortedUV = uv + normal.xy * distortionAmount;
 ```
@@ -741,7 +741,7 @@ I like leveraging pixelation in many of my post-processing experiments, so it fe
 The diagram below illustrates my original sketch showcasing how this effect would eventually work:
 
 <Image
-  src="blog/Depixelation"
+  src="blog/Depixelation.png"
   alt="Diagram showcasing a sketch breaking down the process behind the Depixelation effect."
   width={700}
   height={497}
@@ -777,8 +777,8 @@ float posInRow = floor(gridPos.x);
 
 Once we have all that defined, it's just a matter of reusing our pixelation effect from part 1, but this time conditionally:
 
-- If the a row of pixels is within any previous row that's already been processed: **we should use the updated pixel size** (e.g. if we started at `128`, then it should be `64`).
-- If we're on the currently processing row AND the pixel's horizontal position is less than or equal to how far we've processed in this row: **we should use the updated pixel size as well** (e.g. if we started at `128`, then it should be `64`).
+- If the a row of pixels is within any previous row that's already been processed: **we should use the updated pixel size** (e.g. if we started at `128`, then it should be `64`).
+- If we're on the currently processing row AND the pixel's horizontal position is less than or equal to how far we've processed in this row: **we should use the updated pixel size as well** (e.g. if we started at `128`, then it should be `64`).
 - **Else we should be on the old pixel size** (`128`).
 - We can also add a final case for when we reach a pixel size inferior to or equal to `1`.
 

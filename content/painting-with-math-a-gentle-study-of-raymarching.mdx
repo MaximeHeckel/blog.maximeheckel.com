@@ -84,7 +84,7 @@ For each step, calculating and marching that resulting distance along the rays l
 
 <Fullbleed widthPercent={55}>
   <Image
-    src="blog/raymarching-sdf_inmjmq"
+    src="blog/raymarching-sdf_inmjmq.png"
     alt="Diagram showcasing the Raymarching process of 3 rays beamed from a single point and marching step-by-step by a distance d obtained through a Signed Distance Field"
     width={700}
     height={398}
@@ -109,7 +109,7 @@ To help you understand why the SDF of a sphere is defined as such, I made the di
 
 <Fullbleed widthPercent={55}>
   <Image
-    src="blog/raymarching-points_s6aqzv"
+    src="blog/raymarching-points_s6aqzv.png"
     alt="Diagram showcasing 3 points, P1, P2, and P3, being respectively, at a positive distance, small distance, and inside a sphere."
     width={700}
     height={417}
@@ -162,8 +162,9 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useRef, Suspense } from 'react';
 import * as THREE from 'three';
 import { v4 as uuidv4 } from 'uuid';
-import vertexShader from './vertexShader.glsl';
+
 import fragmentShader from './fragmentShader.glsl';
+import vertexShader from './vertexShader.glsl';
 
 const DPR = 0.75;
 
@@ -235,7 +236,7 @@ These steps allow us to have our coordinate system where the center of the scree
 That process may be hard to understand at first, but here's a diagram to illustrate the math involved:
 
 <Image
-  src="blog/raymarching-uv"
+  src="blog/raymarching-uv.png"
   alt="Diagram illustrating the normalization, shift, and aspect ratio adjustements of our UV coordinates that make sure that our raymarched scenes will be resizable and at the correct aspect ratio."
   width={700}
   height={1079}
@@ -252,7 +253,7 @@ Let's implement our Raymarching algorithm step-by-step from the definition estab
 5. A maximum number `MAX_STEPS` of steps and a surface distance `SURFACE_DISTANCE` from which we can safely assume we're _close enough_ to draw a pixel.
 
 <Image
-  src="blog/raymarching-axis_rxqjxy"
+  src="blog/raymarching-axis_rxqjxy.png"
   alt="Diagram representing the position of a theoretical sphere and our ray origin in relation to the center of the scene."
   width={700}
   height={528}
@@ -313,7 +314,7 @@ You may wonder why we do the dot product to know whether a given point of the su
 If we transpose those notions to lighting, we get that any point where the normal is orthogonal or opposite to the light direction (or that the dot product is lower than or equal to `0`) is in darkness, and any other points should receive _some_ light:
 
 <Image
-  src="blog/raymarching-diffuse_utdrew"
+  src="blog/raymarching-diffuse_utdrew.png"
   alt="Diagram showcasing how the dot product is used to obtain the 'amount' of light that a given point receives from a given light source."
   width={700}
   height={513}
@@ -398,7 +399,7 @@ This is represented in the graph below 👇, notice how we march our rays a dist
 
 <Fullbleed widthPercent={55}>
   <Image
-    src="blog/raymarching-min_scweye"
+    src="blog/raymarching-min_scweye.png"
     alt="Diagram showcasing how Raymarching and SDF are applied when multiple objects are in the scene through the usage of the min operator."
     width={700}
     height={396}
@@ -419,7 +420,7 @@ However, an issue that is particularly visible in the examples above is that the
 - another surface that has a upward slope (positive derivative)
 
 <Image
-  src="blog/raymarching-derivative_uwzz62"
+  src="blog/raymarching-derivative_uwzz62.png"
   alt="Chart representing a non-smooth intersection of 2 objects through the function f:x -> abs(x/2) and its derivative which is discontinued."
   width={700}
   height={358}
@@ -429,7 +430,7 @@ We can use a pinch of math to obtain a **smooth minimum/maximum**. Once again, I
 
 <Fullbleed widthPercent={50}>
   <Image
-    src="blog/raymarching-smoothmin_xjlz5c"
+    src="blog/raymarching-smoothmin_xjlz5c.png"
     alt="Charts representing respectively a curve obtained by using the standard min operator and a curve obtained by using smoothmin."
     width={700}
     height={558}
@@ -570,7 +571,7 @@ The function above is what makes this possible:
 - Then, "instantiate" many objects from a single SDF for each _tile_, giving the illusion of infinite shapes stretching to infinity.
 
 <Image
-  src="blog/raymarching-mod_cr2h8i"
+  src="blog/raymarching-mod_cr2h8i.png"
   alt="Chart representing the mod function with a period of 2. Notice the repeating pattern along the x-axis. Now use this model to picture in your mind the same repetition happening along all axis x, y, and z in our raymarched scene."
   width={700}
   height={358}
@@ -667,7 +668,7 @@ In that blog post, I also briefly mention the concept of **Fractal Brownian Moti
 We can visualize this in 2D by looking at a simple curve. Each iteration is called an **Octave**, and the higher we go in terms of octaves, the sharper and better looking our noise will be:
 
 <Image
-  src="blog/raymarching-fbm_ywg0zh"
+  src="blog/raymarching-fbm_ywg0zh.png"
   alt="Charts representing the application of a noise on top of itself through 3 octaves, where at each octave we decrease its amplitude and increase its frequency, thus yielding a more organic-looking and sharper noise the bigger the maximum octave number is."
   width={700}
   height={719}
@@ -820,7 +821,7 @@ float terrain(vec2 p){
 The screenshot below showcases the terrain yielded at each octave (i.e. each iteration of our FBM loop) from `2` to `7`:
 
 <Image
-  src="blog/raymarching-fbm-noise-derivative_fx9ecf"
+  src="blog/raymarching-fbm-noise-derivative_fx9ecf.png"
   alt="Screenshots representing a raymarched terrain view from the top from octaves 2 to 7, obtained through FBM and noise derivatives. Notice the cracks, and slopes forming after the 5th octave is reached."
   width={700}
   height={771}

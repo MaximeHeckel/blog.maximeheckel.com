@@ -226,7 +226,7 @@ In this part, we will implement some of those improvements with an additional se
 A circular-shaped kernel allows us to increase the number of Sectors when evaluating the color of a given pixel. Its box-shaped counterpart can only allow for up to four Sectors making more complex edge lines not well-preserved. Through his experiments, Papari found that _eight Sectors_ were the ideal amount to balance output quality and good performance.
 
 <Image
-  src="blog/Kernel_Comparison"
+  src="blog/Kernel_Comparison.png"
   alt="Diagram showcasing both box-shaped and circular kernels and highlighting which parts of the image are being smoothed while maintaining the sharpness of the edges."
   width={700}
   height={323}
@@ -281,7 +281,7 @@ void main() {
 In the end, the filter's principle is roughly the same. What changes here is which pixel is picked for a given sector and included in the average and variance.
 
 <Image
-  src="blog/Circular_Kernel_Details"
+  src="blog/Circular_Kernel_Details.png"
   alt="Diagram showcasing how the sampling of a slice of the circular kernel is split."
   width={700}
   height={430}
@@ -302,7 +302,7 @@ Using **Gaussian weights** fixes this issue:
 - It _emphasizes_ the central pixels more likely to represent the **most accurate** sector color, giving them more importance when calculating the average color.
 
 <Image
-  src="blog/Weighting_Comparison"
+  src="blog/Weighting_Comparison.png"
   alt="Diagram comparing standard weighting vs Gaussian weighting. The darker the color of a pixel is, the 'heavier' the weight for said pixel is."
   width={700}
   height={398}
@@ -362,8 +362,8 @@ Now, you may wonder whether adding all those nitty-gritty improvements to a filt
 
 <BeforeAfterImage
   alt="Comparing the output of our extended Kuwahara filter without and with Gaussian weighting."
-  beforeSrc="blog/Kuwahara-Spaceship-before-gaussian_cfx1fy"
-  afterSrc="blog/Kuwahara-Spaceship-after-gaussian_zphvl2"
+  beforeSrc="blog/Kuwahara-Spaceship-before-gaussian_cfx1fy.png"
+  afterSrc="blog/Kuwahara-Spaceship-after-gaussian_zphvl2.png"
   defaultSliderPosition={50}
   width={700}
   height={376}
@@ -373,8 +373,8 @@ The result looks already better than previously, even at a low kernel size! Let'
 
 <BeforeAfterImage
   alt="Comparing the output of our extended Kuwahara filter without and with Gaussian weighting at a high kernel size."
-  beforeSrc="blog/Kuwahara-Plant-before-gaussian_oqjiwu"
-  afterSrc="blog/Kuwahara-Plant-after-gaussian_nsscnb"
+  beforeSrc="blog/Kuwahara-Plant-before-gaussian_oqjiwu.png"
+  afterSrc="blog/Kuwahara-Plant-after-gaussian_nsscnb.png"
   defaultSliderPosition={50}
   width={700}
   height={529}
@@ -448,7 +448,7 @@ Anisotropic = one dominant direction of change
 In this paper, the authors suggest that we could adapt our circular kernel to the local features of the input during sampling by **squeezing** and **rotating** it, thus letting us sample our Sectors more accurately. As a result, our kernel would look more like an ellipsis rather than a circle.
 
 <Image
-  src="blog/Anisotropic_Kernel"
+  src="blog/Anisotropic_Kernel.png"
   alt="Diagram comparing isotropic kernels vs anisotropic kernels."
   width={700}
   height={382}
@@ -462,7 +462,7 @@ Implementing this improvement will require us to follow several steps and make o
 
 <Fullbleed widthPercent={80}>
   <Image
-    src="blog/Kuwahara_Pipeline"
+    src="blog/Kuwahara_Pipeline.png"
     alt="Diagram showcasing the multi-pass post-processing pipeline details in this section."
     width={700}
     height={203}
@@ -808,8 +808,8 @@ The result in itself is subtle, and you'll mostly notice the advantages when:
 
 <BeforeAfterImage
   alt="Comparing the output of our isotropic and anisotropic Kuwahara filter."
-  beforeSrc="blog/Kuwahara-Anisotropic-Spaceship-before_fzlops"
-  afterSrc="blog/Kuwahara-Anisotropic-Spaceship-after_peebcb"
+  beforeSrc="blog/Kuwahara-Anisotropic-Spaceship-before_fzlops.png"
+  afterSrc="blog/Kuwahara-Anisotropic-Spaceship-after_peebcb.png"
   defaultSliderPosition={50}
   width={700}
   height={460}
@@ -817,8 +817,8 @@ The result in itself is subtle, and you'll mostly notice the advantages when:
 
 <BeforeAfterImage
   alt="Comparing the output of our isotropic and anisotropic Kuwahara filter."
-  beforeSrc="blog/Kuwahara-Anisotropic-Plant-before_qx9lza"
-  afterSrc="blog/Kuwahara-Anisotropic-Plant-after_hank5e"
+  beforeSrc="blog/Kuwahara-Anisotropic-Plant-before_qx9lza.png"
+  afterSrc="blog/Kuwahara-Anisotropic-Plant-after_hank5e.png"
   defaultSliderPosition={50}
   width={700}
   height={661}
@@ -933,8 +933,8 @@ You can see that these little color improvements compound into significant chang
 
 <BeforeAfterImage
   alt="Comparing the output of our post-processing pipeline without/with the final pass."
-  beforeSrc="blog/Kuwahara-without-final-pass_d2ag3x"
-  afterSrc="blog/Kuwahara-with-final-padd_gwu0s8"
+  beforeSrc="blog/Kuwahara-without-final-pass_d2ag3x.png"
+  afterSrc="blog/Kuwahara-with-final-padd_gwu0s8.png"
   defaultSliderPosition={50}
   width={700}
   height={465}
@@ -954,28 +954,28 @@ Nonetheless, deep diving into how to obtain the structure tensor of an image and
 To finish this article, which was quite the undertaking not going to lie, here are a couple more shots/paintings of some of the test scenes I used while building this custom post-processing shader:
 
 <Image
-  src="blog/orangetree-painting2-min_zvrziz"
+  src="blog/orangetree-painting2-min_zvrziz.png"
   alt="Orange Tree 1 - Anisotropic Kuwahara filter"
   width={700}
   height={426}
 />
 
 <Image
-  src="blog/clouds-painting-min_bqf2ia"
+  src="blog/clouds-painting-min_bqf2ia.png"
   alt="Raymarched Clouds - Extended Kuwahara filter"
   width={700}
   height={388}
 />
 
 <Image
-  src="blog/orangetree-painting1-min_ljlg7l"
+  src="blog/orangetree-painting1-min_ljlg7l.png"
   alt="Orange Tree 2 - Anisotropic Kuwahara filter"
   width={700}
   height={426}
 />
 
 <Image
-  src="blog/spaceship-formation-painting-min_egrake"
+  src="blog/spaceship-formation-painting-min_egrake.png"
   alt="Spaceship formation - Extended Kuwahara filter"
   width={700}
   height={410}

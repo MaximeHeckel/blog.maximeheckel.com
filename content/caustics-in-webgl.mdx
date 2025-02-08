@@ -15,7 +15,7 @@ However, there's one light effect that I was eager to rebuild this entire time: 
 Those beautiful swirls of light can be visible when light rays **travel through a transmissive or transparent curved surface**, such as a glass of water or the surface of a shallow lake, and converge on a surface after being refracted. I've been obsessing with Caustics since day one of working with shaders (ask <Anchor favicon discreet href="https://twitter.com/pixelbeat">@pixelbeat</Anchor>, he'll tell you). I saw countless examples reproducing the effect on Blender, Redshift, or WebGL/WebGPU, each one of them making me more keen to build my own implementation to fully understand how to render them for my React Three Fiber projects.
 
 <Image
-  src="blog/example_caustics"
+  src="blog/example_caustics.png"
   alt="Example of caustic patterns made in blender, redshift and webGPU by (left to right) @wes_cream, @active_theory, and @pixelbeat who kindly volunteered some of his time to make a custom/special render with my logo for this blog post 🙏."
   width={700}
   height={412}
@@ -55,7 +55,7 @@ Thus, I opted for a _simpler_ yet still somewhat physically based approach for t
 2. We'll render the resulting pattern in a **caustic plane** which we'll then _scale and position_ accordingly based on the position of the light source in relation to our object.
 
 <Image
-  src="blog/caustic_scene"
+  src="blog/caustic_scene.png"
   alt="Diagram showcasing the high level components of our scene that will serve us to render a caustic effect"
   width={700}
   height={440}
@@ -65,7 +65,7 @@ Simulating how the caustic pattern works can seem quite tricky at first. However
 we can get hints for how to proceed. The light pattern we're aiming to render originates from rays hitting a _curved_ surface, which nudges us toward **relying on the Normal data of our target mesh** (i.e. the surface data). On top of that, based on some preliminary research, knowing whether our rays of light converge or diverge after hitting our surface will determine the final look of our caustics.
 
 <Image
-  src="blog/converging_diverging_rays"
+  src="blog/converging_diverging_rays.png"
   alt="Diagram showcasing the impact of the shape of the surface on the intensity of the resulting caustic effect"
   width={700}
   height={442}
@@ -193,7 +193,7 @@ gl.setRenderTarget(null);
 
 <Fullbleed widthPercent={80}>
   <Image
-    src="blog/normal_projection_fbo"
+    src="blog/normal_projection_fbo.png"
     alt="Diagram showcasing the process of swapping the material of the target mesh to our normal material to then render it in a dedicated render target to obtain a texture that can be used as input to any material"
     width={700}
     height={220}
@@ -234,7 +234,7 @@ math and computation I needed**. Then, that would allow me through yet another F
 
 <Fullbleed widthPercent={70}>
   <Image
-    src="blog/caustics_normal_fbo"
+    src="blog/caustics_normal_fbo.png"
     alt="Diagram showcasing how, from the normal texture we just obtained, we can compute a caustic pattern that can then be projected as a texture itself onto the caustic plane."
     width={700}
     height={220}
@@ -269,7 +269,7 @@ Obtaining those surfaces before and after refraction is the **key** to rendering
 - On the other hand, a ratio `oldArea/newArea` below `1` means that our rays have diverged and that our caustic intensity should be lower.
 
 <Image
-  src="blog/projection_fragment"
+  src="blog/projection_fragment.png"
   alt="Diagram showcasing how comparing the surface obtained via partial derivatives before and after the refraction through a surface can tell us whether the intensity of the caustic effect should be weaker (diverging rays -> bigger refracted surface) or brighter (converging rays -> smaller refracted surface)."
   width={700}
   height={391}
@@ -348,7 +348,7 @@ void main() {
 Important to note: not clamping the value caused some weird side effect when viewing the caustic plane _through_ a mesh with `MeshTransmissionMaterial`.
 
 <Image
-  src="blog/caustics_clamp_value_issue"
+  src="blog/caustics_clamp_value_issue.png"
   alt="Screenshot showcasing rendering issue of one early attempt at caustics when the plane was viewed through MeshTransmissionMaterial"
   width={700}
   height={590}
@@ -496,8 +496,8 @@ for ( int i = 0; i < SAMPLES; i ++ ) {
 
 <BeforeAfterImage
   alt="Before/After comparison of our caustics with chromatic aberration with/without the 'flip'. The resulting chromatic aberration is more subtle and the blur better distributed."
-  beforeSrc="blog/caustics_chromatic_before"
-  afterSrc="blog/caustics_chromatic_after"
+  beforeSrc="blog/caustics_chromatic_before.png"
+  afterSrc="blog/caustics_chromatic_after.png"
   defaultSliderPosition={40}
   width={700}
   height={485}
@@ -594,7 +594,7 @@ useFrame((state) => {
 ```
 
 <Image
-  src="blog/bounding_box"
+  src="blog/bounding_box.png"
   alt="Diagram showcasing the vertices of the bounding box of a given mesh."
   width={700}
   height={443}
@@ -627,7 +627,7 @@ const newVertices = boundsVertices.map((v) => {
 By leveraging the projected vertices, we can now obtain the **center** position by combining those coordinates and dividing them by the total number of vertices, i.e., just doing a **weighted average** of all coordinates.
 
 <Image
-  src="blog/center_caustics_plane"
+  src="blog/center_caustics_plane.png"
   alt="Diagram showcasing how we get the weighted center of our caustic plane."
   width={700}
   height={465}
@@ -656,7 +656,7 @@ My train of thought to solve this went as follows:
 - Hence, we can assume that the **safest scale** of the plane, the largest that could for sure fit our caustics, should be the distance from the center to the furthest projected vertices.
 
 <Image
-  src="blog/scale_caustic_plane"
+  src="blog/scale_caustic_plane.png"
   alt="Diagram showcasing how we obtain a safe scale of our caustic plane so it fits our light pattern."
   width={700}
   height={465}
@@ -704,7 +704,7 @@ I would lie to you if I said I wasn't happy with the result above. However, ther
 On top of that, our effect only really works on shapes that are either very complex or have a lot of intricate, rounded corners, limiting the pool of meshes we can use for a great looking light pattern.
 
 <Image
-  src="blog/caustics_simple_mesh"
+  src="blog/caustics_simple_mesh.png"
   alt="Screenshot of a caustic pattern obtained from a sphereGeometry. The resulting effect is unfortunately not very interesting."
   width={700}
   height={485}

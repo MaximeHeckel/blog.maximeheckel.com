@@ -225,10 +225,10 @@ So far, the shaders we saw are pretty static: we do not pass any external data, 
 
 ### Uniforms
 
-To pass data from your Javascript code into your shader, we need to use **uniforms**. A uniform acts as an input to _both_ vertex and fragment shader. The information passed is *read-only* and the _same_ for each pixel and vertex of your mesh, hence the name "uniform".
+To pass data from your Javascript code into your shader, we need to use **uniforms**. A uniform acts as an input to _both_ vertex and fragment shader. The information passed is _read-only_ and the _same_ for each pixel and vertex of your mesh, hence the name "uniform".
 
 <Image
-  src="blog/uniforms-2"
+  src="blog/uniforms-2.png"
   alt="Diagram illustrating how to pass uniforms from our mesh to the vertex shader and fragment shader."
   width={700}
   height={402}
@@ -352,7 +352,7 @@ We now know how to pass data from our React Three Fiber code to our shaders 🎉
 A varying is **a variable that can be declared and set in the vertex shader to be read by the fragment shader**.
 
 <Image
-  src="blog/varyings-2"
+  src="blog/varyings-2.png"
   alt="Diagram illustrating how to pass the attributes from a geometry from the vertex shader to the fragment shader using varyings."
   width={700}
   height={521}
@@ -452,7 +452,7 @@ While noise is a fascinating subject, this article will not focus on it:
 - It's a deep and complex subject that deserves its own article.
 - {<Anchor href="https://twitter.com/winkerVSbecks" favicon discreet>
   @winkerVSbecks
-    </Anchor>} already wrote an incredible article about this subject, better than I could have
+  </Anchor>} already wrote an incredible article about this subject, better than I could have
 ever done 😄.
 
 👉 I highly recommend reading his write-up: [Noise in Creative Coding](https://varun.ca/noise/).

@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from '@maximeheckel/design-system';
 import * as Dialog from '@radix-ui/react-dialog';
-import { loader } from 'lib/next-image-loader';
+import { cloudflareLoader } from 'lib/next-image-loader';
 import { motion, MotionConfig } from 'motion/react';
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
 import { memo, useId, useState } from 'react';
@@ -18,10 +18,12 @@ const RootImage = memo((props: ImageProps) => {
         height: 'auto',
         objectFit: 'cover',
       }}
-      loader={loader}
+      loader={cloudflareLoader}
       {...props}
-      quality={90}
-      sizes="100vw"
+      quality={100}
+      sizes="(max-width: 768px) 120vw,
+             75vw"
+      priority={props.priority}
       style={{
         borderRadius: 'var(--border-radius-3)',
       }}

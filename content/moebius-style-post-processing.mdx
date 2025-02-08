@@ -49,7 +49,7 @@ of creativity. Finally, we'll look at some of the shortcomings of this render pi
 - [Sketchy Pencil Effect with Three.js Post-Processing](https://tympanus.net/codrops/2022/11/29/sketchy-pencil-effect-with-three-js-post-processing/) by {<Anchor discreet favicon href="https://twitter.com/maya_ndljk">@maya_ndljk</Anchor>}
 - {<Anchor discreet favicon href="https://twitter.com/txstc55">
   txstc55
-  </Anchor>} who [explored as well this effect](https://twitter.com/txstc55/status/1686478266654130176)
+    </Anchor>} who [explored as well this effect](https://twitter.com/txstc55/status/1686478266654130176)
 last year
 
 </Callout>
@@ -72,8 +72,8 @@ using `effectcomposer` and the many flags that we need to turn on for each pass 
 ```jsx {7,17,56-58} title=Our scene and a skeleton post-processing pass
 import { Effects } from '@react-three/drei';
 import { extend } from '@react-three/fiber';
-import { useRef } from 'react';
 import { Pass } from 'postprocessing';
+import { useRef } from 'react';
 import * as THREE from 'three';
 
 class MoebiusPass extends Pass {
@@ -442,14 +442,12 @@ You may ask how we're supposed to apply this matrix/kernel to our pixel. Luckily
 - For each pixel, we'll "overlay" the center of the kernel
 - We'll multiply each value of the kernel with the value of the pixel it overlays
 
-<Fullbleed widthPercent={80}>
-  <Image
-    src="blog/sobel_matrix_kernel"
-    alt="Diagram showcasing the process of applying the Sobel matrix on a given kernel"
-    width={700}
-    height={349}
-  />
-</Fullbleed>
+<Image
+  src="blog/sobel_matrix_kernel.png"
+  alt="Diagram showcasing the process of applying the Sobel matrix on a given kernel"
+  width={700}
+  height={349}
+/>
 
 By adding up the result of this operation, we get a _gradient_ or "rate of change," which corresponds to the difference in intensity between pixels processed by the filter (overlayed by the matrix to keep the explanation as visual as possible). If that output is non-zero and above a certain treshold; we detected a potential edge! The widget below aims to showcase this with some simple examples:
 
@@ -466,7 +464,7 @@ Notice that:
 </Callout>
 
 <Image
-  src="blog/sobel_matrix_directions"
+  src="blog/sobel_matrix_directions.png"
   alt="Diagram showcasing how each of x-direction/y-direction Sobel Matrices respectively detect vertical/horizontal edges"
   width={700}
   height={402}
@@ -560,7 +558,7 @@ void main() {
 
 <Fullbleed widthPercent={80}>
   <Image
-    src="blog/sobel_depth_normal_v2"
+    src="blog/sobel_depth_normal_v2.png"
     alt="Diagram showcasing how combining the outputs of the Sobel filters for both Depth and Normal data gives us the outlines for the entire scene and each meshes within it"
     width={700}
     height={222}
@@ -642,8 +640,8 @@ This displacement is subtle, yet it changes the entire look and feel of the scen
 
 <BeforeAfterImage
   alt="Subtle but efficient displacement applied to the outlines of our scene."
-  beforeSrc="blog/outline_before"
-  afterSrc="blog/outline_after"
+  beforeSrc="blog/outline_before.png"
+  afterSrc="blog/outline_after.png"
   defaultSliderPosition={50}
   width={700}
   height={405}
@@ -783,8 +781,8 @@ If we add the concepts and techniques we just explored to our post-processing cu
 
 <BeforeAfterImage
   alt="Comparison of our scene before and after applying a crosshatched shadow pattern to the darker areas."
-  beforeSrc="blog/shadow_before"
-  afterSrc="blog/shadow_after"
+  beforeSrc="blog/shadow_before.png"
+  afterSrc="blog/shadow_after.png"
   defaultSliderPosition={50}
   width={700}
   height={405}
@@ -906,7 +904,7 @@ The white specular reflections that result from this updated code stand out enou
 ## A Moebius-worthy WebGL scene and some final thoughts
 
 <Image
-  src="blog/spaceship_outline"
+  src="blog/spaceship_outline.png"
   alt="Render of the spaceship mesh (originally made by Sousinho) used in the final scene with a custom version of our Moebius post-processing pipeline returning a blueprint style output"
   width={700}
   height={382}
@@ -961,8 +959,8 @@ At this moment, however, I hit a _roadblock_:
 
 <BeforeAfterImage
   alt="Comparison of our rendered scene with displaced ground mesh VS what the Normal data used by the Sobel Filter looks like."
-  beforeSrc="blog/scene_outline"
-  afterSrc="blog/normal_outline"
+  beforeSrc="blog/scene_outline.png"
+  afterSrc="blog/normal_outline.png"
   defaultSliderPosition={50}
   width={700}
   height={405}
@@ -1006,8 +1004,8 @@ I'm not the most proud of that one 😅, but it works: the displaced ground now 
 
 <BeforeAfterImage
   alt="Comparison of our rendered scene with displaced ground mesh VS the displaced GroundNormalMaterial and CustomNormalMaterial passed to the Sobel filter."
-  beforeSrc="blog/scene_outline_fixed"
-  afterSrc="blog/normal_outline_fixed"
+  beforeSrc="blog/scene_outline_fixed.png"
+  afterSrc="blog/normal_outline_fixed.png"
   defaultSliderPosition={50}
   width={700}
   height={405}
