@@ -66,7 +66,7 @@ The first time we got introduced to the concept of SDF, we learned that it was i
 
 <Fullbleed widthPercent={55}>
   <Image
-    src="blog/raymarching-points_s6aqzv"
+    src="blog/raymarching-points_s6aqzv.png"
     alt="Diagram showcasing 3 points, P1, P2, and P3, being respectively, at a positive distance, small distance, and inside a sphere."
     width={700}
     height={417}
@@ -95,7 +95,7 @@ That reframing of what an SDF represents ends up changing two core principles in
 
 <Fullbleed widthPercent={55}>
   <Image
-    src="blog/volumetric_raymarching_points"
+    src="blog/volumetric_raymarching_points.png"
     alt="Diagram showcasing 3 points, P1, P2, and P3, being respectively, at a positive distance, small distance, and inside a sphere. Only P3 is considered 'valid' in the context of Volumetric Raymarching"
     width={700}
     height={415}
@@ -342,7 +342,7 @@ That would work in theory, but it's not the optimal choice for Volumetric Raymar
 Thus, we need another method or approximation for our diffuse light. Luckily, Inigo Quilez presents a technique to solve this problem in [his article on directional derivatives](https://iquilezles.org/articles/derivative/). Instead of having to sample our density in every direction like `getNormal`, this method simplifies the problem by sampling the density at our sampling point `p` and at an offset **in the direction of the light** and getting the difference between those values to approximate how the light scatters roughly inside our volume.
 
 <Image
-  src="blog/directional_derivatives"
+  src="blog/directional_derivatives.png"
   alt="Diagram showcasing 2 sampled points P1 and P2 with both their diffuse lighting calculated by sampling extra points P1' and P2' in the direction of the light"
   width={700}
   height={445}
@@ -386,8 +386,8 @@ You can observe the difference between our cloud without lighting and with diffu
 
 <BeforeAfterImage
   alt="Before/After comparison of our Volumetric cloud without and with diffuse lighting."
-  beforeSrc="blog/diffuse-before"
-  afterSrc="blog/diffuse-after"
+  beforeSrc="blog/diffuse-before.png"
+  afterSrc="blog/diffuse-after.png"
   defaultSliderPosition={40}
   width={700}
   height={511}
@@ -481,7 +481,7 @@ This issue will only worsen as we attempt to make more computations to achieve a
 One of the first things we could do to make this scene more efficient would be to _reduce the amount of steps_ we perform when sampling our cloud and _increase the step size_. However, if we attempt this on some of our previous examples (I invite you to try), some _layering_ will be visible, and our volume will look more like some kind of milk soup than a fluffy cloud.
 
 <Image
-  src="blog/lowstep_cloud"
+  src="blog/lowstep_cloud.png"
   alt="Screenshot of our rendered Volumetric cloud with a low max step count and higher step size. Notice how those optimizations have degraded the output quality."
   width={700}
   height={551}
@@ -496,14 +496,14 @@ In [Ray marching fog with blue noise](https://blog.demofox.org/2020/05/10/ray-ma
 This technique leverages a blue noise pattern, which has fewer patterns or clumps than other noises and is less visible to the human eye, to obtain a random number each time our fragment shader runs. We then introduce that number as an _offset_ at the beginning of the raymarched loop, moving our sampling start point along our ray for each pixel of our output.
 
 <Image
-  src="blog/blue-noise-pattern"
+  src="blog/blue-noise-pattern.png"
   alt="Blue noise texture"
   width={700}
   height={700}
 />
 
 <Image
-  src="blog/blue_noise_dithering"
+  src="blog/blue_noise_dithering.png"
   alt="Diagram showcasing the difference between our cloud being sampled without and with blue noise dithering. Notice how each ray is offset when blue noise is introduced and how that 'erases' any obvious layering in the final render."
   width={700}
   height={763}
@@ -544,8 +544,8 @@ Here's a before/after comparison of our single frame of our raymarched cloud. I 
 
 <BeforeAfterImage
   alt="Before/After comparison of our Volumetric cloud with fewer Raymarching steps and without and with Blue Noise dithering."
-  beforeSrc="blog/blue-noise-dithering-before"
-  afterSrc="blog/blue-noise-dithering-after"
+  beforeSrc="blog/blue-noise-dithering-before.png"
+  afterSrc="blog/blue-noise-dithering-after.png"
   defaultSliderPosition={40}
   width={700}
   height={511}
@@ -580,7 +580,7 @@ I introduced an easy way to build this kind of pipeline in my article titled [Be
 
 <Fullbleed widthPercent={70}>
   <Image
-    src="blog/bicubic_filtering"
+    src="blog/bicubic_filtering.png"
     alt="Diagram showcasing how the bicubic filtering is applied as a post-processing effect to the original scene using Render Targets."
     width={700}
     height={375}
@@ -592,8 +592,8 @@ filtering:
 
 <BeforeAfterImage
   alt="Before/After comparison of our Volumetric cloud with without and with Bicubic Filtering. Notice the noise around at the edges and less dense region of the cloud being smoothed out when the effect is applied."
-  beforeSrc="blog/bicubic-before"
-  afterSrc="blog/bicubic-after"
+  beforeSrc="blog/bicubic-before.png"
+  afterSrc="blog/bicubic-after.png"
   defaultSliderPosition={40}
   width={700}
   height={555}
@@ -626,7 +626,7 @@ I already introduced the concept of [Beer's Law](https://en.wikipedia.org/wiki/B
 `I = I0​ * exp(−α * d)`, where `α` is the absorption or attenuation coefficient describing how "thick" or "dense" the medium is. In our demos, we'll consider an absorption coefficient of `0.9`, although I'd invite you to try different values so you can see the impact of this number on the resulting render.
 
 <Image
-  src="blog/beers_law"
+  src="blog/beers_law.png"
   alt="Diagram showcasing how Beer's Law can be used to represent how much light gets absorbed through a volume"
   width={700}
   height={693}
@@ -705,7 +705,7 @@ For that, we can try to compute how much light has been absorbed for each sample
 The diagram below illustrates this technique to make it a bit easier to understand:
 
 <Image
-  src="blog/lightmarching"
+  src="blog/lightmarching.png"
   alt="Diagram showcasing how we sample multiple points of lights in the direction of the light through our volume for each sampled point in the Raymarching loop."
   width={700}
   height={443}
@@ -789,7 +789,7 @@ In the demo above, try to:
 Until now, we assumed that light gets distributed equally in every direction as it propagates through the cloud. In reality, the light gets scattered in different directions with different intensities due to water droplets. This phenomenon is called **Anisotropic scattering** (vs. Isotropic when light scatters evenly), and to have a realistic cloud, we can try to take this into account within our Raymarching loop.
 
 <Image
-  src="blog/anisotropic_scattering"
+  src="blog/anisotropic_scattering.png"
   alt="Diagram showcasing the difference between isotropic scattering and anisotropic scattering when sampling our light energy."
   width={700}
   height={807}
@@ -850,8 +850,8 @@ float raymarch(vec3 rayOrigin, vec3 rayDirection, float offset) {
 
 <BeforeAfterImage
   alt="Comparison of our physically accurate Volumetric cloud with and without applying the Henyey-Greenstein phase function."
-  beforeSrc="blog/phase-before"
-  afterSrc="blog/phase-after"
+  beforeSrc="blog/phase-before.png"
+  afterSrc="blog/phase-after.png"
   defaultSliderPosition={40}
   width={700}
   height={511}

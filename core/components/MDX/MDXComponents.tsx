@@ -208,7 +208,7 @@ const QuantizationVisualizer = dynamic(
 );
 
 const KuwaharaVisualizer = dynamic(
-  () => import('./Widgets/PostProcessing/PixelizationVisualizer')
+  () => import('./Widgets/PainterlyShaders/KuwaharaVisualizer')
 );
 
 const KernelVisualizer = dynamic(

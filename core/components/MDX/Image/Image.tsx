@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from '@maximeheckel/design-system';
 import * as Dialog from '@radix-ui/react-dialog';
-import { cloudflareLoader, loader } from 'lib/next-image-loader';
+import { cloudflareLoader } from 'lib/next-image-loader';
 import { motion, MotionConfig } from 'motion/react';
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
 import { memo, useId, useState } from 'react';

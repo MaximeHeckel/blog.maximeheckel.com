@@ -155,7 +155,7 @@ Try to drag the render above with your mouse to rotate it and notice how our sce
 After seeing this first example you might ask yourself _Why is our scene mapped onto the plane moving along as we rotate the camera?_ or _Why do we see an empty plane inside the mapped texture?_. Here's a diagram that explains it all:
 
 <Image
-  src="blog/first_render_target_2"
+  src="blog/first_render_target_2.png"
   alt="Diagram showcasing how the texture of a render target is mapped onto a mesh. All these steps are executed on every frame."
   width={700}
   height={290}
@@ -337,7 +337,7 @@ We may have use cases where we don't want those effects, and that's where using 
 To illustrate the nuance between these two, let's take a look at the diagram below:
 
 <Image
-  src="blog/uv_mapping_screen_coordinate"
+  src="blog/uv_mapping_screen_coordinate.png"
   alt="Diagram showcasing the difference between mapping a texture using UV coordinates and mapping a texture using screen coordinates."
   width={700}
   height={345}
@@ -410,11 +410,11 @@ useFrame((state) => {
 
   // Swap the materials of mesh3 and mesh4
   mesh3.current.material = new THREE.MeshBasicMaterial();
-  mesh3.current.material.color = new THREE.Color("#000000");
+  mesh3.current.material.color = new THREE.Color('#000000');
   mesh3.current.material.wireframe = true;
 
   mesh4.current.material = new THREE.MeshBasicMaterial();
-  mesh4.current.material.color = new THREE.Color("#000000");
+  mesh4.current.material.color = new THREE.Color('#000000');
   mesh4.current.material.wireframe = true;
 
   gl.setRenderTarget(renderTarget);
@@ -436,7 +436,7 @@ useFrame((state) => {
   mesh4.current.material.wireframe = false;
 
   gl.setRenderTarget(null);
-}
+});
 
 //...
 ```
@@ -448,7 +448,7 @@ useFrame((state) => {
 5. We then show mesh1, hide mesh2, and restore the material of mesh3 and mesh4.
 
 <Image
-  src="blog/lens"
+  src="blog/lens.png"
   alt="Diagram showcasing materials and meshes being swapped within the render loop before being rendered in a render target"
   width={700}
   height={256}
@@ -483,7 +483,7 @@ Yet another portal! I know, I'm not very original with my examples in this artic
 Of course, I immediately got obsessed with this so I had to give it a try to reproduce it. The diagram below showcases how we can achieve this scene by using what we learned so far about render targets and screen coordinates:
 
 <Image
-  src="blog/transform_portal"
+  src="blog/transform_portal.png"
   alt="Diagram showcasing the diverse pieces of the implementation behind the portal scene"
   width={700}
   height={387}
@@ -591,7 +591,7 @@ const getFullscreenTriangle = () => {
 ```
 
 <Image
-  src="blog/fullscreen_triangle"
+  src="blog/fullscreen_triangle.png"
   alt="Diagram of the fullscreen triangle geometry returned from the getFullscreenTriangle function"
   width={700}
   height={431}
@@ -613,7 +613,7 @@ The code playground below showcases an implementation of a small post-processing
 - We then add a "Video Glitch" effect before displaying the final render.
 
 <Image
-  src="blog/post_processing_effect"
+  src="blog/post_processing_effect.png"
   alt="Diagram detailing a post-processing effect pipeline leveraging render targets and a fullscreen triangle"
   width={700}
   height={256}

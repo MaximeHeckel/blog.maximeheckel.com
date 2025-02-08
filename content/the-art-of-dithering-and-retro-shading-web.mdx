@@ -48,11 +48,11 @@ Today, dithering is more an artistic choice than a workaround. Many artists or g
   </Anchor>}'s art, which I'm an absolute fan of.
 - {<Anchor favicon discreet href="https://twitter.com/aweusmeuh">
   @aweusmeuh
-  </Anchor>}'s use of the original Game Boy camera for experimental photography which features
+    </Anchor>}'s use of the original Game Boy camera for experimental photography which features
 a sublime dithering effect.
 
 <Image
-  src="blog/dithering-examples"
+  src="blog/dithering-examples.png"
   alt="Examples of beautifully executed dithering art from left to right by Basement Studio, @aweusmeuh, and @loackme_"
   width={700}
   height={405}
@@ -197,7 +197,7 @@ However, in many examples I found online, developers tended to define those matr
 
 <Fullbleed widthPercent={80}>
   <Image
-    src="blog/bayermatrix"
+    src="blog/bayermatrix.png"
     alt="Diagram showcasing the process of applying the 4x4 Bayer Matrix on the input buffer of a scene and obtaining the dithering pattern based on the threshold value matching each pixel"
     width={700}
     height={298}
@@ -215,8 +215,8 @@ As you can see through the examples I showcased above, we get some pretty distin
 
 <BeforeAfterImage
   alt="Ordered dithering applied on a simple grayscale gradient"
-  beforeSrc="blog/grayscale"
-  afterSrc="blog/2-color"
+  beforeSrc="blog/grayscale.png"
+  afterSrc="blog/2-color.png"
   defaultSliderPosition={50}
   width={700}
   height={364}
@@ -356,8 +356,8 @@ Notice that when increasing the number of colors in our demo scene above, we get
 
 <BeforeAfterImage
   alt="Ordered dithering with 2 VS 4 color quantization. Notice how the 4-color variant yields a better looking gradient."
-  beforeSrc="blog/2-color"
-  afterSrc="blog/4-color"
+  beforeSrc="blog/2-color.png"
+  afterSrc="blog/4-color.png"
   defaultSliderPosition={50}
   width={700}
   height={364}
@@ -398,7 +398,7 @@ In his [video on quantization and dithering](https://www.youtube.com/watch?v=8wO
 For example, if our last grayscale example scene from earlier sets the color number to four, we will get the following grayscale values:
 
 <Image
-  src="blog/grayscaletexture"
+  src="blog/grayscaletexture.png"
   alt="Diagram showcasing how to use the grayscale values to sample a texture containing the same amount of colors"
   width={700}
   height={362}
@@ -545,7 +545,7 @@ First and foremost, let's look at how CRT displays work so we can reproduce the 
 In this section, we'll attempt to emulate the Schiltzmaske: an aperture grill where each column is staggered by half a cell height.
 
 <Image
-  src="blog/rgbcells"
+  src="blog/rgbcells.png"
   alt="Diagram showcasing the staggered RGB cells shadow mask effect on a sample scene"
   width={700}
   height={362}
@@ -595,8 +595,8 @@ This results in a more accurate look and feel for a retro post-processing effect
 
 <BeforeAfterImage
   alt="Pixelization VS RGB Cell shadow mask effect. Notice how the output appears slightly sharper in the RGB Cell variant."
-  beforeSrc="blog/pixeleffect2"
-  afterSrc="blog/rgbeffect2"
+  beforeSrc="blog/pixeleffect2.png"
+  afterSrc="blog/rgbeffect2.png"
   defaultSliderPosition={50}
   width={700}
   height={370}
@@ -658,7 +658,7 @@ This gives us black curved edges on the top, bottom, left, and right sides of th
 You can also choose to use the `curveUV` when creating our RGB cells shadow mask, however, this may reveal some unwanted artifacts due to the cell curving especially at a low pixel size.
 
 <Image
-  src="blog/screenshot-curveuv"
+  src="blog/screenshot-curveuv.png"
   alt="Screenshot showcasing artifacts introduced when using the curveUV coordinates as base uv for our RGB Cell shadow mask"
   width={700}
   height={467}

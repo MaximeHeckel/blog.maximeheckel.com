@@ -1,5 +1,5 @@
 import { Flex, Icon, Text } from '@maximeheckel/design-system';
-import { loader } from 'lib/next-image-loader';
+import { cloudflareLoader } from 'lib/next-image-loader';
 import { useMotionValue, animate } from 'motion/react';
 import { useState, useRef, useCallback, useEffect } from 'react';
 
@@ -174,7 +174,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
         <S.Image
           alt="Before"
           loading="eager"
-          loader={loader}
+          loader={cloudflareLoader}
           src={beforeSrc}
           quality={75}
           width={width}
@@ -184,7 +184,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
           <S.Image
             alt="After"
             loading="eager"
-            loader={loader}
+            loader={cloudflareLoader}
             quality={75}
             src={afterSrc}
             width={width}

@@ -65,10 +65,8 @@ This project wouldn't have been possible without some help and some already exis
 
 - [Man and machine: GPT for second brains](https://reasonabledeviations.com/2023/02/05/gpt-for-second-brain/) by Robert Andrew Martin
 - [Storing OpenAI embeddings in Postgres with pgvector](https://supabase.com/blog/openai-embeddings-postgres-vector) by the Supabase team
-
-{<li> <a href="https://typefully.com/DanHollick/how-chatgpt-works-a-deep-dive-yA3ppZC">How ChatGPT works: a deep dive</a> by <Anchor discreet favicon href="https://twitter.com/DanHollick">@DanHollick</Anchor></li>}
-
-{<li>and special thanks to <Anchor discreet favicon href="https://twitter.com/aleksandrasays">@aleksandrasays</Anchor> who replied to my questions and put me on the right path at the beginning of this project</li>}
+- [How ChatGPT works: a deep dive](https://typefully.com/DanHollick/how-chatgpt-works-a-deep-dive-yA3ppZC">) by {<Anchor discreet favicon href="https://twitter.com/DanHollick">@DanHollick</Anchor>}
+- and special thanks to {<Anchor discreet favicon href="https://twitter.com/aleksandrasays">@aleksandrasays</Anchor>} who replied to my questions and put me on the right path at the beginning of this project
 
 This is also one of my first project I'm releasing that may or may not cost me a lot of money 😅 (hopefully I did an "ok" job at avoiding some pitfalls). If you like this project and want me to support me to take on more ambitious ones and write about them in the future, you can do so by [buying me a coffee](https://www.buymeacoffee.com/maximeheckel).
 
@@ -98,7 +96,7 @@ The only choice I had to make for this stack was _where_ to store those embeddin
 
 <Fullbleed>
   <Image
-    src="blog/architecture-semantic-search-2"
+    src="blog/architecture-semantic-search-2.png"
     alt="Architecture diagram showcasing the different elements composing the indexing and querying aspects of the semantic search project"
     width={700}
     height={319}
@@ -121,7 +119,7 @@ Embeddings are multi-dimensional _vectors_ that help us represent words as a poi
 For example, if we were to represent the vectors for words like "Javascript" and "code", they would be placed relatively close to one another in our vector space as they are closely related. On the other hand, the vector for the word "coffee" would be further apart from those two, as it does not have such a close relationship with them.
 
 <Image
-  src="blog/similarities_between_words"
+  src="blog/similarities_between_words.png"
   alt="Simplified representation of the similarities between different sets of words"
   width={700}
   height={489}
@@ -136,7 +134,7 @@ To compute the _similarity_ between sentences/chunks of text, we can use the **c
 
 <Fullbleed widthPercent={65}>
   <Image
-    src="blog/cosine_similarity"
+    src="blog/cosine_similarity.png"
     alt="Simplified representation of the cosine similarity between 3 words with arbitrary dimensions"
     width={700}
     height={359}
@@ -719,6 +717,7 @@ As the Markdown formatted chunks are added to our state, displaying it as is and
 import { MDXRemoteSerializeResult, MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { useEffect, useRef, useState } from 'react';
+
 import MDXComponents from '../MDX/MDXComponents';
 
 const Result = (props) => {
@@ -774,7 +773,7 @@ Some other UX/Frontend considerations:
 - I include **sources** for the answer. The lack of sources bothers me the most when using chatGPT, especially when researching a topic so I _really_ wanted to address that in this project.
 
 <Image
-  src="blog/semantic-search-sources-clipboard"
+  src="blog/semantic-search-sources-clipboard.png"
   alt="Screenshot showcasing the list of sources that were quoted in a given semantic search response along with the copy to clipboard button that allows the user to copy the output of a query."
   width={700}
   height={600}
