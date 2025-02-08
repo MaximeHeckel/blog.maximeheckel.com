@@ -613,6 +613,7 @@ In the end, we're using the simulation pass as a **buffer** to store data **and 
 
 ```jsx {19-25,30,42} title=Setting up a simulation material
 import { extend } from '@react-three/fiber';
+
 // ... other imports
 
 const generatePositions = (width, height) => {
@@ -680,26 +681,10 @@ const FBOParticles = () => {
 
   // Create a simple square geometry with custom uv and positions attributes
   const positions = new Float32Array([
-    -1,
-    -1,
-    0,
-    1,
-    -1,
-    0,
-    1,
-    1,
-    0,
-    -1,
-    -1,
-    0,
-    1,
-    1,
-    0,
-    -1,
-    1,
-    0,
+    -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0,
   ]);
-  const uvs = new Float32Array([0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0]);
+
+  const uvs = new Float32Array([0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1]);
 
   // Create our FBO render target
   const renderTarget = useFBO(size, size, {

@@ -160,7 +160,14 @@ const FBOParticles = () => {
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1 / Math.pow(2, 53), 1);
   const positions = new Float32Array([-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0]);
-  const uvs = new Float32Array([0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0]);
+   const uvs = new Float32Array([
+    0, 0,  // bottom-left
+    1, 0,  // bottom-right
+    1, 1,  // top-right
+    0, 0,  // bottom-left
+    1, 1,  // top-right
+    0, 1   // top-left
+  ]);
 
   const renderTarget = useFBO(size, size, {
     minFilter: THREE.NearestFilter,
