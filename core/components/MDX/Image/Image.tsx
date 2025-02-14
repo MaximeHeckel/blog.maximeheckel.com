@@ -1,4 +1,11 @@
-import { Box, Flex, Text } from '@maximeheckel/design-system';
+import {
+  Box,
+  Button,
+  CSS,
+  Flex,
+  Icon,
+  Text,
+} from '@maximeheckel/design-system';
 import * as Dialog from '@radix-ui/react-dialog';
 import { cloudflareLoader } from 'lib/next-image-loader';
 import { motion, MotionConfig } from 'motion/react';
@@ -7,7 +14,9 @@ import { memo, useId, useState } from 'react';
 
 import { Content, Overlay, Trigger } from './Lightbox';
 
-interface ImageProps extends NextImageProps {}
+interface ImageProps extends NextImageProps {
+  css?: CSS;
+}
 
 const RootImage = memo((props: ImageProps) => {
   return (
@@ -17,6 +26,7 @@ const RootImage = memo((props: ImageProps) => {
         width: '100%',
         height: 'auto',
         objectFit: 'cover',
+        border: '2px solid var(--border-color)',
       }}
       loader={cloudflareLoader}
       {...props}
@@ -67,6 +77,7 @@ const Image = (props: ImageProps) => {
               onClick={handleDialogTrigger}
               onKeyDown={handlePressEnter}
               whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
               role="button"
             >
               <RootImage {...props} />
@@ -87,34 +98,78 @@ const Image = (props: ImageProps) => {
         </Flex>
         {isDialogOpen ? (
           <Dialog.Portal key={`portal-${uniqueId}`}>
-            <Overlay asChild key={`overlay-${uniqueId}`}>
-              <motion.div
-                initial={{ background: 'rgba(0, 0, 0, 0)' }}
-                animate={{
-                  background: 'rgba(0, 0, 0, 0.8)',
+            <Overlay key={`overlay-${uniqueId}`}>
+              <Box
+                as={motion.div}
+                css={{
+                  backdropFilter: 'blur(10px)',
+                  height: '100%',
+                  width: '100%',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
                 }}
-                exit={{ background: 'rgba(0, 0, 0, 0)' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  duration: 0.3,
+                }}
+              />
+              <Content
+                asChild
+                key={`content-${uniqueId}`}
+                onInteractOutside={handleDialogTrigger}
+                onFocusOutside={handleDialogTrigger}
+                onEscapeKeyDown={handleDialogTrigger}
               >
-                <Content
-                  asChild
-                  key={`content-${uniqueId}`}
-                  onInteractOutside={handleDialogTrigger}
-                  onFocusOutside={handleDialogTrigger}
-                  onEscapeKeyDown={handleDialogTrigger}
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  as={motion.div}
+                  direction="column"
+                  gap="4"
                 >
-                  <motion.div>
-                    <motion.div
-                      layoutId={`dialog-${uniqueId}`}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                      delay: 0.2,
+                    }}
+                  >
+                    <Button
+                      aria-label="Close"
+                      variant="icon"
                       onClick={handleDialogTrigger}
-                      role="button"
-                      whileTap={{ scale: 0.98 }}
-                      style={{ outline: 'none' }}
-                    >
-                      <RootImage {...props} />
-                    </motion.div>
+                      icon={<Icon.X />}
+                    />
                   </motion.div>
-                </Content>
-              </motion.div>
+                  <motion.div
+                    layoutId={`dialog-${uniqueId}`}
+                    onClick={handleDialogTrigger}
+                    autoFocus
+                    role="button"
+                    whileTap={{ scale: 0.98 }}
+                    style={{ outline: 'none' }}
+                  >
+                    <RootImage
+                      {...props}
+                      css={{
+                        objectFit: 'cover',
+                        height: 'auto',
+                        width: '80dvw',
+
+                        '@media (max-width: 768px)': {
+                          width: '97dvw',
+                        },
+                      }}
+                    />
+                  </motion.div>
+                </Flex>
+              </Content>
             </Overlay>
           </Dialog.Portal>
         ) : null}
