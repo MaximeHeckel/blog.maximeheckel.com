@@ -16,8 +16,6 @@ export const Overlay = styled(Dialog.Overlay, {
 });
 
 export const Content = styled(Dialog.Content, {
-  maxWidth: 1400,
-  width: '95vw',
   backgroundColor: 'transparent',
   zIndex: '101',
   '&:focus': { outline: 'none' },

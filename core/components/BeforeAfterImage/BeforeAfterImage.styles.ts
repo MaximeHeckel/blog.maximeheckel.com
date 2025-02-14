@@ -7,7 +7,7 @@ export const Wrapper = styled(Box, {
   overflow: 'hidden',
   display: 'flex',
   borderRadius: 'var(--border-radius-2)',
-  border: '4px solid var(--border-color)',
+  border: '2px solid var(--border-color)',
   cursor: 'ew-resize',
   transition: 'box-shadow 0.3s',
   boxShadow: 'var(--shadow, none)',

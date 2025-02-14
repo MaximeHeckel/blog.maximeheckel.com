@@ -1,7 +1,7 @@
 import { Flex, Icon, Text } from '@maximeheckel/design-system';
 import { cloudflareLoader } from 'lib/next-image-loader';
-import { useMotionValue, animate } from 'motion/react';
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useMotionValue } from 'motion/react';
+import { useState, useRef, useEffect } from 'react';
 
 import * as S from './BeforeAfterImage.styles';
 import { BeforeAfterImageProps } from './types';
@@ -38,7 +38,7 @@ const Slider = () => (
         backdropFilter: 'blur(8px)',
         zIndex: 2,
         borderRadius: 'var(--border-radius-2)',
-        border: '3px solid var(--border-color)',
+        border: '2px solid var(--border-color)',
       }}
       justifyContent="center"
     >
@@ -62,10 +62,8 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const wiggleMotion = useMotionValue(sliderPosition);
-  let hoverTimer = null as NodeJS.Timeout | null;
 
   const calculateSliderPosition = (clientX: number) => {
-    if (hoverTimer) clearTimeout(hoverTimer);
     const rect = wrapperRef.current!.getBoundingClientRect();
     const x = clientX - rect.left;
     const sliderPositionPercentage = (x / rect.width) * 100;
@@ -73,25 +71,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
     wiggleMotion.set(sliderPositionPercentage);
   };
 
-  const initiateWiggle = useCallback(() => {
-    animate(
-      wiggleMotion,
-      [
-        sliderPosition,
-        sliderPosition - 1.5,
-        sliderPosition + 1.5,
-        sliderPosition - 1.5,
-        sliderPosition + 1.5,
-        sliderPosition,
-      ],
-      {
-        type: 'spring',
-      }
-    );
-  }, [sliderPosition, wiggleMotion]);
-
   const handleMouseDown = (event: React.MouseEvent) => {
-    if (hoverTimer) clearTimeout(hoverTimer);
     setIsDragging(true);
     calculateSliderPosition(event.clientX);
   };
@@ -103,18 +83,16 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
   };
 
   const handleMouseUp = () => {
-    if (hoverTimer) clearTimeout(hoverTimer);
     setIsDragging(false);
   };
 
   const handleMouseMove = (event: React.MouseEvent) => {
     if (!isDragging) return;
-    if (hoverTimer) clearTimeout(hoverTimer);
+
     calculateSliderPosition(event.clientX);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (hoverTimer) clearTimeout(hoverTimer);
     switch (event.key) {
       case 'ArrowLeft':
         wiggleMotion.set(Math.max(0, sliderPosition - 5));
@@ -127,15 +105,6 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
     }
   };
 
-  const handleMouseEnter = () => {
-    hoverTimer = setTimeout(initiateWiggle, 1200);
-  };
-
-  const handleMouseLeave = () => {
-    if (hoverTimer) clearTimeout(hoverTimer);
-    handleMouseUp();
-  };
-
   useEffect(() => {
     const unsubscribe = wiggleMotion.onChange((value) => {
       if (value < 0) return;
@@ -144,10 +113,9 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
     });
 
     return () => {
-      if (hoverTimer) clearTimeout(hoverTimer);
       unsubscribe();
     };
-  }, [hoverTimer, wiggleMotion]);
+  }, [, wiggleMotion]);
 
   return (
     <Flex as="figure" alignItems="start" direction="column" gap="1">
@@ -160,8 +128,6 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
         aria-valuemax={100}
         aria-valuenow={sliderPosition}
         onKeyDown={handleKeyDown}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
