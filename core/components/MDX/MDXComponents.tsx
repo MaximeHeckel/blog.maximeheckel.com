@@ -267,6 +267,8 @@ const PostProcessingSandpack = dynamic(
   () => import('./Widgets/PostProcessing/Sandpack')
 );
 
+const Slideshow = dynamic(() => import('../Slideshow'));
+
 const customComponents = {
   AnimationTypes,
   ClipboardAnimationDetails,
@@ -369,6 +371,7 @@ const MDXComponents = {
   ul: function UL(props: React.HTMLAttributes<HTMLUListElement>) {
     return <List variant="unordered" {...props} />;
   },
+  Slideshow,
   SupportCallout,
   VideoPlayer,
   ...customComponents,

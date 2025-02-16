@@ -10,8 +10,8 @@ const Fullbleed = (props: {
   return (
     <Box
       css={{
-        margin: `0 -50vw 0 -50vw`,
         position: 'relative',
+        margin: `0 -50vw 0 -50vw`,
         left: '50%',
         right: '50%',
         width: `100vw`,

@@ -40,6 +40,7 @@ import Glow from '@core/components/Glow';
 import Logo from '@core/components/Logo';
 import Image from '@core/components/MDX/Image/Image';
 import Seo from '@core/components/Seo';
+import ImageGallery from '@core/components/Slideshow';
 import Tweet from '@core/components/Tweet';
 import Layout from '@core/layout';
 
@@ -158,11 +159,19 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
 
   const palette = ['gray', 'blue', 'red', 'orange', 'green', 'pink'];
 
+  const images = [
+    'blog/orangetree-painting2-min_zvrziz.png',
+    'blog/clouds-painting-min_bqf2ia.png',
+    'blog/scene_outline_fixed.png',
+    'blog/normal_outline_fixed.png',
+    'blog/orangetree-painting1-min_ljlg7l.png',
+  ];
+
   return (
     <Layout footer>
       <Seo title="Design" />
       <Grid
-        css={{ paddingTop: 'var(--space-10)' }}
+        css={{ paddingTop: 'var(--space-10)', overflowX: 'hidden' }}
         gapX={4}
         templateColumns={templateColumnsMedium}
       >
@@ -187,7 +196,6 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
               <Pill variant="info">v1.0</Pill>
             </Flex>
           </Flex>
-
           <Flex
             alignItems="start"
             as="section"
@@ -1319,7 +1327,7 @@ function sayHi(name) {
           >
             <H2>Image</H2>
             <Image
-              src="blog/bayermatrix"
+              src="blog/bayermatrix.png"
               alt="Diagram showcasing the process of applying the 4x4 Bayer Matrix on the input buffer of a scene and obtaining the dithering pattern based on the threshold value matching each pixel"
               width={700}
               height={298}
@@ -1336,11 +1344,22 @@ function sayHi(name) {
             <H2>Before / After Image</H2>
             <BeforeAfterImage
               alt="Screenshot showcasing the blue noise dithering applied to our cloud scene"
-              beforeSrc="/blog/blue-noise-dithering-before.png"
-              afterSrc="/blog/blue-noise-dithering-after.png"
-              width={800}
-              height={511}
+              beforeSrc="blog/scene_outline_fixed.png"
+              afterSrc="blog/normal_outline_fixed.png"
+              width={700}
+              height={405}
             />
+          </Flex>
+          <Flex
+            alignItems="start"
+            as="section"
+            css={{ alignSelf: 'stretch', marginBottom: 'var(--space-9)' }}
+            direction="column"
+            gap="5"
+            id="gallery"
+          >
+            <H2>Gallery</H2>
+            <ImageGallery images={images} width={700} height={405} />
           </Flex>
         </Flex>
       </Grid>

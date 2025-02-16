@@ -124,7 +124,11 @@ const BlogLayout = ({ children, frontMatter, ogImage }: Props) => {
         updated={updated}
       />
       <article className="h-entry">
-        <Grid gapX={4} templateColumns={templateColumnsSmall}>
+        <Grid
+          gapX={4}
+          css={{ overflowX: 'hidden' }}
+          templateColumns={templateColumnsSmall}
+        >
           <Grid.Item col={2}>
             <Flex
               alignItems="start"
