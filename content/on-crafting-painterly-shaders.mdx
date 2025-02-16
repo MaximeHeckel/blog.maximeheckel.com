@@ -947,36 +947,19 @@ The demo below bundles all those improvements together on top of the anisotropic
 
 <KuwaharaSandpack scene="scene6" />
 
-As we saw throughout this article, making a satisfying painterly shader seemed simple on the surface thanks to the standard implementation of the Kuwahara filter. However, it turned out to be much more intricate once we started to dig deeper, trying to fix the artifacts that each technique yielded. If you were to ask me my take on the topic, **I'd consider the Papari extension of the Kuwahara filter with polynomial weighting to be enough** in most cases, while also being relatively performant compared to its anisotropic counterpart. At the end of the day, it's almost more a question of personal taste/creative choice as the different iterations of this image filter can produce drastically different results given an underlying scene/image.
+As we saw throughout this article, making a satisfying painterly shader seemed simple on the surface thanks to the standard implementation of the Kuwahara filter. However, it turned out to be much more intricate once we started to dig deeper and trying to fix the artifacts that each technique yielded. If you were to ask me my take on the topic, **I'd consider the Papari extension of the Kuwahara filter with polynomial weighting to be enough** in most cases, while also being relatively performant compared to its anisotropic counterpart. At the end of the day, it's almost more a question of personal taste/creative choice as the different iterations of this image filter can produce drastically different results given an underlying scene/image.
 
 Nonetheless, deep diving into how to obtain the structure tensor of an image and deriving anisotropy through many layers of linear algebra is far from useless as the technique can be ported to _many_ other post-processing effects (one of which I'm considering writing about here). Consider it as one additional tool in your ever-growing shader toolbelt.
 
 To finish this article, which was quite the undertaking not going to lie, here are a couple more shots/paintings of some of the test scenes I used while building this custom post-processing shader:
 
-<Image
-  src="blog/orangetree-painting2-min_zvrziz.png"
-  alt="Orange Tree 1 - Anisotropic Kuwahara filter"
-  width={700}
-  height={426}
-/>
-
-<Image
-  src="blog/clouds-painting-min_bqf2ia.png"
-  alt="Raymarched Clouds - Extended Kuwahara filter"
+<Slideshow
+  images={[
+    'blog/orangetree-painting2-min_zvrziz.png',
+    'blog/clouds-painting-min_bqf2ia.png',
+    'blog/orangetree-painting1-min_ljlg7l.png',
+    'blog/spaceship-formation-painting-min_egrake.png',
+  ]}
   width={700}
   height={388}
-/>
-
-<Image
-  src="blog/orangetree-painting1-min_ljlg7l.png"
-  alt="Orange Tree 2 - Anisotropic Kuwahara filter"
-  width={700}
-  height={426}
-/>
-
-<Image
-  src="blog/spaceship-formation-painting-min_egrake.png"
-  alt="Spaceship formation - Extended Kuwahara filter"
-  width={700}
-  height={410}
 />

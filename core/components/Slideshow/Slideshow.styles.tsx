@@ -9,7 +9,7 @@ export const GalleryContainer = styled('div', {
 export const ImageTrack = styled('div', {
   display: 'flex',
   height: '100%',
-  gap: '16px',
+  gap: '12px',
 });
 
 export const ImageSlide = styled('button', {
@@ -19,7 +19,7 @@ export const ImageSlide = styled('button', {
   border: 'none',
   background: 'none',
   outline: 'none',
-
+  padding: 0,
   '&[data-current="true"]': {
     cursor: 'default',
   },
