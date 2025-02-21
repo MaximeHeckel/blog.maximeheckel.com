@@ -31,6 +31,11 @@ const output = withBundleAnalyzer({
       'react-dom': path.join(__dirname, 'node_modules/react-dom'),
     };
 
+    config.module.rules.push({
+      test: /\.(glsl|vs|fs|vert|frag)$/,
+      use: ['raw-loader', 'glslify-loader'],
+    });
+
     config.resolve = {
       ...config.resolve,
       alias: {
@@ -46,24 +51,6 @@ const output = withBundleAnalyzer({
       {
         source: '/(.*)',
         headers: securityHeaders,
-      },
-      {
-        source: '/fonts/inter-var-latin.woff2',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/fonts/inter-var-latin-italic.woff2',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
       },
       {
         source: '/fonts/fira-code.woff2',

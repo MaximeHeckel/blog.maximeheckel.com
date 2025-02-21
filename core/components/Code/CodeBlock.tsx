@@ -127,7 +127,7 @@ const Pre = styled('pre', {
   borderBottomLeftRadius: 'var(--border-radius-2)',
   borderBottomRightRadius: 'var(--border-radius-2)',
   backgroundColor: 'var(--code-snippet-background)',
-  fontFamily: 'var(--font-mono)',
+  fontFamily: 'var(--font-mono-code)',
   fontSize: 'var(--font-size-1)',
   lineHeight: '26px',
 
