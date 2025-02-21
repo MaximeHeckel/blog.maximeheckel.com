@@ -9,6 +9,10 @@
   <changefreq>daily</changefreq>
   <priority>0.7</priority>
 </url><url>
+  <loc>https://blog.maximeheckel.com/new-home/</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.7</priority>
+</url><url>
   <loc>https://blog.maximeheckel.com/og/</loc>
   <changefreq>daily</changefreq>
   <priority>0.7</priority>
@@ -134,6 +138,10 @@
   <priority>0.7</priority>
 </url><url>
   <loc>https://blog.maximeheckel.com/posts/painting-with-math-a-gentle-study-of-raymarching/</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.7</priority>
+</url><url>
+  <loc>https://blog.maximeheckel.com/posts/post-processing-as-a-creative-medium/</loc>
   <changefreq>daily</changefreq>
   <priority>0.7</priority>
 </url><url>

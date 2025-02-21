@@ -6,7 +6,7 @@ import Header, { HeaderProps } from '@core/components/Header';
 
 const Wrapper = styled('main', {
   background: 'var(--background)',
-  transition: '0.5s',
+  transition: '0.3s',
 
   /**
    * Disable outline when user doesn't use keyboard

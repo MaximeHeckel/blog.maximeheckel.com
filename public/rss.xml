@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Sat, 21 Dec 2024 17:52:41 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 21 Feb 2025 04:35:00 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Post-Processing Shaders as a Creative Medium]]></title>
+            <description><![CDATA[TBD]]></description>
+            <link>https://blog.maximeheckel.com/posts/post-processing-as-a-creative-medium</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/post-processing-as-a-creative-medium</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 04 Feb 2025 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[On Crafting Painterly Shaders]]></title>
             <description><![CDATA[A detailed essay on my research and process of building a shader to mimic paint, watercolor, and aquarelle by exploring various implementations of the Kuwahara image smoothing filter.]]></description>

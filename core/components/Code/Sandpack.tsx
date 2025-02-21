@@ -39,7 +39,7 @@ const theme = {
   },
   font: {
     body: 'var(--font-display)',
-    mono: 'var(--font-mono)',
+    mono: 'var(--font-mono-code)',
     size: '14px',
     lineHeight: '26px',
   },
