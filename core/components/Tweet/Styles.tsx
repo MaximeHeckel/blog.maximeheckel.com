@@ -3,34 +3,21 @@ import { css, Shadows, styled } from '@maximeheckel/design-system';
 export const TweetWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  gap: 'var(--space-5)',
+  gap: 'var(--space-4)',
   color: 'var(--text-primary)',
   borderRadius: 'var(--border-radius-2)',
   backgroundColor: 'var(--card-background)',
-  padding: '1rem 1.5rem',
+  padding: '16px',
   width: '100%',
 
   border: 'solid 1px var(--border-color)',
   boxShadow: Shadows[1],
-
-  // '@media (max-width: 700px)': {
-  //   /**
-  //    * Make it fullbleed!
-  //    */
-  //   width: '100vw',
-  //   position: 'relative',
-  //   left: '50%',
-  //   right: '50%',
-  //   marginLeft: '-50vw',
-  //   marginRight: '-50vw',
-  //   borderRadius: '0px',
-  // },
 });
 
 export const Avatar = styled('a', {
   display: 'flex',
-  height: '46px',
-  width: '46px',
+  height: '40px',
+  width: '40px',
   borderRadius: '50%',
   overflow: 'hidden',
 });

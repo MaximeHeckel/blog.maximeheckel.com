@@ -79,7 +79,7 @@ const AnimationTypes = () => {
   return (
     <Wrapper ref={ref}>
       <TransitionGridWrapper>
-        <Card glass depth={1}>
+        <Card depth={1}>
           <Card.Header>Spring</Card.Header>
           <AnimationCardContent>
             <Form>
@@ -159,7 +159,7 @@ const AnimationTypes = () => {
           />
         </Card>
 
-        <Card glass depth={1}>
+        <Card depth={1}>
           <Card.Header>Tween</Card.Header>
           <AnimationCardContent>
             <Form>
@@ -221,7 +221,7 @@ const AnimationTypes = () => {
             language="javascript"
           />
         </Card>
-        <Card glass depth={1}>
+        <Card depth={1}>
           <Card.Header>Inertia</Card.Header>
           <AnimationCardContent>
             <Form>

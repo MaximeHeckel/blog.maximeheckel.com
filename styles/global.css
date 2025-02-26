@@ -52,6 +52,6 @@ a {
 canvas {
   opacity: 0;
   animation: fade-in 1s ease 0.3s forwards;
-  animation-delay: 1s;
+  animation-delay: 0.2s;
   user-select: none;
 }

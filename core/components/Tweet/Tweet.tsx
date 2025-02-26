@@ -73,6 +73,7 @@ const Tweet = (props: Props) => {
               title={user.name}
               variant="primary"
               weight="4"
+              size="2"
             >
               {user.name}
             </Text>
@@ -98,6 +99,7 @@ const Tweet = (props: Props) => {
       <Text
         as="p"
         variant="primary"
+        size="3"
         css={{
           whiteSpace: 'pre-wrap',
         }}
@@ -170,21 +172,7 @@ const Tweet = (props: Props) => {
         </SingleImageWrapper>
       ) : null}
       {!!quoted_tweet ? <Tweet tweet={{ ...quoted_tweet }} /> : null}
-      <Flex alignItems="start" direction="column" gap="2">
-        <Anchor
-          discreet
-          href={tweetURL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <time
-            title={`Time Posted: ${createdAt.toUTCString()}`}
-            dateTime={createdAt.toISOString()}
-            suppressHydrationWarning
-          >
-            {format(createdAt, 'h:mm a - MMM d, y')}
-          </time>
-        </Anchor>
+      <Flex alignItems="center" justifyContent="space-between" gap="2">
         <Flex>
           <ActionIcons
             href={replyURL}
@@ -192,7 +180,7 @@ const Tweet = (props: Props) => {
             rel="noopener noreferrer"
           >
             <ReplyIcon />
-            <span>{conversation_count || reply_count}</span>
+            <Text size="1">{conversation_count || reply_count}</Text>
           </ActionIcons>
           {/* <ActionIcons
             href={retweetURL}
@@ -204,9 +192,25 @@ const Tweet = (props: Props) => {
           </ActionIcons> */}
           <ActionIcons href={likeURL} target="_blank" rel="noopener noreferrer">
             <LikeIcon />
-            <span>{favorite_count}</span>
+            <Text size="1">{favorite_count}</Text>
           </ActionIcons>
         </Flex>
+        <Anchor
+          discreet
+          href={tweetURL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Text
+            as="time"
+            title={`Time Posted: ${createdAt.toUTCString()}`}
+            dateTime={createdAt.toISOString()}
+            suppressHydrationWarning
+            size="1"
+          >
+            {format(createdAt, 'h:mm a - MMM d, y')}
+          </Text>
+        </Anchor>
       </Flex>
     </TweetWrapper>
   );

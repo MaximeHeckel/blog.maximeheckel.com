@@ -40,7 +40,7 @@ const TextShowcase = () => {
         dotMatrix
         gap="4"
       >
-        <Text family="numeric" outline size="7">
+        <Text family="mono" outline size="7">
           Almost before we knew it, we had left the ground.
         </Text>
         <Flex css={{ maxWidth: 250 }}>
@@ -48,16 +48,6 @@ const TextShowcase = () => {
             Almost before we knew it, we had left the ground.
           </Text>
         </Flex>
-        <Text
-          gradient
-          css={{
-            backgroundImage: `linear-gradient(90deg,#2E83FF -10%,#EB7D9F 50%, #FFCBBE 100%)`,
-          }}
-          size="6"
-          weight="4"
-        >
-          Almost before we knew it, we had left the ground.
-        </Text>
       </Card.Body>
       <HighlightedCodeText codeString={codeString} language="jsx" />
     </Card>

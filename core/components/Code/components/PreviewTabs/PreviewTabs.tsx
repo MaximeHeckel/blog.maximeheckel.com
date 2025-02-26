@@ -1,4 +1,12 @@
-import { Box, Flex, Text } from '@maximeheckel/design-system';
+import { useSandpackNavigation } from '@codesandbox/sandpack-react';
+import {
+  Box,
+  Flex,
+  Icon,
+  IconButton,
+  Text,
+  Tooltip,
+} from '@maximeheckel/design-system';
 import React from 'react';
 
 import {
@@ -10,7 +18,8 @@ import {
 import { PreviewTabsProps } from './types';
 
 const PreviewTabs = (props: PreviewTabsProps) => {
-  const { selectedTab, onTabSelect, onClear } = props;
+  const { selectedTab, onTabSelect, onClear, onFullscreen } = props;
+  const { refresh } = useSandpackNavigation();
 
   return (
     <Flex
@@ -79,6 +88,25 @@ const PreviewTabs = (props: PreviewTabsProps) => {
       </Flex>
       <Flex>
         <CustomGoToCodesandboxButton />
+        <Tooltip content="Fullscreen" side="top">
+          <IconButton
+            aria-label="Fullscreen"
+            css={{
+              display: 'flex',
+              '@media (max-width: 750px)': {
+                display: 'none',
+              },
+            }}
+            onClick={() => {
+              onFullscreen();
+              refresh();
+            }}
+            variant="tertiary"
+            size="small"
+          >
+            <Icon.FullScreen />
+          </IconButton>
+        </Tooltip>
         <CustomRunButton />
         <CustomRefreshButton />
         <CustomClearConsoleButton

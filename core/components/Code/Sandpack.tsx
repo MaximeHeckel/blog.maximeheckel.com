@@ -45,13 +45,6 @@ const theme = {
   },
 };
 
-const defaultEditorOptions = {
-  showNavigator: false,
-  showInlineErrors: true,
-  showLineNumbers: true,
-  editorHeight: 520,
-};
-
 // Styles
 const SandpackWrapper = styled(Box, {
   '.sp-layout': {
@@ -59,21 +52,6 @@ const SandpackWrapper = styled(Box, {
     position: 'relative',
     borderRadius: 'var(--border-radius-2)',
     boxShadow: Shadows[1],
-    '@media (max-width: 880px)': {
-      display: 'block',
-      width: '95vw',
-      left: '50%',
-      right: '50%',
-      marginLeft: '-47.5vw',
-      marginRight: '-47.5vw',
-    },
-
-    '@media (min-width: 880px)': {
-      position: 'relative',
-      width: 'calc(100% + 150px)',
-      marginLeft: '-75px',
-      marginRight: '-75px',
-    },
   },
   '.cm-gutterElement': {
     fontSize: '12px',
@@ -87,6 +65,58 @@ const SandpackWrapper = styled(Box, {
     '> button': {
       display: 'none',
     },
+  },
+
+  '.sp-tab-container': {
+    paddingRight: 'var(--space-1)',
+    outline: 'none !important',
+  },
+
+  variants: {
+    fullscreen: {
+      true: {
+        '.sp-layout': {
+          width: '100%',
+          height: '100%',
+          borderRadius: '0px',
+          margin: '0px',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 101,
+
+          '& iframe': {
+            height: '100dvh !important',
+          },
+        },
+      },
+      false: {
+        '.sp-layout': {
+          margin: 'var(--space-5) 0px',
+          '@media (max-width: 880px)': {
+            display: 'block',
+            width: '95vw',
+            left: '50%',
+            right: '50%',
+            marginLeft: '-47.5vw',
+            marginRight: '-47.5vw',
+          },
+
+          '@media (min-width: 880px)': {
+            position: 'relative',
+            width: 'calc(100% + 150px)',
+            marginLeft: '-75px',
+            marginRight: '-75px',
+          },
+        },
+      },
+    },
+  },
+
+  defaultVariants: {
+    fullscreen: false,
   },
 });
 
@@ -132,9 +162,24 @@ const Sandpack = (props: SandpackProps) => {
 
   const [consoleKey, setConsoleKey] = React.useState(0);
   const [selectedTab, setSelectedTab] = React.useState<Tab>(defaultTab);
+  const [isFullscreen, setIsFullscreen] = React.useState(false);
+
+  const defaultEditorOptions = {
+    showNavigator: false,
+    showInlineErrors: true,
+    showLineNumbers: true,
+    editorHeight: 520,
+  };
+
+  const handleFullscreen = () => {
+    setIsFullscreen((prev) => {
+      document.body.style.overflow = prev ? 'auto' : 'hidden';
+      return !prev;
+    });
+  };
 
   return (
-    <SandpackWrapper>
+    <SandpackWrapper fullscreen={isFullscreen}>
       <SandpackProvider
         template={template}
         theme={theme}
@@ -154,15 +199,18 @@ const Sandpack = (props: SandpackProps) => {
             direction="column"
             justifyContent="space-between"
             css={{
-              height: defaultEditorOptions.editorHeight,
               gap: 0,
               width: '50%',
               '@media (max-width: 880px)': {
                 width: '100%',
               },
             }}
+            style={{
+              height: isFullscreen ? '100dvh' : '520px',
+            }}
           >
             <PreviewTabs
+              onFullscreen={handleFullscreen}
               onClear={() => setConsoleKey(consoleKey + 1)}
               onTabSelect={(tab) => setSelectedTab(tab)}
               selectedTab={selectedTab}
@@ -171,7 +219,9 @@ const Sandpack = (props: SandpackProps) => {
               key={consoleKey}
               showHeader
               style={{
-                height: defaultEditorOptions.editorHeight - 40,
+                height: isFullscreen
+                  ? '100dvh'
+                  : defaultEditorOptions.editorHeight - 40,
                 display: selectedTab === 'console' ? 'flex' : 'none',
               }}
             />
@@ -179,7 +229,9 @@ const Sandpack = (props: SandpackProps) => {
               showRefreshButton={false}
               showOpenInCodeSandbox={false}
               style={{
-                height: defaultEditorOptions.editorHeight - 40,
+                height: isFullscreen
+                  ? '100dvh'
+                  : defaultEditorOptions.editorHeight - 40,
                 display: selectedTab === 'preview' ? 'flex' : 'none',
               }}
             />
@@ -189,7 +241,9 @@ const Sandpack = (props: SandpackProps) => {
             showRunButton={false}
             style={{
               borderLeft: '1px solid var(--border-color)',
-              height: defaultEditorOptions.editorHeight,
+              height: isFullscreen
+                ? '100dvh'
+                : defaultEditorOptions.editorHeight,
             }}
           />
         </SandpackLayout>

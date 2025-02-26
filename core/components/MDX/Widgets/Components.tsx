@@ -30,13 +30,14 @@ export const HighlightedValue = styled('div', {
   borderRadius: 'var(--border-radius-0)',
   backgroundColor: 'var(--emphasis)',
   color: 'var(--accent)',
-  border: '2px solid var(--accent)',
-  padding: '2px 6px',
-  fontFamily: 'var(--font-numeric)',
+  border: '1px solid var(--accent)',
+  padding: '1px 3px',
+  fontFamily: 'var(--font-mono)',
   fontSize: 'var(--font-size-1)',
   display: 'inline-flex',
   justifyContent: 'center',
   lineHeight: '1rem',
+  marginLeft: '4px',
 });
 
 export const Wrapper = styled('div', {

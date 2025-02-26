@@ -13,7 +13,7 @@
     "build": "next build",
     "cy:open": "cypress open",
     "cy:run": "cypress run --browser chrome",
-    "dev": "next dev",
+    "dev": "NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) next dev",
     "export": "next export",
     "check-format": "prettier --check \"./**/*.{js,jsx,ts,tsx}\"",
     "format": "prettier --write \"./**/*.{js,jsx,ts,tsx}\"",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "2.19.10",
-    "@maximeheckel/design-system": "2.2.0",
+    "@maximeheckel/design-system": "3.0.1",
     "@radix-ui/react-dialog": "^1.1.4",
     "@react-three/drei": "^9.120.4",
     "@react-three/fiber": "^8.17.10",

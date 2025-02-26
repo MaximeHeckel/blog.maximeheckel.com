@@ -1,4 +1,4 @@
-import { Flex, Icon, Text } from '@maximeheckel/design-system';
+import { Flex, GlassMaterial, Icon, Text } from '@maximeheckel/design-system';
 import { cloudflareLoader } from 'lib/next-image-loader';
 import { useMotionValue } from 'motion/react';
 import { useState, useRef, useEffect } from 'react';
@@ -23,8 +23,9 @@ const Slider = () => (
         left: '50%',
         bottom: 0,
         top: 0,
-        width: 3,
-        background: 'var(--foreground)',
+        width: 1,
+        background: 'oklch(from var(--gray-900) l c h / var(--opacity, 0.6))',
+
         transform: 'translateX(-50%)',
       },
     }}
@@ -32,22 +33,23 @@ const Slider = () => (
   >
     <Flex
       css={{
-        width: 48,
-        height: 48,
-        background: 'var(--foreground)',
-        backdropFilter: 'blur(8px)',
+        width: 32,
+        height: 32,
+        background: 'transparent',
         zIndex: 2,
         borderRadius: 'var(--border-radius-2)',
-        border: '2px solid var(--border-color)',
+        gap: '1px',
+        position: 'relative',
       }}
       justifyContent="center"
     >
+      <GlassMaterial />
       <Icon.Arrow
-        size="4"
+        size="2"
         style={{ transform: 'rotate(180deg)' }}
-        variant="tertiary"
+        variant="primary"
       />
-      <Icon.Arrow size="4" variant="tertiary" />
+      <Icon.Arrow size="2" variant="primary" />
     </Flex>
   </Flex>
 );

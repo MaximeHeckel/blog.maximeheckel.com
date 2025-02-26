@@ -5,7 +5,6 @@ import {
   Flex,
   InlineCode,
   Range,
-  useTheme,
 } from '@maximeheckel/design-system';
 import React from 'react';
 
@@ -162,7 +161,6 @@ const WidgetRoot = styled('div', {
 });
 
 const ScrollSpyWidget = () => {
-  const { dark } = useTheme();
   const ids = React.useMemo(() => ['section1', 'section2', 'section3'], []);
   const [elements, setElements] = React.useState<Element[]>([]);
   const [offset, setOffset] = React.useState(50);
@@ -183,8 +181,8 @@ const ScrollSpyWidget = () => {
 
   return (
     <>
-      <BrowserWindow dark={dark}>
-        <BrowserHeader dark={dark}>
+      <BrowserWindow dark>
+        <BrowserHeader dark>
           <TrafficLightWrapper
             alignItems="center"
             direction="row"
@@ -194,7 +192,7 @@ const ScrollSpyWidget = () => {
             <TrafficLight variant="yellow" />
             <TrafficLight variant="green" />
           </TrafficLightWrapper>
-          <SearchBar dark={dark} />
+          <SearchBar dark />
           <div
             style={{
               width: '50px',

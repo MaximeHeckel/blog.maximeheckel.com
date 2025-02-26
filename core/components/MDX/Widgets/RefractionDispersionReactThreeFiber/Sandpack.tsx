@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@maximeheckel/design-system';
+import { Box } from '@maximeheckel/design-system';
 import { useInView } from 'motion/react';
 import { useRef } from 'react';
 
@@ -30,27 +30,12 @@ canvas {
     height: 100vh;
 }`;
 
-const SceneCSSLight = `
-html {
-    background: #F7F7FB;
-}
-
-body {
-  height: 100%;
-  margin: 0;
-}
-
-canvas {
-    width: 100vw;
-    height: 100vh;
-}`;
-
 const RefractionDispersionSandpack = (props: any) => {
   const { scene } = props;
 
   const ref = useRef(null);
   const inView = useInView(ref);
-  const { dark } = useTheme();
+
   const { tier, loading: tierLoading } = useGPUTier();
 
   const autorun = tier > 2;
@@ -85,7 +70,7 @@ const RefractionDispersionSandpack = (props: any) => {
             // @ts-ignore
             ...SCENES[scene],
             '/scene.css': {
-              code: !dark ? SceneCSSLight : SceneCSSDark,
+              code: SceneCSSDark,
               hidden: true,
             },
             '/sandbox.config.json': {

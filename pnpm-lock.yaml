@@ -12,8 +12,8 @@ importers:
         specifier: 2.19.10
         version: 2.19.10(@lezer/common@1.2.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@maximeheckel/design-system':
-        specifier: 2.2.0
-        version: 2.2.0(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: 3.0.1
+        version: 3.0.1(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@radix-ui/react-dialog':
         specifier: ^1.1.4
         version: 1.1.4(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -679,8 +679,8 @@ packages:
   '@marijn/find-cluster-break@1.0.2':
     resolution: {integrity: sha512-l0h88YhZFyKdXIFNfSWpyjStDjGHwZ/U7iobcK1cQQD8sejsONdQtTVU+1wVN1PBw40PiiHB1vA5S7VTfQiP9g==}
 
-  '@maximeheckel/design-system@2.2.0':
-    resolution: {integrity: sha512-qDe2PrMcqhLEr9B+RCKUWJevMbEcKMG08RCS3fmzTUvGba/8VOnbQiI+enSOdMPPySaDoMg4E0I9X5pz4iyQ0g==}
+  '@maximeheckel/design-system@3.0.1':
+    resolution: {integrity: sha512-DuNxaIilOlNTqhfWi+WnnGZ1KFSVokBypLkKTl0ibgthhXZxss1Wayylp85p2mKrJ5vIS39QqeJlr4iCMxZrCg==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -5781,7 +5781,7 @@ snapshots:
 
   '@marijn/find-cluster-break@1.0.2': {}
 
-  '@maximeheckel/design-system@2.2.0(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@maximeheckel/design-system@3.0.1(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@radix-ui/react-collapsible': 1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@radix-ui/react-tooltip': 1.0.0(@types/react@18.2.45)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)

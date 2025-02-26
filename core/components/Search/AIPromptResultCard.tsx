@@ -195,35 +195,10 @@ const AIPromptResultCard = forwardRef(
                     },
                   }}
                 >
-                  <Box>
-                    <Text as="p">Dear reader,</Text>
-                    <Text as="p" size="2">
-                      I built this AI powered mini-search engine to learn more
-                      about OpenAI and embeddings, try new UX patterns while
-                      also exploring new ways for my readers to interact with my
-                      content. This is an experimental feature.
-                    </Text>
-
-                    <Text as="p" size="2">
-                      Ask me anything about my blog posts, a topic, or projects
-                      by typing your question or selecting one of the examples
-                      below.
-                    </Text>
-                    <Text as="p" style={{ marginBottom: 0 }} size="2">
-                      I&apos;m using my own funds to power this feature, if you
-                      wish for me to push this further or simply appreciate the
-                      work I put into projects like this one you can support me
-                      by{' '}
-                      <Anchor
-                        href="https://www.buymeacoffee.com/maximeheckel"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        buying me a coffee
-                      </Anchor>{' '}
-                      (I really do love coffee ☕).
-                    </Text>
-                  </Box>
+                  <Text as="p" size="2">
+                    Ask anything about my blog posts, a topic, or projects by
+                    typing your question or selecting one of the examples below.
+                  </Text>
                   <Flex wrap="wrap" gap="3">
                     {SAMPLE_QUESTIONS.map((question) => (
                       <Box

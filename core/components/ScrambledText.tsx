@@ -1,5 +1,5 @@
 import { Text, VariantProps, CSS, Box } from '@maximeheckel/design-system';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { useReducer, useEffect, useRef, useLayoutEffect } from 'react';
 import { useState } from 'react';
 
@@ -98,12 +98,13 @@ const ScrambledTextAnimation = ({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3, ease: 'easeInOut', delay: delay * 0.95 }}
       style={{
-        display: 'block',
+        display: 'inline-block',
         height: finished ? 'auto' : dimensions?.height,
       }}
     >
       <Text
         aria-hidden
+        suppressHydrationWarning
         css={{
           ...css,
         }}
@@ -113,6 +114,7 @@ const ScrambledTextAnimation = ({
         <Text
           as="span"
           aria-hidden
+          suppressHydrationWarning
           css={{
             ...css,
           }}
@@ -142,11 +144,20 @@ export const ScrambledText = ({
   speed?: number;
   delay?: number;
 } & VariantProps<typeof Text>) => {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <>
-      <ScreenReaderOnly as="span">{children}</ScreenReaderOnly>
+      <ScreenReaderOnly suppressHydrationWarning as="span">
+        {children}
+      </ScreenReaderOnly>
       {disabled ? (
-        <Text {...props} css={css}>
+        <Text
+          {...props}
+          css={css}
+          suppressHydrationWarning
+          style={{ opacity: 0 }}
+        >
           {children}
         </Text>
       ) : (
@@ -154,21 +165,27 @@ export const ScrambledText = ({
           <ClientOnly
             fallback={
               <Box>
-                <Text {...props} css={css}>
+                <Text {...props} suppressHydrationWarning css={css}>
                   {children}
                 </Text>
               </Box>
             }
           >
-            <ScrambledTextAnimation
-              windowSize={windowSize}
-              speed={speed}
-              delay={delay}
-              {...props}
-              css={css}
-            >
-              {children}
-            </ScrambledTextAnimation>
+            {shouldReduceMotion ? (
+              <Text {...props} css={css}>
+                {children}
+              </Text>
+            ) : (
+              <ScrambledTextAnimation
+                windowSize={windowSize}
+                speed={speed}
+                delay={delay}
+                {...props}
+                css={css}
+              >
+                {children}
+              </ScrambledTextAnimation>
+            )}
           </ClientOnly>
         </>
       )}

@@ -8,7 +8,7 @@ import { FrontMatterPost } from 'types/post';
 
 import MDXComponents from '@core/components/MDX/MDXComponents';
 import Tweet from '@core/components/Tweet';
-import BlogLayout from '@core/layout/BlogPost';
+import { BlogPost } from '@core/features/BlogPost';
 
 interface BlogProps {
   post?: FrontMatterPost;
@@ -28,7 +28,7 @@ const Blog = ({ post, ogImage, tweets }: BlogProps) => {
   };
 
   return (
-    <BlogLayout frontMatter={post.frontMatter} ogImage={ogImage}>
+    <BlogPost frontMatter={post.frontMatter} ogImage={ogImage}>
       <MDXRemote
         {...post.mdxSource}
         components={{
@@ -36,7 +36,7 @@ const Blog = ({ post, ogImage, tweets }: BlogProps) => {
           StaticTweet,
         }}
       />
-    </BlogLayout>
+    </BlogPost>
   );
 };
 

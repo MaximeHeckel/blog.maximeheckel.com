@@ -67,6 +67,7 @@ const Cell = (props: CellProps) => {
         }),
       }}
       justifyContent="center"
+      suppressHydrationWarning
       style={{
         backgroundColor:
           isCenter && lowestSector
@@ -84,7 +85,7 @@ const Cell = (props: CellProps) => {
               css={{
                 fontVariantNumeric: 'tabular-nums',
               }}
-              family="numeric"
+              family="mono"
               weight="3"
             >
               Val: {lowestSector?.average.toFixed(3)}
@@ -95,7 +96,7 @@ const Cell = (props: CellProps) => {
               css={{
                 fontVariantNumeric: 'tabular-nums',
               }}
-              family="numeric"
+              family="mono"
               weight="3"
             >
               Val: {value.toFixed(3)}
@@ -148,7 +149,7 @@ const Sector = (props: SectorProps) => {
           css={{
             fontVariantNumeric: 'tabular-nums',
           }}
-          family="numeric"
+          family="mono"
           weight="3"
         >
           Avg: {sectorStat.average.toFixed(3)}
@@ -158,7 +159,7 @@ const Sector = (props: SectorProps) => {
           css={{
             fontVariantNumeric: 'tabular-nums',
           }}
-          family="numeric"
+          family="mono"
           weight="3"
         >
           Var: {sectorStat.variance.toFixed(3)}

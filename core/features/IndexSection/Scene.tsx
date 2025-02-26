@@ -1,10 +1,9 @@
+import { Box } from '@maximeheckel/design-system';
 import {
-  OrbitControls,
   useFBO,
   PerspectiveCamera,
   PerformanceMonitor,
   OrthographicCamera,
-  useTexture,
 } from '@react-three/drei';
 import {
   Canvas,
@@ -16,16 +15,17 @@ import {
 } from '@react-three/fiber';
 import { EffectComposer, wrapEffect } from '@react-three/postprocessing';
 import { Leva, useControls } from 'leva';
+import { useReducedMotion } from 'motion/react';
 import { Effect } from 'postprocessing';
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { v4 } from 'uuid';
 
-import renderFragmentShader from './doffbo/fragmentShader.glsl';
-import simulationFragmentShader from './doffbo/simulationFragment.glsl';
-import simulationVertexShader from './doffbo/simulationVertex.glsl';
-import renderVertexShader from './doffbo/vertexShader.glsl';
-import ASCIIfragmentShader from './postprocessing/ascii.glsl';
+import renderFragmentShader from './gpgpu/fragmentShader.glsl';
+import simulationFragmentShader from './gpgpu/simulationFragment.glsl';
+import simulationVertexShader from './gpgpu/simulationVertex.glsl';
+import renderVertexShader from './gpgpu/vertexShader.glsl';
+import HalftoneFragmentShader from './postprocessing/ascii.glsl';
 
 declare module '@react-three/fiber' {
   interface ThreeElements {
@@ -37,65 +37,39 @@ declare module '@react-three/fiber' {
   }
 }
 
-class CustomASCIIEffectImpl extends Effect {
-  constructor({ pixelSize = 1.0, asciiTexture, charCount }) {
-    const uniforms = new Map([
+class CustomHalftoneEffectImpl extends Effect {
+  pixelSize: number;
+
+  constructor({ pixelSize = 1.0 }: { pixelSize?: number }) {
+    const uniforms = new Map<string, THREE.Uniform<any>>([
       ['pixelSize', new THREE.Uniform(pixelSize)],
-      ['asciiTexture', new THREE.Uniform(asciiTexture)],
-      ['charCount', new THREE.Uniform(new THREE.Vector2(charCount, charCount))],
     ]);
 
-    super('CustomASCIIEffect', ASCIIfragmentShader, {
+    super('HalftoneEffect', HalftoneFragmentShader, {
       uniforms,
     });
 
-    this.uniforms = uniforms;
+    this.pixelSize = pixelSize;
   }
 
-  update(_renderer, _inputBuffer, _deltaTime) {
-    this.uniforms.get('pixelSize').value = this.pixelSize;
-    this.uniforms.get('asciiTexture').value = this.asciiTexture;
-    if (this.charCount) {
-      this.uniforms.get('charCount').value = new THREE.Vector2(
-        this.charCount[0],
-        this.charCount[1]
-      );
-    }
-    // this.uniforms.get('charSize').value = this.charSize;
+  update(
+    _renderer: THREE.WebGLRenderer,
+    _inputBuffer: THREE.WebGLRenderTarget,
+    _deltaTime: number
+  ) {
+    this.uniforms.get('pixelSize')!.value = this.pixelSize;
   }
 }
 
-class CustomDitherEffectImpl extends Effect {
-  constructor({ bias = 0.85, noise }) {
-    const uniforms = new Map([
-      ['noise', new THREE.Uniform(noise)],
-      ['bias', new THREE.Uniform(bias)],
-    ]);
+const CustomHalftoneEffect = wrapEffect(CustomHalftoneEffectImpl);
 
-    super('CustomDitherEffect', ASCIIfragmentShader, {
-      uniforms,
-    });
-
-    this.uniforms = uniforms;
-  }
-
-  update(_renderer, _inputBuffer, _deltaTime) {
-    this.uniforms.get('bias').value = this.bias;
-    this.uniforms.get('noise').value = this.noise;
-  }
-}
-
-const CustomASCIIEffect = wrapEffect(CustomASCIIEffectImpl);
-const CustomDitherEffect = wrapEffect(CustomDitherEffectImpl);
-const ASCII_CHARS = './ノハメラマ木';
-
-export const ASCIIEffect = () => {
-  const effectRef = useRef();
+export const HalftoneEffect = () => {
+  const effectRef = useRef<any>(null);
 
   const { pixelSize } = useControls({
     pixelSize: {
       value: 4.0,
-      min: 1.0,
+      min: 2.0,
       max: 64.0,
       step: 2.0,
     },
@@ -111,77 +85,9 @@ export const ASCIIEffect = () => {
     camera.lookAt(0, 0, 0);
   });
 
-  const fontFamily = '"Space Grotesk", "MS Gothic", "Noto Sans JP", monospace';
-
-  useEffect(() => {
-    const CHAR_SIZE = 1.0;
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    // Modified calculation to maintain readable character size
-    const BASE_SIZE = 32;
-    const adjustedCharSize = Math.max(BASE_SIZE, CHAR_SIZE * BASE_SIZE);
-    canvas.width = adjustedCharSize * ASCII_CHARS.length;
-    canvas.height = adjustedCharSize;
-
-    // Black background
-    ctx.fillStyle = '#090A0E';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // White characters
-    ctx.fillStyle = 'white';
-    ctx.font = `${adjustedCharSize}px ${fontFamily}`;
-    ctx.textBaseline = 'middle';
-    ctx.textAlign = 'center';
-
-    // Draw each character
-    ASCII_CHARS.split('').forEach((char, i) => {
-      ctx.fillText(char, (i + 0.5) * adjustedCharSize, adjustedCharSize / 2);
-    });
-
-    // Create texture
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.minFilter = THREE.NearestFilter;
-    texture.magFilter = THREE.NearestFilter;
-
-    // Pass texture to shader
-    if (effectRef.current) {
-      effectRef.current.asciiTexture = texture;
-      effectRef.current.charCount = [ASCII_CHARS.length, 1];
-      effectRef.current.charSize = CHAR_SIZE;
-    }
-  }, [pixelSize]);
-
   return (
     <EffectComposer>
-      <CustomASCIIEffect ref={effectRef} pixelSize={pixelSize} />
-    </EffectComposer>
-  );
-};
-
-const DitherEffect = () => {
-  const effectRef = useRef();
-
-  const texture = useTexture('https://cdn.maximeheckel.com/noises/bn.png');
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-
-  const { bias } = useControls({
-    bias: {
-      value: 0.85,
-      min: 0.0,
-      max: 1.0,
-    },
-  });
-
-  useFrame(() => {
-    effectRef.current.noise = texture;
-    effectRef.current.bias = bias;
-  });
-
-  return (
-    <EffectComposer>
-      <CustomDitherEffect ref={effectRef} />
+      <CustomHalftoneEffect ref={effectRef} pixelSize={pixelSize} />
     </EffectComposer>
   );
 };
@@ -190,22 +96,19 @@ const getRandomData = (width: number, height: number) => {
   const len = width * height * 4;
   const data = new Float32Array(len);
 
-  // for (let i = 0; i < len; i += 4) {
-  //   // Calculate normalized position (0 to 1)
-  //   const t = (Math.PI * 2 * i) / len;
+  for (let i = 0; i < len; i += 4) {
+    const t = (Math.PI * 2 * i) / len;
 
-  //   // Create figure-eight base position
-  //   const x = Math.cos(t) / (1.0 + Math.sin(t) * Math.sin(t));
-  //   const y = Math.sin(2.0 * t) / 3.0;
-  //   const z = Math.sin(t) * 0.5;
+    const x = Math.cos(t) / (1.0 + Math.sin(t) * Math.sin(t));
+    const y = Math.sin(2.0 * t) / 3.0;
+    const z = Math.sin(t) * 0.5;
 
-  //   // Add more random variation to create a thicker cloud effect
-  //   const randomness = 1.2; // Increased from 0.5 to create thicker pattern
-  //   data[i] = x * 2.5 + (Math.random() - 0.5) * randomness; // Increased base scaling from 2.0 to 2.5
-  //   data[i + 1] = y * 2.5 + (Math.random() - 0.5) * randomness;
-  //   data[i + 2] = z * 2.5 + (Math.random() - 0.5) * randomness;
-  //   data[i + 3] = 1.0;
-  // }
+    const randomness = 1.2;
+    data[i] = x * 2.5 + (Math.random() - 0.5) * randomness;
+    data[i + 1] = y * 2.5 + (Math.random() - 0.5) * randomness;
+    data[i + 2] = z * 2.5 + (Math.random() - 0.5) * randomness;
+    data[i + 3] = 1.0;
+  }
   return data;
 };
 
@@ -261,16 +164,18 @@ class DepthOfFieldMaterial extends THREE.ShaderMaterial {
 
 extend({ SimMaterial: SimulationMaterial, DepthOfFieldMaterial });
 
-const DOFFBO = () => {
+const ParticleLemniscate = ({
+  shouldStopRenderingLoop = false,
+}: {
+  shouldStopRenderingLoop?: boolean;
+}) => {
   const size = 256;
   const depthOfFieldMaterialRef = useRef<DepthOfFieldMaterial>(null);
   const simulationMaterialDOFRef = useRef<SimulationMaterial>(null);
   const orthoRef = useRef<THREE.OrthographicCamera>(null);
 
-  const { fov, blur, focus } = useControls({
-    fov: { value: 60, min: 0, max: 180 },
-    blur: { value: 3.5, min: 0, max: 50, step: 0.1 },
-    focus: { value: 5.0, min: 3, max: 7, step: 0.01 },
+  const { frequency } = useControls({
+    frequency: { value: 0.3, min: 0, max: 1, step: 0.01 },
   });
 
   const [scene] = useState(() => new THREE.Scene());
@@ -303,9 +208,11 @@ const DOFFBO = () => {
       particles[i3 + 1] = i / size / size;
     }
     return particles;
-  }, []);
+  }, [size]);
 
-  const { gl } = useThree();
+  const frameCount = useRef(0);
+
+  const gl = useThree((state) => state.gl);
 
   useEffect(() => {
     if (!orthoRef.current) return;
@@ -325,19 +232,30 @@ const DOFFBO = () => {
   useFrame((state) => {
     const { gl, clock } = state;
 
-    const old = renderTarget;
-    renderTarget = renderTargetB;
-    renderTargetB = old;
-
     if (
       !simulationMaterialDOFRef.current ||
       !depthOfFieldMaterialRef.current ||
       !orthoRef.current
     )
       return;
+
+    // Always set initial positions
+    depthOfFieldMaterialRef.current.uniforms.positions.value =
+      renderTarget.texture;
+    depthOfFieldMaterialRef.current.uniforms.pointSize.value = 2.5;
+    frameCount.current++;
+
+    // Allow the first frame to run even when stopped
+    if (shouldStopRenderingLoop && frameCount.current > 15) {
+      return;
+    }
+
+    const old = renderTarget;
+    renderTarget = renderTargetB;
+    renderTargetB = old;
+
     simulationMaterialDOFRef.current.uniforms.positions.value =
       renderTargetB.texture;
-    // simulationMaterialDOFRef.current.uniforms.uFrequency.value = frequency;
     simulationMaterialDOFRef.current.uniforms.uTime.value =
       clock.getElapsedTime();
 
@@ -346,12 +264,9 @@ const DOFFBO = () => {
     gl.render(scene, orthoRef.current);
     gl.setRenderTarget(null);
 
-    depthOfFieldMaterialRef.current.uniforms.positions.value =
-      renderTarget.texture;
-    depthOfFieldMaterialRef.current.uniforms.uFov.value = fov;
-    depthOfFieldMaterialRef.current.uniforms.uBlur.value = blur;
-    depthOfFieldMaterialRef.current.uniforms.uFocus.value = focus;
-    depthOfFieldMaterialRef.current.uniforms.pointSize.value = 2.3;
+    simulationMaterialDOFRef.current.uniforms.uFrequency.value = frequency;
+    simulationMaterialDOFRef.current.uniforms.uTime.value =
+      clock.getElapsedTime();
   });
 
   return (
@@ -399,8 +314,8 @@ const DOFFBO = () => {
         near={1 / 2 ** 53}
         far={1}
       />
-      <PerspectiveCamera makeDefault position={[0, 0, 6]} fov={75} />
-      <group position={[0, 0, 0]} rotation={[0, 0, -Math.PI * 0.35]}>
+      <PerspectiveCamera makeDefault position={[0, 0, 1.45]} fov={75} />
+      <group position={[0, 0.2, 0]} rotation={[0, 0, -Math.PI * 0.135]}>
         <points>
           <bufferGeometry>
             <bufferAttribute
@@ -413,28 +328,57 @@ const DOFFBO = () => {
           <depthOfFieldMaterial key={v4()} ref={depthOfFieldMaterialRef} />
         </points>
       </group>
-      <group>
+      <HalftoneEffect />
+    </>
+  );
+};
+
+const Background = () => {
+  const backgroundRef = useRef<THREE.Group>(null);
+  const targetRef = useRef<THREE.Object3D>(null);
+  const spotlightRef = useRef<THREE.SpotLight>(null);
+
+  useEffect(() => {
+    if (targetRef.current && spotlightRef.current) {
+      targetRef.current.position.set(-5, 5, -10);
+      spotlightRef.current.target = targetRef.current;
+      targetRef.current.updateMatrixWorld();
+    }
+  }, []);
+
+  return (
+    <>
+      <spotLight
+        ref={spotlightRef}
+        position={[35, 30, 20]}
+        intensity={15.0}
+        color="#FFFFFF"
+        angle={0.25}
+        penumbra={1.0}
+        decay={0.25}
+      />
+      <object3D ref={targetRef} />
+      <group ref={backgroundRef}>
         <mesh rotation={[0, 0, 0]} position={[0, 0, -10]}>
           <planeGeometry args={[300, 300]} />
-          <meshBasicMaterial color="#0F53B7" />
+          <meshStandardMaterial color="#0F53B7" />
         </mesh>
         <gridHelper
-          args={[25, 25]}
+          args={[50, 120]}
           rotation={[-Math.PI / 2, 0, 0]}
-          position={[0, 2, -9.5]}
+          position={[0, 0, -4.5]}
         >
           <meshBasicMaterial color="#FFFFFF" transparent opacity={0.02} />
         </gridHelper>
       </group>
-      <ASCIIEffect />
-      {/* <DitherEffect /> */}
     </>
   );
 };
 
 export const Scene = () => {
-  const [DPR, setDPR] = useState(0.85);
+  const [DPR, setDPR] = useState(1.0);
   const [showDebug, setShowDebug] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     setShowDebug(
@@ -442,19 +386,30 @@ export const Scene = () => {
     );
   }, []);
   return (
-    <>
+    <Box
+      css={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: '120dvh',
+        zIndex: 0,
+        maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
+      }}
+    >
       <Leva hidden={!showDebug} />
-      <Canvas id="main-canvas" dpr={DPR}>
+      <Canvas id="main-canvas" shadows dpr={DPR}>
         <color attach="background" args={['#090A0E']} />
-        <OrbitControls />
         <PerformanceMonitor
           onDecline={() => setDPR(0.7)}
           onIncline={() => setDPR(1.0)}
         />
         <Suspense fallback={null}>
-          <DOFFBO />
+          <ParticleLemniscate shouldStopRenderingLoop={!!shouldReduceMotion} />
+          <Background />
         </Suspense>
       </Canvas>
-    </>
+    </Box>
   );
 };

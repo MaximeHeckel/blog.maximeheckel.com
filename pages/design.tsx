@@ -1,5 +1,4 @@
 import {
-  useTheme,
   styled,
   Anchor,
   Blockquote,
@@ -27,22 +26,22 @@ import {
   Switch,
   Radio,
   Details,
+  IconButton,
 } from '@maximeheckel/design-system';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
-import { templateColumnsMedium } from 'styles/grid';
 import { NewTweet } from 'types/tweet';
 
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
 import CodeBlock from '@core/components/Code/CodeBlock';
-import Glow from '@core/components/Glow';
+import { HR } from '@core/components/HR';
 import Logo from '@core/components/Logo';
 import Image from '@core/components/MDX/Image/Image';
+import { Main } from '@core/components/Main';
 import Seo from '@core/components/Seo';
 import ImageGallery from '@core/components/Slideshow';
 import Tweet from '@core/components/Tweet';
-import Layout from '@core/layout';
 
 const SandpackExample = dynamic(
   () => import('@core/components/MDX/Widgets/WaveAnimation/Sandpack')
@@ -51,104 +50,11 @@ const Search = dynamic(() => import('@core/components/Search'), {
   ssr: false,
 });
 
-/**
- * TODO:
- * - Decouple Search in 2 components => Overlay + Dialog and Command Center
- * - Define specific token for glass card background (foreground is not cutting it)
- */
-
-// Grid examples
-/* <Grid.Item as="section" col={2}>
-          <Grid
-            css={{ height: '500px' }}
-            templateColumns="repeat(5, 1fr)"
-            templateRows="repeat(2, 1fr)"
-            gap={2}
-          >
-            <Grid.Item colSpan={1} rowSpan={2}>
-              <Box
-                css={{ height: '100%', width: '100%', background: 'blue' }}
-              />
-            </Grid.Item>
-            <Grid.Item colSpan={2}>
-              <Box
-                css={{ height: '100%', width: '100%', background: 'blue' }}
-              />
-            </Grid.Item>
-            <Grid.Item colSpan={2}>
-              <Box
-                css={{ height: '100%', width: '100%', background: 'blue' }}
-              />
-            </Grid.Item>
-            <Grid.Item colSpan={4}>
-              <Box
-                css={{ height: '100%', width: '100%', background: 'blue' }}
-              />
-            </Grid.Item>
-          </Grid>
-        </Grid.Item> */
-/* <Grid.Item col={2}>
-          <Grid templateColumns="repeat(5, 1fr)" gap={4}>
-            <Grid.Item colSpan={2}>
-              <Box
-                css={{ width: '100%', height: '200px', background: 'blue' }}
-              />
-            </Grid.Item>
-            <Grid.Item colStart={4} colEnd={6}>
-              <Box
-                css={{ width: '100%', height: '200px', background: 'hotpink' }}
-              />
-            </Grid.Item>
-          </Grid>
-        </Grid.Item> */
-/* <Grid.Item col={2}>
-          <Grid
-            templateAreas={`"header header"
-                  "nav main"
-                  "nav footer"`}
-            templateColumns="'150px 1fr'"
-            templateRows="'30px 1fr 30px'"
-            gapX={4}
-            gapY={3}
-          >
-            <Grid.Item area="header">
-              <Box css={{ width: '100%', height: '100%', background: 'blue' }}>
-                Header
-              </Box>
-            </Grid.Item>
-            <Grid.Item area="nav">
-              <Box css={{ width: '100%', height: '100%', background: 'blue' }}>
-                Nav
-              </Box>
-            </Grid.Item>
-            <Grid.Item area="main">
-              <Box
-                css={{ width: '100%', height: '100%', background: 'hotpink' }}
-              >
-                Main
-              </Box>
-            </Grid.Item>
-            <Grid.Item area="footer">
-              <Box css={{ width: '100%', height: '100%', background: 'blue' }}>
-                Footer
-              </Box>
-            </Grid.Item>
-          </Grid>
-        </Grid.Item> */
-
-const HR = styled('hr', {
-  height: '1px',
-  width: '100%',
-  background: 'var(--border-color)',
-  border: 'none',
-});
-
 const Label = styled('p', {
   marginBottom: '8px',
 });
 
 export default function Design(props: { tweets: Record<string, NewTweet> }) {
-  const { dark } = useTheme();
   const [showSearch, setShowSearch] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [rangeValue, setRangeValue] = React.useState(250);
@@ -168,12 +74,21 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
   ];
 
   return (
-    <Layout footer>
+    <Main>
       <Seo title="Design" />
       <Grid
-        css={{ paddingTop: 'var(--space-10)', overflowX: 'hidden' }}
-        gapX={4}
-        templateColumns={templateColumnsMedium}
+        css={{
+          position: 'relative',
+          height: 'auto',
+          width: '100%',
+          overflow: 'hidden',
+          backgroundColor: 'var(--background)',
+          paddingTop: 'var(--space-10)',
+          borderBottomRightRadius: 4,
+          borderBottomLeftRadius: 4,
+        }}
+        gapX={2}
+        templateColumns="1fr minmax(auto, 700px) 1fr"
       >
         <Flex
           alignItems="flex-start"
@@ -192,8 +107,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
             <H1>Components / Design System </H1>
             <HR />
             <Flex justifyContent="space-between">
-              <Pill variant="warning">Work In Progress</Pill>
-              <Pill variant="info">v1.0</Pill>
+              <Pill variant="info">v3.0</Pill>
             </Flex>
           </Flex>
           <Flex
@@ -358,14 +272,20 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
               </Text>
             </Box>
             <Box>
-              <Label>Numeric (experimenting)</Label>
-              <Text size="3" family="numeric">
-                1 AU = 1,495978707x10<sup>11</sup> m
+              <Label>Serif</Label>
+              <Text size="4" family="serif">
+                Almost before we knew it, we had left the ground.
               </Text>
             </Box>
             <Box>
               <Label>Mono</Label>
               <Text size="3" family="mono">
+                1 AU = 1,495978707x10<sup>11</sup> m
+              </Text>
+            </Box>
+            <Box>
+              <Label>Mono - Code</Label>
+              <Text size="3" family="code">
                 console.log(foobar)
               </Text>
             </Box>
@@ -436,24 +356,6 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
               </Text>
             </Box>
             <Box>
-              <Label>Text gradient</Label>
-              <Text
-                as="p"
-                size="3"
-                gradient
-                css={{
-                  backgroundImage: `linear-gradient(
-              91.83deg,
-              var(--pink-500) -20.26%,
-              var(--blue-600) 20.55%,
-              var(--blue-800) 60.81%
-            )`,
-                }}
-              >
-                Almost before we knew it, we had left the ground.
-              </Text>
-            </Box>
-            <Box>
               <Label>Strong</Label>
               <Strong>Almost before we knew it, we had left the ground.</Strong>
             </Box>
@@ -463,14 +365,14 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
             </Box>
             <Box>
               <Label>BigNum (WIP)</Label>
-              <Text family="numeric" size="7" weight="4">
+              <Text family="mono" size="7" weight="4">
                 1 AU = 1,495978707x10<sup>11</sup> m
               </Text>
             </Box>
             <Box>
               <Label>BigNum Outline (Experimenting)</Label>
               <Text
-                family="numeric"
+                family="mono"
                 size="7"
                 weight="4"
                 css={{
@@ -483,7 +385,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
             </Box>
             <Box>
               <Text
-                family="numeric"
+                family="mono"
                 size="7"
                 weight="4"
                 css={{
@@ -560,7 +462,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
             >
               <Card
                 css={{
-                  '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+                  '--shadow-color': '222deg 39% 5%',
                 }}
                 depth={0}
               >
@@ -572,7 +474,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
               </Card>
               <Card
                 css={{
-                  '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+                  '--shadow-color': '222deg 39% 5%',
                 }}
                 depth={1}
               >
@@ -584,7 +486,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
               </Card>
               <Card
                 css={{
-                  '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+                  '--shadow-color': '222deg 39% 5%',
                 }}
                 depth={2}
               >
@@ -596,7 +498,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
               </Card>
               <Card
                 css={{
-                  '--shadow-color': dark ? '222deg 39% 5%' : '222deg 39% 80%',
+                  '--shadow-color': '222deg 39% 5%',
                 }}
                 depth={3}
               >
@@ -662,53 +564,46 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
           >
             <H2>Buttons</H2>
             <Grid gap={5}>
-              <Glow>
-                <Button variant="primary">Button</Button>
-              </Glow>
               <Button variant="primary">Button</Button>
+              <Button variant="primary" inverted>
+                Button
+              </Button>
               <Button variant="primary" endIcon={<Icon.External size="4" />}>
                 Portfolio
               </Button>
               <Button variant="primary" startIcon={<Icon.Twitter size="4" />}>
                 Follow me!
               </Button>
-              <Button variant="primary" disabled>
-                Button
-              </Button>
+
               <Button variant="secondary">Button</Button>
-              <Button variant="secondary" endIcon={<Icon.External size="4" />}>
-                Portfolio
-              </Button>
-              <Button variant="secondary" startIcon={<Icon.Twitter size="4" />}>
-                Follow me!
-              </Button>
-              <Button variant="secondary" disabled>
-                Button
-              </Button>
-              <Button
+              <Button variant="tertiary">Button</Button>
+
+              <IconButton aria-label="Follow me on Twitter!" variant="primary">
+                <Icon.Twitter />
+              </IconButton>
+              <IconButton aria-label="Follow me on Twitter!">
+                <Icon.Twitter />
+              </IconButton>
+              <IconButton aria-label="Follow me on Twitter!" variant="tertiary">
+                <Icon.Twitter />
+              </IconButton>
+              <IconButton
                 aria-label="Follow me on Twitter!"
-                variant="icon"
-                icon={<Icon.Twitter />}
-              />
-              <Button
+                rounded
+                variant="primary"
+              >
+                <Icon.Twitter />
+              </IconButton>
+              <IconButton aria-label="Follow me on Twitter!" rounded>
+                <Icon.Twitter />
+              </IconButton>
+              <IconButton
                 aria-label="Follow me on Twitter!"
-                disabled
-                variant="icon"
-                icon={<Icon.Twitter />}
-              />
-              <Button
-                aria-label="Follow me on Twitter!"
-                size="small"
-                variant="icon"
-                icon={<Icon.Twitter />}
-              />
-              <Button
-                aria-label="Follow me on Twitter!"
-                disabled
-                size="small"
-                variant="icon"
-                icon={<Icon.Twitter />}
-              />
+                rounded
+                variant="tertiary"
+              >
+                <Icon.Twitter />
+              </IconButton>
             </Grid>
           </Flex>
           <Flex
@@ -721,11 +616,11 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
           >
             <H2>Anchor</H2>
             <Grid gap={1}>
-              <h3>
+              <p>
                 <Anchor href="https://twitter.com/MaximeHeckel" favicon>
                   @MaximeHeckel
                 </Anchor>
-              </h3>
+              </p>
               <p>
                 <Anchor
                   href="https://twitter.com/MaximeHeckel"
@@ -735,43 +630,16 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                   @MaximeHeckel
                 </Anchor>
               </p>
-              <h3>
-                <Anchor
-                  href="https://bsky.app/profile/maxime.bsky.social"
-                  favicon
-                >
-                  @maxime.bsky.social
-                </Anchor>
-              </h3>
               <p>
-                <Anchor
-                  href="https://bsky.app/profile/maxime.bsky.social"
-                  favicon
-                  discreet
-                >
-                  @maxime.bsky.social
-                </Anchor>
-              </p>
-              <h3>
-                <Anchor href="https://github.com/MaximeHeckel" favicon>
-                  Github
-                </Anchor>
-              </h3>
-              <p>
-                <Anchor href="https://github.com/MaximeHeckel" discreet favicon>
-                  Github
-                </Anchor>
-              </p>
-              <h3>
                 <Anchor href="/" arrow="left">
                   Back
                 </Anchor>
-              </h3>
-              <h3>
+              </p>
+              <p>
                 <Anchor href="https://twitter.com/MaximeHeckel" arrow="right">
                   Twitter
                 </Anchor>
-              </h3>
+              </p>
               <p>
                 <Anchor
                   href="https://github.com/MaximeHeckel/blog.maximeheckel.com"
@@ -781,11 +649,11 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                   Check out this repo
                 </Anchor>
               </p>
-              <h3>
+              <p>
                 <Anchor href="/design" underline>
                   Design System
                 </Anchor>
-              </h3>
+              </p>
               <p>
                 <Anchor discreet href="/design" underline>
                   Design System
@@ -1087,6 +955,26 @@ they can change the world, are the ones who do.`}
           >
             <H2>Card</H2>
             <Grid gapY={6} css={{ width: '100%' }}>
+              <Card variant="primary">
+                <Card.Header>Primary Card</Card.Header>
+                <Card.Body>
+                  Default style - Use for widgets and content that needs to be
+                  put int he foreground
+                </Card.Body>
+              </Card>
+              <Card variant="secondary">
+                <Card.Header>Secondary Card</Card.Header>
+                <Card.Body>
+                  Glass Background - Use on top of colored background to blend
+                  in
+                </Card.Body>
+              </Card>
+              <Card variant="tertiary">
+                <Card.Header>Tertiary Card</Card.Header>
+                <Card.Body>
+                  Transparent Background - Use for a more muted look
+                </Card.Body>
+              </Card>
               <Card>
                 <Card.Body>Base Card</Card.Body>
               </Card>
@@ -1109,26 +997,6 @@ they can change the world, are the ones who do.`}
                 >
                   Card With custom Body
                 </Flex>
-              </Card>
-              <Card depth={0}>
-                <Card.Body>
-                  Card <InlineCode>depth={0}</InlineCode>
-                </Card.Body>
-              </Card>
-              <Card depth={1}>
-                <Card.Body>
-                  Card <InlineCode>depth={1}</InlineCode>
-                </Card.Body>
-              </Card>
-              <Card depth={2}>
-                <Card.Body>
-                  Card <InlineCode>depth={2}</InlineCode>
-                </Card.Body>
-              </Card>
-              <Card depth={3}>
-                <Card.Body>
-                  Card <InlineCode>depth={3}</InlineCode>
-                </Card.Body>
               </Card>
             </Grid>
           </Flex>
@@ -1363,7 +1231,7 @@ function sayHi(name) {
           </Flex>
         </Flex>
       </Grid>
-    </Layout>
+    </Main>
   );
 }
 

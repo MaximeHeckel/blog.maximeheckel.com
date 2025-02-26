@@ -2,13 +2,13 @@ import { styled, Anchor, Text, Box, Flex } from '@maximeheckel/design-system';
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 
-// const NewsletterForm = dynamic(() => import('@core/components/NewsletterForm'));
+import { HR } from '@core/components/HR';
 
 const StyledSection = styled('section', {
-  background: 'var(--foreground)',
+  background: 'var(--background)',
   color: 'var(--text-primary)',
   paddingBottom: 48,
-  paddingTop: 48,
+
   width: '100%',
 
   '@media (max-width: 700px)': {
@@ -77,12 +77,12 @@ const SignatureSVG = () => {
   );
 };
 
-const Signature = ({ title, url }: { title: string; url: string }) => {
+const Footnote = ({ title, url }: { title: string; url: string }) => {
   const textTwitter = `${title} by @MaximeHeckel ${url}`;
   const textBluesky = `${title} by @maxime.bsky.social ${url}`;
 
   return (
-    <StyledSection data-testid="signature">
+    <StyledSection data-testid="footnote">
       <Flex
         alignItems="start"
         direction="column"
@@ -92,6 +92,7 @@ const Signature = ({ title, url }: { title: string; url: string }) => {
         }}
         gap="5"
       >
+        <HR />
         <Text as="p">
           Liked this article? Share it with a friend on{' '}
           <Anchor
@@ -147,9 +148,8 @@ const Signature = ({ title, url }: { title: string; url: string }) => {
         </Box>
         <SignatureSVG />
       </Flex>
-      {/* <NewsletterForm /> */}
     </StyledSection>
   );
 };
 
-export { Signature };
+export { Footnote };

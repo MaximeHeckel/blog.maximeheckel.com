@@ -62,25 +62,7 @@ const output = withBundleAnalyzer({
         ],
       },
       {
-        source: '/fonts/SpaceGrotesk-Medium.woff2',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/fonts/SpaceGrotesk-Regular.woff2',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/fonts/SpaceGrotesk-SemiBold.woff2',
+        source: '/fonts/DepartureMono-Regular.woff2',
         headers: [
           {
             key: 'Cache-Control',

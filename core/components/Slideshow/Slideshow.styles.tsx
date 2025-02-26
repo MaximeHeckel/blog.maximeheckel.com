@@ -35,9 +35,8 @@ export const ImageSlide = styled('button', {
 });
 
 export const IndicatorWrapper = styled('div', {
-  '--thickness': '1.5px',
-  backgroundColor: 'oklch(from var(--gray-1000) l c h / 30%)',
-  borderRadius: 'calc(var(--border-radius-2) + var(--thickness))',
+  '--thickness': '1.0px',
+
   padding: 'var(--thickness)',
   overflow: 'hidden',
   backdropFilter: 'blur(2px)',
@@ -51,10 +50,10 @@ export const IndicatorContainer = styled('div', {
   display: 'flex',
   gap: '8px',
   alignItems: 'center',
-  backgroundColor: 'var(--gray-500)',
   borderRadius: 'var(--border-radius-2)',
-  padding: '12px',
+  padding: '10px',
   width: 'fit-content',
+  position: 'relative',
   margin: 0,
 });
 
