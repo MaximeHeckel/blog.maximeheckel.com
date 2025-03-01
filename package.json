@@ -51,7 +51,7 @@
     "chalk": "5.4.1",
     "d3-array": "3.2.4",
     "date-fns": "4.1.0",
-    "detect-gpu": "^5.0.63",
+    "detect-gpu": "^5.0.70",
     "eventsource-parser": "^3.0.0",
     "globby": "14.0.2",
     "gpt3-tokenizer": "^1.1.5",
