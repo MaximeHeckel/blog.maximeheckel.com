@@ -62,7 +62,7 @@
     "next": "^14.2.21",
     "next-mdx-remote": "5.0.0",
     "next-seo": "6.6.0",
-    "openai": "^4.77.0",
+    "openai": "^4.86.1",
     "prism-react-renderer": "^2.4.1",
     "prismjs": "^1.29.0",
     "qs": "6.13.1",
