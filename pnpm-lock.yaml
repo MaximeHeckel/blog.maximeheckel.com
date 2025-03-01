@@ -81,11 +81,11 @@ importers:
         specifier: ^1.1.5
         version: 1.1.5
       graphql:
-        specifier: 15.9.0
-        version: 15.9.0
+        specifier: 15.10.1
+        version: 15.10.1
       graphql-request:
         specifier: 3.3.0
-        version: 3.3.0(graphql@15.9.0)
+        version: 3.3.0(graphql@15.10.1)
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
@@ -328,8 +328,8 @@ packages:
     resolution: {integrity: sha512-zHd0eUrf5GZoOWVCXp6koAKQTfZV07eit6bGPmJgnZdnSAvvZee6zniW2XMF7Cmc4ISOOnPy3QaSiIJGJkVEDQ==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/runtime@7.26.0':
-    resolution: {integrity: sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==}
+  '@babel/runtime@7.26.9':
+    resolution: {integrity: sha512-aA63XwOkcl4xxQa3HjPMqOP6LiK0ZDv3mUPYEFXkpHbaFjtGggE1A61FjFzJnB+p7/oy2gA8E+rcBNl/zC1tMg==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.25.9':
@@ -2692,8 +2692,8 @@ packages:
     peerDependencies:
       graphql: 14.x || 15.x
 
-  graphql@15.9.0:
-    resolution: {integrity: sha512-GCOQdvm7XxV1S4U4CGrsdlEN37245eC8P9zaYCMr6K1BG0IPGy5lUwmJsEOGyl1GD6HXjOtl2keCP9asRBwNvA==}
+  graphql@15.10.1:
+    resolution: {integrity: sha512-BL/Xd/T9baO6NFzoMpiMD7YUZ62R6viR5tp/MULVEnbYJXZA//kRNW7J0j1w/wXArgL0sCxhDfK5dczSKn3+cg==}
     engines: {node: '>= 10.x'}
 
   gray-matter@4.0.3:
@@ -4625,7 +4625,7 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
-  '@babel/runtime@7.26.0':
+  '@babel/runtime@7.26.9':
     dependencies:
       regenerator-runtime: 0.14.1
 
@@ -5581,7 +5581,7 @@ snapshots:
   '@testing-library/dom@10.4.0':
     dependencies:
       '@babel/code-frame': 7.26.2
-      '@babel/runtime': 7.26.0
+      '@babel/runtime': 7.26.9
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       chalk: 4.1.2
@@ -7338,16 +7338,16 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  graphql-request@3.3.0(graphql@15.9.0):
+  graphql-request@3.3.0(graphql@15.10.1):
     dependencies:
       cross-fetch: 3.1.8
       extract-files: 9.0.0
       form-data: 3.0.1
-      graphql: 15.9.0
+      graphql: 15.10.1
     transitivePeerDependencies:
       - encoding
 
-  graphql@15.9.0: {}
+  graphql@15.10.1: {}
 
   gray-matter@4.0.3:
     dependencies:
