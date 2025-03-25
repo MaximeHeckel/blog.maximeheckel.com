@@ -49,9 +49,8 @@ const getBrowser = () => {
 const FooterBlock = styled('footer', {
   transition: '0.5s',
   width: '100%',
-  position: 'sticky',
-  bottom: 0,
   paddingTop: '32px',
+  height: 'fit-content',
   zIndex: -1,
   background: 'var(--gray-000)',
   backgroundImage: `
@@ -61,6 +60,11 @@ const FooterBlock = styled('footer', {
   backgroundSize: '15.85px 15.85px',
   backgroundPosition: 'center center',
   pointerEvents: 'auto',
+
+  '@md': {
+    position: 'sticky',
+    bottom: 0,
+  },
 });
 
 const commitSha = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;

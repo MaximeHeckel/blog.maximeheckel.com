@@ -7,7 +7,9 @@ import {
   SandpackConsole,
 } from '@codesandbox/sandpack-react';
 import { Box, Flex, Shadows, styled } from '@maximeheckel/design-system';
-import React from 'react';
+import { useState } from 'react';
+
+import { useIsMobile } from '@core/hooks/useIsMobile';
 
 import setupFiles from './SandpackSetupFiles';
 import PreviewTabs, { Tab } from './components/PreviewTabs';
@@ -160,9 +162,11 @@ const Sandpack = (props: SandpackProps) => {
     defaultTab = 'preview',
   } = props;
 
-  const [consoleKey, setConsoleKey] = React.useState(0);
-  const [selectedTab, setSelectedTab] = React.useState<Tab>(defaultTab);
-  const [isFullscreen, setIsFullscreen] = React.useState(false);
+  const isMobile = useIsMobile();
+
+  const [consoleKey, setConsoleKey] = useState(0);
+  const [selectedTab, setSelectedTab] = useState<Tab>(defaultTab);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const defaultEditorOptions = {
     showNavigator: false,
@@ -191,7 +195,7 @@ const Sandpack = (props: SandpackProps) => {
           dependencies: dependencies || {},
         }}
         options={{
-          autorun,
+          autorun: isMobile ? false : autorun,
         }}
       >
         <SandpackLayout>
