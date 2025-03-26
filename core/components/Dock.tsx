@@ -185,6 +185,7 @@ const Dock = () => {
                     background: 'transparent',
                   },
                 }}
+                data-testid={`${item.toLowerCase()}-link`}
                 tabIndex={0}
                 data-nav-item={item}
                 onKeyDown={handleKeyDown}

@@ -320,6 +320,7 @@ const DynamicTOC = (props: {
             weight="4"
             variant="primary"
             truncate={!expanded}
+            data-testid="toc-title"
           >
             {title}
           </Text>

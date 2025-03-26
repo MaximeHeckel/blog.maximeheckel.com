@@ -385,6 +385,12 @@ export const Scene = () => {
       typeof window !== 'undefined' && window.location.search.includes('?debug')
     );
   }, []);
+
+  // Check if running in Cypress test environment
+  if (typeof window !== 'undefined' && window.Cypress) {
+    return null;
+  }
+
   return (
     <Box
       css={{

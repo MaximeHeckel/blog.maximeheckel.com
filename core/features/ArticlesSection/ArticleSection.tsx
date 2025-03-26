@@ -46,6 +46,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
     <Grid.Item col={2}>
       <Box
         id="articles"
+        data-testid="articles-list"
         ref={articleListRef}
         as="ul"
         onMouseLeave={() => {
@@ -77,6 +78,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
           return (
             <Box
               as="li"
+              data-testid="article-item"
               css={{
                 '&:last-child a': {
                   borderBottom: 'none',
@@ -114,6 +116,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
               <Box
                 as={Link}
                 id={post.slug}
+                data-testid="article-link"
                 href={`/posts/${post.slug}/`}
                 passHref
                 css={{
