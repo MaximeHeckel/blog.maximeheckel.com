@@ -2,7 +2,6 @@ import {
   css,
   Flex,
   Icon,
-  Pill,
   Text,
   VisuallyHidden,
 } from '@maximeheckel/design-system';
@@ -10,7 +9,7 @@ import { motion } from 'motion/react';
 import Link from 'next/link';
 import { useEffect, useState, useCallback } from 'react';
 
-import { Command, Sparkles } from './Icons';
+import { Sparkles } from './Icons';
 import * as S from './Search.styles';
 import { MAX_HEIGHT } from './constants';
 import useIndexItem from './useIndexItem';
@@ -136,7 +135,6 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
             >
               Ask me anything
             </Text>
-            <Pill variant="success">Experimental</Pill>
           </Flex>
         </S.Item>
         <S.Separator>Navigation</S.Separator>
@@ -163,6 +161,25 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           </Link>
         </S.Item>
         <S.Separator>Links</S.Separator>
+        <S.Item
+          data-testid="bluesky-social-link"
+          data-selected={selectedResult === 'bluesky-social-link'}
+          id="bluesky-social-link"
+          key="bluesky-social-link"
+        >
+          <a
+            href="https://bsky.app/profile/maxime.bsky.social"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon.Bluesky />
+            <span style={{ marginLeft: '15px' }}>Bluesky</span>
+            <VisuallyHidden as="p">
+              Link redirects to my Bluesky profile page
+              https://bsky.app/profile/maxime.bsky.social.
+            </VisuallyHidden>
+          </a>
+        </S.Item>
         <S.Item
           data-testid="twitter-social-link"
           data-selected={selectedResult === 'twitter-social-link'}
@@ -253,7 +270,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           </Link>
         </S.Item>
       </div>
-      <S.ShortcutList>
+      {/* <S.ShortcutList>
         <Flex alignItems="center">
           <Text as="span" css={{ opacity: 0.7 }} size="1" variant="tertiary">
             Cmd
@@ -286,7 +303,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
             </S.KBD>
           </Flex>
         </Flex>
-      </S.ShortcutList>
+      </S.ShortcutList> */}
     </motion.div>
   );
 };

@@ -1,5 +1,3 @@
-import { useTheme } from '@maximeheckel/design-system';
-
 import Sandpack from '@core/components/Code/Sandpack';
 
 const ComponentsCode = `import { styled } from '@stitches/react';
@@ -90,19 +88,7 @@ canvas {
     height: 100vh;
 }`;
 
-const SceneCSSLight = `
-html {
-    background: #F7F7FB;
-}
-
-canvas {
-    width: 100vw;
-    height: 100vh;
-}`;
-
 const SandpackArrowList = () => {
-  const { dark } = useTheme();
-
   return (
     <Sandpack
       template="react"
@@ -118,7 +104,7 @@ const SandpackArrowList = () => {
           code: ComponentsCode,
         },
         '/scene.css': {
-          code: dark ? SceneCSSDark : SceneCSSLight,
+          code: SceneCSSDark,
           hidden: true,
         },
       }}

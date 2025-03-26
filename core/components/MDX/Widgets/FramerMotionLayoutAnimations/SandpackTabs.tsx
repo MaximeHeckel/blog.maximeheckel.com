@@ -1,5 +1,3 @@
-import { useTheme } from '@maximeheckel/design-system';
-
 import Sandpack from '@core/components/Code/Sandpack';
 
 const AppCode = `import { motion } from 'framer-motion';
@@ -116,19 +114,7 @@ canvas {
     height: 100vh;
 }`;
 
-const SceneCSSLight = `
-html {
-    background: #F7F7FB;
-}
-
-canvas {
-    width: 100vw;
-    height: 100vh;
-}`;
-
 const SandpackTabs = () => {
-  const { dark } = useTheme();
-
   return (
     <Sandpack
       template="react"
@@ -144,7 +130,7 @@ const SandpackTabs = () => {
           code: ComponentsCode,
         },
         '/scene.css': {
-          code: dark ? SceneCSSDark : SceneCSSLight,
+          code: SceneCSSDark,
           hidden: true,
         },
       }}

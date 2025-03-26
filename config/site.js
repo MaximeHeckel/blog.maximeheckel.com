@@ -17,10 +17,10 @@ const config = {
     'native',
     'serverless',
   ],
-  title: "Maxime Heckel's Blog",
-  titleAlt: 'Maxime Heckel | Blog',
+  title: 'The Blog of Maxime Heckel',
+  titleAlt: 'The Blog of Maxime Heckel',
   description:
-    "Hi I'm Maxime, and this is my blog. Here, I share through my writing my experience as a frontend engineer and everything I'm learning about on React, Shaders, React Three Fiber, Framer Motion, and more.",
+    "Hi I'm Maxime, and this is my blog. In here, you'll find all the articles I wished I had when I was learning about web development, shaders, real-time 3D on the web, and more.  Each piece I write aims to dive deep into the topics I'm passionate about, while also making complex topics more accessible through interactive playgrounds, visualization, and well detailed walkthroughs. My goal is to give you the tools and intuition to explore further on your own.",
   url: 'https://blog.maximeheckel.com', // Site domain without trailing slash
   siteUrl: 'https://blog.maximeheckel.com/', // url + pathPrefix
   siteLanguage: 'en', // Language Tag on <html> element

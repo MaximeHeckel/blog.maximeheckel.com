@@ -5,13 +5,11 @@ import {
   Flex,
   InlineCode,
   Range,
-  useTheme,
 } from '@maximeheckel/design-system';
 import React from 'react';
 
-import useScrollSpy from '@core/hooks/useScrollSpy';
-
 import { AnimationCardContent, Form, HighlightedValue } from '../Components';
+import useScrollSpy from './useScrollSpy';
 
 const BrowserWindow = styled('div', {
   borderRadius: 'var(--border-radius-1)',
@@ -162,7 +160,6 @@ const WidgetRoot = styled('div', {
 });
 
 const ScrollSpyWidget = () => {
-  const { dark } = useTheme();
   const ids = React.useMemo(() => ['section1', 'section2', 'section3'], []);
   const [elements, setElements] = React.useState<Element[]>([]);
   const [offset, setOffset] = React.useState(50);
@@ -183,8 +180,8 @@ const ScrollSpyWidget = () => {
 
   return (
     <>
-      <BrowserWindow dark={dark}>
-        <BrowserHeader dark={dark}>
+      <BrowserWindow dark>
+        <BrowserHeader dark>
           <TrafficLightWrapper
             alignItems="center"
             direction="row"
@@ -194,7 +191,7 @@ const ScrollSpyWidget = () => {
             <TrafficLight variant="yellow" />
             <TrafficLight variant="green" />
           </TrafficLightWrapper>
-          <SearchBar dark={dark} />
+          <SearchBar dark />
           <div
             style={{
               width: '50px',

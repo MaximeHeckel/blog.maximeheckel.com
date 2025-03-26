@@ -10,8 +10,6 @@ import {
   Pill,
   Text,
   EM,
-  H2,
-  H3,
   Strong,
 } from '@maximeheckel/design-system';
 import dynamic from 'next/dynamic';
@@ -19,7 +17,9 @@ import dynamic from 'next/dynamic';
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
 import Callout from '@core/components/Callout';
 import Code from '@core/components/Code';
+import { FootnoteRef, FootnotesList } from '@core/components/Footnotes';
 import Fullbleed from '@core/components/Fullbleed';
+import H2 from '@core/components/H2';
 import VideoPlayer from '@core/components/VideoPlayer';
 
 import SupportCallout from '../Callout/SupportCallout';
@@ -345,7 +345,9 @@ const customComponents = {
 const MDXComponents = {
   // Replace the default anchor tag by the Anchor component with underline set to true: this is the default link
   a: function A(props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-    return <Anchor underline {...props} />;
+    return (
+      <Anchor external={props.href?.includes('https')} underline {...props} />
+    );
   },
   Anchor,
   Button,
@@ -354,8 +356,12 @@ const MDXComponents = {
   Details,
   em: EM,
   Fullbleed,
+  FootnoteRef,
+  FootnotesList,
   h2: H2,
-  h3: H3,
+  h3: function H3(props: React.HTMLAttributes<HTMLHeadingElement>) {
+    return <Text as="h3" variant="primary" weight="3" {...props} />;
+  },
   Image,
   code: InlineCode,
   li: List.Item,

@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@maximeheckel/design-system';
+import { Box } from '@maximeheckel/design-system';
 import { useInView } from 'motion/react';
 import { useRef } from 'react';
 
@@ -35,22 +35,12 @@ canvas {
     height: 100vh;
 }`;
 
-const SceneCSSLight = `
-html {
-    background: #F7F7FB;
-}
-
-canvas {
-    width: 100vw;
-    height: 100vh;
-}`;
-
 const R3FShaderSandpack = (props: any) => {
   const { scene } = props;
 
   const ref = useRef(null);
   const inView = useInView(ref);
-  const { dark } = useTheme();
+
   const { tier, loading: tierLoading } = useGPUTier();
 
   const autorun = tier > 2;
@@ -71,7 +61,7 @@ const R3FShaderSandpack = (props: any) => {
             // @ts-ignore
             ...SCENES[scene],
             '/scene.css': {
-              code: dark ? SceneCSSDark : SceneCSSLight,
+              code: SceneCSSDark,
               hidden: true,
             },
           }}

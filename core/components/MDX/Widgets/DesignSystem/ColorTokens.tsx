@@ -7,12 +7,9 @@ import {
   Icon,
   Text,
   Tooltip,
-  useTheme,
 } from '@maximeheckel/design-system';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
-
-import LightDarkSwitcher from '@core/components/Buttons/LightDarkSwitcher';
 
 const titles = [
   'Pick base colors',
@@ -90,24 +87,24 @@ const step3ColorScaleDark = {
   ],
 };
 
-const step3ColorScaleLight = {
-  gray: [
-    { color: '--gray-100', label: '--background' },
-    { color: '--gray-200', label: '--foreground' },
-    { color: '--gray-300', label: '--input-disabled' },
-    { color: '--gray-1100', label: '--font-secondary' },
-    { color: '--gray-1000', label: '--font-tertiary' },
-    { color: '--gray-500', label: '--input-border' },
-  ],
-  blue: [
-    { color: '--blue-800', label: '--input-focus' },
-    { color: '--blue-900', label: '--brand' },
-  ],
-  red: [
-    { color: '--red-900', label: '--danger' },
-    { color: '--red-800', label: '--font-danger' },
-  ],
-};
+// const step3ColorScaleLight = {
+//   gray: [
+//     { color: '--gray-100', label: '--background' },
+//     { color: '--gray-200', label: '--foreground' },
+//     { color: '--gray-300', label: '--input-disabled' },
+//     { color: '--gray-1100', label: '--font-secondary' },
+//     { color: '--gray-1000', label: '--font-tertiary' },
+//     { color: '--gray-500', label: '--input-border' },
+//   ],
+//   blue: [
+//     { color: '--blue-800', label: '--input-focus' },
+//     { color: '--blue-900', label: '--brand' },
+//   ],
+//   red: [
+//     { color: '--red-900', label: '--danger' },
+//     { color: '--red-800', label: '--font-danger' },
+//   ],
+// };
 
 // @ts-ignore
 const ColorGrid = (props) => {
@@ -192,12 +189,11 @@ const ColorGrid = (props) => {
 
 const ColorTokens = () => {
   const [step, setStep] = React.useState(0);
-  const { dark } = useTheme();
 
   const colorScaleNumbers = {
     0: step1ColorScale,
     1: step2ColorScale,
-    2: dark ? step3ColorScaleDark : step3ColorScaleLight,
+    2: step3ColorScaleDark,
   };
 
   return (
@@ -248,7 +244,6 @@ const ColorTokens = () => {
                 />
               </Tooltip>
             </Flex>
-            <LightDarkSwitcher />
           </Flex>
         </Flex>
       </Card.Body>

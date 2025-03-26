@@ -14,6 +14,7 @@ const SupportCallout = () => {
           href="https://www.buymeacoffee.com/maximeheckel"
           target="_blank"
           rel="noopener noreferrer"
+          external
         >
           buying me a coffee
         </Anchor>{' '}

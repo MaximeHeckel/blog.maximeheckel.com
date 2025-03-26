@@ -1,5 +1,3 @@
-import { useTheme } from '@maximeheckel/design-system';
-
 import Sandpack from '@core/components/Code/Sandpack';
 
 import snippet1 from './snippet1';
@@ -19,17 +17,6 @@ canvas {
     height: 100vh;
 }`;
 
-const SceneCSSLight = `
-html {
-    background: #F7F7FB;
-    color: black;
-}
-
-canvas {
-    width: 100vw;
-    height: 100vh;
-}`;
-
 const SNIPPETS = {
   snippet1,
   snippet2,
@@ -40,7 +27,6 @@ const SNIPPETS = {
 
 const GuideToFramerMotionSandpack = (props: any) => {
   const { snippet } = props;
-  const { dark } = useTheme();
 
   return (
     <Sandpack
@@ -55,7 +41,7 @@ const GuideToFramerMotionSandpack = (props: any) => {
           code: SNIPPETS[snippet],
         },
         '/scene.css': {
-          code: dark ? SceneCSSDark : SceneCSSLight,
+          code: SceneCSSDark,
           hidden: true,
         },
       }}

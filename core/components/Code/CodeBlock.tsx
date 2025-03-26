@@ -97,7 +97,6 @@ const CodeBlock = (props: CodeBlockProps) => {
       {title ? (
         <Card.Header
           css={{
-            padding: '0px 16px',
             backgroundColor: 'var(--code-snippet-background)',
           }}
         >
@@ -122,14 +121,14 @@ const Pre = styled('pre', {
   marginTop: '0',
   marginBottom: '0',
   textAlign: 'left',
-  padding: '8px 0px',
+  padding: 'var(--space-2) 0px',
   overflow: 'auto',
   borderBottomLeftRadius: 'var(--border-radius-2)',
   borderBottomRightRadius: 'var(--border-radius-2)',
   backgroundColor: 'var(--code-snippet-background)',
-  fontFamily: 'var(--font-mono)',
+  fontFamily: 'var(--font-mono-code)',
   fontSize: 'var(--font-size-1)',
-  lineHeight: '26px',
+  lineHeight: '24px',
 
   '.token.parameter,.token.imports,.token.plain,.token.comment,.token.prolog,.token.doctype,.token.cdata':
     {

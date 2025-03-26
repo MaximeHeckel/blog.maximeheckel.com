@@ -1,9 +1,9 @@
 import {
   Box,
-  Button,
   CSS,
   Flex,
   Icon,
+  IconButton,
   Text,
 } from '@maximeheckel/design-system';
 import * as Dialog from '@radix-ui/react-dialog';
@@ -78,6 +78,12 @@ const Image = (props: ImageProps) => {
               onKeyDown={handlePressEnter}
               whileTap={{ scale: 0.95 }}
               whileHover={{ scale: 1.02 }}
+              transition={{
+                layout: {
+                  type: 'spring',
+                  bounce: 0.4,
+                },
+              }}
               role="button"
             >
               <RootImage {...props} />
@@ -140,12 +146,14 @@ const Image = (props: ImageProps) => {
                       delay: 0.2,
                     }}
                   >
-                    <Button
+                    <IconButton
                       aria-label="Close"
-                      variant="icon"
+                      variant="secondary"
                       onClick={handleDialogTrigger}
-                      icon={<Icon.X />}
-                    />
+                      rounded
+                    >
+                      <Icon.X />
+                    </IconButton>
                   </motion.div>
                   <motion.div
                     layoutId={`dialog-${uniqueId}`}
@@ -154,6 +162,12 @@ const Image = (props: ImageProps) => {
                     role="button"
                     whileTap={{ scale: 0.98 }}
                     style={{ outline: 'none' }}
+                    transition={{
+                      layout: {
+                        type: 'spring',
+                        bounce: 0.4,
+                      },
+                    }}
                   >
                     <RootImage
                       {...props}

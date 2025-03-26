@@ -1,11 +1,11 @@
 describe('SEO: Verify meta tag integrity', () => {
   it('has all the meta tags and the expected canonical url set in the landing page head', () => {
     cy.visit('/');
-    cy.get('title').should('contain', "Maxime Heckel's Blog");
+    cy.get('title').should('contain', 'The Blog of Maxime Heckel');
     cy.get('meta[name="description"]').should(
       'have.attr',
       'content',
-      "Hi I'm Maxime, and this is my blog. Here, I share through my writing my experience as a frontend engineer and everything I'm learning about on React, Shaders, React Three Fiber, Framer Motion, and more."
+      "Hi I'm Maxime, and this is my blog. In here, you'll find all the articles I wished I had when I was learning about web development, shaders, real-time 3D on the web, and more.  Each piece I write aims to dive deep into the topics I'm passionate about, while also making complex topics more accessible through interactive playgrounds, visualization, and well detailed walkthroughs. My goal is to give you the tools and intuition to explore further on your own."
     );
     cy.get('meta[name="twitter:site"]')
       .should('have.attr', 'content')
@@ -32,12 +32,12 @@ describe('SEO: Verify meta tag integrity', () => {
     cy.get('meta[property="og:title"]').should(
       'have.attr',
       'content',
-      "Maxime Heckel's Blog"
+      'The Blog of Maxime Heckel'
     );
     cy.get('meta[property="og:description"]').should(
       'have.attr',
       'content',
-      "Hi I'm Maxime, and this is my blog. Here, I share through my writing my experience as a frontend engineer and everything I'm learning about on React, Shaders, React Three Fiber, Framer Motion, and more."
+      "Hi I'm Maxime, and this is my blog. In here, you'll find all the articles I wished I had when I was learning about web development, shaders, real-time 3D on the web, and more.  Each piece I write aims to dive deep into the topics I'm passionate about, while also making complex topics more accessible through interactive playgrounds, visualization, and well detailed walkthroughs. My goal is to give you the tools and intuition to explore further on your own."
     );
     cy.get('meta[property="og:image"]')
       .should('have.attr', 'content')
@@ -50,7 +50,7 @@ describe('SEO: Verify meta tag integrity', () => {
       .and('contain', '720');
     cy.get('meta[property="og:image:alt"]')
       .should('have.attr', 'content')
-      .and('contain', "Maxime Heckel's Blog");
+      .and('contain', 'The Blog of Maxime Heckel');
 
     cy.get('meta[property="og:url"]').should('have.attr', 'content');
     cy.get('link[rel="canonical"]').should('have.attr', 'href');
@@ -60,7 +60,7 @@ describe('SEO: Verify meta tag integrity', () => {
     cy.visit('/posts/migrating-to-nextjs/');
     cy.get('title').should(
       'contain',
-      "Migrating to Next.js - Maxime Heckel's Blog"
+      'Migrating to Next.js - The Blog of Maxime Heckel'
     );
     cy.get('meta[name="description"]').should(
       'have.attr',
@@ -92,7 +92,7 @@ describe('SEO: Verify meta tag integrity', () => {
     cy.get('meta[property="og:title"]').should(
       'have.attr',
       'content',
-      "Migrating to Next.js - Maxime Heckel's Blog"
+      'Migrating to Next.js - The Blog of Maxime Heckel'
     );
     cy.get('meta[property="og:description"]').should(
       'have.attr',
@@ -110,7 +110,7 @@ describe('SEO: Verify meta tag integrity', () => {
       .and('contain', '720');
     cy.get('meta[property="og:image:alt"]')
       .should('have.attr', 'content')
-      .and('contain', "Migrating to Next.js - Maxime Heckel's Blog");
+      .and('contain', 'Migrating to Next.js - The Blog of Maxime Heckel');
     cy.get('meta[property="og:url"]')
       .should('have.attr', 'content')
       .and('contain', '/posts/migrating-to-nextjs/');

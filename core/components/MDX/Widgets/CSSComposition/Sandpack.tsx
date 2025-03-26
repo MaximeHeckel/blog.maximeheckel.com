@@ -1,20 +1,8 @@
-import { useTheme } from '@maximeheckel/design-system';
-
 import Sandpack from '@core/components/Code/Sandpack';
 
 const SceneCSSDark = `
 html {
     background: #20222B;
-}
-
-canvas {
-    width: 100vw;
-    height: 100vh;
-}`;
-
-const SceneCSSLight = `
-html {
-    background: #F7F7FB;
 }
 
 canvas {
@@ -127,8 +115,6 @@ const Test = () => {
 export default Test;`;
 
 const CSSCompositionSandpack = () => {
-  const { dark } = useTheme();
-
   return (
     <Sandpack
       autorun
@@ -141,7 +127,7 @@ const CSSCompositionSandpack = () => {
           code: AppCode,
         },
         '/scene.css': {
-          code: dark ? SceneCSSDark : SceneCSSLight,
+          code: SceneCSSDark,
           hidden: true,
         },
       }}

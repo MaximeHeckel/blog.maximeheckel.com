@@ -1,20 +1,22 @@
-import React from 'react';
+import { useEffect, useRef } from 'react';
 
-const useInterval = (callback: () => unknown, delay: number = 1000) => {
-  const savedCallback = React.useRef<() => unknown>();
+type Delay = number | null;
+type TimerHandler = (...args: any[]) => void;
 
-  React.useEffect(() => {
+const useInterval = (callback: TimerHandler, delay: Delay) => {
+  const savedCallback = useRef<TimerHandler>();
+
+  useEffect(() => {
     savedCallback.current = callback;
   }, [callback]);
 
-  React.useEffect(() => {
-    function tick() {
-      if (savedCallback && savedCallback.current) {
-        savedCallback.current();
-      }
+  useEffect(() => {
+    const handler = (...args: any[]) => savedCallback.current!(...args);
+
+    if (delay !== null) {
+      const intervalId = setInterval(handler, delay);
+      return () => clearInterval(intervalId);
     }
-    const id = setInterval(tick, delay);
-    return () => clearInterval(id);
   }, [delay]);
 };
 

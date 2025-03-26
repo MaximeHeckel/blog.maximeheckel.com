@@ -1,7 +1,8 @@
 import {
-  Box,
   Flex,
+  GlassMaterial,
   Icon,
+  IconButton,
   useKeyboardShortcut,
 } from '@maximeheckel/design-system';
 import { cloudflareLoader } from 'lib/next-image-loader';
@@ -18,65 +19,6 @@ interface SlideshowProps {
   alt?: string;
   aspectRatio?: CSSProperties['aspectRatio'];
 }
-
-const TranslucideButton = (props: React.ComponentPropsWithoutRef<'button'>) => {
-  return (
-    <Box
-      css={{
-        '--thickness': '1.5px',
-        backgroundColor: 'oklch(from var(--gray-1000) l c h / 30%)',
-        borderRadius: 'calc(var(--border-radius-3) + var(--thickness))',
-        padding: 'var(--thickness)',
-        overflow: 'hidden',
-        backdropFilter: 'blur(2px)',
-        width: 'max-content',
-      }}
-    >
-      <Box
-        as="button"
-        css={{
-          '--thickness': '1.5px',
-          display: 'flex',
-          height: 32,
-          width: 32,
-          backgroundColor: 'var(--gray-500)',
-          borderRadius: 'calc(var(--border-radius-3) + var(--thickness))',
-          padding: 'var(--thickness)',
-          overflow: 'hidden',
-          backdropFilter: 'blur(2px)',
-          color: 'var(--gray-900)',
-          zIndex: 1,
-          boxShadow: '0 3px 6px rgba(0, 0, 0, 0.1)',
-          border: 'none',
-          cursor: 'pointer',
-          alignItems: 'center',
-          justifyContent: 'center',
-          outline: 'none',
-
-          '& > svg': {
-            transition: 'opacity 0.3s ease',
-            opacity: 0.5,
-          },
-
-          '&:focus': {
-            '& > svg': {
-              opacity: 1,
-            },
-          },
-
-          '&:hover': {
-            '& > svg': {
-              opacity: 1,
-            },
-          },
-        }}
-        {...props}
-      >
-        {props.children}
-      </Box>
-    </Box>
-  );
-};
 
 export const Slideshow = ({
   images,
@@ -187,7 +129,7 @@ export const Slideshow = ({
         </S.ImageTrack>
       </S.GalleryContainer>
 
-      <Flex alignItems="center" gap="4">
+      <Flex alignItems="center" gap="2">
         <AnimatePresence>
           {currentIndex > 0 && (
             <motion.div
@@ -201,14 +143,21 @@ export const Slideshow = ({
                 ease: 'easeInOut',
               }}
             >
-              <TranslucideButton onClick={previous}>
+              <IconButton
+                aria-label="Previous image"
+                onClick={previous}
+                variant="tertiary"
+                rounded
+                size="small"
+              >
                 <Icon.Arrow size="5" style={{ transform: 'rotate(180deg)' }} />
-              </TranslucideButton>
+              </IconButton>
             </motion.div>
           )}
           <motion.div key="indicator" layout>
             <S.IndicatorWrapper>
               <S.IndicatorContainer>
+                <GlassMaterial />
                 {images.map((_, index) => (
                   <S.Indicator
                     key={index}
@@ -231,9 +180,15 @@ export const Slideshow = ({
                 ease: 'easeInOut',
               }}
             >
-              <TranslucideButton onClick={next}>
+              <IconButton
+                aria-label="Next image"
+                onClick={next}
+                variant="tertiary"
+                rounded
+                size="small"
+              >
                 <Icon.Arrow size="5" />
-              </TranslucideButton>
+              </IconButton>
             </motion.div>
           )}
         </AnimatePresence>
