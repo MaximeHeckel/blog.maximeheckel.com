@@ -8,7 +8,12 @@ import {
   Box,
 } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
-import { motion, useMotionValueEvent, useScroll } from 'motion/react';
+import {
+  motion,
+  useAnimation,
+  useMotionValueEvent,
+  useScroll,
+} from 'motion/react';
 import Link from 'next/link';
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -106,21 +111,26 @@ const Footer = (props: { lastUpdated?: string }) => {
 
   const { scrollY } = useScroll();
   const [isInView, setIsInView] = useState(false);
-  const [showFooter, setShowFooter] = useState(false);
+
+  const controls = useAnimation();
 
   useMotionValueEvent(scrollY, 'change', () => {
     const farEnoughToDisplayFooter =
       window.innerHeight + window.scrollY >=
-      document.documentElement.scrollHeight - 400;
+      document.documentElement.scrollHeight - 500;
 
     const hasReachedBottom =
       window.innerHeight + window.scrollY >=
       document.documentElement.scrollHeight - 150;
 
     if (farEnoughToDisplayFooter) {
-      setShowFooter(true);
+      controls.set({
+        visibility: 'visible',
+      });
     } else {
-      setShowFooter(false);
+      controls.set({
+        visibility: 'hidden',
+      });
     }
 
     if (hasReachedBottom) {
@@ -166,8 +176,9 @@ const Footer = (props: { lastUpdated?: string }) => {
         as={motion.footer}
         ref={footerRef}
         data-testid="footer"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: showFooter ? 1 : 0 }}
+        key="footer"
+        initial={{ visibility: 'hidden' }}
+        animate={controls}
         onFocus={handleFocus}
       >
         <Grid templateColumns="1fr minmax(auto, 712px) 1fr">
@@ -276,7 +287,7 @@ const Footer = (props: { lastUpdated?: string }) => {
                     family="mono"
                     variant="tertiary"
                   >
-                    maximeheckel
+                    blog
                   </ScrambledText>
                 </Anchor>
               </Grid.Item>

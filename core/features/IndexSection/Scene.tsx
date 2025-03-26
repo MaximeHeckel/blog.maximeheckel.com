@@ -386,7 +386,6 @@ export const Scene = () => {
     );
   }, []);
 
-  // Check if running in Cypress test environment
   if (typeof window !== 'undefined' && window.Cypress) {
     return null;
   }

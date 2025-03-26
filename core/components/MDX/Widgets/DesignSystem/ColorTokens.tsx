@@ -11,8 +11,6 @@ import {
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
 
-import LightDarkSwitcher from '@core/components/Buttons/LightDarkSwitcher';
-
 const titles = [
   'Pick base colors',
   'Increase/decrease the lightness to create a scale for each color',
@@ -246,7 +244,6 @@ const ColorTokens = () => {
                 />
               </Tooltip>
             </Flex>
-            <LightDarkSwitcher />
           </Flex>
         </Flex>
       </Card.Body>

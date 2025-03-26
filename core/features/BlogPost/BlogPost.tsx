@@ -206,7 +206,6 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
       <Grid
         as="article"
         css={{
-          // zIndex: 1,
           overflowX: 'hidden',
           position: 'relative',
           backgroundColor: 'var(--background)',
@@ -220,13 +219,17 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
           col={2}
           justifySelf="center"
           css={{
-            minHeight: 'clamp(300px, 50dvh, 400px)',
+            minHeight: 420,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'end',
             gap: 'var(--space-3)',
             width: '100%',
             position: 'relative',
+
+            '@sm': {
+              minHeight: 'clamp(300px, 55dvh, 400px)',
+            },
           }}
         >
           <Text

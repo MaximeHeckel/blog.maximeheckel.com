@@ -15,6 +15,8 @@ import {
 } from 'motion/react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
+import { useIsMobile } from '@core/hooks/useIsMobile';
+
 import { MiniProgressCircular } from './MiniProgressCircular';
 import { useIntersectionObserver } from './useIntersectionObserver';
 
@@ -24,6 +26,7 @@ const ToC = (props: {
 }) => {
   const { ids } = props;
   const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
   const handleLink = (
     event: React.MouseEvent | React.KeyboardEvent<HTMLAnchorElement>,
@@ -33,7 +36,7 @@ const ToC = (props: {
     event.stopPropagation();
 
     document.getElementById(id)?.scrollIntoView({
-      behavior: shouldReduceMotion ? 'auto' : 'smooth',
+      behavior: shouldReduceMotion || isMobile ? 'auto' : 'smooth',
       block: 'center',
     });
   };
@@ -230,12 +233,15 @@ const DynamicTOC = (props: {
           backdropFilter:
             'blur(var(--blur, 12px)) saturate(var(--saturate, 1.15))',
           minWidth: '150px',
-          maxWidth: '400px',
+          maxWidth: '300px',
           gap: 0,
           userSelect: 'none',
           transition: 'border-color 0.2s ease-in-out',
           '&:focus-visible': {
             outline: '2px solid var(--gray-1200)',
+          },
+          '@sm': {
+            maxWidth: '400px',
           },
         }}
         onClick={() => {

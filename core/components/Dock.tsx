@@ -11,6 +11,8 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 
+import { useIsMobile } from '@core/hooks/useIsMobile';
+
 import Logo from './Logo';
 
 enum NAV {
@@ -28,9 +30,10 @@ const Dock = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAIModeOpen, setIsAIModeOpen] = useState(false);
   const router = useRouter();
-  const isHomePage = router.pathname === '/' || router.pathname === '/new-home';
+  const isHomePage = router.pathname === '/';
 
   const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
   useKeyboardShortcut('ctrl+k|meta+k', () => setIsSearchOpen(true));
 
@@ -55,11 +58,11 @@ const Dock = () => {
 
       if (isHomePage) {
         document.getElementById('articles')?.scrollIntoView({
-          behavior: shouldReduceMotion ? 'auto' : 'smooth',
+          behavior: shouldReduceMotion || isMobile ? 'auto' : 'smooth',
           block: 'start',
         });
       } else {
-        router.push('/new-home#articles');
+        router.push('/#articles');
       }
     },
     [NAV.CMD]: () => {

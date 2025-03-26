@@ -8,9 +8,8 @@ import {
 } from '@maximeheckel/design-system';
 import React from 'react';
 
-import useScrollSpy from '@core/hooks/useScrollSpy';
-
 import { AnimationCardContent, Form, HighlightedValue } from '../Components';
+import useScrollSpy from './useScrollSpy';
 
 const BrowserWindow = styled('div', {
   borderRadius: 'var(--border-radius-1)',
