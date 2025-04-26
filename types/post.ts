@@ -13,6 +13,7 @@ export type Post = {
   keywords?: string[];
   slug: string;
   subtitle: string;
+  seoTitle?: string;
   title: string;
 };
 
