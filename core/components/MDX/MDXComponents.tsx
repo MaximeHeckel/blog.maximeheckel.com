@@ -267,6 +267,10 @@ const PostProcessingSandpack = dynamic(
   () => import('./Widgets/PostProcessing/Sandpack')
 );
 
+const VolumetricLightingSandpack = dynamic(
+  () => import('./Widgets/VolumetricLighting/Sandpack')
+);
+
 const Slideshow = dynamic(() => import('../Slideshow'));
 
 const customComponents = {
@@ -340,6 +344,7 @@ const customComponents = {
   RetroSandpack,
   KuwaharaSandpack,
   PostProcessingSandpack,
+  VolumetricLightingSandpack,
 };
 
 const MDXComponents = {
