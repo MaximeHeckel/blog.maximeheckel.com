@@ -13,7 +13,7 @@ import processMdxFile from './process-mdx.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const SUPABASE_API_KEY = process.env.SUPABASE_API_KEY;
+const SUPABASE_API_KEY = process.env.SUPABASE_API_KEY_BYPASS;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const BLOG_URL = process.env.BLOG_URL;
 const OPEN_AI_API_KEY = process.env.OPEN_AI_API_KEY;

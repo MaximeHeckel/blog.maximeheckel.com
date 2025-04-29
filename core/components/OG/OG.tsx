@@ -17,8 +17,9 @@ const OG = () => {
     <div
       style={{
         overflow: 'hidden',
-        fontFamily: 'Inter',
+        fontFamily: 'var(--font-display)',
         fontWeight: 600,
+        textWrap: 'balance',
         lineHeight: '1.2',
         width: '1200px',
         height: '630px',
