@@ -113,7 +113,7 @@
     "jsdom": "^25.0.1",
     "playwright": "1.17.1",
     "playwright-core": "1.17.1",
-    "playwright-webkit": "^1.40.1",
+    "playwright-webkit": "^1.52.0",
     "prettier": "^3.2.5",
     "progress": "^2.0.3",
     "typescript": "^5.7.2",
