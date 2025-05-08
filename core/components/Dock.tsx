@@ -45,7 +45,7 @@ const Dock = () => {
 
       if (isHomePage) {
         document.getElementById('index')?.scrollIntoView({
-          behavior: shouldReduceMotion ? 'auto' : 'smooth',
+          behavior: shouldReduceMotion || isMobile ? 'auto' : 'smooth',
           block: 'center',
         });
       } else {

@@ -23,6 +23,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
 
   const inView = useInView(articleListRef, {
     amount: 0.03,
+    once: true,
   });
 
   let year = 0;
