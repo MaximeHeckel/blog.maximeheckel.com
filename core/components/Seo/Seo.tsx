@@ -9,11 +9,12 @@ interface Props {
   desc?: string;
   path?: string;
   title?: string;
+  seoTitle?: string;
   date?: string;
   updated?: string;
 }
 
-const Seo = ({ title, desc, image, path, date, updated }: Props) => {
+const Seo = ({ title, desc, image, path, date, updated, seoTitle }: Props) => {
   const {
     title: configTitle,
     description: configDescription,
@@ -26,7 +27,9 @@ const Seo = ({ title, desc, image, path, date, updated }: Props) => {
   const seo = {
     description: desc || configDescription,
     image: image ? `${url}${image}` : configImage,
-    title: `${title} - ${configTitle}` || configTitle,
+    title: seoTitle
+      ? `${seoTitle} - ${configTitle}`
+      : `${title} - ${configTitle}` || configTitle,
     url: `${url}${path || ''}`,
     date: date,
     updated: updated || date,

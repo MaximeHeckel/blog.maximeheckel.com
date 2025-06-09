@@ -167,7 +167,7 @@ const contentClass = css({
 });
 
 const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
-  const { date, updated, slug, subtitle, title } = frontMatter;
+  const { date, updated, slug, subtitle, title, seoTitle } = frontMatter;
   const path = `/posts/${slug}/`;
   const postUrl = `${siteConfig.url}${path}`;
 
@@ -196,6 +196,7 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
     <Main>
       <Seo
         title={title}
+        seoTitle={seoTitle}
         desc={subtitle}
         image={ogImage}
         path={path}
