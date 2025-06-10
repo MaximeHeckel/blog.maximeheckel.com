@@ -57,6 +57,10 @@
   <changefreq>daily</changefreq>
   <priority>0.7</priority>
 </url><url>
+  <loc>https://blog.maximeheckel.com/posts/config-2025/</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.7</priority>
+</url><url>
   <loc>https://blog.maximeheckel.com/posts/creating-beautiful-screenshots-source-code-with-serverless-function/</loc>
   <changefreq>daily</changefreq>
   <priority>0.7</priority>
@@ -182,6 +186,10 @@
   <priority>0.7</priority>
 </url><url>
   <loc>https://blog.maximeheckel.com/posts/seo-mistakes-i-have-made-and-how-i-fixed-them/</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.7</priority>
+</url><url>
+  <loc>https://blog.maximeheckel.com/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/</loc>
   <changefreq>daily</changefreq>
   <priority>0.7</priority>
 </url><url>

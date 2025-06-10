@@ -9,12 +9,28 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Tue, 25 Mar 2025 04:17:09 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 10 Jun 2025 21:10:13 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
         <item>
+            <title><![CDATA[On Shaping Light]]></title>
+            <description><![CDATA[A deep dive into Volumetric Lighting implemented via Post-Processing leveraging a custom shader with raymarching to create beautiful light and atmospheric effect for your React Three Fiber and Three.js scenes.]]></description>
+            <link>https://blog.maximeheckel.com/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 10 Jun 2025 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Speaking at Figma Config 2025]]></title>
+            <description><![CDATA[An overview of the talk I had the chance to give the Figma Config, sharing my passion and learning journey around shaders and real-time 3D on the web.]]></description>
+            <link>https://blog.maximeheckel.com/posts/config-2025</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/config-2025</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Thu, 08 May 2025 08:00:00 GMT</pubDate>
+        </item>
+        <item>
             <title><![CDATA[Post-Processing Shaders as a Creative Medium]]></title>
-            <description><![CDATA[TBD]]></description>
+            <description><![CDATA[A detailed compilation of my post-processing and custom stylized shader experiments — from pixel patterns and optical illusions to dynamic, animated effects.]]></description>
             <link>https://blog.maximeheckel.com/posts/post-processing-as-a-creative-medium</link>
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/post-processing-as-a-creative-medium</guid>
             <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
