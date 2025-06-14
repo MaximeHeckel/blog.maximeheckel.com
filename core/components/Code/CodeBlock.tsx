@@ -1,5 +1,7 @@
 import { Card, styled } from '@maximeheckel/design-system';
+import { useScroll, useMotionValueEvent, useTransform } from 'motion/react';
 import { Highlight, Prism } from 'prism-react-renderer';
+import { useLayoutEffect, useRef } from 'react';
 
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import { CodeBlockProps, HighlightedCodeTextProps } from './types';
@@ -17,6 +19,42 @@ require('prismjs/components/prism-glsl');
 
 export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
   const { codeString, language, highlightLine } = props;
+  const preRef = useRef<HTMLPreElement>(null);
+
+  const { scrollX } = useScroll({
+    container: preRef,
+  });
+
+  const adjustedScrollXProgress = useTransform(scrollX, [10, 50], [0, 1]);
+
+  useMotionValueEvent(adjustedScrollXProgress, 'change', (latestValue) => {
+    if (!preRef.current) return;
+    if (preRef.current.scrollWidth <= preRef.current.clientWidth) {
+      preRef.current.style.setProperty('--shadow-opacity-left', '0');
+      preRef.current.style.setProperty('--shadow-opacity-right', '0');
+      return;
+    }
+
+    preRef.current.style.setProperty(
+      '--shadow-opacity-left',
+      latestValue.toString()
+    );
+    preRef.current.style.setProperty(
+      '--shadow-opacity-right',
+      (1 - latestValue).toString()
+    );
+  });
+
+  useLayoutEffect(() => {
+    if (!preRef.current) return;
+    if (preRef.current.scrollWidth <= preRef.current.clientWidth) {
+      preRef.current.style.setProperty('--shadow-opacity-left', '0');
+      preRef.current.style.setProperty('--shadow-opacity-right', '0');
+      return;
+    }
+
+    preRef.current.style.setProperty('--shadow-opacity-right', '1');
+  }, []);
 
   if (!codeString) return null;
 
@@ -27,7 +65,7 @@ export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
       language={language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <Pre className={className} style={style}>
+        <Pre ref={preRef} className={className} style={style}>
           {tokens.map((line, index) => {
             const { className: lineClassName } = getLineProps({
               className:
@@ -97,6 +135,7 @@ const CodeBlock = (props: CodeBlockProps) => {
       {title ? (
         <Card.Header
           css={{
+            zIndex: 3,
             backgroundColor: 'var(--code-snippet-background)',
           }}
         >
@@ -118,17 +157,42 @@ const CodeBlock = (props: CodeBlockProps) => {
 export default CodeBlock;
 
 const Pre = styled('pre', {
+  '--shadow-size': '70px',
+  '--shadow-color': 'oklch(from var(--gray-000) l c h / 0.75)',
   marginTop: '0',
   marginBottom: '0',
   textAlign: 'left',
   padding: 'var(--space-2) 0px',
-  overflow: 'auto',
   borderBottomLeftRadius: 'var(--border-radius-2)',
   borderBottomRightRadius: 'var(--border-radius-2)',
   backgroundColor: 'var(--code-snippet-background)',
   fontFamily: 'var(--font-mono-code)',
   fontSize: 'var(--font-size-1)',
   lineHeight: '24px',
+  overflowX: 'auto',
+
+  '&::before, &::after': {
+    content: '""',
+    position: 'absolute',
+    top: '0',
+    width: 'var(--shadow-size, 40px)',
+    height: '100%',
+    pointerEvents: 'none',
+    zIndex: '2',
+  },
+
+  '&::before': {
+    left: '0',
+    opacity: 'var(--shadow-opacity-left, 0)',
+    background: 'linear-gradient(to right, var(--shadow-color), transparent)',
+  },
+
+  '&::after': {
+    right: '0',
+
+    opacity: 'var(--shadow-opacity-right, 0)',
+    background: 'linear-gradient(to left, var(--shadow-color), transparent)',
+  },
 
   '.token.parameter,.token.imports,.token.plain,.token.comment,.token.prolog,.token.doctype,.token.cdata':
     {
