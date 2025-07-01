@@ -117,7 +117,7 @@
     "prettier": "^3.2.5",
     "progress": "^2.0.3",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "vitest": "^3.2.4"
   },
   "license": "MIT",
   "repository": {
