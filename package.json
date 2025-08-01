@@ -37,7 +37,7 @@
     "@react-three/drei": "^9.120.4",
     "@react-three/fiber": "^8.17.10",
     "@react-three/postprocessing": "^2.16.3",
-    "@supabase/supabase-js": "^2.47.10",
+    "@supabase/supabase-js": "^2.53.0",
     "@vercel/analytics": "^1.4.1",
     "@vercel/functions": "^1.5.2",
     "@vercel/kv": "^3.0.0",
