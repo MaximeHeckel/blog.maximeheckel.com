@@ -71,7 +71,7 @@
     "next-mdx-remote": "5.0.0",
     "next-seo": "6.6.0",
     "openai": "^4.77.0",
-    "postprocessing": "^6.36.4",
+    "postprocessing": "^6.37.6",
     "prism-react-renderer": "^2.4.1",
     "prismjs": "^1.29.0",
     "qs": "6.13.1",
