@@ -3,8 +3,8 @@ export const script4 = `import "../styles.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-const TEXTURE_PATH = "https://res.cloudinary.com/dg5nsedzw/image/upload/v1641657168/blog/vaporwave-threejs-textures/grid.png";
-const DISPLACEMENT_PATH = "https://res.cloudinary.com/dg5nsedzw/image/upload/v1641657200/blog/vaporwave-threejs-textures/displacement.png";
+const TEXTURE_PATH = "https://linear-vaporwave-three-js.vercel.app/grid-6.png";
+const DISPLACEMENT_PATH = "https://linear-vaporwave-three-js.vercel.app/displacement-7.png";
 
 // Textures
 const textureLoader = new THREE.TextureLoader();

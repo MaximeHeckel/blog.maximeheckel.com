@@ -2,7 +2,7 @@
 title: 'Building a Vaporwave scene with Three.js'
 subtitle: A step-by-step tutorial documenting my attempt at reverse-engineering the vaporwave WebGL scene from the Linear 2021 release page using solely fundamental concepts of Three.js like textures, lights, animations, and post-processing effects.
 date: '2022-01-25T08:00:00.000Z'
-updated: '2023-12-31T08:00:00.000Z'
+updated: '2025-08-08T08:00:00.000Z'
 categories: []
 keywords:
   [
@@ -25,17 +25,17 @@ type: 'blogPost'
 featured: false
 ---
 
-After spending months in my backlog of things to explore, I finally made the jump and started learning Three.js 🎉. I've followed the [Three.js journey course](https://threejs-journey.com) from <Anchor href="https://twitter.com/bruno_simon" favicon discreet>@bruno_simon</Anchor> for a few weeks now, and it's been an eye-opener. It feels like it just unlocked a new realm of possibilities for me to spend time doing more creative coding.
+After spending months in my backlog of things to explore, I finally made the jump and started learning Three.js! I've followed the [Three.js journey course](https://threejs-journey.com) from <Anchor href="https://twitter.com/bruno_simon" favicon discreet>@bruno_simon</Anchor> for a few weeks now, and it's been an eye-opener. It feels like it just unlocked a new realm of possibilities for me to spend time doing more creative coding.
 
 While going through the course, there was a moment where I felt that I needed to explore and build something on my own to apply what I've learned.
 
 <StaticTweet id="1476956816630337542" />
 
-One project I had in mind was to **reverse-engineer the WebGL animation from [Linear's 2021 release page](https://linear.app/releases/2021-06)** and try rebuilding it to see how close I could get from the source material. Since I saw this scene on my timeline last June, I've been a bit obsessed with it. I absolutely love the _vaporwave/outrun vibe_ of this animation and I think the developers and designers involved in this project did an incredible job 👏✨. On top of that, this scene happens to touch upon a wide range of key Three.js concepts which was perfect as a first project!
+One project I had in mind was to **reverse-engineer the WebGL animation from [Linear's 2021 release page](https://linear.app/releases/2021-06)** and try rebuilding it to see how close I could get from the source material. Since I saw this scene on my timeline last June, I've been a bit obsessed with it. I absolutely love the _vaporwave/outrun vibe_ of this animation and I think the developers and designers involved in this project did an incredible job. On top of that, this scene happens to touch upon a wide range of key Three.js concepts which was perfect as a first project!
 
-In this blog post, we're going to take a look at **the thought process and the steps I took to rebuild this vaporwave Three.js scene** by using nothing but **fundamental constructs** that I recently learned. If you do not want to wait until the end of this article to see the result, you can head over to [https://linear-vaporwave-three-js.vercel.app/](https://linear-vaporwave-three-js.vercel.app/) to get a nice preview 😛.
+In this blog post, we're going to take a look at **the thought process and the steps I took to rebuild this vaporwave Three.js scene** by using nothing but **fundamental constructs** that I recently learned. If you do not want to wait until the end of this article to see the result, you can head over to [https://linear-vaporwave-three-js.vercel.app/](https://linear-vaporwave-three-js.vercel.app/) to get a nice preview.
 
-I added editable code snippets with their corresponding rendered scene (including comments) throughout the article for each key step of this project. You will be invited to modify them and observe how some of the changes impact the final render of the Three.js scene 😄.
+I added editable code snippets with their corresponding rendered scene (including comments) throughout the article for each key step of this project. You will be invited to modify them and observe how some of the changes impact the final render of the Three.js scene.
 
 <VaporwaveThreejsDisclaimer />
 
@@ -300,11 +300,11 @@ Above, you can see the annotations I wrote down when I started working on this p
 
 - The plane will need a texture to draw the **grid** on top of it
 - The plane will need to have some **displacement** to shape the terrain on the sides
-- The terrain is very _low-poly_ and seems to match with the grid texture. Thus, we can have as many "squares" in our grid as subdivisions of our plane (I counted 24, but this might be very wrong 😅). So, no matter how we shape our terrain, the intersections of the segments of our grid texture will match the position of the vertices of the plane giving it its distinct vaporwave look
+- The terrain is very _low-poly_ and seems to match with the grid texture. Thus, we can have as many "squares" in our grid as subdivisions of our plane (I counted 24, but this might be very wrong). So, no matter how we shape our terrain, the intersections of the segments of our grid texture will match the position of the vertices of the plane giving it its distinct vaporwave look
 - The surface is a bit shiny in some areas so we'll need to put a _red-ish_ **light behind the camera** and tweak the material of our mesh
 - The terrain moves towards _us_ (the viewer), so **we'll animate the position of our plane along the z-axis**
 
-Now that we've analyzed our scene we can start building 🤘.
+Now that we've analyzed our scene we can start building.
 
 ### Texture
 
@@ -312,7 +312,7 @@ First and foremost, let's make our `PlaneGeometry` look more like the final rend
 
 1. Draw the grid and export it as a `.jpg` or `` on a software like Figma for example
 2. Load this file as a **texture** in our scene
-3. Put that texture on our plane, and _voilà_ ✨ we'll have our _vaporwave grid_ effect!
+3. Put that texture on our plane, and _voilà_ we'll have our _vaporwave grid_ effect!
 
 It may sound complicated at first, but Three.js makes it very easy to do so in just a few lines of code with the [textureLoader](https://threejs.org/docs/index.html?q=textureLoader#api/en/loaders/TextureLoader) class.
 
@@ -325,7 +325,7 @@ const gridTexture = textureLoader.load(TEXTURE_PATH);
 
 <Callout variant="info">
 
-You can download the texture I made on my own [here](https://res.cloudinary.com/dg5nsedzw/image/upload/v1641657168/blog/vaporwave-threejs-textures/grid). It's pretty heavy, but I'll talk about that a bit later.
+You can download the texture I made on my own [here](https://linear-vaporwave-three-js.vercel.app/grid). It's pretty heavy, but I'll talk about that a bit later.
 
 </Callout>
 
@@ -441,12 +441,13 @@ const tick = () => {
 
 ### Making the scene endless
 
-You will notice that there's one issue with our scene now: the plane moves towards us, but since its length is finite, **we don't see anything after a few seconds** 😅:
+You will notice that there's one issue with our scene now: the plane moves towards us, but since its length is finite, **we don't see anything after a few seconds**:
 
 <VideoPlayer
   src="https://d2xl4m2ghaywko.cloudfront.net/linear-finite-scene.mp4"
   controls={true}
   width={700}
+  height={505}
 />
 
 We have to find a way to give the user the _impression_ that this terrain goes on forever. For obvious reasons, we can't make our terrain infinite, it's just impossible, but we can use a few tricks!
@@ -461,7 +462,7 @@ We have to find a way to give the user the _impression_ that this terrain goes o
 - We can add a **second copy of our plane**, put it behind the first one and make it move towards us as well
 - Once the first plane has gone past our camera (just behind it), the second plane will be at the same position as the first one was at the beginning of the transition
 - We can now reset both planes to their original position, respectively `z=0` and `z=-2`, without the viewer noticing.
-- Our animation will thus feel _infinite_. Plus our terrain looks organic enough that it's not too obvious that we keep reusing the same plane 😄
+- Our animation will thus feel _infinite_. Plus our terrain looks organic enough that it's not too obvious that we keep reusing the same plane
 
 Implementing this effect requires just a few lines of code (and some math):
 
@@ -495,7 +496,7 @@ const tick = () => {
 };
 ```
 
-Let's add this code to our `tick` function to see the magic happen ✨:
+Let's add this code to our `tick` function to see the magic happen:
 
 <VaporwaveThreejsSandpacks script="script5" />
 
@@ -514,11 +515,11 @@ const fog = new THREE.Fog('#000000', 1, 2.5);
 scene.fog = fog;
 ```
 
-This code is available at the beginning of the playground above 👆. Just uncomment it to see the result!
+This code is available at the beginning of the playground above. Just uncomment it to see the result!
 
 </Callout>
 
-We did it! 🎉 We managed to animate our scene in an infinite loop and we're slowly getting closer to Linear's original scene. However, there're still a few details to add.
+We did it! We managed to animate our scene in an infinite loop and we're slowly getting closer to Linear's original scene. However, there're still a few details to add.
 
 ## Adding post-processing effects
 
@@ -532,9 +533,9 @@ As you can see from the previous playground, our terrain looks a bit off compare
 />
 
 At first glance, it looks like we got our texture kind of wrong right? It's actually a bit more subtle than this.
-Trust me I tried to rebuild a grid with RGB lines, the result was complete garbage 🤮.
+Trust me I tried to rebuild a grid with RGB lines, the result was complete garbage.
 
-The Linear WebGL scene actually leverages some **Three.js post-processing effects**. In this specific case, it uses an `RGBShift` effect. Or at least I think so 😄. It's the only effect that brings our scene closer to the result the Linear team got. So we'll use that going forward.
+The Linear WebGL scene actually leverages some **Three.js post-processing effects**. In this specific case, it uses an `RGBShift` effect. Or at least I think so. It's the only effect that brings our scene closer to the result the Linear team got. So we'll use that going forward.
 
 <Callout variant="info">
 
@@ -612,7 +613,7 @@ When I applied this effect for the first time, the colors ended up looking... qu
 
 After some investigation, I found out that after applying certain effects, Three.js scenes might get darker because the renderer's output encoding is not working anymore. To fix this we need to add another post-processing effect pass named `GammaCorrectionShader` which will act as a kind of color correction layer to our scene.
 
-In the playground below you'll find our rendered scene with our post-processing-effects looking simply fabulous ⚡️. In it you can try to:
+In the playground below you'll find our rendered scene with our post-processing-effects looking simply fabulous. In it you can try to:
 
 - Comment out the `gammaCorrectionPass` and see how the colors end up a bit messed up
 - Tweak the value of the `rgbShiftPass` to make our RGB shift more or less intense!
@@ -663,7 +664,7 @@ scene.add(spotlight2.target);
 
 <Callout variant="info">
 
-I'm not the biggest specialist when it comes to Three.js lights (yet 😉), I mainly figured out this part by trial and error and (lots) of tweaking.
+I'm not the biggest specialist when it comes to Three.js lights (yet), I mainly figured out this part by trial and error and (lots) of tweaking.
 
 Here's a link to the [Spotlight documentation](https://threejs.org/docs/index.html?q=Spotli#api/en/lights/SpotLight) if you wish to dig deeper on the side.
 
@@ -694,9 +695,9 @@ By adding this `metalnessMap`, tweaking the `metalness` and `roughness` values o
 
 ## Conclusion
 
-From a simple plane geometry, we managed to build with just a few lines of code and a bit of tweaking **a sleek, animated, vaporwave Three.js scene** 🎉 . We could spend a ton of time trying to tweak this scene even further to improve:
+From a simple plane geometry, we managed to build with just a few lines of code and a bit of tweaking **a sleek, animated, vaporwave Three.js scene**. We could spend a ton of time trying to tweak this scene even further to improve:
 
-- the light: I didn't nail that one quite well 😅
+- the light: I didn't nail that one quite well
 - the texture: the grid appears to be a bit too _thick_. Maybe the original team didn't use a texture after all and instead relied on [shaders](https://threejs.org/docs/index.html?q=shader#api/en/materials/ShaderMaterial)?
 - probably performance
 - add some sick tracks as background music to go with the vibe of the scene

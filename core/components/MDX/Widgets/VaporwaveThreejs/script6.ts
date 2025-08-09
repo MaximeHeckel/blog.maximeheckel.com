@@ -8,8 +8,8 @@ import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectio
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
 
-const TEXTURE_PATH = "https://res.cloudinary.com/dg5nsedzw/image/upload/v1641657168/blog/vaporwave-threejs-textures/grid.png";
-const DISPLACEMENT_PATH = "https://res.cloudinary.com/dg5nsedzw/image/upload/v1641657200/blog/vaporwave-threejs-textures/displacement.png";
+const TEXTURE_PATH = "https://linear-vaporwave-three-js.vercel.app/grid-6.png";
+const DISPLACEMENT_PATH = "https://linear-vaporwave-three-js.vercel.app/displacement-7.png";
 
 // Textures
 const textureLoader = new THREE.TextureLoader();
