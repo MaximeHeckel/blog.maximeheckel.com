@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   GlassMaterial,
   Icon,
@@ -130,13 +131,13 @@ export const Slideshow = ({
       </S.GalleryContainer>
 
       <Flex alignItems="center" gap="2">
-        <AnimatePresence>
-          {currentIndex > 0 && (
+        <AnimatePresence mode="popLayout">
+          {currentIndex > 0 ? (
             <motion.div
               key="previous"
-              initial={{ opacity: 0, x: 20, scale: 0.77 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 20, scale: 0.77 }}
+              initial={{ opacity: 0, scale: 0.77 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.77 }}
               layout
               transition={{
                 duration: 0.3,
@@ -153,6 +154,8 @@ export const Slideshow = ({
                 <Icon.Arrow size="5" style={{ transform: 'rotate(180deg)' }} />
               </IconButton>
             </motion.div>
+          ) : (
+            <Box css={{ width: 30 }} />
           )}
           <motion.div key="indicator" layout>
             <S.IndicatorWrapper>
@@ -168,12 +171,12 @@ export const Slideshow = ({
               </S.IndicatorContainer>
             </S.IndicatorWrapper>
           </motion.div>
-          {currentIndex < images.length - 1 && (
+          {currentIndex < images.length - 1 ? (
             <motion.div
               key="next"
-              initial={{ opacity: 0, x: -20, scale: 0.77 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: -20, scale: 0.77 }}
+              initial={{ opacity: 0, scale: 0.77 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.77 }}
               layout
               transition={{
                 duration: 0.3,
@@ -190,6 +193,8 @@ export const Slideshow = ({
                 <Icon.Arrow size="5" />
               </IconButton>
             </motion.div>
+          ) : (
+            <Box css={{ width: 30 }} />
           )}
         </AnimatePresence>
       </Flex>
