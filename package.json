@@ -55,7 +55,7 @@
     "d3-array": "3.2.4",
     "date-fns": "4.1.0",
     "detect-gpu": "^5.0.63",
-    "eventsource-parser": "^3.0.0",
+    "eventsource-parser": "^3.0.6",
     "globby": "14.0.2",
     "glsl-curl-noise2": "^0.0.4",
     "glsl-noise": "^0.0.0",
