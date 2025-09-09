@@ -67,7 +67,7 @@
     "leva": "^0.10.0",
     "lodash.debounce": "^4.0.8",
     "motion": "^11.15.0",
-    "next": "^14.2.21",
+    "next": "^15.4.5",
     "next-mdx-remote": "5.0.0",
     "next-seo": "6.6.0",
     "openai": "^4.77.0",
