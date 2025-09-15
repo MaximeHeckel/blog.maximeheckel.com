@@ -271,6 +271,20 @@ const VolumetricLightingSandpack = dynamic(
   () => import('./Widgets/VolumetricLighting/Sandpack')
 );
 
+const SimpleCompute = dynamic(
+  () => import('./Widgets/TSLWebGPU/SimpleCompute')
+);
+
+const EffectCompute = dynamic(
+  () => import('./Widgets/TSLWebGPU/EffectCompute')
+);
+
+const ParticleCompute = dynamic(
+  () => import('./Widgets/TSLWebGPU/ParticleCompute')
+);
+
+const TSLWebGPUSandpack = dynamic(() => import('./Widgets/TSLWebGPU/Sandpack'));
+
 const Slideshow = dynamic(() => import('../Slideshow'));
 
 const customComponents = {
@@ -324,6 +338,9 @@ const customComponents = {
   KernelVisualizer,
   PixelizationVisualizer,
   ThresholdVisualizer,
+  SimpleCompute,
+  EffectCompute,
+  ParticleCompute,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
@@ -345,6 +362,7 @@ const customComponents = {
   KuwaharaSandpack,
   PostProcessingSandpack,
   VolumetricLightingSandpack,
+  TSLWebGPUSandpack,
 };
 
 const MDXComponents = {
