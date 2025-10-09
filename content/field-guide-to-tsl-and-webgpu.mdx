@@ -326,8 +326,10 @@ useFrame((state) => {
 If you are curious, this is how this uniform declaration code would look if we were to do it without Three.js/React Three Fiber:
 
 ```js
+const uniformBuffseSize = 4 * 1; // time is f32, 1 single f32 is 4 bytes
+
 const uniformBuffer = device.createBuffer({
-  size: 4,
+  size: uniformBuffseSize,
   usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
 });
 
@@ -1411,7 +1413,7 @@ The demo below contains the combination of:
       content: (
         <p>
           <a href="https://webkit.org/blog/17333/webkit-features-in-safari-26-0/#webgpu">
-            https://webkit.org/blog/17333/webkit-features-in-safari-26-0/#webgpu
+            WebGPU WebKit for Safari 26.0 adds support for WebGPU.
           </a>
         </p>
       ),
@@ -1432,7 +1434,7 @@ The demo below contains the combination of:
       content: (
         <p>
           It also depends on whether you use compute shaders or not since they
-          are a WebGPU only feature.
+          are a WebGPU only feature
         </p>
       ),
     },
@@ -1441,7 +1443,7 @@ The demo below contains the combination of:
       content: (
         <p>
           <a href="https://r3f.docs.pmnd.rs/tutorials/v9-migration-guide#async-gl-prop">
-            https://r3f.docs.pmnd.rs/tutorials/v9-migration-guide#async-gl-prop
+            Async GL prop - React Three Fiber docs
           </a>
         </p>
       ),
@@ -1451,7 +1453,7 @@ The demo below contains the combination of:
       content: (
         <p>
           <a href="https://webgpufundamentals.org/webgpu/lessons/webgpu-uniforms.html">
-            https://webgpufundamentals.org/webgpu/lessons/webgpu-uniforms.html
+            WebGPU Uniforms - WebgpuFundamentals.org
           </a>
         </p>
       ),
@@ -1461,7 +1463,7 @@ The demo below contains the combination of:
       content: (
         <p>
           <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API">
-            https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API
+            WebGPU API - MDN
           </a>
         </p>
       ),
@@ -1501,7 +1503,7 @@ The demo below contains the combination of:
       content: (
         <p>
           <a href="https://r3f.docs.pmnd.rs/api/hooks#taking-over-the-render-loop">
-            https://r3f.docs.pmnd.rs/api/hooks#taking-over-the-render-loop
+            Taking over the render-loop - React Three Fiber docs
           </a>
         </p>
       ),
