@@ -131,8 +131,8 @@ import {
  normalize,
  normalLocal,
  normalWorld,
+ positionWorld,
  positionLocal,
- positionView,
   uv,
  viewportUV,
  varying,
@@ -189,6 +189,7 @@ const Core = () => {
 
   const { nodes, uniforms, utils} = useMemo(() => {
     const time = uniform(0.0);
+    const cameraPosition = uniform(vec3(0, 0, 0));
     const vNormal = varying(vec3(), 'vNormal');
 
     const sceneTexture = texture(new THREE.Texture());
@@ -249,8 +250,8 @@ const Core = () => {
         worldNormal,
         power,
       }) => {
-        const fresnelFactor = abs(dot(viewVector, worldNormal));
-        const inversefresnelFactor = sub(1.0, fresnelFactor);
+        const cosTheta = abs(dot(viewVector, worldNormal));
+        const inversefresnelFactor = sub(1.0, cosTheta);
         return pow(inversefresnelFactor, power);
       },
     );
@@ -262,7 +263,7 @@ const Core = () => {
     });
 
     const refract = Fn(({ sceneTex }) => {
-      const absorption = 0.5;
+      const absorption = 0.1;
       const refractionIntensity = 0.25;
       const shininess = 100.0;
       const LOOP = 8;
@@ -308,7 +309,7 @@ const Core = () => {
         lightPosition[1],
         lightPosition[2],
       );
-      const viewVector = normalize(positionView);
+      const viewVector = normalize(cameraPosition.sub(positionWorld));
       const normalVector = normalize(normalWorld);
 
       const halfVector = normalize(viewVector.add(lightVector));
@@ -341,6 +342,7 @@ const Core = () => {
       },
       uniforms: {
         time,
+        cameraPosition,
         sceneTexture,
       },
       utils: {
@@ -363,6 +365,7 @@ const Core = () => {
     const { clock, gl, scene, camera } = state;
     
     uniforms.time.value = clock.getElapsedTime();
+    uniforms.cameraPosition.value = camera.position;
 
     if (!meshRef.current) return;
 

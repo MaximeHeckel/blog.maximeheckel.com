@@ -36,6 +36,17 @@ This article is a compilation of the steps I took, going from knowing very littl
 
 <SupportCallout />
 
+<Callout variant="info">
+
+I ran into a few issues with React Three Fiber’s extend function in my playgrounds that I’m still troubleshooting. Thus, I had to use some workarounds:
+
+- Non–“node materials” appear to be in use, but they’re actually the ones being rendered on screen.
+- Scenes containing `ambientLight` or `directionalLight` require adding these lights manually using the `scene`’s `add` method instead of the JSX syntax.
+
+If you're curious to check out the scene from the introduction, you can see it [here](https://r3f.maximeheckel.com/webgpu/glass).
+
+</Callout>
+
 ## Terminology
 
 If, like me, you've seen the names TSL or WebGPU used interchangeably, you may be confused about their roles and how they relate to one another. This first part should answer all your questions regarding these two concepts so you can start building on your own with solid foundations.
@@ -571,7 +582,7 @@ const { nodes, uniforms, utils } = useMemo(() => {
       lightPosition[1],
       lightPosition[2]
     );
-    const viewVector = normalize(positionView);
+    const viewVector = normalize(cameraPosition.sub(positionWorld));
     const normalVector = normalize(normalWorld);
 
     const halfVector = normalize(viewVector.add(lightVector));
@@ -646,7 +657,7 @@ const { nodes, uniforms, utils } = useMemo(() => {
   `);
 
   const refractAndDisperseWGSL = wgslFn(`
-    fn refract(sceneTex: texture_2d<f32>, sampler: sampler, normalWorld: vec3f, viewportUV: vec2f, positionView: vec3f) -> vec3f {
+    fn refract(sceneTex: texture_2d<f32>, sampler: sampler, normalWorld: vec3f, viewportUV: vec2f, positionWorld: vec3f, cameraPosition: vec3f) -> vec3f {
         let absorption = 0.88;
         let refractionIntensity = 0.25;
         let shininess = 100.0;
@@ -674,7 +685,7 @@ const { nodes, uniforms, utils } = useMemo(() => {
         refractCol = refractCol / f32(LOOP);
 
         let lightVector = vec3(-10.0, 10.0, -1.5);
-        let viewVector = normalize(positionView);
+        let viewVector = normalize(cameraPosition - positionWorld);
         let normalVector = normalize(normalWorld);
 
         let halfVector = normalize(viewVector + lightVector);
@@ -700,7 +711,8 @@ const { nodes, uniforms, utils } = useMemo(() => {
       sampler: sceneTextureSampler,
       normalWorld,
       viewportUV,
-      positionView,
+      positionWorld,
+      cameraPosition
     });
   });
 
@@ -1404,7 +1416,15 @@ The demo below contains the combination of:
 
 ## Final thoughts and what's next
 
-// TO DO
+I could have written a standalone article for each of the examples and themes presented in this post. However, it felt more natural to showcase them together so that it could act as a guide for anyone looking to transition from classic Three.js/React Three Fiber to this new way to build 3D for the web. I hope this answers some of the questions you may have had regarding WebGPU and TSL, and brings clarity to some aspects that may not be obvious from the available documentation and examples.
+
+If I had to write down a couple of my own thoughts at this point in my learning journey, they would have been the following:
+
+1. The node system is life-changing. I _really_ like it. I think many other developers will agree with me on this one.
+2. TSL abstracts _a lot_ of things away, which is both good, as it is very friendly to beginners and lowers the barrier of entry for shader development, but can also be a hassle sometimes, especially the contextual nature of some functions like `instanceIndex`.
+3. The abstraction of TSL, while being great for working fast and focusing on building, may prompt me to start working with WebGPU outside of the framework of Three.js/React Three Fiber. There are projects like [TypeGPU](https://docs.swmansion.com/TypeGPU/) that make working with WebGPU more accessible while completely hiding it away from developers.
+
+In the meantime, as some of the details get ironed out, I will still be writing shaders in GLSL unless I have a specific use case where I'd need compute shaders, like in my recent [procedural landscape experiences](https://x.com/MaximeHeckel/status/1954197728524988842), which I'm very excited to tell you more about the day this project is ready.
 
 <FootnotesList
   notes={[
