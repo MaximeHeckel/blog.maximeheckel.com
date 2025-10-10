@@ -1,7 +1,7 @@
 ---
 title: 'Field Guide to TSL and WebGPU'
 seoTitle: 'Field Guide to TSL and WebGPU'
-subtitle: TBD
+subtitle: A comprehensive guide to building 3D web experiences with TSL and WebGPU, covering shader development, compute shader applications, and practical examples for particle systems and post-processing effects.
 date: '2025-10-14T08:00:00.000Z'
 updated: '2025-10-14T08:00:00.000Z'
 categories: []
@@ -12,16 +12,15 @@ featured: false
 
 Now supported in Apple's most recent version of iOS and Safari <FootnoteRef id="1" />,
 WebGPU is finally gaining widespread support, allowing for more advanced 3D capabilities on the web.
-As someone working with WebGL on the side, this was the push I needed to, at last, dedicate some time to diving deep into this new set of APIs
-to see how I could port some aspects of my existing WebGL/shader knowledge and work to it.
+As someone working with WebGL on the side, this was the push I needed to, at last, dedicate some time to learning more about this new set of APIs
+and see how I could port over some of my existing WebGL/shader knowledge and work to it.
 
 This work involved not only familiarizing myself with **WGSL**, the shader language designed for WebGPU, but also **TSL: Three.js's higher-level,
-JavaScript-like shading language**. Moreover, this new set of APIs
-that interacts with the GPU from our browsers introduces some new constructs, such as **compute shaders**, a new, exciting, yet nebulous type of shaders that seemed like
+JavaScript-like shading language**. Moreover, WebGPU also introduces some new constructs, such as **compute shaders**, a new, exciting, yet nebulous type of shaders that seemed like
 it could improve some key aspects of my workflow.
 
-To guide me through this learning journey, I decided the most practical way would be to spend my summer porting key projects I've worked on throughout the years, such as my glass material, post-processing, particles, as well as several other fun shader experiments.
-There were numerous gotchas and undocumented features, which sometimes made the experience quite frustrating, but in the end, I managed to get the hang of this new way to build 3D scenes for the web.
+To guide me through this learning journey, I decided the most practical way would be to spend my summer porting over key projects I've worked on throughout the years, such as my glass material, post-processing, particles, as well as several other fun shader experiments.
+There were numerous gotchas and undocumented features, which sometimes made the experience quite frustrating, but in the end, I managed to familiarize myself with these new tools and build beautiful scenes with them.
 
 <VideoPlayer
   src="https://d2xl4m2ghaywko.cloudfront.net/glass-webgpu.mp4"
@@ -32,16 +31,16 @@ There were numerous gotchas and undocumented features, which sometimes made the 
   height={498}
 />
 
-This article is a compilation of the steps I took, going from knowing very little about TSL and WebGPU to becoming comfortable with them, and, as a result, serves as _the field guide I wish I had_. In it, I will **tell you all about these new languages and the role they play** while also sharing **recipes** to implement some essential components of a 3D scene, whether it is to build a simple material using **TSL's new node system**, or to leverage **compute shaders** in diverse use cases like particles and post-processing effects.
+This article is a compilation of the steps I took, going from knowing very little about TSL and WebGPU to becoming comfortable with them, and, as a result, serves as _the field guide I wish I had_. In it, I will **tell you all about these new tools/APIs and the role they play** while also sharing **recipes** to implement some essential components of a 3D scene, whether it is to build a simple material using **TSL's new node system**, or to leverage **compute shaders** in diverse use cases like instanced meshes, particles, or post-processing effects.
 
 <SupportCallout />
 
-<Callout variant="info">
+<Callout label="Note" variant="info">
 
 I ran into a few issues with React Three Fiber’s extend function in my playgrounds that I’m still troubleshooting. Thus, I had to use some workarounds:
 
-- Non–“node materials” appear to be in use, but they’re actually the ones being rendered on screen.
-- Scenes containing `ambientLight` or `directionalLight` require adding these lights manually using the `scene`’s `add` method instead of the JSX syntax.
+- Classic Three.js materials (i.e. non-node materials) appear to be in use in demos, but they are actually node materials. E.g. `meshStandardMaterial` in those playgrounds actually points to `meshStandardNodeMaterial`.
+- Scenes containing `ambientLight` or `directionalLight` required adding these lights using the `scene`’s `add` method instead of the JSX syntax.
 
 If you're curious to check out the scene from the introduction, you can see it [here](https://r3f.maximeheckel.com/webgpu/glass).
 
@@ -55,7 +54,7 @@ If, like me, you've seen the names TSL or WebGPU used interchangeably, you may b
 
 Many creative developers were very excited about the recent expansion of WebGPU support, and for good reason: this new API set brings the web up to par with modern graphics API like Vulkan or Metal, the backbone of many professional creative software and game engines. It provides lower-level controls (memory allocation, bind groups, etc.) and offers new constructs such as **compute shaders**, while having near native performance <FootnoteRef id="2" />.
 
-On the other hand, my fellow Three.js developers were also getting interested in something a bit different, yet loosely related: the **Three Shading Language**. A functional _language_ based on JavaScript that was meant to act as a sort of _umbrella_ shading language to make shader creation more accessible and also maintainable over time. Through the introduction of TSL, Three.js provided the ability to write shaders that can run on WebGPU, which would not have been possible otherwise. These shaders can also run on WebGL, allowing developers to target any platform with unique code, regardless of WebGPU support <FootnoteRef id="3" />
+On the other hand, my fellow Three.js developers were also getting interested in something a bit different, yet loosely related: the **Three.js Shading Language**. A functional _language_ based on JavaScript that is meant to act as a sort of _umbrella_ shading language, making shader creation more accessible and also maintainable over time. Through the introduction of TSL, Three.js provided the ability to write shaders that can run on WebGPU, which was not supported up to that point, while also allowing for these same shaders to run on WebGL, thus letting developers target any platform with unique code, regardless of WebGPU support <FootnoteRef id="3" />
 
 <Callout variant="info">
 The main reason given for the existence of TSL has to do with the old GLSL shader chunks (the backbone of the materials bundled in Three.js) being considered as *lost work* since they would require a complete rewrite to WGSL to run on WebGPU:
@@ -107,7 +106,7 @@ fn main(uv: vec2<f32>, baseColor: vec4<f32>) -> vec4<f32> {
 ```
 
 As you can see, the syntax is very (not to say "extremely") functional, even for simple operators. While this offers the ability to target WebGL or WebGPU alike, to me, it comes with the sacrifice of legibility. _I guess it's a matter of taste and habit_. If this bothers you a bit too much, you can still
-opt for the `glslFn` and `wgslFn` and write native code, but down the line, you'll still have to rely on TSL to consume those shader chunks in your materials/effects through its **Node System**.
+opt for the `glslFn` and `wgslFn` TSL function to write native code, however, you still have to rely on TSL at the end of the day to define and consume those shader chunks in your materials/effects through its **Node System**.
 
 ```js {17,3} title=Using glslFn and wgslFn to write native shader code alongside TSL
 const baseColor = uniform(new THREE.Vector4(1, 1, 1, 1));
@@ -157,11 +156,11 @@ You can also use the [editor](https://threejs.org/examples/webgpu_tsl_editor) to
 
 ### The Node System
 
-While the abstraction layer and the lack of ability to write raw WebGPU shaders were a bit of a bummer as I tend to prefer using low-level constructs, **TSL's Node System** is, to me, a key feature that sold me on it and made me embrace it.
+While the abstraction layer and the lack of ability to write raw WebGPU shaders were a bit of a bummer to me as I tend to prefer using low-level constructs, **TSL's Node System** is, to me, a key feature that sold me on it and made me embrace it.
 
 Until now, when we wanted to modify an existing material in WebGL, even for the smallest of changes, we had to painstakingly work our way through string concatenation of several shader chunks using the `onBeforeCompile` method.
 
-Today, TSL provides hooks for each of its `NodeMaterials`, such as `colorNode`, `normalNode`, and `positionNode`, to respectively modify the color, normals, and vertex position output of your material very easily. Even better, every stock Three.js material has a "node compatible" equivalent ready to be used:
+Today, TSL provides hooks for each of its `NodeMaterials`, such as `colorNode`, `normalNode`, or `positionNode`, to respectively modify the color, normals, and vertex position output of your material very easily. Even better, every stock Three.js material now has a "node equivalent" compatible with this new API:
 
 - `MeshStandardMaterial` has `MeshStandardNodeMaterial`
 - `MeshBasicMaterial` has `MeshBasicNodeMaterial`
@@ -192,9 +191,11 @@ As we ease into our WebGPU and TSL journey, let’s start by setting up our `Web
 
 To get access to the new WebGPU features, we first need to instantiate its renderer in our React Three Fiber project through the `gl` prop of the `Canvas` component. Luckily, `Canvas` has been updated in React Three Fiber v9 to support an asynchronous `gl` prop <FootnoteRef id="4" />, a necessary feature since the `WebGPURenderer` requires async initialization.
 
-The following code snippet showcases how we will initialize React Three Fiber projects featuring WebGPU features as we advance:
+The following code snippet showcases how we will initialize React Three Fiber projects featuring WebGPU features going forward:
 
-```jsx {5-9} title=Initializing the WebGPU renderer in React Three Fiber
+```jsx {7-11} title=Initializing the WebGPU renderer in React Three Fiber
+import * as THREE from 'three/webgpu';
+
 const Scene = () => {
   return (
     <Canvas
@@ -256,9 +257,9 @@ Check the console attached to the playground to see which `backend` is powering 
 As a first, more elaborate example, we will create a classic _blob_ by introducing some organic and dynamic displacement to the sphere at the center of the previous scene. To make it ambitious and highlight the benefits of TSL and its node system, we can try to do all of this on top of `meshPhongNodeMaterial` by writing a shader for:
 
 - the `positionNode`, to modify the position of vertices over time
-- the `normalNode`, to adjust the normal data of our sphere accordingly
+- the `normalNode`, to adjust the normal data of our sphere accordingly so the lighting and shadows of our moving sphere match the displacement of its vertices
 
-All of that while maintaining some of the key physical properties that are core to this material.
+all of that while maintaining some of the key physical properties that are core to this material.
 
 To organize my TSL code, I like to:
 
@@ -288,7 +289,7 @@ const { nodes, uniforms } = useMemo(() => {
 
 This provides a more structured approach to organizing our TSL code within our React code, ensuring that key constructs such as uniforms are not accidentally recreated.
 
-We will start by writing a custom `positionNode` to modify the position of the vertices of our sphere mesh following a noise. I transpiled an implementation of Perlin Noise using the [transpiler](https://threejs.org/examples/webgpu_tsl_transpiler.html) that will use in this example, it will be fully featured in the playground at the end of the section.
+We will start by writing a custom `positionNode` to modify the position of the vertices of our sphere mesh following a noise. I transpiled an implementation of Perlin Noise using the [transpiler](https://threejs.org/examples/webgpu_tsl_transpiler.html) that we'll use in this example, it will be fully featured in the playground at the end of the section.
 
 ```js title=Adding displacement for our sphere using positionNode
 const updatePos = Fn(([pos, time]) => {
@@ -305,7 +306,7 @@ const positionNode = Fn(() => {
 
 To animate our blob over time, we would want to pass a `time` uniform to adjust the positions of the vertices over time. However, between WebGL and WebGPU, uniforms work a bit differently:
 
-- WebGL uniforms are global variables that you can set directly by calling `gl.uniforms*` and call it a day.
+- WebGL uniforms are global variables that you can set directly by calling `gl.uniforms` and call it a day.
 - WebGPU uniforms live in a **uniform buffer**, which requires explicit memory allocations <FootnoteRef id="5" />.
 
 This difference between _convenience_ and _control_ is hidden from us by TSL: to declare your uniforms, use the `uniform` function. And that, regardless of whether we write our position shader using the TSL syntax or GLSL/WGLSL syntax.
@@ -355,9 +356,9 @@ device.queue.writeBuffer(uniformBuffer, 0, new Float32Array([time]));
 
 </Callout>
 
-Now we can work our way towards recomputing normals. We did something similar in [Shining a light on Caustics with Shaders and React Three Fiber](/posts/caustics-in-webgl/), where we had to resort to modifying the shader code of the source material quite heavily and be very accurate to ensure we would not break some of its key features. Thanks to the node system, we now simply need to:
+Now we can work our way towards recomputing normals. We did something similar in [Shining a light on Caustics with Shaders and React Three Fiber](/posts/caustics-in-webgl/), where we had to resort to modifying the shader code of the source material quite heavily and had to be very rigorous about it to ensure we would not break some of its key features. Thanks to the node system, we now simply need to:
 
-- Expand the `positionNode`.
+- Expand the `positionNode` to compute the displaced normals.
 - Send the recomputed normals through a varying
 - Declare a `normalNode` where we can return that data to be consumed by the material
 
@@ -471,7 +472,7 @@ return (
 );
 ```
 
-As you can see, the days when we needed to use `onBeforeCompile` and a series of complex string concatenation to modify the shader code within Three.js' materials are long gone. We can now rely on the node system to make those modifications on top of existing materials without too much _mess_. The demo below showcases the result of the code we established above at work:
+As you can see, the days when we needed to use `onBeforeCompile` and a series of complex string concatenation to modify the shader code within Three.js' materials are long gone. We can now rely on the node system to make those modifications on top of existing materials without too much _mess_. The demo below showcases the result of the code we established above:
 
 <TSLWebGPUSandpack scene="scene2" />
 
@@ -508,7 +509,7 @@ Another element that confused me at the beginning was the extra argument require
 - while here we'd have to use `textureSample(myTexture, sampler, uv)`
 
 This is akin to what we said about uniforms earlier, another case of WebGPU not abstracting away those constructs, unlike WebGL does.
-Now, the thing that I wish were part of the TSL specification documentation is a mention of the `sampler` TSL function, which lets you get that extra argument you need to sample textures in WGSL.
+Now, the thing that I wish were part of the TSL specification documentation is a mention of the `sampler` TSL function, which lets you get that extra argument you need to sample textures in WGSL. Hopefully, this note will save you the couple of hours I've lost hunting down this function while rewritting some of my shader work to TSL.
 
 </Callout>
 
@@ -626,6 +627,7 @@ The WGSL equivalent is a bit different but interesting nonetheless:
 
 - You can use the `code` TSL function to split your WGSL shaders into reusable bits; however, the main entrypoints _need_ to use `wgslFn`.
 - Your `texture_2d<f32>` from your WGSL function becomes a `ShaderNodeObject<THREE.TextureNode>`, so you need to first call `texture` with the texture you want to sample as an argument.
+- Shaders written using the `wgslFn` or `glslFn` TSL function seem to always require to have their set of arguments passed as an object.
 
 ```js title=Implementation of my refractive glass material in WGSL
 const { nodes, uniforms, utils } = useMemo(() => {
@@ -746,7 +748,7 @@ There are now two _pipelines_ we can leverage to build our 3D scenes:
 The latter consists of a single compute shader stage (no vertices, no rasterization, no fragments) in which:
 
 1. We take in arbitrary input data such as **textures or buffers**.
-2. Execute **workgroups** of threads, or shader invocations, to process them using a function defined as a compute shader.
+2. Execute **workgroups** of threads, or shader invocations, to process those inputs a function defined as a compute shader.
 3. Output the resulting data in one or multiple **buffers**. We can feed those resulting buffers to the render pipeline or back to the CPU.
 
 <Fullbleed widthPercent={80}>
@@ -766,11 +768,11 @@ A **buffer** is a block of GPU memory that shaders can read from or write to.
 
 </Callout>
 
-While your render pipeline shaders are tied to draw calls and rasterization, we can call/execute our compute shaders programmatically, thus letting us decide when and how many times they run.
+While our render pipeline shaders are tied to draw calls and rasterization, we can call/execute our compute shaders programmatically, thus letting us decide when and how many times they run.
 
 ### Creating Compute Shaders in TSL
 
-Let's examine a first example of how to leverage the compute pipeline in TSL. We'll do a matrix multiplication on the GPU using compute shaders and read back its result on the GPU. Like our previous shader code, we can declare our compute shader either directly in TSL or with the `wgslFn` function:
+Let's examine a first example of how to leverage the compute pipeline in TSL. We'll do a matrix multiplication on the GPU using compute shaders and read back its result on the CPU. Like our previous shader code, we can declare our compute shader either directly in TSL or with the `wgslFn` function:
 
 ```js title=Example of a compute shader performing a multiplication of 2 matrices
 const buffer = storage(responseBuffer, 'mat4x4f', count);
@@ -819,9 +821,9 @@ useEffect(() => {
 
 While the previous example is a great use case for compute shaders, you may want to know how this new feature can be leveraged alongside the render pipeline and potentially even improve the performance of your 3D scene.
 
-One of the first practical examples of computer shader usage I have encountered in Three.js / React Three Fiber is through **instanced meshes**. In my first experiments involving instance meshes, I found myself having to set their original position in space on the CPU. Today, however, we can delegate that work to the GPU as follows:
+One of the first practical examples of computer shader usage I have encountered in Three.js / React Three Fiber is through **instanced meshes**. In my first experiments involving instanced meshes, I found myself having to set their original position in space on the CPU. Today, however, we can delegate that work to the GPU as follows:
 
-```jsx {63,1,72,31-35,57} title=Setting the initial position of instanced meshes with a compute shader
+```jsx {63,1,71,31-35,57} title=Setting the initial position of instanced meshes with a compute shader
 const COUNT = 1024;
 
 const { nodes, uniforms } = useMemo(() => {
@@ -898,13 +900,13 @@ return (
 );
 ```
 
-Which could be illustrated by the following animated diagram that showcases all the pieces from each pipeline working together:
+which could be illustrated by the following animated diagram that showcases all the pieces from each pipeline working together:
 
 <SimpleCompute />
 
 - First, we create a buffer, an array buffer of size `COUNT * 3`, through the `instancedArray` function by specifying the number of instances we want to render, and the type, in this case, a `vec3`.
-- We then define the compute shader. I use WGSL here since it's more readable to me, and our scene will only work through WebGPU anyway. This particular shader positions each instance on a grid alongside the x and z-axes using the `instanceIndex` of the instance.
-- We run the compute shader `COUNT` times, thus creating `COUNT` threads, each thread being responsible for running the shader for one given instance. In this example, the compute shader is run **once** at render time.
+- We then define the compute shader. I use WGSL here since it's more readable to me, and our scene will only work through WebGPU anyway. This particular shader positions each instance on a grid alongside the x and z-axes using the `instanceIndex` of the instance. The resulting positions are then written in the array buffer we passed as argument.
+- We run the compute shader `COUNT` times, thus creating `COUNT` threads, each thread being responsible for running the shader for one given instance. In this example, the compute shader is run **once** at render time (hence why the compute pipeline animation in the diagram above stops at some point).
 
 <Callout label="instanceIndex" variant="info">
 
@@ -966,8 +968,8 @@ Passing this extra argument tells WebGPU how many threads/shader invocations bel
 - This argument has the format `[x, y, z]` where `x`, `y`, and `z` are the dimensions of the workgroup in each direction of a 3D grid.
 - You can get the total number of threads per workgroup by multiplying each of `x`, `y`, and `z`. For example, `[64, 1, 1]` and `[8, 8, 1]` both define our workgroup of 64 threads.
 - The dimensionality of the workgroup depends on how the compute shader is written and the shape of your data/buffers. For 1D buffers, [64, 1, 1] is a natural choice, whereas for 2D buffers, such as a texture, defining it as [8, 8, 1] may be more suitable.
-- There is a maximum limit of 256 threads per workgroup. You can try setting `[512, 1, 1]`, and all you'd get would be a warning from WebGPU.
-- In Three.js, it is set by default to `[ 64, 1, 1 ]` <FootnoteRef id="7" />.
+- **There is a maximum limit of 256 threads per workgroup**. You can try setting `[512, 1, 1]`, and all you'd get would be a warning from WebGPU.
+- In Three.js, it is set by default to `[64, 1, 1 ]` <FootnoteRef id="7" />.
 
 <Callout variant="info">
 
@@ -1020,7 +1022,7 @@ In the first parts of this article, we walked through the basics of WebGPU/TSL a
 
 The first practical use case that I found interesting and that showcased many benefits after porting them to TSL and making them use compute shaders is **particles**.
 
-In 2022, I wrote [an article covering many aspects of particles](/posts/the-magical-world-of-particles-with-react-three-fiber-and-shaders/). Among those, my favorite one was GPGPU particles. Back then, we were using a Frame Buffer Object (FBO) to render in a texture _off-screen_ filled with the position data of each particle on a given frame. We would then pass this texture to the final shader, which is responsible for rendering the particles from those stored positions.
+In 2022, I wrote [an article covering many aspects of particles](/posts/the-magical-world-of-particles-with-react-three-fiber-and-shaders/). Among those, my favorite one was GPGPU particles. Back then, we were using a Frame Buffer Object (FBO) to render in a texture _off-screen_ filled with the position data of each particle on a given frame. After updating each of those positions via a fragment shader, we would then pass the resulting texture to the final shader to get the new positions and render the particles.
 
 <Fullbleed widthPercent={60}>
   <Image
@@ -1059,7 +1061,7 @@ return (
 );
 ```
 
-If we were to render this as is, all the particles would render at `(0, 0, 0)`. We can set up an `instancedArray` of `vec3` that will hold all the initial positions for our particles. Then, we can use a compute shader that we'll dub `computeInit` to initialize the particles at the desired position.
+If we were to render this as is, all the particles would render at `(0, 0, 0)`. We can set up an `instancedArray` of `vec3` that will hold all the initial positions for our particles. Then, we can use a compute shader that we'll dub `computeInit` to initialize the particles at the desired position in that buffer.
 
 ```js title=ComputeShader setting the initial positions of our particle system
 const spawnPositionsBuffer = instancedArray(COUNT, 'vec3');
@@ -1126,9 +1128,9 @@ Set the `blending` property of your `spriteNodeMaterial` to `THREE.AdditiveBlend
 
 With the initialization alone, we already have a good use case for using the compute pipeline: what used to be done on the CPU is now performed on the GPU. However, we can do better!
 
-In the case of GPGPU particles, we can replace the entire FBO and texture writing process with a single compute shader that we run on _every frame_. This grandly simplifies the implementation of a particle system where the position of a particle at time `t` depends on its previous position at a time' t - dt`, i.e., defined through a parametric equation such as [Attractors](https://brandon.nguyen.vc/attractors/thomas/).
+In the case of GPGPU particles, we can replace the entire FBO and texture writing process with **a single compute shader** that we run on _every frame_. This grandly simplifies the implementation of a particle system where the position of a particle at time `t` depends on its previous position at a time `t - dt`, i.e., defined through a parametric equation such as [Attractors](https://brandon.nguyen.vc/attractors/thomas/).
 
-Here, we will add an extra storage buffer called `offsetPosition` that will contain all the positions of our particles at a given frame. These offset positions will continuously update based on their previous value as we're calling the compute shader to fill them on every frame.
+Here, we will add an extra storage buffer called `offsetPosition` that will contain all the positions of our particles at a given frame. These offset positions will continuously update based on their previous values as we call the compute shader to fill them on every frame.
 
 ```js {2-3,28-33,47} title=Updating the position of our particles on every frame with compute shader
 const { nodes } = useMemo(() => {
@@ -1405,26 +1407,38 @@ A quick note on the implementation:
 
 </Callout>
 
-Once set up, we will have to set up our compute shader to create one thread per pixel of our screen: `window.innerWidth * window.devicePixelRatio * window.innerHeight * window.devicePixelRatio`. We can then call it using `gl.compute` in our `useFrame`, thus ensuring it updates the texture containing our magnitude data on every frame to handle any camera angle change or any mesh movement.
+We will then have to set up our compute shader to create one thread per pixel of our screen, i.e. `window.innerWidth * window.devicePixelRatio * window.innerHeight * window.devicePixelRatio`. We can then call it using `gl.compute` in our `useFrame`, thus ensuring it updates the texture containing our magnitude data on every frame to handle any camera angle change or any mesh movement.
 
 The demo below contains the combination of:
 
-- our compute pipeline, running our Sobel filter
-- our render pipeline, running our scene, and applying our custom outline effect
+- our compute pipeline, running our Sobel filter and storing the resulting magnitudes in a texture.
+- our render pipeline, running our scene, and applying our custom outline effect based on the magnitude data stored in the texture.
 
 <TSLWebGPUSandpack scene="scene8" />
 
 ## Final thoughts and what's next
 
-I could have written a standalone article for each of the examples and themes presented in this post. However, it felt more natural to showcase them together so that it could act as a guide for anyone looking to transition from classic Three.js/React Three Fiber to this new way to build 3D for the web. I hope this answers some of the questions you may have had regarding WebGPU and TSL, and brings clarity to some aspects that may not be obvious from the available documentation and examples.
+I could have written a standalone article for each of the examples and themes presented in this post. However, it felt more natural to showcase them together so that it could act as a guide for anyone looking to transition from classic Three.js/React Three Fiber to this new way to build 3D for the web.
+I hope this answers some of the questions you may have had regarding WebGPU and TSL, and provides clarity on aspects that may not be immediately apparent from the available documentation and examples.
 
-If I had to write down a couple of my own thoughts at this point in my learning journey, they would have been the following:
+If I had to write down a couple of my own thoughts at this point in my learning journey, they would be the following:
 
-1. The node system is life-changing. I _really_ like it. I think many other developers will agree with me on this one.
-2. TSL abstracts _a lot_ of things away, which is both good, as it is very friendly to beginners and lowers the barrier of entry for shader development, but can also be a hassle sometimes, especially the contextual nature of some functions like `instanceIndex`.
-3. The abstraction of TSL, while being great for working fast and focusing on building, may prompt me to start working with WebGPU outside of the framework of Three.js/React Three Fiber. There are projects like [TypeGPU](https://docs.swmansion.com/TypeGPU/) that make working with WebGPU more accessible while completely hiding it away from developers.
+1. **The node system is life-changing**. I _really_ like it. I think many other developers will agree with me on this one.
+2. TSL abstracts _a lot_ of things away, which is both good, as it is very friendly to beginners and lowers the barrier of entry for shader development, but can also be a hassle sometimes as we're giving up control for more advanced use cases.
+3. The abstraction of TSL, while being great for working fast and focusing on building, may prompt me to start working with WebGPU outside of the framework of Three.js/React Three Fiber. There are projects like [TypeGPU](https://docs.swmansion.com/TypeGPU/) that make working with WebGPU more accessible while not completely hiding its core features away from developers.
+4. **TSL still is very much a Work In Progress**, many of its features are loosely or not documented at all. This is where the majority of my frustration with it lies. I often found myself having to infer the usage of a function or to dig an example somewhere within the Three.js repository, which slowed me down in my work. I'd love a full specification to be written at some point so it can remove the guesswork from using it and document best practices to follow.
 
-In the meantime, as some of the details get ironed out, I will still be writing shaders in GLSL unless I have a specific use case where I'd need compute shaders, like in my recent [procedural landscape experiences](https://x.com/MaximeHeckel/status/1954197728524988842), which I'm very excited to tell you more about the day this project is ready.
+In the meantime, as some of those details get ironed out, I will still be writing shaders in GLSL unless I have a specific use case where I'd need compute shaders, like in my recent [procedural landscape experiences](https://x.com/MaximeHeckel/status/1954197728524988842), which I'm very excited to tell you more about the day this project is ready. If you need more inspiration to apply your newly acquired TSL/WebGPU knowledge, here's the list of all the other scenes I built over the summer. You can try to reproduce these on your own to get even more comfortable with TSL and WebGPU; **everything you need was introduced in this article**:
+
+- [Blob](https://r3f.maximeheckel.com/webgpu/blob)
+- [Brush](https://r3f.maximeheckel.com/webgpu/brush)
+- [Caustics](https://r3f.maximeheckel.com/webgpu/caustics)
+- [Columns](https://r3f.maximeheckel.com/webgpu/columns)
+- [Glass](https://r3f.maximeheckel.com/webgpu/glass)
+- [GPGPU](https://r3f.maximeheckel.com/webgpu/gpgpu)
+- [Infinity](https://r3f.maximeheckel.com/webgpu/infinity)
+- [Moebius](https://r3f.maximeheckel.com/webgpu/moebius)
+- [Terrain Compute](https://r3f.maximeheckel.com/webgpu/terrain-compute)
 
 <FootnotesList
   notes={[
