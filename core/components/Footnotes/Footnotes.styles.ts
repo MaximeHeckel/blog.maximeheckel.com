@@ -9,7 +9,6 @@ const FootnoteRef = styled(Box, {
   flexShrink: 0,
   background: 'var(--gray-500)',
   borderRadius: 'var(--border-radius-0)',
-  padding: '0px 4px',
   fontVariantNumeric: 'tabular-nums',
   border: '1px solid transparent',
   color: 'var(--text-tertiary)',
@@ -20,6 +19,11 @@ const FootnoteRef = styled(Box, {
     textDecoration: 'none',
     color: 'inherit',
     outline: 'none',
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   '&:focus-within': {
