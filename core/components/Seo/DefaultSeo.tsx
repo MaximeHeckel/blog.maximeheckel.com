@@ -34,6 +34,7 @@ const DefaultSeo = (props: Props) => (
         site: siteConfig.twitter,
         cardType: 'summary_large_image',
       }}
+      themeColor="#0163F5"
     />
     <Head>
       <meta name="googlebot" content="index,follow" />
