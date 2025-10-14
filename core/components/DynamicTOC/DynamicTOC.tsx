@@ -37,7 +37,7 @@ const ToC = (props: {
 
     document.getElementById(id)?.scrollIntoView({
       behavior: shouldReduceMotion || isMobile ? 'auto' : 'smooth',
-      block: 'center',
+      block: 'start',
     });
   };
 

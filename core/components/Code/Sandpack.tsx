@@ -169,9 +169,6 @@ const Sandpack = (props: SandpackProps) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const defaultEditorOptions = {
-    showNavigator: false,
-    showInlineErrors: true,
-    showLineNumbers: true,
     editorHeight: 520,
   };
 
@@ -241,8 +238,9 @@ const Sandpack = (props: SandpackProps) => {
             />
           </Flex>
           <SandpackCodeEditor
-            {...defaultEditorOptions}
             showRunButton={false}
+            showTabs
+            showLineNumbers
             style={{
               borderLeft: '1px solid var(--border-color)',
               height: isFullscreen

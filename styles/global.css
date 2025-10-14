@@ -40,6 +40,35 @@ a {
   text-decoration: none;
 }
 
+/* Anchor links for headings */
+.anchor-link {
+  --anchor-border-color: transparent !important;
+  opacity: 0;
+  text-decoration: none !important;
+  transition: opacity 0.2s ease;
+  margin-left: 0.33rem;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  color: var(--text-tertiary);
+}
+
+h2,
+h3 {
+  scroll-margin-top: 6.6rem;
+}
+
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link {
+  opacity: 1;
+}
+
+.anchor-link:focus-visible {
+  opacity: 1;
+  color: var(--accent);
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

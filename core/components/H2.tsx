@@ -1,13 +1,20 @@
 import { Box, Flex, Text } from '@maximeheckel/design-system';
 
 const H2 = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
+  const { children, id, ...rest } = props;
+
   return (
     <Flex
       alignItems="center"
-      css={{ paddingTop: '5rem', paddingBottom: '0.75rem' }}
-      gap="4"
+      css={{
+        marginTop: '5rem',
+        marginBottom: '0.75rem',
+      }}
+      gap="2"
     >
-      <Text as="h2" variant="primary" weight="4" size="4" {...props} />
+      <Text as="h2" id={id} variant="primary" weight="4" size="4" {...rest}>
+        {children}
+      </Text>
       <Box
         css={{
           flex: 1,
