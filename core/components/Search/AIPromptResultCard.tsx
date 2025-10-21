@@ -4,9 +4,9 @@ import {
   Flex,
   Anchor,
   Pill,
-  Tooltip,
-  Button,
   Text,
+  Details,
+  List,
 } from '@maximeheckel/design-system';
 import { motion, AnimatePresence } from 'motion/react';
 import { MDXRemoteSerializeResult, MDXRemote } from 'next-mdx-remote';
@@ -14,14 +14,13 @@ import { serialize } from 'next-mdx-remote/serialize';
 import Link from 'next/link';
 import { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react';
 
-import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import MDXComponents from '../MDX/MDXComponents';
 import RotatingShine from '../RotatingShine';
-import { Coffee } from './Icons';
 import { SearchError, Status } from './types';
 
 interface AIPromtResultCardProps {
   error: SearchError | null;
+  sources: Array<{ title?: string; url?: string }> | undefined;
   status: Status;
   query: string;
   streamData: string;
@@ -29,8 +28,6 @@ interface AIPromtResultCardProps {
 }
 
 const SAMPLE_QUESTIONS = [
-  // 'React Three Fiber',
-  // 'Framer Motion',
   'Use of shader in R3F',
   'Code: staggered animations',
   "Example on how to use Framer Motion's LayoutGroup",
@@ -46,59 +43,57 @@ const SAMPLE_QUESTIONS = [
 // eslint-disable-next-line react/display-name
 const AIPromptResultCard = forwardRef(
   (props: AIPromtResultCardProps, ref: ForwardedRef<HTMLDivElement>) => {
-    const { error, streamData, query, status, onQuestionSelect } = props;
+    const { error, sources, streamData, query, status, onQuestionSelect } =
+      props;
 
     const [mdxData, setMdxData] = useState<MDXRemoteSerializeResult<
       Record<string, unknown>,
       Record<string, unknown>
     > | null>(null);
-    const responseBodyRef = useRef<HTMLDivElement>(null);
+    const scrollableContentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      if (responseBodyRef.current) {
-        responseBodyRef.current.scrollTop = 0;
+      if (scrollableContentRef.current) {
+        scrollableContentRef.current.scrollTop = 0;
       }
     }, []);
+
+    const scrollToBottom = () => {
+      if (scrollableContentRef.current) {
+        scrollableContentRef.current.scrollTo({
+          top: scrollableContentRef.current.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+    };
 
     useEffect(() => {
       const serializeStreamData = async () => {
         const mdxSource = await serialize(streamData, {
           mdxOptions: { development: process.env.NODE_ENV === 'development' },
         });
-        const responseBody = responseBodyRef.current;
-        setMdxData(mdxSource);
 
-        // Keep response div scrolled to the bottom but wait 200 to let other transition take place before scrolling
-        if (status === 'loading') {
-          setTimeout(() => {
-            responseBody?.scrollTo({
-              top: responseBody.scrollHeight,
-              behavior: 'smooth',
-            });
-          }, 100);
-        }
+        setMdxData(mdxSource);
       };
 
-      serializeStreamData();
+      if (streamData === '') {
+        setMdxData(null);
+        return;
+      }
+
+      if (streamData) {
+        serializeStreamData();
+      }
+
+      if (scrollableContentRef.current) {
+        if (status === 'loading' || status === 'done') {
+          // Use requestAnimationFrame to ensure DOM has updated
+          requestAnimationFrame(() => {
+            scrollToBottom();
+          });
+        }
+      }
     }, [streamData, status]);
-
-    const list = {
-      visible: {
-        opacity: 1,
-        transition: {
-          delayChildren: 0.2,
-          staggerChildren: 0.1,
-        },
-      },
-      hidden: {
-        opacity: 0,
-      },
-    };
-
-    const item = {
-      visible: { opacity: 1, x: 0 },
-      hidden: { opacity: 0, x: -10 },
-    };
 
     return (
       <Card
@@ -147,7 +142,7 @@ const AIPromptResultCard = forwardRef(
         <Box css={{ borderRadius: 'inherit', height: '100%' }} ref={ref}>
           <RotatingShine status={status} />
           <Card.Body
-            ref={responseBodyRef}
+            ref={scrollableContentRef}
             css={{
               padding: 24,
               maxHeight: 500,
@@ -261,57 +256,31 @@ const AIPromptResultCard = forwardRef(
               />
             ) : null}
             <AnimatePresence initial={false}>
-              {status === 'done' ? (
-                <Flex alignItems="baseline" direction="column" gap="3">
-                  <Box
-                    animate="visible"
-                    as={motion.ul}
-                    css={{
-                      listStyle: 'none',
-                      padding: 0,
-                    }}
-                    exit="hidden"
-                    initial="hidden"
-                    variants={list}
-                  >
-                    {/* {sources.map((source) => (
-                      <Box as={motion.li} key={source.url} variants={item}>
-                        <Anchor
-                          href={source.url}
-                          rel="nooepener noreferrer"
-                          target="_blank"
-                        >
-                          {source.title}
-                        </Anchor>
-                      </Box>
-                    ))} */}
-                    <Box as={motion.li} variants={item}>
-                      <Flex alignItems="center" gap="2">
-                        <Tooltip content="Copy output to clipboard">
-                          <Box>
-                            <CopyToClipboardButton
-                              title="Copy output to clipboard"
-                              text={streamData}
-                            />
-                          </Box>
-                        </Tooltip>
-                        <Tooltip content="Support my work: buy me a coffee!">
+              {status === 'done' && sources ? (
+                <Details onOpenChange={() => setTimeout(scrollToBottom, 300)}>
+                  <Details.Summary>
+                    <Text>Sources</Text>
+                  </Details.Summary>
+                  <Details.Content>
+                    <List
+                      variant={sources.length > 1 ? 'ordered' : 'unordered'}
+                    >
+                      {sources.map((source) => (
+                        <List.Item key={source.url}>
                           <Anchor
-                            href="https://www.buymeacoffee.com/maximeheckel"
-                            rel="noopener noreferrer"
+                            href={source.url}
+                            key={source.url}
                             target="_blank"
+                            rel="noopener noreferrer"
+                            underline
                           >
-                            <Button
-                              aria-label="Support my work: buy me a coffee!"
-                              icon={<Coffee />}
-                              variant="icon"
-                            />
+                            {source.title}
                           </Anchor>
-                        </Tooltip>
-                      </Flex>
-                    </Box>
-                  </Box>
-                </Flex>
+                        </List.Item>
+                      ))}
+                    </List>
+                  </Details.Content>
+                </Details>
               ) : null}
             </AnimatePresence>
           </Card.Body>

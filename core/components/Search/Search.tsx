@@ -5,6 +5,7 @@ import {
   useKeyboardShortcut,
 } from '@maximeheckel/design-system';
 import * as Dialog from '@radix-ui/react-dialog';
+import deepEqual from 'deep-eql';
 import { AnimatePresence, motion } from 'motion/react';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 
@@ -14,6 +15,7 @@ import { CommandCenterStatic } from './CommandCenterStatic';
 import * as S from './Search.styles';
 import SearchResults from './SearchResults';
 import { Result, SearchError, Status } from './types';
+import { DeepPartial, parsePartialJson } from './utils';
 
 interface Props {
   open?: boolean;
@@ -34,6 +36,9 @@ const Search = (props: Props) => {
   const [AIMode, setAIMode] = useState(forceAIMode);
   const [AIQuery, setAIQuery] = useState('');
   const [streamData, setStreamData] = useState('');
+  const [sources, setSources] = useState<
+    Array<{ title?: string; url?: string }> | undefined
+  >(undefined);
 
   const readerRef = useRef<ReadableStreamDefaultReader>();
 
@@ -107,6 +112,14 @@ const Search = (props: Props) => {
     } catch (error) {}
   };
 
+  type ResponseData = {
+    answer: string;
+    sources: {
+      title: string;
+      url: string;
+    }[];
+  };
+
   const queryCompletionSemanticSearch = async (query: string) => {
     // Clear data
     setError(null);
@@ -129,7 +142,7 @@ const Search = (props: Props) => {
       signal,
     });
 
-    if (!response.ok) {
+    if (!response.ok || !response.body) {
       setStatus('initial');
       setError({
         status: response.status,
@@ -138,39 +151,37 @@ const Search = (props: Props) => {
       return;
     }
 
-    const data = response.body;
+    let accumulatedText = '';
+    let latestObject: DeepPartial<ResponseData> | undefined = undefined;
 
-    if (!data) {
-      return;
-    }
-    const reader = data.getReader();
-    readerRef.current = reader;
+    await response.body.pipeThrough(new TextDecoderStream()).pipeTo(
+      new WritableStream({
+        async write(chunk) {
+          accumulatedText += chunk;
 
-    const decoder = new TextDecoder();
-    let done = false;
-    let text = '';
-    while (!done) {
-      const { value, done: doneReading } = await reader.read();
+          try {
+            const { value } = await parsePartialJson(accumulatedText);
 
-      if (typeof value === 'undefined') {
-        reader.cancel();
-        break;
-      }
+            const currentObject = value as DeepPartial<ResponseData>;
 
-      done = doneReading;
-      const chunkValue = decoder.decode(value);
+            if (!deepEqual(latestObject, currentObject)) {
+              setStreamData(currentObject?.answer ?? '');
+              latestObject = currentObject;
+              setSources(currentObject?.sources ?? (undefined as any));
+            }
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(
+              'Error parsing AI answer as JSON:',
+              error as Error,
+              JSON.stringify(accumulatedText),
+              '!!! Let Maxime know about it :) !!!'
+            );
+          }
+        },
+      })
+    );
 
-      const invalidOutput = text.includes("Maxime hasn't written about it yet");
-      if (invalidOutput) {
-        break;
-      }
-
-      setStreamData((prev) => {
-        text = prev + chunkValue;
-        return prev + chunkValue;
-      });
-    }
-    reader.cancel();
     setStatus('done');
   };
 
@@ -228,6 +239,7 @@ const Search = (props: Props) => {
                   }}
                   query={AIQuery}
                   ref={resultCardRef}
+                  sources={sources}
                   status={status}
                   streamData={streamData}
                 />

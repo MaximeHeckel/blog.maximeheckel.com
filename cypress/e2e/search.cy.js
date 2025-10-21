@@ -72,11 +72,11 @@ describe('Search tests', () => {
 
     cy.wait(2000);
 
-    cy.get('[data-testid="ai-prompt-serialized-response"]', { timeout: 60000 })
-      .should('be.visible')
-      .should(
-        'contain.text',
-        'You can compose CSS variables by assigning apartial value to a variable'
-      );
+    cy.get('[data-testid="ai-prompt-serialized-response"]', {
+      timeout: 60000,
+    }).should(
+      'contain.text',
+      'You can compose CSS variables by assigning a partial value to a variable'
+    );
   });
 });

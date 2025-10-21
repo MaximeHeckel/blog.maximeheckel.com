@@ -1,130 +1,70 @@
-import { createParser, EventSourceMessage } from 'eventsource-parser';
-
-import { mockStreamData } from './mockStreamData';
-
-type OpenAIPayload = {
-  max_tokens: number;
-  temperature?: number;
-  model: string;
-  messages: Array<{ role: string; content: string }>;
-  stream: boolean;
-};
-
-const OPEN_AI_API_KEY = process.env.OPEN_AI_API_KEY;
+import { simulateReadableStream } from 'ai';
 
 export const OpenAIMockStream = async () => {
   // eslint-disable-next-line no-console
   console.info('=== MOCK STREAM ===');
-  const encoder = new TextEncoder();
 
-  const stream = new ReadableStream({
-    async start(controller) {
-      function onParse(event: EventSourceMessage) {
-        const data = event.data;
-        const lines = data.split('\n').map((line) => line.trim());
+  // Mock answer text
+  const mockAnswer = `You can compose CSS variables by assigning a partial value to a variable and then reuse it in the composition of other variables. This allows you to easily create a color scale and update it by simply changing the base color.
 
-        for (const line of lines) {
-          if (line == '[DONE]') {
-            controller.close();
-            return;
-          } else {
-            let token;
-            try {
-              token = JSON.parse(line).choices[0].delta.content;
-              const queue = encoder.encode(token);
-              controller.enqueue(queue);
-            } catch (error) {
-              controller.error(error);
-              controller.close();
-            }
-          }
-        }
+Below is an example of defining a base color and composing the rest of the blue color scale with it:
+
+\`\`\`css
+:root {
+  --base-blue: 222, 89%;
+  --lightest-blue: hsla(var(--base-blue), 95%);
+  --lighter-blue: hsla(var(--base-blue), 80%);
+  --light-blue: hsla(var(--base-blue), 65%);
+  --blue: hsla(var(--base-blue), 50%);
+  --dark-blue: hsla(var(--base-blue), 35%);
+  --darker-blue: hsla(var(--base-blue), 20%);
+  --darkest-blue: hsla(var(--base-blue), 5%);
+}
+\`\`\`
+
+This way, you can use these CSS variables elsewhere in your code, and they will always be updated in the case of a change to the \`--base-blue\` variable.`;
+
+  // Mock sources
+  const mockSources = [
+    {
+      title: 'A guide to CSS variable composition',
+      url: '/posts/guide-to-css-variables',
+    },
+    {
+      title: 'Advanced theming with CSS',
+      url: '/posts/advanced-theming-css',
+    },
+  ];
+
+  // Return an object that mimics streamObject's result
+  return {
+    toTextStreamResponse() {
+      // Build the complete JSON string first
+      const completeData = {
+        answer: mockAnswer,
+        sources: mockSources,
+      };
+      const completeJson = JSON.stringify(completeData);
+
+      // Split into progressive chunks - each chunk adds more to the accumulated JSON
+      const chunks: string[] = [];
+      const chunkSize = 50; // characters per chunk
+
+      for (let i = 0; i < completeJson.length; i += chunkSize) {
+        chunks.push(completeJson.slice(i, i + chunkSize));
       }
 
-      async function sendMockMessages() {
-        // Simulate delay
-        await new Promise((resolve) => setTimeout(resolve, 500));
+      const stream = simulateReadableStream({
+        initialDelayInMs: 100,
+        chunkDelayInMs: 30,
+        chunks,
+      }).pipeThrough(new TextEncoderStream());
 
-        for (const message of mockStreamData) {
-          await new Promise((resolve) => setTimeout(resolve, 75));
-          const event: {
-            type: 'event';
-            data: string;
-          } = { type: 'event', data: message };
-
-          onParse(event);
-        }
-      }
-
-      sendMockMessages().catch((error) => {
-        controller.error(error);
+      return new Response(stream, {
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+        },
       });
     },
-  });
-
-  return stream;
+  };
 };
-
-const OpenAIStream = async (payload: OpenAIPayload, sources: string[]) => {
-  const encoder = new TextEncoder();
-  const decoder = new TextDecoder();
-
-  const URL = 'https://api.openai.com/v1/chat/completions';
-
-  const res: Response = await fetch(URL, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${OPEN_AI_API_KEY ?? ''}`,
-    },
-    method: 'POST',
-    body: JSON.stringify(payload),
-  });
-
-  const stream = new ReadableStream({
-    async start(controller) {
-      function onParse(event: EventSourceMessage) {
-        const data = event.data;
-        const lines = data.split('\n').map((line) => line.trim());
-        // eslint-disable-next-line no-console
-        for (const line of lines) {
-          if (line == '[DONE]') {
-            for (const sourceToken of sources) {
-              const queue = encoder.encode(sourceToken);
-              controller.enqueue(queue);
-            }
-            controller.close();
-            return;
-          } else {
-            let token;
-            try {
-              token = JSON.parse(line).choices[0].delta?.content;
-              // eslint-disable-next-line no-console
-              if (typeof token !== 'undefined') {
-                const queue = encoder.encode(token);
-                controller.enqueue(queue);
-              }
-            } catch (error) {
-              controller.error(error);
-              controller.close();
-            }
-          }
-        }
-      }
-
-      // stream response (SSE) from OpenAI may be fragmented into multiple chunks
-      // this ensures we properly read chunks & invoke an event for each SSE event stream
-      const parser = createParser({
-        onEvent: onParse,
-      });
-
-      //   // https://web.dev/streams/#asynchronous-iteration
-      for await (const chunk of res.body as any) {
-        parser.feed(decoder.decode(chunk));
-      }
-    },
-  });
-
-  return stream;
-};
-
-export default OpenAIStream;
