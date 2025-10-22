@@ -31,8 +31,10 @@
     "unlink-ds": "rm -rf .next && pnpm unlink && pnpm install"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^2.0.53",
+    "@ai-sdk/provider-utils": "^3.0.12",
     "@codesandbox/sandpack-react": "2.19.10",
-    "@maximeheckel/design-system": "3.0.1",
+    "@maximeheckel/design-system": "3.0.2",
     "@radix-ui/react-dialog": "^1.1.4",
     "@react-three/drei": "^9.120.4",
     "@react-three/fiber": "^8.17.10",
@@ -51,9 +53,11 @@
     "@visx/scale": "3.12.0",
     "@visx/shape": "3.12.0",
     "@visx/tooltip": "3.12.0",
+    "ai": "^5.0.76",
     "chalk": "5.4.1",
     "d3-array": "3.2.4",
     "date-fns": "4.1.0",
+    "deep-eql": "^5.0.2",
     "detect-gpu": "^5.0.63",
     "eventsource-parser": "^3.0.0",
     "globby": "14.0.2",
@@ -85,7 +89,8 @@
     "three": "^0.170.0",
     "unist-util-find-after": "5.0.0",
     "unist-util-visit": "5.0.0 ",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zod": "^4.1.8"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "14.2.20",
@@ -94,6 +99,7 @@
     "@testing-library/user-event": "^14.5.2",
     "@trivago/prettier-plugin-sort-imports": "^5.2.0",
     "@types/d3-array": "3.2.1",
+    "@types/deep-eql": "^4.0.2",
     "@types/lodash.debounce": "^4.0.9",
     "@types/node": "22.10.3",
     "@types/qs": "6.9.17",
