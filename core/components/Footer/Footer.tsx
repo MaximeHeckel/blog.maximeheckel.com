@@ -62,8 +62,8 @@ const FooterBlock = styled('footer', {
     linear-gradient(oklch(from var(--border-color) l c h / 50%) 1px, transparent 1px),
     linear-gradient(90deg, oklch(from var(--border-color) l c h / 50%) 1px, transparent 1px)
   `,
-  backgroundSize: '15.85px 15.85px',
-  backgroundPosition: 'center center',
+  backgroundSize: '17px 15px',
+  backgroundPosition: '1px 1px',
   pointerEvents: 'auto',
 
   '@md': {
@@ -188,7 +188,8 @@ const Footer = (props: { lastUpdated?: string }) => {
             css={{
               padding: 'var(--space-4)',
               background: 'var(--gray-000)',
-
+              border: '1px solid oklch(from var(--border-color) l c h / 33%)',
+              borderRadius: 'var(--border-radius-2)',
               '@sm': {
                 padding: 'var(--space-5)',
               },
