@@ -122,7 +122,7 @@
     "playwright-webkit": "^1.40.1",
     "prettier": "^3.2.5",
     "progress": "^2.0.3",
-    "typescript": "^5.7.2",
+    "typescript": "^5.7.3",
     "vitest": "^2.1.8"
   },
   "license": "MIT",
