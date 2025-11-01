@@ -110,7 +110,7 @@
     "@typescript-eslint/parser": "^8.19.0",
     "@vitejs/plugin-react": "^4.3.4",
     "cross-env": "7.0.3",
-    "cypress": "^15.4.0",
+    "cypress": "^15.5.0",
     "dotenv": "^16.4.7",
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.1.3",
