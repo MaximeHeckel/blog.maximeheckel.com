@@ -3,7 +3,6 @@ import { createClient } from '@supabase/supabase-js';
 import chalk from 'chalk';
 import 'dotenv/config';
 import fs from 'fs';
-import OpenAI from 'openai';
 import path from 'path';
 import ProgressBar from 'progress';
 import { fileURLToPath } from 'url';
@@ -40,7 +39,11 @@ const OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL;
  */
 
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_API_KEY);
-const openAI = new OpenAI({ apiKey: OPEN_AI_API_KEY });
+const openai = createOpenAI({
+  apiKey: OPEN_AI_API_KEY,
+});
+
+const model = openai('gpt-4o');
 
 const generateEmbeddings = async (chunks, metadata) => {
   if (!metadata.title) return;
@@ -106,10 +109,20 @@ const generateEmbeddings = async (chunks, metadata) => {
     };
 
     try {
-      const embeddingResponse = await openAI.embeddings.create({
-        input: vector.input,
-        model: OPENAI_EMBEDDING_MODEL,
-      });
+      const embeddingResponse = await fetch(
+        'https://api.openai.com/v1/embeddings',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${OPEN_AI_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: OPENAI_EMBEDDING_MODEL,
+            input,
+          }),
+        }
+      );
 
       console.log(embeddingResponse);
 

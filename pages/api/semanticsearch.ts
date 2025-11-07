@@ -4,7 +4,6 @@ import { ipAddress } from '@vercel/functions';
 import { kv } from '@vercel/kv';
 import type { ModelMessage } from 'ai';
 import { streamObject } from 'ai';
-import GPT3Tokenizer from 'gpt3-tokenizer';
 import { z } from 'zod';
 
 import { OpenAIMockStream } from '../../lib/openAIStream';
@@ -206,15 +205,11 @@ export default async function handler(req: Request) {
       });
     }
 
-    const tokenizer = new GPT3Tokenizer({ type: 'gpt3' });
-    let tokenCount = 0;
     let contextText = '';
 
     for (let i = 0; i < documents.length; i++) {
       const document = documents[i];
       const content = document.content;
-      const encoded = tokenizer.encode(content);
-      tokenCount += encoded.text.length;
 
       contextText += `${content.trim()}\n---\n`;
     }
