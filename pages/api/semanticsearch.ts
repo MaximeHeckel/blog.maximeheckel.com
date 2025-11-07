@@ -75,7 +75,7 @@ export default async function handler(req: Request) {
     query,
     mock,
     completion = true,
-    threshold = 0.35,
+    threshold = 0.25,
     count = 20,
   } = (await req.json()) as {
     query: string;

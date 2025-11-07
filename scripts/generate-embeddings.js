@@ -39,11 +39,6 @@ const OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL;
  */
 
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_API_KEY);
-const openai = createOpenAI({
-  apiKey: OPEN_AI_API_KEY,
-});
-
-const model = openai('gpt-4o');
 
 const generateEmbeddings = async (chunks, metadata) => {
   if (!metadata.title) return;
@@ -84,20 +79,9 @@ const generateEmbeddings = async (chunks, metadata) => {
   for await (const chunk of chunks) {
     progress.tick();
 
-    // Enhance the input with section context for better embeddings
-    let contextualInput = chunk.text;
-
-    if (chunk.heading) {
-      contextualInput = `Section: ${chunk.heading}\n\n${contextualInput}`;
-    }
-
-    // Add content type context for code blocks
-    if (chunk.contentType === 'code' && chunk.language) {
-      contextualInput = `Code (${chunk.language}):\n${contextualInput}`;
-    }
-
+    // Use raw text without prefixes for better query-document alignment
     const vector = {
-      input: contextualInput,
+      input: chunk.text,
       metadata: {
         title: metadata.title,
         url,
@@ -119,16 +103,15 @@ const generateEmbeddings = async (chunks, metadata) => {
           },
           body: JSON.stringify({
             model: OPENAI_EMBEDDING_MODEL,
-            input,
+            input: vector.input,
           }),
         }
       );
 
-      console.log(embeddingResponse);
+      const embeddingData = await embeddingResponse.json();
+      const embedding = embeddingData.data[0].embedding;
 
-      const embedding = embeddingResponse.data[0].embedding;
-
-      const { data, error } = await supabaseClient.from('documents').insert({
+      const { error } = await supabaseClient.from('documents').insert({
         title: vector.metadata.title,
         url: vector.metadata.url,
         content: chunk.text, // Store original text without prefixes
@@ -138,7 +121,10 @@ const generateEmbeddings = async (chunks, metadata) => {
         content_type: vector.metadata.contentType,
         language: vector.metadata.language,
       });
-      console.log(data, error);
+
+      if (error) {
+        throw error;
+      }
     } catch (error) {
       console.error(
         chalk.redBright('error'),

@@ -3,13 +3,30 @@ import GPT3Tokenizer from 'gpt3-tokenizer';
 import matter from 'gray-matter';
 import path from 'path';
 
-const MAX_TOKEN = 512;
-const CHUNK_OVERLAP = 100; // 20% overlap for better context continuity
+const MAX_TOKEN = 256;
+const CHUNK_OVERLAP = 50; // ~20% overlap for better context continuity
 
-// Remove JSX syntax from a string
+// Remove JSX syntax from a string, preserving meaningful text like alt attributes
 function removeJSX(str) {
-  const regex = /<[^>]+>/g;
-  return str.replace(regex, '');
+  // First, extract alt text from Image/img components (handle multiline)
+  const altTextRegex = /<(?:Image|img)[^>]*alt=["']([^"']+)["'][^>]*\/?>/gs;
+  let result = str.replace(altTextRegex, (match, altText) => ` ${altText} `);
+
+  // Remove all JSX component tags (opening, closing, self-closing) - handle multiline
+  result = result.replace(/<\/?[A-Z][A-Za-z0-9]*[^>]*>/gs, '');
+
+  // Remove all remaining HTML tags
+  result = result.replace(/<[^>]+>/g, '');
+
+  // Clean up JSX props that might remain (like width={...}, height={...})
+  result = result.replace(/\b\w+={[^}]*}/g, '');
+  result = result.replace(/\b\w+=["'][^"']*["']/g, '');
+
+  // Clean up leftover closing brackets and whitespace
+  result = result.replace(/\/>/g, '');
+  result = result.replace(/\s+/g, ' ');
+
+  return result.trim();
 }
 
 // Extract the link text from a markdown link
@@ -108,7 +125,9 @@ function cleanMDXFile(mdxContent) {
         // Close previous section if exists
         if (currentSection) {
           currentSection.end = charPosition - 1;
-          currentSection.content = currentContent.trim();
+          // Process content: extract links and remove JSX (do this once for entire section)
+          const processed = extractLink(removeJSX(currentContent));
+          currentSection.content = replaceNewlineWithSpace(processed).trim();
         }
 
         // Start new section
@@ -130,9 +149,8 @@ function cleanMDXFile(mdxContent) {
         }
       }
 
-      // Extract the link text from the line, remove any JSX syntax, and append it to the current section content
-      const processed = extractLink(removeJSX(line));
-      currentContent += `${processed}\n`;
+      // Just accumulate raw content (we'll process it when closing the section)
+      currentContent += `${line}\n`;
     } else {
       // Append the line to the current section content when inside a code block
       currentContent += `${line}\n`;
@@ -144,24 +162,25 @@ function cleanMDXFile(mdxContent) {
   // Close the last section
   if (currentSection) {
     currentSection.end = charPosition;
-    currentSection.content = currentContent.trim();
+    // Process content: extract links and remove JSX
+    const processed = extractLink(removeJSX(currentContent));
+    currentSection.content = replaceNewlineWithSpace(processed).trim();
   }
 
   // If no sections were found, create a default one
   if (sections.length === 0) {
+    const processed = extractLink(removeJSX(currentContent));
     sections.push({
       title: '',
       heading: '',
       start: 0,
       end: charPosition,
-      content: currentContent.trim(),
+      content: replaceNewlineWithSpace(processed).trim(),
     });
   }
 
-  // Replace newline characters with spaces in all section content
-  const cleanedContent = sections
-    .map((s) => replaceNewlineWithSpace(s.content))
-    .join(' ');
+  // All section content is already processed and has newlines replaced with spaces
+  const cleanedContent = sections.map((s) => s.content).join(' ');
 
   return { content: cleanedContent, sections, codeBlocks };
 }
@@ -169,22 +188,8 @@ function cleanMDXFile(mdxContent) {
 function splitIntoChunks(inputText, sections = [], codeBlocks = []) {
   const Tokenizer = GPT3Tokenizer.default;
   const chunks = [];
-  let chunk = {
-    tokens: [],
-    start: 0,
-    end: 0,
-  };
-
-  let start = 0;
 
   const tokenizer = new Tokenizer({ type: 'gpt3' });
-
-  const { text } = tokenizer.encode(inputText);
-
-  // Helper function to detect if a position is inside a code block
-  const getCodeBlockAt = (position) => {
-    return codeBlocks.find((cb) => cb.start <= position && cb.end >= position);
-  };
 
   // Helper function to determine content type of a chunk
   const getContentType = (chunkStart, chunkEnd) => {
@@ -210,71 +215,74 @@ function splitIntoChunks(inputText, sections = [], codeBlocks = []) {
     return { type: 'prose', language: '' };
   };
 
-  for (let i = 0; i < text.length; i++) {
-    const word = text[i];
-    const newChunkTokens = [...chunk.tokens, word];
+  // Process each section independently to avoid mixing content across sections
+  for (const section of sections) {
+    const sectionText = section.content;
+    const { text: tokens } = tokenizer.encode(sectionText);
 
-    if (newChunkTokens.length > MAX_TOKEN) {
+    let chunk = {
+      tokens: [],
+      start: section.start,
+    };
+
+    let currentPos = section.start;
+
+    for (let i = 0; i < tokens.length; i++) {
+      const word = tokens[i];
+      const newChunkTokens = [...chunk.tokens, word];
+
+      if (newChunkTokens.length > MAX_TOKEN) {
+        // Save the current chunk
+        const chunkText = chunk.tokens.join('');
+        const chunkEnd = currentPos + chunkText.length;
+
+        // Determine content type
+        const contentTypeInfo = getContentType(chunk.start, chunkEnd);
+
+        chunks.push({
+          text: chunkText,
+          start: chunk.start,
+          end: chunkEnd,
+          section: section.title || '',
+          heading: section.heading || '',
+          contentType: contentTypeInfo.type,
+          language: contentTypeInfo.language,
+        });
+
+        currentPos = chunkEnd + 1;
+
+        // Implement overlap: keep last CHUNK_OVERLAP tokens for next chunk
+        const overlapTokens = chunk.tokens.slice(-CHUNK_OVERLAP);
+        chunk = {
+          tokens: [...overlapTokens, word],
+          start: currentPos - overlapTokens.join('').length,
+        };
+      } else {
+        chunk = {
+          ...chunk,
+          tokens: newChunkTokens,
+        };
+      }
+    }
+
+    // Push the final chunk for this section if it has content
+    if (chunk.tokens.length > 0) {
       const chunkText = chunk.tokens.join('');
-      const chunkEnd = start + chunkText.length;
-
-      // Find which section this chunk belongs to based on character position
-      const chunkMiddle = start + Math.floor(chunkText.length / 2);
-      const currentSection = sections.find(
-        (s) => s.start <= chunkMiddle && s.end >= chunkMiddle
-      );
+      const chunkEnd = currentPos + chunkText.length;
 
       // Determine content type
-      const contentTypeInfo = getContentType(start, chunkEnd);
+      const contentTypeInfo = getContentType(chunk.start, chunkEnd);
 
       chunks.push({
         text: chunkText,
-        start,
+        start: chunk.start,
         end: chunkEnd,
-        section: currentSection?.title || '',
-        heading: currentSection?.heading || '',
+        section: section.title || '',
+        heading: section.heading || '',
         contentType: contentTypeInfo.type,
         language: contentTypeInfo.language,
       });
-
-      start += chunkText.length + 1;
-
-      // Implement overlap: keep last CHUNK_OVERLAP tokens for next chunk
-      const overlapTokens = chunk.tokens.slice(-CHUNK_OVERLAP);
-      chunk = {
-        tokens: [...overlapTokens, word],
-        start: start - overlapTokens.join('').length,
-        end: start,
-      };
-    } else {
-      chunk = {
-        ...chunk,
-        tokens: newChunkTokens,
-      };
     }
-  }
-
-  // Push the final chunk if it has content
-  if (chunk.tokens.length > 0) {
-    const chunkText = chunk.tokens.join('');
-    const chunkEnd = start + chunkText.length;
-    const chunkMiddle = start + Math.floor(chunkText.length / 2);
-    const currentSection = sections.find(
-      (s) => s.start <= chunkMiddle && s.end >= chunkMiddle
-    );
-
-    // Determine content type
-    const contentTypeInfo = getContentType(start, chunkEnd);
-
-    chunks.push({
-      text: chunkText,
-      start,
-      end: chunkEnd,
-      section: currentSection?.title || '',
-      heading: currentSection?.heading || '',
-      contentType: contentTypeInfo.type,
-      language: contentTypeInfo.language,
-    });
   }
 
   return chunks;

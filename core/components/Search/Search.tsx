@@ -139,7 +139,7 @@ const Search = (props: Props) => {
         query,
         // @ts-ignore
         mock: window.Cypress ? true : false,
-        threshold: 0.35,
+        threshold: 0.25,
       }),
       signal,
     });
