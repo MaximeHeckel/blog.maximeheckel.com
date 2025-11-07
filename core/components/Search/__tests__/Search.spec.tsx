@@ -1,5 +1,6 @@
 import { act, fireEvent, render } from '@testing-library/react';
 import React from 'react';
+import { it, describe, expect } from 'vitest';
 
 import SearchBox from '..';
 
@@ -50,7 +51,7 @@ describe('SearchBox', () => {
 
     expect(getByTestId('ai-prompt-submit-button')).toBeDefined();
 
-    act(() => {
+    await act(async () => {
       fireEvent.click(getByTestId('ai-prompt-submit-button'));
     });
 

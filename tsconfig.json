@@ -3,16 +3,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@core/*": [
-        "core/*"
-      ]
+      "@core/*": ["core/*"]
     },
     "target": "esnext",
     "module": "esnext",
-    "lib": [
-      "dom",
-      "es2022"
-    ],
+    "lib": ["dom", "es2022"],
     "jsx": "preserve",
     "sourceMap": false,
     "strict": true,
@@ -30,23 +25,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "types": [
-      "vitest/globals",
-      "@testing-library/jest-dom"
-    ],
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
-  "include": [
-    "./**/**.*",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "./**/*.spec.ts",
-    "./**/*.spec.tsx"
-  ]
+  "include": ["./**/**.*", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }
