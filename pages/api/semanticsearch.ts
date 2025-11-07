@@ -76,8 +76,8 @@ export default async function handler(req: Request) {
     query,
     mock,
     completion = true,
-    threshold = 0.7,
-    count = 10,
+    threshold = 0.35,
+    count = 20,
   } = (await req.json()) as {
     query: string;
     mock?: boolean;
@@ -182,7 +182,7 @@ export default async function handler(req: Request) {
 
   try {
     const { data: documents, error } = await supabaseClient.rpc(
-      'match_documents',
+      'match_documents_2',
       {
         query_embedding: embedding,
         similarity_threshold: threshold,
@@ -215,11 +215,6 @@ export default async function handler(req: Request) {
       const content = document.content;
       const encoded = tokenizer.encode(content);
       tokenCount += encoded.text.length;
-
-      // Limit context to max 1500 tokens (configurable)
-      if (tokenCount > 1500) {
-        break;
-      }
 
       contextText += `${content.trim()}\n---\n`;
     }

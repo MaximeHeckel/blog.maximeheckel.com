@@ -8,6 +8,13 @@ export const config = {
 const OPEN_AI_API_KEY = process.env.OPEN_AI_API_KEY;
 const OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL;
 
+/**
+ * Recommended model: 'text-embedding-3-small' (2024/2025)
+ * - 62% cheaper than ada-002
+ * - Better performance
+ * - Optional smaller dimensions (512/256 vs 1536)
+ */
+
 const MAX_REQUEST_PER_MINUTE_PER_USER = 8; // number of requests per minute per user
 const MIN_RATE_LIMIT_INTERVAL = 60; // cache expiration time ins econd
 

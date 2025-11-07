@@ -95,7 +95,7 @@ const Search = (props: Props) => {
         body: JSON.stringify({
           query,
           completion: false,
-          threshold: 0.76,
+          threshold: 0.35,
         }),
       });
 
@@ -138,6 +138,7 @@ const Search = (props: Props) => {
         query,
         // @ts-ignore
         mock: window.Cypress ? true : false,
+        threshold: 0.35,
       }),
       signal,
     });
