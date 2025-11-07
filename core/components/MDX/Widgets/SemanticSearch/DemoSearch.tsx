@@ -64,7 +64,7 @@ const DemoSearch = () => {
         query,
         completion: false,
         count: 50,
-        threshold: 0.6,
+        threshold: 0.3,
       }),
     });
 

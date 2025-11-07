@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { render, waitFor } from '@testing-library/react';
 import React from 'react';
+import { it, describe, expect } from 'vitest';
 
 import Code from '../';
 import { preToCodeBlock, calculateLinesToHighlight, hasTitle } from '../utils';
@@ -42,7 +43,7 @@ describe('Code', () => {
   });
 
   it('Renders a Codeblock component when the proper preProps are passed', async () => {
-    const { container, getByTestId } = render(
+    const { container } = render(
       <Code>
         {/* @ts-ignore */}
         <div metastring="javascript">var hello="world"</div>

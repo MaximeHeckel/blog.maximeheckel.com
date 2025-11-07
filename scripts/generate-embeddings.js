@@ -3,7 +3,6 @@ import { createClient } from '@supabase/supabase-js';
 import chalk from 'chalk';
 import 'dotenv/config';
 import fs from 'fs';
-import OpenAI from 'openai';
 import path from 'path';
 import ProgressBar from 'progress';
 import { fileURLToPath } from 'url';
@@ -19,10 +18,36 @@ const BLOG_URL = process.env.BLOG_URL;
 const OPEN_AI_API_KEY = process.env.OPEN_AI_API_KEY;
 const OPENAI_EMBEDDING_MODEL = process.env.OPENAI_EMBEDDING_MODEL;
 
+/**
+ * EMBEDDING MODEL RECOMMENDATION (2024/2025):
+ *
+ * If currently using 'text-embedding-ada-002', consider upgrading to 'text-embedding-3-small':
+ *
+ * Benefits:
+ * - 62% cost reduction ($0.020 vs $0.100 per 1M tokens)
+ * - Better performance (higher accuracy on benchmarks)
+ * - Smaller dimensions option (512 or 256 vs 1536) for additional cost savings
+ * - More efficient storage and faster similarity searches
+ *
+ * To upgrade:
+ * 1. Set OPENAI_EMBEDDING_MODEL=text-embedding-3-small in your .env
+ * 2. Optionally add dimensions parameter to embeddings.create() for smaller vectors
+ * 3. Re-run embedding generation for all content
+ * 4. Update Supabase schema if changing dimensions (current: 1536)
+ *
+ * Alternative: 'text-embedding-3-large' for highest quality (more expensive)
+ */
+
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_API_KEY);
-const openAI = new OpenAI({ apiKey: OPEN_AI_API_KEY });
+const openai = createOpenAI({
+  apiKey: OPEN_AI_API_KEY,
+});
+
+const model = openai('gpt-4o');
 
 const generateEmbeddings = async (chunks, metadata) => {
+  if (!metadata.title) return;
+
   console.info(
     chalk.cyan('info'),
     ` - Generating Embeddings for ${metadata.title}`
@@ -58,28 +83,62 @@ const generateEmbeddings = async (chunks, metadata) => {
 
   for await (const chunk of chunks) {
     progress.tick();
+
+    // Enhance the input with section context for better embeddings
+    let contextualInput = chunk.text;
+
+    if (chunk.heading) {
+      contextualInput = `Section: ${chunk.heading}\n\n${contextualInput}`;
+    }
+
+    // Add content type context for code blocks
+    if (chunk.contentType === 'code' && chunk.language) {
+      contextualInput = `Code (${chunk.language}):\n${contextualInput}`;
+    }
+
     const vector = {
-      input: chunk.text,
+      input: contextualInput,
       metadata: {
         title: metadata.title,
         url,
+        section: chunk.section || '',
+        heading: chunk.heading || '',
+        contentType: chunk.contentType || 'prose',
+        language: chunk.language || '',
       },
     };
 
     try {
-      const embeddingResponse = await openAI.embeddings.create({
-        input: vector.input,
-        model: OPENAI_EMBEDDING_MODEL,
-      });
+      const embeddingResponse = await fetch(
+        'https://api.openai.com/v1/embeddings',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${OPEN_AI_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: OPENAI_EMBEDDING_MODEL,
+            input,
+          }),
+        }
+      );
+
+      console.log(embeddingResponse);
 
       const embedding = embeddingResponse.data[0].embedding;
 
-      await supabaseClient.from('documents').insert({
+      const { data, error } = await supabaseClient.from('documents').insert({
         title: vector.metadata.title,
         url: vector.metadata.url,
-        content: vector.input,
+        content: chunk.text, // Store original text without prefixes
         embedding,
+        section: vector.metadata.section,
+        heading: vector.metadata.heading,
+        content_type: vector.metadata.contentType,
+        language: vector.metadata.language,
       });
+      console.log(data, error);
     } catch (error) {
       console.error(
         chalk.redBright('error'),
@@ -106,6 +165,7 @@ const run = async () => {
   const stats = fs.statSync(dirPath);
   if (stats.isDirectory()) {
     const files = fs.readdirSync(dirPath);
+    console.log('files', files);
 
     for (const file of files) {
       await generateEmbeddingsForFile(path.join(dirPath, file));

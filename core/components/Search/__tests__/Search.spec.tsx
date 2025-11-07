@@ -1,5 +1,6 @@
 import { act, fireEvent, render } from '@testing-library/react';
 import React from 'react';
+import { it, describe, expect } from 'vitest';
 
 import SearchBox from '..';
 
@@ -50,7 +51,7 @@ describe('SearchBox', () => {
 
     expect(getByTestId('ai-prompt-submit-button')).toBeDefined();
 
-    act(() => {
+    await act(async () => {
       fireEvent.click(getByTestId('ai-prompt-submit-button'));
     });
 
@@ -61,7 +62,7 @@ describe('SearchBox', () => {
     expect(fetch).toHaveBeenCalledWith('/api/semanticsearch/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: 'test', mock: false }),
+      body: JSON.stringify({ query: 'test', mock: false, threshold: 0.35 }),
       signal: expect.anything(),
     });
   });

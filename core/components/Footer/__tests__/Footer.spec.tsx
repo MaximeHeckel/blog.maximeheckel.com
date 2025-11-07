@@ -1,5 +1,6 @@
 import { cleanup, render } from '@testing-library/react';
 import React from 'react';
+import { it, describe, expect } from 'vitest';
 
 import Footer from '..';
 

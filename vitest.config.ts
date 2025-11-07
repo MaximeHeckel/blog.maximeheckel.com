@@ -18,11 +18,11 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['./**/*.spec.ts', './**/*.spec.tsx'],
-    exclude: ['node_modules', '.next', 'cypress'],
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./vitest-setup.ts'],
+    setupFiles: './vitest-setup.ts',
+    include: ['./**/*.spec.ts', './**/*.spec.tsx'],
+    exclude: ['node_modules', '.next', 'cypress'],
     pool: 'forks',
   },
 });

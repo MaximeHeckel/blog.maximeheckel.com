@@ -9,6 +9,7 @@ import deepEqual from 'deep-eql';
 import { AnimatePresence, motion } from 'motion/react';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 
+import { ScreenReaderOnly } from '../ScreenReaderOnly';
 import AIPromptInput from './AIPromptInput';
 import AIPromptResultCard from './AIPromptResultCard';
 import { CommandCenterStatic } from './CommandCenterStatic';
@@ -95,7 +96,7 @@ const Search = (props: Props) => {
         body: JSON.stringify({
           query,
           completion: false,
-          threshold: 0.76,
+          threshold: 0.35,
         }),
       });
 
@@ -138,6 +139,7 @@ const Search = (props: Props) => {
         query,
         // @ts-ignore
         mock: window.Cypress ? true : false,
+        threshold: 0.35,
       }),
       signal,
     });
@@ -219,6 +221,14 @@ const Search = (props: Props) => {
       <Dialog.Portal>
         <S.Overlay data-testid="search-overlay" />
         <S.Content onInteractOutside={onCloseHandler}>
+          <Dialog.Title asChild>
+            <ScreenReaderOnly>Search</ScreenReaderOnly>
+          </Dialog.Title>
+          <Dialog.Description asChild>
+            <ScreenReaderOnly>
+              Search through blog posts or ask AI questions
+            </ScreenReaderOnly>
+          </Dialog.Description>
           <Flex
             css={{
               position: 'relative',
