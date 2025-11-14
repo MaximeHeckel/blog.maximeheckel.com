@@ -56,6 +56,7 @@ const SandpackWrapper = styled(Box, {
     position: 'relative',
     border: 'none',
     boxShadow: Shadows[1],
+    gap: 0,
   },
 
   '.cm-scroller': {
