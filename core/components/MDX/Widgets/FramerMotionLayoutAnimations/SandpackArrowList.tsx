@@ -80,7 +80,7 @@ export default SelectableList
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
 }
 
 canvas {

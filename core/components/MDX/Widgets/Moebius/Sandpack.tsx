@@ -18,7 +18,7 @@ import tonal from './tonal';
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
 }
 
 body {

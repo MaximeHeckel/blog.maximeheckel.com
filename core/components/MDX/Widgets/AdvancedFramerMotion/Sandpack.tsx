@@ -7,7 +7,7 @@ import snippet4 from './snippet4';
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
     color: white;
 }
 

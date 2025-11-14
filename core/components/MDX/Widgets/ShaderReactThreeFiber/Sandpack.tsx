@@ -27,7 +27,7 @@ const SCENES = {
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
 }
 
 canvas {

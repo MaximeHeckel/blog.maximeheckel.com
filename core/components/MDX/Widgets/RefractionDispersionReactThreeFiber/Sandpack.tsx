@@ -17,7 +17,7 @@ import Transparency from './transparency';
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
 }
 
 body {

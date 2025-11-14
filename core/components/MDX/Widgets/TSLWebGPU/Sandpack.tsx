@@ -16,7 +16,7 @@ import postprocessing from './postprocessing';
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
 }
 
 body {

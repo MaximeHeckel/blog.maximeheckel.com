@@ -2,7 +2,7 @@ import Sandpack from '@core/components/Code/Sandpack';
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
 }
 
 canvas {

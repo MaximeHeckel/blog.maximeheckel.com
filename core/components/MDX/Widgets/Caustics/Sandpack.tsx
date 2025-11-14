@@ -13,7 +13,7 @@ import simpleCaustics from './simpleCaustics';
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
 }
 
 body {

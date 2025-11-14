@@ -106,7 +106,7 @@ export const Tab = styled('li', {
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
 }
 
 canvas {
