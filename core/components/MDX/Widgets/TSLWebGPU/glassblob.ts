@@ -1,5 +1,4 @@
-const Perlin = `
-import {
+const Perlin = `import {
   mod,
   Fn,
   mul,

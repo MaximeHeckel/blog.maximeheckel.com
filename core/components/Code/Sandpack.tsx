@@ -258,10 +258,10 @@ const Sandpack = (props: SandpackProps) => {
   const [consoleKey, setConsoleKey] = useState(0);
   const [selectedTab, setSelectedTab] = useState<Tab>(defaultTab);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [displayCode, setDisplayCode] = useState(false);
+  const [displayCode, setDisplayCode] = useState(isMobile ? false : true);
 
   const defaultEditorOptions = {
-    editorHeight: isMobile ? 520 : 620,
+    editorHeight: 620,
   };
 
   const handleToggleCode = () => {
@@ -370,7 +370,7 @@ const Sandpack = (props: SandpackProps) => {
               style={{
                 height: isFullscreen
                   ? '100dvh'
-                  : defaultEditorOptions.editorHeight - 40,
+                  : defaultEditorOptions.editorHeight - 48,
                 display: selectedTab === 'console' ? 'flex' : 'none',
               }}
             />
@@ -380,7 +380,7 @@ const Sandpack = (props: SandpackProps) => {
               style={{
                 height: isFullscreen
                   ? '100dvh'
-                  : defaultEditorOptions.editorHeight - 40,
+                  : defaultEditorOptions.editorHeight - 48,
                 display: selectedTab === 'preview' ? 'flex' : 'none',
               }}
             />

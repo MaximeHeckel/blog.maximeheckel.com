@@ -4,7 +4,7 @@ import {
   UnstyledOpenInCodeSandboxButton,
   useSandpackConsole,
 } from '@codesandbox/sandpack-react';
-import { Box, Tooltip, Icon, IconButton } from '@maximeheckel/design-system';
+import { Box, Tooltip, IconButton } from '@maximeheckel/design-system';
 
 const PlayIcon = () => {
   return (
@@ -222,6 +222,27 @@ export const CustomToggleCodeButton = ({
   );
 };
 
+const ClearIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      color="currentColor"
+      fill="none"
+    >
+      <path
+        d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></path>
+    </svg>
+  );
+};
+
 export const CustomClearConsoleButton = ({
   onClear,
 }: {
@@ -242,7 +263,7 @@ export const CustomClearConsoleButton = ({
         size="small"
         variant="tertiary"
       >
-        <Icon.X />
+        <ClearIcon />
       </IconButton>
     </Tooltip>
   );

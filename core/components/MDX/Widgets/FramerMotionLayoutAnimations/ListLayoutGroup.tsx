@@ -138,7 +138,7 @@ const ListLayoutGroup = () => {
     <Card depth={1}>
       <Card.Body
         css={{
-          height: '520px',
+          height: '620px',
         }}
       >
         <Flex alignItems="start" direction="column" gap="3">

@@ -11,9 +11,9 @@ html {
     color: white;
 }
 
-canvas {
-    width: 100vw;
-    height: 100vh;
+#root {
+    width: unset;
+    height: unset;
 }`;
 
 const PillCode = `import { styled } from '@stitches/react';

@@ -109,9 +109,9 @@ html {
     background: black;
 }
 
-canvas {
-    width: 100vw;
-    height: 100vh;
+#root {
+    width: unset;
+    height: unset;
 }`;
 
 const SandpackTabs = () => {

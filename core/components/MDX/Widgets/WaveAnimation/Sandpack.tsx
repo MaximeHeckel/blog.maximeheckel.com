@@ -5,9 +5,9 @@ const SceneCSSDark = `html {
     color: white;
 }
 
-canvas {
-    width: 100vw;
-    height: 100vh;
+#root {
+    width: unset;
+    height: unset;
 }`;
 
 const AppCode = `import { motion } from 'framer-motion';

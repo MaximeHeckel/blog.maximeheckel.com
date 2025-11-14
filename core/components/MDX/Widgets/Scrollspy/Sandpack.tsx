@@ -5,9 +5,9 @@ html {
     background: black;
 }
 
-canvas {
-    width: 100vw;
-    height: 100vh;
+#root {
+    width: unset;
+    height: unset;
 }`;
 
 const AppCode = `import { styled } from '@stitches/react';

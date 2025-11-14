@@ -1,4 +1,4 @@
-import { css } from '@maximeheckel/design-system';
+import { Box } from '@maximeheckel/design-system';
 import { useInView } from 'motion/react';
 import { useRef } from 'react';
 
@@ -39,14 +39,6 @@ const cssSandpack = `body {
     outline: none;
 }
 `;
-
-const placeholder = css({
-  height: '520px',
-
-  '@media(max-width: 750px)': {
-    height: '1040px',
-  },
-});
 
 const SCRIPTS = {
   script1,
@@ -92,7 +84,7 @@ const VaporwaveThreejsSandpack = (props: any) => {
           }}
         />
       ) : (
-        <div className={placeholder()} />
+        <Box css={{ height: '520px' }} />
       )}
     </div>
   );

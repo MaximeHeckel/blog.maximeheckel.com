@@ -128,30 +128,36 @@ const PreviewTabs = (props: PreviewTabsProps) => {
         </Box>
       </Flex>
       <Flex>
-        <CustomGoToCodesandboxButton />
-        <Tooltip content="Fullscreen" side="top">
-          <IconButton
-            aria-label="Fullscreen"
-            css={{
-              display: 'flex',
-              '@media (max-width: 750px)': {
-                display: 'none',
-              },
-            }}
-            onClick={() => {
-              onFullscreen();
-            }}
-            variant="tertiary"
-            size="small"
-          >
-            <FullscreenIcon />
-          </IconButton>
-        </Tooltip>
-        <CustomRefreshButton />
-        <CustomClearConsoleButton
-          // Workaround to make console clear work
-          onClear={onClear}
-        />
+        {selectedTab === 'preview' ? (
+          <>
+            <Tooltip content="Fullscreen" side="top">
+              <IconButton
+                aria-label="Fullscreen"
+                css={{
+                  display: 'flex',
+                  '@media (max-width: 750px)': {
+                    display: 'none',
+                  },
+                }}
+                onClick={() => {
+                  onFullscreen();
+                }}
+                variant="tertiary"
+                size="small"
+              >
+                <FullscreenIcon />
+              </IconButton>
+            </Tooltip>
+            <CustomRefreshButton />
+            <CustomGoToCodesandboxButton />
+          </>
+        ) : null}
+        {selectedTab === 'console' ? (
+          <CustomClearConsoleButton
+            // Workaround to make console clear work
+            onClear={onClear}
+          />
+        ) : null}
       </Flex>
     </Flex>
   );
