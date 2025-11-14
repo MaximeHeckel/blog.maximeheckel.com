@@ -7,13 +7,13 @@ import snippet4 from './snippet4';
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
     color: white;
 }
 
-canvas {
-    width: 100vw;
-    height: 100vh;
+#root {
+    width: unset;
+    height: unset;
 }`;
 
 const PillCode = `import { styled } from '@stitches/react';

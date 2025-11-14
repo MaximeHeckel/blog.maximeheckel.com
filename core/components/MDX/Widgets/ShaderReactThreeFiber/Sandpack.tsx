@@ -27,7 +27,7 @@ const SCENES = {
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
 }
 
 canvas {
@@ -69,11 +69,7 @@ const R3FShaderSandpack = (props: any) => {
       ) : (
         <Box
           css={{
-            height: '520px',
-
-            '@media(max-width: 750px)': {
-              height: '1060px',
-            },
+            height: '620px',
           }}
         />
       )}

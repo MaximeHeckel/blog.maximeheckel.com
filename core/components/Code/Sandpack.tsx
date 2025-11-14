@@ -7,19 +7,21 @@ import {
   SandpackConsole,
 } from '@codesandbox/sandpack-react';
 import { Box, Flex, Shadows, styled } from '@maximeheckel/design-system';
+import { AnimatePresence } from 'motion/react';
 import { useState } from 'react';
 
 import { useIsMobile } from '@core/hooks/useIsMobile';
 
 import setupFiles from './SandpackSetupFiles';
+import { CustomRunButton } from './components/CustomSandpackButtons';
 import PreviewTabs, { Tab } from './components/PreviewTabs';
 
 // Default Theme
 const theme = {
   colors: {
-    hover: 'var(--accent)',
-    clickable: 'var(--text-secondary)',
-    accent: 'var(--accent)',
+    hover: 'var(--text-secondary)',
+    clickable: 'var(--text-tertiary)',
+    accent: 'var(--text-primary)',
     errorSurface: 'var(--danger-emphasis)',
     error: 'var(--danger)',
     surface3: 'var(--emphasis)',
@@ -50,28 +52,114 @@ const theme = {
 // Styles
 const SandpackWrapper = styled(Box, {
   '.sp-layout': {
-    background: 'var(--card-background)',
+    background: 'transparent',
     position: 'relative',
-    borderRadius: 'var(--border-radius-2)',
+    border: 'none',
     boxShadow: Shadows[1],
   },
+
+  '.cm-scroller': {
+    padding: 'var(--space-2) 0px !important',
+  },
+
+  '.cm-gutter': {
+    padding: ' 0px var(--space-2) !important',
+  },
+
   '.cm-gutterElement': {
     fontSize: '12px',
+    fontVariantNumeric: 'tabular-nums',
+    fontFamily: 'var(--font-mono-code)',
     userSelect: 'none',
     opacity: '1',
     color: 'var(--text-tertiary)',
   },
 
+  '.cm-content': {
+    padding: '0px',
+  },
+
   // Hide default console clear button
-  '.sp-console': {
-    '> button': {
-      display: 'none',
-    },
+  '.sp-console-actions': {
+    display: 'none',
+  },
+
+  '.sp-tabs-scrollable-container': {
+    padding: '0 4px',
+  },
+
+  '.sp-tabs': {
+    background: 'var(--background)',
+    border: 'none !important',
+    borderBottom: '1px solid var(--border-color) !important',
+    position: 'relative',
   },
 
   '.sp-tab-container': {
     paddingRight: 'var(--space-1)',
     outline: 'none !important',
+    position: 'relative',
+    display: 'block',
+    padding: '0 var(--space-2)',
+    minWidth: 80,
+    width: 'auto',
+    flex: '0 0 auto',
+    whiteSpace: 'nowrap',
+
+    '--tab-border-color': 'transparent',
+    borderTopLeftRadius: 'var(--border-radius-1)',
+    borderTopRightRadius: 'var(--border-radius-1)',
+    borderTop: '1px solid var(--tab-border-color)',
+    borderLeft: '1px solid var(--tab-border-color)',
+    borderRight: '1px solid var(--tab-border-color)',
+    marginTop: 4,
+    marginBottom: 0,
+
+    '& button': {
+      margin: '0 auto',
+    },
+
+    '&[aria-selected="true"]': {
+      '--tab-border-color': 'var(--border-color)',
+      background: 'var(--card-background)',
+      borderBottom: '2px solid var(--card-background)',
+      marginBottom: 0,
+      color: 'var(--text-primary) !important',
+
+      '&:before': {
+        content: '""',
+        position: 'absolute',
+        bottom: -2,
+        left: -9,
+        width: 9,
+        height: 9,
+        background:
+          'radial-gradient(circle at top left, transparent 8px, var(--border-color) 8px, var(--border-color) 9px, transparent 9px), ' +
+          'radial-gradient(circle at top left, transparent 7px, var(--card-background) 7px)',
+      },
+
+      '&:after': {
+        content: '""',
+        position: 'absolute',
+        bottom: -2,
+        right: -9,
+        width: 9,
+        height: 9,
+        background:
+          'radial-gradient(circle at top right, transparent 8px, var(--border-color) 8px, var(--border-color) 9px, transparent 9px), ' +
+          'radial-gradient(circle at top right, transparent 7px, var(--card-background) 7px)',
+      },
+    },
+  },
+
+  '.sp-editor': {
+    '@media (max-width: 960px)': {
+      flex: 'unset !important',
+    },
+  },
+
+  '.sp-preview-container': {
+    background: 'var(--card-background)',
   },
 
   variants: {
@@ -80,7 +168,6 @@ const SandpackWrapper = styled(Box, {
         '.sp-layout': {
           width: '100%',
           height: '100%',
-          borderRadius: '0px',
           margin: '0px',
           position: 'fixed',
           top: 0,
@@ -96,9 +183,13 @@ const SandpackWrapper = styled(Box, {
       },
       false: {
         '.sp-layout': {
+          display: 'flex',
           margin: 'var(--space-5) 0px',
-          '@media (max-width: 880px)': {
-            display: 'block',
+          gap: 'var(--space-4)',
+          flexDirection: 'row',
+          '@media (max-width: 960px)': {
+            display: 'flex',
+            flexDirection: 'column',
             width: '95vw',
             left: '50%',
             right: '50%',
@@ -106,11 +197,11 @@ const SandpackWrapper = styled(Box, {
             marginRight: '-47.5vw',
           },
 
-          '@media (min-width: 880px)': {
+          '@media (min-width: 960px)': {
             position: 'relative',
-            width: 'calc(100% + 150px)',
-            marginLeft: '-75px',
-            marginRight: '-75px',
+            width: 'calc(100% + 250px)',
+            marginLeft: '-125px',
+            marginRight: '-125px',
           },
         },
       },
@@ -167,9 +258,14 @@ const Sandpack = (props: SandpackProps) => {
   const [consoleKey, setConsoleKey] = useState(0);
   const [selectedTab, setSelectedTab] = useState<Tab>(defaultTab);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [displayCode, setDisplayCode] = useState(isMobile ? false : true);
 
   const defaultEditorOptions = {
-    editorHeight: 520,
+    editorHeight: 620,
+  };
+
+  const handleToggleCode = () => {
+    setDisplayCode((prev) => !prev);
   };
 
   const handleFullscreen = () => {
@@ -196,33 +292,85 @@ const Sandpack = (props: SandpackProps) => {
         }}
       >
         <SandpackLayout>
+          <AnimatePresence mode="popLayout">
+            {displayCode ? (
+              <SandpackCodeEditor
+                showRunButton={false}
+                showTabs
+                showLineNumbers
+                style={{
+                  borderLeft: '1px solid var(--border-color)',
+                  borderTop: '1px solid var(--border-color)',
+                  borderBottom: '1px solid var(--border-color)',
+                  borderRight: isFullscreen
+                    ? 'none'
+                    : '1px solid var(--border-color)',
+                  borderRadius: isFullscreen ? '0px' : 'var(--border-radius-2)',
+                  height: isFullscreen
+                    ? '100dvh'
+                    : defaultEditorOptions.editorHeight,
+                }}
+              />
+            ) : null}
+          </AnimatePresence>
           <Flex
             direction="column"
             justifyContent="space-between"
             css={{
               gap: 0,
-              width: '50%',
-              '@media (max-width: 880px)': {
+              flex: 1,
+              position: 'relative',
+              background: 'var(--card-background)',
+              borderRadius: isFullscreen ? '0px' : 'var(--border-radius-2)',
+              overflow: 'hidden',
+              '@media (max-width: 960px)': {
                 width: '100%',
+              },
+              '&:after': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                pointerEvents: 'none',
+                border: '1px solid var(--border-color)',
+                borderRadius: isFullscreen ? '0px' : 'var(--border-radius-2)',
               },
             }}
             style={{
-              height: isFullscreen ? '100dvh' : '520px',
+              height: isFullscreen
+                ? '100dvh'
+                : defaultEditorOptions.editorHeight,
             }}
           >
+            <Flex
+              css={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 1,
+                pointerEvents: 'none',
+              }}
+            >
+              <CustomRunButton />
+            </Flex>
             <PreviewTabs
               onFullscreen={handleFullscreen}
               onClear={() => setConsoleKey(consoleKey + 1)}
               onTabSelect={(tab) => setSelectedTab(tab)}
               selectedTab={selectedTab}
+              onToggleCode={handleToggleCode}
             />
+
             <SandpackConsole
               key={consoleKey}
               showHeader
               style={{
                 height: isFullscreen
                   ? '100dvh'
-                  : defaultEditorOptions.editorHeight - 40,
+                  : defaultEditorOptions.editorHeight - 48,
                 display: selectedTab === 'console' ? 'flex' : 'none',
               }}
             />
@@ -232,22 +380,11 @@ const Sandpack = (props: SandpackProps) => {
               style={{
                 height: isFullscreen
                   ? '100dvh'
-                  : defaultEditorOptions.editorHeight - 40,
+                  : defaultEditorOptions.editorHeight - 48,
                 display: selectedTab === 'preview' ? 'flex' : 'none',
               }}
             />
           </Flex>
-          <SandpackCodeEditor
-            showRunButton={false}
-            showTabs
-            showLineNumbers
-            style={{
-              borderLeft: '1px solid var(--border-color)',
-              height: isFullscreen
-                ? '100dvh'
-                : defaultEditorOptions.editorHeight,
-            }}
-          />
         </SandpackLayout>
       </SandpackProvider>
     </SandpackWrapper>

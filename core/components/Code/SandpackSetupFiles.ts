@@ -36,6 +36,11 @@ body {
     height: 450px;
     color: currentColor;
 }
+
+#root {
+  width: 99dvw;
+  height: 100dvh;
+}
 `;
 
 const IndexHtml = `<!DOCTYPE html>

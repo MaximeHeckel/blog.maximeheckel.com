@@ -1,13 +1,13 @@
 import Sandpack from '@core/components/Code/Sandpack';
 
 const SceneCSSDark = `html {
-    background: #20222B;
+    background: black;
     color: white;
 }
 
-canvas {
-    width: 100vw;
-    height: 100vh;
+#root {
+    width: unset;
+    height: unset;
 }`;
 
 const AppCode = `import { motion } from 'framer-motion';

@@ -1,4 +1,5 @@
 export {
+  CustomToggleCodeButton,
   CustomRunButton,
   CustomClearConsoleButton,
   CustomGoToCodesandboxButton,

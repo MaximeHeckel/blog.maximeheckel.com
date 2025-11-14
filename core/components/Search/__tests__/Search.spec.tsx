@@ -62,7 +62,7 @@ describe('SearchBox', () => {
     expect(fetch).toHaveBeenCalledWith('/api/semanticsearch/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: 'test', mock: false, threshold: 0.35 }),
+      body: JSON.stringify({ query: 'test', mock: false, threshold: 0.25 }),
       signal: expect.anything(),
     });
   });

@@ -68,12 +68,12 @@ export const Toast = styled('div', {
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
 }
 
-canvas {
-    width: 100vw;
-    height: 100vh;
+#root {
+    width: unset;
+    height: unset;
 }`;
 
 const SandpackNotification = () => {

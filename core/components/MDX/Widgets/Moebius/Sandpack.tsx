@@ -18,7 +18,7 @@ import tonal from './tonal';
 
 const SceneCSSDark = `
 html {
-    background: #20222B;
+    background: black;
 }
 
 body {
@@ -84,10 +84,7 @@ const CausticsSandpack = (props: any) => {
       ) : (
         <Box
           css={{
-            height: '520px',
-            '@media(max-width: 750px)': {
-              height: '1060px',
-            },
+            height: '620px',
           }}
         />
       )}
