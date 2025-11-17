@@ -1,15 +1,15 @@
 import { IconButton } from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'motion/react';
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 const CopyToClipboardButton = (props: { text: string; title?: string }) => {
-  const duration = 0.4;
+  const duration = 0.275;
   const svgVariants = {
     hover: (isChecked: boolean) => ({
       scale: isChecked ? 1 : 1.05,
     }),
     pressed: (isChecked: boolean) => ({
-      scale: isChecked ? 1 : 0.95,
+      scale: isChecked ? 1 : 0.97,
     }),
     idle: {
       scale: 1,
@@ -17,17 +17,17 @@ const CopyToClipboardButton = (props: { text: string; title?: string }) => {
   };
 
   const boxVariants = {
-    checked: { opacity: 0 },
-    unchecked: { opacity: 1 },
+    checked: { opacity: 0, filter: 'blur(2px)' },
+    unchecked: { opacity: 1, filter: 'blur(0px)' },
   };
 
   const tickVariants = {
     pressed: (isChecked: boolean) => ({ pathLength: isChecked ? 0.85 : 0.05 }),
-    checked: { pathLength: 1 },
-    unchecked: { pathLength: 0 },
+    checked: { pathLength: 1, filter: 'blur(0px)', scale: 1.05 },
+    unchecked: { pathLength: 0, filter: 'blur(2px)', scale: 0.97 },
   };
 
-  const [isChecked, setIsChecked] = React.useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const pathLength = useMotionValue(0);
   const opacity = useTransform(pathLength, [0.05, 0.15], [0, 1]);
 
@@ -43,9 +43,9 @@ const CopyToClipboardButton = (props: { text: string; title?: string }) => {
     document.body.removeChild(el);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isChecked) {
-      setTimeout(() => setIsChecked(false), 3000);
+      setTimeout(() => setIsChecked(false), 2500);
     }
   }, [isChecked]);
 
@@ -71,6 +71,7 @@ const CopyToClipboardButton = (props: { text: string; title?: string }) => {
         viewBox="0 0 25 25"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        style={{ outline: 'none' }}
       >
         <motion.path
           d="M20.8511 9.46338H11.8511C10.7465 9.46338 9.85107 10.3588 9.85107 11.4634V20.4634C9.85107 21.5679 10.7465 22.4634 11.8511 22.4634H20.8511C21.9556 22.4634 22.8511 21.5679 22.8511 20.4634V11.4634C22.8511 10.3588 21.9556 9.46338 20.8511 9.46338Z"

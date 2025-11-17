@@ -137,6 +137,7 @@ const CodeBlock = (props: CodeBlockProps) => {
           css={{
             zIndex: 3,
             backgroundColor: 'var(--code-snippet-background)',
+            padding: 'var(--space-2) var(--space-3)',
           }}
         >
           <CodeSnippetTitle data-testid="codesnippet-title">
