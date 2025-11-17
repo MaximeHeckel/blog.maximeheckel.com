@@ -5,7 +5,6 @@ import {
   Grid,
   Range,
   Switch,
-  Text,
 } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
 
@@ -85,7 +84,6 @@ const shader = (x: number, y: number) => {
 
 interface CellProps {
   originalUV: number[];
-  snappedUV: number[];
   value: number;
   pixelation: number;
   enablePatterns: boolean;
@@ -93,8 +91,7 @@ interface CellProps {
 }
 
 const Cell = (props: CellProps) => {
-  const { originalUV, snappedUV, value, pixelation, enablePatterns, pattern } =
-    props;
+  const { originalUV, value, pixelation, enablePatterns, pattern } = props;
 
   const gridX = Math.floor(originalUV[0] * (WIDTH - 1));
   const gridY = Math.floor(originalUV[1] * (HEIGHT - 1));
@@ -137,34 +134,19 @@ const Cell = (props: CellProps) => {
         backgroundColor: color,
         alignContent: 'center',
         borderRight: isRightBorder
-          ? '0.5px solid var(--blue-700)'
-          : '0.5px solid transparent',
+          ? '1px solid var(--blue-700)'
+          : '1px solid transparent',
         borderTop: isTopBorder
-          ? '0.5px solid var(--blue-700)'
-          : '0.5px solid transparent',
+          ? '1px solid var(--blue-700)'
+          : '1px solid transparent',
         borderBottom: isBottomBorder
-          ? '0.5px solid var(--blue-700)'
-          : '0.5px solid var(--gray-700)',
+          ? '1px solid var(--blue-700)'
+          : '1px solid transparent',
         borderLeft: isLeftBorder
-          ? '0.5px solid var(--blue-700)'
-          : '0.5px solid var(--gray-700)',
+          ? '1px solid var(--blue-700)'
+          : '1px solid transparent',
       }}
-    >
-      {(originalUV[0] === 0 && originalUV[1] === 0) ||
-      (originalUV[0] === 1 && originalUV[1] === 1) ||
-      (originalUV[0] === 0 && originalUV[1] === 1) ||
-      (originalUV[0] === 1 && originalUV[1] === 0) ? (
-        <Text
-          css={{
-            fontSize: '10px',
-            userSelect: 'none',
-            color: 'var(--gray-900)',
-          }}
-        >
-          {snappedUV[0].toFixed(1)},{snappedUV[1].toFixed(1)}
-        </Text>
-      ) : null}
-    </Grid.Item>
+    />
   );
 };
 
@@ -211,7 +193,6 @@ const PixelizationVisualizer = (props: { showPatterns?: boolean }) => {
 
             return {
               originalUV,
-              snappedUV,
               value: shader(snappedUV[0], snappedUV[1]),
             };
           })
@@ -268,22 +249,47 @@ const PixelizationVisualizer = (props: { showPatterns?: boolean }) => {
         ) : null}
         <Grid
           css={{
-            borderTop: '0.5px solid var(--gray-700)',
-            borderRight: '0.5px solid var(--gray-700)',
+            borderBottom: '1px solid var(--border-color)',
+            borderRight: '1px solid var(--border-color)',
+            position: 'relative',
             width: '100%',
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              pointerEvents: 'none',
+              backgroundImage: `
+                     repeating-linear-gradient(
+                       to right,
+                       var(--border-color) 0,
+                       var(--border-color) 1px,
+                       transparent 1px,
+                       transparent calc(100% / ${WIDTH})
+                     ),
+                     repeating-linear-gradient(
+                       to bottom,
+                       var(--border-color) 0,
+                       var(--border-color) 1px,
+                       transparent 1px,
+                       transparent calc(100% / ${WIDTH})
+                     )
+                   `,
+            },
           }}
           templateColumns={`repeat(${WIDTH}, 1fr)`}
         >
           {matrix.map((row, y) => (
             <React.Fragment key={y}>
-              {row.map(({ originalUV, snappedUV, value }, x) => (
+              {row.map(({ originalUV, value }, x) => (
                 <Cell
                   key={`${x}-${y}`}
                   pixelation={deferredPixelation}
                   originalUV={originalUV}
                   enablePatterns={enablePatterns}
                   pattern={pattern}
-                  snappedUV={snappedUV}
                   value={value}
                 />
               ))}
