@@ -30,8 +30,6 @@ const Cell = (props: CellProps) => {
         position: 'relative',
         backgroundColor: color,
         alignContent: 'center',
-        borderBottom: '0.5px solid var(--gray-700)',
-        borderLeft: '0.5px solid var(--gray-700)',
       }}
     >
       <Box
@@ -46,6 +44,8 @@ const Cell = (props: CellProps) => {
           height: '100%',
           cursor: 'pointer',
           fontSize: 'var(--font-size-1)',
+          fontFamily: 'var(--font-mono)',
+          letterSpacing: '-1px',
           '&::-webkit-inner-spin-button, &::-webkit-outer-spin-button': {
             '-webkit-appearance': 'none',
             margin: 0,
@@ -100,9 +100,35 @@ const ThresholdVisualizer = () => {
       >
         <Grid
           css={{
-            borderTop: '0.5px solid var(--gray-700)',
-            borderRight: '0.5px solid var(--gray-700)',
+            borderBottom: '1px solid var(--border-color)',
+            borderRight: '1px solid var(--border-color)',
+            position: 'relative',
             width: '100%',
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              pointerEvents: 'none',
+              backgroundImage: `
+                     repeating-linear-gradient(
+                       to right,
+                       var(--border-color) 0,
+                       var(--border-color) 1px,
+                       transparent 1px,
+                       transparent calc(100% / ${WIDTH})
+                     ),
+                     repeating-linear-gradient(
+                       to bottom,
+                       var(--border-color) 0,
+                       var(--border-color) 1px,
+                       transparent 1px,
+                       transparent calc(100% / ${WIDTH})
+                     )
+                   `,
+            },
           }}
           templateColumns={`repeat(${WIDTH}, 1fr)`}
         >
