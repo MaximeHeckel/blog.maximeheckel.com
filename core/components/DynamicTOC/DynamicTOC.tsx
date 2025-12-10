@@ -123,8 +123,10 @@ const ToC = (props: {
                   color: 'var(--text-primary)',
                 },
               }}
-              onClick={(event) => handleLink(event, item.id)}
-              onKeyDown={(event) => {
+              onClick={(event: React.MouseEvent<HTMLAnchorElement>) =>
+                handleLink(event, item.id)
+              }
+              onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
                 if (event.key === 'Enter') {
                   event.preventDefault();
                   handleLink(event, item.id);
@@ -247,8 +249,8 @@ const DynamicTOC = (props: {
         onClick={() => {
           setExpanded(!expanded);
         }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
+        onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
+          if (event.key === 'Enter') {
             setExpanded(!expanded);
           }
         }}

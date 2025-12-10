@@ -41,7 +41,7 @@ const Search = (props: Props) => {
     Array<{ title?: string; url?: string }> | undefined
   >(undefined);
 
-  const readerRef = useRef<ReadableStreamDefaultReader>();
+  const readerRef = useRef<ReadableStreamDefaultReader>(null);
 
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 400);
 
@@ -293,8 +293,10 @@ const Search = (props: Props) => {
                         data-testid="search-input"
                         id="search-input"
                         name="search"
-                        onChange={(e) => {
-                          setSearchQuery(e.target.value);
+                        onChange={(
+                          event: React.ChangeEvent<HTMLInputElement>
+                        ) => {
+                          setSearchQuery(event.target.value);
                         }}
                         value={searchQuery}
                       />

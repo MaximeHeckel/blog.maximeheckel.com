@@ -9,7 +9,7 @@ import {
   Canvas,
   createPortal,
   extend,
-  Object3DNode,
+  ThreeElement,
   useFrame,
   useThree,
 } from '@react-three/fiber';
@@ -30,11 +30,8 @@ import { wrapEffect } from './utils';
 
 declare module '@react-three/fiber' {
   interface ThreeElements {
-    simMaterial: Object3DNode<SimulationMaterial, typeof SimulationMaterial>;
-    depthOfFieldMaterial: Object3DNode<
-      DepthOfFieldMaterial,
-      typeof DepthOfFieldMaterial
-    >;
+    simMaterial: ThreeElement<typeof SimulationMaterial>;
+    depthOfFieldMaterial: ThreeElement<typeof DepthOfFieldMaterial>;
   }
 }
 
@@ -283,16 +280,9 @@ const ParticleLemniscate = ({
             <bufferGeometry>
               <bufferAttribute
                 attach="attributes-position"
-                count={positions.length / 3}
-                array={positions}
-                itemSize={3}
+                args={[positions, 3]}
               />
-              <bufferAttribute
-                attach="attributes-uv"
-                count={uvs.length / 2}
-                array={uvs}
-                itemSize={2}
-              />
+              <bufferAttribute attach="attributes-uv" args={[uvs, 2]} />
             </bufferGeometry>
           </mesh>
         </>,
@@ -321,9 +311,7 @@ const ParticleLemniscate = ({
           <bufferGeometry>
             <bufferAttribute
               attach="attributes-position"
-              count={particles.length / 3}
-              array={particles}
-              itemSize={3}
+              args={[particles, 3]}
             />
           </bufferGeometry>
           <depthOfFieldMaterial key={v4()} ref={depthOfFieldMaterialRef} />
