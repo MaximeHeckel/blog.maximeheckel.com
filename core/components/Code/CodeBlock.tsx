@@ -86,15 +86,16 @@ export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
               >
                 <LineNo data-testid="number-line">{index + 1}</LineNo>
                 <LineContent>
-                  {line.map((token, key) => {
+                  {line.map((token, tokenIndex) => {
+                    const { key: _key, ...tokenProps } = getTokenProps({
+                      token,
+                      key: tokenIndex,
+                    });
                     return (
                       <span
                         data-testid="content-line"
-                        key={key}
-                        {...getTokenProps({
-                          key,
-                          token,
-                        })}
+                        key={tokenIndex}
+                        {...tokenProps}
                       />
                     );
                   })}
