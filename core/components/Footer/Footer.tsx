@@ -321,9 +321,7 @@ const Footer = (props: { lastUpdated?: string }) => {
               <Grid.Item>
                 <Text size={1}>
                   <Grid>
-                    <Link href="/" legacyBehavior passHref>
-                      <Anchor discreet>Home</Anchor>
-                    </Link>
+                    <Link href="/">Home</Link>
                     <Anchor discreet href="https://maximeheckel.com">
                       Work
                     </Anchor>
@@ -355,9 +353,7 @@ const Footer = (props: { lastUpdated?: string }) => {
                     >
                       Twitter
                     </Anchor>
-                    <Link href="/rss.xml" legacyBehavior passHref>
-                      <Anchor discreet>RSS</Anchor>
-                    </Link>
+                    <Link href="/rss.xml">RSS</Link>
                   </Grid>
                 </Text>
               </Grid.Item>
