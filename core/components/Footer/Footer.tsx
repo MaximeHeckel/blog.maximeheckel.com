@@ -321,7 +321,9 @@ const Footer = (props: { lastUpdated?: string }) => {
               <Grid.Item>
                 <Text size={1}>
                   <Grid>
-                    <Link href="/">Home</Link>
+                    <Anchor as={Link} discreet href="/">
+                      Home
+                    </Anchor>
                     <Anchor discreet href="https://maximeheckel.com">
                       Work
                     </Anchor>
@@ -353,7 +355,9 @@ const Footer = (props: { lastUpdated?: string }) => {
                     >
                       Twitter
                     </Anchor>
-                    <Link href="/rss.xml">RSS</Link>
+                    <Anchor as={Link} discreet href="/rss.xml">
+                      RSS
+                    </Anchor>
                   </Grid>
                 </Text>
               </Grid.Item>
