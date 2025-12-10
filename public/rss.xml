@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Tue, 10 Jun 2025 21:10:13 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 10 Dec 2025 21:25:04 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Field Guide to TSL and WebGPU]]></title>
+            <description><![CDATA[A comprehensive guide to building 3D web experiences with TSL and WebGPU, covering shader development, compute shader applications, and practical examples for particle systems and post-processing effects.]]></description>
+            <link>https://blog.maximeheckel.com/posts/field-guide-to-tsl-and-webgpu</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/field-guide-to-tsl-and-webgpu</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 14 Oct 2025 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[On Shaping Light]]></title>
             <description><![CDATA[A deep dive into Volumetric Lighting implemented via Post-Processing leveraging a custom shader with raymarching to create beautiful light and atmospheric effect for your React Three Fiber and Three.js scenes.]]></description>

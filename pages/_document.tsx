@@ -59,7 +59,6 @@ class MyDocument extends Document {
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         </Head>
         <body className="maximeheckel-dark">
-          <Script src="/sw.js"></Script>
           <script
             key="maximeheckel-theme"
             dangerouslySetInnerHTML={{

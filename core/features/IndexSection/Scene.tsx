@@ -13,7 +13,7 @@ import {
   useFrame,
   useThree,
 } from '@react-three/fiber';
-import { EffectComposer, wrapEffect } from '@react-three/postprocessing';
+import { EffectComposer } from '@react-three/postprocessing';
 import { Leva, useControls } from 'leva';
 import { useReducedMotion } from 'motion/react';
 import { Effect } from 'postprocessing';
@@ -26,6 +26,7 @@ import simulationFragmentShader from './gpgpu/simulationFragment.glsl';
 import simulationVertexShader from './gpgpu/simulationVertex.glsl';
 import renderVertexShader from './gpgpu/vertexShader.glsl';
 import HalftoneFragmentShader from './postprocessing/ascii.glsl';
+import { wrapEffect } from './utils';
 
 declare module '@react-three/fiber' {
   interface ThreeElements {
