@@ -71,7 +71,7 @@ const RepeatIcon = () => {
         d="M3.5 18.5H14.5C18.2133 18.5 21 15.815 21 12"
         stroke="currentColor"
         strokeWidth="2"
-        stroke-linecap="round"
+        strokeLinecap="round"
         strokeLinejoin="round"
       ></path>
       <path
@@ -85,8 +85,8 @@ const RepeatIcon = () => {
         d="M5.49998 16C5.49998 16 3.00001 17.8412 3 18.5C2.99999 19.1588 5.5 21 5.5 21"
         stroke="currentColor"
         strokeWidth="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></path>
     </svg>
   );
