@@ -9,11 +9,11 @@ import {
   Canvas,
   createPortal,
   extend,
-  Object3DNode,
+  ThreeElement,
   useFrame,
   useThree,
 } from '@react-three/fiber';
-import { EffectComposer, wrapEffect } from '@react-three/postprocessing';
+import { EffectComposer } from '@react-three/postprocessing';
 import { Leva, useControls } from 'leva';
 import { useReducedMotion } from 'motion/react';
 import { Effect } from 'postprocessing';
@@ -26,14 +26,12 @@ import simulationFragmentShader from './gpgpu/simulationFragment.glsl';
 import simulationVertexShader from './gpgpu/simulationVertex.glsl';
 import renderVertexShader from './gpgpu/vertexShader.glsl';
 import HalftoneFragmentShader from './postprocessing/ascii.glsl';
+import { wrapEffect } from './utils';
 
 declare module '@react-three/fiber' {
   interface ThreeElements {
-    simMaterial: Object3DNode<SimulationMaterial, typeof SimulationMaterial>;
-    depthOfFieldMaterial: Object3DNode<
-      DepthOfFieldMaterial,
-      typeof DepthOfFieldMaterial
-    >;
+    simMaterial: ThreeElement<typeof SimulationMaterial>;
+    depthOfFieldMaterial: ThreeElement<typeof DepthOfFieldMaterial>;
   }
 }
 
@@ -41,7 +39,7 @@ class CustomHalftoneEffectImpl extends Effect {
   pixelSize: number;
 
   constructor({ pixelSize = 1.0 }: { pixelSize?: number }) {
-    const uniforms = new Map<string, THREE.Uniform<any>>([
+    const uniforms = new Map<string, THREE.Uniform<unknown>>([
       ['pixelSize', new THREE.Uniform(pixelSize)],
     ]);
 
@@ -64,7 +62,7 @@ class CustomHalftoneEffectImpl extends Effect {
 const CustomHalftoneEffect = wrapEffect(CustomHalftoneEffectImpl);
 
 export const HalftoneEffect = () => {
-  const effectRef = useRef<any>(null);
+  const effectRef = useRef<CustomHalftoneEffectImpl | null>(null);
 
   const { pixelSize } = useControls({
     pixelSize: {
@@ -282,16 +280,9 @@ const ParticleLemniscate = ({
             <bufferGeometry>
               <bufferAttribute
                 attach="attributes-position"
-                count={positions.length / 3}
-                array={positions}
-                itemSize={3}
+                args={[positions, 3]}
               />
-              <bufferAttribute
-                attach="attributes-uv"
-                count={uvs.length / 2}
-                array={uvs}
-                itemSize={2}
-              />
+              <bufferAttribute attach="attributes-uv" args={[uvs, 2]} />
             </bufferGeometry>
           </mesh>
         </>,
@@ -320,9 +311,7 @@ const ParticleLemniscate = ({
           <bufferGeometry>
             <bufferAttribute
               attach="attributes-position"
-              count={particles.length / 3}
-              array={particles}
-              itemSize={3}
+              args={[particles, 3]}
             />
           </bufferGeometry>
           <depthOfFieldMaterial key={v4()} ref={depthOfFieldMaterialRef} />

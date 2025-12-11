@@ -41,7 +41,7 @@ const Search = (props: Props) => {
     Array<{ title?: string; url?: string }> | undefined
   >(undefined);
 
-  const readerRef = useRef<ReadableStreamDefaultReader>();
+  const readerRef = useRef<ReadableStreamDefaultReader>(null);
 
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 400);
 
@@ -110,7 +110,7 @@ const Search = (props: Props) => {
       const data = await response.json();
       setResults(data);
       setStatus('done');
-    } catch (error) {}
+    } catch (_error) {}
   };
 
   type ResponseData = {
@@ -169,6 +169,7 @@ const Search = (props: Props) => {
             if (!deepEqual(latestObject, currentObject)) {
               setStreamData(currentObject?.answer ?? '');
               latestObject = currentObject;
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               setSources(currentObject?.sources ?? (undefined as any));
             }
           } catch (error) {
@@ -293,8 +294,10 @@ const Search = (props: Props) => {
                         data-testid="search-input"
                         id="search-input"
                         name="search"
-                        onChange={(e) => {
-                          setSearchQuery(e.target.value);
+                        onChange={(
+                          event: React.ChangeEvent<HTMLInputElement>
+                        ) => {
+                          setSearchQuery(event.target.value);
                         }}
                         value={searchQuery}
                       />

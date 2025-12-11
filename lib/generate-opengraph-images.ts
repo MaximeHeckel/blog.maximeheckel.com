@@ -16,7 +16,7 @@ const getOgImage = async (params: OgImageParams): Promise<string> => {
   try {
     fs.statSync(imagePath);
     return publicPath;
-  } catch (error) {
+  } catch (_error) {
     return defaultOGImage;
   }
 };

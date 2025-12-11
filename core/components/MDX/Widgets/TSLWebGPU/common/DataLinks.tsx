@@ -1,21 +1,21 @@
 import { Flex } from '@maximeheckel/design-system';
-import { useAnimate } from 'motion/react';
+import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
 
 export const DataLink0 = (props: { enabled?: boolean }) => {
   const { enabled = true } = props;
   const [scope, animate] = useAnimate();
-  const animationsRef = useRef<any[]>([]);
+  const animationsRef = useRef<AnimationPlaybackControls[]>([]);
 
   const startAnimation = useCallback(async () => {
     stopAnimation();
 
-    const animations: any[] = [];
+    const animations: AnimationPlaybackControls[] | undefined = [];
 
     // Animate the data link paths
     const paths = scope.current?.querySelectorAll('path[data-animate]');
     if (paths) {
-      paths.forEach((path: any) => {
+      paths.forEach((path: HTMLElement) => {
         const isInverse = path.getAttribute('data-inverse') === 'true';
 
         const pathAnimation = animate(
@@ -119,17 +119,17 @@ export const DataLink0 = (props: { enabled?: boolean }) => {
 export const DataLink01 = (props: { enabled?: boolean }) => {
   const { enabled = true } = props;
   const [scope, animate] = useAnimate();
-  const animationsRef = useRef<any[]>([]);
+  const animationsRef = useRef<AnimationPlaybackControls[]>([]);
 
   const startAnimation = useCallback(async () => {
     stopAnimation();
 
-    const animations: any[] = [];
+    const animations: AnimationPlaybackControls[] | undefined = [];
 
     // Animate the data link paths
     const paths = scope.current?.querySelectorAll('path[data-animate]');
     if (paths) {
-      paths.forEach((path: any) => {
+      paths.forEach((path: HTMLElement) => {
         const isInverse = path.getAttribute('data-inverse') === 'true';
 
         const pathAnimation = animate(
@@ -209,7 +209,7 @@ export const DataLink01 = (props: { enabled?: boolean }) => {
 
 export const DataLink1 = ({ enabled = true }: { enabled?: boolean }) => {
   const [scope, animate] = useAnimate();
-  const animationRef = useRef<any>(null);
+  const animationRef = useRef<AnimationPlaybackControls | undefined>(undefined);
 
   const startAnimation = useCallback(async () => {
     stopAnimation();
@@ -284,7 +284,7 @@ export const DataLink1 = ({ enabled = true }: { enabled?: boolean }) => {
 
 export const DataLink11 = ({ enabled = true }: { enabled?: boolean }) => {
   const [scope, animate] = useAnimate();
-  const animationRef = useRef<any>(null);
+  const animationRef = useRef<AnimationPlaybackControls | undefined>(undefined);
 
   const startAnimation = useCallback(async () => {
     stopAnimation();
@@ -359,7 +359,7 @@ export const DataLink11 = ({ enabled = true }: { enabled?: boolean }) => {
 
 export const DataLink2 = ({ enabled = true }: { enabled?: boolean }) => {
   const [scope, animate] = useAnimate();
-  const animationRef = useRef<any>(null);
+  const animationRef = useRef<AnimationPlaybackControls | undefined>(undefined);
 
   const startAnimation = useCallback(async () => {
     stopAnimation();

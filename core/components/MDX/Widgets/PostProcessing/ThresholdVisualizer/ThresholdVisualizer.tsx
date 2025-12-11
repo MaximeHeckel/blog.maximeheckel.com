@@ -55,7 +55,9 @@ const Cell = (props: CellProps) => {
           },
         }}
         value={cellValue}
-        onChange={(event) => setCellValue(Number(event.target.value))}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setCellValue(Number(event.target.value))
+        }
       />
     </Grid.Item>
   );

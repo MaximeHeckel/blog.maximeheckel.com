@@ -50,7 +50,7 @@ const SCRIPTS = {
   script7,
 };
 
-const VaporwaveThreejsSandpack = (props: any) => {
+const VaporwaveThreejsSandpack = (props: { script: string }) => {
   const { script } = props;
 
   const ref = useRef(null);

@@ -10,8 +10,13 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 const output = withBundleAnalyzer({
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  productionBrowserSourceMaps: false,
   trailingSlash: true,
   images: {
+    qualities: [25, 50, 75, 100],
     remotePatterns: [
       {
         protocol: 'https',
@@ -25,7 +30,7 @@ const output = withBundleAnalyzer({
       },
     ],
   },
-  webpack(config, { isServer, buildId }) {
+  webpack(config) {
     const reactPaths = {
       react: path.join(__dirname, 'node_modules/react'),
       'react-dom': path.join(__dirname, 'node_modules/react-dom'),

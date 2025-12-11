@@ -120,60 +120,63 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
   }, [, wiggleMotion]);
 
   return (
-    <Flex as="figure" alignItems="start" direction="column" gap="1">
-      <S.Wrapper
-        ref={wrapperRef}
-        tabIndex={0}
-        role="slider"
-        aria-label={alt}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={sliderPosition}
-        onKeyDown={handleKeyDown}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-        onTouchMove={handleTouchMove}
-        style={{
-          // @ts-ignore
-          '--progress': `${wiggleMotion.get()}%`,
-        }}
-      >
-        <S.Image
-          alt="Before"
-          loading="eager"
-          loader={cloudflareLoader}
-          src={beforeSrc}
-          quality={75}
-          width={width}
-          height={height}
-        />
-        <S.Overlay>
+    <figure>
+      <Flex alignItems="start" direction="column" gap="1">
+        <S.Wrapper
+          ref={wrapperRef}
+          tabIndex={0}
+          role="slider"
+          aria-label={alt}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={sliderPosition}
+          onKeyDown={handleKeyDown}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          onTouchMove={handleTouchMove}
+          style={{
+            // @ts-ignore
+            '--progress': `${wiggleMotion.get()}%`,
+          }}
+        >
           <S.Image
-            alt="After"
+            alt="Before"
             loading="eager"
             loader={cloudflareLoader}
+            src={beforeSrc}
             quality={75}
-            src={afterSrc}
             width={width}
             height={height}
           />
-        </S.Overlay>
-        <Slider />
-      </S.Wrapper>
-      <Text
-        as="figcaption"
-        css={{
-          lineHeight: '1.5',
-          paddingTop: '10px',
-        }}
-        size="1"
-        variant="tertiary"
-        weight="3"
-      >
-        {props.alt}
-      </Text>
-    </Flex>
+          <S.Overlay>
+            <S.Image
+              alt="After"
+              loading="eager"
+              loader={cloudflareLoader}
+              quality={75}
+              src={afterSrc}
+              width={width}
+              height={height}
+            />
+          </S.Overlay>
+          <Slider />
+        </S.Wrapper>
+        <figcaption>
+          <Text
+            css={{
+              lineHeight: '1.5',
+              paddingTop: '10px',
+            }}
+            size="1"
+            variant="tertiary"
+            weight="3"
+          >
+            {props.alt}
+          </Text>
+        </figcaption>
+      </Flex>
+    </figure>
   );
 };
 

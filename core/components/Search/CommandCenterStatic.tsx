@@ -144,7 +144,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           id="home-navigation"
           key="home-navigation"
         >
-          <Link href="/" passHref>
+          <Link href="/">
             <Icon.Arrow size={4} />
             <span style={{ marginLeft: '16px' }}>Home</span>
           </Link>
@@ -155,7 +155,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           id="design-navigation"
           key="design-navigation"
         >
-          <Link href="/design/" passHref>
+          <Link href="/design/">
             <Icon.Arrow size={4} />
             <span style={{ marginLeft: '16px' }}>Design System</span>
           </Link>
@@ -261,7 +261,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           id="rss-link"
           key="rss-link"
         >
-          <Link href="/rss.xml" aria-label="RSS Feed" passHref>
+          <Link href="/rss.xml" aria-label="RSS Feed">
             <Icon.RSS />
             <span style={{ marginLeft: '15px' }}>RSS</span>
             <VisuallyHidden as="p">

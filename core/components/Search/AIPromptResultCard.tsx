@@ -40,7 +40,6 @@ const SAMPLE_QUESTIONS = [
   "What's a great use case for render targets?",
 ];
 
-// eslint-disable-next-line react/display-name
 const AIPromptResultCard = forwardRef(
   (props: AIPromtResultCardProps, ref: ForwardedRef<HTMLDivElement>) => {
     const { error, sources, streamData, query, status, onQuestionSelect } =
@@ -222,15 +221,9 @@ const AIPromptResultCard = forwardRef(
                     learn more about the underlying technologies. If you want to
                     learn more about how I build it you can read my blog post
                     titled{' '}
-                    <Link
-                      href="/posts/building-magical-ai-powered-semantic-search"
-                      legacyBehavior
-                      passHref
-                    >
-                      <Anchor>
-                        Building a magical AI-powered semantic search from
-                        scratch
-                      </Anchor>
+                    <Link href="/posts/building-magical-ai-powered-semantic-search">
+                      {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */}
+                      Building a magical AI-powered semantic search from scratch
                     </Link>{' '}
                     where I go through all the implementation details.
                     <br />

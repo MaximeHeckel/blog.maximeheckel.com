@@ -46,15 +46,18 @@ export default async function handler(req: Request) {
       await kv.incr(ip);
     }
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Rate limit exceeded' }), {
-      status: 429,
-      headers: {
-        'X-RateLimit-Limit': `${MAX_REQUEST_PER_MINUTE_PER_USER}`,
-        'X-RateMAX_REQUEST_PER_MINUTE_PER_USER-Remaining': `${
-          MAX_REQUEST_PER_MINUTE_PER_USER - (rate || 0)
-        }`,
-      },
-    });
+    return new Response(
+      JSON.stringify({ error: `Rate limit exceeded: ${error}` }),
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': `${MAX_REQUEST_PER_MINUTE_PER_USER}`,
+          'X-RateMAX_REQUEST_PER_MINUTE_PER_USER-Remaining': `${
+            MAX_REQUEST_PER_MINUTE_PER_USER - (rate || 0)
+          }`,
+        },
+      }
+    );
   }
 
   const embeddingResponse = await fetch(

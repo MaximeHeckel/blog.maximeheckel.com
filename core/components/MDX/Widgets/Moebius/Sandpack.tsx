@@ -31,7 +31,7 @@ canvas {
   height: 100vh;
 }`;
 
-const CausticsSandpack = (props: any) => {
+const CausticsSandpack = (props: { scene: string }) => {
   const { scene } = props;
 
   const ref = useRef(null);

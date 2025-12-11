@@ -5,6 +5,7 @@ import {
   SandpackLayout,
   SandpackPredefinedTemplate,
   SandpackConsole,
+  SandpackFiles,
 } from '@codesandbox/sandpack-react';
 import { Box, Flex, Shadows, styled } from '@maximeheckel/design-system';
 import { AnimatePresence } from 'motion/react';
@@ -223,27 +224,26 @@ interface SandpackOptions {
 interface SandpackProps {
   template: SandpackPredefinedTemplate;
   options?: SandpackOptions;
-  // Type using Sandpack built in types
-  files: Record<string, any>;
+  files: SandpackFiles;
   dependencies?: Record<string, string>;
   autorun?: boolean;
   defaultTab?: Tab;
 }
 
-const defaultFilesByTemplate: Partial<Record<SandpackPredefinedTemplate, any>> =
-  {
-    react: setupFiles,
-    // TODO
-    'react-ts': '',
-    vanilla: '',
-    'vanilla-ts': '',
-    angular: '',
-    vue: '',
-    'vue-ts': '',
-    svelte: '',
-    solid: '',
-    'test-ts': '',
-  };
+const defaultFilesByTemplate: Partial<
+  Record<SandpackPredefinedTemplate, SandpackFiles | undefined>
+> = {
+  react: setupFiles,
+  'react-ts': undefined,
+  vanilla: undefined,
+  'vanilla-ts': undefined,
+  angular: undefined,
+  vue: undefined,
+  'vue-ts': undefined,
+  svelte: undefined,
+  solid: undefined,
+  'test-ts': undefined,
+};
 
 const Sandpack = (props: SandpackProps) => {
   const {
@@ -283,7 +283,7 @@ const Sandpack = (props: SandpackProps) => {
         theme={theme}
         files={{
           ...files,
-          ...defaultFilesByTemplate[template],
+          ...(defaultFilesByTemplate[template] ?? {}),
         }}
         customSetup={{
           dependencies: dependencies || {},

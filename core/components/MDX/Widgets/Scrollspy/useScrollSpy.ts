@@ -43,7 +43,7 @@ const useScrollSpy = (
       ? elements.slice(0, currentActiveSectionIndex + 1)
       : [];
 
-  const observer = React.useRef<IntersectionObserver>();
+  const observer = React.useRef<IntersectionObserver>(null);
 
   React.useEffect(() => {
     if (observer.current) {

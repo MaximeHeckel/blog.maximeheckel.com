@@ -1,12 +1,14 @@
 import { Flex, Text } from '@maximeheckel/design-system';
-import { useAnimate } from 'motion/react';
+import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
 
 import { seededRandom } from './util';
 
 export const TextureBuffer = ({ enabled = true }: { enabled?: boolean }) => {
   const [scope, animate] = useAnimate();
-  const animationRef = useRef<any>(null);
+  const animationRef = useRef<AnimationPlaybackControls[] | undefined>(
+    undefined
+  );
 
   const randomNumArray = Array.from({ length: 9 }, (_, row) =>
     Array.from({ length: 9 }, (_, col) =>
@@ -16,15 +18,15 @@ export const TextureBuffer = ({ enabled = true }: { enabled?: boolean }) => {
 
   const stopAnimation = useCallback(() => {
     if (animationRef.current) {
-      animationRef.current.forEach((animation: any) => {
+      animationRef.current.forEach((animation: AnimationPlaybackControls) => {
         animation.cancel();
       });
-      animationRef.current = null;
+      animationRef.current = undefined;
 
       // Reset all items to default state using animate
       const items = scope.current?.querySelectorAll('div[data-animate]');
       if (items) {
-        items.forEach((item: any) => {
+        items.forEach((item: HTMLElement) => {
           // Use animate to properly set the final values
           animate(item, { opacity: 1, scale: 1 }, { duration: 0 });
         });
@@ -33,11 +35,11 @@ export const TextureBuffer = ({ enabled = true }: { enabled?: boolean }) => {
   }, [scope, animate]);
 
   const startAnimation = useCallback(async () => {
-    const animations: any[] = [];
+    const animations: AnimationPlaybackControls[] | undefined = [];
     const items = scope.current?.querySelectorAll('div[data-animate]');
 
     if (items) {
-      items.forEach((item: any, index: number) => {
+      items.forEach((item: HTMLElement, index: number) => {
         // Calculate row and column from the index (9x9 grid)
         const rowIndex = Math.floor(index / 9);
         const colIndex = index % 9;

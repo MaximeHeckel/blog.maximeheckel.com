@@ -1,5 +1,5 @@
 import { Flex, Text } from '@maximeheckel/design-system';
-import { useAnimate } from 'motion/react';
+import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
 
 export const ParticleVertexShader = ({
@@ -8,14 +8,16 @@ export const ParticleVertexShader = ({
   enabled?: boolean;
 }) => {
   const [scope, animate] = useAnimate();
-  const animationRef = useRef<any>(null);
+  const animationRef = useRef<AnimationPlaybackControls[] | undefined>(
+    undefined
+  );
 
   const startAnimation = useCallback(async () => {
-    const animations: any[] = [];
+    const animations: AnimationPlaybackControls[] | undefined = [];
     const dots = scope.current?.querySelectorAll('circle[data-animate]');
     if (dots) {
-      dots.forEach((dot: any, index: number) => {
-        const initialY = parseFloat(dot.getAttribute('cy'));
+      dots.forEach((dot: HTMLElement, index: number) => {
+        const initialY = parseFloat(dot.getAttribute('cy') || '0');
         const phaseOffset = (index * Math.PI) / 8; // Progressive phase offset
 
         // Use the same logic as createDotAnimation
@@ -48,10 +50,10 @@ export const ParticleVertexShader = ({
 
   const stopAnimation = useCallback(() => {
     if (animationRef.current) {
-      animationRef.current.forEach((animation: any) => {
+      animationRef.current.forEach((animation: AnimationPlaybackControls) => {
         animation.cancel();
       });
-      animationRef.current = null;
+      animationRef.current = undefined;
     }
   }, []);
 

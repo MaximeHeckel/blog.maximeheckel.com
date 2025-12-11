@@ -1,5 +1,5 @@
 import { Flex, Text } from '@maximeheckel/design-system';
-import { useAnimate } from 'motion/react';
+import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
 
 const vertices = [
@@ -13,10 +13,10 @@ const edges = ['edge-1', 'edge-2', 'edge-3', 'edge-4', 'edge-5'];
 
 export const VertexShader = ({ enabled = true }: { enabled?: boolean }) => {
   const [scope, animate] = useAnimate();
-  const animationsRef = useRef<any[]>([]);
+  const animationsRef = useRef<AnimationPlaybackControls[]>([]);
 
   const startAnimation = useCallback(async () => {
-    const animations: any[] = [];
+    const animations: AnimationPlaybackControls[] | undefined = [];
 
     // Reset vertices to initial state
     vertices.forEach((vertex) => {

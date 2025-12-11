@@ -1,5 +1,5 @@
 import { Box, Text } from '@maximeheckel/design-system';
-import { useAnimate } from 'motion/react';
+import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
 
 import { seededRandom } from './util';
@@ -10,7 +10,7 @@ export const DataLinkMagnified = (props: {
 }) => {
   const { enabled = true, repeat = Infinity } = props;
   const [scope, animate] = useAnimate();
-  const animationsRef = useRef<any[]>([]);
+  const animationsRef = useRef<AnimationPlaybackControls[]>([]);
 
   const randomNumArray = Array.from({ length: 9 }, (_, i) =>
     seededRandom(i + 1).toFixed(1)
@@ -19,12 +19,12 @@ export const DataLinkMagnified = (props: {
   const startAnimation = useCallback(async () => {
     stopAnimation();
 
-    const animations: any[] = [];
+    const animations: AnimationPlaybackControls[] | undefined = [];
 
     // Animate the rotating data items
     const dataItems = scope.current?.querySelectorAll('[data-rotate]');
     if (dataItems) {
-      dataItems.forEach((item: any) => {
+      dataItems.forEach((item: HTMLElement) => {
         const baseAngle = parseFloat(
           item.getAttribute('data-base-angle') || '0'
         );
@@ -46,7 +46,7 @@ export const DataLinkMagnified = (props: {
     // Animate the data link paths
     const paths = scope.current?.querySelectorAll('path[data-animate]');
     if (paths) {
-      paths.forEach((path: any) => {
+      paths.forEach((path: HTMLElement) => {
         const isInverse = path.getAttribute('data-inverse') === 'true';
 
         const pathAnimation = animate(

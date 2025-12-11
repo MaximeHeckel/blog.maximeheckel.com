@@ -113,7 +113,6 @@ export const Slideshow = ({
               data-current={index === currentIndex}
               onClick={() => handleIndicatorClick(index)}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <NextImage
                 loader={cloudflareLoader}
                 src={src}

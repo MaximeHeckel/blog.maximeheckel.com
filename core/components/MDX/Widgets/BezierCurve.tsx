@@ -27,6 +27,7 @@ type Time = number;
 
 interface CurveProps {
   activeStepIndex: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   scale: any;
 }
 

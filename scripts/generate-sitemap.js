@@ -39,6 +39,5 @@ import { globby } from 'globby';
         </urlset>
     `;
 
-  // eslint-disable-next-line no-sync
   fs.writeFileSync('public/sitemap.xml', sitemap);
 })();

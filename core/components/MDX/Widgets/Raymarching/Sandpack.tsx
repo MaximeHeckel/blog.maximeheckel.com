@@ -40,7 +40,7 @@ canvas {
     height: 100vh;
 }`;
 
-const RenderTargetsSandpack = (props: any) => {
+const RenderTargetsSandpack = (props: { scene: string }) => {
   const { scene } = props;
 
   const ref = useRef(null);

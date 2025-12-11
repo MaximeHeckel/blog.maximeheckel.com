@@ -53,7 +53,7 @@ const Glow = (props: GlowProps) => {
   return (
     <Box css={{ ...css }} className={glowWrapper()} {...rest}>
       <StyledGlow />
-      {props.children}
+      {children}
     </Box>
   );
 };

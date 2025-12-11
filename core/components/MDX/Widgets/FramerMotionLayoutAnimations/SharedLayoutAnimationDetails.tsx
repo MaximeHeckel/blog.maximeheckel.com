@@ -29,7 +29,7 @@ const SharedLayoutAnimationDetails = () => {
                   },
                 }}
                 onClick={() => setSelected(item)}
-                onKeyDown={(event) =>
+                onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) =>
                   event.key === 'Enter' && setSelected(item)
                 }
                 tabIndex={0}

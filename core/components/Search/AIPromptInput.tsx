@@ -35,7 +35,9 @@ const AIPromptInput = (props: { status: Status }) => {
         data-testid="ai-prompt-input"
         id="search-input"
         name="aisearch"
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setValue(event.target.value)
+        }
       />
       <Box css={{ width: 96 }}>
         <AnimatePresence>

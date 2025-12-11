@@ -1,5 +1,5 @@
 import { Flex, Text } from '@maximeheckel/design-system';
-import { useAnimate } from 'motion/react';
+import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
 
 import { seededRandom } from './util';
@@ -7,7 +7,7 @@ import { seededRandom } from './util';
 export const StorageBuffer = ({ enabled = true }: { enabled?: boolean }) => {
   const [scope, animate] = useAnimate();
 
-  const animationRef = useRef<any>(null);
+  const animationRef = useRef<AnimationPlaybackControls | undefined>(undefined);
 
   const randomNumArray = Array.from({ length: 9 }, (_, i) =>
     seededRandom(i + 1).toFixed(1)

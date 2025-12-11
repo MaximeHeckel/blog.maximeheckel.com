@@ -62,7 +62,7 @@ const __dirname = path.dirname(__filename);
 
     try {
       fs.statSync(imagePath);
-    } catch (error) {
+    } catch (_error) {
       console.info(
         chalk.yellowBright(
           `      - Generating Opengraph image for ${post.title}`

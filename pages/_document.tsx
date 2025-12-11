@@ -1,6 +1,5 @@
 import { getCssText } from '@maximeheckel/design-system';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import Script from 'next/script';
 
 class MyDocument extends Document {
   render() {
@@ -59,7 +58,6 @@ class MyDocument extends Document {
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         </Head>
         <body className="maximeheckel-dark">
-          <Script src="/sw.js"></Script>
           <script
             key="maximeheckel-theme"
             dangerouslySetInnerHTML={{
