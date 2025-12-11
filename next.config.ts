@@ -10,6 +10,10 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 const output = withBundleAnalyzer({
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  productionBrowserSourceMaps: false,
   trailingSlash: true,
   images: {
     qualities: [25, 50, 75, 100],

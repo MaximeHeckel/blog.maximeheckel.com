@@ -64,7 +64,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
      * Get tweets from API
      */
     const tweets =
-      // TODO: write proper return types for getTweets
       post.tweetIDs.length > 0 ? await getTweets(post.tweetIDs) : {};
 
     const ogImage = await getOgImage({
