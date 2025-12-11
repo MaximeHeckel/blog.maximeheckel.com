@@ -105,8 +105,6 @@
     "@types/react": "^19.2.1",
     "@types/react-dom": "^19.2.1",
     "@types/three": "^0.173.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.1",
-    "@typescript-eslint/parser": "^8.19.0",
     "@vitejs/plugin-react": "^4.3.4",
     "cross-env": "7.0.3",
     "cypress": "^15.4.0",
