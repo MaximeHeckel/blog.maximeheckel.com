@@ -15,6 +15,22 @@ const output = withBundleAnalyzer({
   },
   productionBrowserSourceMaps: false,
   trailingSlash: true,
+  turbopack: {
+    rules: {
+      '*.glsl': {
+        loaders: ['raw-loader', 'glslify-loader'],
+        as: '*.js',
+      },
+      '*.vert': {
+        loaders: ['raw-loader'],
+        as: '*.js',
+      },
+      '*.frag': {
+        loaders: ['raw-loader'],
+        as: '*.js',
+      },
+    },
+  },
   images: {
     qualities: [25, 50, 75, 100],
     remotePatterns: [
