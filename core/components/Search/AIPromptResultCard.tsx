@@ -40,7 +40,6 @@ const SAMPLE_QUESTIONS = [
   "What's a great use case for render targets?",
 ];
 
-// eslint-disable-next-line react/display-name
 const AIPromptResultCard = forwardRef(
   (props: AIPromtResultCardProps, ref: ForwardedRef<HTMLDivElement>) => {
     const { error, sources, streamData, query, status, onQuestionSelect } =

@@ -1,5 +1,5 @@
 import { Flex, Text } from '@maximeheckel/design-system';
-import { useAnimate } from 'motion/react';
+import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
 
 export const ComputeShaderGrid = ({
@@ -10,16 +10,16 @@ export const ComputeShaderGrid = ({
   repeat?: number;
 }) => {
   const [scope, animate] = useAnimate();
-  const animationsRef = useRef<any[]>([]);
+  const animationsRef = useRef<AnimationPlaybackControls[]>([]);
 
   const startAnimation = useCallback(async () => {
     stopAnimation();
 
     const paths = scope.current?.querySelectorAll('path[data-animate]');
     if (paths) {
-      const animations: any[] = [];
+      const animations: AnimationPlaybackControls[] | undefined = [];
 
-      paths.forEach((path: any) => {
+      paths.forEach((path: HTMLElement) => {
         const group = parseInt(path.getAttribute('data-group') || '0');
         const baseColor = path.getAttribute('data-base-color') || '#3565F8';
 

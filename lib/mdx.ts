@@ -23,8 +23,6 @@ export const getFiles = async () => {
 const TWEET_RE = /<StaticTweet\sid="[0-9]+"\s\/>/g;
 
 export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
-  // eslint-disable-next-line no-console
-
   const source = fs.readFileSync(
     path.join(root, 'content', `${slug}.mdx`),
     'utf8'
@@ -85,6 +83,7 @@ export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
               ],
             },
           },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ] as any,
         rehypeFigure,
       ],

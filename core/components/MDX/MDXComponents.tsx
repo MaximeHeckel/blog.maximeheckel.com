@@ -66,7 +66,6 @@ const ScrollSpyWidget = dynamic(
   () => import('./Widgets/Scrollspy/ScrollSpyWidget'),
   {
     ssr: false,
-    // eslint-disable-next-line react/display-name
     loading: () => <div style={{ width: '100%', height: '705px' }} />,
   }
 );

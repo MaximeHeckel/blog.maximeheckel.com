@@ -51,6 +51,7 @@ interface DragHandleProps {
   dimension: number;
   point: Point;
   originPoint: Point;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   scale: any;
   onDragStart: () => void;
   onDragMove: (point: Point) => void;

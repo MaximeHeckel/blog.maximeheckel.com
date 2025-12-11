@@ -23,7 +23,9 @@ const fetchTweetData = async (ids: string[]): Promise<NewTweet[]> => {
   return results;
 };
 
-export const getTweets = async (ids: string[]) => {
+export const getTweets = async (
+  ids: string[]
+): Promise<Record<string, NewTweet>> => {
   try {
     const tweets = await fetchTweetData(ids);
 
@@ -40,5 +42,6 @@ export const getTweets = async (ids: string[]) => {
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error('[Error] - getTweets:', e);
+    return {};
   }
 };

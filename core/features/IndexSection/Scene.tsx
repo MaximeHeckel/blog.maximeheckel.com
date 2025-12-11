@@ -39,7 +39,7 @@ class CustomHalftoneEffectImpl extends Effect {
   pixelSize: number;
 
   constructor({ pixelSize = 1.0 }: { pixelSize?: number }) {
-    const uniforms = new Map<string, THREE.Uniform<any>>([
+    const uniforms = new Map<string, THREE.Uniform<unknown>>([
       ['pixelSize', new THREE.Uniform(pixelSize)],
     ]);
 
@@ -62,7 +62,7 @@ class CustomHalftoneEffectImpl extends Effect {
 const CustomHalftoneEffect = wrapEffect(CustomHalftoneEffectImpl);
 
 export const HalftoneEffect = () => {
-  const effectRef = useRef<any>(null);
+  const effectRef = useRef<CustomHalftoneEffectImpl | null>(null);
 
   const { pixelSize } = useControls({
     pixelSize: {

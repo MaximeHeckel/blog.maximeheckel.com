@@ -5,6 +5,7 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import { MDXRemote } from 'next-mdx-remote';
 import { useRouter } from 'next/router';
 import { FrontMatterPost } from 'types/post';
+import { NewTweet } from 'types/tweet';
 
 import MDXComponents from '@core/components/MDX/MDXComponents';
 import Tweet from '@core/components/Tweet';
@@ -13,7 +14,7 @@ import { BlogPost } from '@core/features/BlogPost';
 interface BlogProps {
   post?: FrontMatterPost;
   ogImage: string;
-  tweets: Record<string, any>; // TODO: write types for tweets
+  tweets: Record<string, NewTweet>;
 }
 
 const Blog = ({ post, ogImage, tweets }: BlogProps) => {

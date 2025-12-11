@@ -1,7 +1,6 @@
 import fs from 'fs';
 import GPT3Tokenizer from 'gpt3-tokenizer';
 import matter from 'gray-matter';
-import path from 'path';
 
 const MAX_TOKEN = 256;
 const CHUNK_OVERLAP = 50; // ~20% overlap for better context continuity
@@ -32,7 +31,7 @@ function removeJSX(str) {
 // Extract the link text from a markdown link
 function extractLink(text) {
   const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
-  return text.replace(regex, (match, p1, p2) => p1);
+  return text.replace(regex, (match, p1, _p2) => p1);
 }
 
 // Replace newline characters with spaces within a string

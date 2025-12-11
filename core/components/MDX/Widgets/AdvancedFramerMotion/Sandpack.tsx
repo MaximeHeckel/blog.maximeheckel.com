@@ -65,7 +65,7 @@ const SNIPPETS = {
   snippet4,
 };
 
-const GuideToFramerMotionSandpack = (props: any) => {
+const GuideToFramerMotionSandpack = (props: { snippet: string }) => {
   const { snippet } = props;
 
   return (

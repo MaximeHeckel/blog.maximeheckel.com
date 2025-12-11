@@ -30,7 +30,7 @@ canvas {
     height: 100vh;
 }`;
 
-const RefractionDispersionSandpack = (props: any) => {
+const RefractionDispersionSandpack = (props: { scene: string }) => {
   const { scene } = props;
 
   const ref = useRef(null);

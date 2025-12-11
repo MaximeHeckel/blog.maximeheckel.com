@@ -1,5 +1,5 @@
 import { Flex, Text } from '@maximeheckel/design-system';
-import { useAnimate } from 'motion/react';
+import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
 
 const staticBlocks = [
@@ -24,7 +24,7 @@ const staticBlocks = [
 
 export const FragmentShader = ({ enabled = true }: { enabled?: boolean }) => {
   const [scope, animate] = useAnimate();
-  const animationsRef = useRef<any[]>([]);
+  const animationsRef = useRef<AnimationPlaybackControls[]>([]);
 
   const fragmentBlockArray = Array.from({ length: 6 }, () =>
     Array.from({ length: 12 }, () => null)
@@ -33,9 +33,9 @@ export const FragmentShader = ({ enabled = true }: { enabled?: boolean }) => {
   const startAnimation = useCallback(async () => {
     const rects = scope.current?.querySelectorAll('rect[data-animate]');
     if (rects) {
-      const animations: any[] = [];
+      const animations: AnimationPlaybackControls[] | undefined = [];
 
-      rects.forEach((rect: any) => {
+      rects.forEach((rect: HTMLElement) => {
         const rowIndex = parseInt(rect.getAttribute('data-row') || '0');
         const blockIndex = parseInt(rect.getAttribute('data-block') || '0');
         const isStatic = staticBlocks.includes(`${rowIndex}-${blockIndex}`);
@@ -83,7 +83,7 @@ export const FragmentShader = ({ enabled = true }: { enabled?: boolean }) => {
     // Set final state when stopping animation
     const rects = scope.current?.querySelectorAll('rect[data-animate]');
     if (rects) {
-      rects.forEach((rect: any) => {
+      rects.forEach((rect: HTMLElement) => {
         const rowIndex = parseInt(rect.getAttribute('data-row') || '0');
         const blockIndex = parseInt(rect.getAttribute('data-block') || '0');
         const isStatic = staticBlocks.includes(`${rowIndex}-${blockIndex}`);

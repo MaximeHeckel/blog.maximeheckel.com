@@ -26,7 +26,7 @@ const output = withBundleAnalyzer({
       },
     ],
   },
-  webpack(config, { isServer, buildId }) {
+  webpack(config) {
     const reactPaths = {
       react: path.join(__dirname, 'node_modules/react'),
       'react-dom': path.join(__dirname, 'node_modules/react-dom'),

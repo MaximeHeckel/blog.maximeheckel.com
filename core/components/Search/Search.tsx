@@ -110,7 +110,7 @@ const Search = (props: Props) => {
       const data = await response.json();
       setResults(data);
       setStatus('done');
-    } catch (error) {}
+    } catch (_error) {}
   };
 
   type ResponseData = {
@@ -169,6 +169,7 @@ const Search = (props: Props) => {
             if (!deepEqual(latestObject, currentObject)) {
               setStreamData(currentObject?.answer ?? '');
               latestObject = currentObject;
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               setSources(currentObject?.sources ?? (undefined as any));
             }
           } catch (error) {

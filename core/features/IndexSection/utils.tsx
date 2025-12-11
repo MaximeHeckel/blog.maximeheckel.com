@@ -2,7 +2,7 @@ import { extend, useThree } from '@react-three/fiber';
 import { BlendFunction, Effect } from 'postprocessing';
 import React, { RefObject } from 'react';
 
-export const resolveRef = (ref: RefObject<any>) =>
+export const resolveRef = (ref: RefObject<unknown>) =>
   typeof ref === 'object' && ref != null && 'current' in ref
     ? ref.current
     : ref;
@@ -10,9 +10,14 @@ export const resolveRef = (ref: RefObject<any>) =>
 let i = 0;
 const components = new WeakMap();
 
-export const wrapEffect = (
-  effect: new (...args: any[]) => Effect,
-  defaults?: { blendFunction?: BlendFunction; opacity?: number; args?: any[] }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const wrapEffect = <T extends new (...args: any[]) => Effect>(
+  effect: T,
+  defaults?: {
+    blendFunction?: BlendFunction;
+    opacity?: number;
+    args?: unknown[];
+  }
 ) =>
   /* @__PURE__ */ function Effect({
     blendFunction = defaults?.blendFunction,

@@ -35,7 +35,7 @@ canvas {
     height: 100vh;
 }`;
 
-const R3FShaderSandpack = (props: any) => {
+const R3FShaderSandpack = (props: { scene: string }) => {
   const { scene } = props;
 
   const ref = useRef(null);

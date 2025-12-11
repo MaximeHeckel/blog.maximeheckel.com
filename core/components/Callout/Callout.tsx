@@ -12,7 +12,7 @@ const Callout = (props: SystemCalloutProps) => {
       {...rest}
     >
       <Flex alignItems="start" direction="column" gap="6">
-        {props.children}
+        {children}
       </Flex>
     </SystemCallout>
   );

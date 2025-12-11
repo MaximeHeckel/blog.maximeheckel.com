@@ -137,6 +137,7 @@ const Tweet = (props: Props) => {
                 (max, obj) => {
                   return (obj.bitrate || 0) > max.bitrate ? obj : max;
                 },
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 { bitrate: 0 } as any
               );
 

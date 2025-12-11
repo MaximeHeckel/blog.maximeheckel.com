@@ -37,7 +37,7 @@ canvas {
     height: 100vh;
 }`;
 
-const ParticlesShaderSandpack = (props: any) => {
+const ParticlesShaderSandpack = (props: { scene: string }) => {
   const { scene } = props;
 
   const ref = useRef(null);
