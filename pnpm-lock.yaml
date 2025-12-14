@@ -27,7 +27,7 @@ importers:
         specifier: ^10.7.7
         version: 10.7.7(@react-three/fiber@9.4.2(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(three@0.170.0))(@types/react@19.2.7)(@types/three@0.173.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(three@0.170.0)
       '@react-three/fiber':
-        specifier: ^9.1.2
+        specifier: ^9.4.2
         version: 9.4.2(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(three@0.170.0)
       '@react-three/postprocessing':
         specifier: ^3.0.4

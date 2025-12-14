@@ -17,7 +17,14 @@ import { EffectComposer } from '@react-three/postprocessing';
 import { Leva, useControls } from 'leva';
 import { useReducedMotion } from 'motion/react';
 import { Effect } from 'postprocessing';
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import * as THREE from 'three';
 import { v4 } from 'uuid';
 
@@ -187,7 +194,7 @@ const ParticleLemniscate = ({
     () => new Float32Array([0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0])
   );
 
-  let renderTarget = useFBO(size, size, {
+  const renderTargetA = useFBO(size, size, {
     minFilter: THREE.NearestFilter,
     magFilter: THREE.NearestFilter,
     format: THREE.RGBAFormat,
@@ -195,7 +202,16 @@ const ParticleLemniscate = ({
     type: THREE.FloatType,
   });
 
-  let renderTargetB = renderTarget.clone();
+  const renderTargetB = useFBO(size, size, {
+    minFilter: THREE.NearestFilter,
+    magFilter: THREE.NearestFilter,
+    format: THREE.RGBAFormat,
+    stencilBuffer: false,
+    type: THREE.FloatType,
+  });
+
+  // Use ref to track ping-pong state (survives React re-renders)
+  const pingPong = useRef(0);
 
   const particles = useMemo(() => {
     const length = size * size;
@@ -212,10 +228,10 @@ const ParticleLemniscate = ({
 
   const gl = useThree((state) => state.gl);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!orthoRef.current) return;
 
-    gl.setRenderTarget(renderTarget);
+    gl.setRenderTarget(renderTargetA);
     gl.clear();
     gl.render(scene, orthoRef.current);
 
@@ -224,8 +240,7 @@ const ParticleLemniscate = ({
     gl.render(scene, orthoRef.current);
 
     gl.setRenderTarget(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [gl, renderTargetA, renderTargetB, scene]);
 
   useFrame((state) => {
     const { gl, clock } = state;
@@ -237,34 +252,41 @@ const ParticleLemniscate = ({
     )
       return;
 
-    // Always set initial positions
-    depthOfFieldMaterialRef.current.uniforms.positions.value =
-      renderTarget.texture;
+    // Determine which target to read from and write to based on ping-pong state
+    const targets = [renderTargetA, renderTargetB];
+    const writeTarget = targets[pingPong.current];
+    const readTarget = targets[1 - pingPong.current];
+
     depthOfFieldMaterialRef.current.uniforms.pointSize.value = 2.5;
     frameCount.current++;
 
     // Allow the first frame to run even when stopped
     if (shouldStopRenderingLoop && frameCount.current > 15) {
+      // Still need to set the positions texture even when stopped
+      depthOfFieldMaterialRef.current.uniforms.positions.value =
+        writeTarget.texture;
       return;
     }
 
-    const old = renderTarget;
-    renderTarget = renderTargetB;
-    renderTargetB = old;
-
+    // Set the simulation to read from the previous frame's output
     simulationMaterialDOFRef.current.uniforms.positions.value =
-      renderTargetB.texture;
+      readTarget.texture;
     simulationMaterialDOFRef.current.uniforms.uTime.value =
       clock.getElapsedTime();
+    simulationMaterialDOFRef.current.uniforms.uFrequency.value = frequency;
 
-    gl.setRenderTarget(renderTarget);
+    // Render simulation to the write target
+    gl.setRenderTarget(writeTarget);
     gl.clear();
     gl.render(scene, orthoRef.current);
     gl.setRenderTarget(null);
 
-    simulationMaterialDOFRef.current.uniforms.uFrequency.value = frequency;
-    simulationMaterialDOFRef.current.uniforms.uTime.value =
-      clock.getElapsedTime();
+    // Update the depth of field material to use the newly computed positions
+    depthOfFieldMaterialRef.current.uniforms.positions.value =
+      writeTarget.texture;
+
+    // Flip ping-pong for next frame
+    pingPong.current = 1 - pingPong.current;
   });
 
   return (
@@ -305,6 +327,7 @@ const ParticleLemniscate = ({
         near={1 / 2 ** 53}
         far={1}
       />
+
       <PerspectiveCamera makeDefault position={[0, 0, 1.45]} fov={75} />
       <group position={[0, 0.2, 0]} rotation={[0, 0, -Math.PI * 0.135]}>
         <points>
