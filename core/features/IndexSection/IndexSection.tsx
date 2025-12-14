@@ -16,7 +16,7 @@ const IndexSection = () => {
           display: 'flex',
           alignItems: 'end',
           justifyContent: 'center',
-          minHeight: 'clamp(400px, 90dvh, 900px)',
+          minHeight: 'clamp(400px, 90dvh, 800px)',
         }}
       >
         <Box

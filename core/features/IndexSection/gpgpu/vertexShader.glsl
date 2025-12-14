@@ -2,6 +2,7 @@ uniform sampler2D positions;
 uniform float pointSize;
 varying float vDistance;
 varying vec3 vPosition;
+varying vec2 vUv;
 
 void main() {
     // Get the position from the texture
@@ -15,10 +16,7 @@ void main() {
 
     vDistance = length(mvPosition.xyz);
     vPosition = pos;
+    vUv = uv;
 
-    // Calculate point size based on multiple factors:
-    // - Checks if position.x is within FOV range using step function
-    // - Multiplies by distance from focus and blur factor
-    //gl_PointSize = clamp((step(0.95 - (1.0 / (uFov + 1e-6)), position.x)) * vDistance * uBlur , pointSize, 5.0);
-    gl_PointSize = pointSize * 1.5 / length(mvPosition.xyz);
+    gl_PointSize = pointSize * 3.0 / length(mvPosition.xyz);
 }

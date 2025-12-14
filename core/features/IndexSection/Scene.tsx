@@ -132,6 +132,7 @@ class SimulationMaterial extends THREE.ShaderMaterial {
       positions: { value: positionsTexture },
       uFrequency: { value: 0.25 },
       uTime: { value: 0 },
+      uSize: { value: size },
     };
 
     super({
@@ -149,7 +150,7 @@ class DepthOfFieldMaterial extends THREE.ShaderMaterial {
         value: null,
       },
       pointSize: {
-        value: 3.0,
+        value: 2.5,
       },
       uFocus: { value: 4.0 },
       uFov: { value: 45 },
@@ -161,7 +162,7 @@ class DepthOfFieldMaterial extends THREE.ShaderMaterial {
       vertexShader: renderVertexShader,
       fragmentShader: renderFragmentShader,
       transparent: true,
-      blending: THREE.NormalBlending,
+      blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
   }
@@ -197,20 +198,13 @@ const ParticleLemniscate = ({
   const renderTargetA = useFBO(size, size, {
     minFilter: THREE.NearestFilter,
     magFilter: THREE.NearestFilter,
-    format: THREE.RGBAFormat,
-    stencilBuffer: false,
-    type: THREE.FloatType,
   });
 
   const renderTargetB = useFBO(size, size, {
     minFilter: THREE.NearestFilter,
     magFilter: THREE.NearestFilter,
-    format: THREE.RGBAFormat,
-    stencilBuffer: false,
-    type: THREE.FloatType,
   });
 
-  // Use ref to track ping-pong state (survives React re-renders)
   const pingPong = useRef(0);
 
   const particles = useMemo(() => {
@@ -252,17 +246,13 @@ const ParticleLemniscate = ({
     )
       return;
 
-    // Determine which target to read from and write to based on ping-pong state
     const targets = [renderTargetA, renderTargetB];
     const writeTarget = targets[pingPong.current];
     const readTarget = targets[1 - pingPong.current];
 
-    depthOfFieldMaterialRef.current.uniforms.pointSize.value = 2.5;
     frameCount.current++;
 
-    // Allow the first frame to run even when stopped
     if (shouldStopRenderingLoop && frameCount.current > 15) {
-      // Still need to set the positions texture even when stopped
       depthOfFieldMaterialRef.current.uniforms.positions.value =
         writeTarget.texture;
       return;
@@ -275,17 +265,14 @@ const ParticleLemniscate = ({
       clock.getElapsedTime();
     simulationMaterialDOFRef.current.uniforms.uFrequency.value = frequency;
 
-    // Render simulation to the write target
     gl.setRenderTarget(writeTarget);
     gl.clear();
     gl.render(scene, orthoRef.current);
     gl.setRenderTarget(null);
 
-    // Update the depth of field material to use the newly computed positions
     depthOfFieldMaterialRef.current.uniforms.positions.value =
       writeTarget.texture;
 
-    // Flip ping-pong for next frame
     pingPong.current = 1 - pingPong.current;
   });
 
@@ -328,8 +315,8 @@ const ParticleLemniscate = ({
         far={1}
       />
 
-      <PerspectiveCamera makeDefault position={[0, 0, 1.45]} fov={75} />
-      <group position={[0, 0.2, 0]} rotation={[0, 0, -Math.PI * 0.135]}>
+      <PerspectiveCamera makeDefault position={[0, 0, 4]} fov={75} />
+      <group position={[0, 0.5, 0]} rotation={[0, 0, -Math.PI * 0.135]}>
         <points>
           <bufferGeometry>
             <bufferAttribute
@@ -410,7 +397,7 @@ export const Scene = () => {
         left: 0,
         right: 0,
         bottom: 0,
-        height: '120dvh',
+        height: 'min(120dvh, 1100px)',
         zIndex: 0,
         maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
       }}
