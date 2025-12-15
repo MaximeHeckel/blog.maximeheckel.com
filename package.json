@@ -64,8 +64,6 @@
     "glsl-curl-noise2": "^0.0.4",
     "glsl-noise": "^0.0.0",
     "glslify-loader": "^2.0.0",
-    "graphql": "15.9.0",
-    "graphql-request": "3.3.0",
     "gray-matter": "4.0.3",
     "leva": "^0.10.1",
     "lodash.debounce": "^4.0.8",
