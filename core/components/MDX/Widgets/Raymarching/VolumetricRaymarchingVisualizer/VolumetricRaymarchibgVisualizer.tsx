@@ -205,7 +205,7 @@ const Diagram = (props: { step: number }) => {
         ease: 'easeInOut',
       },
     },
-  };
+  } as const;
 
   return (
     <svg

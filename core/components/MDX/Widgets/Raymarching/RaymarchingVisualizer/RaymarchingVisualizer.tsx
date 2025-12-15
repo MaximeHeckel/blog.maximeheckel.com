@@ -201,7 +201,7 @@ const Diagram = (props: { step: number }) => {
         ease: 'easeInOut',
       },
     },
-  };
+  } as const;
 
   const edgePathVariants = {
     initial: {
@@ -214,7 +214,7 @@ const Diagram = (props: { step: number }) => {
         ease: 'easeInOut',
       },
     },
-  };
+  } as const;
 
   const outPathVariants = {
     initial: {
@@ -227,7 +227,7 @@ const Diagram = (props: { step: number }) => {
         ease: 'easeInOut',
       },
     },
-  };
+  } as const;
 
   return (
     <svg
