@@ -8,9 +8,8 @@ void main() {
 
   if (dist > 0.8) discard;
 
-
   float falloff = dist;
-  float intensity =  falloff * 1.65;
+  float intensity =  falloff * 1.8;
 
 
   gl_FragColor = vec4(vec3(1.0), (1.0 - clamp(vDistance, 0.0, 0.75) * intensity));

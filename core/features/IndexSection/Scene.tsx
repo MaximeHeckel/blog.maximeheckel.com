@@ -150,11 +150,8 @@ class DepthOfFieldMaterial extends THREE.ShaderMaterial {
         value: null,
       },
       pointSize: {
-        value: 2.5,
+        value: 3.5,
       },
-      uFocus: { value: 4.0 },
-      uFov: { value: 45 },
-      uBlur: { value: 30 },
     };
 
     super({
