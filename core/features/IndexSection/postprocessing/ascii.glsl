@@ -46,6 +46,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
   float transition =  smoothstep(0.0, 0.35, uv.y - pow(uv.x, 2.0));
   
   outputColor = mix(asciiColor, vec4(ogColor.rgb, 1.0), transition);
+  outputColor.a = 1.0;
   // outputColor = asciiColor;
 
   #include <tonemapping_fragment>
