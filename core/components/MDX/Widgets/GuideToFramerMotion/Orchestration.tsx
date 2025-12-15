@@ -19,12 +19,12 @@ const Orchestration = () => {
     in: {
       y: 0,
       transition: {
-        duration: '0.6',
+        duration: 0.6,
         delayChildren,
         staggerChildren,
       },
     },
-  };
+  } as const;
 
   const iconVariants = {
     out: {
@@ -33,7 +33,7 @@ const Orchestration = () => {
     in: {
       x: 0,
     },
-  };
+  } as const;
 
   React.useEffect(() => {
     setKey(key + 1);

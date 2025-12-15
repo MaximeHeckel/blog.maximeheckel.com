@@ -101,9 +101,7 @@ const FramerMotionLayoutAnimationsLayoutPosition = dynamic(
 
 const FramerMotionLayoutAnimationsSharedLayoutAnimationDetails = dynamic(
   () =>
-    import(
-      './Widgets/FramerMotionLayoutAnimations/SharedLayoutAnimationDetails'
-    )
+    import('./Widgets/FramerMotionLayoutAnimations/SharedLayoutAnimationDetails')
 );
 
 const FramerMotionLayoutAnimationListLayoutGroup = dynamic(

@@ -4,7 +4,7 @@ import {
   Range,
   useDebouncedValue,
 } from '@maximeheckel/design-system';
-import { motion, useInView } from 'motion/react';
+import { Easing, motion, useInView } from 'motion/react';
 import React, { useRef } from 'react';
 
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
@@ -208,7 +208,7 @@ const AnimationTypes = () => {
                     }
               }
               transition={{
-                ease: tweenAnimation,
+                ease: tweenAnimation as Easing,
                 repeat: Infinity,
                 repeatType: 'reverse',
                 repeatDelay: 1,

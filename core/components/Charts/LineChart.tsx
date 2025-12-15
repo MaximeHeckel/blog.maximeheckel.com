@@ -67,7 +67,7 @@ const LineChart = withTooltip<LineChartProps, FormattedData>(
           duration: 2,
         },
       },
-    };
+    } as const;
 
     const areaVariants = {
       initial: {
@@ -81,7 +81,7 @@ const LineChart = withTooltip<LineChartProps, FormattedData>(
           duration: 2,
         },
       },
-    };
+    } as const;
 
     const pathLength = useMotionValue(0);
 

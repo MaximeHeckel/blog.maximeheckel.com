@@ -26,7 +26,7 @@ const signatureSvgVariants = {
       staggerChildren: 0.45,
     },
   },
-};
+} as const;
 
 const signaturePathVariants = {
   initial: {
@@ -43,7 +43,7 @@ const signaturePathVariants = {
       },
     },
   },
-};
+} as const;
 
 const signaturePathVariantsFast = {
   initial: {
@@ -60,7 +60,7 @@ const signaturePathVariantsFast = {
       },
     },
   },
-};
+} as const;
 
 const SignatureSVG = () => {
   const ref = useRef(null);
