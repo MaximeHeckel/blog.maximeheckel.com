@@ -6,7 +6,7 @@ import {
 } from '@codesandbox/sandpack-react';
 import { Box, Tooltip, IconButton } from '@maximeheckel/design-system';
 
-const PlayIcon = () => {
+export const PlayIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
