@@ -42,6 +42,7 @@ import { Main } from '@core/components/Main';
 import Seo from '@core/components/Seo';
 import ImageGallery from '@core/components/Slideshow';
 import Tweet from '@core/components/Tweet';
+import { MediaPlayer } from '@core/components/VideoPlayer/MediaPlayer';
 
 const SandpackExample = dynamic(
   () => import('@core/components/MDX/Widgets/WaveAnimation/Sandpack')
@@ -1218,6 +1219,36 @@ function sayHi(name) {
               height={405}
             />
           </Flex>
+          <Flex
+            alignItems="start"
+            as="section"
+            css={{ alignSelf: 'stretch' }}
+            direction="column"
+            gap="5"
+            id="image"
+          >
+            <H2>Video</H2>
+            <MediaPlayer.Root playsInline muted autoPlay loop>
+              <MediaPlayer.Glow blur={70} scaleX={1.1} scaleY={1.3} />
+              <MediaPlayer.VideoOverlay>
+                <Text css={{ letterSpacing: '-0.022em' }} weight="3">
+                  WebGPU - Glass 02
+                </Text>
+              </MediaPlayer.VideoOverlay>
+              <MediaPlayer.Video width={700} height={398} fit="cover">
+                <source
+                  src="https://cdn.maximeheckel.com/work/glasswebgpu3.mp4"
+                  type="video/mp4"
+                />
+              </MediaPlayer.Video>
+              <MediaPlayer.PlaybackControls />
+              <MediaPlayer.Track>
+                <MediaPlayer.Range type="played" />
+              </MediaPlayer.Track>
+              <MediaPlayer.ScreenControls />
+            </MediaPlayer.Root>
+          </Flex>
+
           <Flex
             alignItems="start"
             as="section"

@@ -89,7 +89,7 @@ const ContentSecurityPolicy = `
     child-src *.youtube.com *.google.com *.twitter.com *.codesandbox.io;
     style-src 'self' 'unsafe-inline' *.googleapis.com;
     img-src * blob: data:;
-    media-src 'self' d2xl4m2ghaywko.cloudfront.net https://video.twimg.com;
+    media-src 'self' d2xl4m2ghaywko.cloudfront.net https://video.twimg.com https://cdn.maximeheckel.com;
     connect-src *;
     font-src 'self';
 `;

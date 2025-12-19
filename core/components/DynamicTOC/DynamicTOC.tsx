@@ -269,7 +269,8 @@ const DynamicTOC = (props: {
               }
             : {
                 type: 'spring',
-                bounce: expanded ? 0.4 : 0.25,
+                bounce: 0.15,
+                duration: 0.5,
               }
         }
         onAnimationStart={() => {

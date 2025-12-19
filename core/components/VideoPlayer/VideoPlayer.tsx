@@ -1,8 +1,8 @@
-import { useDebouncedValue } from '@maximeheckel/design-system';
+import { Box, useDebouncedValue } from '@maximeheckel/design-system';
 import { useInView, useReducedMotion } from 'motion/react';
 import React, { useRef } from 'react';
 
-import * as S from './VideoPlayer.styles';
+import { MediaPlayer } from './MediaPlayer';
 
 interface VideoPlayerProps {
   autoPlay?: boolean;
@@ -14,48 +14,61 @@ interface VideoPlayerProps {
   height?: number;
   alt?: string;
   src: string;
+  type?: string;
 }
 
 const VideoPlayer = (props: VideoPlayerProps) => {
   const {
     alt,
     autoPlay,
-    controls = false,
     loop,
     muted,
     width,
     height,
     src,
+    type = 'video/mp4',
   } = props;
 
-  const ref = useRef(null);
-  const isReducedMotionEnabled = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+
   const isInView = useInView(ref, {
     amount: 0.1,
   });
 
+  const isReducedMotionEnabled = useReducedMotion();
   const debouncedIsInView = useDebouncedValue(isInView, 200);
 
   return (
-    <S.VideoContainer
+    <Box
       ref={ref}
       css={{
         aspectRatio: `${width} / ${height}`,
+        position: 'relative',
+        margin: '0 auto',
+        background: 'var(--foreground)',
+        width: '100%',
+        height: '100%',
       }}
     >
       {debouncedIsInView ? (
-        <S.Video
+        <MediaPlayer.Root
           aria-label={alt}
-          autoPlay={autoPlay}
-          controls={controls || isReducedMotionEnabled || false}
-          loop={loop || isReducedMotionEnabled || false}
-          muted={muted}
           playsInline
+          muted={muted}
+          autoPlay={autoPlay || isReducedMotionEnabled || false}
+          loop={loop || isReducedMotionEnabled || false}
         >
-          <source src={src} type="video/mp4" />
-        </S.Video>
+          <MediaPlayer.Video width={width} height={height}>
+            <source src={src} type={type} />
+          </MediaPlayer.Video>
+          <MediaPlayer.PlaybackControls />
+          <MediaPlayer.Track>
+            <MediaPlayer.Range type="played" />
+          </MediaPlayer.Track>
+          <MediaPlayer.ScreenControls />
+        </MediaPlayer.Root>
       ) : null}
-    </S.VideoContainer>
+    </Box>
   );
 };
 
