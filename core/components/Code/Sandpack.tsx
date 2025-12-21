@@ -9,7 +9,7 @@ import {
 } from '@codesandbox/sandpack-react';
 import { Box, Flex, Shadows, styled } from '@maximeheckel/design-system';
 import { AnimatePresence } from 'motion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useIsMobile } from '@core/hooks/useIsMobile';
 
@@ -259,7 +259,17 @@ const Sandpack = (props: SandpackProps) => {
   const [consoleKey, setConsoleKey] = useState(0);
   const [selectedTab, setSelectedTab] = useState<Tab>(defaultTab);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [displayCode, setDisplayCode] = useState(isMobile ? false : true);
+  // Start with true to match SSR, then update based on isMobile after hydration
+  const [displayCode, setDisplayCode] = useState(true);
+  const [shouldAutorun, setShouldAutorun] = useState(autorun);
+
+  // Sync with isMobile state after hydration to avoid SSR mismatch
+  useEffect(() => {
+    if (isMobile) {
+      setDisplayCode(false);
+      setShouldAutorun(false);
+    }
+  }, [isMobile]);
 
   const defaultEditorOptions = {
     editorHeight: 620,
@@ -289,7 +299,7 @@ const Sandpack = (props: SandpackProps) => {
           dependencies: dependencies || {},
         }}
         options={{
-          autorun: isMobile ? false : autorun,
+          autorun: shouldAutorun,
         }}
       >
         <SandpackLayout>

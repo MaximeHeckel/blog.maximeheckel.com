@@ -146,12 +146,14 @@ const Tweet = (props: Props) => {
               if (!videoSrc || lastVariant.content_type !== 'video/mp4')
                 return null;
 
+              const srcWithoutTag = videoSrc.split('?')[0];
+
               return (
                 <VideoPlayer
                   controls
                   muted
-                  key={videoSrc}
-                  src={videoSrc}
+                  key={srcWithoutTag}
+                  src={srcWithoutTag}
                   height={m.original_info.height}
                   width={m.original_info.width}
                   poster={m.media_url_https}

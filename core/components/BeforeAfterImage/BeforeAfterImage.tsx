@@ -108,7 +108,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
   };
 
   useEffect(() => {
-    const unsubscribe = wiggleMotion.onChange((value) => {
+    const unsubscribe = wiggleMotion.on('change', (value) => {
       if (value < 0) return;
       if (value > 100) return;
       setSliderPosition(value);
