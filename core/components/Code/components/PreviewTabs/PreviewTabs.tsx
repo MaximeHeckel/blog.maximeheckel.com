@@ -15,7 +15,7 @@ import {
 } from '../CustomSandpackButtons';
 import { PreviewTabsProps } from './types';
 
-const FullscreenIcon = () => {
+export const FullscreenIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

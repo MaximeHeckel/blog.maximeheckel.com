@@ -7,11 +7,22 @@ import {
   Text,
   Tooltip,
 } from '@maximeheckel/design-system';
+import deepEqual from 'deep-eql';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { useEffect, useRef, useState } from 'react';
 
+import { DeepPartial, parsePartialJson } from '@core/components/Search/utils';
+
 import MDXComponents from '../../MDXComponents';
+
+type ResponseData = {
+  answer: string;
+  sources: {
+    title: string;
+    url: string;
+  }[];
+};
 
 const Formatting = () => {
   const [status, setStatus] = useState<'initial' | 'loading' | 'done'>(
@@ -42,41 +53,40 @@ const Formatting = () => {
       }),
     });
 
-    if (!response.ok) {
+    if (!response.ok || !response.body) {
       setStatus('initial');
       return;
     }
 
-    const data = response.body;
+    let accumulatedText = '';
+    let latestObject: DeepPartial<ResponseData> | undefined = undefined;
 
-    if (!data) {
-      return;
-    }
-    const reader = data.getReader();
+    await response.body.pipeThrough(new TextDecoderStream()).pipeTo(
+      new WritableStream({
+        async write(chunk) {
+          accumulatedText += chunk;
 
-    const decoder = new TextDecoder();
-    let done = false;
+          try {
+            const { value } = await parsePartialJson(accumulatedText);
 
-    while (!done) {
-      const { value, done: doneReading } = await reader.read();
+            const currentObject = value as DeepPartial<ResponseData>;
 
-      if (typeof value === 'undefined') {
-        reader.cancel();
-        break;
-      }
-
-      done = doneReading;
-      const chunkValue = decoder.decode(value);
-
-      if (chunkValue.includes('[VECTOR_SEARCH_END]')) {
-        break;
-      } else {
-        setStreamData((prev) => {
-          return prev + chunkValue;
-        });
-      }
-    }
-    reader.cancel();
+            if (!deepEqual(latestObject, currentObject)) {
+              setStreamData(currentObject?.answer ?? '');
+              latestObject = currentObject;
+            }
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(
+              'Error parsing AI answer as JSON:',
+              error as Error,
+              JSON.stringify(accumulatedText),
+              '!!! Let Maxime know about it :) !!!'
+            );
+          }
+        },
+      })
+    );
     setStatus('done');
   };
 
