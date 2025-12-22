@@ -48,6 +48,7 @@ const VideoPlayer = (props: VideoPlayerProps) => {
         background: 'var(--foreground)',
         width: '100%',
         height: '100%',
+        borderRadius: 'var(--border-radius-3)',
       }}
     >
       {debouncedIsInView ? (
