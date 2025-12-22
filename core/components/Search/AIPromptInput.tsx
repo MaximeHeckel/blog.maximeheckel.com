@@ -2,7 +2,6 @@ import { Box, Flex, Icon, Text } from '@maximeheckel/design-system';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
-import { Sparkles } from './Icons';
 import * as S from './Search.styles';
 import { Status } from './types';
 
@@ -20,11 +19,7 @@ const AIPromptInput = (props: { status: Status }) => {
   return (
     <>
       <Flex css={{ width: 24, marginLeft: 16 }}>
-        <Sparkles
-          style={{
-            color: 'var(--text-secondary)',
-          }}
-        />
+        <Icon.AIChat variant="tertiary" />
       </Flex>
       <S.AIInput
         ref={inputRef}

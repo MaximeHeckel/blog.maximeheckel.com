@@ -1298,15 +1298,6 @@ function sayHi(name) {
 
 const IconSection = () => (
   <Flex direction="column" gap={8} alignItems="stretch" css={{ width: '100%' }}>
-    <Grid flow="column" gap={4}>
-      <Icon.Twitter variant="info" size={5} />
-      <Icon.Twitter variant="danger" size={5} />
-      <Icon.Twitter variant="success" size={5} />
-      <Icon.Twitter variant="warning" size={5} />
-      <Icon.Twitter variant="primary" size={5} />
-      <Icon.Twitter variant="secondary" size={5} />
-      <Icon.Twitter variant="tertiary" size={5} />
-    </Grid>
     <Grid gapY={4} flow="row" align="center" templateColumns="repeat(5, 1fr)">
       <Icon.Twitter variant="default" size={7} />
       <Icon.Twitter variant="default" size={6} />
@@ -1323,11 +1314,21 @@ const IconSection = () => (
       <Icon.Github variant="default" size={5} />
       <Icon.Github variant="default" size={4} />
       <Icon.Github variant="default" size={3} />
-      <Icon.Contact variant="default" size={7} />
-      <Icon.Contact variant="default" size={6} />
-      <Icon.Contact variant="default" size={5} />
-      <Icon.Contact variant="default" size={4} />
-      <Icon.Contact variant="default" size={3} />
+      <Icon.Coffee variant="default" size={7} />
+      <Icon.Coffee variant="default" size={6} />
+      <Icon.Coffee variant="default" size={5} />
+      <Icon.Coffee variant="default" size={4} />
+      <Icon.Coffee variant="default" size={3} />
+      <Icon.AIChat variant="default" size={7} />
+      <Icon.AIChat variant="default" size={6} />
+      <Icon.AIChat variant="default" size={5} />
+      <Icon.AIChat variant="default" size={4} />
+      <Icon.AIChat variant="default" size={3} />
+      <Icon.Command variant="default" size={7} />
+      <Icon.Command variant="default" size={6} />
+      <Icon.Command variant="default" size={5} />
+      <Icon.Command variant="default" size={4} />
+      <Icon.Command variant="default" size={3} />
       <Icon.Map variant="default" size={7} />
       <Icon.Map variant="default" size={6} />
       <Icon.Map variant="default" size={5} />
@@ -1338,11 +1339,6 @@ const IconSection = () => (
       <Icon.External variant="default" size={5} />
       <Icon.External variant="default" size={4} />
       <Icon.External variant="default" size={3} />
-      <Icon.Map variant="default" size={7} />
-      <Icon.Map variant="default" size={6} />
-      <Icon.Map variant="default" size={5} />
-      <Icon.Map variant="default" size={4} />
-      <Icon.Map variant="default" size={3} />
       <Icon.Enter variant="default" size={7} />
       <Icon.Enter variant="default" size={6} />
       <Icon.Enter variant="default" size={5} />
@@ -1388,6 +1384,57 @@ const IconSection = () => (
       <Icon.Stack variant="default" size={5} />
       <Icon.Stack variant="default" size={4} />
       <Icon.Stack variant="default" size={3} />
+      <Icon.Chevron variant="default" size={7} />
+      <Icon.Chevron variant="default" size={6} />
+      <Icon.Chevron variant="default" size={5} />
+      <Icon.Chevron variant="default" size={4} />
+      <Icon.Chevron variant="default" size={3} />
+      <Icon.VolumeUp variant="default" size={7} />
+      <Icon.VolumeUp variant="default" size={6} />
+      <Icon.VolumeUp variant="default" size={5} />
+      <Icon.VolumeUp variant="default" size={4} />
+      <Icon.VolumeUp variant="default" size={3} />
+      <Icon.VolumeDown variant="default" size={7} />
+      <Icon.VolumeDown variant="default" size={6} />
+      <Icon.VolumeDown variant="default" size={5} />
+      <Icon.VolumeDown variant="default" size={4} />
+      <Icon.VolumeDown variant="default" size={3} />
+      <Icon.VolumeMute variant="default" size={7} />
+      <Icon.VolumeMute variant="default" size={6} />
+      <Icon.VolumeMute variant="default" size={5} />
+      <Icon.VolumeMute variant="default" size={4} />
+      <Icon.VolumeMute variant="default" size={3} />
+      <Icon.Code variant="default" size={7} />
+      <Icon.Code variant="default" size={6} />
+      <Icon.Code variant="default" size={5} />
+      <Icon.Code variant="default" size={4} />
+      <Icon.Code variant="default" size={3} />
+      <Icon.PiP variant="default" size={7} />
+      <Icon.PiP variant="default" size={6} />
+      <Icon.PiP variant="default" size={5} />
+      <Icon.PiP variant="default" size={4} />
+      <Icon.PiP variant="default" size={3} />
+      <Icon.PiPExit variant="default" size={7} />
+      <Icon.PiPExit variant="default" size={6} />
+      <Icon.PiPExit variant="default" size={5} />
+      <Icon.PiPExit variant="default" size={4} />
+      <Icon.PiPExit variant="default" size={3} />
+      <Icon.Copy variant="default" size={7} />
+      <Icon.Copy variant="default" size={6} />
+      <Icon.Copy variant="default" size={5} />
+      <Icon.Copy variant="default" size={4} />
+      <Icon.Copy variant="default" size={3} />
+      <Icon.Clear variant="default" size={7} />
+      <Icon.Clear variant="default" size={6} />
+      <Icon.Clear variant="default" size={5} />
+      <Icon.Clear variant="default" size={4} />
+      <Icon.Clear variant="default" size={3} />
+
+      <Icon.Contact variant="default" size={7} />
+      <Icon.Contact variant="default" size={6} />
+      <Icon.Contact variant="default" size={5} />
+      <Icon.Contact variant="default" size={4} />
+      <Icon.Contact variant="default" size={3} />
     </Grid>
   </Flex>
 );

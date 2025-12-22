@@ -2,6 +2,7 @@ import {
   Flex,
   Box,
   IconButton,
+  Icon,
   isElementOfType,
   Text,
   GlassMaterial,
@@ -19,16 +20,6 @@ import {
   useState,
 } from 'react';
 
-import {
-  PauseIcon,
-  PlayIcon,
-  VolumeMuteIcon,
-  VolumeDownIcon,
-  VolumeUpIcon,
-  FullscreenIcon,
-  PiPExitIcon,
-  PiPIcon,
-} from './Icons';
 import { formatTime } from './utils';
 
 type MediaContextType = {
@@ -593,7 +584,7 @@ const MediaPlayerPlaybackControls = () => {
           onClick={togglePlay}
           variant="tertiary"
         >
-          {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          {isPlaying ? <Icon.Pause /> : <Icon.Play />}
         </IconButton>
       </Tooltip>
       <Box
@@ -716,11 +707,11 @@ const MediaPlayerPlaybackControls = () => {
             }}
           >
             {volumePercent === 0 ? (
-              <VolumeMuteIcon />
+              <Icon.VolumeMute />
             ) : volumePercent < 50 ? (
-              <VolumeDownIcon />
+              <Icon.VolumeDown />
             ) : (
-              <VolumeUpIcon />
+              <Icon.VolumeUp />
             )}
           </IconButton>
         </Tooltip>
@@ -999,7 +990,7 @@ const MediaPlayerScreenControls = () => {
             style={{ color: 'var(--white)' }}
             onClick={toggleFullscreen}
           >
-            <FullscreenIcon />
+            <Icon.FullScreen />
           </IconButton>
         </Tooltip>
       )}
@@ -1010,7 +1001,7 @@ const MediaPlayerScreenControls = () => {
           style={{ color: 'var(--white)' }}
           onClick={togglePiP}
         >
-          {isPiP ? <PiPExitIcon /> : <PiPIcon />}
+          {isPiP ? <Icon.PiPExit /> : <Icon.PiP />}
         </IconButton>
       </Tooltip>
     </Flex>

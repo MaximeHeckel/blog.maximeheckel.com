@@ -1,9 +1,8 @@
-import { Button } from '@maximeheckel/design-system';
+import { Button, Icon } from '@maximeheckel/design-system';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
 import Glow from '@core/components/Glow';
-import { Sparkles } from '@core/components/Search/Icons';
 
 const Search = dynamic(() => import('@core/components/Search'));
 
@@ -15,7 +14,7 @@ const DemoButton = () => {
       <Glow>
         <Button
           onClick={() => setShowSearch(true)}
-          startIcon={<Sparkles />}
+          startIcon={<Icon.AIChat variant="default" />}
           variant="primary"
         >
           Ask me anything!

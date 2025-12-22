@@ -21,8 +21,8 @@ importers:
         specifier: 2.19.10
         version: 2.19.10(@lezer/common@1.2.3)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@maximeheckel/design-system':
-        specifier: 4.1.0
-        version: 4.1.0(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        specifier: 4.2.0
+        version: 4.2.0(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@radix-ui/react-dialog':
         specifier: ^1.1.15
         version: 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -986,8 +986,8 @@ packages:
   '@marijn/find-cluster-break@1.0.2':
     resolution: {integrity: sha512-l0h88YhZFyKdXIFNfSWpyjStDjGHwZ/U7iobcK1cQQD8sejsONdQtTVU+1wVN1PBw40PiiHB1vA5S7VTfQiP9g==}
 
-  '@maximeheckel/design-system@4.1.0':
-    resolution: {integrity: sha512-dLULCY2x+TDHF6PigOJTBT4UhtjuoQDIXL2BCCFA43jJxOLCF1e4F6jvhDpuCaBoJ+JyJgwEkeLyGYE9X/4Dqw==}
+  '@maximeheckel/design-system@4.2.0':
+    resolution: {integrity: sha512-qHy5QG8c9ChtGIhWfwhJFHcGrKOAutlM4M1FDaANu8m3kprQp7uE/zL25v4OQxwkO5x8bHzSOewdnTMqPCa5Ww==}
     peerDependencies:
       react: ^19.2.1
       react-dom: ^19.2.1
@@ -5634,7 +5634,7 @@ snapshots:
 
   '@marijn/find-cluster-break@1.0.2': {}
 
-  '@maximeheckel/design-system@4.1.0(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@maximeheckel/design-system@4.2.0(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
       '@radix-ui/react-collapsible': 1.1.12(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@radix-ui/react-tooltip': 1.2.8(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -6177,7 +6177,7 @@ snapshots:
   '@testing-library/dom@10.4.0':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/runtime': 7.26.0
+      '@babel/runtime': 7.28.4
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       chalk: 4.1.2

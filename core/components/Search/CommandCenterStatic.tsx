@@ -9,7 +9,6 @@ import { motion } from 'motion/react';
 import Link from 'next/link';
 import { useEffect, useState, useCallback } from 'react';
 
-import { Sparkles } from './Icons';
 import * as S from './Search.styles';
 import { MAX_HEIGHT } from './constants';
 import useIndexItem from './useIndexItem';
@@ -126,7 +125,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
               onItemClick('aiMode');
             }}
           >
-            <Sparkles />
+            <Icon.AIChat variant="default" />
             <Text
               as="span"
               css={{ margin: '0 8px', textAlign: 'left', flex: 1 }}
@@ -162,6 +161,27 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
         </S.Item>
         <S.Separator>Links</S.Separator>
         <S.Item
+          data-testid="twitter-social-link"
+          data-selected={selectedResult === 'twitter-social-link'}
+          id="twitter-social-link"
+          key="twitter-social-link"
+        >
+          <a
+            href="https://twitter.com/MaximeHeckel"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon.Twitter />
+            <span style={{ marginLeft: '15px' }}>
+              Twitter (yes that's still how I call it)
+            </span>
+            <VisuallyHidden as="p">
+              Link redirects to my Twitter profile page
+              https://twitter.com/MaximeHeckel.
+            </VisuallyHidden>
+          </a>
+        </S.Item>
+        <S.Item
           data-testid="bluesky-social-link"
           data-selected={selectedResult === 'bluesky-social-link'}
           id="bluesky-social-link"
@@ -177,25 +197,6 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
             <VisuallyHidden as="p">
               Link redirects to my Bluesky profile page
               https://bsky.app/profile/maxime.bsky.social.
-            </VisuallyHidden>
-          </a>
-        </S.Item>
-        <S.Item
-          data-testid="twitter-social-link"
-          data-selected={selectedResult === 'twitter-social-link'}
-          id="twitter-social-link"
-          key="twitter-social-link"
-        >
-          <a
-            href="https://twitter.com/MaximeHeckel"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Icon.Twitter />
-            <span style={{ marginLeft: '15px' }}>Twitter</span>
-            <VisuallyHidden as="p">
-              Link redirects to my Twitter profile page
-              https://twitter.com/MaximeHeckel.
             </VisuallyHidden>
           </a>
         </S.Item>
@@ -270,40 +271,6 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
           </Link>
         </S.Item>
       </div>
-      {/* <S.ShortcutList>
-        <Flex alignItems="center">
-          <Text as="span" css={{ opacity: 0.7 }} size="1" variant="tertiary">
-            Cmd
-          </Text>
-          <Flex>
-            <S.KBD>
-              <Command width="16" height="16" />
-            </S.KBD>
-            <S.KBD>K</S.KBD>
-          </Flex>
-        </Flex>
-        <Flex alignItems="center">
-          <Text as="span" css={{ opacity: 0.7 }} size="1" variant="tertiary">
-            Theme
-          </Text>
-          <Flex>
-            <S.KBD>
-              <Command width="16" height="16" />
-            </S.KBD>
-            <S.KBD>T</S.KBD>
-          </Flex>
-        </Flex>
-        <Flex alignItems="center">
-          <Text as="span" css={{ opacity: 0.7 }} size="1" variant="tertiary">
-            Open
-          </Text>
-          <Flex>
-            <S.KBD>
-              <Icon.Enter size="4" />
-            </S.KBD>
-          </Flex>
-        </Flex>
-      </S.ShortcutList> */}
     </motion.div>
   );
 };
