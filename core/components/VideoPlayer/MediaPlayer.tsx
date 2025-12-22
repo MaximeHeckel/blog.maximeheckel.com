@@ -934,7 +934,7 @@ const MediaPlayerTrack = ({ children }: { children: React.ReactNode }) => {
           all: 'unset',
           cursor: 'pointer',
           userSelect: 'none',
-          '&:focus': {
+          '&:focus-visible': {
             outline: '2px solid oklch(from var(--gray-1200) l c h / 0.25)',
             outlineOffset: 4,
             borderRadius: 4,
