@@ -1,12 +1,7 @@
-import {
-  Box,
-  Card,
-  Flex,
-  Grid,
-  Range,
-  Switch,
-} from '@maximeheckel/design-system';
+import { Card, Flex, Grid, Range, Switch } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
+
+import { Select } from '@core/components/Select';
 
 import { HighlightedValue } from '../../Components';
 
@@ -150,6 +145,13 @@ const Cell = (props: CellProps) => {
   );
 };
 
+const patternOptions = [
+  { label: 'Crosshatch', value: 'crosshatch' },
+  { label: 'Dots', value: 'dots' },
+  { label: 'Lines', value: 'lines' },
+  { label: 'Squares', value: 'squares' },
+];
+
 const PixelizationVisualizer = (props: { showPatterns?: boolean }) => {
   const { showPatterns = false } = props;
   const [pixelation, setPixelation] = useState(showPatterns ? 4 : 1);
@@ -223,28 +225,12 @@ const PixelizationVisualizer = (props: { showPatterns?: boolean }) => {
               onChange={handleTogglePatterns}
               checked={enablePatterns}
             />
-            <Box
-              as="select"
-              css={{
-                border: '1px solid var(--accent)',
-                boxShadow: 'none',
-                backgroundColor: 'var(--emphasis)',
-                color: 'var(--accent)',
-                height: '34px',
-                borderRadius: 'var(--border-radius-0)',
-                padding: '5px',
-              }}
+            <Select
               id="pattern-function"
+              items={patternOptions}
               value={pattern}
-              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                setPattern(event.target.value as keyof typeof patterns);
-              }}
-            >
-              <option value="crosshatch">Crosshatch</option>
-              <option value="dots">Dots</option>
-              <option value="lines">Lines</option>
-              <option value="squares">Squares</option>
-            </Box>
+              onChange={(value) => setPattern(value as keyof typeof patterns)}
+            />
           </Flex>
         ) : null}
         <Grid

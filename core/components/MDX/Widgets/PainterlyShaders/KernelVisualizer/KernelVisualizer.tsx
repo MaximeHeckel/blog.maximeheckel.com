@@ -11,6 +11,8 @@ import {
 } from '@maximeheckel/design-system';
 import React, { useMemo, useState, useEffect } from 'react';
 
+import { Select } from '@core/components/Select';
+
 const WIDTH = 9;
 const HEIGHT = 9;
 
@@ -175,6 +177,12 @@ const shaderFunction = {
   shader3,
 };
 
+const shaderOptions = [
+  { label: 'Filled', value: 'shader1' },
+  { label: 'Edge 1', value: 'shader2' },
+  { label: 'Edge 2', value: 'shader3' },
+];
+
 const KuwaharaVisualizer = () => {
   const [sectorsEnabled, setSectorsEnabled] = useState<boolean>(false);
   const [lowestSector, setLowestSector] = useState<SectorStats | null>(null);
@@ -301,27 +309,14 @@ const KuwaharaVisualizer = () => {
             checked={sectorsEnabled}
           />
           <Flex gap="2">
-            <Box
-              as="select"
-              css={{
-                border: '1px solid var(--accent)',
-                boxShadow: 'none',
-                backgroundColor: 'var(--emphasis)',
-                color: 'var(--accent)',
-                height: '34px',
-                borderRadius: 'var(--border-radius-0)',
-                padding: '5px',
-              }}
+            <Select
               id="shader-function"
+              items={shaderOptions}
               value={shader}
-              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                setShader(event.target.value as keyof typeof shaderFunction);
-              }}
-            >
-              <option value="shader1">Filled</option>
-              <option value="shader2">Edge 1</option>
-              <option value="shader3">Edge 2</option>
-            </Box>
+              onChange={(value) =>
+                setShader(value as keyof typeof shaderFunction)
+              }
+            />
             <Tooltip content="Randomize">
               <Button
                 icon={<Icon.Repeat />}

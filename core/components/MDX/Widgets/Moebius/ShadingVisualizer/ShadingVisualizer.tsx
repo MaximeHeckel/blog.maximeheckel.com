@@ -6,9 +6,10 @@ import {
   Label,
   Range,
 } from '@maximeheckel/design-system';
-import React, { useMemo, useState } from 'react';
+import React, { useDeferredValue, useMemo, useState } from 'react';
 
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Select from '@core/components/Select/Select';
 
 import { HighlightedValue } from '../../Components';
 
@@ -114,9 +115,17 @@ const crossHatchedGLSLCodeString = `if ((pixelLuma <= 0.45
     pixelColor = outlineColor;
 }`;
 
+const shadowOptions = [
+  { label: 'Crosshatched', value: 'crossHatched' },
+  { label: 'Raster', value: 'raster' },
+];
+
 const ShadingVisualizer = () => {
   const [luma, setLuma] = useState(65);
   const [shadowType, setShadowType] = useState<ShadowType>('crossHatched');
+
+  // Defer expensive matrix computation so the slider stays responsive
+  const deferredLuma = useDeferredValue(luma);
 
   const codeString =
     shadowType === 'raster' ? rasterGLSLCodeString : crossHatchedGLSLCodeString;
@@ -136,16 +145,16 @@ const ShadingVisualizer = () => {
           row.map((_, x) => {
             switch (shadowType) {
               case 'raster': {
-                return raster(x, y, luma);
+                return raster(x, y, deferredLuma);
               }
               default: {
-                return crossHatched(x, y, luma);
+                return crossHatched(x, y, deferredLuma);
               }
             }
           })
         )
         .reverse(),
-    [emptyMatrix, luma, shadowType]
+    [emptyMatrix, deferredLuma, shadowType]
   );
 
   return (
@@ -166,32 +175,17 @@ const ShadingVisualizer = () => {
           <Flex css={{ width: '100%' }} justifyContent="space-between">
             <Flex alignItems="center">
               <Label htmlFor="shading-function">Shadow type:</Label>
-              <Box
-                as="select"
-                css={{
-                  border: '2px solid var(--accent)',
-                  boxShadow: 'none',
-                  backgroundColor: 'var(--emphasis)',
-                  color: 'var(--accent)',
-                  height: '30px',
-                  borderRadius: 'var(--border-radius-0)',
-                  padding: '5px',
-                }}
+              <Select
                 id="shading-function"
+                items={shadowOptions}
                 value={shadowType}
-                onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                  setShadowType(event.target.value as ShadowType);
-                }}
-              >
-                <option value="crosshatched">Crosshatched</option>
-                <option value="raster">Raster</option>
-              </Box>
+                minWidth={132}
+                onChange={(value) => setShadowType(value as ShadowType)}
+              />
             </Flex>
             <Flex alignItems="center">
               <Label htmlFor="timeline">Luma:</Label>
-              <HighlightedValue
-                css={{ width: 34 }}
-              >{`0.${luma}`}</HighlightedValue>
+              <HighlightedValue>{`0.${luma}`}</HighlightedValue>
             </Flex>
           </Flex>
           <Range
@@ -220,7 +214,7 @@ const ShadingVisualizer = () => {
               {row.map((value, idx) => (
                 <Cell
                   key={`${value}-${idx}-${idy}`}
-                  luma={luma}
+                  luma={deferredLuma}
                   value={value}
                 />
               ))}

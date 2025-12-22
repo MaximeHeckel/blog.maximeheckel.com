@@ -31,7 +31,7 @@ export const HighlightedValue = styled('div', {
   backgroundColor: 'var(--emphasis)',
   color: 'var(--accent)',
   border: '1px solid var(--accent)',
-  padding: '1px 3px',
+  padding: '1px 4px',
   fontFamily: 'var(--font-mono)',
   fontSize: 'var(--font-size-1)',
   display: 'inline-flex',

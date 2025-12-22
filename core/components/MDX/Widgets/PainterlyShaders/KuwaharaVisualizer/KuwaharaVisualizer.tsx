@@ -1,12 +1,7 @@
-import {
-  Card,
-  Flex,
-  Grid,
-  Switch,
-  Range,
-  Box,
-} from '@maximeheckel/design-system';
+import { Card, Flex, Grid, Switch, Range } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
+
+import { Select } from '@core/components/Select';
 
 import { HighlightedValue } from '../../Components';
 
@@ -285,6 +280,11 @@ const shaderFunction = {
   shader2,
 };
 
+const shapeOptions = [
+  { label: 'Stripes', value: 'shader1' },
+  { label: 'Circle', value: 'shader2' },
+];
+
 const KuwaharaVisualizer = (props: { method: 'basic' | 'papari' }) => {
   const { method = 'papari' } = props;
   const [kuwaharaEnabled, setKuwaharaEnabled] = useState<boolean>(false);
@@ -345,26 +345,14 @@ const KuwaharaVisualizer = (props: { method: 'basic' | 'papari' }) => {
             onChange={toggleKuwahara}
             checked={kuwaharaEnabled}
           />
-          <Box
-            as="select"
-            css={{
-              border: '1px solid var(--accent)',
-              boxShadow: 'none',
-              backgroundColor: 'var(--emphasis)',
-              color: 'var(--accent)',
-              height: '34px',
-              borderRadius: 'var(--border-radius-0)',
-              padding: '5px',
-            }}
+          <Select
             id="shader-function"
+            items={shapeOptions}
             value={shader}
-            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-              setShader(event.target.value as keyof typeof shaderFunction);
-            }}
-          >
-            <option value="shader1">Stripes</option>
-            <option value="shader2">Circle</option>
-          </Box>
+            onChange={(value) =>
+              setShader(value as keyof typeof shaderFunction)
+            }
+          />
         </Flex>
         <Grid
           css={{

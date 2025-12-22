@@ -1,5 +1,4 @@
 import {
-  Box,
   Card,
   Flex,
   Grid,
@@ -11,6 +10,7 @@ import {
 import React from 'react';
 
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import { Select } from '@core/components/Select';
 
 interface CellProps {
   value: number;
@@ -151,6 +151,18 @@ const shaderCode = {
   shader8: codeShader8,
 };
 
+const shaderOptions = [
+  { label: 'White', value: 'shader0' },
+  { label: 'Black', value: 'shader1' },
+  { label: 'Gradient', value: 'shader2' },
+  { label: 'Reverse Gradient', value: 'shader3' },
+  { label: 'Cosine Gradient', value: 'shader4' },
+  { label: 'Sine Gradient', value: 'shader5' },
+  { label: 'Circle', value: 'shader6' },
+  { label: 'Reverse Circle', value: 'shader7' },
+  { label: 'Box', value: 'shader8' },
+];
+
 const FragmentShaderVisualizer = () => {
   const [size, setSize] = React.useState(16);
   const [shader, setShader] =
@@ -219,33 +231,14 @@ const FragmentShaderVisualizer = () => {
           </Flex>
           <Flex alignItems="start" direction="column">
             <Label htmlFor="shader-function">Shader Function</Label>
-            <Box
-              as="select"
-              css={{
-                border: '1px solid var(--accent)',
-                boxShadow: 'none',
-                backgroundColor: 'var(--emphasis)',
-                color: 'var(--accent)',
-                height: '30px',
-                borderRadius: 'var(--border-radius-0)',
-                padding: '5px',
-              }}
+            <Select
               id="shader-function"
+              items={shaderOptions}
               value={shader}
-              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                setShader(event.target.value as keyof typeof shaderFunction);
-              }}
-            >
-              <option value="shader0">White</option>
-              <option value="shader1">Black</option>
-              <option value="shader2">Gradient</option>
-              <option value="shader3">Reverse Gradient</option>
-              <option value="shader4">Cosine Gradient</option>
-              <option value="shader5">Sine Gradient</option>
-              <option value="shader6">Circle</option>
-              <option value="shader7">Reverse Circle</option>
-              <option value="shader8">Box</option>
-            </Box>
+              onChange={(value) =>
+                setShader(value as keyof typeof shaderFunction)
+              }
+            />
           </Flex>
         </Flex>
         <Grid

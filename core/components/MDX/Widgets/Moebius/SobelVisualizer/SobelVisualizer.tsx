@@ -1,5 +1,4 @@
 import {
-  Box,
   Card,
   Flex,
   Grid,
@@ -8,6 +7,8 @@ import {
   Text,
 } from '@maximeheckel/design-system';
 import React, { useMemo, useState, useCallback } from 'react';
+
+import { Select } from '@core/components/Select';
 
 import { HighlightedValue } from '../../Components';
 
@@ -161,6 +162,14 @@ const sobelMatrixY = [
   [1, 2, 1],
 ];
 
+const shaderOptions = [
+  { label: 'Half and Half', value: 'shader1' },
+  { label: 'Vertical Stripes', value: 'shader2' },
+  { label: 'Horizontal Stripes', value: 'shader3' },
+  { label: 'Diagonal Stripes', value: 'shader4' },
+  { label: 'Square', value: 'shader5' },
+];
+
 const SobelVisualizer = () => {
   const [selectedCell, setSelectedCell] = useState<[number, number]>([8, 8]);
   const [matrixDir, setMatrixDir] = useState<'x' | 'y'>('x');
@@ -295,29 +304,15 @@ const SobelVisualizer = () => {
           </Flex>
           <Flex alignItems="start" direction="column">
             <Label htmlFor="shader-function">Fragment shader:</Label>
-            <Box
-              as="select"
-              css={{
-                border: '2px solid var(--accent)',
-                boxShadow: 'none',
-                backgroundColor: 'var(--emphasis)',
-                color: 'var(--accent)',
-                height: '30px',
-                borderRadius: 'var(--border-radius-0)',
-                padding: '5px',
-              }}
+            <Select
               id="shader-function"
+              items={shaderOptions}
               value={shader}
-              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                setShader(event.target.value as keyof typeof shaderFunction);
-              }}
-            >
-              <option value="shader1">Half and Half</option>
-              <option value="shader2">Vertical Stripes</option>
-              <option value="shader3">Horizontal Stripes</option>
-              <option value="shader4">Diagonal Stripes</option>
-              <option value="shader5">Square</option>
-            </Box>
+              minWidth={154}
+              onChange={(value) =>
+                setShader(value as keyof typeof shaderFunction)
+              }
+            />
           </Flex>
         </Flex>
         <Grid
