@@ -1259,7 +1259,7 @@ function sayHi(name) {
           >
             <H2>Video</H2>
             <MediaPlayer.Root playsInline muted autoPlay loop>
-              <MediaPlayer.Glow blur={70} scaleX={1.1} scaleY={1.3} />
+              <MediaPlayer.Glow blur={70} scaleX={1.025} scaleY={1.15} />
               <MediaPlayer.VideoOverlay>
                 <Text css={{ letterSpacing: '-0.022em' }} weight="3">
                   WebGPU - Glass 02
