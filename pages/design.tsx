@@ -39,6 +39,7 @@ import { HR } from '@core/components/HR';
 import Logo from '@core/components/Logo';
 import Image from '@core/components/MDX/Image/Image';
 import { Main } from '@core/components/Main';
+import { Select } from '@core/components/Select';
 import Seo from '@core/components/Seo';
 import ImageGallery from '@core/components/Slideshow';
 import Tweet from '@core/components/Tweet';
@@ -943,6 +944,35 @@ they can change the world, are the ones who do.`}
                 max={500}
                 onChange={() => {}}
                 disabled
+              />
+            </Grid>
+            <Grid
+              gap={3}
+              css={{
+                width: '100%',
+              }}
+              templateColumns="repeat(2, minmax(2rem, 1fr))"
+            >
+              <Select
+                id="select-1"
+                aria-label="Select"
+                items={[
+                  { label: 'Option 1', value: 'option1' },
+                  { label: 'Option 2', value: 'option2' },
+                ]}
+                value="option1"
+                onChange={() => {}}
+              />
+              <Select
+                id="select-2"
+                aria-label="Select"
+                disabled
+                items={[
+                  { label: 'Option 1', value: 'option1' },
+                  { label: 'Option 2', value: 'option2' },
+                ]}
+                value="option1"
+                onChange={() => {}}
               />
             </Grid>
           </Flex>

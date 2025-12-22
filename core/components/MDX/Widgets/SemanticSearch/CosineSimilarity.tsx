@@ -5,6 +5,8 @@ import { ParentSize } from '@visx/responsive';
 import { scaleLinear, scaleBand } from '@visx/scale';
 import { useMemo, useState } from 'react';
 
+import { Select } from '@core/components/Select';
+
 import vectors from './vectors.json';
 
 type Bucket =
@@ -52,6 +54,13 @@ const sentenceBucket4 = {
   sentence5: { value: sentence11, vector: vectors['sentence11'] },
   sentence6: { value: sentence12, vector: vectors['sentence12'] },
 };
+
+const bucketOptions = [
+  { label: 'Bucket 1', value: 'sentenceBucket1' },
+  { label: 'Bucket 2', value: 'sentenceBucket2' },
+  { label: 'Bucket 3', value: 'sentenceBucket3' },
+  { label: 'Bucket 4', value: 'sentenceBucket4' },
+];
 
 const buckets: Record<
   Bucket,
@@ -263,28 +272,12 @@ const CosineSimilarity = () => {
             gap="2"
           >
             <Flex alignItems="center">
-              <Box
-                as="select"
-                css={{
-                  border: '1px solid var(--accent)',
-                  boxShadow: 'none',
-                  backgroundColor: 'var(--emphasis)',
-                  color: 'var(--accent)',
-                  height: '30px',
-                  borderRadius: 'var(--border-radius-0)',
-                  padding: '5px',
-                }}
-                id="shader-function"
+              <Select
+                id="bucket-1"
+                items={bucketOptions}
                 value={bucket1}
-                onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                  setBucket1(event.target.value as Bucket);
-                }}
-              >
-                <option value="sentenceBucket1">Bucket 1</option>
-                <option value="sentenceBucket2">Bucket 2</option>
-                <option value="sentenceBucket3">Bucket 3</option>
-                <option value="sentenceBucket4">Bucket 4</option>
-              </Box>
+                onChange={(value) => setBucket1(value as Bucket)}
+              />
             </Flex>
             {Object.values(buckets[bucket1]).map((sentence, i) => (
               <Text as="span" css={{ margin: 0 }} key={i} size="1">
@@ -298,28 +291,14 @@ const CosineSimilarity = () => {
             direction="column"
             gap="2"
           >
-            <Box
-              as="select"
-              css={{
-                border: '1px solid var(--accent)',
-                boxShadow: 'none',
-                backgroundColor: 'var(--emphasis)',
-                color: 'var(--accent)',
-                height: '30px',
-                borderRadius: 'var(--border-radius-0)',
-                padding: '5px',
-              }}
-              id="shader-function"
-              value={bucket2}
-              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                setBucket2(event.target.value as Bucket);
-              }}
-            >
-              <option value="sentenceBucket1">Bucket 1</option>
-              <option value="sentenceBucket2">Bucket 2</option>
-              <option value="sentenceBucket3">Bucket 3</option>
-              <option value="sentenceBucket4">Bucket 4</option>
-            </Box>
+            <Flex alignItems="center">
+              <Select
+                id="bucket-2"
+                items={bucketOptions}
+                value={bucket2}
+                onChange={(value) => setBucket2(value as Bucket)}
+              />
+            </Flex>
             {Object.values(buckets[bucket2]).map((sentence, i) => (
               <Text as="span" css={{ margin: 0 }} key={i} size="1">
                 {i + 4}. <EM size="1">&quot;{sentence.value}&quot;</EM>;

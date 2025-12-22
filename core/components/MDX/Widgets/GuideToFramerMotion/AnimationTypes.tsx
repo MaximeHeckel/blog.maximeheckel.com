@@ -8,6 +8,7 @@ import { Easing, motion, useInView } from 'motion/react';
 import React, { useRef } from 'react';
 
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import { Select } from '@core/components/Select';
 
 import {
   AnimationCardContent,
@@ -16,6 +17,20 @@ import {
   TransitionGridWrapper,
   Wrapper,
 } from '../Components';
+
+const animationOptions = [
+  { label: 'Linear', value: 'linear' },
+  { label: 'EaseIn', value: 'easeIn' },
+  { label: 'EaseOut', value: 'easeOut' },
+  { label: 'EaseInOut', value: 'easeInOut' },
+  { label: 'CircIn', value: 'circIn' },
+  { label: 'CircOut', value: 'circOut' },
+  { label: 'CircInOut', value: 'circInOut' },
+  { label: 'BackIn', value: 'backIn' },
+  { label: 'BackOut', value: 'backOut' },
+  { label: 'BackInOut', value: 'backInOut' },
+  { label: 'Anticipate', value: 'anticipate' },
+];
 
 const AnimationTypes = () => {
   const ref = useRef(null);
@@ -165,25 +180,12 @@ const AnimationTypes = () => {
             <Form>
               <div style={{ display: 'grid' }}>
                 <Label htmlFor="tween-type">Ease</Label>
-                <select
+                <Select
                   id="tween-type"
+                  items={animationOptions}
                   value={tweenAnimation}
-                  onChange={(event) => {
-                    setTweenAnimation(event.target.value);
-                  }}
-                >
-                  <option value="linear">linear</option>
-                  <option value="easeIn">easeIn</option>
-                  <option value="easeOut">easeOut</option>
-                  <option value="easeInOut">easeInOut</option>
-                  <option value="circIn">circIn</option>
-                  <option value="circOut">circOut</option>
-                  <option value="circInOut">circInOut</option>
-                  <option value="backIn">backIn</option>
-                  <option value="backOut">backOut</option>
-                  <option value="backInOut">backInOut</option>
-                  <option value="anticipate">anticipate</option>
-                </select>
+                  onChange={(value) => setTweenAnimation(value as string)}
+                />
               </div>
             </Form>
             <div />

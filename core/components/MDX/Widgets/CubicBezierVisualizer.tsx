@@ -1,5 +1,4 @@
 import {
-  css,
   Button,
   Card,
   Flex,
@@ -16,23 +15,10 @@ import { LinePath } from '@visx/shape';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
 
+import { Select } from '@core/components/Select';
 import useInterval from '@core/hooks/useInterval';
 
 import { HighlightedValue } from './Components';
-
-const select = css({
-  border: '1px solid var(--accent)',
-  boxShadow: 'none',
-  backgroundColor: 'var(--emphasis)',
-  color: 'var(--accent)',
-  height: '30px',
-  borderRadius: 'var(--border-radius-0)',
-  padding: '0px 8px 0px 8px',
-  marginBottom: '32px',
-  justifySelf: 'center',
-  maxWidth: '400px',
-  width: '100%',
-});
 
 type Point = {
   x: number;
@@ -134,43 +120,43 @@ const easingControlPoints: Record<
 
 const options = [
   {
-    name: 'Ease',
+    label: 'Ease',
     value: 'ease',
   },
   {
-    name: 'Ease in',
+    label: 'Ease in',
     value: 'easein',
   },
   {
-    name: 'Ease out',
+    label: 'Ease out',
     value: 'easeout',
   },
   {
-    name: 'Ease in out',
+    label: 'Ease in out',
     value: 'easeinout',
   },
   {
-    name: 'Ease in back',
+    label: 'Ease in back',
     value: 'easeinback',
   },
   {
-    name: 'Ease out back',
+    label: 'Ease out back',
     value: 'easeoutback',
   },
   {
-    name: 'Ease in out back',
+    label: 'Ease in out back',
     value: 'easeinoutback',
   },
   {
-    name: 'Ease in circ',
+    label: 'Ease in circ',
     value: 'easeincirc',
   },
   {
-    name: 'Ease out circ',
+    label: 'Ease out circ',
     value: 'easeoutcirc',
   },
   {
-    name: 'Ease in out circ',
+    label: 'Ease in out circ',
     value: 'easeinoutcirc',
   },
 ];
@@ -389,21 +375,15 @@ const Chart = (props: ChartProps) => {
   return (
     <Grid gap={7}>
       {!editable ? (
-        <select
+        <Select
           id="ease-type"
+          items={options}
           value={type}
-          onChange={(event) => {
-            setType(event.target.value);
+          onChange={(value) => {
+            setType(value as string);
             setActiveStepIndex(0);
           }}
-          className={select()}
-        >
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.name}
-            </option>
-          ))}
-        </select>
+        />
       ) : null}
       <svg
         width={dimension}
