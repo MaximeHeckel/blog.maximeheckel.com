@@ -1,140 +1,27 @@
-import { Slider } from '@base-ui/react/slider';
+import { Box, GlassMaterial, Text } from '@maximeheckel/design-system';
 import {
-  Box,
-  Flex,
-  GlassMaterial,
-  Grid,
-  styled,
-  Text,
-} from '@maximeheckel/design-system';
-import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from 'motion/react';
+import { useCallback, useEffect, useId, useMemo, useRef } from 'react';
 
-import { Main } from '@core/components/Main';
+import {
+  Control,
+  Indicator,
+  SliderLabel,
+  SliderRoot,
+  SliderStepsDots,
+  Thumb,
+  Track,
+} from './Slider.styles';
+import { SliderProps } from './types';
 
-const SliderRoot = styled(Slider.Root, {
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  userSelect: 'none',
-  touchAction: 'none',
-  width: '100%',
-  height: '48px',
-  borderRadius: '12px',
-  overflow: 'clip',
-  backdropFilter: 'blur(24px)',
-  cursor: 'grab',
-
-  '&:active': {
-    cursor: 'grabbing',
-  },
-});
-
-const Control = styled(Slider.Control, {
-  position: 'relative',
-  boxSizing: 'border-box',
-  display: 'flex',
-  alignItems: 'center',
-  width: '100%',
-  height: '48px',
-  touchAction: 'none',
-  userSelect: 'none',
-});
-
-const Track = styled(Slider.Track, {
-  position: 'relative',
-  flexGrow: 1,
-  height: '100%',
-
-  userSelect: 'none',
-});
-
-const Indicator = styled(Slider.Indicator, {
-  userSelect: 'none',
-  position: 'absolute',
-
-  height: '100%',
-
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: '50%',
-    transition: 'opacity 0.15s ease-in-out',
-    opacity: 'var(--thumb-opacity, 1)',
-    transform: 'translate(-50%, -50%)',
-    right: 'var(--right-offset, auto)',
-    left: 'var(--left-offset, auto)',
-    width: '2px',
-    backgroundColor: 'hsla(0, 0%, 100%, 0.5)',
-    borderRadius: '9999px',
-    height: '24px',
-  },
-});
-
-const Thumb = styled(Slider.Thumb, {
-  display: 'block',
-  opacity: 1,
-  backgroundColor: 'rgba(220, 38, 38, 0.0)',
-  width: '20px',
-  height: '44px',
-  borderRadius: '9999px',
-  cursor: 'grab',
-  position: 'relative',
-  zIndex: 1,
-
-  '&:focus': {
-    outline: 'none',
-  },
-  '&:active': {
-    cursor: 'grabbing',
-  },
-
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-    left: '50%',
-    width: '2px',
-    borderRadius: '9999px',
-    height: '24px',
-  },
-});
-
-const SliderLabel = styled(Box, {
-  position: 'absolute',
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'space-between',
-  padding: '0 16px',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  fontSize: '12px',
-  opacity: 0.9,
-  pointerEvents: 'none',
-});
-
-const SliderStepsDots = styled(Box, {
-  position: 'absolute',
-  inset: 0,
-  display: 'flex',
-  alignItems: 'center',
-  pointerEvents: 'none',
-});
-
-type CustomSliderProps = {
-  min: number;
-  max: number;
-  step?: number;
-  onChange: (value: number) => void;
-  value: number;
-  defaultValue: number;
-  disabled?: boolean;
-  label?: string;
-};
-
-const CustomSlider = (props: CustomSliderProps) => {
+const Slider = (props: SliderProps) => {
   const {
+    id,
     min,
     max,
     step = 1,
@@ -143,19 +30,23 @@ const CustomSlider = (props: CustomSliderProps) => {
     defaultValue,
     disabled,
     label,
+    size = 'md',
   } = props;
+
+  const shouldReduceMotion = useReducedMotion();
+  const generatedId = useId();
+  const sliderId = id || generatedId;
 
   const MAX_VALUE = max;
   const MIN_VALUE = min;
   const STEP_SIZE = step;
-  // const MIN_STEP_SIZE = 5;
   const MAX_STEPS_COUNT = 25;
 
   const startPositionRef = useRef(0);
   const isPointerDownRef = useRef(false);
   const sliderElementRef = useRef<HTMLDivElement>(null);
   const continuousValueRef = useRef(50);
-  const rangeElementRef = useRef<HTMLDivElement>(null); // Add ref for the range element
+  const rangeElementRef = useRef<HTMLDivElement>(null);
   const isFirstRenderRef = useRef(true);
 
   const leftLabelRef = useRef<HTMLSpanElement>(null);
@@ -210,6 +101,8 @@ const CustomSlider = (props: CustomSliderProps) => {
     springRangeRight,
     (v) => `${v}%`
   );
+
+  const rangeRightPercent = useTransform(rangeRight, (v) => `${v}%`);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     startPositionRef.current = e.clientX;
@@ -419,7 +312,13 @@ const CustomSlider = (props: CustomSliderProps) => {
 
   return (
     <SliderRoot
-      id="slider-root"
+      id={sliderId}
+      aria-label={label}
+      aria-valuemin={MIN_VALUE}
+      aria-valuemax={MAX_VALUE}
+      aria-valuenow={value}
+      aria-disabled={disabled}
+      aria-valuetext={`${label}: ${value}`}
       ref={sliderElementRef}
       defaultValue={defaultValue}
       min={MIN_VALUE}
@@ -428,32 +327,35 @@ const CustomSlider = (props: CustomSliderProps) => {
       value={value}
       disabled={disabled}
       onValueChange={onChange}
+      size={size}
       render={
         <motion.div
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerDown={handlePointerDown}
           style={{
+            opacity: disabled ? 0.4 : 1,
             transformOrigin,
-            scaleX: springScaleX,
-            scaleY: springScaleY,
-            x: springTranslateX,
+            scaleX: shouldReduceMotion ? scaleX : springScaleX,
+            scaleY: shouldReduceMotion ? scaleY : springScaleY,
+            x: shouldReduceMotion ? translateX : springTranslateX,
           }}
         />
       }
     >
       <GlassMaterial style={{ '--opacity': 0.205 } as React.CSSProperties} />
-      <Control id="slider-control">
-        <Track id="slider-track">
+      <Control size={size}>
+        <Track>
           <Indicator
             render={
               <motion.div
-                id="slider-indicator"
                 ref={rangeElementRef}
                 style={{
-                  borderRadius: '12px',
-                  scaleX: springRangeScaleX,
-                  width: springRangeRightPercent,
+                  borderRadius: size === 'sm' ? '8px' : '12px',
+                  scaleX: shouldReduceMotion ? rangeScaleX : springRangeScaleX,
+                  width: shouldReduceMotion
+                    ? rangeRightPercent
+                    : springRangeRightPercent,
                   // @ts-ignore
                   '--left-offset': value === 0 ? '8px' : 'auto',
                   '--right-offset': value === 0 ? 'auto' : '8px',
@@ -466,17 +368,18 @@ const CustomSlider = (props: CustomSliderProps) => {
                 }}
               >
                 <GlassMaterial
+                  border={false}
                   style={{ '--opacity': 0.205 } as React.CSSProperties}
                 />
               </motion.div>
             }
           />
 
-          <Thumb id="slider-thumb" />
+          <Thumb />
         </Track>
       </Control>
       {shouldRenderStepsDots ? (
-        <SliderStepsDots>
+        <SliderStepsDots aria-hidden="true">
           {Array.from({
             length: Math.floor((MAX_VALUE - MIN_VALUE) / STEP_SIZE) + 1,
           }).map((_, index) => {
@@ -513,7 +416,15 @@ const CustomSlider = (props: CustomSliderProps) => {
       ) : null}
       <SliderLabel>
         {label ? (
-          <Text size="2" weight="4" variant="primary" ref={leftLabelRef}>
+          <Text
+            id={`${sliderId}-label`}
+            as="label"
+            htmlFor={sliderId}
+            size="2"
+            weight="4"
+            variant="primary"
+            ref={leftLabelRef}
+          >
             {label}
           </Text>
         ) : null}
@@ -531,69 +442,4 @@ const CustomSlider = (props: CustomSliderProps) => {
   );
 };
 
-const Test = () => {
-  const [value, setValue] = useState(50);
-  const [value2, setValue2] = useState(180);
-  const [value3, setValue3] = useState(1);
-  // const [value2, setValue2] = useState(500);
-  // const [value3, setValue3] = useState(1);
-
-  return (
-    <Main>
-      <Grid
-        css={{
-          position: 'relative',
-          height: '100vh',
-          width: '100%',
-          overflow: 'hidden',
-          backgroundColor: 'var(--background)',
-          paddingTop: 'var(--space-10)',
-          borderBottomRightRadius: 4,
-          borderBottomLeftRadius: 4,
-        }}
-        gapX={2}
-        templateColumns="1fr minmax(auto, 700px) 1fr"
-      >
-        <Flex
-          alignItems="center"
-          as={Grid.Item}
-          direction="column"
-          col={2}
-          gap="5"
-        >
-          <CustomSlider
-            min={0}
-            max={100}
-            step={1}
-            onChange={(value) => setValue(value)}
-            value={value}
-            defaultValue={500}
-            disabled={false}
-            label="Quantity"
-          />
-          <CustomSlider
-            min={0}
-            max={360}
-            step={30}
-            onChange={(value) => setValue2(value)}
-            value={value2}
-            defaultValue={500}
-            disabled={false}
-            label="Angle"
-          />
-          <CustomSlider
-            min={0}
-            max={2}
-            step={1}
-            onChange={(value) => setValue3(value)}
-            value={value3}
-            defaultValue={1}
-            disabled={false}
-            label="Mode"
-          />
-        </Flex>
-      </Grid>
-    </Main>
-  );
-};
-export default Test;
+export default Slider;

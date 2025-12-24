@@ -1,13 +1,15 @@
-import { Card, Range, useDebouncedValue } from '@maximeheckel/design-system';
+import { Card, Flex, useDebouncedValue } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React from 'react';
 
-import { AnimationCardContent, Form, HighlightedValue } from '../Components';
+import { Slider } from '@core/components/Slider';
+
+import { AnimationCardContent, Form } from '../Components';
 
 const Orchestration = () => {
   const [key, setKey] = React.useState(0);
-  const [delayChildren, setDelayChildren] = React.useState(0.5);
-  const [staggerChildren, setStaggerChildren] = React.useState(0.5);
+  const [delayChildren, setDelayChildren] = React.useState(3);
+  const [staggerChildren, setStaggerChildren] = React.useState(3.5);
 
   const debouncedDelay = useDebouncedValue(delayChildren, 500);
   const debouncedStagger = useDebouncedValue(staggerChildren, 500);
@@ -56,44 +58,36 @@ const Orchestration = () => {
         }}
       >
         <Form>
-          <Range
-            id="delayChildren"
-            label={
-              <span>
-                Delay Children:{' '}
-                <HighlightedValue>{delayChildren}</HighlightedValue>
-              </span>
-            }
-            aria-label="Delay Children"
-            min={0}
-            max={5}
-            step="0.1"
-            value={delayChildren}
-            onChange={(value) => setDelayChildren(value)}
-          />
+          <Flex direction="column" gap={4}>
+            <Slider
+              id="delayChildren"
+              label="Delay Children"
+              aria-label="Delay Children"
+              min={0}
+              max={5.0}
+              step={0.1}
+              value={delayChildren}
+              onChange={(value) => setDelayChildren(value)}
+            />
 
-          <Range
-            id="staggerChildren"
-            label={
-              <span>
-                Stagger Children:{' '}
-                <HighlightedValue>{staggerChildren}</HighlightedValue>
-              </span>
-            }
-            aria-label="Stagger Children"
-            min={0}
-            max={5}
-            step="0.1"
-            value={staggerChildren}
-            onChange={(value) => setStaggerChildren(value)}
-          />
+            <Slider
+              id="staggerChildren"
+              label="Stagger Children"
+              aria-label="Stagger Children"
+              min={0}
+              max={5.0}
+              step={0.1}
+              value={staggerChildren}
+              onChange={(value) => setStaggerChildren(value)}
+            />
+          </Flex>
         </Form>
         <motion.div
           key={key}
           style={{
-            background: 'linear-gradient(90deg,#ffa0ae 0%,#aacaef 75%)',
+            background: 'var(--emphasis)',
             height: '280px',
-            width: '230px',
+            width: '280px',
             borderRadius: '10px',
             display: 'flex',
             flexDirection: 'column',

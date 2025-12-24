@@ -26,20 +26,6 @@ export const AnimationCardContent = styled('div', {
   padding: '12px 0px',
 });
 
-export const HighlightedValue = styled('div', {
-  borderRadius: 'var(--border-radius-0)',
-  backgroundColor: 'var(--emphasis)',
-  color: 'var(--accent)',
-  border: '1px solid var(--accent)',
-  padding: '1px 4px',
-  fontFamily: 'var(--font-mono)',
-  fontSize: 'var(--font-size-1)',
-  display: 'inline-flex',
-  justifyContent: 'center',
-  lineHeight: '1rem',
-  marginLeft: '4px',
-});
-
 export const Wrapper = styled('div', {
   margin: '30px 0px',
 
@@ -59,14 +45,6 @@ export const Form = styled('form', {
   flexDirection: 'column',
   justifyContent: 'space-around',
   fontSize: '14px',
-
-  label: {
-    marginBottom: '8px',
-  },
-
-  input: {
-    marginBottom: '24px',
-  },
 
   select: {
     border: '1px solid var(--accent)',

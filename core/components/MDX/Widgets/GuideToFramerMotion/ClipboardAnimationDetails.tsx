@@ -1,8 +1,10 @@
-import { Card, Grid, Label, Range } from '@maximeheckel/design-system';
+import { Card, Flex, Grid, Label, Text } from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'motion/react';
 import React from 'react';
 
-import { AnimationCardContent, Form, HighlightedValue } from '../Components';
+import { Slider } from '@core/components/Slider';
+
+import { AnimationCardContent, Form } from '../Components';
 
 const ClipboardAnimationDetails = () => {
   const clipboardIconVariants = {
@@ -48,24 +50,11 @@ const ClipboardAnimationDetails = () => {
     >
       <AnimationCardContent
         css={{
+          height: '375px',
           margin: '0 auto',
           maxWidth: '400px',
         }}
       >
-        <div style={{ width: '70%', marginBottom: '20px' }}>
-          <Grid gap={3}>
-            <Label>
-              <Grid>
-                PathLength: <HighlightedValue>{pathLengthVal}</HighlightedValue>
-              </Grid>
-            </Label>
-            <Label>
-              <Grid>
-                Opacity: <HighlightedValue>{opacityVal}</HighlightedValue>
-              </Grid>
-            </Label>
-          </Grid>
-        </div>
         <button
           style={{
             background: 'transparent',
@@ -124,22 +113,34 @@ const ClipboardAnimationDetails = () => {
             />
           </svg>
         </button>
-        <Form>
-          <Range
-            id="duration"
-            label={
-              <span>
-                Duration: <HighlightedValue>{duration}</HighlightedValue>
-              </span>
-            }
-            aria-label="Duration"
-            min={0.1}
-            max={5.0}
-            step={0.1}
-            value={duration}
-            onChange={(value) => setDuration(value)}
-          />
-        </Form>
+        <div style={{ width: '70%', marginBottom: '20px' }}>
+          <Grid gap={3}>
+            <Label>
+              <Flex justifyContent="space-between">
+                PathLength:
+                <Text family="mono">{pathLengthVal.toFixed(5)}</Text>
+              </Flex>
+            </Label>
+            <Label>
+              <Flex justifyContent="space-between">
+                Opacity:
+                <Text family="mono">{opacityVal.toFixed(5)}</Text>
+              </Flex>
+            </Label>
+          </Grid>
+          <Form style={{ width: '100%' }}>
+            <Slider
+              id="duration"
+              label="Duration"
+              aria-label="Duration"
+              min={0.1}
+              max={5.0}
+              step={0.1}
+              value={duration}
+              onChange={(value) => setDuration(value)}
+            />
+          </Form>
+        </div>
       </AnimationCardContent>
     </Card>
   );

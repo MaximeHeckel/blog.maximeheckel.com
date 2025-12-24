@@ -1,9 +1,9 @@
 import {
+  Box,
   Button,
   Card,
   Flex,
   Icon,
-  Range,
   Tooltip,
 } from '@maximeheckel/design-system';
 import { Group } from '@visx/group';
@@ -12,9 +12,8 @@ import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
 import React from 'react';
 
+import { Slider } from '@core/components/Slider';
 import useInterval from '@core/hooks/useInterval';
-
-import { HighlightedValue } from './Components';
 
 type ChartType = 'linear' | 'quadratic' | 'cubic';
 
@@ -568,27 +567,8 @@ const Chart = (props: ChartProps) => {
           <Cubic scale={scale} activeStepIndex={activeStepIndex} />
         ) : null}
       </svg>
-      <Flex direction="column" alignItems="start" css={{ width: '50%' }}>
-        <div>
-          t:{' '}
-          <HighlightedValue>
-            {(activeStepIndex / 60).toFixed(2)}
-          </HighlightedValue>
-        </div>
-        <Range
-          id="timeline"
-          aria-label="Timeline"
-          min={0}
-          max={60}
-          step={1}
-          value={activeStepIndex}
-          onChange={(value) => {
-            setPaused(true);
-            setActiveStepIndex(value);
-          }}
-        />
-      </Flex>
-      <Flex gap={4} justifyContent="center">
+
+      <Flex css={{ width: '100%' }} gap={4} justifyContent="center">
         <Tooltip id="playpauseButton" content={paused ? 'Play' : 'Pause'}>
           <Button
             aria-label={paused ? 'Play' : 'Pause'}
@@ -607,6 +587,22 @@ const Chart = (props: ChartProps) => {
             onClick={repeat}
           />
         </Tooltip>
+        <Box css={{ flex: 1 }}>
+          <Slider
+            id="time"
+            aria-label="Time"
+            label="Time"
+            min={0}
+            max={60}
+            step={1}
+            value={activeStepIndex}
+            onChange={(value) => {
+              setPaused(true);
+              setActiveStepIndex(value);
+            }}
+            size="sm"
+          />
+        </Box>
       </Flex>
     </Flex>
   );

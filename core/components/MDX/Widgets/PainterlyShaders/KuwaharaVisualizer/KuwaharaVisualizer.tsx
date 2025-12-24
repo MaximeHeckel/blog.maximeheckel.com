@@ -1,9 +1,8 @@
-import { Card, Flex, Grid, Switch, Range } from '@maximeheckel/design-system';
+import { Card, Flex, Grid, Switch } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
 
 import { Select } from '@core/components/Select';
-
-import { HighlightedValue } from '../../Components';
+import { Slider } from '@core/components/Slider';
 
 const WIDTH = 36;
 const HEIGHT = 36;
@@ -379,14 +378,10 @@ const KuwaharaVisualizer = (props: { method: 'basic' | 'papari' }) => {
             </React.Fragment>
           ))}
         </Grid>
-        <Range
+        <Slider
           id="kernelSize"
           aria-label="Kernel Size"
-          label={
-            <span>
-              Kernel Size: <HighlightedValue>{kernelSize}</HighlightedValue>
-            </span>
-          }
+          label="Kernel Size"
           min={2}
           max={12}
           step={2}

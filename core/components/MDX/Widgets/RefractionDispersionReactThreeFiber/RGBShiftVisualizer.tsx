@@ -1,7 +1,7 @@
-import { Box, Card, Flex, Range, Text, css } from '@maximeheckel/design-system';
+import { Box, Card, Flex, css } from '@maximeheckel/design-system';
 import React from 'react';
 
-import { HighlightedValue } from '../Components';
+import { Slider } from '@core/components/Slider';
 
 const channelSplit = css({
   position: 'absolute',
@@ -29,7 +29,7 @@ const RGBShiftVisualizer = (props: { enableSampling?: boolean }) => {
       <Card.Body as={Flex} direction="column" dotMatrix gap="6">
         <Box
           css={{
-            margin: '0 auto',
+            margin: '24px auto',
             position: 'relative',
             width: 'fit-content',
             color: 'white !important',
@@ -87,17 +87,12 @@ const RGBShiftVisualizer = (props: { enableSampling?: boolean }) => {
           direction="column"
           gap="2"
           alignItems="start"
-          css={{ width: '50%' }}
+          css={{ width: '100%' }}
         >
-          <Box>
-            <Text as="span" size="2">
-              Shift intensity:
-            </Text>{' '}
-            <HighlightedValue>{split}</HighlightedValue>
-          </Box>
-          <Range
+          <Slider
             id="split"
-            aria-label="Split"
+            aria-label="Split intensity"
+            label="Split intensity"
             min={0}
             max={10}
             step={0.1}
@@ -108,14 +103,9 @@ const RGBShiftVisualizer = (props: { enableSampling?: boolean }) => {
           />
           {enableSampling ? (
             <>
-              <Box>
-                <Text as="span" size="2">
-                  Samples:
-                </Text>{' '}
-                <HighlightedValue>{samples}</HighlightedValue>
-              </Box>
-              <Range
+              <Slider
                 id="samples"
+                label="Samples"
                 aria-label="Samples"
                 min={1}
                 max={10}

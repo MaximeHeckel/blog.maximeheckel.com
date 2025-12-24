@@ -4,11 +4,12 @@ import {
   Card,
   Flex,
   InlineCode,
-  Range,
 } from '@maximeheckel/design-system';
 import React from 'react';
 
-import { AnimationCardContent, Form, HighlightedValue } from '../Components';
+import { Slider } from '@core/components/Slider';
+
+import { AnimationCardContent, Form } from '../Components';
 import useScrollSpy from './useScrollSpy';
 
 const BrowserWindow = styled('div', {
@@ -162,8 +163,8 @@ const WidgetRoot = styled('div', {
 const ScrollSpyWidget = () => {
   const ids = React.useMemo(() => ['section1', 'section2', 'section3'], []);
   const [elements, setElements] = React.useState<Element[]>([]);
-  const [offset, setOffset] = React.useState(50);
-  const [height, setHeight] = React.useState(200);
+  const [offset, setOffset] = React.useState(100);
+  const [height, setHeight] = React.useState(300);
 
   const [index] = useScrollSpy(elements, {
     root: document.querySelector('#widgetRoot')!,
@@ -263,30 +264,22 @@ const ScrollSpyWidget = () => {
           }}
         >
           <Form>
-            <Range
+            <Slider
               id="offset"
-              label={
-                <span>
-                  Offset: <HighlightedValue>{-offset}</HighlightedValue>
-                </span>
-              }
+              label="Offset"
               aria-label="Offset"
               min={0}
               max={400}
               value={offset}
               onChange={(value) => setOffset(value)}
             />
+            <br />
             <InlineCode>rootMargin: -{offset}px 0px 0px 0px</InlineCode>
             <br />
-            <Range
+            <Slider
               id="height"
-              label={
-                <span>
-                  Section Height: <HighlightedValue>{height}</HighlightedValue>
-                </span>
-              }
+              label="Section Height"
               aria-label="Section Height"
-              step="10"
               min={100}
               max={500}
               value={height}

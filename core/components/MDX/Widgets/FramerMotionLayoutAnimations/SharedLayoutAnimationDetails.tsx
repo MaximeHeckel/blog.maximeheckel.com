@@ -1,21 +1,21 @@
-import { Box, Card, Flex, Icon, Range } from '@maximeheckel/design-system';
+import { Box, Card, Flex, Icon } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React from 'react';
 
-import { HighlightedValue } from '../Components';
+import { Slider } from '@core/components/Slider';
 
 const ITEMS = [1, 2, 3];
 const COLORS = ['var(--accent)', 'var(--pink-500)', 'var(--orange-900)'];
 
 const SharedLayoutAnimationDetails = () => {
   const [selected, setSelected] = React.useState(1);
-  const [duration, setDuration] = React.useState(0.3);
+  const [duration, setDuration] = React.useState(0.9);
 
   return (
     <Card title="Little shared layout animation debugger">
       <Card.Body>
         <Flex direction="column" gap="5">
-          <Flex gap="5" alignItems="start">
+          <Flex css={{ marginTop: '24px' }} gap="5" alignItems="start">
             {ITEMS.map((item, index) => (
               <Flex
                 key={item}
@@ -57,24 +57,17 @@ const SharedLayoutAnimationDetails = () => {
               </Flex>
             ))}
           </Flex>
-          <Flex justifyContent="center">
-            <Box>
-              <Range
-                id="mass1"
-                aria-label="Mass"
-                label={
-                  <span>
-                    Transition duration:{' '}
-                    <HighlightedValue>{duration}</HighlightedValue> seconds
-                  </span>
-                }
-                min={0.2}
-                step={0.1}
-                max={2}
-                value={duration}
-                onChange={(value) => setDuration(value)}
-              />
-            </Box>
+          <Flex css={{ width: '70%' }} justifyContent="center">
+            <Slider
+              id="duration"
+              label="Duration"
+              aria-label="Duration"
+              min={0.2}
+              max={2.0}
+              step={0.1}
+              value={duration}
+              onChange={(value) => setDuration(value)}
+            />
           </Flex>
         </Flex>
       </Card.Body>

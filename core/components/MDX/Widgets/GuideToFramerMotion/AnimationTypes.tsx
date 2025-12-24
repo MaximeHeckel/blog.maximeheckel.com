@@ -1,19 +1,14 @@
-import {
-  Card,
-  Label,
-  Range,
-  useDebouncedValue,
-} from '@maximeheckel/design-system';
+import { Card, Flex, useDebouncedValue } from '@maximeheckel/design-system';
 import { Easing, motion, useInView } from 'motion/react';
 import React, { useRef } from 'react';
 
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 import { Select } from '@core/components/Select';
+import { Slider } from '@core/components/Slider';
 
 import {
   AnimationCardContent,
   Form,
-  HighlightedValue,
   TransitionGridWrapper,
   Wrapper,
 } from '../Components';
@@ -36,10 +31,10 @@ const AnimationTypes = () => {
   const ref = useRef(null);
   const inView = useInView(ref);
   const [tweenAnimation, setTweenAnimation] = React.useState('easeInOut');
-  const [mass, setMass] = React.useState(3);
-  const [damping, setDamping] = React.useState(1);
-  const [velocity, setVelocity] = React.useState(50);
-  const [stiffness, setStiffness] = React.useState(100);
+  const [mass, setMass] = React.useState(4);
+  const [damping, setDamping] = React.useState(4);
+  const [velocity, setVelocity] = React.useState(250);
+  const [stiffness, setStiffness] = React.useState(230);
   const [countSpring, setCountSpring] = React.useState(0);
   const [countInertia, setCountInertia] = React.useState(0);
 
@@ -98,46 +93,36 @@ const AnimationTypes = () => {
           <Card.Header>Spring</Card.Header>
           <AnimationCardContent>
             <Form>
-              <Range
-                id="mass1"
-                aria-label="Mass"
-                label={
-                  <span>
-                    Mass: <HighlightedValue>{mass}</HighlightedValue>
-                  </span>
-                }
-                min={1}
-                max={10}
-                value={mass}
-                onChange={(value) => setMass(value)}
-              />
-              <Range
-                id="stiffness1"
-                aria-label="Stiffness"
-                label={
-                  <span>
-                    Stiffness: <HighlightedValue>{stiffness}</HighlightedValue>
-                  </span>
-                }
-                min={1}
-                max={500}
-                value={stiffness}
-                onChange={(value) => setStiffness(value)}
-              />
-              <Range
-                id="damping"
-                aria-label="Damping"
-                label={
-                  <span>
-                    Damping: <HighlightedValue>{damping}</HighlightedValue>
-                  </span>
-                }
-                min={0}
-                max={5}
-                step="0.10"
-                value={damping}
-                onChange={(value) => setDamping(value)}
-              />
+              <Flex direction="column" gap={5}>
+                <Slider
+                  id="mass1"
+                  aria-label="Mass"
+                  label="Mass"
+                  min={1}
+                  max={10}
+                  value={mass}
+                  onChange={(value) => setMass(value)}
+                />
+                <Slider
+                  id="stiffness1"
+                  aria-label="Stiffness"
+                  label="Stiffness"
+                  min={1}
+                  max={500}
+                  value={stiffness}
+                  onChange={(value) => setStiffness(value)}
+                />
+                <Slider
+                  id="damping"
+                  aria-label="Damping"
+                  label="Damping"
+                  min={0}
+                  max={5}
+                  step={0.1}
+                  value={damping}
+                  onChange={(value) => setDamping(value)}
+                />
+              </Flex>
             </Form>
             <div />
             <motion.div
@@ -178,15 +163,13 @@ const AnimationTypes = () => {
           <Card.Header>Tween</Card.Header>
           <AnimationCardContent>
             <Form>
-              <div style={{ display: 'grid' }}>
-                <Label htmlFor="tween-type">Ease</Label>
-                <Select
-                  id="tween-type"
-                  items={animationOptions}
-                  value={tweenAnimation}
-                  onChange={(value) => setTweenAnimation(value as string)}
-                />
-              </div>
+              <Select
+                aria-label="Easing type"
+                id="tween-type"
+                items={animationOptions}
+                value={tweenAnimation}
+                onChange={(value) => setTweenAnimation(value as string)}
+              />
             </Form>
             <div />
             <motion.div
@@ -228,14 +211,10 @@ const AnimationTypes = () => {
           <AnimationCardContent>
             <Form>
               <div style={{ display: 'grid' }}>
-                <Range
+                <Slider
                   id="velocity"
                   aria-label="Velocity"
-                  label={
-                    <span>
-                      Velocity: <HighlightedValue>{velocity}</HighlightedValue>
-                    </span>
-                  }
+                  label="Velocity"
                   min={1}
                   max={500}
                   value={velocity}

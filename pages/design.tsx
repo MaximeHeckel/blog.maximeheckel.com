@@ -16,7 +16,6 @@ import {
   InlineCode,
   List,
   Pill,
-  Range,
   Strong,
   Text,
   TextInput,
@@ -41,6 +40,7 @@ import Image from '@core/components/MDX/Image/Image';
 import { Main } from '@core/components/Main';
 import { Select } from '@core/components/Select';
 import Seo from '@core/components/Seo';
+import { Slider } from '@core/components/Slider';
 import ImageGallery from '@core/components/Slideshow';
 import Tweet from '@core/components/Tweet';
 import { MediaPlayer } from '@core/components/VideoPlayer/MediaPlayer';
@@ -56,10 +56,53 @@ const Label = styled('p', {
   marginBottom: '8px',
 });
 
+const SliderExample = () => {
+  const [value, setValue] = React.useState(250);
+  return (
+    <>
+      <Slider
+        id="slider-1"
+        label="Slider"
+        value={value}
+        min={0}
+        max={500}
+        onChange={(value) => setValue(value)}
+      />
+      <Slider
+        id="slider-2"
+        label="Slider"
+        disabled
+        value={250}
+        min={0}
+        max={500}
+        onChange={() => {}}
+      />
+      <Slider
+        id="slider-1"
+        label="Slider"
+        value={value}
+        min={0}
+        max={500}
+        onChange={(value) => setValue(value)}
+        size="sm"
+      />
+      <Slider
+        id="slider-2"
+        label="Slider"
+        disabled
+        value={250}
+        min={0}
+        max={500}
+        onChange={() => {}}
+        size="sm"
+      />
+    </>
+  );
+};
+
 export default function Design(props: { tweets: Record<string, NewTweet> }) {
   const [showSearch, setShowSearch] = React.useState(false);
   const [email, setEmail] = React.useState('');
-  const [rangeValue, setRangeValue] = React.useState(250);
 
   const colorScaleNumbers = [
     100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200,
@@ -926,25 +969,7 @@ they can change the world, are the ones who do.`}
               }}
               templateColumns="repeat(2, minmax(2rem, 1fr))"
             >
-              <Range
-                id="range-1"
-                aria-label="Range"
-                label="Range"
-                value={rangeValue}
-                min={0}
-                max={500}
-                onChange={(value) => setRangeValue(value)}
-              />
-              <Range
-                id="range-2"
-                aria-label="Range"
-                label="Range"
-                value={250}
-                min={0}
-                max={500}
-                onChange={() => {}}
-                disabled
-              />
+              <SliderExample />
             </Grid>
             <Grid
               gap={3}

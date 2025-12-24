@@ -1,9 +1,11 @@
-import { Card, Range } from '@maximeheckel/design-system';
+import { Card } from '@maximeheckel/design-system';
 import { curveBasisOpen } from '@visx/curve';
 import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
 import { motion } from 'motion/react';
 import React from 'react';
+
+import { Slider } from '@core/components/Slider';
 
 import { AnimationCardContent, Form } from '../Components';
 
@@ -120,44 +122,41 @@ const SpringPhysics = (props: { withDamping?: boolean }) => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-around',
+            gap: '16px',
           }}
         >
-          <div style={{ display: 'grid' }}>
-            <Range
-              id={`mass-${withDamping}`}
-              aria-label="mass"
-              label={`Mass ${mass}`}
-              min={1}
-              max={10}
-              step="0.1"
-              value={mass}
-              onChange={(value) => setMass(value)}
-            />
-          </div>
-          <div style={{ display: 'grid' }}>
-            <Range
-              id={`stiffness-${withDamping}`}
-              aria-label="stiffness"
-              label={`Stiffness ${stiffness}`}
-              min={1}
-              max={500}
-              value={stiffness}
-              onChange={(value) => setStiffness(value)}
-            />
-          </div>
+          <Slider
+            id={`mass-${withDamping}`}
+            aria-label="mass"
+            label="Mass"
+            min={1}
+            max={10}
+            step={0.1}
+            value={mass}
+            onChange={(value) => setMass(value)}
+          />
+
+          <Slider
+            id={`stiffness-${withDamping}`}
+            aria-label="stiffness"
+            label="Stiffness"
+            min={1}
+            max={500}
+            value={stiffness}
+            onChange={(value) => setStiffness(value)}
+          />
+
           {withDamping ? (
-            <div style={{ display: 'grid' }}>
-              <Range
-                id="damping"
-                label={`Damping ${damping}`}
-                aria-label="dambing"
-                min={0}
-                max={5}
-                step="0.1"
-                value={damping}
-                onChange={(value) => setDamping(value)}
-              />
-            </div>
+            <Slider
+              id="damping"
+              label="Damping"
+              aria-label="dambing"
+              min={0}
+              max={5}
+              step={0.1}
+              value={damping}
+              onChange={(value) => setDamping(value)}
+            />
           ) : null}
         </Form>
 
