@@ -126,7 +126,6 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
           position: 'relative',
           height: 'auto',
           width: '100%',
-          overflow: 'hidden',
           backgroundColor: 'var(--background)',
           paddingTop: 'var(--space-10)',
           borderBottomRightRadius: 4,
@@ -1089,6 +1088,24 @@ they can change the world, are the ones who do.`}
             css={{ alignSelf: 'stretch' }}
             direction="column"
             gap="5"
+            id="details-summary"
+          >
+            <H2>Details/Summary</H2>
+            <Details>
+              <Details.Summary>Summary: Some short text</Details.Summary>
+              <Details.Content>
+                Content. Some long text nested inside the component. Useful to
+                avoid long, optional content. It can take some simple strings or
+                some other custom React components. As you want!
+              </Details.Content>
+            </Details>
+          </Flex>
+          <Flex
+            alignItems="start"
+            as="section"
+            css={{ alignSelf: 'stretch' }}
+            direction="column"
+            gap="5"
             id="pill"
           >
             <H2>Pill</H2>
@@ -1197,24 +1214,6 @@ function sayHi(name) {
               <Label>Sandpack Code Block</Label>
               <SandpackExample />
             </Box>
-          </Flex>
-          <Flex
-            alignItems="start"
-            as="section"
-            css={{ alignSelf: 'stretch' }}
-            direction="column"
-            gap="5"
-            id="details-summary"
-          >
-            <H2>Details/Summary</H2>
-            <Details>
-              <Details.Summary>Summary: Some short text</Details.Summary>
-              <Details.Content>
-                Content. Some long text nested inside the component. Useful to
-                avoid long, optional content. It can take some simple strings or
-                some other custom React components. As you want!
-              </Details.Content>
-            </Details>
           </Flex>
           <Flex
             alignItems="start"
