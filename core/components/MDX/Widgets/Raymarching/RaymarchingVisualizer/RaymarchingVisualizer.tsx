@@ -1,18 +1,16 @@
 import {
-  Box,
   Button,
   Card,
   Flex,
   Grid,
   Icon,
-  Range,
   Text,
   Tooltip,
 } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React, { useMemo, useState } from 'react';
 
-import { HighlightedValue } from '../../Components';
+import { Slider } from '@core/components/Slider';
 
 interface CellProps {
   value: number;
@@ -164,9 +162,9 @@ const RaymarchingVisualizer = () => {
               variant="icon"
             />
           </Tooltip>
-          <Range
-            id="timeline"
-            aria-label="Timeline"
+          <Slider
+            id="step"
+            label="Step"
             min={0}
             max={MAX_STEP}
             step={1}
@@ -174,13 +172,8 @@ const RaymarchingVisualizer = () => {
             onChange={(value) => {
               setStep(value);
             }}
+            size="sm"
           />
-          <Box css={{ flexShrink: 0 }}>
-            <Text size="1">
-              Step:{' '}
-              <HighlightedValue css={{ width: 34 }}>{step}</HighlightedValue>
-            </Text>
-          </Box>
         </Flex>
       </Card.Body>
     </Card>

@@ -1,6 +1,7 @@
 import {
   Card,
   Flex,
+  GlassMaterial,
   Grid,
   Label,
   Radio,
@@ -9,8 +10,6 @@ import {
 import React, { useMemo, useState, useCallback } from 'react';
 
 import { Select } from '@core/components/Select';
-
-import { HighlightedValue } from '../../Components';
 
 interface CellProps {
   value: number;
@@ -65,19 +64,20 @@ const Cell = (props: CellProps) => {
               left: '50%',
               transform: 'translateX(-50%) translateY(25%)',
               zIndex: 1,
+              borderRadius: 'var(--border-radius-1)',
+              padding: '4px 12px',
             }}
             gap="2"
           >
-            <Text variant="primary">Output:</Text>
-            <HighlightedValue
-              css={{
-                color: 'var(--text-primary)',
-                borderColor: 'var(--text-primary)',
-                backgroundColor: 'var(--foreground)',
-              }}
-            >
+            <GlassMaterial
+              style={{ '--opacity': 0.5 } as React.CSSProperties}
+            />
+            <Text family="mono" variant="primary">
+              Output:
+            </Text>
+            <Text family="mono" variant="primary">
               {result}
-            </HighlightedValue>
+            </Text>
           </Flex>
         ) : null}
         {kernelValue ? (
@@ -89,7 +89,7 @@ const Cell = (props: CellProps) => {
               width: '100%',
               height: '100%',
               position: 'absolute',
-              background: 'oklch(from var(--gray-600) l c h / 55%)',
+              background: 'oklch(from var(--gray-700) l c h / 55%)',
               border: '2px solid',
               borderRadius: 'var(--border-radius-0)',
             }}
@@ -98,13 +98,7 @@ const Cell = (props: CellProps) => {
               borderColor: selected ? 'var(--text-primary)' : 'transparent',
             }}
           >
-            <Text
-              style={{
-                color: 'var(--text-primary)',
-              }}
-              size="1"
-              weight="4"
-            >
+            <Text family="mono" size="1" weight="4" variant="primary">
               {kernelValue}
             </Text>
           </Flex>

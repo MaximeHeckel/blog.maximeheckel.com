@@ -1,7 +1,7 @@
-import { Box, Card, Flex, Grid, Range } from '@maximeheckel/design-system';
+import { Box, Card, Flex, Grid } from '@maximeheckel/design-system';
 import React, { useMemo, useState } from 'react';
 
-import { HighlightedValue } from '../../Components';
+import { Slider } from '@core/components/Slider';
 
 const WIDTH = 4;
 
@@ -142,14 +142,10 @@ const ThresholdVisualizer = () => {
             </React.Fragment>
           ))}
         </Grid>
-        <Range
+        <Slider
           id="pixelation"
           aria-label="Pixelation"
-          label={
-            <span>
-              Luma: <HighlightedValue>{luma}</HighlightedValue>
-            </span>
-          }
+          label="Luma"
           min={0.0}
           max={1.0}
           step={0.01}

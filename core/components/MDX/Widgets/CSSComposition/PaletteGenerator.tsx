@@ -1,7 +1,9 @@
-import { Card, Flex, InlineCode, Range } from '@maximeheckel/design-system';
+import { Card, Flex, InlineCode } from '@maximeheckel/design-system';
 import React from 'react';
 
-import { AnimationCardContent, Form, HighlightedValue } from '../Components';
+import { Slider } from '@core/components/Slider';
+
+import { AnimationCardContent, Form } from '../Components';
 
 const lightness = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10];
 
@@ -19,6 +21,7 @@ const PaletteGenerator = () => {
           wrap="wrap"
           css={{
             padding: '0px 30px',
+            height: '100px',
           }}
         >
           {lightness.map((light, index) => (
@@ -37,32 +40,26 @@ const PaletteGenerator = () => {
         </Flex>
         <InlineCode>{cssVariable}</InlineCode>
         <Form>
-          <Range
-            id="hue"
-            label={
-              <span>
-                Hue: <HighlightedValue>{hue}</HighlightedValue>
-              </span>
-            }
-            aria-label="Hue"
-            min={0}
-            max={359}
-            value={hue}
-            onChange={(value) => setHue(value)}
-          />
-          <Range
-            id="saturation"
-            label={
-              <span>
-                Saturation: <HighlightedValue>{saturation}</HighlightedValue>
-              </span>
-            }
-            aria-label="Saturation"
-            min={1}
-            max={100}
-            value={saturation}
-            onChange={(value) => setSaturation(value)}
-          />
+          <Flex direction="column" gap={5}>
+            <Slider
+              id="hue"
+              label="Hue"
+              aria-label="Hue"
+              min={0}
+              max={359}
+              value={hue}
+              onChange={(value) => setHue(value)}
+            />
+            <Slider
+              id="saturation"
+              label="Saturation"
+              aria-label="Saturation"
+              min={1}
+              max={100}
+              value={saturation}
+              onChange={(value) => setSaturation(value)}
+            />
+          </Flex>
         </Form>
       </AnimationCardContent>
     </Card>

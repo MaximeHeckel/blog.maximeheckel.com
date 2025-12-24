@@ -1,9 +1,8 @@
-import { Card, Flex, Grid, Range, Switch } from '@maximeheckel/design-system';
+import { Card, Flex, Grid, Switch } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
 
 import { Select } from '@core/components/Select';
-
-import { HighlightedValue } from '../../Components';
+import { Slider } from '@core/components/Slider';
 
 const WIDTH = 16;
 const HEIGHT = 16;
@@ -283,17 +282,10 @@ const PixelizationVisualizer = (props: { showPatterns?: boolean }) => {
           ))}
         </Grid>
         {showPatterns ? null : (
-          <Range
+          <Slider
             id="pixelation"
             aria-label="Pixelation"
-            label={
-              <span>
-                Pixelation:{' '}
-                <HighlightedValue>
-                  {pixelation} x {pixelation}
-                </HighlightedValue>
-              </span>
-            }
+            label="Pixelation"
             min={1}
             max={4}
             value={Math.log2(pixelation) + 1}

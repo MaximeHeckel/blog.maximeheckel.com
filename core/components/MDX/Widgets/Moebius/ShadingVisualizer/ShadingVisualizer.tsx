@@ -1,17 +1,9 @@
-import {
-  Box,
-  Card,
-  Flex,
-  Grid,
-  Label,
-  Range,
-} from '@maximeheckel/design-system';
+import { Box, Card, Flex, Grid } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
 
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
 import Select from '@core/components/Select/Select';
-
-import { HighlightedValue } from '../../Components';
+import { Slider } from '@core/components/Slider';
 
 interface CellProps {
   value: number;
@@ -116,8 +108,8 @@ const crossHatchedGLSLCodeString = `if ((pixelLuma <= 0.45
 }`;
 
 const shadowOptions = [
-  { label: 'Crosshatched', value: 'crossHatched' },
-  { label: 'Raster', value: 'raster' },
+  { label: 'Crosshatched Shadow', value: 'crossHatched' },
+  { label: 'Raster Shadow', value: 'raster' },
 ];
 
 const ShadingVisualizer = () => {
@@ -164,42 +156,36 @@ const ShadingVisualizer = () => {
         direction="column"
         dotMatrix
         justifyContent="center"
+        alignItems="start"
         gap="6"
       >
-        <Flex
-          direction="column"
-          css={{ width: '100%' }}
-          alignItems="start"
-          gap="2"
-        >
-          <Flex css={{ width: '100%' }} justifyContent="space-between">
-            <Flex alignItems="center">
-              <Label htmlFor="shading-function">Shadow type:</Label>
-              <Select
-                id="shading-function"
-                items={shadowOptions}
-                value={shadowType}
-                minWidth={132}
-                onChange={(value) => setShadowType(value as ShadowType)}
-              />
-            </Flex>
-            <Flex alignItems="center">
-              <Label htmlFor="timeline">Luma:</Label>
-              <HighlightedValue>{`0.${luma}`}</HighlightedValue>
-            </Flex>
-          </Flex>
-          <Range
-            id="timeline"
-            aria-label="Timeline"
-            min={40}
-            max={70}
-            step={1}
-            value={luma}
-            onChange={(value) => {
-              setLuma(value);
-            }}
-          />
+        <Flex alignItems="center" css={{ width: '100%' }} gap="4">
+          <Box>
+            <Select
+              id="shading-function"
+              aria-label="Shadow type"
+              items={shadowOptions}
+              value={shadowType}
+              minWidth={190}
+              onChange={(value) => setShadowType(value as ShadowType)}
+            />
+          </Box>
+          <Box css={{ flex: 1 }}>
+            <Slider
+              id="timeline"
+              label="Luma"
+              min={40}
+              max={70}
+              step={1}
+              value={luma}
+              size="sm"
+              onChange={(value) => {
+                setLuma(value);
+              }}
+            />
+          </Box>
         </Flex>
+
         <Grid
           css={{
             borderTop: '0.5px solid var(--gray-700)',

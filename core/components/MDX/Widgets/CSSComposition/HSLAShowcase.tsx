@@ -1,7 +1,9 @@
-import { Card, Flex, InlineCode, Range } from '@maximeheckel/design-system';
+import { Card, Flex, InlineCode } from '@maximeheckel/design-system';
 import React from 'react';
 
-import { AnimationCardContent, Form, HighlightedValue } from '../Components';
+import { Slider } from '@core/components/Slider';
+
+import { AnimationCardContent, Form } from '../Components';
 
 const HSLAShowcase = () => {
   const [hue, setHue] = React.useState(222);
@@ -15,13 +17,12 @@ const HSLAShowcase = () => {
     <Card depth={1}>
       <AnimationCardContent
         css={{
-          height: '700px',
+          height: '625px',
         }}
       >
         <Flex
           css={{
             width: '350px',
-
             '@media (max-width: 700px)': {
               width: '100%',
             },
@@ -154,58 +155,44 @@ const HSLAShowcase = () => {
         </Flex>
         <InlineCode>{cssBackgroundColor}</InlineCode>
         <Form>
-          <Range
-            id="hue1"
-            label={
-              <span>
-                Hue: <HighlightedValue>{hue}</HighlightedValue>
-              </span>
-            }
-            aria-label="Hue"
-            min={0}
-            max={359}
-            value={hue}
-            onChange={(value) => setHue(value)}
-          />
-          <Range
-            id="saturation1"
-            label={
-              <span>
-                Saturation: <HighlightedValue>{saturation}</HighlightedValue>
-              </span>
-            }
-            aria-label="Saturation"
-            min={1}
-            max={100}
-            value={saturation}
-            onChange={(value) => setSaturation(value)}
-          />
-          <Range
-            id="lightness"
-            label={
-              <span>
-                Lightness: <HighlightedValue>{lightness}</HighlightedValue>
-              </span>
-            }
-            aria-label="Lightness"
-            min={0}
-            max={100}
-            value={lightness}
-            onChange={(value) => setLightness(value)}
-          />
-          <Range
-            id="alpha"
-            label={
-              <span>
-                Alpha: <HighlightedValue>{alpha}</HighlightedValue>
-              </span>
-            }
-            aria-label="Alpha"
-            min={0}
-            max={100}
-            value={alpha}
-            onChange={(value) => setAlpha(value)}
-          />
+          <Flex direction="column" gap={5}>
+            <Slider
+              id="hue1"
+              label="Hue"
+              aria-label="Hue"
+              min={0}
+              max={359}
+              value={hue}
+              onChange={(value) => setHue(value)}
+            />
+            <Slider
+              id="saturation1"
+              label="Saturation"
+              aria-label="Saturation"
+              min={1}
+              max={100}
+              value={saturation}
+              onChange={(value) => setSaturation(value)}
+            />
+            <Slider
+              id="lightness"
+              label="Lightness"
+              aria-label="Lightness"
+              min={0}
+              max={100}
+              value={lightness}
+              onChange={(value) => setLightness(value)}
+            />
+            <Slider
+              id="alpha"
+              label="Alpha"
+              aria-label="Alpha"
+              min={0}
+              max={100}
+              value={alpha}
+              onChange={(value) => setAlpha(value)}
+            />
+          </Flex>
         </Form>
       </AnimationCardContent>
     </Card>

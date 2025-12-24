@@ -1,7 +1,7 @@
-import { Card, Flex, Grid, Range, Switch } from '@maximeheckel/design-system';
+import { Card, Flex, Grid, Switch } from '@maximeheckel/design-system';
 import React, { useMemo, useState } from 'react';
 
-import { HighlightedValue } from '../../Components';
+import { Slider } from '@core/components/Slider';
 
 const WIDTH = 63;
 const HEIGHT = 31;
@@ -159,16 +159,11 @@ const DitheringVisualizer = () => {
           ))}
         </Grid>
 
-        <Range
+        <Slider
           id="number-of-color"
           aria-label="Number of Color"
           disabled={!ditheringEnabled}
-          label={
-            <span>
-              Number of colors:{' '}
-              <HighlightedValue>{Math.pow(2, numberOfColor)}</HighlightedValue>
-            </span>
-          }
+          label="Number of colors"
           min={1}
           max={5}
           step={1}

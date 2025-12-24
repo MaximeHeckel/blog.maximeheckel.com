@@ -6,6 +6,7 @@ import {
   Icon,
   Switch,
   Tooltip,
+  Text,
 } from '@maximeheckel/design-system';
 import { Drag } from '@visx/drag';
 import { Group } from '@visx/group';
@@ -17,8 +18,6 @@ import React from 'react';
 
 import { Select } from '@core/components/Select';
 import useInterval from '@core/hooks/useInterval';
-
-import { HighlightedValue } from './Components';
 
 type Point = {
   x: number;
@@ -582,17 +581,17 @@ const Chart = (props: ChartProps) => {
           marginTop: 'var(--space-4)',
         }}
       >
-        <Flex justifyContent="center">
-          P1{' '}
-          <HighlightedValue>
+        <Flex justifyContent="center" gap="3">
+          P1:
+          <Text family="mono" variant="secondary">
             x:{P1.x.toFixed(2)} y:{P1.y.toFixed(2)}
-          </HighlightedValue>
+          </Text>
         </Flex>
-        <Flex justifyContent="center">
-          P2{' '}
-          <HighlightedValue>
+        <Flex justifyContent="center" gap="3">
+          P2:
+          <Text family="mono" variant="secondary">
             x:{P2.x.toFixed(2)} y:{P2.y.toFixed(2)}
-          </HighlightedValue>
+          </Text>
         </Flex>
       </Grid>
       {editable ? (

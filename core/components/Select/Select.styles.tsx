@@ -33,6 +33,7 @@ export const SelectTrigger = styled(BaseSelect.Trigger, {
 
   '&:focus-visible:not([disabled])': {
     outline: '2px solid var(--blue-800)',
+    outlineOffset: 2,
     backgroundColor: 'oklch(from var(--gray-900) l c h / var(--opacity, 0.4))',
   },
 });
