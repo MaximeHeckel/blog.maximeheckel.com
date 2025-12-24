@@ -6,7 +6,7 @@ export const SelectTrigger = styled(BaseSelect.Trigger, {
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: 'var(--space-2)',
-  padding: 'var(--space-1) var(--space-2)',
+  padding: 'var(--space-1) var(--space-3)',
   backgroundColor: 'oklch(from var(--gray-900) l c h / var(--opacity, 0.3))',
   backdropFilter: 'blur(var(--blur, 12px)) saturate(var(--saturate, 1.15))',
   border:

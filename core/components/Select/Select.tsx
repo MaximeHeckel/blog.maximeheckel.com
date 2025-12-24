@@ -1,4 +1,5 @@
 import { Select as BaseSelect } from '@base-ui/react/select';
+import { Icon } from '@maximeheckel/design-system';
 import { useId } from 'react';
 
 import {
@@ -8,45 +9,6 @@ import {
   SelectPopup,
   SelectTrigger,
 } from './Select.styles';
-
-const ChevronUpDownIcon = ({ size = 24 }: { size?: number }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={size}
-      height={size}
-      color="currentColor"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M18 14C18 14 13.5811 19 12 19C10.4188 19 6 14 6 14" />
-      <path d="M18 9.99996C18 9.99996 13.5811 5.00001 12 5C10.4188 4.99999 6 10 6 10" />
-    </svg>
-  );
-};
-
-const CheckIcon = ({ size = 24 }: { size?: number }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={size}
-      height={size}
-      color="currentColor"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 14L8.5 17.5L19 6.5" />
-    </svg>
-  );
-};
 
 export interface SelectProps {
   id?: string;
@@ -77,7 +39,7 @@ const Select = (props: SelectProps) => {
       >
         <BaseSelect.Value />
         <SelectIcon>
-          <ChevronUpDownIcon size={16} />
+          <Icon.ChevronUpDown size={4} />
         </SelectIcon>
       </SelectTrigger>
       <BaseSelect.Portal>
@@ -97,7 +59,7 @@ const Select = (props: SelectProps) => {
                 <SelectItem key={label} value={value}>
                   {label}
                   <SelectItemIndicator>
-                    <CheckIcon size={16} />
+                    <Icon.Check variant="default" size={4} />
                   </SelectItemIndicator>
                 </SelectItem>
               ))}
