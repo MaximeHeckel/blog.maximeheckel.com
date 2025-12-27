@@ -1,0 +1,117 @@
+---
+description: React component conventions, patterns, and MDX widget guidelines
+alwaysApply: false
+globs: ["**/*.ts", "**/*.tsx"]
+---
+
+# React Component Conventions
+
+## File Structure
+
+Every component follows this pattern:
+
+```
+ComponentName/
+├── index.tsx              # Barrel export
+├── ComponentName.tsx      # Component logic
+├── ComponentName.styles.tsx   # Styled components
+└── types.ts               # Optional type definitions
+```
+
+## Example Component
+
+```tsx
+// Select.tsx
+import { Select as BaseSelect } from '@base-ui/react/select';
+import { Icon } from '@maximeheckel/design-system';
+import { useId } from 'react';
+
+import { SelectTrigger, SelectPopup } from './Select.styles';
+
+export interface SelectProps {
+  id?: string;
+  items: { label: string; value: string }[];
+  value: string | null;
+  onChange: (value: string | null) => void;
+}
+
+const Select = (props: SelectProps) => {
+  const { id, items, value, onChange } = props;
+  const generatedId = useId();
+  const selectId = id || generatedId;
+
+  return (
+    <BaseSelect.Root items={items} value={value} onValueChange={onChange}>
+      {/* ... */}
+    </BaseSelect.Root>
+  );
+};
+
+export default Select;
+```
+
+## Barrel Export
+
+```tsx
+// index.tsx
+export { default } from './Select';
+export type { SelectProps } from './Select';
+```
+
+## MDX Widgets
+
+Interactive components for blog posts live in `core/components/MDX/Widgets/`. Each widget is self-contained with its own:
+
+- React components
+- GLSL shaders (`.glsl` files)
+- Code snippets for Sandpack playgrounds
+
+### Adding to MDX
+
+Widgets are registered in `core/components/MDX/MDXComponents.tsx` using dynamic imports:
+
+```tsx
+const MyWidget = dynamic(() => import('./Widgets/MyWidget'));
+
+const customComponents = {
+  MyWidget,
+  // ...
+};
+```
+
+### Widget Categories
+
+- **Visualizers**: Interactive shader/3D demonstrations
+- **Sandpacks**: Editable code playgrounds
+- **UI Components**: Interactive UI examples
+
+## Creating a New Component
+
+1. Create folder in `core/components/ComponentName/`
+2. Add `ComponentName.tsx` with TypeScript interface
+3. Add `ComponentName.styles.tsx` using `styled()`
+4. Add `index.tsx` barrel export
+5. Optionally add `types.ts` for complex types
+
+## Creating an MDX Widget
+
+1. Create folder in `core/components/MDX/Widgets/WidgetName/`
+2. Build the widget component(s)
+3. Register in `MDXComponents.tsx` with dynamic import
+4. Use in MDX files: `<WidgetName />`
+
+## Adding Animations
+
+Use the `motion` library:
+
+```tsx
+import { motion } from 'motion/react';
+
+<motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.3 }}
+>
+  Content
+</motion.div>;
+```

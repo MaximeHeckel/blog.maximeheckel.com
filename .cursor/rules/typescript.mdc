@@ -1,0 +1,68 @@
+---
+description: TypeScript conventions, import order, and ESLint rules
+alwaysApply: false
+globs: ["**/*.ts", "**/*.tsx"]
+---
+
+# TypeScript & Code Conventions
+
+## TypeScript
+
+- Strict mode enabled, avoid `any`
+- Prefix unused variables with `_`
+- Use `useId()` for generated element IDs
+- Define prop interfaces explicitly
+
+## Import Order
+
+1. External libraries (react, next, etc.)
+2. `@maximeheckel/design-system`
+3. `@base-ui/react`
+4. Local `@core/*` imports
+5. Relative imports
+
+### Example
+
+```tsx
+// External
+import { useId } from 'react';
+import dynamic from 'next/dynamic';
+
+// Design system
+import { Icon, Text } from '@maximeheckel/design-system';
+
+// Headless UI
+import { Select as BaseSelect } from '@base-ui/react/select';
+
+// Local imports
+import { useIsMobile } from '@core/hooks/useIsMobile';
+
+// Relative imports
+import { Wrapper, Container } from './Component.styles';
+import type { ComponentProps } from './types';
+```
+
+## ESLint Rules
+
+- No `console.log` (error) - use proper error handling or remove debug statements
+- React hooks rules enforced (`rules-of-hooks`, `exhaustive-deps`)
+- Unused vars must be prefixed with `_`
+
+## Prop Interfaces
+
+Always define explicit prop interfaces:
+
+```tsx
+export interface ButtonProps {
+  variant?: 'primary' | 'secondary';
+  size?: 'small' | 'medium' | 'large';
+  disabled?: boolean;
+  onClick?: () => void;
+  children: React.ReactNode;
+}
+
+const Button = (props: ButtonProps) => {
+  const { variant = 'primary', size = 'medium', disabled, onClick, children } = props;
+  // ...
+};
+```

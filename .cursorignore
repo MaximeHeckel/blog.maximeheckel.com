@@ -1,0 +1,41 @@
+# Build outputs
+.next/
+out/
+
+# MDX files
+content/**/*.mdx
+
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+
+# Generated files
+public/static/og/
+public/rss.xml
+public/sitemap.xml
+tsconfig.tsbuildinfo
+
+# Binary assets (images, fonts)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.woff
+*.woff2
+*.ico
+
+# Test artifacts
+cypress/screenshots/
+cypress/videos/
+coverage/
+
+# Environment
+.env*
+!.env.example
+
+# IDE
+.idea/
+*.swp
+*.swo
+

@@ -1,0 +1,71 @@
+---
+description: Testing patterns with Vitest, Testing Library, and Cypress
+alwaysApply: false
+globs:
+  [
+    '**/*.spec.ts',
+    '**/*.spec.tsx',
+    '**/*.test.ts',
+    '**/*.test.tsx',
+    '**/cypress/**/*.js',
+  ]
+---
+
+# Testing Conventions
+
+## Unit Tests
+
+- Located in `__tests__/` folders adjacent to components
+- Use Vitest with Testing Library
+- File naming: `*.spec.tsx`
+
+### Example Test
+
+```tsx
+import { render, waitFor } from '@testing-library/react';
+import { it, describe, expect } from 'vitest';
+
+import Component from '../';
+
+describe('ComponentName', () => {
+  it('does something', async () => {
+    const { container } = render(<Component />);
+    await waitFor(() => {
+      expect(container.querySelector('.class')).toBeDefined();
+    });
+  });
+
+  it('handles user interaction', async () => {
+    const { getByTestId } = render(<Component />);
+    await waitFor(() => {
+      expect(getByTestId('element')).toBeInTheDocument();
+    });
+  });
+});
+```
+
+## E2E Tests
+
+- Located in `cypress/e2e/`
+- Test navigation, search, meta tags
+- Use Cypress with Chrome
+
+## Running Tests
+
+```bash
+pnpm test:watch  # Development (interactive)
+pnpm test:run    # CI (headless)
+pnpm cy:open     # Cypress interactive
+pnpm cy:run      # Cypress headless
+```
+
+## Testing Patterns
+
+- Use `waitFor` for async assertions
+- Prefer `getByTestId` for specific element queries
+- Import components via barrel exports (`from '../'`)
+- Test user-visible behavior, not implementation details
+
+## IMPORTANT
+
+- Always prompt the operator whether a test should be written or not prior to doing it

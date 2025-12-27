@@ -1,0 +1,53 @@
+---
+description: Design tokens and styling patterns using CSS custom properties
+alwaysApply: false
+globs: ["**/*.ts", "**/*.tsx"]
+---
+
+# Design Tokens & Styling Patterns
+
+## Styled Components
+
+Use `styled()` from the design system with CSS custom properties:
+
+```tsx
+// ComponentName.styles.tsx
+import { styled } from '@maximeheckel/design-system';
+
+export const Wrapper = styled('div', {
+  padding: 'var(--space-4)',
+  color: 'var(--text-primary)',
+  backgroundColor: 'oklch(from var(--gray-900) l c h / 0.3)',
+  backdropFilter: 'blur(12px)',
+  borderRadius: 'var(--border-radius-1)',
+});
+```
+
+## Design Tokens
+
+Always use CSS custom properties, never hardcode values:
+
+| Token Type | Examples                                                                        |
+| ---------- | ------------------------------------------------------------------------------- |
+| Spacing    | `var(--space-1)` through `var(--space-9)`                                       |
+| Colors     | `var(--gray-100)` to `var(--gray-1100)`, `var(--text-primary)`, `var(--accent)` |
+| Typography | `var(--font-display)`, `var(--font-size-1)` to `var(--font-size-7)`             |
+| Borders    | `var(--border-radius-1)`, `var(--border-radius-2)`                              |
+| Shadows    | Use `oklch()` with CSS relative color syntax                                    |
+
+## Glassmorphism Pattern
+
+Common pattern used throughout:
+
+```css
+backgroundColor: 'oklch(from var(--gray-900) l c h / var(--opacity, 0.3))',
+backdropFilter: 'blur(var(--blur, 12px)) saturate(var(--saturate, 1.15))',
+border: 'var(--thickness, 1px) solid oklch(from var(--gray-1100) l c h / 15%)',
+```
+
+## Key Principles
+
+- **Never hardcode colors** - Use `var(--gray-*)`, `var(--text-*)`, `var(--accent)`
+- **Never hardcode spacing** - Use `var(--space-*)` tokens
+- **Use oklch()** for transparency and color manipulation
+- **Styles go in separate files** - `ComponentName.styles.tsx`
