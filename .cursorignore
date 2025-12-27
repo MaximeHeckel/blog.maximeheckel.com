@@ -2,9 +2,6 @@
 .next/
 out/
 
-# MDX files
-content/**/*.mdx
-
 # Dependencies
 node_modules/
 pnpm-lock.yaml

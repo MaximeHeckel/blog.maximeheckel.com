@@ -50,6 +50,14 @@ Context-specific coding guidelines are located in `.cursor/rules/`:
 | `typescript.mdc` | TypeScript conventions, import order, ESLint rules | `*.ts`, `*.tsx`        |
 | `testing.mdc`    | Vitest, Testing Library, Cypress patterns          | `*.spec.*`, `cypress/` |
 
+## Custom Commands
+
+Slash commands for common tasks are located in `.cursor/commands/`:
+
+| Command           | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `/create-article` | Create a new blog post with proper MDX frontmatter |
+
 ## Scripts
 
 | Command                 | Purpose                  |
