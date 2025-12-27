@@ -24,6 +24,7 @@ const items = [
   'home-navigation',
   'design-navigation',
   'twitter-social-link',
+  'bluesky-social-link',
   'email-link',
   'roadmap-link',
   'maximeheckelcom-link',
