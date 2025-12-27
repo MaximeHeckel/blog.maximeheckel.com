@@ -214,7 +214,7 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
           borderBottomLeftRadius: 4,
         }}
         gapX={4}
-        templateColumns="1fr minmax(auto, 700px) 1fr"
+        templateColumns="1fr minmax(auto, 663px) 1fr"
       >
         <Grid.Item
           col={2}

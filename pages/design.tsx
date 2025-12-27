@@ -130,9 +130,10 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
           paddingTop: 'var(--space-10)',
           borderBottomRightRadius: 4,
           borderBottomLeftRadius: 4,
+          overflow: 'hidden',
         }}
         gapX={2}
-        templateColumns="1fr minmax(auto, 700px) 1fr"
+        templateColumns="1fr minmax(auto, 663px) 1fr"
       >
         <Flex
           alignItems="flex-start"
@@ -1306,7 +1307,10 @@ function sayHi(name) {
           <Flex
             alignItems="start"
             as="section"
-            css={{ alignSelf: 'stretch', marginBottom: 'var(--space-9)' }}
+            css={{
+              alignSelf: 'stretch',
+              marginBottom: 'var(--space-9)',
+            }}
             direction="column"
             gap="5"
             id="gallery"
