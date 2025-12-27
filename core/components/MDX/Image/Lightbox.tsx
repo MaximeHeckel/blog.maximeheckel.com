@@ -1,7 +1,7 @@
 import { styled } from '@maximeheckel/design-system';
-import * as Dialog from '@radix-ui/react-dialog';
+import { Dialog } from '@base-ui/react/dialog';
 
-export const Overlay = styled(Dialog.Overlay, {
+export const Backdrop = styled(Dialog.Backdrop, {
   position: 'fixed',
   top: 0,
   right: 0,
@@ -15,7 +15,7 @@ export const Overlay = styled(Dialog.Overlay, {
   cursor: 'zoom-out',
 });
 
-export const Content = styled(Dialog.Content, {
+export const Popup = styled(Dialog.Popup, {
   backgroundColor: 'transparent',
   zIndex: '101',
   '&:focus': { outline: 'none' },

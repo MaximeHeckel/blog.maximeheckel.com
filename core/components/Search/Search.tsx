@@ -4,7 +4,7 @@ import {
   useDebouncedValue,
   useKeyboardShortcut,
 } from '@maximeheckel/design-system';
-import * as Dialog from '@radix-ui/react-dialog';
+import { Dialog } from '@base-ui/react/dialog';
 import deepEqual from 'deep-eql';
 import { AnimatePresence, motion } from 'motion/react';
 import { FormEvent, useEffect, useRef, useState } from 'react';
@@ -218,17 +218,20 @@ const Search = (props: Props) => {
   useKeyboardShortcut('Escape', AIMode ? dismissAIMode : onCloseHandler);
 
   return (
-    <Dialog.Root open={open}>
+    <Dialog.Root
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) {
+          onCloseHandler();
+        }
+      }}
+    >
       <Dialog.Portal>
-        <S.Overlay data-testid="search-overlay" />
-        <S.Content onInteractOutside={onCloseHandler}>
-          <Dialog.Title asChild>
-            <ScreenReaderOnly>Search</ScreenReaderOnly>
-          </Dialog.Title>
-          <Dialog.Description asChild>
-            <ScreenReaderOnly>
-              Search through blog posts or ask AI questions
-            </ScreenReaderOnly>
+        <S.Backdrop data-testid="search-overlay" />
+        <S.Popup>
+          <Dialog.Title render={<ScreenReaderOnly />}>Search</Dialog.Title>
+          <Dialog.Description render={<ScreenReaderOnly />}>
+            Search through blog posts or ask AI questions
           </Dialog.Description>
           <Flex
             css={{
@@ -324,7 +327,7 @@ const Search = (props: Props) => {
               )}
             </S.SearchBox>
           </Flex>
-        </S.Content>
+        </S.Popup>
       </Dialog.Portal>
     </Dialog.Root>
   );

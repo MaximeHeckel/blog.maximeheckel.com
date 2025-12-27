@@ -5,7 +5,7 @@ import {
   styled,
   Text,
 } from '@maximeheckel/design-system';
-import * as Dialog from '@radix-ui/react-dialog';
+import { Dialog } from '@base-ui/react/dialog';
 import { motion } from 'motion/react';
 
 import { HEIGHT, MAX_HEIGHT, SHORTCUT_HEIGHT } from './constants';
@@ -20,24 +20,24 @@ const overlayHide = keyframes({
   '100%': { opacity: 0 },
 });
 
-export const Overlay = styled(Dialog.Overlay, {
+export const Backdrop = styled(Dialog.Backdrop, {
   opacity: 0.5,
   position: 'fixed',
   inset: 0,
   zIndex: '100',
   backdropFilter: 'blur(4px)',
   '@media (prefers-reduced-motion: no-preference)': {
-    '&[data-state="open"]': {
+    '&[data-open]': {
       animation: `${overlayShow} 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards`,
     },
 
-    '&[data-state="closed"]': {
+    '&[data-closed]': {
       animation: `${overlayHide} var(--exit-duration, 0ms) ease-in-out forwards`,
     },
   },
 });
 
-export const Content = styled(Dialog.Content, {
+export const Popup = styled(Dialog.Popup, {
   position: 'fixed',
   top: '50%',
   left: '50%',
