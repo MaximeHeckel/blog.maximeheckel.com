@@ -25,7 +25,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.17.0'
+          node-version: 'v22.21.1'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -58,7 +58,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.17.0'
+          node-version: 'v22.21.1'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -85,7 +85,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.17.0'
+          node-version: 'v22.21.1'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -109,7 +109,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.17.0'
+          node-version: 'v22.21.1'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -133,7 +133,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.17.0'
+          node-version: 'v22.21.1'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -165,7 +165,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.17.0'
+          node-version: 'v22.21.1'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -219,7 +219,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.17.0'
+          node-version: 'v22.21.1'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
