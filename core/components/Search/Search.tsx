@@ -5,7 +5,6 @@ import {
   useDebouncedValue,
   useKeyboardShortcut,
 } from '@maximeheckel/design-system';
-import deepEqual from 'deep-eql';
 import { AnimatePresence, motion } from 'motion/react';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
@@ -15,8 +14,8 @@ import AIPromptResultCard from './AIPromptResultCard';
 import { CommandCenterStatic } from './CommandCenterStatic';
 import * as S from './Search.styles';
 import SearchResults from './SearchResults';
-import { Result, SearchError, Status } from './types';
-import { DeepPartial, parsePartialJson } from './utils';
+import { useAICompletion } from './useAICompletion';
+import { useSemanticSearch } from './useSemanticSearch';
 
 interface Props {
   open?: boolean;
@@ -27,60 +26,51 @@ interface Props {
 const Search = (props: Props) => {
   const { onClose, forceAIMode = false, open } = props;
 
-  // Search Related states
-  const [status, setStatus] = useState<Status>('initial');
-  const [results, setResults] = useState<Result[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [error, setError] = useState<SearchError | null>(null);
-
-  // AI Related states
+  // UI state
   const [AIMode, setAIMode] = useState(forceAIMode);
-  const [AIQuery, setAIQuery] = useState('');
-  const [streamData, setStreamData] = useState('');
-  const [sources, setSources] = useState<
-    Array<{ title?: string; url?: string }> | undefined
-  >(undefined);
-
+  const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 400);
 
+  // Refs
   const formRef = useRef<HTMLFormElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const resultCardRef = useRef<HTMLDivElement>(null);
 
-  // AbortController ref for canceling in-flight requests
-  const abortControllerRef = useRef<AbortController | null>(null);
+  // Custom hooks for search and AI completion
+  const {
+    status: searchStatus,
+    results,
+    error: searchError,
+    search,
+    reset: resetSearch,
+  } = useSemanticSearch();
 
-  // Cleanup abort controller on unmount
-  useEffect(() => {
-    return () => {
-      abortControllerRef.current?.abort();
-    };
-  }, []);
+  const {
+    status: aiStatus,
+    query: aiQuery,
+    streamData,
+    sources,
+    error: aiError,
+    submitQuery,
+    reset: resetAI,
+  } = useAICompletion();
+
+  // Derive combined status and error based on mode
+  const status = AIMode ? aiStatus : searchStatus;
+  const error = AIMode ? aiError : searchError;
 
   const dismissAIMode = useCallback(() => {
-    setStatus('initial');
-    abortControllerRef.current?.abort();
-    setError(null);
+    resetAI();
     setAIMode(false);
-    setAIQuery('');
-    setStreamData('');
-    setSources(undefined);
-  }, []);
+  }, [resetAI]);
 
   const onCloseHandler = useCallback(() => {
-    abortControllerRef.current?.abort();
+    resetAI();
+    resetSearch();
     setAIMode(forceAIMode);
-    setAIQuery('');
-    setStreamData('');
-    setSources(undefined);
-
-    setError(null);
-    setResults([]);
     setSearchQuery('');
-    setStatus('initial');
-
     onClose();
-  }, [forceAIMode, onClose]);
+  }, [forceAIMode, onClose, resetAI, resetSearch]);
 
   const handleItemClick = useCallback((item: string) => {
     if (item === 'aiMode') {
@@ -88,167 +78,49 @@ const Search = (props: Props) => {
     }
   }, []);
 
-  type ResponseData = {
-    answer: string;
-    sources: {
-      title: string;
-      url: string;
-    }[];
-  };
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event?.preventDefault();
 
-  const querySemanticSearch = useCallback(async (query: string) => {
-    setError(null);
-    setStatus('loading');
+      const form = event?.currentTarget
+        .elements as typeof event.currentTarget.elements & {
+        aisearch: { value: string };
+      };
 
-    try {
-      const response = await fetch('/api/semanticsearch/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query,
-          completion: false,
-          threshold: 0.35,
-        }),
-      });
+      if (!AIMode || form.aisearch.value === '') return;
 
-      if (!response.ok) {
-        setError({
-          status: response.status,
-          statusText: response.statusText,
-        });
-        setStatus('done');
-        return;
-      }
+      submitQuery(form.aisearch.value);
+      form.aisearch.value = '';
+    },
+    [AIMode, submitQuery]
+  );
 
-      const data = await response.json();
-      setResults(data);
-      setStatus('done');
-    } catch (err) {
-      // Only set error if it's not an abort error
-      if (err instanceof Error && err.name !== 'AbortError') {
-        setError({
-          status: 0,
-          statusText: err.message || 'Network error',
-        });
-        setStatus('done');
-      }
-    }
-  }, []);
-
-  const queryCompletionSemanticSearch = useCallback(async (query: string) => {
-    // Abort any existing request before starting a new one
-    abortControllerRef.current?.abort();
-    abortControllerRef.current = new AbortController();
-
-    // Clear data
-    setError(null);
-    setStreamData('');
-    setSources(undefined);
-    // Show query of the user at the top of the result card
-    setAIQuery(query);
-    // Set status to loading to show rotating border
-    setStatus('loading');
-
-    try {
-      const response = await fetch('/api/semanticsearch/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query,
-          // @ts-ignore
-          mock: window.Cypress ? true : false,
-          threshold: 0.25,
-        }),
-        signal: abortControllerRef.current.signal,
-      });
-
-      if (!response.ok || !response.body) {
-        setStatus('initial');
-        setError({
-          status: response.status,
-          statusText: response.statusText,
-        });
-        return;
-      }
-
-      let accumulatedText = '';
-      let latestObject: DeepPartial<ResponseData> | undefined = undefined;
-
-      await response.body.pipeThrough(new TextDecoderStream()).pipeTo(
-        new WritableStream({
-          async write(chunk) {
-            accumulatedText += chunk;
-
-            try {
-              const { value } = await parsePartialJson(accumulatedText);
-
-              const currentObject = value as DeepPartial<ResponseData>;
-
-              if (!deepEqual(latestObject, currentObject)) {
-                setStreamData(currentObject?.answer ?? '');
-                latestObject = currentObject;
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                setSources(currentObject?.sources ?? (undefined as any));
-              }
-            } catch (error) {
-              // eslint-disable-next-line no-console
-              console.error(
-                'Error parsing AI answer as JSON:',
-                error as Error,
-                JSON.stringify(accumulatedText),
-                '!!! Let Maxime know about it :) !!!'
-              );
-            }
-          },
-        }),
-        { signal: abortControllerRef.current.signal }
-      );
-
-      setStatus('done');
-    } catch (err) {
-      // Only set error if it's not an abort error
-      if (err instanceof Error && err.name !== 'AbortError') {
-        setStatus('initial');
-        setError({
-          status: 0,
-          statusText: err.message || 'Network error',
-        });
-      }
-    }
-  }, []);
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event?.preventDefault();
-
-    const form = event?.currentTarget
-      .elements as typeof event.currentTarget.elements & {
-      aisearch: { value: string };
-    };
-
-    if (!AIMode || form.aisearch.value === '') return;
-
-    setAIQuery(form.aisearch.value);
-
-    queryCompletionSemanticSearch(form.aisearch.value);
-    form.aisearch.value = '';
-  };
-
+  // Trigger search when debounced query changes
   useEffect(() => {
     if (debouncedSearchQuery && debouncedSearchQuery !== '') {
-      querySemanticSearch(debouncedSearchQuery);
+      search(debouncedSearchQuery);
     }
 
     if (debouncedSearchQuery === '') {
-      setResults([]);
-      setStatus('initial');
+      resetSearch();
     }
-  }, [debouncedSearchQuery, querySemanticSearch]);
+  }, [debouncedSearchQuery, search, resetSearch]);
 
   useKeyboardShortcut('Escape', AIMode ? dismissAIMode : onCloseHandler);
+
+  // Screen reader announcement for search results
+  const getStatusAnnouncement = () => {
+    if (status === 'loading') {
+      return AIMode ? 'Generating AI response...' : 'Searching...';
+    }
+    if (status === 'done' && !AIMode && debouncedSearchQuery !== '') {
+      return `${results.length} ${results.length === 1 ? 'result' : 'results'} found`;
+    }
+    if (error) {
+      return `Error: ${error.statusText}`;
+    }
+    return '';
+  };
 
   return (
     <Dialog.Root
@@ -261,11 +133,17 @@ const Search = (props: Props) => {
     >
       <Dialog.Portal>
         <S.Backdrop data-testid="search-overlay" />
-        <S.Popup>
+        <S.Popup role="search" aria-label="Search dialog">
           <Dialog.Title render={<ScreenReaderOnly />}>Search</Dialog.Title>
           <Dialog.Description render={<ScreenReaderOnly />}>
             Search through blog posts or ask AI questions
           </Dialog.Description>
+
+          {/* Live region for status announcements */}
+          <ScreenReaderOnly aria-live="polite" aria-atomic="true">
+            {getStatusAnnouncement()}
+          </ScreenReaderOnly>
+
           <Flex
             css={{
               position: 'relative',
@@ -281,10 +159,8 @@ const Search = (props: Props) => {
               {AIMode ? (
                 <AIPromptResultCard
                   error={error}
-                  onQuestionSelect={(question) => {
-                    queryCompletionSemanticSearch(question);
-                  }}
-                  query={AIQuery}
+                  onQuestionSelect={submitQuery}
+                  query={aiQuery}
                   ref={resultCardRef}
                   sources={sources}
                   status={status}
@@ -311,7 +187,6 @@ const Search = (props: Props) => {
                         borderBottomLeftRadius: 'var(--border-radius-2)',
                         borderBottomRightRadius: 'var(--border-radius-2)',
                         transition: 'all 0.2s ease-in-out',
-
                         transform: `scale(${status === 'loading' ? 0.95 : 1})`,
                         opacity: status === 'loading' ? 0.8 : 1,
                       }
@@ -330,6 +205,8 @@ const Search = (props: Props) => {
                         data-testid="search-input"
                         id="search-input"
                         name="search"
+                        aria-label="Search blog posts"
+                        aria-describedby="search-status"
                         onChange={(
                           event: React.ChangeEvent<HTMLInputElement>
                         ) => {
@@ -338,6 +215,8 @@ const Search = (props: Props) => {
                         value={searchQuery}
                       />
                       <Label
+                        id="search-status"
+                        aria-live="polite"
                         style={{
                           width: '120px',
                         }}
@@ -351,7 +230,11 @@ const Search = (props: Props) => {
                 </form>
               </S.FormWrapper>
               {debouncedSearchQuery !== '' ? (
-                <SearchResults results={results} onClose={onClose} />
+                <SearchResults
+                  results={results}
+                  onClose={onClose}
+                  aria-busy={status === 'loading'}
+                />
               ) : (
                 <CommandCenterStatic
                   collapse={AIMode}

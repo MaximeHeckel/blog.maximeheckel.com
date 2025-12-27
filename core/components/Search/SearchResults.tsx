@@ -11,10 +11,11 @@ import useIndexItem from './useIndexItem';
 interface StaticSearchResultsProps {
   results: ResultType[];
   onClose: () => void;
+  'aria-busy'?: boolean;
 }
 
 const StaticSearchResults = (props: StaticSearchResultsProps) => {
-  const { results, onClose } = props;
+  const { results, onClose, 'aria-busy': ariaBusy } = props;
 
   const router = useRouter();
 
@@ -67,6 +68,9 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
   return (
     <S.ResultListWrapper>
       <S.ResultList
+        role="listbox"
+        aria-label="Search results"
+        aria-busy={ariaBusy}
         style={{
           height:
             results.length === 0
@@ -83,6 +87,8 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
             data-testid="search-result"
             key={result.url}
             id={result.url}
+            role="option"
+            aria-selected={selectedResult === result}
             selected={selectedResult === result}
             onPointerEnter={() => handlePointer(index)}
           >
@@ -95,6 +101,7 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
             <Flex
               alignItems="center"
               justifyContent="center"
+              aria-hidden="true"
               css={{
                 height: '35px',
                 width: '35px',
