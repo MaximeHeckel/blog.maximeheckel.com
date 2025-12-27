@@ -8,7 +8,7 @@ import {
 import { Dialog } from '@base-ui/react/dialog';
 import { motion } from 'motion/react';
 
-import { HEIGHT, MAX_HEIGHT, SHORTCUT_HEIGHT } from './constants';
+import { HEIGHT, MAX_HEIGHT } from './constants';
 
 const overlayShow = keyframes({
   '0%': { opacity: 0 },
@@ -95,12 +95,12 @@ export const Result = styled(motion.li, {
 });
 
 export const ResultListWrapper = styled(Box, {
-  height: `${MAX_HEIGHT + SHORTCUT_HEIGHT}px`,
+  height: `${MAX_HEIGHT}px`,
 });
 
 export const ResultList = styled('ul', {
   background: 'var(--background)',
-  maxHeight: `${MAX_HEIGHT + SHORTCUT_HEIGHT}px`,
+  maxHeight: `${MAX_HEIGHT}px`,
   overflowY: 'scroll',
   margin: '0',
   padding: '0',
@@ -252,16 +252,6 @@ export const Separator = styled(Box, {
   alignItems: 'center',
   marginBottom: '0',
   padding: '20px 12px 8px 12px',
-});
-
-export const ShortcutList = styled(Box, {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '24px',
-  backgroundColor: 'var(--background)',
-  height: SHORTCUT_HEIGHT,
-  padding: '0px 20px',
-  borderTop: '1px solid var(--border-color)',
 });
 
 export const KBD = (props: React.HTMLAttributes<HTMLParagraphElement>) => (

@@ -1,22 +1,31 @@
+import { Dialog } from '@base-ui/react/dialog';
 import {
   Flex,
   Label,
   useDebouncedValue,
   useKeyboardShortcut,
 } from '@maximeheckel/design-system';
-import { Dialog } from '@base-ui/react/dialog';
-import deepEqual from 'deep-eql';
 import { AnimatePresence, motion } from 'motion/react';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import {
+  FormEvent,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { ScreenReaderOnly } from '../ScreenReaderOnly';
 import AIPromptInput from './AIPromptInput';
 import AIPromptResultCard from './AIPromptResultCard';
-import { CommandCenterStatic } from './CommandCenterStatic';
+import {
+  CommandCenterNavigationRef,
+  CommandCenterStatic,
+} from './CommandCenterStatic';
 import * as S from './Search.styles';
-import SearchResults from './SearchResults';
-import { Result, SearchError, Status } from './types';
-import { DeepPartial, parsePartialJson } from './utils';
+import SearchResults, { SearchResultsNavigationRef } from './SearchResults';
+import { useAICompletion } from './useAICompletion';
+import { useSemanticSearch } from './useSemanticSearch';
 
 interface Props {
   open?: boolean;
@@ -27,195 +36,135 @@ interface Props {
 const Search = (props: Props) => {
   const { onClose, forceAIMode = false, open } = props;
 
-  // Search Related states
-  const [status, setStatus] = useState<Status>('initial');
-  const [results, setResults] = useState<Result[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [error, setError] = useState<SearchError | null>(null);
-
-  // AI Related states
+  // UI state
   const [AIMode, setAIMode] = useState(forceAIMode);
-  const [AIQuery, setAIQuery] = useState('');
-  const [streamData, setStreamData] = useState('');
-  const [sources, setSources] = useState<
-    Array<{ title?: string; url?: string }> | undefined
-  >(undefined);
-
-  const readerRef = useRef<ReadableStreamDefaultReader>(null);
-
+  const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 400);
 
+  // Refs
   const formRef = useRef<HTMLFormElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const resultCardRef = useRef<HTMLDivElement>(null);
 
-  const controller = new AbortController();
-  const signal = controller.signal;
+  // Navigation refs for keyboard handling
+  const commandCenterRef = useRef<CommandCenterNavigationRef>(null);
+  const searchResultsRef = useRef<SearchResultsNavigationRef>(null);
 
-  const dismissAIMode = () => {
-    setStatus('initial');
-    controller.abort();
-    if (readerRef.current) {
-      readerRef.current.cancel();
-    }
-    setError(null);
+  // Custom hooks for search and AI completion
+  const {
+    status: searchStatus,
+    results,
+    error: searchError,
+    search,
+    reset: resetSearch,
+  } = useSemanticSearch();
+
+  const {
+    status: aiStatus,
+    query: aiQuery,
+    streamData,
+    sources,
+    error: aiError,
+    submitQuery,
+    reset: resetAI,
+  } = useAICompletion();
+
+  // Derive combined status and error based on mode
+  const status = AIMode ? aiStatus : searchStatus;
+  const error = AIMode ? aiError : searchError;
+
+  // Handle keyboard navigation at dialog level (inside focus trap)
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLDivElement>) => {
+      // Don't handle if in AI mode (no navigation needed)
+      if (AIMode) return;
+
+      const navRef =
+        debouncedSearchQuery !== '' ? searchResultsRef : commandCenterRef;
+
+      switch (event.key) {
+        case 'ArrowUp':
+          event.preventDefault();
+          navRef.current?.previous();
+          break;
+        case 'ArrowDown':
+          event.preventDefault();
+          navRef.current?.next();
+          break;
+        case 'Enter':
+          // Only handle Enter if not focused on the search input
+          if ((event.target as HTMLElement).tagName !== 'INPUT') {
+            event.preventDefault();
+            navRef.current?.select();
+          }
+          break;
+      }
+    },
+    [AIMode, debouncedSearchQuery]
+  );
+
+  const dismissAIMode = useCallback(() => {
+    resetAI();
     setAIMode(false);
-    setAIQuery('');
-    setStreamData('');
-  };
+  }, [resetAI]);
 
-  const onCloseHandler = () => {
+  const onCloseHandler = useCallback(() => {
+    resetAI();
+    resetSearch();
     setAIMode(forceAIMode);
-    setAIQuery('');
-    setStreamData('');
-
-    setError(null);
-    setResults([]);
     setSearchQuery('');
-    setStatus('initial');
-
     onClose();
-  };
+  }, [forceAIMode, onClose, resetAI, resetSearch]);
 
-  const handleItemClick = (item: string) => {
+  const handleItemClick = useCallback((item: string) => {
     if (item === 'aiMode') {
       setAIMode(true);
     }
-  };
+  }, []);
 
-  const querySemanticSearch = async (query: string) => {
-    setError(null);
-    setStatus('loading');
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event?.preventDefault();
 
-    try {
-      const response = await fetch('/api/semanticsearch/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query,
-          completion: false,
-          threshold: 0.35,
-        }),
-      });
+      const form = event?.currentTarget
+        .elements as typeof event.currentTarget.elements & {
+        aisearch: { value: string };
+      };
 
-      if (!response.ok) {
-        setError({
-          status: response.status,
-          statusText: response.statusText,
-        });
-      }
+      if (!AIMode || form.aisearch.value === '') return;
 
-      const data = await response.json();
-      setResults(data);
-      setStatus('done');
-    } catch (_error) {}
-  };
+      submitQuery(form.aisearch.value);
+      form.aisearch.value = '';
+    },
+    [AIMode, submitQuery]
+  );
 
-  type ResponseData = {
-    answer: string;
-    sources: {
-      title: string;
-      url: string;
-    }[];
-  };
-
-  const queryCompletionSemanticSearch = async (query: string) => {
-    // Clear data
-    setError(null);
-    setStreamData('');
-    // Show query of the user at the top of the result card
-    setAIQuery(query);
-    // Set status to loading to show rotating border
-    setStatus('loading');
-
-    const response = await fetch('/api/semanticsearch/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query,
-        // @ts-ignore
-        mock: window.Cypress ? true : false,
-        threshold: 0.25,
-      }),
-      signal,
-    });
-
-    if (!response.ok || !response.body) {
-      setStatus('initial');
-      setError({
-        status: response.status,
-        statusText: response.statusText,
-      });
-      return;
-    }
-
-    let accumulatedText = '';
-    let latestObject: DeepPartial<ResponseData> | undefined = undefined;
-
-    await response.body.pipeThrough(new TextDecoderStream()).pipeTo(
-      new WritableStream({
-        async write(chunk) {
-          accumulatedText += chunk;
-
-          try {
-            const { value } = await parsePartialJson(accumulatedText);
-
-            const currentObject = value as DeepPartial<ResponseData>;
-
-            if (!deepEqual(latestObject, currentObject)) {
-              setStreamData(currentObject?.answer ?? '');
-              latestObject = currentObject;
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              setSources(currentObject?.sources ?? (undefined as any));
-            }
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error(
-              'Error parsing AI answer as JSON:',
-              error as Error,
-              JSON.stringify(accumulatedText),
-              '!!! Let Maxime know about it :) !!!'
-            );
-          }
-        },
-      })
-    );
-
-    setStatus('done');
-  };
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event?.preventDefault();
-
-    const form = event?.currentTarget
-      .elements as typeof event.currentTarget.elements & {
-      aisearch: { value: string };
-    };
-
-    if (!AIMode || form.aisearch.value === '') return;
-
-    setAIQuery(form.aisearch.value);
-
-    queryCompletionSemanticSearch(form.aisearch.value);
-    form.aisearch.value = '';
-  };
-
+  // Trigger search when debounced query changes
   useEffect(() => {
     if (debouncedSearchQuery && debouncedSearchQuery !== '') {
-      querySemanticSearch(debouncedSearchQuery);
+      search(debouncedSearchQuery);
     }
 
     if (debouncedSearchQuery === '') {
-      setResults([]);
-      setStatus('initial');
+      resetSearch();
     }
-  }, [debouncedSearchQuery]);
+  }, [debouncedSearchQuery, search, resetSearch]);
 
   useKeyboardShortcut('Escape', AIMode ? dismissAIMode : onCloseHandler);
+
+  // Screen reader announcement for search results
+  const getStatusAnnouncement = () => {
+    if (status === 'loading') {
+      return AIMode ? 'Generating AI response...' : 'Searching...';
+    }
+    if (status === 'done' && !AIMode && debouncedSearchQuery !== '') {
+      return `${results.length} ${results.length === 1 ? 'result' : 'results'} found`;
+    }
+    if (error) {
+      return `Error: ${error.statusText}`;
+    }
+    return '';
+  };
 
   return (
     <Dialog.Root
@@ -228,11 +177,21 @@ const Search = (props: Props) => {
     >
       <Dialog.Portal>
         <S.Backdrop data-testid="search-overlay" />
-        <S.Popup>
+        <S.Popup
+          role="search"
+          aria-label="Search dialog"
+          onKeyDown={handleKeyDown}
+        >
           <Dialog.Title render={<ScreenReaderOnly />}>Search</Dialog.Title>
           <Dialog.Description render={<ScreenReaderOnly />}>
             Search through blog posts or ask AI questions
           </Dialog.Description>
+
+          {/* Live region for status announcements */}
+          <ScreenReaderOnly aria-live="polite" aria-atomic="true">
+            {getStatusAnnouncement()}
+          </ScreenReaderOnly>
+
           <Flex
             css={{
               position: 'relative',
@@ -248,10 +207,8 @@ const Search = (props: Props) => {
               {AIMode ? (
                 <AIPromptResultCard
                   error={error}
-                  onQuestionSelect={(question) => {
-                    queryCompletionSemanticSearch(question);
-                  }}
-                  query={AIQuery}
+                  onQuestionSelect={submitQuery}
+                  query={aiQuery}
                   ref={resultCardRef}
                   sources={sources}
                   status={status}
@@ -278,7 +235,6 @@ const Search = (props: Props) => {
                         borderBottomLeftRadius: 'var(--border-radius-2)',
                         borderBottomRightRadius: 'var(--border-radius-2)',
                         transition: 'all 0.2s ease-in-out',
-
                         transform: `scale(${status === 'loading' ? 0.95 : 1})`,
                         opacity: status === 'loading' ? 0.8 : 1,
                       }
@@ -297,6 +253,8 @@ const Search = (props: Props) => {
                         data-testid="search-input"
                         id="search-input"
                         name="search"
+                        aria-label="Search blog posts"
+                        aria-describedby="search-status"
                         onChange={(
                           event: React.ChangeEvent<HTMLInputElement>
                         ) => {
@@ -305,7 +263,11 @@ const Search = (props: Props) => {
                         value={searchQuery}
                       />
                       <Label
+                        id="search-status"
+                        aria-live="polite"
                         style={{
+                          textAlign: 'right',
+                          paddingRight: '8px',
                           width: '120px',
                         }}
                       >
@@ -318,9 +280,15 @@ const Search = (props: Props) => {
                 </form>
               </S.FormWrapper>
               {debouncedSearchQuery !== '' ? (
-                <SearchResults results={results} onClose={onClose} />
+                <SearchResults
+                  ref={searchResultsRef}
+                  results={results}
+                  onClose={onClose}
+                  aria-busy={status === 'loading'}
+                />
               ) : (
                 <CommandCenterStatic
+                  ref={commandCenterRef}
                   collapse={AIMode}
                   onItemClick={handleItemClick}
                 />
