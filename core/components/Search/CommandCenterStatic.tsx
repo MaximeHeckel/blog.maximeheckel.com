@@ -7,7 +7,13 @@ import {
 } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-import { useEffect, useState, useCallback } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 
 import * as S from './Search.styles';
 import { MAX_HEIGHT } from './constants';
@@ -31,42 +37,43 @@ const items = [
   'rss-link',
 ];
 
+export interface CommandCenterNavigationRef {
+  previous: () => void;
+  next: () => void;
+  select: () => void;
+}
+
 interface CommandCenterStaticProps {
   collapse: boolean;
   onItemClick: (item: string) => void;
 }
 
-const CommandCenterStatic = (props: CommandCenterStaticProps) => {
+const CommandCenterStatic = forwardRef<
+  CommandCenterNavigationRef,
+  CommandCenterStaticProps
+>((props, ref) => {
   const { collapse, onItemClick } = props;
   const [hidden, setHidden] = useState(false);
 
-  const [
-    selectedResult,
-    previousResult,
-    nextResult,
-    // setSelectedResult,
-  ] = useIndexItem(items);
+  const [selectedResult, previousResult, nextResult] = useIndexItem(items);
 
-  const handleKey = useCallback(
-    (event: KeyboardEvent) => {
-      switch (event.key) {
-        case 'Enter':
-          (
-            document.getElementById(selectedResult)?.children[0] as HTMLElement
-          ).click();
-          break;
-        case 'ArrowUp':
-          event.preventDefault();
-          previousResult();
-          break;
-        case 'ArrowDown':
-          event.preventDefault();
-          nextResult();
-          break;
-        default:
-      }
-    },
-    [previousResult, nextResult, selectedResult]
+  const selectItem = useCallback(() => {
+    if (selectedResult) {
+      (
+        document.getElementById(selectedResult)?.children[0] as HTMLElement
+      )?.click();
+    }
+  }, [selectedResult]);
+
+  // Expose navigation methods to parent via ref
+  useImperativeHandle(
+    ref,
+    () => ({
+      previous: previousResult,
+      next: nextResult,
+      select: selectItem,
+    }),
+    [previousResult, nextResult, selectItem]
   );
 
   useEffect(() => {
@@ -76,14 +83,6 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
         ?.scrollIntoView({ block: 'nearest' });
     }
   }, [selectedResult]);
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKey);
-
-    return () => {
-      window.removeEventListener('keydown', handleKey);
-    };
-  }, [handleKey]);
 
   useEffect(() => {
     if (collapse) {
@@ -99,7 +98,7 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
     <motion.div
       initial={false}
       animate={{
-        height: collapse ? 0 : 468,
+        height: collapse ? 0 : MAX_HEIGHT,
       }}
       transition={{ ease: 'easeInOut' }}
       style={{
@@ -274,6 +273,8 @@ const CommandCenterStatic = (props: CommandCenterStaticProps) => {
       </div>
     </motion.div>
   );
-};
+});
+
+CommandCenterStatic.displayName = 'CommandCenterStatic';
 
 export { CommandCenterStatic };

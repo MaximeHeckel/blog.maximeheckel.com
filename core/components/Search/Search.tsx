@@ -6,14 +6,24 @@ import {
   useKeyboardShortcut,
 } from '@maximeheckel/design-system';
 import { AnimatePresence, motion } from 'motion/react';
-import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  FormEvent,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { ScreenReaderOnly } from '../ScreenReaderOnly';
 import AIPromptInput from './AIPromptInput';
 import AIPromptResultCard from './AIPromptResultCard';
-import { CommandCenterStatic } from './CommandCenterStatic';
+import {
+  CommandCenterNavigationRef,
+  CommandCenterStatic,
+} from './CommandCenterStatic';
 import * as S from './Search.styles';
-import SearchResults from './SearchResults';
+import SearchResults, { SearchResultsNavigationRef } from './SearchResults';
 import { useAICompletion } from './useAICompletion';
 import { useSemanticSearch } from './useSemanticSearch';
 
@@ -35,6 +45,10 @@ const Search = (props: Props) => {
   const formRef = useRef<HTMLFormElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const resultCardRef = useRef<HTMLDivElement>(null);
+
+  // Navigation refs for keyboard handling
+  const commandCenterRef = useRef<CommandCenterNavigationRef>(null);
+  const searchResultsRef = useRef<SearchResultsNavigationRef>(null);
 
   // Custom hooks for search and AI completion
   const {
@@ -58,6 +72,36 @@ const Search = (props: Props) => {
   // Derive combined status and error based on mode
   const status = AIMode ? aiStatus : searchStatus;
   const error = AIMode ? aiError : searchError;
+
+  // Handle keyboard navigation at dialog level (inside focus trap)
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLDivElement>) => {
+      // Don't handle if in AI mode (no navigation needed)
+      if (AIMode) return;
+
+      const navRef =
+        debouncedSearchQuery !== '' ? searchResultsRef : commandCenterRef;
+
+      switch (event.key) {
+        case 'ArrowUp':
+          event.preventDefault();
+          navRef.current?.previous();
+          break;
+        case 'ArrowDown':
+          event.preventDefault();
+          navRef.current?.next();
+          break;
+        case 'Enter':
+          // Only handle Enter if not focused on the search input
+          if ((event.target as HTMLElement).tagName !== 'INPUT') {
+            event.preventDefault();
+            navRef.current?.select();
+          }
+          break;
+      }
+    },
+    [AIMode, debouncedSearchQuery]
+  );
 
   const dismissAIMode = useCallback(() => {
     resetAI();
@@ -133,7 +177,11 @@ const Search = (props: Props) => {
     >
       <Dialog.Portal>
         <S.Backdrop data-testid="search-overlay" />
-        <S.Popup role="search" aria-label="Search dialog">
+        <S.Popup
+          role="search"
+          aria-label="Search dialog"
+          onKeyDown={handleKeyDown}
+        >
           <Dialog.Title render={<ScreenReaderOnly />}>Search</Dialog.Title>
           <Dialog.Description render={<ScreenReaderOnly />}>
             Search through blog posts or ask AI questions
@@ -218,6 +266,8 @@ const Search = (props: Props) => {
                         id="search-status"
                         aria-live="polite"
                         style={{
+                          textAlign: 'right',
+                          paddingRight: '8px',
                           width: '120px',
                         }}
                       >
@@ -231,12 +281,14 @@ const Search = (props: Props) => {
               </S.FormWrapper>
               {debouncedSearchQuery !== '' ? (
                 <SearchResults
+                  ref={searchResultsRef}
                   results={results}
                   onClose={onClose}
                   aria-busy={status === 'loading'}
                 />
               ) : (
                 <CommandCenterStatic
+                  ref={commandCenterRef}
                   collapse={AIMode}
                   onItemClick={handleItemClick}
                 />

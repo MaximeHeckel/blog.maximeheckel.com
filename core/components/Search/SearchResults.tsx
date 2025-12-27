@@ -1,12 +1,18 @@
 import { Flex, Icon } from '@maximeheckel/design-system';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle } from 'react';
 
 import * as S from './Search.styles';
 import { HEIGHT, MAX_HEIGHT } from './constants';
 import { Result as ResultType } from './types';
 import useIndexItem from './useIndexItem';
+
+export interface SearchResultsNavigationRef {
+  previous: () => void;
+  next: () => void;
+  select: () => void;
+}
 
 interface StaticSearchResultsProps {
   results: ResultType[];
@@ -14,7 +20,10 @@ interface StaticSearchResultsProps {
   'aria-busy'?: boolean;
 }
 
-const StaticSearchResults = (props: StaticSearchResultsProps) => {
+const StaticSearchResults = forwardRef<
+  SearchResultsNavigationRef,
+  StaticSearchResultsProps
+>((props, ref) => {
   const { results, onClose, 'aria-busy': ariaBusy } = props;
 
   const router = useRouter();
@@ -24,38 +33,27 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
 
   const handlePointer = (index: number) => setSelectedResult(index);
 
-  const handleKey = useCallback(
-    (event: KeyboardEvent) => {
-      switch (event.key) {
-        case 'Enter':
-          const href = selectedResult.url.replace(
-            'https://blog.maximeheckel.com',
-            ''
-          );
-          router.push(href).then(() => window.scrollTo(0, 0));
-          setTimeout(onClose, 600);
-          break;
-        case 'ArrowUp':
-          event.preventDefault();
-          previousResult();
-          break;
-        case 'ArrowDown':
-          event.preventDefault();
-          nextResult();
-          break;
-        default:
-      }
-    },
-    [selectedResult, router, onClose, previousResult, nextResult]
+  const selectItem = useCallback(() => {
+    if (selectedResult?.url) {
+      const href = selectedResult.url.replace(
+        'https://blog.maximeheckel.com',
+        ''
+      );
+      router.push(href).then(() => window.scrollTo(0, 0));
+      setTimeout(onClose, 600);
+    }
+  }, [selectedResult, router, onClose]);
+
+  // Expose navigation methods to parent via ref
+  useImperativeHandle(
+    ref,
+    () => ({
+      previous: previousResult,
+      next: nextResult,
+      select: selectItem,
+    }),
+    [previousResult, nextResult, selectItem]
   );
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKey);
-
-    return () => {
-      window.removeEventListener('keydown', handleKey);
-    };
-  }, [handleKey]);
 
   useEffect(() => {
     if (selectedResult) {
@@ -120,6 +118,8 @@ const StaticSearchResults = (props: StaticSearchResultsProps) => {
       </S.ResultList>
     </S.ResultListWrapper>
   );
-};
+});
+
+StaticSearchResults.displayName = 'StaticSearchResults';
 
 export default StaticSearchResults;
