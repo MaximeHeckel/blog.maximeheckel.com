@@ -2,8 +2,8 @@ import fs from 'fs';
 import GPT3Tokenizer from 'gpt3-tokenizer';
 import matter from 'gray-matter';
 
-const MAX_TOKEN = 256;
-const CHUNK_OVERLAP = 50; // ~20% overlap for better context continuity
+const MAX_TOKEN = 100;
+const CHUNK_OVERLAP = 10;
 
 // Remove JSX syntax from a string, preserving meaningful text like alt attributes
 function removeJSX(str) {
