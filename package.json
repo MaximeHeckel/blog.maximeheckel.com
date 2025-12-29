@@ -35,7 +35,7 @@
     "@ai-sdk/provider-utils": "^3.0.19",
     "@base-ui/react": "^1.0.0",
     "@codesandbox/sandpack-react": "2.19.10",
-    "@maximeheckel/design-system": "4.2.1",
+    "@maximeheckel/design-system": "4.2.3",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
     "@react-three/postprocessing": "^3.0.4",
