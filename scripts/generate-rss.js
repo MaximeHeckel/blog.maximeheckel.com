@@ -1,10 +1,11 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 /* eslint-disable no-console */
 import chalk from 'chalk';
-import fs from 'fs';
 import matter from 'gray-matter';
-import path from 'path';
 import RSS from 'rss';
-import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

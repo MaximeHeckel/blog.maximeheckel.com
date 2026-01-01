@@ -75,7 +75,7 @@ jobs:
           pnpm lint
       - name: Run prettier
         run: |
-          pnpm format
+          pnpm check-format
   type-check:
     runs-on: ubuntu-latest
     needs: install-cache

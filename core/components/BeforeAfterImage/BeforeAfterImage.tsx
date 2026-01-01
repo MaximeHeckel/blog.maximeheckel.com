@@ -117,7 +117,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
     return () => {
       unsubscribe();
     };
-  }, [, wiggleMotion]);
+  }, [wiggleMotion]);
 
   return (
     <figure>

@@ -14,7 +14,6 @@ import {
   ActionIcons,
   singleImage,
 } from './Styles';
-
 interface Props {
   tweet: NewTweet;
 }
@@ -174,7 +173,7 @@ const Tweet = (props: Props) => {
           })}
         </SingleImageWrapper>
       ) : null}
-      {!!quoted_tweet ? <Tweet tweet={{ ...quoted_tweet }} /> : null}
+      {quoted_tweet ? <Tweet tweet={{ ...quoted_tweet }} /> : null}
       <Flex alignItems="center" justifyContent="space-between" gap="2">
         <Flex>
           <ActionIcons

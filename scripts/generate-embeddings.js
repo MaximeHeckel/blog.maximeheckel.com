@@ -1,11 +1,13 @@
+import fs from 'fs';
+import path from 'path';
+
+import 'dotenv/config';
+import { fileURLToPath } from 'url';
+
 /* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
 import chalk from 'chalk';
-import 'dotenv/config';
-import fs from 'fs';
-import path from 'path';
 import ProgressBar from 'progress';
-import { fileURLToPath } from 'url';
 
 import processMdxFile from './process-mdx.js';
 

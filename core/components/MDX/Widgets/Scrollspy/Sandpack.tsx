@@ -121,7 +121,7 @@ const Article = () => {
   */
   React.useEffect(() => {
     const widgetElements = ids.map((item) =>
-      document.querySelector(\`section[id="\${item\}"]\`)
+      document.querySelector(\`section[id="\${item}"]\`)
     );
 
     setElements(widgetElements);

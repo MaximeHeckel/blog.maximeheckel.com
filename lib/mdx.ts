@@ -1,7 +1,8 @@
 import fs from 'fs';
+import path from 'path';
+
 import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
-import path from 'path';
 import readingTime from 'reading-time';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
