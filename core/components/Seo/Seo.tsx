@@ -29,7 +29,7 @@ const Seo = ({ title, desc, image, path, date, updated, seoTitle }: Props) => {
     image: image ? `${url}${image}` : configImage,
     title: seoTitle
       ? `${seoTitle} - ${configTitle}`
-      : `${title} - ${configTitle}` || configTitle,
+      : `${title} - ${configTitle}`,
     url: `${url}${path || ''}`,
     date: date,
     updated: updated || date,

@@ -1,5 +1,5 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "oxlint.enable": true,
+  "oxlint.configPath": "./oxlint.json",
+  "eslint.enable": false
 }

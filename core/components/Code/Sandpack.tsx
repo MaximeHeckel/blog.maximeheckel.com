@@ -293,7 +293,7 @@ const Sandpack = (props: SandpackProps) => {
         theme={theme}
         files={{
           ...files,
-          ...(defaultFilesByTemplate[template] ?? {}),
+          ...defaultFilesByTemplate[template],
         }}
         customSetup={{
           dependencies: dependencies || {},
