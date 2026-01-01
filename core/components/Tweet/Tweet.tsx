@@ -14,7 +14,6 @@ import {
   ActionIcons,
   singleImage,
 } from './Styles';
-
 interface Props {
   tweet: NewTweet;
 }

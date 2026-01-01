@@ -6,8 +6,8 @@
     "no-console": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-require-imports": "off",
+    "typescript/ban-ts-comment": "off",
+    "typescript/no-require-imports": "off",
     "triple-slash-reference": "allow",
     "no-unused-vars": [
       "error",

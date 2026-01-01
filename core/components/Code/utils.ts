@@ -4,7 +4,7 @@ import { JSXElementConstructor, ReactElement } from 'react';
 import { PrePropsType } from './types';
 
 export const preToCodeBlock = (preProps: PrePropsType) => {
-  const children = preProps.children as  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const children = preProps.children as // eslint-disable-next-line @typescript-eslint/no-explicit-any
     | ReactElement<any, string | JSXElementConstructor<any>>
     | undefined;
 

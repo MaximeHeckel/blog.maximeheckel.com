@@ -1,5 +1,5 @@
-import { styled } from '@maximeheckel/design-system';
 import { Dialog } from '@base-ui/react/dialog';
+import { styled } from '@maximeheckel/design-system';
 
 export const Backdrop = styled(Dialog.Backdrop, {
   position: 'fixed',

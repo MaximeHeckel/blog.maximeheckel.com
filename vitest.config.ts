@@ -1,7 +1,7 @@
-/// <reference types="vitest" />
-import react from '@vitejs/plugin-react';
 import path, { resolve } from 'path';
 import { fileURLToPath } from 'url';
+
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 
 const __filename = fileURLToPath(import.meta.url);

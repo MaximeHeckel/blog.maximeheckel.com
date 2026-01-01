@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "printWidth": 80,
+  "experimentalSortImports": {
+    "groups": [
+      "builtin",
+      "external",
+      "internal",
+      ["parent", "sibling", "index"]
+    ],
+    "internalPattern": ["@core/"],
+    "newlinesBetween": true,
+    "ignoreCase": false,
+    "order": "asc"
+  },
+  "ignorePatterns": [
+    ".cache",
+    "package.json",
+    "package-lock.json",
+    "public",
+    "node_modules",
+    ".next",
+    "coverage/**",
+    "yarn.lock",
+    "pnpm-lock.yaml",
+    "content/**"
+  ]
+}

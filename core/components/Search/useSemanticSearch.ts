@@ -94,4 +94,3 @@ const useSemanticSearch = (
 
 export { useSemanticSearch };
 export type { UseSemanticSearchReturn };
-

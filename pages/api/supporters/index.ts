@@ -1,6 +1,7 @@
 import fs from 'fs';
-import { NextApiRequest, NextApiResponse } from 'next';
 import path from 'path';
+
+import { NextApiRequest, NextApiResponse } from 'next';
 import { Supporter } from 'types/supporter';
 
 function parseCSV(csvContent: string): Supporter[] {

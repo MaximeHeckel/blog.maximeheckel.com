@@ -1,3 +1,4 @@
+import { Dialog } from '@base-ui/react/dialog';
 import {
   Box,
   keyframes,
@@ -5,7 +6,6 @@ import {
   styled,
   Text,
 } from '@maximeheckel/design-system';
-import { Dialog } from '@base-ui/react/dialog';
 import { motion } from 'motion/react';
 
 import { HEIGHT, MAX_HEIGHT } from './constants';
