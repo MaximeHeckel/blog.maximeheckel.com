@@ -5,7 +5,9 @@ export type SliderProps = {
   step?: number;
   onChange: (value: number) => void;
   value: number;
+  labelValue?: string;
   defaultValue?: number;
+  hideDots?: boolean;
   disabled?: boolean;
   label?: string;
   size?: 'sm' | 'md';

@@ -220,6 +220,44 @@ const ThresholdVisualizer = dynamic(
   () => import('./Widgets/PostProcessing/ThresholdVisualizer')
 );
 
+const GridDotsDemo = dynamic(() =>
+  import('./Widgets/Halftone/GridDotsDemo').then((mod) => mod.GridDotsDemo)
+);
+
+const MoireDemo = dynamic(() =>
+  import('./Widgets/Halftone/MoireDemo').then((mod) => mod.MoireDemo)
+);
+
+const RingDemo = dynamic(() =>
+  import('./Widgets/Halftone/RingDemo').then((mod) => mod.RingDemo)
+);
+
+const CMYKHalftoneDemo = dynamic(() =>
+  import('./Widgets/Halftone/CMYKHalftoneDemo').then(
+    (mod) => mod.CMYKHalftoneDemo
+  )
+);
+
+const GooeyDemo = dynamic(() =>
+  import('./Widgets/Halftone/GooeyDemo').then((mod) => mod.GooeyDemo)
+);
+
+const PatternDemo = dynamic(() =>
+  import('./Widgets/Halftone/PatternDemo').then((mod) => mod.PatternDemo)
+);
+
+const SimpleGridDemo = dynamic(() =>
+  import('./Widgets/Halftone/SimpleGridDemo').then((mod) => mod.SimpleGridDemo)
+);
+
+const ColorBlending = dynamic(() =>
+  import('./Widgets/Halftone/ColorBlending').then((mod) => mod.ColorBlending)
+);
+
+const Reflectance = dynamic(() =>
+  import('./Widgets/Halftone/Reflectance').then((mod) => mod.Reflectance)
+);
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -282,6 +320,8 @@ const ParticleCompute = dynamic(
 
 const TSLWebGPUSandpack = dynamic(() => import('./Widgets/TSLWebGPU/Sandpack'));
 
+const HalftoneSandpack = dynamic(() => import('./Widgets/Halftone/Sandpack'));
+
 const Slideshow = dynamic(() => import('../Slideshow'));
 
 const customComponents = {
@@ -338,6 +378,15 @@ const customComponents = {
   SimpleCompute,
   EffectCompute,
   ParticleCompute,
+  GridDotsDemo,
+  MoireDemo,
+  RingDemo,
+  CMYKHalftoneDemo,
+  GooeyDemo,
+  PatternDemo,
+  SimpleGridDemo,
+  ColorBlending,
+  Reflectance,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
@@ -360,6 +409,7 @@ const customComponents = {
   PostProcessingSandpack,
   VolumetricLightingSandpack,
   TSLWebGPUSandpack,
+  HalftoneSandpack,
 };
 
 const MDXComponents = {

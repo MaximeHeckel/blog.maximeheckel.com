@@ -9,7 +9,7 @@ export const SliderRoot = styled(Slider.Root, {
   touchAction: 'none',
   width: '100%',
   overflow: 'clip',
-  backdropFilter: 'blur(24px)',
+  backgroundColor: 'oklch(from var(--gray-900) l c h / var(--opacity, 0.3))',
   cursor: 'grab',
 
   '&:active': {

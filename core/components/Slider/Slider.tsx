@@ -6,7 +6,14 @@ import {
   useSpring,
   useTransform,
 } from 'motion/react';
-import { useCallback, useEffect, useId, useMemo, useRef } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   Control,
@@ -29,7 +36,9 @@ const Slider = (props: SliderProps) => {
     value,
     defaultValue,
     disabled,
+    hideDots,
     label,
+    labelValue,
     size = 'md',
   } = props;
 
@@ -59,6 +68,9 @@ const Slider = (props: SliderProps) => {
     left: null,
     right: null,
   });
+
+  // State to trigger useMemo recalculation after bounds are computed
+  const [boundsReady, setBoundsReady] = useState(false);
 
   // Motion values for transforms
   const scaleX = useMotionValue(1);
@@ -251,6 +263,8 @@ const Slider = (props: SliderProps) => {
             width: rightRect.width,
           } as DOMRect,
         };
+
+        setBoundsReady(true);
       }
     };
 
@@ -281,6 +295,7 @@ const Slider = (props: SliderProps) => {
   const PADDING_OPACITY = 16;
 
   const isValueIntersectsLeftLabel = useMemo(() => {
+    if (!boundsReady) return false;
     if (!labelBoundsRef.current.left) return false;
     if (!sliderElementRef.current) return false;
     const valueToPositionInPixel =
@@ -293,9 +308,10 @@ const Slider = (props: SliderProps) => {
       valueToPositionInPixel <
         labelBoundsRef.current.left.right + PADDING_OPACITY
     );
-  }, [MAX_VALUE, MIN_VALUE, value]);
+  }, [MAX_VALUE, MIN_VALUE, value, boundsReady]);
 
   const isValueIntersectsRightLabel = useMemo(() => {
+    if (!boundsReady) return false;
     if (!labelBoundsRef.current.right) return false;
     if (!sliderElementRef.current) return false;
     const valueToPositionInPixel =
@@ -308,7 +324,7 @@ const Slider = (props: SliderProps) => {
       valueToPositionInPixel >
         labelBoundsRef.current.right.left - PADDING_OPACITY
     );
-  }, [MAX_VALUE, MIN_VALUE, value]);
+  }, [MAX_VALUE, MIN_VALUE, value, boundsReady]);
 
   return (
     <SliderRoot
@@ -343,7 +359,6 @@ const Slider = (props: SliderProps) => {
         />
       }
     >
-      <GlassMaterial style={{ '--opacity': 0.205 } as React.CSSProperties} />
       <Control size={size}>
         <Track>
           <Indicator
@@ -369,7 +384,12 @@ const Slider = (props: SliderProps) => {
               >
                 <GlassMaterial
                   border={false}
-                  style={{ '--opacity': 0.205 } as React.CSSProperties}
+                  style={
+                    {
+                      zIndex: 'unset !important',
+                      backdropFilter: 'unset !important',
+                    } as React.CSSProperties
+                  }
                 />
               </motion.div>
             }
@@ -378,7 +398,7 @@ const Slider = (props: SliderProps) => {
           <Thumb />
         </Track>
       </Control>
-      {shouldRenderStepsDots ? (
+      {shouldRenderStepsDots && !hideDots ? (
         <SliderStepsDots aria-hidden="true">
           {Array.from({
             length: Math.floor((MAX_VALUE - MIN_VALUE) / STEP_SIZE) + 1,
@@ -399,13 +419,12 @@ const Slider = (props: SliderProps) => {
                   backgroundColor: 'hsla(0, 0%, 100%, 0.3)',
                   borderRadius: '9999px',
                   transition: 'opacity 0.15s ease-in-out',
-                  willChange: 'opacity',
                 }}
                 style={{
                   opacity:
                     stepValue === value ||
-                    stepValue < MIN_VALUE + 0.15 * (MAX_VALUE - MIN_VALUE) ||
-                    stepValue > MIN_VALUE + 0.9 * (MAX_VALUE - MIN_VALUE)
+                    stepValue < MIN_VALUE + 0.3 * (MAX_VALUE - MIN_VALUE) ||
+                    stepValue > MIN_VALUE + 0.8 * (MAX_VALUE - MIN_VALUE)
                       ? 0
                       : 1,
                 }}
@@ -435,7 +454,7 @@ const Slider = (props: SliderProps) => {
           weight="4"
           ref={rightLabelRef}
         >
-          {value}
+          {labelValue ? labelValue : value.toFixed(2)}
         </Text>
       </SliderLabel>
     </SliderRoot>

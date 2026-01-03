@@ -1,0 +1,696 @@
+---
+title: 'Shades of Halftone'
+subtitle: TBD
+date: '2026-02-10T08:00:00.000Z'
+updated: '2026-02-10T08:00:00.000Z'
+categories: []
+slug: shades-of-halftone
+type: 'blogPost'
+featured: false
+---
+
+There has recently been a newfound excitement for pattern-based post-processing 
+effects all over my timeline, as softwares such as [Paper](https://paper.design/), [Efecto](https://efecto.app/), or [Unicorn Studio](https://www.unicorn.studio/) 
+are democratizing the use of shaders for both designers and developers. While some of these patterns originated as *workarounds* due to technical limitations we have since overcome, they now serve as an artistic direction to create distinct designs with self-imposed constraints.
+
+One of those effects that kept coming back over and over again is **halftone**, the classic dot pattern, arranging dots of different sizes in a grid to give the optical illusion of a gradient of color to the observer. This technique was originally used to print images with limited ink colors; today, it is more a versatile artistic tool used [across media](https://www.youtube.com/watch?v=kIhb5pEo_j0)
+and the web to give some kind of texture or grain to digital outputs. I personally find this effect *very* interesting, as it is inherently simple to implement in its classic form, but can quickly scale to some complex and intricate visuals.
+
+// VIDEO
+
+I’ve dedicated a lot of time over the past few months to trying the different flavors that 
+halftone can take and overlaying them on top of static images, videos, or interactive 3D scenes as shaders. 
+**Simple dots on a grid**, **ink splatters**, **grids overlapping at an angle yielding some Moiré effects**, **blending colors in interesting ways**, **breaking the grid**, etc. 
+I even tried my hand at seeing **how halftone could be animated** in a fun yet meaningful way. Every single one of these variants had its own interesting implementation details/shading techniques and aesthetic that I felt were worth writing about and breaking down to make building and designing with halftone more approachable.
+
+<SupportCallout />
+
+## Behind the Dot Pattern
+
+I explored several optical illusions and “trompe l’oeil” post-processing effects in [Post-Processing Shaders as a Creative Medium](/posts/post-processing-as-a-creative-medium/) that create the illusion of texture or material, like woven crochet or glass. Halftone is, funnily enough, not so different as it is inherently an optical illusion itself.
+
+The effect creates the impression of continuous/smooth tones, much like dithering, by providing a high-frequency grid of dots. Because these dots can be smaller than the **eye's spatial resolution**, the brain ends up performing **a spatial average of the pattern**. Thus, past a certain dot radius, we stop seeing individual dots composing the grid and instead *see* the **ratio of 'ink' to 'empty space'** as smooth tones.
+
+We will use those characteristics to guide and break down our implementation of halftone as a shader with GLSL.
+
+### Rendering a grid of dots
+
+To ensure this article is as approachable as possible to beginners, we’re going to build this effect from the ground up, starting with its most fundamental pieces. The first step is, as you may expect, to render a single dot or circle using GLSL and UV coordinates.
+
+<Image
+  src="blog/mask-halftone.png"
+  alt="Diagram breaking down the distance field and masking aspect of drawing a circle in a fragment shader"
+  width={663}
+  height={399}
+/>
+
+The diagram above illustrates the two key aspects of drawing a circle in a fragment shader:
+
+1. A distance `d` that represents the distance to the center point `{0.5, 0.5}` of our UV coordinate system. The results this yield is also called as a **distance field**
+2. A mask, a threshold from which we decide what is in the dot, and what is outside.
+
+```glsl title=Circle shader
+float dist = length(cellUv - 0.5);
+float circle = step(0.35, dist);
+
+vec3 color = mix(vec3(1.0), vec3(0.0), circle);
+```
+
+By adjusting the mask function, we can also choose whether we prefer a softer or more defined result.
+
+```glsl title=Softer circle shader
+float dist = length(cellUv - 0.5);
+float circle = smoothstep(0.32, 0.37, dist);
+
+vec3 color = mix(vec3(1.0), vec3(0.0), circle);
+```
+
+With that, we now have the fundamental shape for our halftone effect and can focus on its second main characteristic, **the grid**. In GLSL, a grid can be achieved via the `fract` <FootnoteRef id="1" /> function, which returns the fractional part of its number argument:
+
+- `fract(1.1)` returns `0.1`
+- `fract(0.9)` returns `0.9` 
+- `fract(20.3)` returns `0.3`
+
+Essentially, it is equivalent to doing `mod(x, 1)`, which returns any number after the floating point of `x`. Of course, if we just do `fract(uv)`, nothing will change, since our UVs are already defined within the standard `0.0 → 1.0` range. 
+What we need to do first is **scale our UV coordinates by multiplying them by our grid size**, and then use the scaled UVs as an argument for `fract`, which will result in our fragment shader tiling. The diagram below showcases our UV coordinates before and after tiling.
+
+<Image
+  src="blog/cell-halftone.png"
+  alt="Diagram showcasing the process of repeating patterns in a fragment shader using the fract function"
+  width={663}
+  height={354}
+/>
+
+Notice how we now have multiple *cells*, each with their own UV coordinates ranging from `0.0 -> 1.0` and essentially running the same fragment shader. If we combine this with our circle code from above, each of these cell will draw its own circle, thus giving us our grid of dots!
+
+
+The widget below lets you:
+
+* Scale up and down the grid.
+* Scale up and down the scale of the radius.
+
+while also displaying some variation in dot size, so you can start seeing the halftone effect at play with this very simple example.
+
+<SimpleGridDemo />
+
+### Applying Halftone
+
+While playing with dot radii can yield some beautiful patterns, one of the main appeals of halftone is to apply it as a *filter* on top of a 3D scene, image, or video. The result comes with a loss of details from the underlying media, but what we obtain in return is a kind of microtexture that fills in empty spaces with interesting shapes where we’d normally see flat colors.
+
+If we simply apply the grid of dots from the previous section as a filter and color the dots based on the sampled pixels at that position, we’re only going to see a simple *mask*. To achieve a true halftone effect, we need to process our underlying texture first by **pixelating** it in such a way that it matches 1:1 our grid of dots.
+
+<Callout variant="info" label="Pixels">
+
+I already touched upon the topic of pixelization in [Post-processing as a creative medium](/posts/post-processing-as-a-creative-medium/#intricate-pixel-patterns). The process and code remain the same here!
+
+```glsl title=Pixelization 
+vec2 normalizedPixelSize = pixelSize / resolution;
+vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
+
+vec4 color = texture2D(inputBuffer, uvPixel);
+```
+
+</Callout>
+
+An interesting aspect of this pixelization logic is how we rely on the `floor` function to define our `pixelatedUV` coordinates. This function removes the decimals of our UV coordinates, the opposite effect of `fract`, and thus ensures that each pixel within a given cell samples the same color, thus resulting in a pixelated look and feel for our texture. 
+
+```glsl title=Regular halftone grid
+vec2 uv = vUv;
+vec2 normalizedPixelSize = uPixelSize / uResolution;
+vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
+
+vec4 color = texture(inputBuffer, uvPixel);
+
+vec2 cellUv = fract(uv / normalizedPixelSize);
+float dist = length(cellUv - 0.5);
+
+float circle = smoothstep(uRadius - 0.01, uRadius + 0.01, dist);
+
+color = mix(color, vec4(0.0, 0.0, 0.0, 1.0), circle);
+```
+
+<PatternDemo />
+
+Of course, there’s still something missing here from our original definition of halftone, the variation of dot size! We can implement this easily by using the luma of a given pixel, and tweak the radius based on its value.
+
+```glsl {6-7} title=Luma-based halftone grid
+vec2 uv = vUv;
+vec2 normalizedPixelSize = uPixelSize / uResolution;
+vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
+
+vec4 color = texture(inputBuffer, uvPixel);
+float luma = dot(vec3(0.2126, 0.7152, 0.0722), color.rgb);
+float radius = uRadius * (0.1 + luma);
+
+vec2 cellUv = fract(uv / normalizedPixelSize);
+float dist = length(cellUv - 0.5);
+
+float circle = smoothstep(radius - 0.01, radius + 0.01, dist);
+
+color = mix(color, vec4(0.0, 0.0, 0.0, 1.0), circle);
+```
+
+Moreover, if we wanted to display a grayscale version of our halftone, we could also do so using that same value. The widget below showcases the colored, black and white, and grayscale variants.
+
+<PatternDemo allControls/>
+
+<Callout variant="info">
+
+Notice how the variant where the dot size is adjusted based on luma makes the pattern from the original texture more noticeable as it increases contrast.
+
+</Callout>
+
+More interesting variants of halftone can be achieved by introducing a **grid offset**, thus staggering the dots instead of having them perfectly aligned. This allows for a higher density of dots in our pattern, reducing the amount of white space. This offset is defined by tweaking our UVs, thus propagating it not only in how we lay down our dots but also how we sample our texture and pixelize it.
+
+```glsl {5-8} title=Grid UV offset
+vec2 uv = vUv;
+vec2 normalizedPixelSize = pixelSize / resolution;
+vec2 offsetUv = uv;
+
+float rowIndex = floor(uv.y / normalizedPixelSize.y);
+if (offset && mod(rowIndex, 2.0) == 1.0) {
+    offsetUv.x += normalizedPixelSize.x * 0.5;
+}
+
+vec2 uvPixel = normalizedPixelSize * floor(offsetUv / normalizedPixelSize);
+vec4 color = texture2D(inputBuffer, uvPixel);
+
+//...
+```
+
+The playground below implements this on top of a React Three Fiber 3D scene, thus letting you not only explore this variant alongside all the 
+others we’ve seen so far but also play with many of the settings over a dynamic scene where I think halftone shines the most: over organic-moving objects, bringing a lovely contrasting aesthetic to the scene.
+
+<HalftoneSandpack scene="scene1" />
+
+### Not just dots
+
+When the Paper team announced their halftone presets, back in November 2025, they showcased a lot of halftone variants I had not seen before. It turns out that circles are just a part of the wide spectrum of halftone patterns available, and we can allow ourselves to tweak the original definition of the effect with what I dubbed *“dot adjacent”* shapes. 
+
+
+<StaticTweet id="1993021342413991987" />
+
+The first one we can take a look at is directly inspired by the video featured in the tweet above: dots and squares, which is a combination of:
+
+- The classic dot pattern we implemented already
+- An inverted pattern where we can find white dots inside colored pixels. The darker the underlying pixel, the bigger the white dot.
+
+<Fullbleed widthPercent={60}>
+<Image
+  src="blog/luma-halftone.png"
+  alt="Diagram showcasing the white dot halftone pattern based on the luma of the underlying cell color"
+  width={663}
+  height={300}
+/>
+</Fullbleed>
+
+
+Those two patterns complement each other very well, and can be mixed and matched based on luma, as showcased in the demo below:
+
+- A darker pixel would yield a “square with white dot.”
+- A lighter pixel would yield a standard dot.
+
+This has the effect of preserving much more of the original texture while still making the brighter parts of it standard halftone. 
+
+We can also choose to go all in one of the patterns as showcased below, where I overlaid the different patterns on top of a video so we can see the effect at play on a subtly dynamic media:
+
+// WIDGET TODO
+
+Another type of halftone I found interesting to highlight is the **ring variant**. I originally got inspired some of the work of <Anchor href="https://twitter.com/poetengineer__" favicon discreet>@poetengineer__</Anchor> who made some beautiful uncommon halftone renders:
+
+<StaticTweet id="1969942408399065239" />
+
+Making a ring is actually simpler than it looks: we just need to define two circles, and combine them using an `A AND NOT B` combinatory logic.
+
+<Image
+  src="blog/ring-halftone.png"
+  alt="Diagram illustrating an arbitrary set of nodes for a given material and a representation of the data they can override."
+  width={663}
+  height={558}
+/>
+
+```glsl {8-9,11} title=Ring shader
+//...
+
+float radius = uRadius * (0.2 + luma);
+
+float ringThickness = 0.1;
+float innerRadius = radius - ringThickness;
+
+float outerCircle = smoothstep(radius - 0.01, radius + 0.01, dist);
+float innerCircle = smoothstep(innerRadius - 0.01, innerRadius + 0.01, dist);
+
+float ring = innerCircle * (1.0 - outerCircle);
+
+color = mix(vec4(0.0, 0.0, 0.0, 1.0), color, ring);
+```
+
+Applying this effect to a video with a monochromatic palette yields a 'technical/low-res' aesthetic, almost terminal-like,  unlike the more in-your-face and high contrast big bright dots of your standard halftone variant.
+
+<RingDemo />
+
+<Callout variant="info" label="Antialiasing">
+
+You may notice that on displays with a high device pixel ratio, your circles may appear a bit blurry or *mushy*. This is mostly due to aliasing. To fix this, and as you may have seen in a couple of my examples already, we can opt to use smoothstep instead of step to introduce a tiny bit of fading over a narrow window.
+
+<Image
+  src="blog/antialias.png"
+  alt="Diagram illustrating a simple antialiasing process using smoothstep to blur the edges of a circle and make its edge softer"
+  width={663}
+  height={357}
+/>
+
+While this works well on most displays, we may still end up with circles that are too sharp or too blurry, and finding the right edge value to fit all our displays may be challenging. To make our antialiasing resolution agnostic, we can use the `fwidth` function, which tells us *how much the UV value changes from one pixel to the next* <FootnoteRef id="2" />
+
+</Callout>
+
+## Multichannel Halftoning and Interferences
+
+Until now, we have considered the case of a monochromatic halftone, where the tones are defined by the concentration of dots in a single grid. We also tried our hand at “colored” halftone, but we were merely picking up colors from the underlying texture/media and not really pushing the optical illusion of this effect to its full extent.
+
+Indeed, instead of treating halftone as a simple grid, we can also view it as **a stack of grids**, **where each layer corresponds to a specific color channel of the underlying image**. We can derive our layers defined through the Red, Green, and Blue color channels for an RGB look, or Cyan, Magenta, Yellow, and Key for a classic CMYK printing finish. This technique will expand what we can do with regard to building halftone shaders, but it will also come at a cost of visual artifacts and interference, which we must first understand to work around them.
+
+### Moiré Pattern
+
+You may have encountered Moiré patterns in your renders from time to time when experimenting with overlapping repeating patterns. This type of interference manifests when two almost identical patterns are overlaid on top of each other <FootnoteRef id="3" />. By *almost identical*, here I mean:
+
+- They could not be completely identical, for example, different frequencies.
+- They could be identical, but need to be displaced or rotated.
+
+t occurs in both physical and digital media alike, and is yet another optical illusion / perception artifact due to our brain trying to reconcile the intersection of two competing patterns.
+
+<Callout variant="info" label="Examples">
+
+You can find many examples of Moiré effects on [Shadertoy](https://www.shadertoy.com/results?query=moir%C3%A9). As you can see, they come in many shapes and forms.
+
+</Callout>
+
+The widget below demonstrates this effect on very simple examples for you to try:
+- We have a version where two grids are stacked on top of each other. Rotating one will cause quite a few interferences.
+- The other example consists of a two stacked Poisson distribution, where the slightest rotation reveals circular interferences.
+
+<MoireDemo />
+
+The GLSL implementation is rather straightforward and can serve you as a base for your own Moiré-like experiences.
+
+```glsl {12,31-32} title=Moiré pattern shader
+mat2 rotate(float angle) {
+  float s = sin(angle);
+  float c = cos(angle);
+  return mat2(c, -s, s, c);
+}
+
+float circleGrid(vec2 uv, float radius, float angle) {
+  vec2 normalizedPixelSize = uPixelSize / uResolution;
+  
+  // Apply rotation to UV before calculating cell
+  vec2 uvPx = uv * uResolution;
+  vec2 rotatedPx = rotate(angle) * uvPx;
+  vec2 rotatedUv = rotatedPx / uResolution;
+  
+  vec2 cellUv = fract(rotatedUv / normalizedPixelSize);
+  float dist = length(cellUv - 0.5);
+
+  float edgeWidth = fwidth(dist);
+
+  float circle = smoothstep(radius - edgeWidth, radius + edgeWidth, dist);
+
+  return circle;
+}
+
+void main() {
+  vec2 uv = vUv;
+  
+  float circleGridA = circleGrid(uv, uRadius, 0.0)
+  float circleGridB = circleGrid(uv, uRadius, radians(uAngle))
+
+  vec3 colorA = mix(vec3(1.0), vec3(0.0), circleGridA);
+  vec3 colorB = mix(vec3(1.0), vec3(0.0), circleGridB);
+
+  fragColor = vec4(max(colorA, colorB), 1.0);
+}
+```
+
+This will inevitably occur in the example of this section of the article, as we will start building multichannel halftoning. The artifact can be embraced or seen as an issue to mitigate, as the printing industry often does by applying workarounds. Such a solution simply consists of **applying specific rotations to each individual layer**, thus reducing the interference to a minimum. We will see this technique in action in our upcoming implementation of CMYK halftone.
+
+### Digital vs Physical color blending
+
+The main use case for our multichannel implementation of halftone is for each layer to hold a specific color channel and blend into one another, **reproducing the optical mixing found in physical print**. We can opt for layers representing either:
+
+- RGB for a more digital-like render.
+- CMYK for a more physical look.
+
+However, the blending of these two color models differs:
+
+* The former one is based on the *addition* of light starting from a black display. The red, blue, and green color channels add up to white.
+* The latter, on the *subtraction* of color from light being absorbed, starting from a white paper. The cyan, magenta, and yellow “inks” filter the light hitting them. The more of them overlap, the darker the resulting tone as light gets further filtered, eventually reaching black.
+
+We can see this firsthand below, where I reproduce the RGB and CMY color blending variants on HTML canvases.
+
+<ColorBlending />
+
+Mathematically speaking, this is what is happening. For the RGB variant, we’re simply adding the color intensity of each channel, i.e., 
+`ColorOut = (Ir, 0, 0) + (0, Ig, 0) + (0, 0, Ib)`. Adding/composing color channels is something we do quite often in GLSL for several effects like [refraction, or dispersion](/posts/refraction-dispersion-and-other-shader-light-effects/). As the values approach `1.0`, their combination tends towards `(1.0, 1.0, 1.0)`, i.e., white, which is represented in the chart below:
+
+<Reflectance mode="RGB" />
+
+<Callout variant="info">
+
+This is the main reason why color mixing, digitally speaking, doesn’t happen like in real life. We do not get green by mixing yellow and blue colors of equivalent intensity; we get gray <FootnoteRef id="4"/> as `0.5 * [0, 0, 1] + 0.5 * [1, 1, 0] = [0.5, 0.5, 0.5]` 
+
+</Callout>
+
+For CMY subtractive blending, which mathematically is a bit of a misnomer, it can be represented through a multiplication: 
+`ColorOut = White * (1.0 - C) * (1.0 - M) * (1.0 - Y)`. The *subtractive* nature of this blending  refers to the physics of light absorption: each color channel acts as a filter that absorbs specific wavelengths from white light, only to leave the leftovers to the viewer. That’s why overlapping all the color channels results in black.
+
+<Fullbleed widthPercent={70}>
+<Image
+  src="blog/subtractive-blending.png"
+  alt="Diagram showcasing subtractive color blending for cyan, magenta, yellow, and all the pairs they can form"
+  width={663}
+  height={156}
+/>
+</Fullbleed>
+
+The chart below represents the reflectance profile of cyan, magenta, and yellow across the visible spectrum, as well as the resulting filter:
+
+<Reflectance />
+
+Notice how the resulting color for the blending corresponds to **the overlapping area shared by all the curves**.
+
+### CMYK halftone
+
+The halftone variant we’re about to look at is perhaps the main reason I wrote the article in the first place. I originally got inspired by some of the work of <Anchor discreet favicon href="https://twitter.com/floguo">@floguo</Anchor> who produced some renders where this pattern really shone.
+
+<StaticTweet id="1960597589553811829" />
+
+This intrigued me, so I tried my hand at reproducing a shader for it, which nerd-snipped me and led me to learn a lot about color blending, Moiré, and halftone in general. Since, to build this effect, we’d need to overlay 4 distinct grids of dots, doing so naively would immediately give us some Moiré patters and make the colors a bit *washed out*. Instead, we need to rotate each layer at a specific angle set of angles to yield an image with as few artifacts as possible. The widget below reproduces the CMYK halftone variant with preset angle values of:
+
+* `15.0` for cyan
+* `75.0` for magenta
+* `0.0` for yellow
+* `45.0` for key
+
+I recommend playing with the angle values and dot density to see the differences in output.
+
+<CMYKHalftoneDemo />
+
+As you can see above, the size of the individual dots varies based on the underlying sampled color. With just these 4 colors and the ability to tweak their density, we can obtain any type of shade.
+
+<Image
+  src="blog/cmyk-halftone.png"
+  alt="Diagram showcasing the breakdown of red, green, and blue with CMYK dots"
+  width={663}
+  height={428}
+/>
+
+Implementation-wise, we can work on top of our classic halftone base. However, we’d first need to convert our sampled color from RGB to CMYK. I used a function from [Matt DesLauriers](https://www.mattdesl.com/) to do so:
+
+```glsl title=RGB to CMYK
+vec4 RGBtoCMYK (vec3 rgb) {
+  float r = rgb.r;
+  float g = rgb.g;
+  float b = rgb.b;
+  float k = min(1.0 - r, min(1.0 - g, 1.0 - b));
+  vec3 cmy = vec3(0.0);
+  
+  float invK = 1.0 - k;
+
+  if (invK != 0.0) {
+    cmy.x = (1.0 - r - k) / invK;
+    cmy.y = (1.0 - g - k) / invK;
+    cmy.z = (1.0 - b - k) / invK;
+  }
+
+  return clamp(vec4(cmy, k), 0.0, 1.0);
+}
+```
+
+Then, we can generate our grid of dots for each individual channel, and have the coverage/radius of their dots match the intensity of that color channel at that given position on screen.
+
+```glsl {8,11,25-28} title=CMYK Halftone grids
+float halftoneDot(vec2 uvScreen, float angleDeg, float coverage) {
+  float effectiveDotDensity = (min(resolution.x, resolution.y) / pixelSize);
+  
+  float minRes = min(resolution.x, resolution.y);
+  float scale = effectiveDotDensity / minRes;
+  vec2 uv = uvScreen * scale;
+
+  uv = rot(angleDeg) * uv;
+
+  vec2 gv = fract(uv) - 0.5;
+  float r = dotSize * sqrt(clamp(coverage, 0.0, 1.0));
+  
+  float aa = fwidth(length(gv));
+  float d = length(gv);
+  float ink = 1.0 - smoothstep(r - aa, r + aa, d);
+  return ink;
+}
+
+void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
+  vec2 normalizedPixelSize = pixelSize / resolution;
+  vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
+  vec3 base = texture2D(inputBuffer, uvPixel).rgb;
+  vec4 cmyk = RGBtoCMYK(base);
+      
+  float dotC = halftoneDot(gl_FragCoord.xy, ANGLE_C, cmyk.x);
+  float dotM = halftoneDot(gl_FragCoord.xy, ANGLE_M, cmyk.y);
+  float dotY = halftoneDot(gl_FragCoord.xy, ANGLE_Y, cmyk.z);
+  float dotK = halftoneDot(gl_FragCoord.xy, ANGLE_K, cmyk.w);
+  
+  vec3 outColor = vec3(1.0);
+  outColor.r *= (1.0 - CYAN_STRENGTH * dotC);
+  outColor.g *= (1.0 - MAGENTA_STRENGTH * dotM);
+  outColor.b *= (1.0 - YELLOW_STRENGTH * dotY);
+  outColor *= (1.0 - BLACK_STRENGTH * dotK);
+    
+  outputColor = vec4(outColor, 1.0);
+}
+```
+
+<Callout variant="info" label="Radius">
+
+We infer the radius of each dot based on the coverage using the formula for the area of a circle.
+
+- `DotArea = π × r²`
+- If we want an area proportional to coverage: `DotArea = coverage × maxArea`
+- Thus: `π × r² = coverage × π × maxRadius²`
+- Solving for r: `r = maxRadius × sqrt(coverage)`
+
+</Callout>
+
+The demo below is my personal attempt at a CMYK halftone effect for React Three Fiber. You can see how the effect shines over scenes featuring intricate details, light effects, and movement:
+
+<HalftoneSandpack scene="scene2" />
+
+I truly enjoy the fact that we’re jumping through a lot of hoops here, going from RGB to CMYK to emulate back RGB through subtractive blending, just to get a specific look and feel.
+
+## Breaking the Grid
+
+So far, we’ve only explored halftone restricted within the confines of a strictly defined grid. However, what if we wanted to *shake* things around? Could we have dots within a given grid displaced, overlapping, or even merging together? This last section explores some uncanny variants of halftone that I have encountered throughout my research and seeks to implement them by breaking away from the constraints of the grid.
+
+## Cell wall
+
+The main issue with the grid that we created in part 1 of this article is that it restricts the position and size our dots can take. Moving them too much around will cause them to **clip when they encounter the boundaries of their respective cells**.
+
+<Image
+  src="blog/cell-wall.png"
+  alt="Diagram illustrating dots clipping to the 'walls' of their respective cell when offset too much"
+  width={663}
+  height={548}
+/>
+
+Instead of each pixel being aware of its own cell, we need to tweak our implementation and start looking at the neighboring cells as well. By checking a `3x3` area around the current pixel, we can allow the dots to *leak* across cells without being clipped.
+
+```glsl {12-13,27-30} title=Sampling neighboring cells
+vec2 pixelCoord = vUv * uResolution;
+  
+// Base cell for this pixel
+vec2 baseCellIndex = floor(pixelCoord / uPixelSize);
+
+vec4 finalColor = vec4(0.0);
+float maxCircle = 0.0;
+
+// Search radius: check neighboring cells for overlapping dots
+const int searchRadius = 1;
+
+for (int dx = -searchRadius; dx <= searchRadius; dx++) {
+  for (int dy = -searchRadius; dy <= searchRadius; dy++) {
+    vec2 cellIndex = baseCellIndex + vec2(float(dx), float(dy));
+    vec2 cellCenter = (cellIndex + 0.5) * uPixelSize;
+    
+    vec2 uvPixel = cellCenter / uResolution;
+    vec4 texColor = texture(uTexture, uvPixel);
+    
+    float dist = length(pixelCoord - cellCenter);
+    
+    float radius = uPixelSize * uRadius;
+    
+    float aa = fwidth(dist);
+    float circle = 1.0 - smoothstep(radius - aa, radius + aa, dist);
+    
+    if (circle > maxCircle) {
+      maxCircle = circle;
+      finalColor = texColor;
+    }
+  }
+}
+
+vec3 bgColor = vec3(0.0);
+vec3 color = mix(bgColor, finalColor.rgb, maxCircle);
+```
+
+- We introduce a nested loop that searches at a 1-cell radius around the current position.
+- We define a `baseCell` as our current cell for the current pixel our fragment shader is processing.
+- We calculate the `cellCenter` of each neighbor in the `3x3` kernel. This allows us to measure the distance `dist` between the current pixel and all the neighboring cell centers.
+- We check the reachability. We sample the color at that neighbor’s center to determine the dot's color and check if that specific neighbor's dot is large enough to "reach" our current pixel.
+
+<Callout variant="info">
+
+If the distance is big, smoothstep will return `1.0`, and thus, `circle = 0.0`; the dot of that given neighbor has no influence on the given pixel.
+
+If the distance is small, smoothstep will return `0.0`, and thus, the pixel’s color will be that of the neighbor dot.
+
+</Callout>
+
+- Many neighboring circles may reach our current pixel; we need to ensure we only have one winner, and this is why we store the “biggest” circle in `maxCircle`.
+
+This is the mechanism that erases the clipping, as now every cell can get part of all of its pixels colored based on the influence of its neighboring cells. We can do many things with this, the first one being increasing the size of our circles beyond the cell’s size, which yields a beautiful, almost watercolor-y output.
+
+<GridDotsDemo />
+
+### Gooey halftone
+
+What if we could make our dots look like ink? Or make them look more liquid by simulating some sort of surface tension between neighboring dots?
+
+Now that we know how to render halftone dots beyond their grid cells, there’s nothing preventing us from doing so! Adding a radius based on luma so darker pixels end up represented by bigger dots, as well as blending overlapping circles with a `smoothmin` function <FootnoteRef id="5" />
+
+<GooeyDemo />
+
+These two small changes allow neighboring circles that are close enough to one another to gracefully merge as if they were ink drops. This yields a more organic-looking halftone variant, one that shines when overlayed on top of an animated 3D scene, as showcased in the demo below, which also features the full code.
+
+<HalftoneSandpack scene="scene3" />
+
+<Callout variant="info" label="Kernel">
+
+You may have noticed that the kernel size was increased in the previous demo, from 9 pixels to 25. This is to prevent further potential leakage, as cells can still clip if they grow big enough to go beyond their kernel.
+
+This, of course, comes with a performance trade-off, and we should always try to keep the kernel size relatively reasonable. There may be applications that will require even larger kernels, which may require us to tweak other aspects of the effect (like the `pixelSize`) to compensate for the loss of performance.
+
+</Callout>
+
+### Displaced dots
+
+As a final variant of halftone, I wanted to take the time to look into ways we could make the effect more dynamic / alive by allowing the dots to be animated and move. We pretty much have the recipe already in place to achieve this through the two previous examples, and all we need now is a good **idea** to implement.
+
+On my end, my original source of inspiration for this section was this artwork by <Anchor discreet favicon href="https://twitter.com/adamfuhrer">@adamfuhrer</Anchor>, a visual artist I’m a big fan of.
+
+<StaticTweet id="1772606761695879419" />
+
+1. It’s leveraging the ring halftone pattern we saw in the first part of this article.
+2. We have some rings positioned way beyond their original position, which means we’ll need a relatively large kernel when rendering our effect.
+3. There’s the **trail** left by a swooping movement across the rings. This is what we have yet to implement!
+
+For this experiment, I reused the MouseTrail component I originally built for the [Pixelated Mouse Trail effect](/posts/post-processing-as-a-creative-medium/#pixelating-mouse-trail). As it did for that effect, this standalone component renders the trail of the user’s cursor through:
+
+- Two **Frame Buffer Objects** (FBOs) and ping pong rendering
+- The position and velocity of the cursor.
+
+It is rendered off-screen, and its resulting texture can be passed directly to our halftone effect as a uniform. Once sampled, we can get the brightness of the red and green channels, representing the cursor movement alongside the x and y axes, to know the direction and intensity of the displacement.
+
+```glsl title=Displacement from brush texture
+vec2 brushUV = cellCenter / resolution;
+vec4 brush = texture2D(brushTexture, brushUV);
+vec2 brushVel = clamp(brush.rg, -0.45, 0.45);
+float brushIntensity = length(brushVel);
+
+vec2 forwardDir = brushIntensity > 0.001 ? brushVel / brushIntensity : vec2(0.0);
+vec2 perpDir = vec2(-forwardDir.y, forwardDir.x);
+float side = sign(random(cellCenter) - 0.5);
+
+float t = smoothstep(0.0, 0.5, brushIntensity);
+float easeIn = t * t * t;
+float easedIntensity = mix(easeIn, t, 0.5);
+
+vec2 srcUV = clamp(cellCenter / resolution, 0.0, 1.0);
+vec3 srcColor = texture2D(inputBuffer, srcUV).rgb;
+
+// 75% of the motion is forward, 25% perpendicular
+vec2 displacement = forwardDir * 0.75 + perpDir * side * 0.25;
+
+cellCenter += displacement * mouseStrength * easedIntensity;
+```
+
+The displacement is then applied to the center of the neighboring cells to shift where the dots/rings are visually rendered. This creates the illusion of movement, which in this case is defined as follows:
+
+- We first define the direction of the movement: `vec2 forwardDir = brushIntensity > 0.001 ? brushVel / brushIntensity : vec2(0.0);`
+- We get the perpendicular vector to the direction: `vec2 perpDir = vec2(-forwardDir.y, forwardDir.x);`
+- Pick a random side, and the ring will move towards
+- Combine and ease the movement. In our case, it’s more weighted towards moving forward (75%) than on the side (25%), giving the illusion of the rings being gently pushed to the side.
+
+Once again, this implementation is built on top of what we saw in the first subsection and consists of only a few tactical tweaks. I highly encourage exploring further what can be done with such a pattern.
+
+<HalftoneSandpack scene="scene4" />
+
+<Callout variant="info">
+
+Notice how we increased the kernel size to an even larger size (`4x4`), which allows us to push our rings even further out from their original cells while also allowing a large contingent of rings to intersect with one another, creating a lovely level of contrast over the darker areas of the original image.
+
+This, unfortunately, also makes this effect pretty expensive to run.
+
+</Callout> 
+
+<FootnotesList
+  notes={[
+    {
+      id: 1,
+      content: (
+        <p>
+          <a href="https://thebookofshaders.com/glossary/?search=fract">
+            Fract - The Book of Shaders
+          </a>
+        </p>
+      ),
+    },
+    {
+      id: 2,
+      content: (
+        <p>
+          <a href="https://rubendv.be/posts/fwidth/">
+            Drawing antialiased circles in OpenGL
+          </a>
+        </p>
+      ),
+    },
+    {
+      id: 3,
+      content: (
+        <p>
+          <a href="https://en.wikipedia.org/wiki/Moir%C3%A9_pattern">
+            Moiré pattern - Wikipedia
+          </a>
+        </p>
+      ),
+    },
+    {
+      id: 4,
+      content: (
+        <p>
+          <a href="https://youtu.be/Xsqtg2yRl8M?si=GfhIalsr3ahkGDzz&t=136">  
+            How to fix digital color mixing: Intro to Mixbox
+          </a>
+        </p>
+      ),
+    },
+    {
+      id: 5,
+      content: (
+        <p>
+          <a href="/posts/painting-with-math-a-gentle-study-of-raymarching/#sdf-operations-complex-scenes-and-fractals">  
+            SDF operations, complex scenes, and fractals
+          </a>
+        </p>
+      ),
+    }
+  ]}
+/>
