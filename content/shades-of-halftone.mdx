@@ -1,0 +1,63 @@
+---
+title: 'Shades of Halftone'
+subtitle: TBD
+date: '2026-02-03T08:00:00.000Z'
+updated: '2026-02-03T08:00:00.000Z'
+categories: []
+slug: shades-of-halftone
+type: 'blogPost'
+featured: false
+---
+
+
+<HalftoneShaderVisualizer />
+
+## How does halftoning work
+
+- how it works: "This reproduction relies on a basic optical illusion: when the halftone dots are small, the human eye interprets the patterned areas as if they were smooth tones."
+- "By providing a signal (dots) at a higher frequency than the eye’s sampling rate (retinal mosaic), we force the brain to perform a spatial average, turning a binary pattern into a continuous tone"
+
+<Reflectance />
+
+- Black And White
+- Optical color mixing 
+  - [https://www.youtube.com/watch?v=RFjhUMAX-NI&t=745s](https://www.youtube.com/watch?v=RFjhUMAX-NI&t=745s) 
+  - [https://alvalyn.com/optical-color-mixing/]()
+  - [https://studiochalkboard.evansville.edu/c-optics.html]()
+  - [https://thevirtualinstructor.com/blog/optical-color-mixing]()
+
+## Classic Halftone - Cartesian Order
+
+
+- use fract / grid // widget
+- constant radius - fill screen
+- draw a circle  // widget
+- tweak radius based on luma // widget
+- smoothstep / anti aliasing // widget
+- Hexagonal Tiling -> shift 
+- Wavy-Line Screen
+- Inverted - white dot at the center
+- just circle border
+
+## Multichannel Interference
+
+- Typical usage of halftone in printing
+- [https://cruz-diez.com/works/chromointerference/](https://cruz-diez.com/works/chromointerference/)
+- Moiré pattern https://www.youtube.com/watch?v=QAja2jp1VjE
+- Color blending -> RGB VS CMYK -> how does it work -> diagram
+
+- Ben-Day Dots
+- Multiple grid halftone + rotation // widget
+- Using halftone screens (dot patterns) with different angles for each channel to spread out interference and improve quality.
+- [Atlas of Halftoning - Getty Institure](https://www.getty.edu/conservation/publications_resources/pdf_publications/pdf/atlas_halftone.pdf)
+
+### Breaking the Grid
+- benefits
+- clipping when dots are moved / jittered
+- use loops to place dots based on neighboard
+- portfolio dot dissipate image with big gaps and dots -> artistic render -> overlap 
+- Gooey halftone
+- Stochastic Screening
+- Floating halftone with brush https://www.youtube.com/watch?v=RBx9zsxhIpk
+- Usage with animation -> dissipate image example
+
