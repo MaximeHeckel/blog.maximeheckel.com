@@ -220,6 +220,12 @@ const ThresholdVisualizer = dynamic(
   () => import('./Widgets/PostProcessing/ThresholdVisualizer')
 );
 
+const HalftoneShaderVisualizer = dynamic(() =>
+  import('./Widgets/Halftone/HalftoneShaderVisualizer').then(
+    (mod) => mod.HalftoneShaderVisualizer
+  )
+);
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -338,6 +344,7 @@ const customComponents = {
   SimpleCompute,
   EffectCompute,
   ParticleCompute,
+  HalftoneShaderVisualizer,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
