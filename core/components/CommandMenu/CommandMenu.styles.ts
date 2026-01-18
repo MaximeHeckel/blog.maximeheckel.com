@@ -10,7 +10,7 @@ export const Overlay = styled('div', {
 
 export const Dialog = styled('div', {
   position: 'fixed',
-  top: '96px',
+  top: '20%',
   left: '50%',
   transform: 'translateX(-50%)',
   width: '600px',
@@ -59,7 +59,7 @@ export const Input = styled('input', {
 });
 
 export const List = styled('div', {
-  maxHeight: '460px',
+  maxHeight: 'min(460px, 50vh)',
   overflowY: 'auto',
   padding: '8px',
   transition: 'height 0.15s ease',
@@ -136,9 +136,12 @@ export const Item = styled('div', {
     flexShrink: 0,
   },
 
-  '&[aria-selected="true"]': {
-    opacity: 1,
-    backgroundColor: 'oklch(from var(--gray-700) l c h / var(--opacity, 0.5))',
+  '@media (pointer: fine)': {
+    '&[aria-selected="true"]': {
+      opacity: 1,
+      backgroundColor:
+        'oklch(from var(--gray-700) l c h / var(--opacity, 0.5))',
+    },
   },
 });
 
@@ -182,9 +185,12 @@ export const SecondaryItem = styled('div', {
     flexShrink: 0,
   },
 
-  '&[aria-selected="true"]': {
-    backgroundColor: 'var(--emphasis)',
-    color: 'var(--text-secondary)',
+  '@media (pointer: fine)': {
+    '&[aria-selected="true"]': {
+      opacity: 1,
+      backgroundColor:
+        'oklch(from var(--gray-700) l c h / var(--opacity, 0.5))',
+    },
   },
 });
 
