@@ -3,6 +3,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import 'styles/global.css';
+import { CommandMenuProvider } from '@core/components/CommandMenu';
 import { Fonts } from '@core/components/Fonts';
 import { DefaultSeo } from '@core/components/Seo';
 
@@ -29,9 +30,11 @@ const App = ({ Component, pageProps }: AppProps) => {
       <Meta />
       <Fonts />
       <Analytics />
-      <Tooltip.Provider>
-        <Component {...pageProps} />
-      </Tooltip.Provider>
+      <CommandMenuProvider>
+        <Tooltip.Provider>
+          <Component {...pageProps} />
+        </Tooltip.Provider>
+      </CommandMenuProvider>
     </>
   );
 };

@@ -14,8 +14,8 @@ import { serialize } from 'next-mdx-remote/serialize';
 import Link from 'next/link';
 import { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react';
 
+import { CustomGlassMaterial } from '../CommandMenu/CommandMenu.styles';
 import MDXComponents from '../MDX/MDXComponents';
-import RotatingShine from '../RotatingShine';
 import { SearchError, Status } from './types';
 
 interface AIPromtResultCardProps {
@@ -119,7 +119,9 @@ const AIPromptResultCard = forwardRef(
         css={{
           width: '100%',
           color: 'var(--text-secondary)',
-          background: 'var(--background)',
+          background: 'transparent',
+          border: 'none',
+          position: 'relative',
           'p, li, strong, em': {
             margin: '0px 0px 1rem',
             fontSize: 'var(--font-size-1)!important',
@@ -138,8 +140,8 @@ const AIPromptResultCard = forwardRef(
           ease: 'easeIn',
         }}
       >
+        <CustomGlassMaterial />
         <Box css={{ borderRadius: 'inherit', height: '100%' }} ref={ref}>
-          <RotatingShine status={status} />
           <Card.Body
             ref={scrollableContentRef}
             css={{
@@ -179,7 +181,7 @@ const AIPromptResultCard = forwardRef(
                   as={motion.div}
                   direction="column"
                   justifyContent="space-between"
-                  gap="5"
+                  gap="3"
                   exit={{
                     y: 20,
                     opacity: 0,
@@ -189,7 +191,11 @@ const AIPromptResultCard = forwardRef(
                     },
                   }}
                 >
-                  <Text as="p" size="2">
+                  <Text
+                    as="p"
+                    css={{ marginBottom: '0px !important' }}
+                    size="2"
+                  >
                     Ask anything about my blog posts, a topic, or projects by
                     typing your question or selecting one of the examples below.
                   </Text>

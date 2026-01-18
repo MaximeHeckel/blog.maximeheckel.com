@@ -20,11 +20,7 @@ const DemoButton = () => {
           Ask me anything!
         </Button>
       </Glow>
-      <Search
-        forceAIMode
-        onClose={() => setShowSearch(false)}
-        open={showSearch}
-      />
+      <Search onClose={() => setShowSearch(false)} open={showSearch} />
     </>
   );
 };

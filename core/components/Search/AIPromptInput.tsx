@@ -19,7 +19,7 @@ const AIPromptInput = (props: { status: Status }) => {
   return (
     <>
       <Flex css={{ width: 24, marginLeft: 16 }}>
-        <Icon.AIChat variant="tertiary" />
+        <Icon.AIChat size={4} variant="tertiary" />
       </Flex>
       <S.AIInput
         ref={inputRef}

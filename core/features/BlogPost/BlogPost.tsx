@@ -1,4 +1,4 @@
-import { css, Box, Flex, Grid, Text } from '@maximeheckel/design-system';
+import { css, Box, Flex, Grid, Icon, Text } from '@maximeheckel/design-system';
 import siteConfig from 'config/site';
 import { format } from 'date-fns';
 import {
@@ -8,10 +8,11 @@ import {
   useReducedMotion,
   useScroll,
 } from 'motion/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Post, ReadingTime } from 'types/post';
 
 import { BottomBlurGradientMask } from '@core/components/BottomBlurGradientMask';
+import { useRegisterAction } from '@core/components/CommandMenu';
 import { Dock } from '@core/components/Dock';
 import { DynamicTOC } from '@core/components/DynamicTOC';
 import Footer from '@core/components/Footer/Footer';
@@ -174,6 +175,21 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
   const [ids, setIds] = React.useState<Array<{ id: string; title: string }>>(
     []
   );
+
+  // Register copy link action in command menu
+  const copyLinkAction = useMemo(
+    () => ({
+      id: 'copy-post-link',
+      label: 'Copy link to clipboard',
+      icon: Icon.Copy,
+      keywords: ['share', 'url', 'copy'],
+      onSelect: () => {
+        navigator.clipboard.writeText(postUrl);
+      },
+    }),
+    [postUrl]
+  );
+  useRegisterAction(copyLinkAction);
 
   useEffect(() => {
     /**
