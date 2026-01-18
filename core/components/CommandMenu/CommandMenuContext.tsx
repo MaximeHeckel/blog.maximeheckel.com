@@ -26,10 +26,12 @@ interface CommandMenuContextValue {
   registerAction: (action: Action) => void;
   unregisterAction: (id: string) => void;
   openCommandMenu: () => void;
+  openAIMode: () => void;
 }
 
-export const CommandMenuContext =
-  createContext<CommandMenuContextValue | null>(null);
+export const CommandMenuContext = createContext<CommandMenuContextValue | null>(
+  null
+);
 
 interface CommandMenuProviderProps {
   children: React.ReactNode;
@@ -59,13 +61,23 @@ export const CommandMenuProvider = ({ children }: CommandMenuProviderProps) => {
     setIsCommandMenuOpen(true);
   }, []);
 
-  const contextRef = useRef({ registerAction, unregisterAction, openCommandMenu });
+  const openAIMode = useCallback(() => {
+    setIsAIModeOpen(true);
+  }, []);
+
+  const contextRef = useRef({
+    registerAction,
+    unregisterAction,
+    openCommandMenu,
+    openAIMode,
+  });
 
   const value: CommandMenuContextValue = {
     actions,
     registerAction: contextRef.current.registerAction,
     unregisterAction: contextRef.current.unregisterAction,
     openCommandMenu: contextRef.current.openCommandMenu,
+    openAIMode: contextRef.current.openAIMode,
   };
 
   return (

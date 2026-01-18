@@ -13,6 +13,7 @@ enum NAV {
   INDEX = 'Index',
   ARTICLES = 'Articles',
   CMD = 'Cmd',
+  ASK = 'Ask',
 }
 
 const Dock = () => {
@@ -54,9 +55,10 @@ const Dock = () => {
       }
     },
     [NAV.CMD]: () => {
-      // Trigger command menu open via context
-      // The keyboard shortcut ctrl+k/meta+k is handled globally in CommandMenuProvider
       commandMenuContext?.openCommandMenu?.();
+    },
+    [NAV.ASK]: () => {
+      commandMenuContext?.openAIMode?.();
     },
   };
 

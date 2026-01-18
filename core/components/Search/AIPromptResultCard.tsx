@@ -140,7 +140,7 @@ const AIPromptResultCard = forwardRef(
           ease: 'easeIn',
         }}
       >
-        <CustomGlassMaterial />
+        <CustomGlassMaterial style={{ '--opacity': 0.84 }} />
         <Box css={{ borderRadius: 'inherit', height: '100%' }} ref={ref}>
           <Card.Body
             ref={scrollableContentRef}
