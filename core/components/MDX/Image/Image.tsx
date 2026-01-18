@@ -8,7 +8,7 @@ import {
   Text,
 } from '@maximeheckel/design-system';
 import { cloudflareLoader } from 'lib/next-image-loader';
-import { motion, MotionConfig } from 'motion/react';
+import { AnimatePresence, motion, MotionConfig } from 'motion/react';
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
 import { memo, useId, useState } from 'react';
 
@@ -105,88 +105,78 @@ const Image = (props: ImageProps) => {
             {props.alt}
           </Text>
         </Flex>
-        {isDialogOpen ? (
-          <Dialog.Portal key={`portal-${uniqueId}`}>
-            <Backdrop key={`backdrop-${uniqueId}`}>
-              <Box
+        <Dialog.Portal keepMounted>
+          <AnimatePresence>
+            {isDialogOpen ? (
+              <Backdrop
                 as={motion.div}
-                css={{
-                  backdropFilter: 'blur(10px)',
-                  height: '100%',
-                  width: '100%',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{
-                  duration: 0.3,
-                }}
-              />
-              <Popup
-                key={`popup-${uniqueId}`}
-                render={
-                  <Flex
-                    alignItems="center"
-                    justifyContent="center"
-                    as={motion.div}
-                    direction="column"
-                    gap="4"
-                  >
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{
-                        delay: 0.2,
-                      }}
+                transition={{ duration: 0.3 }}
+                key={`backdrop-${uniqueId}`}
+              >
+                <Popup
+                  key={`popup-${uniqueId}`}
+                  render={
+                    <Flex
+                      alignItems="center"
+                      justifyContent="center"
+                      as={motion.div}
+                      direction="column"
+                      gap="4"
                     >
-                      <IconButton
-                        aria-label="Close"
-                        variant="secondary"
-                        onClick={handleDialogTrigger}
-                        rounded
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{
+                          delay: 0.2,
+                        }}
                       >
-                        <Icon.X />
-                      </IconButton>
-                    </motion.div>
-                    <motion.div
-                      layoutId={`dialog-${uniqueId}`}
-                      onClick={handleDialogTrigger}
-                      autoFocus
-                      role="button"
-                      whileTap={{ scale: 0.98 }}
-                      style={{ outline: 'none' }}
-                      transition={{
-                        layout: {
-                          type: 'spring',
-                          bounce: 0.4,
-                        },
-                      }}
-                    >
-                      <RootImage
-                        {...props}
-                        css={{
-                          objectFit: 'cover',
-                          height: 'auto',
-                          width: '80dvw',
-
-                          '@media (max-width: 768px)': {
-                            width: '97dvw',
+                        <IconButton
+                          aria-label="Close"
+                          variant="secondary"
+                          onClick={handleDialogTrigger}
+                          rounded
+                        >
+                          <Icon.X />
+                        </IconButton>
+                      </motion.div>
+                      <motion.div
+                        layoutId={`dialog-${uniqueId}`}
+                        onClick={handleDialogTrigger}
+                        autoFocus
+                        role="button"
+                        whileTap={{ scale: 0.98 }}
+                        style={{ outline: 'none' }}
+                        transition={{
+                          layout: {
+                            type: 'spring',
+                            bounce: 0.4,
                           },
                         }}
-                      />
-                    </motion.div>
-                  </Flex>
-                }
-              />
-            </Backdrop>
-          </Dialog.Portal>
-        ) : null}
+                      >
+                        <RootImage
+                          {...props}
+                          css={{
+                            objectFit: 'cover',
+                            height: 'auto',
+                            width: '80dvw',
+
+                            '@media (max-width: 768px)': {
+                              width: '97dvw',
+                            },
+                          }}
+                        />
+                      </motion.div>
+                    </Flex>
+                  }
+                />
+              </Backdrop>
+            ) : null}
+          </AnimatePresence>
+        </Dialog.Portal>
       </Dialog.Root>
     </MotionConfig>
   );
