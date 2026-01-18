@@ -17,7 +17,7 @@ import {
 } from 'react';
 
 import { ScreenReaderOnly } from '../ScreenReaderOnly';
-import { useSemanticSearch } from '../Search/useSemanticSearch';
+import { useLocalSearch } from '../Search/useLocalSearch';
 import * as S from './CommandMenu.styles';
 import { CommandMenuContext } from './CommandMenuContext';
 
@@ -189,7 +189,7 @@ const CommandMenu = (props: CommandMenuProps) => {
     results: searchResults,
     search,
     reset: resetSearch,
-  } = useSemanticSearch();
+  } = useLocalSearch();
 
   useEffect(() => {
     if (page === 'search') {
@@ -325,6 +325,7 @@ const CommandMenu = (props: CommandMenuProps) => {
           />
           <S.Dialog
             as={motion.div}
+            data-testid="command-menu"
             initial={{ opacity: 0, scale: 0.95, x: '-50%' }}
             animate={{ opacity: 1, scale: 1, x: '-50%' }}
             exit={{ opacity: 0, scale: 0.95, x: '-50%' }}
@@ -341,6 +342,7 @@ const CommandMenu = (props: CommandMenuProps) => {
               <S.Input
                 ref={inputRef}
                 as={Command.Input}
+                data-testid="command-input"
                 placeholder={
                   isSearchMode ? 'Search blog posts...' : 'Type a command...'
                 }
@@ -406,6 +408,7 @@ const CommandMenu = (props: CommandMenuProps) => {
                             onSelect={() =>
                               handleSearchResultSelect(result.url)
                             }
+                            data-testid="search-result"
                           >
                             <Icon.Arrow variant="tertiary" size={4} />
                             <S.ItemLabel>{result.title}</S.ItemLabel>
@@ -423,6 +426,7 @@ const CommandMenu = (props: CommandMenuProps) => {
                         value="Search blog posts"
                         keywords={['find', 'articles', 'posts']}
                         onSelect={() => setPage('search')}
+                        data-testid="search-tool"
                       >
                         <SearchIcon />
                         <S.ItemLabel>Search blog posts...</S.ItemLabel>
@@ -432,6 +436,7 @@ const CommandMenu = (props: CommandMenuProps) => {
                         value="Ask AI"
                         keywords={['ai', 'question', 'chat', 'assistant']}
                         onSelect={handleAskAI}
+                        data-testid="aimode"
                       >
                         <Icon.AIChat size={4} />
                         <S.ItemLabel>Ask me anything...</S.ItemLabel>
@@ -454,13 +459,18 @@ const CommandMenu = (props: CommandMenuProps) => {
                       })}
                     </S.Group>
 
-                    <S.Group as={Command.Group} heading="Navigation">
+                    <S.Group
+                      as={Command.Group}
+                      heading="Navigation"
+                      data-testid="navigation"
+                    >
                       {NAVIGATION_ITEMS.map((item) => (
                         <S.Item
                           key={item.id}
                           as={Command.Item}
                           value={item.label}
                           onSelect={() => handleNavigationSelect(item.href)}
+                          data-testid={`nav-${item.id}`}
                         >
                           <Icon.Arrow size={4} />
                           <S.ItemLabel>{item.label}</S.ItemLabel>
@@ -468,7 +478,11 @@ const CommandMenu = (props: CommandMenuProps) => {
                       ))}
                     </S.Group>
 
-                    <S.Group as={Command.Group} heading="Links">
+                    <S.Group
+                      as={Command.Group}
+                      heading="Links"
+                      data-testid="links"
+                    >
                       {LINK_ITEMS.map((item) => {
                         const ItemIcon = IconMap[item.icon];
                         return (
@@ -479,6 +493,7 @@ const CommandMenu = (props: CommandMenuProps) => {
                             onSelect={() =>
                               handleLinkSelect(item.href, item.internal)
                             }
+                            data-testid={`link-${item.id}`}
                           >
                             <ItemIcon size={4} />
                             <S.ItemLabel>{item.label}</S.ItemLabel>

@@ -1,55 +1,60 @@
-describe('Search tests', () => {
-  it('Toggles the search box when hitting ctrl + k', () => {
+describe('Command Menu tests', () => {
+  it('Toggles the command menu when hitting ctrl + k', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
-    cy.get('input[id="search-input"]').clear();
-    cy.get('[data-testid="search"]').should('be.visible');
+    cy.get('[data-testid="command-menu"]').should('be.visible');
+    cy.get('[data-testid="command-input"]').should('exist');
     cy.get('[data-testid="navigation"]').should('exist');
-    cy.get('[data-testid="design"]').should('exist');
+    cy.get('[data-testid="nav-design"]').should('exist');
     cy.get('[data-testid="aimode"]').should('exist');
-    cy.get('[data-testid="twitter-social-link"]').should('exist');
-    cy.get('[data-testid="maximeheckelcom-link"]').should('exist');
-    cy.get('[data-testid="rss-link"]').should('exist');
-    cy.get('[data-testid="email-link"]').should('exist');
+    cy.get('[data-testid="link-twitter"]').should('exist');
+    cy.get('[data-testid="link-work"]').should('exist');
+    cy.get('[data-testid="nav-rss"]').should('exist');
+    cy.get('[data-testid="link-contact"]').should('exist');
   });
 
-  it('Hides the search box when hitting esc', () => {
+  it('Hides the command menu when hitting esc', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
-    cy.get('input[id="search-input"]').clear();
+    cy.get('[data-testid="command-menu"]').should('be.visible');
     cy.wait(1000);
     cy.get('body').type('{esc}');
-    cy.get('[data-testid="search"]').should('not.exist');
+    cy.get('[data-testid="command-menu"]').should('not.exist');
   });
 
-  it('Hides the search box when clicking on the overlay', () => {
+  it('Hides the command menu when clicking on the overlay', () => {
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
-    cy.get('input[id="search-input"]').clear();
+    cy.get('[data-testid="command-menu"]').should('be.visible');
     cy.wait(1000);
     cy.get('body').click(10, 10, { force: true });
 
-    cy.get('[data-testid="search"]').should('not.exist');
+    cy.get('[data-testid="command-menu"]').should('not.exist');
   });
 
-  it('Queries the semantic search endpoint and returns results that are clickable', () => {
-    cy.intercept('POST', '/api/semanticsearch', [
+  it('Enters search mode, queries the search endpoint and returns clickable results', () => {
+    cy.intercept('POST', '/api/search', [
       {
         title: 'Migrating to Next.js',
         url: 'https://blog.maximeheckel.com/posts/migrating-to-nextjs/',
       },
-    ]).as('semanticSearch');
+    ]).as('search');
 
     cy.visit('/');
     cy.wait(2000);
     cy.get('body').type('{ctrl}k');
 
-    cy.get('[data-testid="search"]').should('be.visible');
-    cy.get('input[id="search-input"]').clear().type('react');
-    cy.wait('@semanticSearch');
+    cy.get('[data-testid="command-menu"]').should('be.visible');
+
+    // Click on "Search blog posts" to enter search mode
+    cy.get('[data-testid="search-tool"]').click();
+
+    // Now type the search query
+    cy.get('[data-testid="command-input"]').type('react');
+    cy.wait('@search');
     cy.get('[data-testid="search-result"]').should('be.visible').eq(0).click();
 
     cy.url().should('include', '/posts/');
