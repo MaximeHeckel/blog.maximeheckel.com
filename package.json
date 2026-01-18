@@ -114,7 +114,7 @@
     "playwright-core": "1.57.0",
     "playwright-webkit": "^1.57.0",
     "progress": "^2.0.3",
-    "qs": "6.14.0",
+    "qs": "6.14.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.15"
   },
