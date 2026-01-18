@@ -16,7 +16,7 @@ export const Backdrop = styled(Dialog.Backdrop, {
   position: 'fixed',
   inset: 0,
   zIndex: '100',
-  backdropFilter: 'blur(4px)',
+  background: 'oklch(from var(--background) l c h / 80%)',
   '@media (prefers-reduced-motion: no-preference)': {
     '&[data-open]': {
       animation: `${overlayShow} 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards`,

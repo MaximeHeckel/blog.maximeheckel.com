@@ -4,8 +4,7 @@ export const Overlay = styled('div', {
   position: 'fixed',
   inset: 0,
   zIndex: 100,
-  background: 'oklch(from var(--background) l c h / 50%)',
-  backdropFilter: 'blur(4px)',
+  background: 'oklch(from var(--background) l c h / 80%)',
 });
 
 export const Dialog = styled('div', {
@@ -139,8 +138,12 @@ export const Item = styled('div', {
   '@media (pointer: fine)': {
     '&[aria-selected="true"]': {
       opacity: 1,
-      backgroundColor:
-        'oklch(from var(--gray-700) l c h / var(--opacity, 0.5))',
+      backgroundColor: 'var(--emphasis)',
+      color: 'var(--accent)',
+
+      '& svg': {
+        stroke: 'var(--accent)',
+      },
     },
   },
 });
@@ -188,8 +191,12 @@ export const SecondaryItem = styled('div', {
   '@media (pointer: fine)': {
     '&[aria-selected="true"]': {
       opacity: 1,
-      backgroundColor:
-        'oklch(from var(--gray-700) l c h / var(--opacity, 0.5))',
+      backgroundColor: 'var(--emphasis)',
+      color: 'var(--accent)',
+
+      '& svg': {
+        stroke: 'var(--accent)',
+      },
     },
   },
 });
