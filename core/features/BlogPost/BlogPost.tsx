@@ -152,6 +152,7 @@ const contentClass = css({
 
   p: {
     fontWeight: 'var(--font-weight-400)',
+    letterSpacing: '0.15px',
   },
 
   li: {

@@ -44,7 +44,7 @@ const IndexSection = () => {
           <Text
             as="h1"
             css={{
-              letterSpacing: '-1.5px',
+              letterSpacing: '-1.0px',
               lineHeight: 1.2,
               maxWidth: 400,
               textWrap: 'balance',
@@ -80,7 +80,7 @@ const IndexSection = () => {
             css={{
               textAlign: 'center',
               textWrap: 'balance',
-              letterSpacing: '-1.0px',
+              letterSpacing: '-0.25px',
             }}
             variant="secondary"
             size="4"
