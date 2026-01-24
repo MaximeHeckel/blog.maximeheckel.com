@@ -59,7 +59,7 @@ const NotFound = () => {
       <Text
         as={motion.p}
         variants={textVariants}
-        css={{ letterSpacing: '-1.0px', lineHeight: 1.6 }}
+        css={{ letterSpacing: '-0.25px', lineHeight: 1.6 }}
         variant="primary"
         size="3"
         weight="3"
