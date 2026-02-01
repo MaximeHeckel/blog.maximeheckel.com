@@ -33,7 +33,7 @@
     "unlink-ds": "rm -rf .next && pnpm unlink && pnpm install"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^2.0.86",
+    "@ai-sdk/openai": "^3.0.25",
     "@ai-sdk/provider-utils": "^3.0.19",
     "@base-ui/react": "^1.0.0",
     "@codesandbox/sandpack-react": "2.19.10",
