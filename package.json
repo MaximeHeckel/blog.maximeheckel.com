@@ -86,7 +86,7 @@
     "rss": "1.2.2",
     "three": "^0.182.0",
     "unist-util-find-after": "5.0.0",
-    "unist-util-visit": "5.0.0 ",
+    "unist-util-visit": "5.1.0",
     "uuid": "^13.0.0",
     "zod": "^4.2.0"
   },
