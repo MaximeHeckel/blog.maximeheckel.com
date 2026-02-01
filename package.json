@@ -108,7 +108,7 @@
     "is-ci-cli": "2.2.0",
     "jiti": "^2.6.1",
     "jsdom": "^25.0.1",
-    "oxfmt": "^0.21.0",
+    "oxfmt": "^0.27.0",
     "oxlint": "^1.0.0",
     "playwright": "1.57.0",
     "playwright-core": "1.57.0",
