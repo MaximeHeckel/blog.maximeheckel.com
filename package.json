@@ -63,7 +63,7 @@
     "date-fns": "4.1.0",
     "deep-eql": "^5.0.2",
     "detect-gpu": "^5.0.63",
-    "globby": "16.0.0",
+    "globby": "16.1.0",
     "glsl-curl-noise2": "^0.0.4",
     "glsl-noise": "^0.0.0",
     "glslify-loader": "^2.0.0",
