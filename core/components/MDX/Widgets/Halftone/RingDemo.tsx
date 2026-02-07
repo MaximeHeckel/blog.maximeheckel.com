@@ -92,7 +92,11 @@ export const RingDemo = () => {
           />
         ) : null}
       </Box>
-      <Flex direction="column" gap="4" css={{ width: '50%', minWidth: 135 }}>
+      <Flex
+        direction="column"
+        gap="4"
+        css={{ width: '100%', '@md': { width: '50%', minWidth: 135 } }}
+      >
         <Slider
           id={`${id}-split`}
           label="Split"

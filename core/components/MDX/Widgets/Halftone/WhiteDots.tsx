@@ -82,7 +82,11 @@ export const WhiteDots = () => {
           aspectRatio="16 / 10"
         />
       </Box>
-      <Flex direction="column" gap="4" css={{ width: '50%', minWidth: 135 }}>
+      <Flex
+        direction="column"
+        gap="4"
+        css={{ width: '100%', '@md': { width: '50%', minWidth: 135 } }}
+      >
         <Slider
           id={`${id}-pixelSize`}
           label="Pixel Size"
