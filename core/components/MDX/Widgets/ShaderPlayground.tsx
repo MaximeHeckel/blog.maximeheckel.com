@@ -331,7 +331,7 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
   // const isInView = useInView(ref);
 
   return (
-    <Fullbleed widthPercent={70}>
+    <Fullbleed widthPercent={60}>
       <Card css={{ width: '100%', minWidth: 0, overflow: 'hidden' }}>
         <Card.Body
           as={Flex}
@@ -341,7 +341,7 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
             padding: 0,
             columnGap: 'var(--space-9)',
             rowGap: 'var(--space-3)',
-            '@media (max-width: 700px)': {
+            '@media (max-width: 900px)': {
               flexDirection: 'column-reverse',
             },
           }}
@@ -368,7 +368,7 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
             alignItems="center"
             justifyContent="end"
             css={{
-              flex: hasControls ? 1.75 : 1,
+              flex: hasControls ? 2.25 : 1,
               minWidth: 0,
             }}
           >

@@ -17,61 +17,67 @@ mat2 rot(float deg) {
   return mat2(c, -s, s, c);
 }
 
-float halftoneDot(vec2 uvScreen, float angleDeg, float coverage) {
-  float effectiveDotDensity = (min(resolution.x, resolution.y) / pixelSize);
-  
-  float minRes = min(resolution.x, resolution.y);
-  float scale = effectiveDotDensity / minRes;
-  vec2 uv = uvScreen * scale;
+vec2 toGridUV(vec2 uv, float angleDeg) {
+  return rot(angleDeg) * (uv * resolution) / pixelSize;
+}
 
-  uv = rot(angleDeg) * uv;
+vec2 getCellCenterUV(vec2 uv, float angleDeg) {
+  vec2 gridUV = toGridUV(uv, angleDeg);
+  vec2 cellCenter = floor(gridUV) + 0.5;
+  vec2 centerScreen = rot(-angleDeg) * cellCenter * pixelSize;
+  return centerScreen / resolution;
+}
 
-  vec2 gv = fract(uv) - 0.5;
+float halftoneDot(vec2 uv, float angleDeg, float coverage) {
+  vec2 gridUV = toGridUV(uv, angleDeg);
+  vec2 gv = fract(gridUV) - 0.5;
   float r = dotSize * sqrt(clamp(coverage, 0.0, 1.0));
-  
-
   float aa = fwidth(length(gv));
   float d = length(gv);
-  float ink = 1.0 - smoothstep(r - aa, r + aa, d);
-  return ink;
+  return 1.0 - smoothstep(r - aa, r + aa, d);
 }
 
 // Convert RGB to CMYK by MattDSL -> https://gist.github.com/mattdesl/e40d3189717333293813626cbdb2c1d1
 vec4 RGBtoCMYK (vec3 rgb) {
-    float r = rgb.r;
-    float g = rgb.g;
-    float b = rgb.b;
-    float k = min(1.0 - r, min(1.0 - g, 1.0 - b));
-    vec3 cmy = vec3(0.0);
-    float invK = 1.0 - k;
+  float r = rgb.r;
+  float g = rgb.g;
+  float b = rgb.b;
+  float k = min(1.0 - r, min(1.0 - g, 1.0 - b));
+  vec3 cmy = vec3(0.0);
+  float invK = 1.0 - k;
 
-    if (invK != 0.0) {
-        cmy.x = (1.0 - r - k) / invK;
-        cmy.y = (1.0 - g - k) / invK;
-        cmy.z = (1.0 - b - k) / invK;
-    }
+  if (invK != 0.0) {
+      cmy.x = (1.0 - r - k) / invK;
+      cmy.y = (1.0 - g - k) / invK;
+      cmy.z = (1.0 - b - k) / invK;
+  }
 
-    return clamp(vec4(cmy, k), 0.0, 1.0);
+  return clamp(vec4(cmy, k), 0.0, 1.0);
 }
 
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
-    vec2 normalizedPixelSize = pixelSize / resolution;
-    vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
-    vec3 base = texture2D(inputBuffer, uvPixel).rgb;
-    vec4 cmyk = RGBtoCMYK(base);
-       
-    float dotC = halftoneDot(gl_FragCoord.xy, ANGLE_C, cmyk.x);
-    float dotM = halftoneDot(gl_FragCoord.xy, ANGLE_M, cmyk.y);
-    float dotY = halftoneDot(gl_FragCoord.xy, ANGLE_Y, cmyk.z);
-    float dotK = halftoneDot(gl_FragCoord.xy, ANGLE_K, cmyk.w);
-    
-    vec3 outColor = vec3(1.0);
-    outColor.r *= (1.0 - CYAN_STRENGTH * dotC);
-    outColor.g *= (1.0 - MAGENTA_STRENGTH * dotM);
-    outColor.b *= (1.0 - YELLOW_STRENGTH * dotY);
-    outColor *= (1.0 - BLACK_STRENGTH * dotK);
-    
-    outputColor = vec4(outColor, 1.0);
+  vec2 uvC = getCellCenterUV(uv, ANGLE_C);
+  vec2 uvM = getCellCenterUV(uv, ANGLE_M);
+  vec2 uvY = getCellCenterUV(uv, ANGLE_Y);
+  vec2 uvK = getCellCenterUV(uv, ANGLE_K);
+  
+  vec4 cmykC = RGBtoCMYK(texture2D(inputBuffer, uvC).rgb);
+  vec4 cmykM = RGBtoCMYK(texture2D(inputBuffer, uvM).rgb);
+  vec4 cmykY = RGBtoCMYK(texture2D(inputBuffer, uvY).rgb);
+  vec4 cmykK = RGBtoCMYK(texture2D(inputBuffer, uvK).rgb);
+  
+  float dotC = halftoneDot(uv, ANGLE_C, cmykC.x);
+  float dotM = halftoneDot(uv, ANGLE_M, cmykM.y);
+  float dotY = halftoneDot(uv, ANGLE_Y, cmykY.z);
+  float dotK = halftoneDot(uv, ANGLE_K, cmykK.w);
+  
+  vec3 outColor = vec3(1.0);
+  outColor.r *= (1.0 - CYAN_STRENGTH * dotC);
+  outColor.g *= (1.0 - MAGENTA_STRENGTH * dotM);
+  outColor.b *= (1.0 - YELLOW_STRENGTH * dotY);
+  outColor *= (1.0 - BLACK_STRENGTH * dotK);
+  
+  outputColor = vec4(outColor, 1.0);
 }
 `;
 
@@ -283,7 +289,13 @@ class HalftoneEffectImpl extends Effect {
 const CustomHalftoneEffect = wrapEffect(HalftoneEffectImpl);
 
 const HalftoneEffect = () => {
-  const { enabled, dotSize } = useControls({
+  const { enabled, dotSize, pixelSize } = useControls({
+    pixelSize: {
+      value: 8.0,
+      min: 2.0,
+      max: 32.0,
+      step: 2.0,
+    },
     dotSize: {
       value: 0.7,
       min: 0.25,
@@ -297,7 +309,7 @@ const HalftoneEffect = () => {
 
   return (
     <EffectComposer enabled={enabled}>
-      <CustomHalftoneEffect pixelSize={8.0} dotSize={dotSize} />
+      <CustomHalftoneEffect pixelSize={pixelSize} dotSize={dotSize} />
     </EffectComposer>
   );
 };

@@ -1,4 +1,11 @@
-import { Box, Icon, IconButton, Tooltip } from '@maximeheckel/design-system';
+import {
+  Box,
+  Icon,
+  IconButton,
+  Tooltip,
+  Text,
+  Flex,
+} from '@maximeheckel/design-system';
 import React, { useState } from 'react';
 
 import { ShaderPlayground } from '@core/components/MDX/Widgets/ShaderPlayground';
@@ -28,47 +35,24 @@ mat2 rot(float deg) {
   return mat2(c, -s, s, c);
 }
 
-// Get the texture UV at the center of the rotated halftone cell
-vec2 getHalftoneCellTextureUV(vec2 uvScreen, float angleDeg) {
-  float effectiveDotDensity = (min(uResolution.x, uResolution.y) / uPixelSize);
-  float minRes = min(uResolution.x, uResolution.y);
-  float scale = effectiveDotDensity / minRes;
-
-  vec2 uv = uvScreen * scale;
-
-  // Transform to rotated space
-  mat2 rotation = rot(angleDeg);
-  vec2 rotatedUV = rotation * uv;
-
-  // Find cell center in rotated space
-  vec2 cellCenter = floor(rotatedUV) + 0.5;
-
-  // Transform back to screen space
-  mat2 invRotation = rot(-angleDeg);
-  vec2 screenCenter = invRotation * cellCenter;
-
-  // Convert back to texture UV (0-1 range)
-  return screenCenter / scale / uResolution;
+vec2 toGridUV(vec2 uv, float angleDeg) {
+  return rot(angleDeg) * (uv * uResolution) / uPixelSize;
 }
 
-float halftoneDot(vec2 uvScreen, float angleDeg, float coverage) {
-  float effectiveDotDensity = (min(uResolution.x, uResolution.y) / uPixelSize);
+vec2 getCellCenterUV(vec2 uv, float angleDeg) {
+  vec2 gridUV = toGridUV(uv, angleDeg);
+  vec2 cellCenter = floor(gridUV) + 0.5;
+  vec2 centerScreen = rot(-angleDeg) * cellCenter * uPixelSize;
+  return centerScreen / uResolution;
+}
 
-  float minRes = min(uResolution.x, uResolution.y);
-  float scale = effectiveDotDensity / minRes;
-  vec2 uv = uvScreen * scale;
-
-  // Introduce rotation
-  uv = rot(angleDeg) * uv;
-
-  vec2 gv = fract(uv) - 0.5;
+float halftoneDot(vec2 uv, float angleDeg, float coverage) {
+  vec2 gridUV = toGridUV(uv, angleDeg);
+  vec2 gv = fract(gridUV) - 0.5;
   float r = uDotSize * sqrt(clamp(coverage, 0.0, 1.0));
-
-  // Analytic AA
-  float aa = fwidth(length(gv)) * 1.0;
+  float aa = fwidth(length(gv));
   float d = length(gv);
-  float ink = 1.0 - smoothstep(r - aa, r + aa, d);
-  return ink;
+  return 1.0 - smoothstep(r - aa, r + aa, d);
 }
 
 // Convert RGB to CMYK by MattDSL -> https://gist.github.com/mattdesl/e40d3189717333293813626cbdb2c1d1
@@ -87,39 +71,25 @@ vec4 RGBtoCMYK(vec3 rgb) {
   return clamp(vec4(cmy, k), 0.0, 1.0);
 }
 
-// Procedural colorful gradient to demonstrate the effect
-vec3 proceduralImage(vec2 uv) {
-  // Create a nice colorful gradient with multiple hues
-  vec3 col1 = vec3(0.9, 0.2, 0.3);  // Red-ish
-  vec3 col2 = vec3(0.2, 0.8, 0.4);  // Green
-  vec3 col3 = vec3(0.2, 0.4, 0.9);  // Blue
-  vec3 col4 = vec3(0.9, 0.7, 0.1);  // Yellow
-
-  // Four-corner gradient
-  vec3 top = mix(col1, col2, uv.x);
-  vec3 bottom = mix(col4, col3, uv.x);
-  return mix(bottom, top, uv.y);
-}
-
 void main() {
-  vec2 uvScreen = vUv * uResolution;
+  vec2 uv = vUv;
 
   // Sample texture at each channel's rotated cell center
   // This ensures consistent color within each rotated halftone cell
-  vec2 uvC = getHalftoneCellTextureUV(uvScreen, uAngleC);
-  vec2 uvM = getHalftoneCellTextureUV(uvScreen, uAngleM);
-  vec2 uvY = getHalftoneCellTextureUV(uvScreen, uAngleY);
-  vec2 uvK = getHalftoneCellTextureUV(uvScreen, uAngleK);
+  vec2 uvC = getCellCenterUV(uv, uAngleC);
+  vec2 uvM = getCellCenterUV(uv, uAngleM);
+  vec2 uvY = getCellCenterUV(uv, uAngleY);
+  vec2 uvK = getCellCenterUV(uv, uAngleK);
 
   vec4 cmykC = RGBtoCMYK(texture(uTexture, uvC).rgb);
   vec4 cmykM = RGBtoCMYK(texture(uTexture, uvM).rgb);
   vec4 cmykY = RGBtoCMYK(texture(uTexture, uvY).rgb);
   vec4 cmykK = RGBtoCMYK(texture(uTexture, uvK).rgb);
 
-  float dotC = halftoneDot(uvScreen, uAngleC, cmykC.x);
-  float dotM = halftoneDot(uvScreen, uAngleM, cmykM.y);
-  float dotY = halftoneDot(uvScreen, uAngleY, cmykY.z);
-  float dotK = halftoneDot(uvScreen, uAngleK, cmykK.w);
+  float dotC = halftoneDot(uv, uAngleC, cmykC.x);
+  float dotM = halftoneDot(uv, uAngleM, cmykM.y);
+  float dotY = halftoneDot(uv, uAngleY, cmykY.z);
+  float dotK = halftoneDot(uv, uAngleK, cmykK.w);
 
   vec3 outColor = vec3(1.0);
   outColor.r *= (1.0 - CYAN_STRENGTH * dotC);
@@ -133,7 +103,6 @@ void main() {
 
 export const CMYKHalftoneDemo = () => {
   const [pixelSize, setPixelSize] = useState(8.0);
-  const [dotSize, setDotSize] = useState(0.65);
   const [angleC, setAngleC] = useState(15.0);
   const [angleM, setAngleM] = useState(75.0);
   const [angleY, setAngleY] = useState(0.0);
@@ -145,7 +114,7 @@ export const CMYKHalftoneDemo = () => {
       fragmentShader={CMYK_HALFTONE_FRAGMENT_SHADER}
       uniforms={{
         uPixelSize: pixelSize,
-        uDotSize: dotSize,
+        uDotSize: 0.65,
         uAngleC: angleC,
         uAngleM: angleM,
         uAngleY: angleY,
@@ -164,15 +133,6 @@ export const CMYKHalftoneDemo = () => {
         value={pixelSize}
         onChange={setPixelSize}
       />
-      <Slider
-        id="dotSize"
-        label="Dot Size"
-        min={0}
-        max={1}
-        step={0.01}
-        value={dotSize}
-        onChange={setDotSize}
-      />
       <Box
         as="hr"
         css={{
@@ -182,59 +142,66 @@ export const CMYKHalftoneDemo = () => {
           backgroundColor: 'var(--border-color)',
         }}
       />
+      <Flex
+        alignItems="center"
+        css={{ width: '100%' }}
+        gap="2"
+        justifyContent="space-between"
+      >
+        <Text size="2" weight="4" variant="tertiary">
+          Angles
+        </Text>
+        <Tooltip content="Reset Angles">
+          <IconButton
+            variant="tertiary"
+            size="small"
+            onClick={() => {
+              setAngleC(15.0);
+              setAngleM(75.0);
+              setAngleY(0.0);
+              setAngleK(45.0);
+            }}
+          >
+            <Icon.Repeat />
+          </IconButton>
+        </Tooltip>
+      </Flex>
       <Slider
         id="angleC"
-        label="Cyan Angle"
+        label="Cyan"
         min={0}
         max={90}
         step={1}
         value={angleC}
         onChange={setAngleC}
-        size="sm"
       />
       <Slider
         id="angleM"
-        label="Magenta Angle"
+        label="Magenta"
         min={0}
         max={90}
         step={1}
         value={angleM}
         onChange={setAngleM}
-        size="sm"
       />
       <Slider
         id="angleY"
-        label="Yellow Angle"
+        label="Yellow"
         min={0}
         max={90}
         step={1}
         value={angleY}
         onChange={setAngleY}
-        size="sm"
       />
       <Slider
         id="angleK"
-        label="Black Angle"
+        label="Black"
         min={0}
         max={90}
         step={1}
         value={angleK}
-        size="sm"
         onChange={setAngleK}
       />
-      <Tooltip content="Reset Angles">
-        <IconButton
-          variant="secondary"
-          onClick={() => {
-            setAngleC(15.0);
-            setAngleM(75.0);
-            setAngleY(0.0);
-            setAngleK(45.0);
-          }}
-        >
-          <Icon.Repeat />
-        </IconButton>
-      </Tooltip>
     </ShaderPlayground>
   );
 };

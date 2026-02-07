@@ -25,7 +25,7 @@ canvas {
   height: 100vh;
 }`;
 
-const CausticsSandpack = (props: { scene: string }) => {
+const HalftoneSandpack = (props: { scene: string }) => {
   const { scene } = props;
 
   const ref = useRef(null);
@@ -84,4 +84,4 @@ const CausticsSandpack = (props: { scene: string }) => {
   );
 };
 
-export default CausticsSandpack;
+export default HalftoneSandpack;

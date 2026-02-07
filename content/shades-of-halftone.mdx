@@ -434,47 +434,64 @@ vec4 RGBtoCMYK (vec3 rgb) {
 
 Then, we can generate our grid of dots for each individual channel, and have the coverage/radius of their dots match the intensity of that color channel at that given position on screen.
 
-```glsl {8,11,25-28} title=CMYK Halftone grids
-float halftoneDot(vec2 uvScreen, float angleDeg, float coverage) {
-  float effectiveDotDensity = (min(resolution.x, resolution.y) / pixelSize);
-  
-  float minRes = min(resolution.x, resolution.y);
-  float scale = effectiveDotDensity / minRes;
-  vec2 uv = uvScreen * scale;
+```glsl {1-3,16} title=CMYK Halftone grids
+vec2 toGridUV(vec2 uv, float angleDeg) {
+  return rot(angleDeg) * (uv * resolution) / pixelSize;
+}
 
-  uv = rot(angleDeg) * uv;
+vec2 getCellCenterUV(vec2 uv, float angleDeg) {
+  vec2 gridUV = toGridUV(uv, angleDeg);
+  vec2 cellCenter = floor(gridUV) + 0.5;
+  vec2 centerScreen = rot(-angleDeg) * cellCenter * pixelSize;
+  return centerScreen / resolution;
+}
 
-  vec2 gv = fract(uv) - 0.5;
+float halftoneDot(vec2 uv, float angleDeg, float coverage) {
+  vec2 gridUV = toGridUV(uv, angleDeg);
+  vec2 distToCenter = fract(gridUV) - 0.5;
+
   float r = dotSize * sqrt(clamp(coverage, 0.0, 1.0));
-  
-  float aa = fwidth(length(gv));
-  float d = length(gv);
-  float ink = 1.0 - smoothstep(r - aa, r + aa, d);
-  return ink;
+  float aa = fwidth(length(distToCenter));
+  float d = length(distToCenter);
+  return 1.0 - smoothstep(r - aa, r + aa, d);
 }
 
 void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
-  vec2 normalizedPixelSize = pixelSize / resolution;
-  vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
-  vec3 base = texture2D(inputBuffer, uvPixel).rgb;
-  vec4 cmyk = RGBtoCMYK(base);
-      
-  float dotC = halftoneDot(gl_FragCoord.xy, ANGLE_C, cmyk.x);
-  float dotM = halftoneDot(gl_FragCoord.xy, ANGLE_M, cmyk.y);
-  float dotY = halftoneDot(gl_FragCoord.xy, ANGLE_Y, cmyk.z);
-  float dotK = halftoneDot(gl_FragCoord.xy, ANGLE_K, cmyk.w);
+  vec2 uvC = getCellCenterUV(uv, ANGLE_C);
+  vec2 uvM = getCellCenterUV(uv, ANGLE_M);
+  vec2 uvY = getCellCenterUV(uv, ANGLE_Y);
+  vec2 uvK = getCellCenterUV(uv, ANGLE_K);
+  
+  vec4 cmykC = RGBtoCMYK(texture2D(inputBuffer, uvC).rgb);
+  vec4 cmykM = RGBtoCMYK(texture2D(inputBuffer, uvM).rgb);
+  vec4 cmykY = RGBtoCMYK(texture2D(inputBuffer, uvY).rgb);
+  vec4 cmykK = RGBtoCMYK(texture2D(inputBuffer, uvK).rgb);
+  
+  float dotC = halftoneDot(uv, ANGLE_C, cmykC.x);
+  float dotM = halftoneDot(uv, ANGLE_M, cmykM.y);
+  float dotY = halftoneDot(uv, ANGLE_Y, cmykY.z);
+  float dotK = halftoneDot(uv, ANGLE_K, cmykK.w);
   
   vec3 outColor = vec3(1.0);
   outColor.r *= (1.0 - CYAN_STRENGTH * dotC);
   outColor.g *= (1.0 - MAGENTA_STRENGTH * dotM);
   outColor.b *= (1.0 - YELLOW_STRENGTH * dotY);
   outColor *= (1.0 - BLACK_STRENGTH * dotK);
-    
+  
   outputColor = vec4(outColor, 1.0);
 }
 ```
 
-<Callout variant="info" label="Radius">
+<Callout variant="info" label="Sampling">
+
+Notice how we use `getCellCenterUV` to sample the texture at the **center of each rotated cell** 
+rather than at the current pixel position. 
+
+If we sampled per-pixel like we did in previous examples, each pixel within a cell could return a different RGB value, 
+causing the dots to get *cut* by the underlying color edges (e.g. at the edge of our mesh). 
+By sampling only at the cell center, every pixel within a cell uses the same color, yielding perfect round dots across the screen.
+
+You can read more about this in the beautiful article written by Ksenia Kondrashova and Agu Segui from the Paper team [Exploring retro print with CMYK Halftone](https://paper.design/blog/retro-print-cmyk-halftone-shader).
 
 We infer the radius of each dot based on the coverage using the formula for the area of a circle.
 
