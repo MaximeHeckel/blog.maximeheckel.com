@@ -1,6 +1,6 @@
 import { Box, Flex } from '@maximeheckel/design-system';
 import { useInView } from 'motion/react';
-import React, { useDeferredValue, useRef, useState } from 'react';
+import React, { useDeferredValue, useId, useRef, useState } from 'react';
 
 import { ShaderCanvas } from '@core/components/MDX/Widgets/ShaderCanvas';
 import { Slider } from '@core/components/Slider';
@@ -57,6 +57,7 @@ export const RingDemo = () => {
 
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref);
+  const id = useId();
 
   return (
     <Flex
@@ -93,7 +94,7 @@ export const RingDemo = () => {
       </Box>
       <Flex direction="column" gap="4" css={{ width: '50%', minWidth: 135 }}>
         <Slider
-          id="split"
+          id={`${id}-split`}
           label="Split"
           min={0}
           max={1}
@@ -102,7 +103,7 @@ export const RingDemo = () => {
           onChange={setSplit}
         />
         <Slider
-          id="pixelSize"
+          id={`${id}-pixelSize`}
           label="Cell Size"
           min={8}
           max={32}

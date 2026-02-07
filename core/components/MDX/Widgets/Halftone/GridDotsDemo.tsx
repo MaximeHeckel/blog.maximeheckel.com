@@ -1,6 +1,6 @@
 import { Box, Flex } from '@maximeheckel/design-system';
 // import { useInView } from 'motion/react';
-import React, { useDeferredValue, useRef, useState } from 'react';
+import React, { useDeferredValue, useId, useRef, useState } from 'react';
 
 import { ShaderCanvas } from '@core/components/MDX/Widgets/ShaderCanvas';
 import { Slider } from '@core/components/Slider';
@@ -58,10 +58,11 @@ void main() {
 `;
 
 export const GridDotsDemo = () => {
-  const [radius, setRadius] = useState(0.7);
+  const [radius, setRadius] = useState(0.8);
   const deferredRadius = useDeferredValue(radius);
   const ref = useRef<HTMLDivElement>(null);
   // const isInView = useInView(ref);
+  const id = useId();
 
   return (
     <Flex
@@ -97,7 +98,7 @@ export const GridDotsDemo = () => {
       </Box>
       <Flex direction="column" gap="4" css={{ width: '50%', minWidth: 135 }}>
         <Slider
-          id="radius"
+          id={`${id}-radius`}
           label="Radius"
           min={0.5}
           max={1.25}

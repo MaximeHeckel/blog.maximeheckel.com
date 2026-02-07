@@ -70,7 +70,7 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
     
     float finalShape = maxCircle;
     
-    vec3 finalColor = vec3(1.0 - finalShape);
+    vec3 finalColor = mix(vec3(0.75), vec3(0.0, 0.0, 1.0), finalShape);
     vec4 debugTextureColor = texture2D(brushTexture, uv);
     outputColor = vec4(finalColor, 1.0) + (debug ? debugTextureColor : vec4(0.0));
 }

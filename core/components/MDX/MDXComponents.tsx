@@ -258,6 +258,10 @@ const Reflectance = dynamic(() =>
   import('./Widgets/Halftone/Reflectance').then((mod) => mod.Reflectance)
 );
 
+const WhiteDots = dynamic(() =>
+  import('./Widgets/Halftone/WhiteDots').then((mod) => mod.WhiteDots)
+);
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -387,6 +391,7 @@ const customComponents = {
   SimpleGridDemo,
   ColorBlending,
   Reflectance,
+  WhiteDots,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,

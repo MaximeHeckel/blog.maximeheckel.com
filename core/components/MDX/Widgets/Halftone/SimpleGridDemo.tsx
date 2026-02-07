@@ -1,4 +1,4 @@
-import React, { useDeferredValue, useState } from 'react';
+import React, { useDeferredValue, useId, useState } from 'react';
 
 import { ShaderPlayground } from '@core/components/MDX/Widgets/ShaderPlayground';
 import { Slider } from '@core/components/Slider';
@@ -27,8 +27,10 @@ export const SimpleGridDemo = () => {
   const [radius, setRadius] = useState(0.4);
   const [gridSize, setGridSize] = useState(10);
   const deferredRadius = useDeferredValue(radius);
-
   const deferredGridSize = useDeferredValue(gridSize);
+
+  const id = useId();
+
   return (
     <ShaderPlayground
       key={SIMPLE_GRID_FRAGMENT}
@@ -38,7 +40,7 @@ export const SimpleGridDemo = () => {
       gridSize={gridSize}
     >
       <Slider
-        id="radius"
+        id={`${id}-radius`}
         label="Radius"
         min={0}
         max={0.5}
@@ -47,7 +49,7 @@ export const SimpleGridDemo = () => {
         onChange={setRadius}
       />
       <Slider
-        id="gridSize"
+        id={`${id}-gridSize`}
         label="Grid Size"
         min={4}
         max={30}
