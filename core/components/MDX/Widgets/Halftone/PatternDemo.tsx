@@ -14,11 +14,11 @@ uniform vec2 uResolution;
 uniform float uRadius;
 uniform float uPixelSize;
 uniform sampler2D uTexture;
+uniform vec2 uTextureSize;
 uniform bool uUsePixelatedUv;
 uniform bool uDisplayCircleMask;
 uniform bool uDisplayLuma;
 uniform float uColorMode; // 0.0 = color, 1.0 = grayscale, 2.0 = black & white
-uniform float uTextureAspectRatio;
 
 void main() {
   vec2 uv = vUv;
@@ -27,7 +27,15 @@ void main() {
 
   vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
 
-  vec2 textureUv = (uUsePixelatedUv ? uvPixel : uv) * vec2(1.0, uTextureAspectRatio);
+  // object-fit: cover - compare canvas vs texture aspect ratios
+  float canvasAspect = uResolution.x / uResolution.y;
+  float textureAspect = uTextureSize.x / uTextureSize.y;
+  vec2 scale = textureAspect > canvasAspect 
+    ? vec2(canvasAspect / textureAspect, 1.0)  // texture wider: crop sides
+    : vec2(1.0, textureAspect / canvasAspect); // texture taller: crop top/bottom
+  
+  vec2 baseUv = uUsePixelatedUv ? uvPixel : uv;
+  vec2 textureUv = (baseUv - 0.5) * scale + 0.5;
   vec4 color = texture(uTexture, textureUv);
 
   float luma = dot(vec3(0.2126, 0.7152, 0.0722), color.rgb);
@@ -103,7 +111,6 @@ export const PatternDemo = (props: { allControls?: boolean }) => {
       fragmentShader={PATTERN_FRAGMENT}
       uniforms={{
         uRadius: deferredRadius,
-        uTextureAspectRatio: props.allControls ? 0.9 : 1.3,
         uTexture: props.allControls
           ? '/static/backgrounds/girl_with_pearl_earing.jpg'
           : '/static/backgrounds/flowers.webp',

@@ -23,13 +23,12 @@ uniform float uAngleM;
 uniform float uAngleY;
 uniform float uAngleK;
 uniform sampler2D uTexture;
+uniform vec2 uTextureSize;
 
 const float CYAN_STRENGTH    = 0.95;
 const float MAGENTA_STRENGTH = 0.95;
 const float YELLOW_STRENGTH  = 0.95;
 const float BLACK_STRENGTH   = 1.10;
-
-const float TEXTURE_ASPECT_RATIO = 1.3;
 
 mat2 rot(float deg) {
   float a = radians(deg);
@@ -83,10 +82,10 @@ void main() {
   vec2 uvY = getCellCenterUV(uv, uAngleY);
   vec2 uvK = getCellCenterUV(uv, uAngleK);
 
-  vec4 cmykC = RGBtoCMYK(texture(uTexture, uvC * vec2(1.0, TEXTURE_ASPECT_RATIO)).rgb);
-  vec4 cmykM = RGBtoCMYK(texture(uTexture, uvM * vec2(1.0, TEXTURE_ASPECT_RATIO)).rgb);
-  vec4 cmykY = RGBtoCMYK(texture(uTexture, uvY * vec2(1.0, TEXTURE_ASPECT_RATIO)).rgb);
-  vec4 cmykK = RGBtoCMYK(texture(uTexture, uvK * vec2(1.0, TEXTURE_ASPECT_RATIO)).rgb);
+  vec4 cmykC = RGBtoCMYK(texture(uTexture, uvC * vec2((uTextureSize.y / uTextureSize.x), 1.0)).rgb);
+  vec4 cmykM = RGBtoCMYK(texture(uTexture, uvM * vec2((uTextureSize.y / uTextureSize.x), 1.0)).rgb);
+  vec4 cmykY = RGBtoCMYK(texture(uTexture, uvY * vec2((uTextureSize.y / uTextureSize.x), 1.0)).rgb);
+  vec4 cmykK = RGBtoCMYK(texture(uTexture, uvK * vec2((uTextureSize.y / uTextureSize.x), 1.0)).rgb);
 
   float dotC = halftoneDot(uv, uAngleC, cmykC.x);
   float dotM = halftoneDot(uv, uAngleM, cmykM.y);

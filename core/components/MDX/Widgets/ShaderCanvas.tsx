@@ -21,6 +21,8 @@ export interface Uniforms {
 interface TextureInfo {
   texture: WebGLTexture;
   unit: number;
+  width?: number;
+  height?: number;
 }
 
 interface VideoTextureInfo {
@@ -154,7 +156,7 @@ function isVideoUrl(url: string): boolean {
 function loadTexture(
   gl: WebGL2RenderingContext,
   url: string,
-  onLoad?: () => void
+  onLoad?: (width: number, height: number) => void
 ): WebGLTexture | null {
   const texture = gl.createTexture();
   if (!texture) return null;
@@ -192,7 +194,7 @@ function loadTexture(
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     }
 
-    onLoad?.();
+    onLoad?.(image.width, image.height);
   };
   image.src = url;
 
@@ -333,6 +335,11 @@ export const ShaderCanvas = ({
     // Add user-defined uniforms
     Object.keys(uniformsRef.current).forEach((name) => {
       uniformLocations.set(name, gl.getUniformLocation(program, name));
+      // Also try to get companion size uniform for textures (e.g., uTextureSize)
+      uniformLocations.set(
+        `${name}Size`,
+        gl.getUniformLocation(program, `${name}Size`)
+      );
     });
 
     // Initialize texture tracking
@@ -389,15 +396,25 @@ export const ShaderCanvas = ({
           let textureInfo = renderer.textures.get(uniformName);
 
           if (!textureInfo) {
-            const texture = loadTexture(gl, value);
+            const unit = renderer.nextTextureUnit++;
+            textureInfo = { texture: null as unknown as WebGLTexture, unit };
+            renderer.textures.set(uniformName, textureInfo);
+
+            const texture = loadTexture(gl, value, (width, height) => {
+              // Store dimensions when image loads
+              const info = renderer.textures.get(uniformName);
+              if (info) {
+                info.width = width;
+                info.height = height;
+              }
+            });
+
             if (texture) {
-              const unit = renderer.nextTextureUnit++;
-              textureInfo = { texture, unit };
-              renderer.textures.set(uniformName, textureInfo);
+              textureInfo.texture = texture;
             }
           }
 
-          if (textureInfo) {
+          if (textureInfo?.texture) {
             gl.activeTexture(gl.TEXTURE0 + textureInfo.unit);
             gl.bindTexture(gl.TEXTURE_2D, textureInfo.texture);
             gl.uniform1i(location, textureInfo.unit);
@@ -449,8 +466,23 @@ export const ShaderCanvas = ({
     gl.bindVertexArray(vao);
 
     // Update all video textures every frame
-    renderer.videoTextures.forEach(({ texture, video }) => {
+    renderer.videoTextures.forEach(({ texture, video }, name) => {
       updateVideoTexture(gl, texture, video);
+      // Set video size uniform if available
+      const sizeLocation = uniformLocations.get(`${name}Size`);
+      if (sizeLocation && video.videoWidth > 0 && video.videoHeight > 0) {
+        gl.uniform2f(sizeLocation, video.videoWidth, video.videoHeight);
+      }
+    });
+
+    // Set image texture size uniforms
+    renderer.textures.forEach((info, name) => {
+      if (info.width !== undefined && info.height !== undefined) {
+        const sizeLocation = uniformLocations.get(`${name}Size`);
+        if (sizeLocation) {
+          gl.uniform2f(sizeLocation, info.width, info.height);
+        }
+      }
     });
 
     // Always set built-in uniforms
