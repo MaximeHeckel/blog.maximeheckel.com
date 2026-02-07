@@ -371,14 +371,12 @@ This is the main reason why color mixing, digitally speaking, doesn’t happen l
 For CMY subtractive blending, which mathematically is a bit of a misnomer, it can be represented through a multiplication: 
 `ColorOut = White * (1.0 - C) * (1.0 - M) * (1.0 - Y)`. The *subtractive* nature of this blending  refers to the physics of light absorption: each color channel acts as a filter that absorbs specific wavelengths from white light, only to leave the leftovers to the viewer. That’s why overlapping all the color channels results in black.
 
-<Fullbleed widthPercent={70}>
 <Image
-  src="blog/subtractive-blending.png"
+  src="blog/subtractive-blending2.png"
   alt="Diagram showcasing subtractive color blending for cyan, magenta, yellow, and all the pairs they can form"
   width={663}
-  height={156}
+  height={409}
 />
-</Fullbleed>
 
 The chart below represents the reflectance profile of cyan, magenta, and yellow across the visible spectrum, as well as the resulting filter:
 

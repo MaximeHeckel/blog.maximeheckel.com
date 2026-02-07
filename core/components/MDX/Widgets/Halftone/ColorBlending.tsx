@@ -447,7 +447,14 @@ export const ColorBlending = () => {
   return (
     <Fullbleed widthPercent={70}>
       <Card>
-        <Card.Body as={Flex} direction="row" gap="2">
+        <Card.Body
+          as={Flex}
+          direction={{
+            '@md': 'row',
+            '@initial': 'column',
+          }}
+          gap="2"
+        >
           <ColorBlendingCanvas mode="RGB" />
           <ColorBlendingCanvas mode="CMY" />
         </Card.Body>
