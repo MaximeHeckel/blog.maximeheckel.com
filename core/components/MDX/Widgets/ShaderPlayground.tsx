@@ -17,7 +17,7 @@ import Fullbleed from '@core/components/Fullbleed';
 import { ShaderCanvas, Uniforms } from './ShaderCanvas';
 
 const GRID_SIZE = 12;
-const HIDE_DELAY_MS = 550;
+const HIDE_DELAY_MS = 250;
 const SOUND_THROTTLE_MS = 50;
 
 // Helper function to calculate grid point from mouse position

@@ -241,7 +241,7 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'end',
-            gap: 'var(--space-3)',
+            gap: 'var(--space-1)',
             width: '100%',
             position: 'relative',
 

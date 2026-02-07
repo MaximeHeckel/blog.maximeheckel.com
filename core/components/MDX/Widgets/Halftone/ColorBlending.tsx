@@ -1,8 +1,6 @@
 import { Box, Card, Flex } from '@maximeheckel/design-system';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 
-import Fullbleed from '@core/components/Fullbleed';
-
 interface ColorBlendingProps {
   mode: 'RGB' | 'CMY';
   width?: number;
@@ -445,20 +443,11 @@ const ColorBlendingCanvas: React.FC<ColorBlendingProps> = ({
 
 export const ColorBlending = () => {
   return (
-    <Fullbleed widthPercent={70}>
-      <Card>
-        <Card.Body
-          as={Flex}
-          direction={{
-            '@md': 'row',
-            '@initial': 'column',
-          }}
-          gap="2"
-        >
-          <ColorBlendingCanvas mode="RGB" />
-          <ColorBlendingCanvas mode="CMY" />
-        </Card.Body>
-      </Card>
-    </Fullbleed>
+    <Card>
+      <Card.Body as={Flex} direction="column" gap="2">
+        <ColorBlendingCanvas mode="RGB" />
+        <ColorBlendingCanvas mode="CMY" />
+      </Card.Body>
+    </Card>
   );
 };
