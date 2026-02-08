@@ -339,7 +339,7 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
           alignItems="stretch"
           css={{
             padding: 0,
-            columnGap: 'var(--space-9)',
+            columnGap: 'var(--space-6)',
             rowGap: 'var(--space-3)',
             '@media (max-width: 900px)': {
               flexDirection: 'column-reverse',

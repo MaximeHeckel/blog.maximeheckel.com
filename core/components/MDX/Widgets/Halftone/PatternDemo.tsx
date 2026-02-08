@@ -143,6 +143,22 @@ export const PatternDemo = (props: { allControls?: boolean }) => {
         value={pixelSizeIndex}
         onChange={setPixelSizeIndex}
       />
+      {props.allControls ? (
+        <Select
+          id={`${id}-colorMode`}
+          label="Mode"
+          items={[
+            { label: 'Colored', value: 'color' },
+            { label: 'Grayscale', value: 'grayscale' },
+            { label: 'Black & White', value: 'blackwhite' },
+          ]}
+          value={colorMode}
+          onChange={(value) =>
+            setColorMode(value as 'color' | 'grayscale' | 'blackwhite')
+          }
+          size="md"
+        />
+      ) : null}
       <Checkbox
         id={`${id}-displayCircleMask`}
         aria-label="Display Circle Mask"
@@ -166,18 +182,6 @@ export const PatternDemo = (props: { allControls?: boolean }) => {
             disabled={!displayCircleMask}
             checked={displayLuma}
             onChange={() => setDisplayLuma((prev) => !prev)}
-          />
-          <Select
-            id={`${id}-colorMode`}
-            items={[
-              { label: 'Colored', value: 'color' },
-              { label: 'Grayscale', value: 'grayscale' },
-              { label: 'Black & White', value: 'blackwhite' },
-            ]}
-            value={colorMode}
-            onChange={(value) =>
-              setColorMode(value as 'color' | 'grayscale' | 'blackwhite')
-            }
           />
         </>
       ) : null}

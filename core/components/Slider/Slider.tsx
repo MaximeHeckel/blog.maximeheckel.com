@@ -441,7 +441,7 @@ const Slider = (props: SliderProps) => {
             htmlFor={sliderId}
             size="2"
             weight="4"
-            variant="primary"
+            variant="secondary"
             ref={leftLabelRef}
           >
             {label}

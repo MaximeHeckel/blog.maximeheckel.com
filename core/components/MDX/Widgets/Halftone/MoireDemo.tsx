@@ -1,5 +1,5 @@
 import { Checkbox } from '@maximeheckel/design-system';
-import React, { useDeferredValue, useState } from 'react';
+import React, { useDeferredValue, useEffect, useState } from 'react';
 
 import { ShaderPlayground } from '@core/components/MDX/Widgets/ShaderPlayground';
 import { Select } from '@core/components/Select';
@@ -103,6 +103,10 @@ export const MoireDemo = () => {
   const deferredPixelSize = useDeferredValue(pixelSize);
   const deferredAngle = useDeferredValue(angle);
 
+  useEffect(() => {
+    setAngle(0.0);
+  }, [type]);
+
   return (
     <ShaderPlayground
       key={MOIRE_FRAGMENT}
@@ -124,8 +128,10 @@ export const MoireDemo = () => {
           { label: 'Poisson Dots', value: 'poissonDots' },
         ]}
         value={type}
+        label="Type"
         minWidth={135}
         onChange={(value) => setType(value as 'circleGrid' | 'poissonDots')}
+        size="md"
       />
       <Slider
         id="pixelSize"
