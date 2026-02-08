@@ -1,7 +1,10 @@
-import { Inter, Instrument_Serif } from 'next/font/google';
+import { Instrument_Serif } from 'next/font/google';
 import localFont from 'next/font/local';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-display' });
+const inter = localFont({
+  src: '../../public/fonts/InterVariable.woff2',
+  variable: '--font-display',
+});
 const instrument = Instrument_Serif({
   subsets: ['latin'],
   weight: '400',

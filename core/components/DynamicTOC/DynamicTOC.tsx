@@ -213,7 +213,11 @@ const DynamicTOC = (props: {
   }, [expanded, ids]);
 
   return (
-    <Box css={{ position: 'relative' }}>
+    <Box
+      css={{
+        position: 'relative',
+      }}
+    >
       <Flex
         as={motion.div}
         layout

@@ -70,6 +70,7 @@ const Image = (props: ImageProps) => {
           direction="column"
           css={{ margin: '0', width: '100%' }}
           alignItems="start"
+          gap="0"
         >
           <Trigger
             tabIndex={0}
@@ -80,10 +81,12 @@ const Image = (props: ImageProps) => {
                 onKeyDown={handlePressEnter}
                 whileTap={{ scale: 0.95 }}
                 whileHover={{ scale: 1.02 }}
+                style={{ willChange: 'transform' }}
                 transition={{
                   layout: {
                     type: 'spring',
-                    bounce: 0.4,
+                    stiffness: 400,
+                    damping: 27,
                   },
                 }}
                 role="button"
@@ -110,10 +113,10 @@ const Image = (props: ImageProps) => {
             {isDialogOpen ? (
               <Backdrop
                 as={motion.div}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                initial={{ '--opacity': 0 }}
+                animate={{ '--opacity': 0.8 }}
+                exit={{ '--opacity': 0, transition: { duration: 0.2 } }}
+                transition={{ duration: 0.2, delay: 0.2 }}
                 key={`backdrop-${uniqueId}`}
               >
                 <Popup
@@ -153,7 +156,8 @@ const Image = (props: ImageProps) => {
                         transition={{
                           layout: {
                             type: 'spring',
-                            bounce: 0.4,
+                            stiffness: 400,
+                            damping: 27,
                           },
                         }}
                       >

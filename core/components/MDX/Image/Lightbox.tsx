@@ -13,7 +13,7 @@ export const Backdrop = styled(Dialog.Backdrop, {
   placeItems: 'center',
   overflowY: 'auto',
   cursor: 'zoom-out',
-  backgroundColor: 'oklch(from var(--background) l c h / 80%)',
+  backgroundColor: 'oklch(from var(--background) l c h / var(--opacity, 0.8))',
 });
 
 export const Popup = styled(Dialog.Popup, {
@@ -26,4 +26,6 @@ export const Trigger = styled(Dialog.Trigger, {
   all: 'unset',
   cursor: 'zoom-in',
   width: '100%',
+  height: '100%',
+  lineHeight: 0,
 });

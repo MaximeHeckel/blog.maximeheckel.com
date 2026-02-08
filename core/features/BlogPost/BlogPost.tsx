@@ -209,6 +209,28 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
     }, 500);
   }, [slug]);
 
+  useEffect(() => {
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.currentTarget as HTMLAnchorElement;
+      const href = target.getAttribute('href');
+      if (href) {
+        const fullUrl = `${postUrl}${href}`;
+        navigator.clipboard.writeText(fullUrl);
+      }
+    };
+
+    const anchorLinks = document.querySelectorAll('.anchor-link');
+    anchorLinks.forEach((link) => {
+      link.addEventListener('click', handleAnchorClick as EventListener);
+    });
+
+    return () => {
+      anchorLinks.forEach((link) => {
+        link.removeEventListener('click', handleAnchorClick as EventListener);
+      });
+    };
+  }, [postUrl, ids]);
+
   return (
     <Main>
       <Seo
@@ -241,7 +263,7 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'end',
-            gap: 'var(--space-3)',
+            gap: 'var(--space-1)',
             width: '100%',
             position: 'relative',
 
