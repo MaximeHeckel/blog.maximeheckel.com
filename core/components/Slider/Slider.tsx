@@ -36,9 +36,9 @@ const Slider = (props: SliderProps) => {
     value,
     defaultValue,
     disabled,
-    hideDots,
     label,
     labelValue,
+    hideDots,
     size = 'md',
   } = props;
 
@@ -50,6 +50,8 @@ const Slider = (props: SliderProps) => {
   const MIN_VALUE = min;
   const STEP_SIZE = step;
   const MAX_STEPS_COUNT = 25;
+
+  const [boundsReady, setBoundsReady] = useState(false);
 
   const startPositionRef = useRef(0);
   const isPointerDownRef = useRef(false);
@@ -68,9 +70,6 @@ const Slider = (props: SliderProps) => {
     left: null,
     right: null,
   });
-
-  // State to trigger useMemo recalculation after bounds are computed
-  const [boundsReady, setBoundsReady] = useState(false);
 
   // Motion values for transforms
   const scaleX = useMotionValue(1);
@@ -263,7 +262,6 @@ const Slider = (props: SliderProps) => {
             width: rightRect.width,
           } as DOMRect,
         };
-
         setBoundsReady(true);
       }
     };
@@ -419,6 +417,7 @@ const Slider = (props: SliderProps) => {
                   backgroundColor: 'hsla(0, 0%, 100%, 0.3)',
                   borderRadius: '9999px',
                   transition: 'opacity 0.15s ease-in-out',
+                  willChange: 'opacity',
                 }}
                 style={{
                   opacity:
