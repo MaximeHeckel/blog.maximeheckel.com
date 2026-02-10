@@ -1,5 +1,5 @@
 import { Select as BaseSelect } from '@base-ui/react/select';
-import { Icon } from '@maximeheckel/design-system';
+import { Flex, Icon, Text } from '@maximeheckel/design-system';
 import { useId } from 'react';
 
 import {
@@ -18,10 +18,22 @@ export interface SelectProps {
   onChange: (value: string | null) => void;
   minWidth?: number;
   disabled?: boolean;
+  size?: 'sm' | 'md';
+  label?: string;
 }
 
 const Select = (props: SelectProps) => {
-  const { id, triggerRef, items, value, onChange, minWidth, disabled } = props;
+  const {
+    id,
+    triggerRef,
+    items,
+    value,
+    onChange,
+    minWidth,
+    disabled,
+    size = 'sm',
+    label,
+  } = props;
 
   const generatedId = useId();
 
@@ -33,14 +45,29 @@ const Select = (props: SelectProps) => {
         id={selectId}
         ref={triggerRef}
         disabled={disabled}
+        size={size}
         style={{
           '--min-width': `${minWidth ?? 124}px`,
         }}
       >
-        <BaseSelect.Value />
-        <SelectIcon>
-          <Icon.ChevronUpDown size={4} />
-        </SelectIcon>
+        {label && size === 'md' ? (
+          <Text size="2" weight="4" variant="secondary">
+            {label}
+          </Text>
+        ) : null}
+        <Flex
+          alignItems="center"
+          css={{ width: size === 'md' ? 'auto' : '100%' }}
+          justifyContent="space-between"
+          gap="1"
+        >
+          <Text size="2" weight="4" variant="primary">
+            <BaseSelect.Value />
+          </Text>
+          <SelectIcon>
+            <Icon.ChevronUpDown size={4} />
+          </SelectIcon>
+        </Flex>
       </SelectTrigger>
       <BaseSelect.Portal>
         <BaseSelect.Positioner

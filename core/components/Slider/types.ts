@@ -8,5 +8,7 @@ export type SliderProps = {
   defaultValue?: number;
   disabled?: boolean;
   label?: string;
+  labelValue?: string;
   size?: 'sm' | 'md';
+  hideDots?: boolean;
 };

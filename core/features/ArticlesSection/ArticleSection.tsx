@@ -195,7 +195,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
                     delay={0.5 + index * 0.05}
                     windowSize={7}
                     speed={0.8}
-                    size="1"
+                    size="2"
                     variant="tertiary"
                   >
                     {format(new Date(post.date), 'MMM dd')}

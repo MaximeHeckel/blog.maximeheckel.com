@@ -107,6 +107,10 @@ const Dock = () => {
           position: 'relative',
           '--thickness': '1.5px',
           borderRadius: 'var(--border-radius-2)',
+          // Force own compositing layer to prevent backdrop-filter flickering
+          // when GPU-heavy elements (WebGL canvases) are on the page
+          transform: 'translateZ(0)',
+          isolation: 'isolate',
         }}
       >
         <GlassMaterial />
