@@ -45,7 +45,7 @@
     "@react-three/fiber": "^9.4.2",
     "@react-three/postprocessing": "^3.0.4",
     "@supabase/supabase-js": "^2.47.10",
-    "@vercel/analytics": "^1.4.1",
+    "@vercel/analytics": "^1.6.1",
     "@vercel/functions": "^1.5.2",
     "@vercel/kv": "^3.0.0",
     "@visx/clip-path": "3.12.0",
