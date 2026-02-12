@@ -112,8 +112,8 @@ export const PatternDemo = (props: { allControls?: boolean }) => {
       uniforms={{
         uRadius: deferredRadius,
         uTexture: props.allControls
-          ? '/static/backgrounds/girl_with_pearl_earing.jpg'
-          : '/static/backgrounds/flowers.webp',
+          ? 'https://cdn.maximeheckel.com/images/backgrounds/gril-with-pearl-earing.jpg'
+          : 'https://cdn.maximeheckel.com/images/backgrounds/flowers.webp',
         uUsePixelatedUv: usePixelatedUv,
         uPixelSize: deferredPixelSize,
         uDisplayCircleMask: displayCircleMask,

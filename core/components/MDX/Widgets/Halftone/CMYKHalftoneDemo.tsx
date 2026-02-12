@@ -120,7 +120,8 @@ export const CMYKHalftoneDemo = () => {
         uAngleM: angleM,
         uAngleY: angleY,
         uAngleK: angleK,
-        uTexture: '/static/backgrounds/flowers.webp',
+        uTexture:
+          'https://cdn.maximeheckel.com/images/backgrounds/flowers.webp',
       }}
       showGrid={false}
       showCode={false}

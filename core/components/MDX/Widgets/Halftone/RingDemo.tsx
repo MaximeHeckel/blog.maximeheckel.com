@@ -85,7 +85,8 @@ export const RingDemo = () => {
             uniforms={{
               uRadius: 0.3,
               uPixelSize: deferredPixelSize,
-              uTexture: '/static/backgrounds/landscape.mp4',
+              uTexture:
+                'https://cdn.maximeheckel.com/images/backgrounds/landscape.mp4',
               split: deferredSplit,
             }}
             aspectRatio="16 / 10"

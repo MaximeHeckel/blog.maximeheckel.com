@@ -77,7 +77,8 @@ export const WhiteDots = () => {
           uniforms={{
             uRadius: deferredRadius,
             uPixelSize: deferredPixelSize,
-            uTexture: '/static/backgrounds/landscape.mp4',
+            uTexture:
+              'https://cdn.maximeheckel.com/images/backgrounds/landscape.mp4',
           }}
           aspectRatio="16 / 10"
         />
