@@ -145,7 +145,7 @@ const Tweet = (props: Props) => {
               if (!videoSrc || lastVariant.content_type !== 'video/mp4')
                 return null;
 
-              const proxiedSrc = `/api/twitter-video?url=${encodeURIComponent(videoSrc)}`;
+              const proxiedSrc = `https://cdn.maximeheckel.com/videos/tweets/${id}.mp4`;
 
               return (
                 <VideoPlayer
@@ -173,7 +173,7 @@ const Tweet = (props: Props) => {
           })}
         </SingleImageWrapper>
       ) : null}
-      {quoted_tweet ? <Tweet tweet={{ ...quoted_tweet }} /> : null}
+      {quoted_tweet && !hasMedia ? <Tweet tweet={{ ...quoted_tweet }} /> : null}
       <Flex alignItems="center" justifyContent="space-between" gap="2">
         <Flex>
           <ActionIcons

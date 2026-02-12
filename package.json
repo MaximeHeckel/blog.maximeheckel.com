@@ -17,6 +17,7 @@
     "export": "next export",
     "check-format": "oxfmt --check",
     "format": "oxfmt --write",
+    "download:twitter-videos": "node ./scripts/download-twitter-videos.js",
     "generate:og": "node ./scripts/generate-opengraph-images",
     "generate:rss": "node ./scripts/generate-rss",
     "generate:search": "node ./scripts/generate-search-index.js",
