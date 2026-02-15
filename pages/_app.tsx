@@ -1,8 +1,10 @@
 import { globalStyles, Tooltip } from '@maximeheckel/design-system';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AppProps } from 'next/app';
-import Head from 'next/head';
 import 'styles/global.css';
+import Head from 'next/head';
+
 import { CommandMenuProvider } from '@core/components/CommandMenu';
 import { Fonts } from '@core/components/Fonts';
 import { DefaultSeo } from '@core/components/Seo';
@@ -30,6 +32,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <Meta />
       <Fonts />
       <Analytics />
+      <SpeedInsights />
       <CommandMenuProvider>
         <Tooltip.Provider>
           <Component {...pageProps} />
