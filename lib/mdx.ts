@@ -35,6 +35,8 @@ export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
   const content = parsedFile.content;
 
   const options = {
+    blockJS: false,
+    blockDangerousJS: false,
     mdxOptions: {
       rehypePlugins: [
         rehypeSlug,

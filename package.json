@@ -76,7 +76,7 @@
     "lodash.debounce": "^4.0.8",
     "motion": "^12.23.26",
     "next": "^15.5.9",
-    "next-mdx-remote": "5.0.0",
+    "next-mdx-remote": "6.0.0",
     "next-seo": "6.6.0",
     "postprocessing": "^6.38.1",
     "prism-react-renderer": "^2.4.1",
