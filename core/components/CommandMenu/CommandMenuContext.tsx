@@ -41,6 +41,13 @@ export const CommandMenuProvider = ({ children }: CommandMenuProviderProps) => {
   const [actions, setActions] = useState<Action[]>([]);
   const [isCommandMenuOpen, setIsCommandMenuOpen] = useState(false);
   const [isAIModeOpen, setIsAIModeOpen] = useState(false);
+  const commandMenuKeyRef = useRef(0);
+  const wasOpenRef = useRef(false);
+
+  if (isCommandMenuOpen && !wasOpenRef.current) {
+    commandMenuKeyRef.current += 1;
+  }
+  wasOpenRef.current = isCommandMenuOpen;
 
   useKeyboardShortcut('ctrl+k|meta+k', () => setIsCommandMenuOpen(true));
 
@@ -83,6 +90,7 @@ export const CommandMenuProvider = ({ children }: CommandMenuProviderProps) => {
   return (
     <CommandMenuContext.Provider value={value}>
       <CommandMenu
+        key={commandMenuKeyRef.current}
         open={isCommandMenuOpen}
         onOpenChange={setIsCommandMenuOpen}
         onAskAI={() => setIsAIModeOpen(true)}

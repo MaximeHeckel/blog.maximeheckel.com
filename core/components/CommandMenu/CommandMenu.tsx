@@ -207,14 +207,6 @@ const CommandMenu = (props: CommandMenuProps) => {
     }
   }, [page, debouncedSearchQuery, search, resetSearch]);
 
-  useEffect(() => {
-    if (!open) {
-      setPage(null);
-      setSearchQuery('');
-      resetSearch();
-    }
-  }, [open, resetSearch]);
-
   const handleActionSelect = useCallback(
     (onSelect: () => void) => {
       onSelect();
