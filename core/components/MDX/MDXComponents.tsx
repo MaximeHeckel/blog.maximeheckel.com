@@ -262,6 +262,52 @@ const WhiteDots = dynamic(() =>
   import('./Widgets/Halftone/WhiteDots').then((mod) => mod.WhiteDots)
 );
 
+const RayleighDensity = dynamic(() =>
+  import('./Widgets/AtmosphericScattering/RayleighDensity').then(
+    (mod) => mod.RayleighDensity
+  )
+);
+
+const MieOzoneDensity = dynamic(() =>
+  import('./Widgets/AtmosphericScattering/MieOzoneDensity').then(
+    (mod) => mod.MieOzoneDensity
+  )
+);
+
+const Lightmarching = dynamic(() =>
+  import('./Widgets/AtmosphericScattering/Lightmarching').then(
+    (mod) => mod.Lightmarching
+  )
+);
+
+const RaySphereIntersect = dynamic(() =>
+  import('./Widgets/AtmosphericScattering/RaySphereIntersect').then(
+    (mod) => mod.RaySphereIntersect
+  )
+);
+
+const RaySphereIntersectPlanet = dynamic(() =>
+  import('./Widgets/AtmosphericScattering/RaySphereIntersect').then(
+    (mod) => mod.RaySphereIntersectPlanet
+  )
+);
+
+const Density = dynamic(() =>
+  import('./Widgets/AtmosphericScattering/Density').then((mod) => mod.Density)
+);
+
+const LightDensity = dynamic(() =>
+  import('./Widgets/AtmosphericScattering/LightDensity').then(
+    (mod) => mod.Density
+  )
+);
+
+const TransmittanceLUT = dynamic(() =>
+  import('./Widgets/AtmosphericScattering/TransmittanceLUT').then(
+    (mod) => mod.TransmittanceLUT
+  )
+);
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -325,6 +371,10 @@ const ParticleCompute = dynamic(
 const TSLWebGPUSandpack = dynamic(() => import('./Widgets/TSLWebGPU/Sandpack'));
 
 const HalftoneSandpack = dynamic(() => import('./Widgets/Halftone/Sandpack'));
+
+const AtmosphericScatteringSandpack = dynamic(
+  () => import('./Widgets/AtmosphericScattering/Sandpack')
+);
 
 const Slideshow = dynamic(() => import('../Slideshow'));
 
@@ -392,6 +442,14 @@ const customComponents = {
   ColorBlending,
   Reflectance,
   WhiteDots,
+  RayleighDensity,
+  MieOzoneDensity,
+  Lightmarching,
+  RaySphereIntersect,
+  RaySphereIntersectPlanet,
+  Density,
+  LightDensity,
+  TransmittanceLUT,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
@@ -415,6 +473,7 @@ const customComponents = {
   VolumetricLightingSandpack,
   TSLWebGPUSandpack,
   HalftoneSandpack,
+  AtmosphericScatteringSandpack,
 };
 
 const MDXComponents = {
