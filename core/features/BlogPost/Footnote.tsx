@@ -78,8 +78,8 @@ const SignatureSVG = () => {
         initial="initial"
         animate={isVisible ? 'revealed' : 'initial'}
         variants={signatureSvgVariants}
-        width="178"
-        height="74"
+        width="142"
+        height="59"
         viewBox="0 0 89 37"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

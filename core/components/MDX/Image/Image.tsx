@@ -26,7 +26,6 @@ const RootImage = memo((props: ImageProps) => {
         width: '100%',
         height: 'auto',
         objectFit: 'cover',
-        border: '2px solid var(--border-color)',
       }}
       loader={cloudflareLoader}
       {...props}
@@ -34,9 +33,6 @@ const RootImage = memo((props: ImageProps) => {
       sizes="(max-width: 768px) 120vw,
              75vw"
       priority={props.priority}
-      style={{
-        borderRadius: 'var(--border-radius-3)',
-      }}
     />
   );
 });
@@ -91,7 +87,13 @@ const Image = (props: ImageProps) => {
                 }}
                 role="button"
               >
-                <RootImage {...props} />
+                <RootImage
+                  {...props}
+                  style={{
+                    border: '2px solid var(--border-color)',
+                    borderRadius: 'var(--border-radius-3)',
+                  }}
+                />
               </motion.div>
             }
           />
@@ -167,6 +169,7 @@ const Image = (props: ImageProps) => {
                             objectFit: 'cover',
                             height: 'auto',
                             width: '80dvw',
+                            borderRadius: 'var(--border-radius-3)',
 
                             '@media (max-width: 768px)': {
                               width: '97dvw',

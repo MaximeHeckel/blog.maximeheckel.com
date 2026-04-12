@@ -6,7 +6,6 @@ import {
   Shadows,
   Text,
 } from '@maximeheckel/design-system';
-// import { useInView } from 'motion/react';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import useSound from 'use-sound';
@@ -328,10 +327,8 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
   const hasControls = React.Children.count(children) > 0;
   const ref = useRef<HTMLDivElement>(null);
 
-  // const isInView = useInView(ref);
-
   return (
-    <Fullbleed widthPercent={60}>
+    <Fullbleed widthPercent={85}>
       <Card css={{ width: '100%', minWidth: 0, overflow: 'hidden' }}>
         <Card.Body
           as={Flex}
@@ -379,15 +376,17 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
                 width: '100%',
                 overflow: 'hidden',
                 borderLeft: '1px solid var(--border-color)',
+
+                '@media (max-width: 900px)': {
+                  borderLeft: 'none',
+                },
               }}
               style={{ aspectRatio }}
             >
-              {/* {isInView ? ( */}
               <ShaderCanvas
                 fragmentShader={fragmentShader}
                 uniforms={uniforms}
               />
-              {/* ) : null} */}
               {showGrid ? <GridOverlay gridSize={gridSize} /> : null}
             </Box>
           </Flex>
