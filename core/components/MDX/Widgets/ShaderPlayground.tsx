@@ -331,7 +331,7 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
   // const isInView = useInView(ref);
 
   return (
-    <Fullbleed widthPercent={60}>
+    <Fullbleed widthPercent={85}>
       <Card css={{ width: '100%', minWidth: 0, overflow: 'hidden' }}>
         <Card.Body
           as={Flex}
