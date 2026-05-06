@@ -17,7 +17,7 @@ const openai = createOpenAI({
   apiKey: OPEN_AI_API_KEY,
 });
 
-const model = openai('gpt-4o');
+const model = openai('gpt-4.1');
 
 export const config = {
   runtime: 'edge',
