@@ -23,11 +23,19 @@ I wanted to build my own version of this effect with shaders, rendering the sky�
 
 Here’s a compilation of what came out of this month-long journey, all running in real time:
 
-// VIDEO
+<VideoPlayer
+  src="https://cdn.maximeheckel.com/videos/blog/atmosphere-compilation-compressed.mp4"
+  autoPlay
+  muted
+  loop
+  width={663}
+  height={373}
+/>
+
 
 While I didn't originally plan on writing an article on this subject, the enthusiasm around the recent Artemis II mission coupled with my own interest in everything related to space made it feel like something worth exploring in depth and building an interactive experience for in an effort to make the topic more accessible.
 We’ll see how to implement an **atmospheric scattering post-processing effect step-by-step**, starting with the implementation of the different building blocks to render **a realistic sky dome**, and then adapt the result to render it as **an atmospheric shell around a planet**. 
-Finally, we'll look into Sebastian Hillaire’s LUT-based approach for a more performant result, and my own attempt at implementing it, which was a kind of *stepping outside of my comfort zone* phase for this project.
+Finally, we'll look into Sebastian Hillaire’s LUT-based approach for a more performant result, or at least an *attempt* at it, as this was very much the *stepping outside of my comfort zone* phase for this project.
 
 <Callout variant="info" label="Sources">
 Here's a list of the key references I used during this project:
@@ -44,8 +52,7 @@ Here's a list of the key references I used during this project:
 
 You may have, at some point or another, tried to slap a blue gradient background behind some of your work to give it a more atmospheric look and feel, but doing so never feels quite right <FootnoteRef id="1" />.
 
-
- at first glance, but it’s far from accurate, and it only gets worse if you try to render it at dawn or dusk. If we want physical accuracy, we can’t think of the sky as a flat background texture. For our shader implementation, we must treat it as **the result of light interacting with air and its constituents**, while taking into account several variables, such the altitude of the observer, the amount of dust, the time of day, etc, all of that **in a volume**.
+For our shader implementation, we must treat it as **the result of light interacting with air and its constituents**, while taking into account several variables, such the altitude of the observer, the amount of dust, the time of day, etc, all of that **in a volume**.
 
 With that established, our goal for this first part is to use this as guiding principle to lay the foundation for our atmosphere shader, and get to a result that feels almost indistinguishable from a real sky, at any time of the day.
 
@@ -119,7 +126,7 @@ If you’ve read my article on volumetric clouds <FootnoteRef id="2"/>, we’re 
 float dR = rayleighDensity(h);
 viewOpticalDepth += dR * stepSize;
 
-vec3 transmittance = exp(-BETA_R * viewOpticalDepth);
+vec3 transmittance = exp(-rayleighBeta * viewOpticalDepth);
 scattering += dR * transmittance * stepSize;
 
 //...
@@ -138,6 +145,9 @@ With this in place, we can now describe how light is *attenuated* as it travels 
 ```glsl title=Rayleigh phase function
 //...
 
+// We consider the sun constant at its zenith here
+const vec3 SUN_DIRECTION = normalize(vec3(0.0, 1.0, 1.0));
+
 float rayleighPhase(float mu) {
   return 3.0 / (16.0 * PI) * (1.0 + mu * mu);
 }
@@ -149,7 +159,7 @@ void main() {
   
   // Raymarching loop
 
-  scattering *= SUN_INTENSITY * phase * BETA_R;
+  scattering *= SUN_INTENSITY * phase * rayleighBeta;
 
   float horizon = smoothstep(-0.12, 0.05, skyDir.y);
   vec3 color = mix(SPACE_COLOR, scattering, horizon);
@@ -277,22 +287,22 @@ As you can see, this version yields both:
 
 <BeforeAfterImage
   alt="Our sky shader without/with Ozone"
-  beforeSrc="blog/ozone_before.png"
-  afterSrc="blog/ozone_after.png"
+  beforeSrc="blog/ozone_before-2.png"
+  afterSrc="blog/ozone_after-2.png"
   defaultSliderPosition={50}
   width={663}
-  height={455}
+  height={424}
 />
 
 * A hazy glow around the location of our sun, and even more so visible when the sun is close to the horizon
 
 <BeforeAfterImage
   alt="Our sky shader without/with Mie scattering"
-  beforeSrc="blog/mie_before.png"
-  afterSrc="blog/mie_after.png"
+  beforeSrc="blog/mie_before-2.png"
+  afterSrc="blog/mie_after-2.png"
   defaultSliderPosition={50}
   width={663}
-  height={455}
+  height={424}
 />
 
 
@@ -688,15 +698,18 @@ float sunVisibility(vec3 point) {
     return 1.0;
   }
 
+  // Compare the apparent positions and sizes of the sun and moon in the sky.
   float angularSep = acos(clamp(dot(sunDir, moonDir), -1.0, 1.0));
   float sunAngularRadius = SUN_RADIUS / SUN_DISTANCE;
   float moonAngularRadius = moonRadius / moonDist;
   float outerEdge = sunAngularRadius + moonAngularRadius;
 
-  if (angularSep >= outerEdge) {
+  // No overlap between the sun and moon disks: full sunlight.
+  if (dot(sunDir, moonDir) < 0.9) {
     return 1.0;
   }
 
+  // The moon appears larger than the sun, so it can fully cover it near the center.
   if (moonAngularRadius >= sunAngularRadius) {
     float innerEdge = moonAngularRadius - sunAngularRadius;
     return max(0.075, smoothstep(innerEdge, outerEdge, angularSep));
@@ -709,10 +722,7 @@ float sunVisibility(vec3 point) {
     1.0
   );
 
-  if (angularSep <= innerEdge) {
-    return minVisibility;
-  }
-
+  // Partial overlap: smoothly fade between the minimum and full sunlight.
   return mix(minVisibility, 1.0, smoothstep(innerEdge, outerEdge, angularSep));
 }
 ```
@@ -1124,13 +1134,23 @@ void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor)
 }
 ```
 
-The playground below contains all the full implementation of our LUT-based atmosphere: all the LUTs and their corresponding shader, as well as the final post-processing pass. It is a bit dense, so I’d recommend checking the implementation directly at this [Github link](), where you’ll find the code that renders the scene below.
+The playground below contains all the full implementation of our LUT-based atmosphere: all the LUTs and their corresponding shader, as well as the final post-processing pass. It is a bit dense, so I’d recommend checking the implementation directly at this [Github link](https://github.com/MaximeHeckel/blog.maximeheckel.com/blob/afe3cd40fb51989e52a6d2a474506ed668dbad54/core/components/MDX/Widgets/AtmosphericScattering/lut.ts), where you’ll find the code that renders the scene below.
 
 <AtmosphericScatteringSandpack scene="scene4" />
 
 ## Conclusion
 
-This last version of atmospheric scattering may look quite similar to the one we worked on in the earlier parts of this post, but the underlying process is different: instead of computing every aspect of scattering directly in the final post-processing pass, **we split the work into smaller LUTs that we then compose in the final effect**. Most importantly, we avoid repeatedly raymarching towards the sun in our main raymarching loop, which replaces a costly nested loop with a simple transmittance LUT lookup, resulting in a significant performance boost for the final scene.
+This version of atmospheric scattering may look almost identical to the one we worked on in the earlier parts of this post, but the underlying process is different: **we split the work into smaller LUTs that we then compose in the final effect**. Most importantly, instead of repeatedly raymarching toward the sun to figure out how much light reaches each sample, we can fetch that lighting information directly from the Transmittance LUT, replacing a costly nested loop with a simple texture lookup and resulting in a non-negligible performance boost for the final scene.
+
+Despite that, my LUT-based implementation pales in comparison to what Sébastian Hillaire and others in the field came up with:
+
+* There’s some banding and flickering happening, particularly in the sky-view
+* The shortcuts I took made the process less optimal than it could have been.
+* I should probably have used WebGPU from the get-go.
+
+Nonetheless, I learned *a lot* through this entire project, especially the LUT-based approach, which took me out of my comfort zone when it comes to creating screen-space depth-aware post-processing effects, consolidated some previous learnings, and resulted in a series of beautiful visuals (which is the most important after all).
+
+Getting to produce a realistic sky and planetary atmosphere, being able to transition from ground to orbit, all of that in real-time in the browser, was a long-term goal of mine, and I’m very happy with the result of those experiments. I also worked on adding volumetric clouds on top of that, but the result is still a bit of a mixed bag and needs a bit more work before I could be proud enough of it to showcase it in a write-up. This will have to wait. Until then, I’m looking forward to leveraging that work to complement my upcoming projects and scenes *I have been slowly shaping in my head*.
 
 <FootnotesList
   notes={[
@@ -1158,7 +1178,7 @@ This last version of atmospheric scattering may look quite similar to the one we
         <p>
           <a href="/posts/real-time-cloudscapes-with-volumetric-raymarching/">
             Real-time Cloudscapes with Volumetric Raymarching
-          </a>
+          </a>{" "}
           introduces a lot of concepts used here.
         </p>
       )

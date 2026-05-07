@@ -122,21 +122,24 @@ float sunVisibility(vec3 point) {
   vec3 sunDir = normalize(sunDirection);
   vec3 toMoon = moonPosition - point;
   float moonDist = length(toMoon);
+  vec3 moonDir = normalize(toMoon);
 
   if (moonDist <= 1e-5) {
     return 1.0;
   }
 
-  vec3 moonDir = normalize(toMoon);
+  // Compare the apparent positions and sizes of the sun and moon in the sky.
   float angularSep = acos(clamp(dot(sunDir, moonDir), -1.0, 1.0));
   float sunAngularRadius = SUN_RADIUS / SUN_DISTANCE;
   float moonAngularRadius = moonRadius / moonDist;
   float outerEdge = sunAngularRadius + moonAngularRadius;
 
-  if (angularSep >= outerEdge) {
+  // No overlap between the sun and moon disks: full sunlight.
+  if (dot(sunDir, moonDir) < 0.9) {
     return 1.0;
   }
 
+  // The moon appears larger than the sun, so it can fully cover it near the center.
   if (moonAngularRadius >= sunAngularRadius) {
     float innerEdge = moonAngularRadius - sunAngularRadius;
     return max(0.075, smoothstep(innerEdge, outerEdge, angularSep));
@@ -149,10 +152,7 @@ float sunVisibility(vec3 point) {
     1.0
   );
 
-  if (angularSep <= innerEdge) {
-    return minVisibility;
-  }
-
+  // Partial overlap: smoothly fade between the minimum and full sunlight.
   return mix(minVisibility, 1.0, smoothstep(innerEdge, outerEdge, angularSep));
 }
 

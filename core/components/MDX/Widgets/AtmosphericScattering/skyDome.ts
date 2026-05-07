@@ -22,8 +22,8 @@ uniform float sunDiscSize;
 uniform int uFrame;
 uniform sampler2D blueNoiseTexture;
 
-const int PRIMARY_STEPS = 20;
-const int LIGHT_STEPS = 1;
+const int PRIMARY_STEPS = 24;
+const int LIGHT_STEPS = 4;
 const float PI = 3.14159265;
 
 float readDepth(sampler2D depthSampler, vec2 coord) {
