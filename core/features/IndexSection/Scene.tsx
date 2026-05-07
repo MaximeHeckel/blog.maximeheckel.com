@@ -313,7 +313,7 @@ const ParticleLemniscate = ({
       />
 
       <PerspectiveCamera makeDefault position={[0, 0, 4]} fov={75} />
-      <group position={[0, 0.5, 0]} rotation={[0, 0, -Math.PI * 0.135]}>
+      <group position={[0, 0.75, 0]} rotation={[0, 0, -Math.PI * 0.065]}>
         <points>
           <bufferGeometry>
             <bufferAttribute
@@ -394,7 +394,7 @@ export const Scene = () => {
         left: 0,
         right: 0,
         bottom: 0,
-        height: 'min(120dvh, 1100px)',
+        height: 'min(110dvh, 950px)',
         zIndex: 0,
         maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
       }}

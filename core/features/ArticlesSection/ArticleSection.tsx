@@ -1,14 +1,14 @@
 import { Box, Grid, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import debounce from 'lodash.debounce';
-import { AnimatePresence, useInView } from 'motion/react';
+import { useInView } from 'motion/react';
 import Link from 'next/link';
 import { useCallback, useRef, useState } from 'react';
 import { Post } from 'types/post';
 
 import { ScrambledText } from '@core/components/ScrambledText';
 
-import { ViewFinderMarks } from './ViewFinderMarks';
+// import { ViewFinderMarks } from './ViewFinderMarks';
 
 interface ArticleSectionProps {
   posts: Post[];
@@ -18,7 +18,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
   const { posts } = props;
 
   const articleListRef = useRef<HTMLUListElement>(null);
-  const [focusedPost, setFocusedPost] = useState<string | null>(null);
+  const [, setFocusedPost] = useState<string | null>(null);
   const [isKeyboardNav, setIsKeyboardNav] = useState(false);
 
   const inView = useInView(articleListRef, {
@@ -176,11 +176,11 @@ const ArticlesSection = (props: ArticleSectionProps) => {
                   >
                     {post.title}
                   </ScrambledText>
-                  <AnimatePresence>
+                  {/* <AnimatePresence>
                     {focusedPost === post.slug ? (
                       <ViewFinderMarks text={post.title} />
                     ) : null}
-                  </AnimatePresence>
+                  </AnimatePresence> */}
                 </Grid.Item>
                 <Grid.Item justifySelf="end" css={{ gridColumn: '6' }}>
                   <ScrambledText

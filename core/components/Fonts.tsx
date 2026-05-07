@@ -1,15 +1,19 @@
-import { Instrument_Serif } from 'next/font/google';
 import localFont from 'next/font/local';
 
 const inter = localFont({
-  src: '../../public/fonts/InterVariable.woff2',
+  src: [
+    {
+      path: '../../public/fonts/InterVariable.woff2',
+      style: 'normal',
+      weight: '100 900',
+    },
+    {
+      path: '../../public/fonts/InterVariable-Italic.woff2',
+      style: 'italic',
+      weight: '100 900',
+    },
+  ],
   variable: '--font-display',
-});
-const instrument = Instrument_Serif({
-  subsets: ['latin'],
-  weight: '400',
-  style: ['normal', 'italic'],
-  variable: '--font-serif',
 });
 
 const FiraCode = localFont({
@@ -26,12 +30,12 @@ const Fonts = () => (
   <style jsx global>{`
     :root {
       --font-display: ${inter.style.fontFamily};
-      --font-serif: ${instrument.style.fontFamily};
       --font-mono: ${DepartureMono.style.fontFamily};
       --font-mono-code: ${FiraCode.style.fontFamily};
       font: 100%/1.2888 var(--font-display);
       -ms-text-size-adjust: 100%;
       -webkit-text-size-adjust: 100%;
+      font-feature-settings: 'cv11' 1, 'cv05' 1;
     }
   `}</style>
 );
