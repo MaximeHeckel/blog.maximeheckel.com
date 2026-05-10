@@ -1,6 +1,6 @@
 ---
 title: 'On Rendering the Sky, Sunsets, and Planets'
-subtitle: TBD
+subtitle: This article explores how to render realistic skies and atmospheres in real time in the browser with shaders, from simple sky domes, to entire planets using raymarching, Rayleigh and Mie scattering, and ozone absorption.
 date: '2026-05-12T08:00:00.000Z'
 updated: '2026-05-12T08:00:00.000Z'
 categories: []
@@ -34,7 +34,7 @@ Here’s a compilation of what came out of this month-long journey, all running 
 
 
 While I didn't originally plan on writing an article on this subject, the enthusiasm around the recent Artemis II mission coupled with my own interest in everything related to space made it feel like something worth exploring in depth and building an interactive experience for in an effort to make the topic more accessible.
-We’ll see how to implement an **atmospheric scattering post-processing effect step-by-step**, starting with the implementation of the different building blocks to render **a realistic sky dome**, and then adapt the result to render it as **an atmospheric shell around a planet**. 
+We’ll see how to implement an **atmospheric scattering post-processing effect step-by-step**, starting with the implementation of the different building blocks (raymarching, Rayleigh and Mie scattering, as well as ozone absorption) to render **a realistic sky dome**, and then adapt the result to render it as **an atmospheric shell around a planet**. 
 Finally, we'll look into Sebastian Hillaire’s LUT-based approach for a more performant result, or at least an *attempt* at it, as this was very much the *stepping outside of my comfort zone* phase for this project.
 
 <Callout variant="info" label="Sources">
