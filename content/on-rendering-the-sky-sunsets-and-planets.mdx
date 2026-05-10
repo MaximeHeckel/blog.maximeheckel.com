@@ -1,6 +1,6 @@
 ---
 title: 'On Rendering the Sky, Sunsets, and Planets'
-subtitle: This article explores how to render realistic skies and atmospheres in real time in the browser with shaders, from simple sky domes, to entire planets using raymarching, Rayleigh and Mie scattering, and ozone absorption.
+subtitle: This article explores how to render realistic skies and atmospheres in real time in the browser with shaders, from simple sky domes, to entire planets using shaders, raymarching, Rayleigh and Mie scattering, and ozone absorption.
 date: '2026-05-12T08:00:00.000Z'
 updated: '2026-05-12T08:00:00.000Z'
 categories: []
@@ -9,7 +9,7 @@ type: 'blogPost'
 featured: false
 ---
 
-There’s this photo that’s been sitting in my inspiration board for a while, of the space shuttle Endeavour, suspended in space in low Earth orbit at sunset. It shows Earth’s upper atmosphere as a backdrop, featuring beautiful, colorful layers ranging from dark orange to blue before fading away into the deep black of space. Not only is that gradient of color aesthetically pleasing, but the phenomenon behind those colors, **atmospheric scattering**, is even more of an interesting topic.
+There’s this photo that’s been sitting on my inspiration board for a while, of the space shuttle Endeavour, suspended in space in low Earth orbit at sunset. It shows Earth’s upper atmosphere as a backdrop, featuring beautiful, colorful layers ranging from dark orange to blue before fading away into the deep black of space. Not only is that gradient of color aesthetically pleasing, but the phenomenon behind those colors, **atmospheric scattering**, is even more of an interesting topic once you start looking into how it works and how to reproduce it.
 
 <Image
   src="blog/shuttle.webp"
@@ -33,9 +33,9 @@ Here’s a compilation of what came out of this month-long journey, all running 
 />
 
 
-While I didn't originally plan on writing an article on this subject, the enthusiasm around the recent Artemis II mission coupled with my own interest in everything related to space made it feel like something worth exploring in depth and building an interactive experience for in an effort to make the topic more accessible.
-We’ll see how to implement an **atmospheric scattering post-processing effect step-by-step**, starting with the implementation of the different building blocks (raymarching, Rayleigh and Mie scattering, as well as ozone absorption) to render **a realistic sky dome**, and then adapt the result to render it as **an atmospheric shell around a planet**. 
-Finally, we'll look into Sebastian Hillaire’s LUT-based approach for a more performant result, or at least an *attempt* at it, as this was very much the *stepping outside of my comfort zone* phase for this project.
+I didn’t originally plan on writing about this subject, but the enthusiasm around the recent Artemis II mission, combined with my own interest in all things space, made it feel worth exploring in depth. It also felt like the perfect opportunity to build an interactive experience that could make the topic more accessible.
+In this write-up, we’ll see **how to implement an atmospheric scattering shader post-processing effect step-by-step**, starting with the implementation of the different building blocks (raymarching, Rayleigh and Mie scattering, as well as ozone absorption) to render **a realistic sky dome**, and then adapt the result to render it as **an atmospheric shell around a planet**. 
+Finally, we'll look into Sebastian Hillaire’s LUT-based approach for a more performant result, or at least my *attempt* at implementing it, as this was very much the *stepping outside of my comfort zone* phase for this project.
 
 <Callout variant="info" label="Sources">
 Here's a list of the key references I used during this project:
@@ -50,9 +50,9 @@ Here's a list of the key references I used during this project:
 
 ## How to Render a Sky
 
-You may have, at some point or another, tried to slap a blue gradient background behind some of your work to give it a more atmospheric look and feel, but doing so never feels quite right <FootnoteRef id="1" />.
+You may have, at some point or another, tried to slap a blue gradient background behind some of your work in an attempt to give it a more "atmospheric" look and call it a day, but quickly noticed doing so never feels quite right <FootnoteRef id="1" />.
 
-For our shader implementation, we must treat it as **the result of light interacting with air and its constituents**, while taking into account several variables, such the altitude of the observer, the amount of dust, the time of day, etc, all of that **in a volume**.
+For a more true to life implementation, we must treat the sky and its color as **the result of light interacting with air and its constituents**, while taking into account several variables, such the altitude of the observer, the amount of dust, the time of day, etc, all of that **in a volume**.
 
 With that established, our goal for this first part is to use this as guiding principle to lay the foundation for our atmosphere shader, and get to a result that feels almost indistinguishable from a real sky, at any time of the day.
 
@@ -140,7 +140,7 @@ In shader code, we store it as `vec3(0.0058, 0.0135, 0.0331)`.
 
 </Callout>
 
-With this in place, we can now describe how light is *attenuated* as it travels through the atmosphere. However, to render the sky, attenuation alone is not enough: we still need the *scattering term*. That amount of light sent toward the viewer depends on the angle between the incoming sunlight and the direction of the ray. This can be modeled through the **Rayleigh phase function**.
+With this in place, we can now describe how light is *attenuated* as it travels through the atmosphere. However, density and transmittance only tell us how much light is available to scatter, not how that light is distributed toward the viewer. For that, we need to account for the angle between the incoming sunlight and the view ray, which is what the **Rayleigh phase function** models.
 
 ```glsl title=Rayleigh phase function
 //...
@@ -310,7 +310,7 @@ As you can see, this version yields both:
 
 At this point, we have a decent sky fragment shader capable of rendering a natural color for any altitude and taking into account a diverse set of transmittance models (Mie, Rayleigh, and Ozone). That still leaves us with lighting to work on.
 
-You may have noticed in the previous widget that moving the sun close to the horizon only results in a *white, hazy glow*, without any light attenuation or a sunset/sunrise effect. This is expected as our current raymarching loop does, in fact, not take into account how much light is lost while traveling through the atmosphere before reaching the current sample point.
+You may have noticed in the previous widget that moving the sun close to the horizon only results in a *white, hazy glow*, without any light attenuation or a sunset/sunrise effect. This is expected, as our current raymarching loop only accounts for light being attenuated along the view ray, from the camera to each sample. It does not yet account for how much sunlight is lost while traveling through the atmosphere before reaching that sample point.
 As we did for in [related](/posts/real-time-cloudscapes-with-volumetric-raymarching/) [past](/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/) articles, we need to introduce, for any given sample point alongside our ray, a standalone nested loop to light-march in the direction of the light source and sample the *transmittance* along that path.
 
 <LightDensity />
@@ -372,7 +372,7 @@ I invite you to take a little break and play with the widget above to appreciate
 
 ## Planetary Atmosphere
 
-While the shader we built in the first section checks a lot of boxes, what we have in place right now is just a mere flat background. If we were to use it in a React Three Fiber scene in its current state, we would simply have a nice backdrop for our scenes and not much more beyond that.
+The shader we just built in this first section checks a lot of boxes, but we have in place right now is just a mere flat background. If we were to use it in a React Three Fiber scene in its current state, we would simply have a nice backdrop for our scenes and not much more beyond that.
 
 In this section, we will turn our flat shader into a proper **post-processing effect**, allowing us to render the atmosphere as: 
 - *a volume* and account for scene depth along the way by reconstructing world-space coordinates from `screenUV` coordinates.
@@ -431,7 +431,7 @@ vec3 worldPosition = getWorldPosition(uv, depth);
 vec3 rayDir = normalize(worldPosition - rayOrigin);
 ```
 
-The last thing we need to do now is to have our raymarching take into account any geometry in the scene. To do so, we will use the depth buffer of our scene to define our raymarch stepSize rather than using a constant so that we can space our sample points to fit the ray we are currently marching along.
+The last thing we need to do now is to have our raymarching take into account any geometry in the scene. To do so, we will use the depth buffer of our scene to define our raymarch `stepSize` rather than using a constant so that we can space our sample points to fit the ray we are currently marching along.
 
 ```glsl
 float depth = readDepth(depthBuffer, uv);
@@ -477,7 +477,7 @@ Notice how:
 * The closer objects are to the camera, the clearer they will appear.
 * The further objects are from the camera, the more they will fade away.
 
-With that implemented, we can start providing a more realistic ambient sky to any scene that would need it, or also have some fun with some *silly interactions* like this one below, implemented with a `Raycaster`:
+With that implemented, we can start providing a more realistic ambient sky to any scene that would need it, and also have some fun with some *silly interactions* like this one below, implemented with a `Raycaster`:
 
 <StaticTweet id="2038380281451671638" />
 
@@ -541,11 +541,11 @@ vec3 getWorldPosition(vec2 uv, float depth) {
 }
 ```
 
-For the second point, we will use **a ray-sphere intersection test** that will compute the intersection points between the ray and our *atmospheric sphere* to get the entry and exit points along the ray.
+For the second point, we will use **a ray-sphere intersection test** to find where our view ray enters and exits the *atmospheric sphere*. Once we have those two points, we can limit our raymarching loop to that segment without wasting samples outside the atmosphere.
 
 <RaySphereIntersect />
 
-However, just doing a single test is not enough. We also want to model our planet as a sphere mesh surrounded by a slightly larger atmosphere sphere, and thus, we will need to perform the same test against our planet to know whether our ray intersects with the ground. In this specific case, the exit point will simply be at the surface of the planet.
+However, just doing a single test is not enough. We also want to model our planet as a sphere mesh surrounded by a slightly larger atmosphere sphere, and thus, we will need to perform the same test against the planet itself. If the ray hits the ground before it exits the atmosphere, we use that ground intersection as the end of our raymarching segment.
 
 <RaySphereIntersectPlanet />
 
@@ -614,7 +614,10 @@ vec2 raySphereIntersect(vec3 rayOrigin, vec3 rayDir, vec3 sphereCenter, float sp
 
 </Callout>
 
-One additional thing we will need to adapt is how we handle objects within the scene. We now need to consider the planet mesh itself, particularly when objects are close to the ground.
+One additional thing we need to adapt is the end of our raymarching segment to handle objects within the scene. The atmosphere may stop for two different reasons:
+
+- it can hit the planet surface `planetHit.x > 0.0`
+- it can hit another scene object before reaching the ground. 
 
 ```glsl
 // If the ray hits the planet, stop marching at the ground.
@@ -632,8 +635,7 @@ if (planetHit.x > 0.0) {
 }
 ```
 
-* `planetHit.x` is the distance where the ray hits the surface
-* If sceneDepth is lower than this distance minus an *arbitrary bias*, it means we hit the object before the surface, and thus we clamp atmosphereFar to sceneDepth so the raymarch loop stops at the nearest object it intersects instead of continuing until our ray hits the ground.
+In both cases, we want to stop marching at the closest relevant object.
 
 <BeforeAfterImage
   alt="Our scene before/after taking the scene depth into account"
@@ -646,7 +648,7 @@ if (planetHit.x > 0.0) {
 
 Notice how, without this logic, the surface of the planet will appear *in front* of our object.
 
-With those two points now in code, we have a full implementation of atmospheric scattering as a post-processing effect and can render atmospheres around planets. The scene below renders a simple “Sun - Earth system” in React Three Fiber, with our custom effect in place. I invite you to take some time to adjust the position of the sun, zoom out, and enjoy the sky colors this shader can yield from different angles, from ground to orbit.
+With those two parts now in code, we have a full implementation of atmospheric scattering as a post-processing effect and can render atmospheres around planets. The scene below renders a simple “Sun - Earth system” in React Three Fiber, with our custom effect in place. I invite you to take some time to adjust the position of the sun, zoom out, and enjoy the sky colors this shader can yield from different angles, from ground to orbit.
 
 <AtmosphericScatteringSandpack scene="scene2" />
 
@@ -666,7 +668,7 @@ For now, the cleanest workaround I'd try first would be to reuse the shadow-mapp
 
 This is a little *bonus* section where I’d like us to answer the question: *how can we handle large celestial objects blocking the sun?* We now have a decent understanding of what’s at play in this atmospheric scattering shader when it comes to lighting, and adding this extra test is relatively easy.
 
-We can add, after our lightMarch function, a function call that would return the sunVisibility ranging from [0, 1] and multiply the transmittance by this value. The function itself could be as easy as doing a dot product between:
+We can add, after our lightMarch function, a function call that would return the`sunVisibility` ranging from `[0, 1]` and multiply the transmittance by this value. The function itself could be as easy as doing a dot product between:
 
 * The direction between our current sampling point and the moon.
 * The direction between our current sampling point and the sun.
@@ -751,7 +753,7 @@ The demo below implements this `sunVisibility` function on top of our previous e
 
 <Callout variant="info" label="Paper">
 
-As always this only scratches the surface, some talented folks dived deep in the topic of rendering solar eclipses ans imulating the corona accurately. If you're curious, here's a paper on the matter: [Physically Based Real-Time Rendering of Eclipses](https://t.co/QDqIxyzflj). 
+As always this only scratches the surface, some talented folks dived deep in the topic of rendering solar eclipses and simulating the corona accurately. If you're curious, here's a paper on the matter: [Physically Based Real-Time Rendering of Eclipses](https://t.co/QDqIxyzflj). 
 
 I haven't gone through the process of reading the paper and porting the implementation to WebGL, but if you do, let me know!
 
@@ -766,7 +768,7 @@ Another *bonus* section! It’s your lucky day! The model we’ve been using thr
 * `MieScaleHeight`, `MieBeta`, `mieBetaExt`, and `mieG` 
 * `OzoneHeight` and `OzoneWidth` 
 
-These are the main knobs that make our rendered atmosphere look the way it does. Thus, by tweaking them to the right set of values, we could, in theory, approach a martian atmosphere or even other planets. Below is the set of values I set for Mars:
+These are the main knobs that make our rendered atmosphere look the way it does. Thus, by tweaking them to the right set of values, we could, in theory, approach a martian atmosphere or even other planets'. Below is the set of values I set for Mars:
 
 ```js
 // These values are only approximative
@@ -788,7 +790,7 @@ const Mars = {
 };
 ```
 
-Just replacing our constants with these gives us the more dusty, orangy atmosphere. Even better, we get Mars' distinctive blue hue at sunset. Below are a couple of screenshots I took while working on this. You can try plugging those values into the previous demo to see the result by yourself.
+Just replacing our constants with these gives us a more dusty, orangy atmosphere. Even better, we get Mars' distinctive blue hue at sunset! Below are a couple of screenshots I took while working on this. You can try plugging those values into the previous demo to see the result by yourself.
 
 <Slideshow
   images={[
@@ -809,26 +811,26 @@ You guessed it, yes, there's a paper on this topic as well: [Physically Based Re
 
 ## LUT Based Atmospheric Scattering
 
-The resulting shader we’ve built, albeit intuitive and able to render atmosphere at small and large scales, is quite expensive to run:
+The resulting shader we’ve built, albeit intuitive and able to render atmosphere at small and large scales, is unfortunately quite expensive to run:
 
 * We have a large amount of `PRIMARY_STEPS` in our raymarching loop.
 * We have a nested loop for lightmarching. 
 * We perform all the math at full screen resolution.
 
-Besides those drawbacks, I also wanted to study *how the pros were doing it* when I reached this point in my exploration of atmospheric scattering. Sebastian Hillaire proposed in his paper titled [A Scalable and Production Ready Sky and Atmosphere Rendering Technique](https://sebh.github.io/publications/egsr2020.pdf), a method to render atmosphere based on **Look Up Tables** (LUTs), i.e. textures that can hold expensive scattering calculations, so the final render samples and composes those pre-computed textures.
+Alongside tackling those drawbacks, I also wanted to study *how the pros were doing it* when I reached this point in my exploration of atmospheric scattering. Sebastian Hillaire proposed in his paper titled [A Scalable and Production Ready Sky and Atmosphere Rendering Technique](https://sebh.github.io/publications/egsr2020.pdf), a method to render atmosphere based on **Look Up Tables** (LUTs), i.e. textures that can hold expensive scattering calculations, so the final render samples and composes those precomputed textures.
 
 In this part, we will look into the respective implementations of:
 
 * **Transmittance LUT**, which stores the amount of light that survives as it travels through the atmosphere.
 * **Sky-view LUT**, which stores the resulting sky color for a given camera position
-* **Aerial Perspective LUT**, which stores the atmospheric haze/fog between the camera and visible scene geometry, including the amount of light added by scattering and its effect on the  scene’s colors.
+* **Aerial Perspective LUT**, which stores the atmospheric haze/fog between the camera and visible scene geometries, including the amount of light added by scattering and its effect on the  scene’s colors.
 
 <Callout variant="info" label="Implementation">
 
-While this method is well-documented, the process highlighted in the paper was still *a little bit beyond my comfort zone* to me, and despite spending a decent amount of time on it, I did not implement the full paper. Among the things I took shortcuts on are:
+While this method is well-documented, the process highlighted in the paper was still *a little bit beyond my current skill level*, and despite spending a decent amount of time on it, I did not implement the full paper. Among the things I took shortcuts on are:
 
 * I still use WebGL here, while those LUTs would have been great candidates for leveraging compute shaders in WebGPU. This was mostly due to both a lack of time and the necessity for continuity in my study/this article (I started with WebGL).
-* The aerial perspective LUT is a **3D texture** in the paper, while in my implementation I use a simple 2D render target where each pixel of the resulting texture corresponds to the current frame’s visible pixel. The depth is resolved from the scene's depth buffer instead of being stored in the LUT itself as separate slices. I did not feel comfortable enough introducing the concept of 3D textures as of writing these words. With this implementation, we’d need to regenerate this texture on every camera move to have the right pixel values, and would not be able to simply compute it ahead of time.
+* The aerial perspective LUT is a **3D texture** in the paper, while in my implementation I use a simple 2D render target where each pixel of the resulting texture corresponds to the current frame’s visible pixel. The depth is resolved from the scene's depth buffer instead of being stored in the LUT itself as separate slices. I did not feel comfortable enough introducing the concept of 3D textures as of writing these words (especially as I still find them hard to work with but I'll work on that :)). With this implementation, we’d need to regenerate this texture on every camera move to have the right pixel values, and would not be able to simply compute it ahead of time.
 * Multi-Scattering is skipped; I simply ran out of time, but may take a stab at it in the future.
 
 Despite that, the result is on par with our original fully raymarched implementation, and it is still interesting to investigate together.
@@ -837,7 +839,7 @@ Despite that, the result is on par with our original fully raymarched implementa
 
 ### Transmittance LUT
 
-In our original shader, every ray calls the `lightmarch` function to get the amount of light from our sun that reaches any given sample point, which, as you may guess, is quite expensive. The goal of this LUT is to store that data beforehand, preferably at a low resolution, so we can then load it into subsequent LUTs whenever we need that light data.
+In our original shader, every sample point calls the `lightmarch` function to get the amount of light from our sun that reaches it, which, as you may guess, is quite expensive. The goal of this LUT is to store that data beforehand, preferably at a low resolution, so we can then load it into subsequent LUTs whenever we need that light data.
 
 My implementation for this LUT, and any that follows, consists of:
 
@@ -846,7 +848,7 @@ My implementation for this LUT, and any that follows, consists of:
 3. Apply it to a full-screen quad in a dedicated scene, in this case, `transmittanceLUTScene`.
 4. Render the scene, and pass the resulting texture as a uniform to downstream LUTs.
 
-It may seem a bit convoluted, but as said before, ideally, you’d use WebGPU and compute shaders for this and not need those FBOs. 
+It may seem a bit convoluted, but as said before, ideally, you’d use WebGPU and compute shaders for this and thus not need those FBOs. 
 
 For the tramittance, we’re extracting the expensive lightmarch loop into its own pass by putting it in the `transmittanceLUTFragmentShader`. The code below is what I used to generate my texture:
 
@@ -1138,7 +1140,7 @@ The playground below contains all the full implementation of our LUT-based atmos
 
 <AtmosphericScatteringSandpack scene="scene4" />
 
-## Conclusion
+## Final Thoughts
 
 This version of atmospheric scattering may look almost identical to the one we worked on in the earlier parts of this post, but the underlying process is different: **we split the work into smaller LUTs that we then compose in the final effect**. Most importantly, instead of repeatedly raymarching toward the sun to figure out how much light reaches each sample, we can fetch that lighting information directly from the Transmittance LUT, replacing a costly nested loop with a simple texture lookup and resulting in a non-negligible performance boost for the final scene.
 
@@ -1148,9 +1150,11 @@ Despite that, my LUT-based implementation pales in comparison to what Sébastian
 * The shortcuts I took made the process less optimal than it could have been.
 * I should probably have used WebGPU from the get-go.
 
-Nonetheless, I learned *a lot* through this entire project, especially the LUT-based approach, which took me out of my comfort zone when it comes to creating screen-space depth-aware post-processing effects, consolidated some previous learnings, and resulted in a series of beautiful visuals (which is the most important after all).
+If you want to look at a real production-grade implementation, I highly recommend checking out [three-geospatial](https://github.com/takram-design-engineering/three-geospatial) by Shoda Matsuda (<Anchor favicon discreet href="https://twitter.com/shotamatsuda">@shotamatsuda</Anchor>). His work on skies, clouds, and geospatial rendering has been a huge reference point for me, and the images he shares on social media speak for themselves.
 
-Getting to produce a realistic sky and planetary atmosphere, being able to transition from ground to orbit, all of that in real-time in the browser, was a long-term goal of mine, and I’m very happy with the result of those experiments. I also worked on adding volumetric clouds on top of that, but the result is still a bit of a mixed bag and needs a bit more work before I could be proud enough of it to showcase it in a write-up. This will have to wait. Until then, I’m looking forward to leveraging that work to complement my upcoming projects and scenes *I have been slowly shaping in my head*.
+Nonetheless, I learned *a lot* throughout this entire project, especially through the LUT-based approach, which took me out of my comfort zone when it comes to creating screen-space depth-aware post-processing effects. It also consolidated some previous learnings, and resulted in a series of beautiful visuals (which is the most important after all).
+
+I’m very happy with the result of those experiments. I also worked on adding volumetric clouds on top of that, but the result is still a bit of a mixed bag and needs more work put into it before I could be proud enough of it to showcase it in a write-up. This will have to wait. Until then, I’m looking forward to leveraging that work to complement my upcoming projects and scenes *I have been slowly shaping in my head*.
 
 <FootnotesList
   notes={[

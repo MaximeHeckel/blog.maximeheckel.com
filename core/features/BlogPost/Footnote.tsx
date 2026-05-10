@@ -133,7 +133,7 @@ const SignatureSVG = () => {
 
 const Footnote = ({ title, url }: { title: string; url: string }) => {
   const textTwitter = `${title} by @MaximeHeckel ${url}`;
-  const textBluesky = `${title} by @maxime.bsky.social ${url}`;
+  //const textBluesky = `${title} by @maxime.bsky.social ${url}`;
 
   return (
     <StyledSection data-testid="footnote">
@@ -149,17 +149,6 @@ const Footnote = ({ title, url }: { title: string; url: string }) => {
         <HR />
         <Text as="p">
           Liked this article? Share it with a friend on{' '}
-          <Anchor
-            favicon
-            href={`https://bsky.app/intent/compose?text=${encodeURI(
-              textBluesky
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Bluesky
-          </Anchor>{' '}
-          or{' '}
           <Anchor
             favicon
             href={`https://twitter.com/intent/tweet?text=${encodeURI(
