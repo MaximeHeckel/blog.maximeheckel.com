@@ -259,7 +259,7 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
           col={2}
           justifySelf="center"
           css={{
-            minHeight: 420,
+            minHeight: 300,
             maxWidth: 500,
             display: 'flex',
             flexDirection: 'column',
@@ -270,7 +270,7 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
             position: 'relative',
 
             '@sm': {
-              minHeight: 'clamp(300px, 55dvh, 350px)',
+              minHeight: 'clamp(250px, 50dvh, 375px)',
             },
           }}
         >
