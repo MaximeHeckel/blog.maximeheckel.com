@@ -143,7 +143,7 @@ interface Props {
 }
 
 const contentClass = css({
-  padding: 'var(--space-6) 0px',
+  padding: 'var(--space-8) 0px',
   color: 'var(--text-secondary)',
 
   h3: {
@@ -259,32 +259,33 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
           col={2}
           justifySelf="center"
           css={{
-            minHeight: 420,
+            minHeight: 300,
+            maxWidth: 500,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'end',
-            gap: 'var(--space-1)',
+            alignItems: 'center',
+            gap: 'var(--space-2)',
             width: '100%',
             position: 'relative',
 
             '@sm': {
-              minHeight: 'clamp(300px, 55dvh, 400px)',
+              minHeight: 'clamp(250px, 50dvh, 375px)',
             },
           }}
         >
           <Text
             as="h1"
             css={{
-              fontWeight: 400,
-              letterSpacing: '-1.0px',
+              fontWeight: 510,
+              letterSpacing: '-0.028em',
               lineHeight: 1.2,
               textWrap: 'balance',
-              textAlign: 'left',
+              textAlign: 'center',
             }}
             data-testid="post-title"
-            family="serif"
-            size="8"
-            weight="3"
+            family="display"
+            size="6"
             variant="primary"
           >
             {title}
@@ -294,12 +295,12 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
               css={{
                 whiteSpace: 'nowrap',
                 transition: 'color 0.3s ease-in-out',
-                fontFamily: 'var(--font-mono)',
                 letterSpacing: '-1px',
                 textTransform: 'uppercase',
               }}
               delay={0.5}
               speed={0.8}
+              family="mono"
               size="1"
               variant="tertiary"
               windowSize={3}

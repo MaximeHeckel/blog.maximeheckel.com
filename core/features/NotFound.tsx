@@ -43,16 +43,16 @@ const NotFound = () => {
       <Text
         as={motion.h1}
         css={{
-          letterSpacing: '-1.5px',
-          lineHeight: 1.2,
+          letterSpacing: '-0.028em',
+          lineHeight: 1,
           maxWidth: 400,
           textWrap: 'balance',
           textAlign: 'center',
         }}
-        family="serif"
-        size="8"
+        family="display"
+        size="6"
         variant="primary"
-        weight="3"
+        weight="4"
       >
         404 - <GlitchText>Not Found</GlitchText>
       </Text>
@@ -69,7 +69,7 @@ const NotFound = () => {
       <Box
         as={motion.div}
         variants={textVariants}
-        css={{ pointerEvents: 'auto' }}
+        css={{ pointerEvents: 'auto', marginTop: 8 }}
       >
         <Link href="/">
           <Button variant="primary">Head back home</Button>

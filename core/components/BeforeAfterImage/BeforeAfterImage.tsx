@@ -145,7 +145,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
             loading="eager"
             loader={cloudflareLoader}
             src={beforeSrc}
-            quality={75}
+            quality={100}
             width={width}
             height={height}
           />
@@ -154,7 +154,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
               alt="After"
               loading="eager"
               loader={cloudflareLoader}
-              quality={75}
+              quality={100}
               src={afterSrc}
               width={width}
               height={height}
