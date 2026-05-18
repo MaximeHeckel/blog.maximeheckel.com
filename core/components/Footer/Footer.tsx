@@ -397,7 +397,7 @@ const Footer = (props: { lastUpdated?: string }) => {
                 weight="3"
               >
                 © {new Date().getFullYear()} Maxime Heckel{' '}
-                <EM size="1">Design & Built in NYC</EM>
+                <EM size="1">Designed & Built in NYC</EM>
               </Text>
             </Box>
           </Flex>
