@@ -8,6 +8,7 @@ import {
   useReducedMotion,
   useScroll,
 } from 'motion/react';
+import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Post, ReadingTime } from 'types/post';
 
@@ -19,6 +20,7 @@ import Footer from '@core/components/Footer/Footer';
 import { Main } from '@core/components/Main';
 import { ScrambledText } from '@core/components/ScrambledText';
 import Seo from '@core/components/Seo';
+import { useSkipArticlesScrambleWhenLeavingPost } from '@core/hooks/useArticlesScrambleNavigation';
 
 import { Footnote } from './Footnote';
 
@@ -170,6 +172,7 @@ const contentClass = css({
 
 const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
   const { date, updated, slug, subtitle, title, seoTitle } = frontMatter;
+  const router = useRouter();
   const path = `/posts/${slug}/`;
   const postUrl = `${siteConfig.url}${path}`;
 
@@ -191,6 +194,7 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
     [postUrl]
   );
   useRegisterAction(copyLinkAction);
+  useSkipArticlesScrambleWhenLeavingPost(router);
 
   useEffect(() => {
     /**

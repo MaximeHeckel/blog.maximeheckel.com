@@ -7,6 +7,7 @@ import { Post } from 'types/post';
 
 import { ScrambledText } from '@core/components/ScrambledText';
 import ViewTransitionLink from '@core/components/ViewTransitionLink';
+import { useShouldSkipArticlesScramble } from '@core/hooks/useArticlesScrambleNavigation';
 
 // import { ViewFinderMarks } from './ViewFinderMarks';
 
@@ -20,11 +21,13 @@ const ArticlesSection = (props: ArticleSectionProps) => {
   const articleListRef = useRef<HTMLUListElement>(null);
   const [, setFocusedPost] = useState<string | null>(null);
   const [isKeyboardNav, setIsKeyboardNav] = useState(false);
+  const shouldSkipScramble = useShouldSkipArticlesScramble();
 
   const inView = useInView(articleListRef, {
-    amount: 0.03,
+    amount: 0.08,
     once: true,
   });
+  const shouldAnimateScramble = inView && !shouldSkipScramble;
 
   let year = 0;
 
@@ -162,20 +165,33 @@ const ArticlesSection = (props: ArticleSectionProps) => {
                     gridColumn: 'auto/span 5',
                   }}
                 >
-                  <ScrambledText
-                    css={{
-                      transition: 'color 0.3s ease-in-out',
-                    }}
-                    disabled={!inView}
-                    delay={0.5 + index * 0.1}
-                    windowSize={7}
-                    speed={1.75}
-                    size="2"
-                    weight="3"
-                    variant="tertiary"
-                  >
-                    {post.title}
-                  </ScrambledText>
+                  {shouldSkipScramble ? (
+                    <Text
+                      css={{
+                        transition: 'color 0.3s ease-in-out',
+                      }}
+                      size="2"
+                      weight="3"
+                      variant="tertiary"
+                    >
+                      {post.title}
+                    </Text>
+                  ) : (
+                    <ScrambledText
+                      css={{
+                        transition: 'color 0.3s ease-in-out',
+                      }}
+                      disabled={!shouldAnimateScramble}
+                      delay={0.5 + index * 0.1}
+                      windowSize={7}
+                      speed={1.75}
+                      size="2"
+                      weight="3"
+                      variant="tertiary"
+                    >
+                      {post.title}
+                    </ScrambledText>
+                  )}
                   {/* <AnimatePresence>
                     {focusedPost === post.slug ? (
                       <ViewFinderMarks text={post.title} />
@@ -183,23 +199,41 @@ const ArticlesSection = (props: ArticleSectionProps) => {
                   </AnimatePresence> */}
                 </Grid.Item>
                 <Grid.Item justifySelf="end" css={{ gridColumn: '6' }}>
-                  <ScrambledText
-                    css={{
-                      whiteSpace: 'nowrap',
-                      transition: 'color 0.3s ease-in-out',
-                      fontFamily: 'var(--font-mono)',
-                      letterSpacing: '-1px',
-                      textTransform: 'uppercase',
-                      fontSize: 13,
-                    }}
-                    delay={0.5 + index * 0.05}
-                    windowSize={7}
-                    speed={0.8}
-                    size="2"
-                    variant="tertiary"
-                  >
-                    {format(new Date(post.date), 'MMM dd')}
-                  </ScrambledText>
+                  {shouldSkipScramble ? (
+                    <Text
+                      css={{
+                        whiteSpace: 'nowrap',
+                        transition: 'color 0.3s ease-in-out',
+                        fontFamily: 'var(--font-mono)',
+                        letterSpacing: '-1px',
+                        textTransform: 'uppercase',
+                        fontSize: 13,
+                      }}
+                      size="2"
+                      variant="tertiary"
+                    >
+                      {format(new Date(post.date), 'MMM dd')}
+                    </Text>
+                  ) : (
+                    <ScrambledText
+                      css={{
+                        whiteSpace: 'nowrap',
+                        transition: 'color 0.3s ease-in-out',
+                        fontFamily: 'var(--font-mono)',
+                        letterSpacing: '-1px',
+                        textTransform: 'uppercase',
+                        fontSize: 13,
+                      }}
+                      disabled={!shouldAnimateScramble}
+                      delay={0.5 + index * 0.05}
+                      windowSize={7}
+                      speed={0.8}
+                      size="2"
+                      variant="tertiary"
+                    >
+                      {format(new Date(post.date), 'MMM dd')}
+                    </ScrambledText>
+                  )}
                 </Grid.Item>
               </Box>
             </Box>
