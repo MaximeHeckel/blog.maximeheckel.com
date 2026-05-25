@@ -78,6 +78,26 @@ h4:hover .anchor-link {
   }
 }
 
+::view-transition-old(root) {
+  animation: page-view-transition-fade-out 180ms ease both;
+}
+
+::view-transition-new(root) {
+  animation: page-view-transition-fade-in 240ms ease both;
+}
+
+@keyframes page-view-transition-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-view-transition-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
 canvas#main-canvas {
   opacity: 0;
   animation: fade-in 1s ease 0.3s forwards;

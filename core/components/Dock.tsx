@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import React, { useCallback, useContext, useState } from 'react';
 
 import { useIsMobile } from '@core/hooks/useIsMobile';
+import { useViewTransitionNavigation } from '@core/hooks/useViewTransitionNavigation';
 
 import { CommandMenuContext } from './CommandMenu/CommandMenuContext';
 import Logo from './Logo';
@@ -25,6 +26,7 @@ const Dock = () => {
 
   const shouldReduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
+  const { navigateWithViewTransition } = useViewTransitionNavigation();
 
   const navItems = Object.values(NAV);
   const navActions = {
@@ -38,7 +40,7 @@ const Dock = () => {
           block: 'center',
         });
       } else {
-        router.push('/');
+        navigateWithViewTransition('/');
       }
     },
     [NAV.ARTICLES]: (event: React.MouseEvent) => {
@@ -51,7 +53,7 @@ const Dock = () => {
           block: 'start',
         });
       } else {
-        router.push('/#articles');
+        navigateWithViewTransition('/#articles');
       }
     },
     [NAV.CMD]: () => {

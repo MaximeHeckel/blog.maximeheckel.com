@@ -2,11 +2,11 @@ import { Box, Grid, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import debounce from 'lodash.debounce';
 import { useInView } from 'motion/react';
-import Link from 'next/link';
 import { useCallback, useRef, useState } from 'react';
 import { Post } from 'types/post';
 
 import { ScrambledText } from '@core/components/ScrambledText';
+import ViewTransitionLink from '@core/components/ViewTransitionLink';
 
 // import { ViewFinderMarks } from './ViewFinderMarks';
 
@@ -115,7 +115,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
                 ) : null}
               </Box>
               <Box
-                as={Link}
+                as={ViewTransitionLink}
                 id={post.slug}
                 data-testid="article-link"
                 href={`/posts/${post.slug}/`}

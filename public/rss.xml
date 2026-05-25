@@ -9,9 +9,25 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Thu, 01 Jan 2026 22:32:02 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 25 May 2026 17:27:35 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[On Rendering the Sky, Sunsets, and Planets]]></title>
+            <description><![CDATA[This article explores how to render realistic skies and atmospheres in real time in the browser with shaders, from simple sky domes, to entire planets using shaders, raymarching, Rayleigh and Mie scattering, and ozone absorption.]]></description>
+            <link>https://blog.maximeheckel.com/posts/on-rendering-the-sky-sunsets-and-planets</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/on-rendering-the-sky-sunsets-and-planets</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 12 May 2026 08:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Shades of Halftone]]></title>
+            <description><![CDATA[An interactive deep dive into building halftone shaders in GLSL, covering everything from classic dot patterns and CMYK color separation to Moiré interference, gooey effects, and animated displacement.]]></description>
+            <link>https://blog.maximeheckel.com/posts/shades-of-halftone</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/shades-of-halftone</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 10 Feb 2026 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Field Guide to TSL and WebGPU]]></title>
             <description><![CDATA[A comprehensive guide to building 3D web experiences with TSL and WebGPU, covering shader development, compute shader applications, and practical examples for particle systems and post-processing effects.]]></description>
