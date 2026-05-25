@@ -129,13 +129,7 @@ const Image = (props: ImageProps) => {
           </Text>
         </Flex>
         <Dialog.Portal>
-          <Backdrop
-            as={motion.div}
-            initial={{ '--opacity': 0 }}
-            animate={{ '--opacity': 0.8 }}
-            transition={{ duration: 0.2, delay: 0.2 }}
-            key={`backdrop-${uniqueId}`}
-          >
+          <Backdrop key={`backdrop-${uniqueId}`}>
             <Popup
               key={`popup-${uniqueId}`}
               render={
@@ -169,7 +163,9 @@ const Image = (props: ImageProps) => {
                     whileTap={{ scale: 0.98 }}
                     style={{
                       outline: 'none',
-                      viewTransitionName: isDialogOpen ? transitionName : 'none',
+                      viewTransitionName: isDialogOpen
+                        ? transitionName
+                        : 'none',
                     }}
                   >
                     <RootImage

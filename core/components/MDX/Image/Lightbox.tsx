@@ -13,7 +13,12 @@ export const Backdrop = styled(Dialog.Backdrop, {
   placeItems: 'center',
   overflowY: 'auto',
   cursor: 'zoom-out',
-  backgroundColor: 'oklch(from var(--background) l c h / var(--opacity, 0.8))',
+  backgroundColor: 'oklch(from var(--background) l c h / 0.8)',
+  transition: 'background-color 200ms ease',
+
+  '&[data-starting-style], &[data-ending-style]': {
+    backgroundColor: 'oklch(from var(--background) l c h / 0)',
+  },
 });
 
 export const Popup = styled(Dialog.Popup, {
