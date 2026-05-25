@@ -10,7 +10,7 @@ const H2 = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
         marginTop: '5rem',
         marginBottom: '0.75rem',
       }}
-      gap="2"
+      gap="1"
     >
       <Text as="h2" id={id} variant="primary" weight="4" size="4" {...rest}>
         {children}
@@ -21,10 +21,7 @@ const H2 = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
           width: '100%',
           height: '1px',
           border: 'none',
-          backgroundImage:
-            'linear-gradient(to right,var(--border-color) 50%, var(--background) 0)',
-          backgroundSize: '8px 1px',
-          backgroundRepeat: 'repeat-x',
+          backgroundColor: 'var(--border-color)',
           marginTop: '0.25rem',
         }}
       />
