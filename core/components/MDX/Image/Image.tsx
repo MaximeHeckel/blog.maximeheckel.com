@@ -8,15 +8,20 @@ import {
   Text,
 } from '@maximeheckel/design-system';
 import { cloudflareLoader } from 'lib/next-image-loader';
-import { AnimatePresence, motion, MotionConfig } from 'motion/react';
+import { motion, MotionConfig } from 'motion/react';
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
 import { memo, useId, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 import { Backdrop, Popup, Trigger } from './Lightbox';
 
 interface ImageProps extends NextImageProps {
   css?: CSS;
 }
+
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (callback: () => void) => void;
+};
 
 const RootImage = memo((props: ImageProps) => {
   return (
@@ -42,15 +47,29 @@ RootImage.displayName = 'Image';
 const Image = (props: ImageProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const uniqueId = useId();
+  const transitionName = `mdx-image-${uniqueId.replace(/[^a-zA-Z0-9-_]/g, '')}`;
 
-  const handleDialogTrigger = () => {
-    setIsDialogOpen((prev) => !prev);
+  const handleDialogOpenChange = (open: boolean) => {
+    if (open === isDialogOpen) {
+      return;
+    }
+
+    const transitionDocument = document as ViewTransitionDocument;
+
+    if (!transitionDocument.startViewTransition) {
+      setIsDialogOpen(open);
+      return;
+    }
+
+    transitionDocument.startViewTransition(() => {
+      flushSync(() => {
+        setIsDialogOpen(open);
+      });
+    });
   };
 
-  const handlePressEnter = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleDialogTrigger();
-    }
+  const handleDialogTrigger = () => {
+    handleDialogOpenChange(!isDialogOpen);
   };
 
   return (
@@ -60,7 +79,15 @@ const Image = (props: ImageProps) => {
         ease: 'easeInOut',
       }}
     >
-      <Dialog.Root open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <style>
+        {`
+          ::view-transition-group(${transitionName}) {
+            animation-duration: 300ms;
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+          }
+        `}
+      </style>
+      <Dialog.Root open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
         <Flex
           as="figure"
           direction="column"
@@ -72,19 +99,9 @@ const Image = (props: ImageProps) => {
             tabIndex={0}
             render={
               <motion.div
-                layoutId={`dialog-${uniqueId}`}
-                onClick={handleDialogTrigger}
-                onKeyDown={handlePressEnter}
                 whileTap={{ scale: 0.95 }}
                 whileHover={{ scale: 1.02 }}
                 style={{ willChange: 'transform' }}
-                transition={{
-                  layout: {
-                    type: 'spring',
-                    stiffness: 400,
-                    damping: 27,
-                  },
-                }}
                 role="button"
               >
                 <RootImage
@@ -92,6 +109,7 @@ const Image = (props: ImageProps) => {
                   style={{
                     border: '2px solid var(--border-color)',
                     borderRadius: 'var(--border-radius-3)',
+                    viewTransitionName: isDialogOpen ? 'none' : transitionName,
                   }}
                 />
               </motion.div>
@@ -110,79 +128,68 @@ const Image = (props: ImageProps) => {
             {props.alt}
           </Text>
         </Flex>
-        <Dialog.Portal keepMounted>
-          <AnimatePresence>
-            {isDialogOpen ? (
-              <Backdrop
-                as={motion.div}
-                initial={{ '--opacity': 0 }}
-                animate={{ '--opacity': 0.8 }}
-                exit={{ '--opacity': 0, transition: { duration: 0.2 } }}
-                transition={{ duration: 0.2, delay: 0.2 }}
-                key={`backdrop-${uniqueId}`}
-              >
-                <Popup
-                  key={`popup-${uniqueId}`}
-                  render={
-                    <Flex
-                      alignItems="center"
-                      justifyContent="center"
-                      as={motion.div}
-                      direction="column"
-                      gap="4"
+        <Dialog.Portal>
+          <Backdrop
+            as={motion.div}
+            initial={{ '--opacity': 0 }}
+            animate={{ '--opacity': 0.8 }}
+            transition={{ duration: 0.2, delay: 0.2 }}
+            key={`backdrop-${uniqueId}`}
+          >
+            <Popup
+              key={`popup-${uniqueId}`}
+              render={
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  as={motion.div}
+                  direction="column"
+                  gap="4"
+                >
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{
+                      delay: 0.2,
+                    }}
+                  >
+                    <IconButton
+                      aria-label="Close"
+                      variant="secondary"
+                      onClick={handleDialogTrigger}
+                      rounded
                     >
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{
-                          delay: 0.2,
-                        }}
-                      >
-                        <IconButton
-                          aria-label="Close"
-                          variant="secondary"
-                          onClick={handleDialogTrigger}
-                          rounded
-                        >
-                          <Icon.X />
-                        </IconButton>
-                      </motion.div>
-                      <motion.div
-                        layoutId={`dialog-${uniqueId}`}
-                        onClick={handleDialogTrigger}
-                        autoFocus
-                        role="button"
-                        whileTap={{ scale: 0.98 }}
-                        style={{ outline: 'none' }}
-                        transition={{
-                          layout: {
-                            type: 'spring',
-                            stiffness: 400,
-                            damping: 27,
-                          },
-                        }}
-                      >
-                        <RootImage
-                          {...props}
-                          css={{
-                            objectFit: 'cover',
-                            height: 'auto',
-                            width: '80dvw',
-                            borderRadius: 'var(--border-radius-3)',
+                      <Icon.X />
+                    </IconButton>
+                  </motion.div>
+                  <motion.div
+                    onClick={handleDialogTrigger}
+                    autoFocus
+                    role="button"
+                    whileTap={{ scale: 0.98 }}
+                    style={{
+                      outline: 'none',
+                      viewTransitionName: isDialogOpen ? transitionName : 'none',
+                    }}
+                  >
+                    <RootImage
+                      {...props}
+                      css={{
+                        objectFit: 'cover',
+                        height: 'auto',
+                        width: '80dvw',
+                        borderRadius: 'var(--border-radius-3)',
 
-                            '@media (max-width: 768px)': {
-                              width: '97dvw',
-                            },
-                          }}
-                        />
-                      </motion.div>
-                    </Flex>
-                  }
-                />
-              </Backdrop>
-            ) : null}
-          </AnimatePresence>
+                        '@media (max-width: 768px)': {
+                          width: '97dvw',
+                        },
+                      }}
+                    />
+                  </motion.div>
+                </Flex>
+              }
+            />
+          </Backdrop>
         </Dialog.Portal>
       </Dialog.Root>
     </MotionConfig>
