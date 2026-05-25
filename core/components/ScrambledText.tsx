@@ -96,7 +96,7 @@ const ScrambledTextAnimation = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.3, ease: 'easeInOut', delay: delay * 0.95 }}
+      transition={{ duration: 0.2, ease: 'easeInOut', delay: delay * 0.9 }}
       style={{
         display: 'inline-block',
         height: finished ? 'auto' : dimensions?.height,
@@ -164,7 +164,7 @@ export const ScrambledText = ({
         <>
           <ClientOnly
             fallback={
-              <Box>
+              <Box aria-hidden css={{ opacity: 0 }}>
                 <Text {...props} suppressHydrationWarning css={css}>
                   {children}
                 </Text>
