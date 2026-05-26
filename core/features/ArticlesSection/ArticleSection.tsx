@@ -66,6 +66,13 @@ const ArticlesSection = (props: ArticleSectionProps) => {
           display: 'flex',
           flexDirection: 'column',
           padding: '64px 0 0 0',
+
+          '@media (hover: hover) and (pointer: fine)': {
+            '&:has([data-article-item]:hover) [data-article-year-label], &:has([data-article-item]:hover) [data-article-item]:not(:hover)':
+              {
+                opacity: 0.5,
+              },
+          },
         }}
       >
         {posts.map((post, index) => {
@@ -92,12 +99,14 @@ const ArticlesSection = (props: ArticleSectionProps) => {
               key={post.slug}
             >
               <Box
+                data-article-year-label
                 css={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   paddingLeft: 'var(--space-4)',
                   paddingRight: 'var(--space-4)',
+                  transition: 'opacity 0.2s ease-in-out',
                 }}
                 onMouseEnter={() => !isKeyboardNav && debouncedSetFocused(null)}
               >
@@ -121,6 +130,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
                 as={ViewTransitionLink}
                 id={post.slug}
                 data-testid="article-link"
+                data-article-item
                 href={`/posts/${post.slug}/`}
                 passHref
                 css={{
@@ -131,7 +141,8 @@ const ArticlesSection = (props: ArticleSectionProps) => {
                   textDecoration: 'none',
                   fontWeight: 500,
                   padding: 'var(--space-4)',
-                  transition: 'border-color 0.3s ease-in-out',
+                  transition:
+                    'border-color 0.3s ease-in-out, opacity 0.2s ease-in-out',
                   borderBottom: '1px solid var(--border-color)',
                   outline: 'none',
 
