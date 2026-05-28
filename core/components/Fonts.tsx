@@ -35,7 +35,11 @@ const Fonts = () => (
       font: 100%/1.2888 var(--font-display);
       -ms-text-size-adjust: 100%;
       -webkit-text-size-adjust: 100%;
-      font-feature-settings: 'cv11' 1, 'cv05' 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      --font-settings: 'cv11' 1, 'cv05' 1;
+      font-feature-settings: var(--font-settings);
+      text-rendering: optimizeLegibility;
     }
   `}</style>
 );

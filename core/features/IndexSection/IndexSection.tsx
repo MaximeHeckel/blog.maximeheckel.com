@@ -1,6 +1,8 @@
 import { Box, Flex, Grid, Text } from '@maximeheckel/design-system';
 import dynamic from 'next/dynamic';
 
+import Headline from '@core/components/Headline';
+
 const Scene = dynamic(() => import('./Scene').then((mod) => mod.Scene), {
   ssr: false,
 });
@@ -51,21 +53,9 @@ const IndexSection = () => {
               justifyContent: 'space-between',
             }}
           >
-            <Text
-              as="h1"
-              css={{
-                fontWeight: 510,
-                letterSpacing: '-0.028em',
-                lineHeight: 1.2,
-                textWrap: 'balance',
-                textAlign: 'left',
-              }}
-              family="display"
-              size="6"
-              variant="primary"
-            >
+            <Headline>
               Experiments and essays on the modern web.
-            </Text>
+            </Headline>
             <Text
               as="p"
               css={{

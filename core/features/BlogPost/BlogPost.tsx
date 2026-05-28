@@ -1,4 +1,4 @@
-import { css, Box, Flex, Grid, Icon, Text } from '@maximeheckel/design-system';
+import { css, Box, Flex, Grid, Icon } from '@maximeheckel/design-system';
 import siteConfig from 'config/site';
 import { format } from 'date-fns';
 import {
@@ -17,6 +17,7 @@ import { useRegisterAction } from '@core/components/CommandMenu';
 import { Dock } from '@core/components/Dock';
 import { DynamicTOC } from '@core/components/DynamicTOC';
 import Footer from '@core/components/Footer/Footer';
+import Headline from '@core/components/Headline';
 import { Main } from '@core/components/Main';
 import { ScrambledText } from '@core/components/ScrambledText';
 import Seo from '@core/components/Seo';
@@ -278,22 +279,9 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
             },
           }}
         >
-          <Text
-            as="h1"
-            css={{
-              fontWeight: 510,
-              letterSpacing: '-0.028em',
-              lineHeight: 1.2,
-              textWrap: 'balance',
-              textAlign: 'center',
-            }}
-            data-testid="post-title"
-            family="display"
-            size="6"
-            variant="primary"
-          >
+          <Headline data-testid="post-title" textAlign="center">
             {title}
-          </Text>
+          </Headline>
           <time itemProp="datepublished" dateTime={date}>
             <ScrambledText
               css={{
