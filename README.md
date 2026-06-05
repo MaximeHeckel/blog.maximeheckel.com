@@ -1,5 +1,7 @@
 # blog.maximeheckel.com
 
+Hello, world!
+
 This is the main code base for [my blog](https://blog.maximeheckel.com).
 
 ## Tech Stack
