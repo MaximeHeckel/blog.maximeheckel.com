@@ -152,13 +152,13 @@ const ArticlesSection = (props: ArticleSectionProps) => {
             // Opacity: year labels and article columns fade with section dimming.
             '[data-article-year-section] [data-article-year-label], [data-article-item] > *':
               {
-                transition: 'opacity 0.2s ease-in-out',
+                transition: 'opacity 0.25s ease-in-out',
               },
 
             // Color: text inside article columns (not the columns themselves,
             // otherwise the transition shorthand overrides opacity on > *).
             '[data-article-item] > * *': {
-              transition: 'color 0.125s ease-in-out',
+              transition: 'color 0.15s ease-in-out',
             },
 
             // Snap text color when moving between articles in the same year.
