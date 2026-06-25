@@ -87,7 +87,7 @@ const ContentSecurityPolicy = `
     default-src 'self';
     object-src 'self' data:;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' *.youtube.com *.twitter.com *.vercel-scripts.com; 
-    child-src *.youtube.com *.google.com *.twitter.com *.codesandbox.io;
+    child-src *.youtube.com *.google.com *.twitter.com *.codesandbox.io https://sandpack-maxime.vercel.app;
     style-src 'self' 'unsafe-inline' *.googleapis.com;
     img-src * blob: data:;
     media-src 'self' d2xl4m2ghaywko.cloudfront.net https://video.twimg.com https://cdn.maximeheckel.com;
