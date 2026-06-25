@@ -38,8 +38,9 @@ const Fonts = () => (
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       --font-settings: 'cv11' 1, 'cv05' 1;
+      --font-variation-settings: 'opsz' auto;
       font-feature-settings: var(--font-settings);
-      font-variation-settings: 'opsz' auto;
+      font-variation-settings: var(--font-variation-settings);
       text-rendering: optimizeLegibility;
     }
   `}</style>

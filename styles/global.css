@@ -3,6 +3,7 @@
   color: var(--accent);
 }
 
+
 html {
   font: 100%/1.2888 var(--font-display);
   -ms-text-size-adjust: 100%;
@@ -14,6 +15,10 @@ body {
   color: var(--text-primary);
   word-wrap: break-word;
   margin: 0;
+}
+
+button {
+  font: inherit;
 }
 
 .hidden-layout {
