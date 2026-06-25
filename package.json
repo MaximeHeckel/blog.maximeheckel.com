@@ -13,7 +13,7 @@
     "build": "next build",
     "cy:open": "cypress open",
     "cy:run": "cypress run --browser chrome",
-    "dev": "NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) next dev",
+    "dev": "NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) portless blog.maximeheckel next dev",
     "export": "next export",
     "check-format": "oxfmt --check",
     "format": "oxfmt --write",
