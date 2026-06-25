@@ -2,6 +2,7 @@ import { globalStyles, Tooltip } from '@maximeheckel/design-system';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AppProps } from 'next/app';
+import 'katex/dist/katex.min.css';
 import 'styles/global.css';
 import Head from 'next/head';
 

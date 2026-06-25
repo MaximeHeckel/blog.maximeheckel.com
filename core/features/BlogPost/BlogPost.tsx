@@ -25,6 +25,8 @@ import { useSkipArticlesScrambleWhenLeavingPost } from '@core/hooks/useArticlesS
 
 import { Footnote } from './Footnote';
 
+import 'katex/dist/katex.min.css';
+
 const Header = (props: {
   title: string;
   ids: Array<{ id: string; title: string }>;
@@ -168,6 +170,15 @@ const contentClass = css({
     gap: 'var(--space-5)',
     maxWidth: 700,
     width: '100%',
+  },
+
+  '.katex-display>.katex>.katex-html>.tag': {
+    display: 'none',
+  },
+
+  '.katex-display>.katex': {
+    textAlign: 'left',
+    whiteSpace: 'normal',
   },
 });
 

@@ -39,6 +39,7 @@ const Fonts = () => (
       -moz-osx-font-smoothing: grayscale;
       --font-settings: 'cv11' 1, 'cv05' 1;
       font-feature-settings: var(--font-settings);
+      font-variation-settings: 'opsz' auto;
       text-rendering: optimizeLegibility;
     }
   `}</style>

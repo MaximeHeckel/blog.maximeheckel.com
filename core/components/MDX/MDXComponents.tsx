@@ -25,6 +25,7 @@ import VideoPlayer from '@core/components/VideoPlayer';
 import SupportCallout from '../Callout/SupportCallout';
 // MDX only components
 import Image from './Image';
+import InlineMath from './InlineMath';
 
 // Widgets (used in blog post for interactive experiences)
 const ClipboardAnimationDetails = dynamic(
@@ -497,6 +498,7 @@ const MDXComponents = {
     return <Text as="h3" variant="primary" weight="3" {...props} />;
   },
   Image,
+  InlineMath,
   code: InlineCode,
   li: List.Item,
   ol: function OL(props: React.OlHTMLAttributes<HTMLOListElement>) {

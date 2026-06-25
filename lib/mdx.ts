@@ -5,6 +5,7 @@ import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
 import readingTime from 'reading-time';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeKatex from 'rehype-katex';
 import rehypeSlug from 'rehype-slug';
 import { FrontMatterPost, Post } from 'types/post';
 
@@ -89,6 +90,7 @@ export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ] as any,
         rehypeFigure,
+        rehypeKatex,
       ],
     },
   };
