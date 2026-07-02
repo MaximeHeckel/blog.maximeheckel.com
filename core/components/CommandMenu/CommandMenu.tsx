@@ -33,6 +33,7 @@ interface CommandMenuProps {
 const NAVIGATION_ITEMS = [
   { id: 'home', label: 'Home', href: '/' },
   { id: 'design', label: 'Design System', href: '/design/' },
+  { id: 'glossary', label: 'Glossary', href: '/glossary' },
   { id: 'rss', label: 'RSS', href: '/rss.xml' },
 ] as const;
 

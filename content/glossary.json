@@ -1,0 +1,3160 @@
+[
+  {
+    "definition": "A texture storing data in three dimensions, used for volumetric effects in shaders.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "3D texture"
+  },
+  {
+    "definition": "A lookup texture storing atmospheric haze and light scattering for visible scene pixels.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "aerial perspective LUT"
+  },
+  {
+    "definition": "A Framer Motion component enabling exit animations for components leaving the React tree.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations"
+    ],
+    "term": "AnimatePresence"
+  },
+  {
+    "definition": "A texture filtering method that improves image quality at oblique viewing angles.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "anisotropic filtering"
+  },
+  {
+    "definition": "Light scattering unevenly in different directions due to particle properties in a medium.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "anisotropic scattering"
+  },
+  {
+    "definition": "Technique to smooth jagged edges in graphics by blending pixel colors.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "antialiasing"
+  },
+  {
+    "definition": "A CRT display mask with vertical slots allowing electron beams to hit phosphor stripes.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "aperture grill"
+  },
+  {
+    "definition": "The process of light being redirected by air molecules and particles in the atmosphere.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "atmospheric scattering"
+  },
+  {
+    "definition": "Input data for vertex shaders that varies per vertex, like position or UV coordinates.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "attribute"
+  },
+  {
+    "definition": "The mean color value computed from a group of pixels or samples.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "average color"
+  },
+  {
+    "definition": "Rendering the inside faces of a mesh to show its inner surface effects.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "backside rendering"
+  },
+  {
+    "definition": "A threshold map used in ordered dithering to create structured pixel patterns.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Bayer Matrix"
+  },
+  {
+    "definition": "A law describing light intensity reduction exponentially with distance through a medium.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Beer's Law"
+  },
+  {
+    "kind": "other",
+    "term": "Bézier curve",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "A parametric curve defined by control points used to model smooth shapes and motions."
+  },
+  {
+    "definition": "An upscaling method smoothing images by interpolating pixels using 16 neighbors with cubic polynomials.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Bicubic filtering"
+  },
+  {
+    "definition": "A shading model that simulates light reflection using diffuse and specular components.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Blinn-Phong lighting model"
+  },
+  {
+    "definition": "A technique adding subtle random offsets to reduce visual artifacts in rendering.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "blue noise dithering"
+  },
+  {
+    "definition": "The smallest cube enclosing a 3D mesh, defined by minimum and maximum coordinates.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "bounding cube"
+  },
+  {
+    "definition": "Light patterns formed by rays refracted or reflected through curved surfaces.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "caustics"
+  },
+  {
+    "definition": "A color distortion effect where RGB channels are slightly offset in an image.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "chromatic aberration"
+  },
+  {
+    "definition": "A visual effect where light splits into colors due to varying refraction indices.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "chromatic dispersion"
+  },
+  {
+    "definition": "Splitting text into smaller pieces to process or analyze more effectively.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "chunking"
+  },
+  {
+    "definition": "A round-shaped sampling area used in image filtering to gather pixel data.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "circular kernel"
+  },
+  {
+    "definition": "Coordinate system after view transformation where geometry outside the view frustum is clipped.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "clip space"
+  },
+  {
+    "aliases": [
+      "CMYK color model"
+    ],
+    "definition": "A subtractive color model using cyan, magenta, yellow, and black inks for printing.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "CMYK"
+  },
+  {
+    "definition": "Reducing the number of colors in an image to create a limited color palette.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "color quantization"
+  },
+  {
+    "definition": "A GPU pipeline for running compute shaders to process data without rendering graphics.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "compute pipeline"
+  },
+  {
+    "definition": "GPU programs designed for general-purpose parallel computation beyond graphics rendering.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "compute shaders"
+  },
+  {
+    "definition": "A matrix operation sliding over pixels to modify images like blurring or edge detection.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "convolution filter"
+  },
+  {
+    "definition": "Processes converting coordinates between different spaces like object, world, and screen.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "coordinate system transformations"
+  },
+  {
+    "definition": "A trigonometric function returning the cosine of an angle in radians.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "cos"
+  },
+  {
+    "definition": "A measure of similarity between two vectors based on the cosine of their angle.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "cosine similarity"
+  },
+  {
+    "kind": "other",
+    "term": "Cubic Bézier curve",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "A Bézier curve defined by four control points creating smooth, complex curves."
+  },
+  {
+    "kind": "function",
+    "term": "cubic-bezier function",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "A CSS function defining a cubic Bézier curve for timing animations and transitions."
+  },
+  {
+    "definition": "A user-defined set of colors used to limit or stylize rendered output.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "custom color palette"
+  },
+  {
+    "definition": "A value representing how much volume or mass is present at a point in a volume.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "density"
+  },
+  {
+    "definition": "A texture storing depth information of a scene from a specific camera or light.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "depth texture"
+  },
+  {
+    "kind": "other",
+    "term": "derivative",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "A mathematical function representing the rate of change or velocity of a curve."
+  },
+  {
+    "definition": "Light scattered evenly from a surface, creating soft, non-reflective illumination.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "diffuse lighting"
+  },
+  {
+    "definition": "The number of workgroups launched to execute a compute shader.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "dispatch size"
+  },
+  {
+    "definition": "A representation storing distance to the nearest shape edge for rendering.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "distance field"
+  },
+  {
+    "definition": "A technique adding noise to simulate more colors or smooth gradients in images.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "dithering"
+  },
+  {
+    "definition": "A math operation returning a scalar from two vectors, indicating their directional similarity.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "dot product"
+  },
+  {
+    "kind": "function",
+    "term": "ease-in",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "An easing function where motion starts slowly and accelerates towards the end."
+  },
+  {
+    "kind": "function",
+    "term": "ease-in-out",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "An easing function that starts and ends slowly with faster motion in the middle."
+  },
+  {
+    "kind": "function",
+    "term": "ease-out",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "An easing function where motion starts fast and decelerates towards the end."
+  },
+  {
+    "kind": "other",
+    "term": "easing functions",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "Functions that control animation speed to create natural motion effects."
+  },
+  {
+    "definition": "A filter that highlights sharp brightness changes to find object boundaries.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "edge detection filter"
+  },
+  {
+    "definition": "Scalars representing the magnitude of stretching or shrinking in a matrix transformation.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "eigenvalues"
+  },
+  {
+    "definition": "Vectors that maintain direction under a matrix transformation, scaled by eigenvalues.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "eigenvectors"
+  },
+  {
+    "definition": "Numeric vector representations of text capturing semantic meaning for comparison.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "embeddings"
+  },
+  {
+    "definition": "An animation that plays when a component is removed from the UI.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations"
+    ],
+    "term": "exit animation"
+  },
+  {
+    "definition": "Fractal Brownian Motion, a technique combining multiple noise layers for natural-looking textures.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "FBM"
+  },
+  {
+    "definition": "Framebuffer Object used to render scenes offscreen into textures for later use.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "FBO"
+  },
+  {
+    "aliases": [
+      "floor()"
+    ],
+    "definition": "A function that rounds a number down to the nearest whole integer.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "floor"
+  },
+  {
+    "aliases": [
+      "fract()"
+    ],
+    "definition": "A function that returns the fractional part of a number, removing its integer part.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "fract"
+  },
+  {
+    "definition": "A method layering noise at different scales to create complex, natural patterns in graphics.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Fractal Brownian Motion"
+  },
+  {
+    "definition": "A GPU program that computes the color and other attributes of each pixel.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "fragment shader"
+  },
+  {
+    "definition": "An off-screen buffer to render textures for use in later rendering passes.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Frame Buffer Object"
+  },
+  {
+    "kind": "other",
+    "term": "Framer Motion",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "A React library for creating animations and gestures with declarative APIs."
+  },
+  {
+    "definition": "Variation of reflectivity depending on the viewing angle of a surface.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Fresnel effect"
+  },
+  {
+    "definition": "A 2D rectangle covering the entire screen used for post-processing effects.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "FullScreenQuad"
+  },
+  {
+    "aliases": [
+      "fwidth()"
+    ],
+    "definition": "Shader function returning rate of change of a value across pixels for antialiasing.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "fwidth"
+  },
+  {
+    "definition": "Weights based on a Gaussian function used to emphasize central pixels in filtering.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Gaussian weights"
+  },
+  {
+    "definition": "The shape or structure of a 3D object defined by vertices and faces.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "geometry"
+  },
+  {
+    "definition": "A C-like language used to write shaders that run on the GPU.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "GLSL"
+  },
+  {
+    "definition": "Shifting grid cells to create staggered or varied pattern layouts.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "grid offset"
+  },
+  {
+    "definition": "The normalized vector halfway between the light direction and eye vector.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "half-vector"
+  },
+  {
+    "definition": "Technique using dots of varying size to simulate continuous tones in images.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "halftone"
+  },
+  {
+    "definition": "A phase function modeling directional light scattering in participating media.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Henyey-Greenstein function"
+  },
+  {
+    "definition": "A number describing how much light bends when entering a material.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "index of refraction"
+  },
+  {
+    "definition": "A mesh that renders multiple copies efficiently using GPU instancing.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "instanced mesh"
+  },
+  {
+    "definition": "The dimension or radius of the sampling area used in image filtering.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "kernel size"
+  },
+  {
+    "definition": "An edge-preserving smoothing filter that reduces noise while maintaining sharp edges.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Kuwahara filter"
+  },
+  {
+    "definition": "Animation that smoothly transitions a component between different layouts or positions.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations"
+    ],
+    "term": "layout animation"
+  },
+  {
+    "definition": "The process of animating changes in a component's layout properties.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations"
+    ],
+    "term": "layout transition"
+  },
+  {
+    "definition": "A component that groups motion components to coordinate shared or sibling layout animations.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations"
+    ],
+    "term": "LayoutGroup"
+  },
+  {
+    "definition": "A function that linearly interpolates between two values based on a factor.",
+    "kind": "function",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "lerp"
+  },
+  {
+    "definition": "The deflection of light rays as they pass through particles or media.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "light scattering"
+  },
+  {
+    "definition": "A raymarching process sampling light absorption and scattering along a ray inside a volume.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "lightmarch"
+  },
+  {
+    "definition": "A technique to sample light attenuation by marching rays toward a light source.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "lightmarching"
+  },
+  {
+    "kind": "other",
+    "term": "linear easing",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "An easing function where motion progresses at a constant speed."
+  },
+  {
+    "kind": "other",
+    "term": "Linear Interpolation",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "A method to find a point between two values based on a parameter t."
+  },
+  {
+    "definition": "Large Language Model, an AI trained to understand and generate human-like text.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "LLM"
+  },
+  {
+    "definition": "A precomputed texture or array used to quickly retrieve complex calculation results.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "lookup table"
+  },
+  {
+    "definition": "Brightness component of a color, representing perceived light intensity.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "luma"
+  },
+  {
+    "definition": "A measure of perceived brightness of a color, often used for grayscale conversion.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "luminance"
+  },
+  {
+    "definition": "Dithering that uses pixel brightness to determine black or white output pixels.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "luminance-based dithering"
+  },
+  {
+    "definition": "Defines how a mesh looks by controlling its surface properties and shading.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "material"
+  },
+  {
+    "definition": "A function returning the larger of two values, often used in shading calculations.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "max"
+  },
+  {
+    "definition": "Markdown format that supports embedding JSX components for interactive content.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "MDX"
+  },
+  {
+    "definition": "A 3D object composed of geometry and material used in rendering.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "mesh"
+  },
+  {
+    "definition": "A physically based material in Three.js simulating realistic lighting and reflections.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "MeshStandardMaterial"
+  },
+  {
+    "definition": "A material simulating light transmission and refraction through transparent meshes.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "MeshTransmissionMaterial"
+  },
+  {
+    "definition": "Light scattering caused by larger atmospheric particles like dust and aerosols.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Mie scattering"
+  },
+  {
+    "definition": "A function returning the smaller of two values, used to combine distances in SDFs.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "min"
+  },
+  {
+    "definition": "A GLSL function that blends two values based on a given interpolation factor.",
+    "kind": "function",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "mix"
+  },
+  {
+    "definition": "A mathematical operation returning the remainder after division, used for repeating patterns.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "mod"
+  },
+  {
+    "definition": "Visual interference pattern from overlapping similar grids or textures.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Moiré pattern"
+  },
+  {
+    "definition": "A Framer Motion-enhanced component that supports animations and layout transitions.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations"
+    ],
+    "term": "motion component"
+  },
+  {
+    "definition": "Halftone technique applying separate dot grids for each color channel.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "multichannel halftoning"
+  },
+  {
+    "definition": "An abstraction for building shaders using composable nodes instead of raw code.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "node system"
+  },
+  {
+    "definition": "A procedural function generating pseudo-random values for natural randomness in graphics.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "noise"
+  },
+  {
+    "definition": "A texture storing surface normals used for lighting and edge detection.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "normal buffer"
+  },
+  {
+    "definition": "Vectors perpendicular to a mesh's surface used to calculate lighting and shading.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "normal data"
+  },
+  {
+    "definition": "Recalculating surface normals dynamically, often after vertex displacement in shaders.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "normal recomputation"
+  },
+  {
+    "definition": "A vector perpendicular to a surface used for lighting and shading calculations.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "normal vector"
+  },
+  {
+    "definition": "Coordinates normalized to a -1 to 1 range after perspective division in clip space.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "normalized device coordinates"
+  },
+  {
+    "definition": "A material that visualizes surface normals as colors for debugging or effects.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "NormalMaterial"
+  },
+  {
+    "definition": "Coordinate system relative to an individual object's local origin.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "object space"
+  },
+  {
+    "definition": "The accumulated density of a medium along a ray affecting light attenuation.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "optical depth"
+  },
+  {
+    "definition": "A visual effect where the brain perceives something different from the actual image or pattern.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "optical illusion"
+  },
+  {
+    "definition": "Dithering using a fixed threshold matrix to produce a repeating, structured pattern.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "ordered dithering"
+  },
+  {
+    "definition": "The process where ozone absorbs specific light wavelengths, altering sky colors.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "ozone absorption"
+  },
+  {
+    "kind": "other",
+    "term": "parametric curve",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "A curve defined by one or more parameters, often time, controlling its points."
+  },
+  {
+    "definition": "Rates of change of a function with respect to one variable, holding others constant.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "partial derivatives"
+  },
+  {
+    "definition": "A gradient noise function used to create natural-looking textures and animations.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Perlin noise"
+  },
+  {
+    "definition": "A PostgreSQL extension for storing and querying vector embeddings efficiently.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "pgvector"
+  },
+  {
+    "definition": "A function describing how scattered light is directionally distributed in the atmosphere.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "phase function"
+  },
+  {
+    "definition": "Alternating rendering between two framebuffers to reuse data across frames efficiently.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "ping pong rendering"
+  },
+  {
+    "definition": "Effect where images appear blocky due to enlarged pixels.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "pixelation"
+  },
+  {
+    "definition": "Downsampling an image to larger visible pixels for a retro or stylized look.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "pixelization"
+  },
+  {
+    "definition": "Allowing components to render different HTML elements based on a prop.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations"
+    ],
+    "term": "polymorphism"
+  },
+  {
+    "definition": "An approximation method using polynomial functions to weight pixels in filtering.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "polynomial weighting"
+  },
+  {
+    "definition": "A shader or filter applied after rendering to alter the final image appearance.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "post-processing effect"
+  },
+  {
+    "definition": "A rendering step applying image-wide effects after the main scene is rendered.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "post-processing pass"
+  },
+  {
+    "definition": "Mapping 3D points onto a plane or screen using mathematical transformations.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "projection"
+  },
+  {
+    "definition": "Manipulating AI prompts to alter or exploit the model's output behavior.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "prompt injection"
+  },
+  {
+    "definition": "Reducing the number of colors by mapping continuous values to discrete levels.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "quantization"
+  },
+  {
+    "definition": "The process of converting 3D geometry into 2D pixels for display on screen.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Rasterization"
+  },
+  {
+    "definition": "Light scattering by small air molecules, stronger at shorter (blue) wavelengths.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Rayleigh scattering"
+  },
+  {
+    "definition": "A rendering technique that steps along rays to find surface intersections using distances.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "raymarch"
+  },
+  {
+    "definition": "An iterative process stepping along a ray to sample distances or densities in a scene.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Raymarching loop"
+  },
+  {
+    "definition": "A function calculating the bending of a light vector passing through a surface.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "refract"
+  },
+  {
+    "definition": "A light ray bent as it passes through a surface with a different refractive index.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "refracted ray"
+  },
+  {
+    "definition": "The bending of light as it passes between materials with different densities.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "refraction"
+  },
+  {
+    "definition": "The GPU pipeline that processes vertex and fragment shaders to produce images.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "render pipeline"
+  },
+  {
+    "definition": "A texture or buffer where a scene or image is rendered offscreen.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "render target"
+  },
+  {
+    "definition": "A component that manages a list of reorderable items with drag-and-drop support.",
+    "kind": "function",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations"
+    ],
+    "term": "Reorder.Group"
+  },
+  {
+    "definition": "A draggable item component used within a Reorder.Group for reordering lists.",
+    "kind": "function",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations"
+    ],
+    "term": "Reorder.Item"
+  },
+  {
+    "definition": "A function that tiles space periodically to create infinite repeating patterns in scenes.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "repeat"
+  },
+  {
+    "definition": "Subpixel groups in CRTs representing red, green, and blue color channels.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "RGB cells"
+  },
+  {
+    "definition": "A halftone pattern made of concentric rings instead of solid dots for a unique effect.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "ring halftone"
+  },
+  {
+    "definition": "A matrix used to rotate points or vectors in 2D or 3D space.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "rotation matrix"
+  },
+  {
+    "definition": "A GPU object that defines how to read and filter textures in shaders.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "sampler"
+  },
+  {
+    "definition": "The intensity or purity of a color, affecting its vividness.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "saturation"
+  },
+  {
+    "definition": "Horizontal lines simulating CRT display refresh lines for retro visual effects.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "scanlines"
+  },
+  {
+    "definition": "A shader effect that warps UVs to mimic the curved surface of CRT screens.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "screen curvature"
+  },
+  {
+    "definition": "The 2D coordinate system of the final rendered image or frame buffer.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "screen space"
+  },
+
+  {
+    "definition": "A GPU program that calculates rendering effects for vertices or pixels.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "shader"
+  },
+  {
+    "definition": "A texture storing scene depth from a light's perspective to determine shadows.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "shadow map"
+  },
+  {
+    "definition": "A technique using shadow maps to calculate shadows in 3D scenes.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "shadow mapping"
+  },
+  {
+    "definition": "A metal plate with holes in CRTs to align electron beams with phosphor dots.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "shadow mask"
+  },
+  {
+    "definition": "Animation that transitions a component between instances sharing the same layoutId.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations"
+    ],
+    "term": "shared layout animation"
+  },
+  {
+    "definition": "Functions returning the shortest distance from a point to a surface, positive outside, negative inside.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Signed Distance Fields (SDF)"
+  },
+  {
+    "definition": "A smooth, non-repetitive noise function used for organic texture generation.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Simplex noise"
+  },
+  {
+    "definition": "A trigonometric function returning the sine of an angle in radians.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "sin"
+  },
+  {
+    "definition": "A texture storing sky colors for different viewing directions and camera positions.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "sky-view LUT"
+  },
+  {
+    "definition": "A function blending two distances smoothly to combine shapes without sharp edges.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "smoothmin"
+  },
+  {
+    "aliases": [
+      "smoothstep()"
+    ],
+    "definition": "Shader function creating smooth transitions between two edges.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "smoothstep"
+  },
+  {
+    "definition": "An edge detection filter using two convolution kernels to find horizontal and vertical edges.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Sobel filter"
+  },
+  {
+    "definition": "A convolution filter used to estimate image gradients and edge directions.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Sobel operator"
+  },
+  {
+    "definition": "The bright reflection of light on shiny surfaces in a specific direction.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "specular"
+  },
+  {
+    "definition": "Structured Query Language used to manage and query relational databases.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "SQL"
+  },
+  {
+    "definition": "Grid cells offset alternately to create more complex, non-uniform patterns.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "staggered cells"
+  },
+  {
+    "definition": "A GPU buffer that shaders can read from and write to for arbitrary data.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "storage buffer"
+  },
+  {
+    "definition": "A matrix summarizing local gradient directions and magnitudes in an image.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "structure tensor"
+  },
+  {
+    "definition": "Smaller divisions within a pixel used to increase detail or create effects.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "sub-pixels"
+  },
+  {
+    "definition": "A color blending method where overlapping colors absorb light, darkening the result.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "subtractive blending"
+  },
+  {
+    "kind": "other",
+    "term": "SVG paths",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "Vector graphics instructions defining shapes and curves in Scalable Vector Graphics."
+  },
+  {
+    "definition": "A web API that converts binary data into readable text strings.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "TextDecoder"
+  },
+  {
+    "definition": "A 2D coordinate mapping a texture onto a surface in shaders.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "texture coordinate"
+  },
+  {
+    "definition": "The process of reading texel data from a texture in a shader.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "texture sampling"
+  },
+  {
+    "definition": "A GLSL function that samples a color from a 2D texture using coordinates.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "texture2D"
+  },
+  {
+    "kind": "other",
+    "term": "timing function",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "A function that controls the pacing of an animation over time."
+  },
+  {
+    "definition": "A unit of text like a word or subword used in language model processing.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "token"
+  },
+  {
+    "definition": "The process of splitting text into tokens for analysis or model input.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "tokenization"
+  },
+  {
+    "definition": "A process that maps high dynamic range colors to a displayable range.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "tone mapping"
+  },
+  {
+    "kind": "other",
+    "term": "transition",
+    "origin": [
+      "cubic-bezier-from-math-to-motion"
+    ],
+    "definition": "A CSS property that animates changes between states smoothly."
+  },
+  {
+    "definition": "The fraction of light that passes through a medium without being absorbed or scattered.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "transmittance"
+  },
+  {
+    "definition": "A lookup texture storing precomputed light survival data through the atmosphere.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "transmittance LUT"
+  },
+  {
+    "definition": "Three.js Shading Language, a functional language for writing portable shaders.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "TSL"
+  },
+  {
+    "definition": "A GPU buffer holding uniform data accessible by shaders during rendering.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "uniform buffer"
+  },
+  {
+    "definition": "Normalized 2D coordinates mapping textures onto 3D surfaces.",
+    "kind": "other",
+    "origin": [
+      "beautiful-and-mind-bending-effects-with-webgl-render-targets",
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shades-of-halftone",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-magical-world-of-particles-with-react-three-fiber-and-shaders",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "UV coordinates"
+  },
+  {
+    "definition": "Manipulating texture coordinates to create warping or displacement effects on surfaces.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "UV distortion"
+  },
+  {
+    "definition": "A technique to map 2D textures onto 3D geometry using UV coordinates.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "UV mapping"
+  },
+  {
+    "definition": "A measure of how much pixel values differ from their average in a region.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "variance"
+  },
+  {
+    "definition": "A variable used to pass interpolated data from vertex to fragment shaders.",
+    "kind": "other",
+    "origin": [
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "varying"
+  },
+  {
+    "definition": "A mathematical space where vectors represent data points for comparison.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "vector space"
+  },
+  {
+    "definition": "A GPU program that processes each vertex's position and attributes before rasterization.",
+    "kind": "function",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "vertex shader"
+  },
+  {
+    "definition": "Coordinate system relative to the camera's position and orientation.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "view space"
+  },
+  {
+    "definition": "Rendering technique simulating light interacting with particles in a volume.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "volumetric lighting"
+  },
+  {
+    "definition": "A technique sampling densities inside volumes by marching rays step-by-step through 3D space.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Volumetric Raymarching"
+  },
+  {
+    "definition": "A procedural texture based on distance to randomly placed points creating cell patterns.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "Voronoi noise"
+  },
+  {
+    "definition": "A modern web API for high-performance GPU graphics and computation.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "WebGPU"
+  },
+  {
+    "definition": "Dithering using random noise thresholds to scatter pixel brightness variations.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "white noise dithering"
+  },
+  {
+    "definition": "The number of threads grouped together to execute a compute shader.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "field-guide-to-tsl-and-webgpu",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "on-rendering-the-sky-sunsets-and-planets",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "workgroup size"
+  },
+  {
+    "definition": "A shared coordinate system for all objects in a 3D scene.",
+    "kind": "other",
+    "origin": [
+      "building-magical-ai-powered-semantic-search",
+      "caustics-in-webgl",
+      "cubic-bezier-from-math-to-motion",
+      "framer-motion-layout-animations",
+      "moebius-style-post-processing",
+      "on-crafting-painterly-shaders",
+      "painting-with-math-a-gentle-study-of-raymarching",
+      "post-processing-as-a-creative-medium",
+      "real-time-cloudscapes-with-volumetric-raymarching",
+      "refraction-dispersion-and-other-shader-light-effects",
+      "shaping-light-volumetric-lighting-with-post-processing-and-raymarching",
+      "the-art-of-dithering-and-retro-shading-web",
+      "the-study-of-shaders-with-react-three-fiber"
+    ],
+    "term": "world space"
+  }
+]
