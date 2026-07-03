@@ -28,6 +28,7 @@
     "lint:fix": "oxlint --fix",
     "prebuild": "pnpm generate:rss && pnpm generate:sitemap",
     "start": "portless blog.maximeheckel next start",
+    "start:ci": "next start -H 127.0.0.1 -p 3000",
     "test": "is-ci \"test:run\" \"test:watch\"",
     "test:run": "TZ=utc vitest run",
     "test:watch": "TZ=utc vitest",
