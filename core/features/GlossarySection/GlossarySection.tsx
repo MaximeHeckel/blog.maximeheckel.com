@@ -17,6 +17,7 @@ import type {
 } from 'react';
 
 import { AnimatedNumberTicker } from '@core/components/AnimatedNumberTicker';
+import { SearchIcon } from '@core/components/Icons';
 
 export interface GlossaryTerm {
   aliases: string[];
@@ -39,33 +40,6 @@ const glossaryDimFade = keyframes({
 });
 
 const SEARCH_DEBOUNCE_DELAY = 300;
-
-const SearchIcon = () => (
-  <svg
-    aria-hidden="true"
-    color="currentColor"
-    fill="none"
-    height="16"
-    viewBox="0 0 24 24"
-    width="16"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M17 17L21 21"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-    />
-    <path
-      d="M19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11Z"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-    />
-  </svg>
-);
 
 const getTermLetter = (term: string) => {
   const firstCharacter = term.trim().charAt(0).toUpperCase();
@@ -153,7 +127,7 @@ const renderGlossaryGroup = (group: {
                 ? 'calc(var(--space-2) + 1.125em)'
                 : 0,
           position: 'sticky',
-          top: 96,
+          top: 192,
         }}
       >
         <Text
@@ -171,12 +145,12 @@ const renderGlossaryGroup = (group: {
         </Text>
       </Grid.Item>
       <Grid.Item>
-        <Box
+        <Flex
           as="ul"
+          alignItems="start"
+          direction="column"
+          gap="6"
           css={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 'var(--space-4)',
             listStyle: 'none',
             margin: 0,
             padding: 0,
@@ -233,7 +207,7 @@ const renderGlossaryGroup = (group: {
               </Flex>
             </Box>
           ))}
-        </Box>
+        </Flex>
       </Grid.Item>
     </Grid>
   );
@@ -438,7 +412,7 @@ const GlossarySection = (props: GlossarySectionProps) => {
                         zIndex: 1,
                       }}
                     >
-                      <SearchIcon />
+                      <SearchIcon size={16} />
                     </Box>
                     <TextInput
                       aria-label="Filter glossary terms"
