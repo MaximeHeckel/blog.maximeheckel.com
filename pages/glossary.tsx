@@ -44,7 +44,12 @@ const Glossary = (props: GlossaryProps) => {
         gapX={2}
         templateColumns="1fr minmax(auto, 712px) 1fr"
       >
-        <Grid.Item col={2}>
+        <Grid.Item
+          col={2}
+          css={{
+            paddingInline: 'var(--space-4)',
+          }}
+        >
           <GlossarySection terms={terms} />
         </Grid.Item>
       </Grid>
