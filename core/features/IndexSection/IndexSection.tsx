@@ -53,9 +53,7 @@ const IndexSection = () => {
               justifyContent: 'space-between',
             }}
           >
-            <Headline>
-              Experiments and essays on the modern web.
-            </Headline>
+            <Headline>Experiments and essays on the modern web.</Headline>
             <Text
               as="p"
               css={{

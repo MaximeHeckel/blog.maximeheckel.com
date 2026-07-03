@@ -9,7 +9,7 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Thu, 25 Jun 2026 00:36:03 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 03 Jul 2026 16:59:26 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
         <item>
@@ -483,6 +483,13 @@
             <guid isPermaLink="false">https://blog.maximeheckel.com/posts/running-golang-tests-with-jest-b5d8f3d43a7</guid>
             <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
             <pubDate>Wed, 10 Jan 2018 17:00:17 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://blog.maximeheckel.com/posts/glossary.json</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/glossary.json</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Invalid Date</pubDate>
         </item>
         <item>
             <title><![CDATA[No title]]></title>

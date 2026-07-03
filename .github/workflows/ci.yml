@@ -193,7 +193,9 @@ jobs:
       - name: Run cypress
         uses: cypress-io/github-action@v6.7.6
         with:
-          start: pnpm start
+          start: pnpm start:ci
+          wait-on: http://127.0.0.1:3000
+          config: baseUrl=http://127.0.0.1:3000
           browser: chrome
           install: false
       - name: Upload Screenshots
@@ -247,7 +249,9 @@ jobs:
       - name: Run cypress
         uses: cypress-io/github-action@v6.7.6
         with:
-          start: pnpm start
+          start: pnpm start:ci
+          wait-on: http://127.0.0.1:3000
+          config: baseUrl=http://127.0.0.1:3000
           browser: firefox
           install: false
       - name: Upload Screenshots

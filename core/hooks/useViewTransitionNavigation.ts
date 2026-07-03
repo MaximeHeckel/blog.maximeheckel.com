@@ -1,10 +1,8 @@
-import { useCallback } from 'react';
 import { useRouter } from 'next/router';
+import { useCallback } from 'react';
 
 type ViewTransitionDocument = Document & {
-  startViewTransition?: (
-    callback: () => void | Promise<void>
-  ) => void;
+  startViewTransition?: (callback: () => void | Promise<void>) => void;
 };
 
 export const startViewTransition = (callback: () => void | Promise<void>) => {

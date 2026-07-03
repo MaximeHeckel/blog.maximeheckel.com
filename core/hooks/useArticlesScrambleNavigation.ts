@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
 import type { NextRouter } from 'next/router';
+import { useEffect, useRef } from 'react';
 
 let shouldSkipNextArticlesScramble = false;
 

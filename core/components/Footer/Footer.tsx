@@ -324,6 +324,9 @@ const Footer = (props: { lastUpdated?: string }) => {
                     <Anchor as={Link} discreet href="/">
                       Home
                     </Anchor>
+                    <Anchor as={Link} discreet href="/glossary">
+                      Glossary
+                    </Anchor>
                     <Anchor discreet href="https://maximeheckel.com">
                       Work
                     </Anchor>

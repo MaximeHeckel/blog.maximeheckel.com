@@ -1,5 +1,5 @@
-import type { ComponentProps, MouseEvent } from 'react';
 import Link from 'next/link';
+import type { ComponentProps, MouseEvent } from 'react';
 
 import { useViewTransitionNavigation } from '@core/hooks/useViewTransitionNavigation';
 
