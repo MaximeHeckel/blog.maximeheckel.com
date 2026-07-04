@@ -20,7 +20,9 @@ interface ImageProps extends NextImageProps {
 }
 
 type ViewTransitionDocument = Document & {
-  startViewTransition?: (callback: () => void) => void;
+  startViewTransition?: (callback: () => void) => {
+    finished: Promise<void>;
+  };
 };
 
 const RootImage = memo((props: ImageProps) => {
@@ -61,11 +63,20 @@ const Image = (props: ImageProps) => {
       return;
     }
 
-    transitionDocument.startViewTransition(() => {
+    const documentElement = document.documentElement;
+    documentElement.setAttribute('data-mdx-image-view-transition', '');
+
+    const viewTransition = transitionDocument.startViewTransition(() => {
       flushSync(() => {
         setIsDialogOpen(open);
       });
     });
+
+    const cleanup = () => {
+      documentElement.removeAttribute('data-mdx-image-view-transition');
+    };
+
+    void viewTransition.finished.then(cleanup, cleanup);
   };
 
   const handleDialogTrigger = () => {

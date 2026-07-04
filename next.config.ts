@@ -11,6 +11,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 const output = withBundleAnalyzer({
+  allowedDevOrigins: ['blog.maximeheckel.localhost'],
   eslint: {
     ignoreDuringBuilds: true,
   },
