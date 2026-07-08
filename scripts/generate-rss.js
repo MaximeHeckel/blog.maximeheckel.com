@@ -21,6 +21,10 @@ const __dirname = path.dirname(__filename);
       .filter((name) => name !== 'img');
 
     const posts = files.reduce((allPosts, postSlug) => {
+      if (!postSlug.endsWith('.mdx')) {
+        return allPosts;
+      }
+
       const source = fs.readFileSync(
         path.join(root, 'content', postSlug),
         'utf8'
