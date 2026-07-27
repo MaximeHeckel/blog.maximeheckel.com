@@ -109,6 +109,7 @@ const Image = (props: ImageProps) => {
                   style={{
                     border: '2px solid var(--border-color)',
                     borderRadius: 'var(--border-radius-3)',
+                    visibility: isDialogOpen ? 'hidden' : 'visible',
                     viewTransitionName: isDialogOpen ? 'none' : transitionName,
                   }}
                 />

@@ -75,3 +75,5 @@ certificates/
 
 # Twitter video downloads (uploaded to CDN manually)
 twitter_video_out/
+
+.pnpm-store/
