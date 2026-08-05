@@ -129,17 +129,7 @@ export const createOutputNode = ({
       .mul(vec2(videoUvScaleX, videoUvScaleY))
       .add(0.5);
     const videoUv = vec2(coverUv.x, float(1.0).sub(coverUv.y));
-    const ditherUv = snapDitherUv(screenUv);
-    const pixelatedCoverUv = ditherUv
-      .sub(0.5)
-      .mul(vec2(videoUvScaleX, videoUvScaleY))
-      .add(0.5);
-    const pixelatedVideoUv = vec2(
-      pixelatedCoverUv.x,
-      float(1.0).sub(pixelatedCoverUv.y),
-    );
     const videoColor = texture(videoTexture, videoUv).rgb;
-    const pixelatedColor = texture(videoTexture, pixelatedVideoUv).rgb;
     const color = vec3(videoColor).toVar();
     const drawUv = vec2(screenUv.x.mul(targetAspect), screenUv.y);
     const fillMask = float(0.0).toVar();
@@ -202,20 +192,34 @@ export const createOutputNode = ({
       lineMask.assign(max(lineMask, line));
     }
 
-    const luminance = dot(pixelatedColor, vec3(0.299, 0.587, 0.114));
-    const chromaticOffset = vec2(0.5 / ditherRows, 0.0);
-    const chromaticDither = vec3(
-      orderedDither(screenUv.sub(chromaticOffset), luminance),
-      orderedDither(screenUv, luminance),
-      orderedDither(screenUv.add(chromaticOffset), luminance),
-    );
-    const noise = staticNoise(screenUv, time).sub(0.5).mul(0.08);
-    const ditherColor = chromaticDither.add(vec3(noise));
     const effectColor = vec3(0.0).toVar();
 
     If(effectType, () => {
       effectColor.assign(thermalEffect(videoColor));
     }).Else(() => {
+      const ditherUv = snapDitherUv(screenUv);
+      const pixelatedCoverUv = ditherUv
+        .sub(0.5)
+        .mul(vec2(videoUvScaleX, videoUvScaleY))
+        .add(0.5);
+      const pixelatedVideoUv = vec2(
+        pixelatedCoverUv.x,
+        float(1.0).sub(pixelatedCoverUv.y),
+      );
+      const pixelatedColor = texture(videoTexture, pixelatedVideoUv).rgb;
+      const luminance = dot(
+        pixelatedColor,
+        vec3(0.299, 0.587, 0.114),
+      );
+      const chromaticOffset = vec2(0.5 / ditherRows, 0.0);
+      const chromaticDither = vec3(
+        orderedDither(screenUv.sub(chromaticOffset), luminance),
+        orderedDither(screenUv, luminance),
+        orderedDither(screenUv.add(chromaticOffset), luminance),
+      );
+      const noise = staticNoise(screenUv, time).sub(0.5).mul(0.08);
+      const ditherColor = chromaticDither.add(vec3(noise));
+
       effectColor.assign(ditherColor);
     });
 

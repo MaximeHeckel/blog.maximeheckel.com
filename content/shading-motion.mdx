@@ -1006,6 +1006,11 @@ Again, this is a hack; there may be a more elegant solution to this issue, but t
 3. Maybe looking into using instances rather than discrete meshes (I was lazy here).
 
 ## Afterword
+This article mainly stemmed from a personal challenge to reproduce the effects I saw some of my friends, and many other creators, playing with on TouchDesigner or similar softwares, but this time on the web to give us a new outlook on what we can unlock in terms of interactivity and visual language when using motion. 
+
+Building these made me appreciate how, from a *very simple* set of techniques such as frame differencing, we managed to infer fairly complex and fine details such as what is moving in a given scene, how intensely, and in which direction. Once converted to luminance or flow map, we saw that motion can be interpreted the same way as color, light, or depth in many classic post-processing effects, allowing us to combine different aesthetics.
+
+While the output is nice, I have yet to find a concrete application for blob tracking, optical flow, or motion blur beyond the simple detection or visual use case. Not that we necessarily need to focus our time only on algorithms and shading techniques to produce *useful* results, but I generally like to see where and how some of the pieces we looked into can fit in other contexts as part of a solution to a bigger problem. For now, the creative and visual aspect will have to be enough. **It never hurts to dilly-dallay a bit while learning without a set goal and see where it leads you**. 
 
 <FootnotesList
   notes={[
