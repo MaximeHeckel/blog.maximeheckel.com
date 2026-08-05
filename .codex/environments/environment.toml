@@ -4,5 +4,4 @@ name = "blog.maximeheckel.com"
 
 [setup]
 script = '''
-pnpm --version
-pnpm install --frozen-lockfile'''
+npx --yes pnpm@11.9.0 install --frozen-lockfile'''
