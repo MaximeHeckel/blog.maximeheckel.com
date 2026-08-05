@@ -22,13 +22,10 @@ jobs:
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/setup@v1
         with:
-          node-version: 'v22.21.1'
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+          runtime: node@24.19.0
+          install: false
       - name: Cache pnpm dependencies
         uses: actions/cache@v4
         id: cache-dependencies
@@ -48,20 +45,17 @@ jobs:
       - name: Install Dependencies
         if: steps.cache-dependencies.outputs.cache-hit != 'true' || steps.cache-cypress-binary.outputs.cache-hit != 'true'
         run: |
-          pnpm install
+          pnpm install --frozen-lockfile
   lint-format:
     runs-on: ubuntu-latest
     needs: install-cache
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/setup@v1
         with:
-          node-version: 'v22.21.1'
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+          runtime: node@24.19.0
+          install: false
       - name: Restore pnpm dependencies
         uses: actions/cache@v4
         id: cache-dependencies
@@ -82,13 +76,10 @@ jobs:
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/setup@v1
         with:
-          node-version: 'v22.21.1'
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+          runtime: node@24.19.0
+          install: false
       - name: Restore pnpm dependencies
         uses: actions/cache@v4
         id: cache-dependencies
@@ -106,13 +97,10 @@ jobs:
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/setup@v1
         with:
-          node-version: 'v22.21.1'
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+          runtime: node@24.19.0
+          install: false
       - name: Restore pnpm dependencies
         uses: actions/cache@v4
         id: cache-dependencies
@@ -130,13 +118,10 @@ jobs:
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/setup@v1
         with:
-          node-version: 'v22.21.1'
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+          runtime: node@24.19.0
+          install: false
       - name: Restore pnpm dependencies
         uses: actions/cache@v4
         id: cache-dependencies
@@ -162,13 +147,10 @@ jobs:
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/setup@v1
         with:
-          node-version: 'v22.21.1'
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+          runtime: node@24.19.0
+          install: false
       - name: Restore pnpm dependencies
         uses: actions/cache@v4
         id: cache-dependencies
@@ -218,13 +200,10 @@ jobs:
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/setup@v1
         with:
-          node-version: 'v22.21.1'
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+          runtime: node@24.19.0
+          install: false
       - name: Restore pnpm dependencies
         uses: actions/cache@v4
         id: cache-dependencies
