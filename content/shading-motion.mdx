@@ -16,7 +16,15 @@ This made me wonder: **what if, instead, we used motion within the scene as the 
 
 I was eager to find a way to extract motion and explore the many ways we could visually *draw* it with shaders, even more so after seeing friends experiment with motion-based effects such as blob tracking and optical flow in tools like [TouchDesigner](https://derivative.ca/). The list of things I wanted to try out and build only grew longer as I dug deeper into this topic, finding new solutions to edge cases I was encountering or stumbling upon new visuals I wanted to recreate. This new *temporal* input kept me tinkering creatively for the better part of two months now.
 
-// VIDEO
+<VideoPlayer
+  src="https://cdn.maximeheckel.com/videos/blog/shading-motion-compressed.mp4"
+  autoPlay
+  muted
+  loop
+  width={663}
+  height={373}
+/>
+
 
 My goal for this article is to introduce you to motion as a new creative medium and explore several ways of representing it with shaders, or simply put, *“how to shade motion”*, hence the title. Using WebGPU compute shaders, we’ll build a small pipeline to extract motion through frame differencing and encode it into masks and velocity maps. We’ll use those as foundations for a series of effects ranging from simple trails to blob tracking, directional effects, and motion blur with object smearing, each bringing its own set of challenges and new interesting shading techniques that I’m excited to finally share with you.
 
