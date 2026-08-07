@@ -19,6 +19,10 @@ export const Backdrop = styled(Dialog.Backdrop, {
   '&[data-starting-style], &[data-ending-style]': {
     backgroundColor: 'oklch(from var(--background) l c h / 0)',
   },
+
+  'html[data-mdx-image-view-transition] &[data-starting-style]': {
+    backgroundColor: 'oklch(from var(--background) l c h / 0.8)',
+  },
 });
 
 export const Popup = styled(Dialog.Popup, {
