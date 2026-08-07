@@ -8,7 +8,6 @@ const H2 = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
       alignItems="center"
       css={{
         marginTop: '5rem',
-        marginBottom: '0.75rem',
       }}
       gap="1"
     >

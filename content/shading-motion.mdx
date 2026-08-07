@@ -1,6 +1,6 @@
 ---
 title: 'Shading Motion'
-subtitle: TBD
+subtitle: A deep dive into detecting, extracting, and stylizing motion with WebGPU and TSL, covering motion masking, blob tracking, optical flow, and velocity-based motion blur.
 date: '2026-08-18T08:00:00.000Z'
 updated: '2026-08-18T08:00:00.000Z'
 categories: []
@@ -9,12 +9,12 @@ type: 'blogPost'
 featured: false
 ---
 
-If you’re a long-time reader of this blog, you may have noticed that many of my recent explorations of graphics programming topics involve a flavor of screen-space shaders. They’re incredibly versatile, as we’ve seen through the many effects we’ve studied, ranging from simple pixel manipulation, such as 
-[paint](/posts/on-crafting-painterly-shaders/) or [halftone](/posts/shades-of-halftone/), to the more advanced ones, such as [volumetric lighting](/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/) or [atmospheric scattering](/posts/on-rendering-the-sky-sunsets-and-planets/). Yet, all have one thing in common here. They all treat the image as a *spatial medium*: sampling color, luminance, depth, and neighboring pixels, and use it as the main input for the effect.
+If you are a long-time reader of this blog, you may have noticed that many of my recent explorations related to graphics programming topics involves some flavor of screen-space shaders. They are incredibly versatile, as we’ve seen through the many effects we’ve studied, ranging from simple pixel manipulation, such as 
+[paint](/posts/on-crafting-painterly-shaders/) or [halftone](/posts/shades-of-halftone/), to more advanced use cases, such as [volumetric lighting](/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/) or [atmospheric scattering](/posts/on-rendering-the-sky-sunsets-and-planets/). Yet, all have one thing in common here. They all treat the underlying image, or frame, as a *spatial medium*: sampling color, luminance, depth, and neighboring pixels, and use it as the main input for the effect.
 
 This made me wonder: **what if, instead, we used motion within the scene as the input to our effects?**
 
-I was eager to find a way to extract motion and explore the many ways we could visually *draw* it with shaders, even more so after seeing friends experiment with motion-based effects such as blob tracking and optical flow in tools like [TouchDesigner](https://derivative.ca/). The list of things I wanted to try out and build only grew longer as I dug deeper into this topic, finding new solutions to edge cases I was encountering or stumbling upon new visuals I wanted to recreate. This new *temporal* input kept me tinkering creatively for the better part of two months now.
+I was eager to find a way to extract motion and explore the many ways we could visually *interpret* it with shaders, even more so after seeing friends experiment with motion-based effects such as blob tracking and optical flow in tools like [TouchDesigner](https://derivative.ca/). The list of things I wanted to try out and build only grew longer as I dug deeper into this topic, finding novel solutions to edge cases I was encountering or stumbling upon new visuals I wanted to recreate. This new *temporal* input kept me tinkering creatively for the better part of two months now.
 
 <VideoPlayer
   src="https://cdn.maximeheckel.com/videos/blog/shading-motion-compressed.mp4"
@@ -34,7 +34,7 @@ My goal for this article is to introduce you to motion as a new creative medium 
 
 Unlike luminance or depth, motion is not available straight out of the box for us to sample from a single frame of our scene. Before we can process it or stylize it with a shader, we first need to make it visible.
 
-For this section, our goal is straightforward: we need to establish a pipeline that identifies which parts of the frame change and maps the *magnitude of the motion* to a luminance map. The brighter the pixel appears at a given location, the more movement is detected there. This will give us a simple representation of motion that we can store, process, and eventually use as the backbone of other effects.
+For this section, our goal is straightforward: we need to establish a pipeline that identifies which parts of the frame change and maps the *magnitude of the motion* to a luminance texture. The brighter the pixel appears at a given location, the more movement is detected at this position. This will give us a simple representation of motion that we can store, process, and eventually use as the backbone of other effects.
 
 <Callout variant="info" label="Compatibility">
 
@@ -51,13 +51,13 @@ instead of a simpler single read/write texture:
 stateReadWriteTexture: texture_storage_2d<rgba8unorm, read_write>
 ```
 
-This is done on purpose as while preparing this article I noticed that Safari does not support this texture type in its current implementation of WebGPU.
+This is done on purpose as while preparing this article I noticed that Safari does not support the latter texture type in its current implementation of WebGPU.
 
 </Callout>
 
 ### Comparing frames
 
-To produce the luminance map on which our entire pipeline will rest, we’ll first start with the simplest possible approach: **comparing the current frame with the previous one**. We need at least two points in time, or in this case, two frames, to tell us about what is moving in the scene. By converting both frames to luminance, subtracting one from the other, and taking the absolute value, we can obtain a grayscale image representing the magnitude of the change for each pixel.
+To produce the luminance map on which our entire pipeline will rest, we’ll first start with the simplest possible approach: **comparing the current frame with the previous one**. We need at least two points in time, or in this case, two frames, to tell us about what is moving in the scene. By converting both frames to grayscale, subtracting one from the other, and taking the absolute value, we can obtain a grayscale image representing the magnitude of the change for each pixel.
 
 <Fullbleed>
 <Image
@@ -106,7 +106,7 @@ In most of my examples, you will see that I set the `DETECTION_SCALE` to `0.5` a
 
 </Callout>
 
-This method is called **frame differencing**, and it’s one of the *simplest* ways to estimate motion from a sequence of images. In my experiments, I used it to extract motion over 3D scenes, videos, or even webcam streams. It does a pretty decent job of giving you a result that you can work with. You can even apply a threshold, as featured in the code example above, to remove noise or subtle movements that may pollute the resulting texture. The widget below showcases this method applied over a video.
+This method is called **frame differencing**, and it’s one of the *simplest* ways to estimate motion from a sequence of images. In my experiments, I used it to extract motion over 3D scenes, videos, or even webcam streams. It does a pretty decent job at giving you a result that you can work with. You can even apply a threshold, as featured in the code example above, to remove noise or subtle movements that may pollute the resulting texture. The widget below showcases this method applied over a video.
 
 <MotionMask />
 
@@ -150,15 +150,15 @@ This gives us the `decay` as an extra tool in our belt to tweak the motion mask 
 * The smaller the decay, the faster the accumulated texture will fade out.
 * The larger, the longer it will remain on screen, leaving semi-permanent long trails on the canvas.
 
-As for which setting I recommend, it really depends on your input image. For scenes featuring slow movements with a high amplitude, I’d increase the `motionThreshold`, and keep the decay rate below 0.75. For the ones featuring tiny, subtle motion, I’d give more weight to the trail, as otherwise the surface area where our shader will apply its effect will remain too small to be visible. The widget below showcases a version of the previous mask, but this time with decay.
+As for which setting I recommend, it really depends on your input image. For scenes featuring slow movements with a high amplitude, I’d increase the `motionThreshold`, and keep the `decay` rate below `0.75`. For the ones featuring tiny, subtle motion, I’d give more weight to the trail, as otherwise the surface area where our shader will apply its effect will remain too small to be visible. The widget below showcases a version of the previous mask, but this time with decay.
 
 <MotionMask variant="decayedMask" />
 
-As you can see, this version is a lot more pleasing to the eye and gives us more luminance to work with. We finally have a decent **motion mask** that will serve as input to the subsequent post-processing passes we will build to stylize the motion.
+As you can see, this version is a lot more pleasing to the eye and gives us more luminance pixels to work with. With this, we finally have a decent **motion mask** that will serve as input to the subsequent post-processing passes we will build to stylize the motion.
 
 ### Stylizing the motion
 
-Now that we have a good motion mask, we can start putting it to work. First, we need a way to build the motion mask texture on every frame. This is a task we need to perform independently for every pixel, making it particularly well suited to a **compute shader**.
+We can now start putting our motion mask to work. First, we need a way to build the motion mask texture on every frame. This is a task we need to perform independently for every pixel, which is something we can handle in a **compute shader**.
 
 
 Each invocation of the compute shader can process one pixel: sample its current and previous luminance values, compute their difference, update the decayed trail, and write the results to a storage texture, as we showcased in the code snippets before this section. Moreover, it will also help us make a clear distinction between:
@@ -274,7 +274,7 @@ This is the moment where the possibilities become endless, as you have total fre
 
 <DitheredMotionMaskDemo />
 
-The beauty of this simple pipeline is that it compounds elegantly with concepts and techniques we’ve seen in other post-processing-related blog posts, such as [Post-processing as a Creative Medium](/posts/post-processing-as-a-creative-medium/), since, after all, the only thing we really did in this first pass was **transform the motion into luminance**. The playground below features the full compute and render phase with an example of a motion effect, a recreation of my demo titled “data stream” applied on top of a 3D scene
+The beauty of this simple pipeline is that it compounds elegantly with concepts and techniques we’ve seen in other post-processing-related blog posts, such as [Post-processing as a Creative Medium](/posts/post-processing-as-a-creative-medium/), since, after all, the only thing we really did in this first pass was **transform the motion into luminance**. The playground below features the full compute and render phase with an example of a motion effect, a recreation of my demo titled “[data stream](https://r3f.maximeheckel.com/motion-tracking-2)” applied on top of a 3D scene
 
 <ShadingMotionSandpack scene="asciiMotionMask" showCode={false}/>
 
@@ -282,7 +282,7 @@ The beauty of this simple pipeline is that it compounds elegantly with concepts 
 
 While our motion mask tells us where individual pixels changed from one frame to another, it does not highlight the larger moving elements they belong to. Grouping those into coherent regions would unlock a new kind of visual for our render pipeline, allowing us to shade the image based on *clusters of motion* rather than discrete pixels.
 
-This is the main idea behind **Blob Tracking**: an effect that overlays connected motion areas with boxes, crosshairs, connecting segments, or any other shapes we choose. My definition may sound vague, but I’m sure you’ve encountered this visual language before, especially among creators in the TouchDesigner community. Just in case, here’s an example:
+This is the main idea behind **Blob Tracking**: an effect that overlays connected motion areas with boxes, crosshairs, connecting segments, or any other shapes we may choose. My definition may sound vague, but I’m sure you’ve encountered this visual language before, especially among creators in the TouchDesigner community. Just in case, here’s an example:
 
 <VideoPlayer
   src="https://cdn.maximeheckel.com/videos/blog/blob_tracking_omer.mp4"
@@ -294,6 +294,12 @@ This is the main idea behind **Blob Tracking**: an effect that overlays connecte
 />
 
 
+Often, these geometric shapes and data-heavy overlays characteristic of this effect are found over nature/cityscape time-lapses or macro footage of plants growing and blooming. Another great example of [contrasting aesthetic](https://rauno.me/craft/contrasting-aesthetics). I did the same for my own take on this effect:
+
+<StaticTweet id="2063262209367580785" />
+
+In this section, we will walk through the process of reimplementing this effect in WebGPU, on top of the pipeline we built in the first part of this article. The goal would be to approach the visuals from TouchDesigners while remaining relatively performant.
+
 <Callout variant="info">
 
 This specific effect was, in fact, the main motivation for this article. Creations from talented people like my friend [Omer](https://www.instagram.com/ojrgb/) (the video above is from him, give him a follow on Instagram, he will appreciate) are often the catalyst behind most of the work presented on this blog, and as you will see in later examples, often lead to me poking around other techniques and trying new things to see what sticks.
@@ -301,12 +307,6 @@ This specific effect was, in fact, the main motivation for this article. Creatio
 I wanted to take a moment to share my appreciation to everyone sharing and talking about their work online or IRL. It’s the kind of thing that keeps me going.
 
 </Callout>
-
-Often, these geometric shapes and data-heavy overlays characteristic of this effect are found over nature/cityscape time-lapses or macro footage of plants growing and blooming. Another great example of [contrasting aesthetic](https://rauno.me/craft/contrasting-aesthetics). I did the same for my own take on this effect:
-
-<StaticTweet id="2063262209367580785" />
-
-In this section, we will walk through the process of reimplementing this effect in WebGPU, on top of the pipeline we built in the first part of this article. The goal would be to approach the visuals from TouchDesigners while remaining relatively performant.
 
 ### Detecting motion blobs
 
@@ -502,7 +502,7 @@ Rendering this effect on top of our scene, whether it is a simple video or a 3D 
 
 <ShadingMotionSandpack scene="blobTracking" />
 
-Now, some blob-tracking examples we saw also feature segments connecting the centers of different blobs on screen. *How should we go about that?* With SDFs once again! 
+Now, some blob-tracking examples also feature segments connecting the centers of different blobs on screen. *How should we go about that?* With SDFs once again! 
 
 To draw a segment, we find the point on the line closest to the current pixel and measure the distance between them. Pixels close enough to the line become visible, while those farther away fade out smoothly using `smoothstep`. For more complex curved segments, the principle remains the same, except that we first need to evaluate a Bézier curve <FootnoteRef id="4" /> at that position before measuring the distance. The widget below shows both segment types and their corresponding SDFs.
 
@@ -588,7 +588,7 @@ We now have a convincing blob-tracking effect implemented in WebGPU. We used com
 
 <Callout variant="info" label="CPU readback">
 
-In my own [Blob Tracking demo](https://r3f.maximeheckel.com/blob-tracking-2), you may have noticed that I also included *sound*. In this scene, blobs play notes based on their position on the screen.
+In my own [Blob Tracking demo](https://r3f.maximeheckel.com/blob-tracking-2), you may have noticed that I also included *sound*. In that scene, blobs play notes based on their position on the screen.
 
 To achieve this, I bended a little bit the rules and did a **CPU readback**, which usually could be quite a performance bottleneck. However, in this case given its small size of 192 bytes, reading back the blob slot buffer is fairly reasonable. Doing so within `useFrame` lets us read the blob slot data on every frame in Javascript, and play sounds using [AudioContext](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext).
 
@@ -636,7 +636,7 @@ useFrame(() => {
 
 ## Optical Flow
 
-The previous section offered a practical example of using detected motion beyond simple masking. The motion masking texture encodes where clusters of motion beyond a certain threshold are located, but it cannot tell us in which direction they are moving. In this part, we’re going to work towards extracting that information from the motion mask and building an **optical flow-inspired effect** where we’ll draw t a field of arrows/vectors over the scene representing the direction of the detected movement.
+The previous section featured a practical example of using detected motion beyond simple masking. As is, the motion masking texture encodes where clusters of motion beyond a certain threshold are located, but it cannot tell us in which direction they are moving. In this part, we’re going to work towards extracting that information from the motion mask and building an **optical flow-inspired effect** where we’ll draw a field of arrows/vectors over the scene representing the direction of the detected movement.
 
 <Anchor discreet favicon href="https://twitter.com/poetengineer__">@poetengineer__</Anchor> has a great example of this effect among her many visual experiments. Hers relies on [OpenCV](https://opencv.org/), which I’d recommend using if you want accuracy. Our goal here, however, is to have an additional shader input for creative purposes rather than production-grade computer vision.
 
@@ -809,13 +809,13 @@ This section is more of a fun hack than a serious experiment, unlike above. It i
 
 ### Capturing object motion
 
-Our goal is to detect moving objects “as a whole”, not just individual pixels in motion, and encode their velocity and their direction onto a texture we can then pass to a post-processing shader. Much like what we did in the optical flow scene, we will encode the direction as follows:
+Our goal is to detect moving objects “as a whole”, not just individual pixels in motion, and encode their velocity and their direction onto a texture we can then pass to a shader for post-processing. Much like what we did in the optical flow scene, we will encode the direction as follows:
 
 * Red for horizontal screen-space velocity.
 * Green for vertical screen-space velocity.
 * The intensity is encoded in the absolute magnitude of these two channels.
 
-I could not find a *good way* to get this data. And by “good”, I mean here non-convoluted (just to set the proper expectations). The pipeline I came up with, albeit accurate, is quite complicated, and I have yet to find a good abstraction for it. It is interesting to look at nonetheless:
+I could not find a *good way* to get this data. And by “good”, I mean here non-convoluted (just to set the proper expectations). The pipeline I came up with, albeit accurate, is quite complicated, and I have yet to find a good abstraction for it. Despite its DX shortcomings, it is interesting to look at nonetheless:
 
 * We get the projected coordinates of our mesh’s center through the camera.
 * We calculate its screen-space movement.
@@ -860,9 +860,6 @@ const velocityMaterial = new THREE.MeshBasicNodeMaterial();
 
 // R = horizontal velocity, G = vertical velocity.
 velocityMaterial.outputNode = vec4(velocity, 0.0, 1.0);
-velocityMaterial.depthTest = true;
-velocityMaterial.depthWrite = true;
-velocityMaterial.toneMapped = false;
 ```
 
 * With that done, now start the convoluted part. I chose to render a copy of the moving object in an offscreen scene through React Three Fiber’s `Portal` feature. The positions are synced between the scenes on every frame, and the meshes are rendered with the velocity material.
@@ -938,7 +935,7 @@ The result is a complete velocity map representing camera and object motion. The
 
 **Why screen-space?** 
 
-Since motion blur works in screen space, we need the object’s movement across the image rather than across the 3D scene.
+Since motion blur is applied in screen space, we need the object’s movement across the image rather than across the 3D scene.
 
 </Callout>
 
@@ -946,7 +943,7 @@ Since motion blur works in screen space, we need the object’s movement across 
 
 ### Wagon-wheel effect
 
-Our velocity-based motion blur effect works like a charm! However, past a certain speed, the effect breaks down. The underlying data we extract is accurate, but the rendered image only shows parts of the movement, or even the movement going *in reverse*.
+Our velocity-based motion blur effect works like a charm! However, past a certain speed, the effect breaks down. The underlying data we extract is accurate, but the rendered image only shows parts of the movement, or even the movement going *in reverse* past a certain threshold.
 
 This is called the **wagon-wheel effect**, and it’s simply due to our continuous motion being sampled at discrete intervals, which at a high speed may cause motion to appear discontinuous or going the wrong way.
 
@@ -959,9 +956,9 @@ This is called the **wagon-wheel effect**, and it’s simply due to our continuo
 />
 </Fullbleed>
 
-I was intrigued by this side-effect, especially after reading Pierre Cusa’s article titled [Motion All the Way Down](https://www.osar.fr/notes/motionblur/), where, among many other things, he introduces a hack to solve for it that I thought would fit well in our example here: rendering copies of our objects where we expect them to be.
+I was intrigued by this side-effect, especially after reading Pierre Cusa’s article titled [Motion All the Way Down](https://www.osar.fr/notes/motionblur/), where, among many other things, he introduces a hack to solve for it that I thought would fit well in our example here: rendering copies of our moving objects where we expect them to be.
 
-Of course, this solution only works when the object follows a predictable trajectory that we can evaluate between frames, i.e., when we can know. The code snippet below demonstrates this hack for our sphere’s circular trajectory.
+Of course, this solution only works when the object follows a predictable trajectory that we can evaluate between frames. The code snippet below demonstrates this hack for our sphere’s circular trajectory.
 
 ```jsx title=Analytical solution to the wagon-wheel effect
 for (let index = 0; index < activeSmearSamples; index += 1) {
@@ -1007,18 +1004,18 @@ The next and final demo features this hack at work. I also included a weight to 
 <ShadingMotionSandpack scene="objectSmear" showCode={false} />
 
 
-Again, this is a hack; there may be a more elegant solution to this issue, but this one was so *smart and simple* and produced such a lovely result that I had to show it. As a word of caution, I’d recommend the following 3 improvements before you think of shipping this to production:
+Again, this is a hack; there may be a more elegant solution to this issue, but this one was so *smart and simple* and produced such a lovely result that I had to share it. As a word of caution, I’d recommend the following 3 improvements before you think of shipping this to production:
 
 1. Only using this in a very limited use case, like here, one or two meshes.
 2. Reducing the number of vertices for the copies to avoid any potential performance impact this may have
 3. Maybe looking into using instances rather than discrete meshes (I was lazy here).
 
 ## Afterword
-This article mainly stemmed from a personal challenge to reproduce the effects I saw some of my friends, and many other creators, playing with on TouchDesigner or similar softwares, but this time on the web to give us a new outlook on what we can unlock in terms of interactivity and visual language when using motion. 
+This article mainly stemmed from a personal challenge: to reproduce the effects I saw some of my friends, and many other creators, playing with on TouchDesigner or similar softwares, but on the web to give us a new outlook on what we can unlock in terms of interactivity and visual language when using motion. 
 
 Building these made me appreciate how, from a *very simple* set of techniques such as frame differencing, we managed to infer fairly complex and fine details such as what is moving in a given scene, how intensely, and in which direction. Once converted to luminance or flow map, we saw that motion can be interpreted the same way as color, light, or depth in many classic post-processing effects, allowing us to combine different aesthetics.
 
-While the output is nice, I have yet to find a concrete application for blob tracking, optical flow, or motion blur beyond the simple detection or visual use case. Not that we necessarily need to focus our time only on algorithms and shading techniques to produce *useful* results, but I generally like to see where and how some of the pieces we looked into can fit in other contexts as part of a solution to a bigger problem. For now, the creative and visual aspect will have to be enough. **It never hurts to dilly-dallay a bit while learning without a set goal and see where it leads you**. 
+While the output is nice, I have yet to find a concrete application for blob tracking, optical flow, or motion blur beyond the simple detection or visual use case. Not that we necessarily need to focus our time only on algorithms and shading techniques to produce *useful* results, but I generally like to see where and how some of the pieces we looked into can fit in other contexts as part of a solution to a bigger problem. For now, the creative and visual aspect will have to be enough. **It never hurts to dilly-dally a bit while learning without a set goal and see where it leads you**. 
 
 <FootnotesList
   notes={[
