@@ -326,6 +326,12 @@ const BlobTracking = dynamic(() =>
   import('./Widgets/ShadingMotion/BlobTracking').then((mod) => mod.BlobTracking)
 );
 
+const DecorativeMotion = dynamic(() =>
+  import('./Widgets/ShadingMotion/DecorativeMotion').then(
+    (mod) => mod.DecorativeMotion
+  )
+);
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -476,6 +482,7 @@ const customComponents = {
   MotionMask,
   DitheredMotionMaskDemo,
   BlobTracking,
+  DecorativeMotion,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,

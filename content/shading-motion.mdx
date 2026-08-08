@@ -280,6 +280,8 @@ The beauty of this simple pipeline is that it compounds elegantly with concepts 
 
 ## Blob Tracking
 
+<DecorativeMotion variant="blob-tracking" />
+
 While our motion mask tells us where individual pixels changed from one frame to another, it does not highlight the larger moving elements they belong to. Grouping those into coherent regions would unlock a new kind of visual for our render pipeline, allowing us to shade the image based on *clusters of motion* rather than discrete pixels.
 
 This is the main idea behind **Blob Tracking**: an effect that overlays connected motion areas with boxes, crosshairs, connecting segments, or any other shapes we may choose. My definition may sound vague, but I’m sure you’ve encountered this visual language before, especially among creators in the TouchDesigner community. Just in case, here’s an example:
@@ -636,6 +638,8 @@ useFrame(() => {
 
 ## Optical Flow
 
+<DecorativeMotion variant="optical-flow" />
+
 The previous section featured a practical example of using detected motion beyond simple masking. As is, the motion masking texture encodes where clusters of motion beyond a certain threshold are located, but it cannot tell us in which direction they are moving. In this part, we’re going to work towards extracting that information from the motion mask and building an **optical flow-inspired effect** where we’ll draw a field of arrows/vectors over the scene representing the direction of the detected movement.
 
 <Anchor discreet favicon href="https://twitter.com/poetengineer__">@poetengineer__</Anchor> has a great example of this effect among her many visual experiments. Hers relies on [OpenCV](https://opencv.org/), which I’d recommend using if you want accuracy. Our goal here, however, is to have an additional shader input for creative purposes rather than production-grade computer vision.
@@ -801,6 +805,8 @@ Once added to a scene, this effect should render a minimal vector field composed
 <ShadingMotionSandpack scene="opticalFlow" showCode={false}/>
 
 ## Motion Blur
+
+<DecorativeMotion variant="motion-blur" />
 
 Throughout this article, we’ve extracted motion by comparing the color of each pixel across consecutive frames. This was merely guesswork as we're only *inferring* the motion.
 
