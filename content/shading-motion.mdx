@@ -167,10 +167,9 @@ Each invocation of the compute shader can process one pixel: sample its current 
 * The render stage, which will focus on using those computed textures for the final render.
 
 <Callout variant="info">
-A fullscreen render pass could produce a similar result, but compute shaders give us a more flexible foundation for:
 
-* introducing additional processing stages later in the pipeline.
-* running motion detection at a resolution independent of the final render.
+A fullscreen render pass could produce a similar result at this stage, but compute shaders give us a more flexible foundation for later stages which will transform this "per pixel texture" onto something that doesn't map to screen pixels such as array buffers.
+
 </Callout>
 
 For a React Three Fiber scene, I like to organize my compute shader as follows <FootnoteRef id="2" />
