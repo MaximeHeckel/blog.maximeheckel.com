@@ -5,12 +5,19 @@ on:
     branches:
       - main
     paths:
-      - '**.js'
-      - '**.jsx'
-      - '**.ts'
-      - '**.tsx'
-      - '**.yml'
-      - '**.json'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.json'
+      - '**/*.yml'
+      - '**/*.yaml'
+      - '**/*.md'
+      - '**/*.mdx'
+      - '**/*.css'
+      - '**/*.glsl'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
 
 concurrency:
   group: ${{ github.head_ref }}
@@ -67,7 +74,7 @@ jobs:
       - name: Run lint
         run: |
           pnpm lint
-      - name: Run prettier
+      - name: Run Oxfmt
         run: |
           pnpm check-format
   type-check:
