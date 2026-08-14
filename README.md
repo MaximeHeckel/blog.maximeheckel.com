@@ -2,6 +2,8 @@
 
 This is the main code base for [my blog](https://blog.maximeheckel.com).
 
+Coding assistants should start with [`AGENTS.md`](AGENTS.md). Tool-neutral conventions live in [`docs/agent-guidelines/`](docs/agent-guidelines/); editor-specific rules are only adapters to those canonical guides.
+
 ## Tech Stack
 
 - Next.js

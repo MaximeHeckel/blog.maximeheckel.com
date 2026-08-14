@@ -132,5 +132,9 @@
     "type": "git",
     "url": "https://github.com/MaximeHeckel/blog.maximeheckel.com"
   },
-  "packageManager": "pnpm@11.9.0"
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": "24.19.x",
+    "pnpm": "11.9.x"
+  }
 }

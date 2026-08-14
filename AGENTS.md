@@ -40,15 +40,22 @@ A personal blog built with Next.js featuring interactive articles about web deve
 
 ## Detailed Rules
 
-Context-specific coding guidelines are located in `.cursor/rules/`:
+Tool-neutral, context-specific coding guidelines are located in `docs/agent-guidelines/`. These Markdown files are the canonical source for every coding agent; integrations such as `.cursor/rules/` should only point to them.
 
-| Rule File        | Description                                        | Applied To             |
-| ---------------- | -------------------------------------------------- | ---------------------- |
-| `general.mdc`    | Links to this document (entry point)               | Always                 |
-| `react.mdc`      | Component conventions, MDX widgets, animations     | `*.ts`, `*.tsx`        |
-| `tokens.mdc`     | Design tokens, styling patterns, CSS variables     | `*.ts`, `*.tsx`        |
-| `typescript.mdc` | TypeScript conventions, import order, ESLint rules | `*.ts`, `*.tsx`        |
-| `testing.mdc`    | Vitest, Testing Library, Cypress patterns          | `*.spec.*`, `cypress/` |
+| Guide                                                  | Description                                      | Applies to                   |
+| ------------------------------------------------------ | ------------------------------------------------ | ---------------------------- |
+| [`react.md`](docs/agent-guidelines/react.md)           | Component conventions, MDX widgets, animations   | React components and widgets |
+| [`tokens.md`](docs/agent-guidelines/tokens.md)         | Design tokens, styling patterns, CSS variables   | UI and style files           |
+| [`typescript.md`](docs/agent-guidelines/typescript.md) | TypeScript conventions, import order, lint rules | TypeScript files             |
+| [`testing.md`](docs/agent-guidelines/testing.md)       | Vitest, Testing Library, Cypress patterns        | Tests and behavior changes   |
+
+Before editing, inspect the repository for more deeply nested `AGENTS.md` files; their instructions take precedence within their directory.
+
+## Setup
+
+- Use Node.js `24.19.x` and pnpm `11.9.x` (Corepack is recommended).
+- Install dependencies with `pnpm install --frozen-lockfile`.
+- The normal lint, type-check, unit-test, and build workflows must not require production credentials.
 
 ## Custom Commands
 
@@ -60,16 +67,17 @@ Slash commands for common tasks are located in `.cursor/commands/`:
 
 ## Scripts
 
-| Command                 | Purpose                  |
-| ----------------------- | ------------------------ |
-| `pnpm dev`              | Start development server |
-| `pnpm build`            | Production build         |
-| `pnpm lint`             | Run ESLint               |
-| `pnpm type-check`       | TypeScript validation    |
-| `pnpm format`           | Format with Prettier     |
-| `pnpm generate:og`      | Generate OG images       |
-| `pnpm generate:rss`     | Generate RSS feed        |
-| `pnpm generate:sitemap` | Generate sitemap         |
+| Command                 | Purpose                     |
+| ----------------------- | --------------------------- |
+| `pnpm dev`              | Start development server    |
+| `pnpm build`            | Production build            |
+| `pnpm lint`             | Run ESLint                  |
+| `pnpm type-check`       | TypeScript validation       |
+| `pnpm check-format`     | Check formatting with Oxfmt |
+| `pnpm format`           | Format with Oxfmt           |
+| `pnpm generate:og`      | Generate OG images          |
+| `pnpm generate:rss`     | Generate RSS feed           |
+| `pnpm generate:sitemap` | Generate sitemap            |
 
 ## Important Notes
 
@@ -79,3 +87,19 @@ Slash commands for common tasks are located in `.cursor/commands/`:
 - **Headless UI**: Use `@base-ui/react` for accessible primitives (Select, Dialog, etc.)
 - **No console.log**: Use proper error handling or remove debug statements
 - `@maximeheckel/design-system` codebase can be found at https://github.com/maximeheckel/design-system. The repository is public.
+
+## Definition of Done
+
+- Keep changes scoped to the requested behavior and avoid unrelated generated or formatting diffs.
+- Add or update tests when behavior changes or a bug is fixed and the behavior can be tested reasonably. Do not stop to ask whether obvious regression coverage is wanted.
+- Run the most relevant targeted checks, plus formatting, linting, and type checking for code changes. Run a production build for routing, MDX, configuration, dependency, or build-pipeline changes.
+- Capture a screenshot for perceptible UI changes.
+- Never commit secrets, local environment files, caches, or build artifacts.
+- Report the exact validation commands and their outcomes.
+
+## Commits and Pull Requests
+
+- Commit only the files belonging to the requested change, using a concise imperative commit subject.
+- Include required generated outputs in the same commit as their source change; do not commit incidental output from local checks.
+- Pull request titles should describe the user-visible or developer-facing outcome.
+- Pull request bodies should contain `Summary` and `Testing` sections. List exact commands, disclose skipped or environment-limited checks, and include screenshots for visual changes.
