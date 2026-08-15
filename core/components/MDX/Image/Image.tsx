@@ -8,22 +8,15 @@ import {
   Text,
 } from '@maximeheckel/design-system';
 import { cloudflareLoader } from 'lib/next-image-loader';
-import { motion, MotionConfig } from 'motion/react';
+import { AnimatePresence, motion, MotionConfig } from 'motion/react';
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
-import { memo, useId, useState } from 'react';
-import { flushSync } from 'react-dom';
+import { memo, useId, useRef, useState } from 'react';
 
-import { Backdrop, Popup, Trigger } from './Lightbox';
+import { Backdrop, ImageFrame, Popup, Trigger } from './Lightbox';
 
 interface ImageProps extends NextImageProps {
   css?: CSS;
 }
-
-type ViewTransitionDocument = Document & {
-  startViewTransition?: (callback: () => void) => {
-    finished: Promise<void>;
-  };
-};
 
 const RootImage = memo((props: ImageProps) => {
   return (
@@ -46,41 +39,64 @@ const RootImage = memo((props: ImageProps) => {
 
 RootImage.displayName = 'Image';
 
+const MotionImageFrame = motion.create(ImageFrame);
+
 const Image = (props: ImageProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const uniqueId = useId();
-  const transitionName = `mdx-image-${uniqueId.replace(/[^a-zA-Z0-9-_]/g, '')}`;
+  const dialogActionsRef = useRef<Dialog.Root.Actions>(null!);
 
-  const handleDialogOpenChange = (open: boolean) => {
+  const uniqueId = useId();
+  const layoutId = `mdx-image-${uniqueId.replace(/[^a-zA-Z0-9-_]/g, '')}`;
+
+  const staticImage =
+    typeof props.src === 'object'
+      ? 'default' in props.src
+        ? props.src.default
+        : props.src
+      : undefined;
+
+  const imageWidth = Number(props.width ?? staticImage?.width);
+  const imageHeight = Number(props.height ?? staticImage?.height);
+
+  const imageAspectRatio =
+    Number.isFinite(imageWidth) &&
+    Number.isFinite(imageHeight) &&
+    imageWidth > 0 &&
+    imageHeight > 0
+      ? imageWidth / imageHeight
+      : undefined;
+
+  const expandedFrameWidth = imageAspectRatio
+    ? `min(80dvw, calc(80dvh * ${imageAspectRatio}))`
+    : '80dvw';
+
+  const framedImageCSS: CSS = {
+    width: '100%',
+    height: imageAspectRatio ? '100%' : 'auto',
+    objectFit: 'cover',
+  };
+
+  const handleDialogOpenChange = (
+    open: boolean,
+    eventDetails: Dialog.Root.ChangeEventDetails
+  ) => {
     if (open === isDialogOpen) {
       return;
     }
 
-    const transitionDocument = document as ViewTransitionDocument;
-
-    if (!transitionDocument.startViewTransition) {
-      setIsDialogOpen(open);
-      return;
+    if (!open) {
+      eventDetails.preventUnmountOnClose();
     }
 
-    const documentElement = document.documentElement;
-    documentElement.setAttribute('data-mdx-image-view-transition', '');
-
-    const viewTransition = transitionDocument.startViewTransition(() => {
-      flushSync(() => {
-        setIsDialogOpen(open);
-      });
-    });
-
-    const cleanup = () => {
-      documentElement.removeAttribute('data-mdx-image-view-transition');
-    };
-
-    void viewTransition.finished.then(cleanup, cleanup);
+    setIsDialogOpen(open);
   };
 
-  const handleDialogTrigger = () => {
-    handleDialogOpenChange(!isDialogOpen);
+  const handleDialogClose = () => {
+    dialogActionsRef.current?.close();
+  };
+
+  const handleDialogExitComplete = () => {
+    dialogActionsRef.current?.unmount();
   };
 
   return (
@@ -90,15 +106,11 @@ const Image = (props: ImageProps) => {
         ease: 'easeInOut',
       }}
     >
-      <style>
-        {`
-          ::view-transition-group(${transitionName}) {
-            animation-duration: 300ms;
-            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-          }
-        `}
-      </style>
-      <Dialog.Root open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
+      <Dialog.Root
+        actionsRef={dialogActionsRef}
+        open={isDialogOpen}
+        onOpenChange={handleDialogOpenChange}
+      >
         <Flex
           as="figure"
           direction="column"
@@ -109,22 +121,25 @@ const Image = (props: ImageProps) => {
           <Trigger
             tabIndex={0}
             render={
-              <motion.div
-                whileTap={{ scale: 0.95 }}
-                whileHover={{ scale: 1.02 }}
-                style={{ willChange: 'transform' }}
-                role="button"
-              >
-                <RootImage
-                  {...props}
+              <div role="button">
+                <MotionImageFrame
+                  css={{ width: '100%' }}
+                  layoutId={layoutId}
                   style={{
-                    border: '2px solid var(--border-color)',
+                    aspectRatio: imageAspectRatio,
                     borderRadius: 'var(--border-radius-3)',
-                    visibility: isDialogOpen ? 'hidden' : 'visible',
-                    viewTransitionName: isDialogOpen ? 'none' : transitionName,
                   }}
-                />
-              </motion.div>
+                  transition={{
+                    layout: {
+                      type: 'spring',
+                      visualDuration: 0.15,
+                      bounce: 0.1,
+                    },
+                  }}
+                >
+                  <RootImage {...props} css={framedImageCSS} />
+                </MotionImageFrame>
+              </div>
             }
           />
           <Text
@@ -141,7 +156,10 @@ const Image = (props: ImageProps) => {
           </Text>
         </Flex>
         <Dialog.Portal>
-          <Backdrop key={`backdrop-${uniqueId}`}>
+          <Backdrop
+            key={`backdrop-${uniqueId}`}
+            render={<motion.div layoutRoot />}
+          >
             <Popup
               key={`popup-${uniqueId}`}
               render={
@@ -152,48 +170,73 @@ const Image = (props: ImageProps) => {
                   direction="column"
                   gap="4"
                 >
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{
-                      delay: 0.2,
-                    }}
-                  >
-                    <IconButton
-                      aria-label="Close"
-                      variant="secondary"
-                      onClick={handleDialogTrigger}
-                      rounded
-                    >
-                      <Icon.X />
-                    </IconButton>
-                  </motion.div>
-                  <motion.div
-                    onClick={handleDialogTrigger}
-                    autoFocus
-                    role="button"
-                    whileTap={{ scale: 0.98 }}
-                    style={{
-                      outline: 'none',
-                      viewTransitionName: isDialogOpen
-                        ? transitionName
-                        : 'none',
-                    }}
-                  >
-                    <RootImage
-                      {...props}
-                      css={{
-                        objectFit: 'cover',
-                        height: 'auto',
-                        width: '80dvw',
-                        borderRadius: 'var(--border-radius-3)',
+                  <AnimatePresence onExitComplete={handleDialogExitComplete}>
+                    {isDialogOpen ? (
+                      <motion.div
+                        key="close-button"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{
+                          opacity: 0,
+                          transition: {
+                            delay: 0,
+                            duration: 0.15,
+                            ease: 'easeOut',
+                          },
+                        }}
+                        transition={{
+                          delay: 0.04,
+                          duration: 0.1,
+                        }}
+                        style={{
+                          position: 'fixed',
+                          top: 'var(--space-4)',
+                          right: 'var(--space-4)',
+                        }}
+                      >
+                        <IconButton
+                          aria-label="Close"
+                          variant="secondary"
+                          onClick={handleDialogClose}
+                          rounded
+                        >
+                          <Icon.X />
+                        </IconButton>
+                      </motion.div>
+                    ) : null}
+                    {isDialogOpen ? (
+                      <MotionImageFrame
+                        key="expanded-image"
+                        autoFocus
+                        css={{
+                          width: expandedFrameWidth,
 
-                        '@media (max-width: 768px)': {
-                          width: '97dvw',
-                        },
-                      }}
-                    />
-                  </motion.div>
+                          '@media (max-width: 768px)': {
+                            width: imageAspectRatio
+                              ? `min(97dvw, calc(80dvh * ${imageAspectRatio}))`
+                              : '97dvw',
+                          },
+                        }}
+                        layoutId={layoutId}
+                        onClick={handleDialogClose}
+                        role="button"
+                        style={{
+                          aspectRatio: imageAspectRatio,
+                          borderRadius: 'var(--border-radius-3)',
+                          outline: 'none',
+                        }}
+                        transition={{
+                          layout: {
+                            type: 'spring',
+                            visualDuration: 0.3,
+                            bounce: 0.2,
+                          },
+                        }}
+                      >
+                        <RootImage {...props} css={framedImageCSS} />
+                      </MotionImageFrame>
+                    ) : null}
+                  </AnimatePresence>
                 </Flex>
               }
             />

@@ -14,15 +14,20 @@ export const Backdrop = styled(Dialog.Backdrop, {
   overflowY: 'auto',
   cursor: 'zoom-out',
   backgroundColor: 'oklch(from var(--background) l c h / 0.8)',
-  transition: 'background-color 200ms ease',
+  transition: 'background-color 140ms ease',
 
   '&[data-starting-style], &[data-ending-style]': {
     backgroundColor: 'oklch(from var(--background) l c h / 0)',
   },
+});
 
-  'html[data-mdx-image-view-transition] &[data-starting-style]': {
-    backgroundColor: 'oklch(from var(--background) l c h / 0.8)',
-  },
+export const ImageFrame = styled('div', {
+  position: 'relative',
+  boxSizing: 'border-box',
+  overflow: 'hidden',
+  lineHeight: 0,
+  border: '2px solid var(--border-color)',
+  borderRadius: 'var(--border-radius-3)',
 });
 
 export const Popup = styled(Dialog.Popup, {
