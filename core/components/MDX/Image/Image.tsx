@@ -43,6 +43,7 @@ const MotionImageFrame = motion.create(ImageFrame);
 
 const Image = (props: ImageProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogClosing, setIsDialogClosing] = useState(false);
   const dialogActionsRef = useRef<Dialog.Root.Actions>(null!);
 
   const uniqueId = useId();
@@ -67,8 +68,8 @@ const Image = (props: ImageProps) => {
       : undefined;
 
   const expandedFrameWidth = imageAspectRatio
-    ? `min(80dvw, calc(80dvh * ${imageAspectRatio}))`
-    : '80dvw';
+    ? `min(97dvw, calc(90dvh * ${imageAspectRatio}))`
+    : '97dvw';
 
   const framedImageCSS: CSS = {
     width: '100%',
@@ -86,6 +87,9 @@ const Image = (props: ImageProps) => {
 
     if (!open) {
       eventDetails.preventUnmountOnClose();
+      setIsDialogClosing(true);
+    } else {
+      setIsDialogClosing(false);
     }
 
     setIsDialogOpen(open);
@@ -99,10 +103,16 @@ const Image = (props: ImageProps) => {
     dialogActionsRef.current?.unmount();
   };
 
+  const handleImageLayoutAnimationComplete = () => {
+    if (isDialogClosing) {
+      setIsDialogClosing(false);
+    }
+  };
+
   return (
     <MotionConfig
       transition={{
-        duration: 0.3,
+        duration: 0.1,
         ease: 'easeInOut',
       }}
     >
@@ -123,8 +133,14 @@ const Image = (props: ImageProps) => {
             render={
               <div role="button">
                 <MotionImageFrame
-                  css={{ width: '100%' }}
+                  css={{
+                    width: '100%',
+                    zIndex: isDialogClosing ? '99' : 'auto',
+                  }}
                   layoutId={layoutId}
+                  onLayoutAnimationComplete={
+                    handleImageLayoutAnimationComplete
+                  }
                   style={{
                     aspectRatio: imageAspectRatio,
                     borderRadius: 'var(--border-radius-3)',
@@ -132,8 +148,8 @@ const Image = (props: ImageProps) => {
                   transition={{
                     layout: {
                       type: 'spring',
-                      visualDuration: 0.15,
-                      bounce: 0.1,
+                      visualDuration: 0.2,
+                      bounce: 0.12,
                     },
                   }}
                 >
@@ -210,12 +226,6 @@ const Image = (props: ImageProps) => {
                         autoFocus
                         css={{
                           width: expandedFrameWidth,
-
-                          '@media (max-width: 768px)': {
-                            width: imageAspectRatio
-                              ? `min(97dvw, calc(80dvh * ${imageAspectRatio}))`
-                              : '97dvw',
-                          },
                         }}
                         layoutId={layoutId}
                         onClick={handleDialogClose}
