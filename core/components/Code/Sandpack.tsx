@@ -346,6 +346,7 @@ const Sandpack = (props: SandpackProps) => {
                 left: 0,
                 width: '100%',
                 height: '100%',
+                zIndex: 4,
                 pointerEvents: 'none',
                 border: '1px solid var(--border-color)',
                 borderRadius: isFullscreen ? '0px' : 'var(--border-radius-2)',

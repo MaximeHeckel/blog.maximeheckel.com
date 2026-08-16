@@ -138,9 +138,7 @@ const Image = (props: ImageProps) => {
                     zIndex: isDialogClosing ? '99' : 'auto',
                   }}
                   layoutId={layoutId}
-                  onLayoutAnimationComplete={
-                    handleImageLayoutAnimationComplete
-                  }
+                  onLayoutAnimationComplete={handleImageLayoutAnimationComplete}
                   style={{
                     aspectRatio: imageAspectRatio,
                     borderRadius: 'var(--border-radius-3)',
