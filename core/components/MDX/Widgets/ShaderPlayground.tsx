@@ -74,8 +74,8 @@ const GridLines = memo(({ gridSize }: GridLinesProps) => (
         y1={0}
         x2={(i / gridSize) * 100}
         y2={100}
-        stroke="var(--border-color)"
-        strokeOpacity={0.85}
+        stroke="var(--white)"
+        strokeOpacity={0.1}
         strokeWidth={1.0}
         vectorEffect="non-scaling-stroke"
       />
@@ -87,8 +87,8 @@ const GridLines = memo(({ gridSize }: GridLinesProps) => (
         y1={(i / gridSize) * 100}
         x2={100}
         y2={(i / gridSize) * 100}
-        stroke="var(--border-color)"
-        strokeOpacity={0.85}
+        stroke="var(--white)"
+        strokeOpacity={0.1}
         strokeWidth={1.0}
         vectorEffect="non-scaling-stroke"
       />
@@ -307,10 +307,12 @@ export interface ShaderPlaygroundProps {
   fragmentShader: string;
   uniforms?: Uniforms;
   children?: React.ReactNode;
+  codeString?: string;
   showGrid?: boolean;
   showCode?: boolean;
   aspectRatio?: string;
   gridSize?: number;
+  fullBleedWidth?: number;
 }
 
 export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
@@ -318,17 +320,20 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
     fragmentShader,
     uniforms = {},
     children,
+    codeString,
     showGrid = false,
     showCode = true,
     aspectRatio = '1 / 1',
     gridSize = GRID_SIZE,
+    fullBleedWidth = 85,
   } = props;
 
   const hasControls = React.Children.count(children) > 0;
+  const displayedCodeString = codeString ?? fragmentShader;
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <Fullbleed widthPercent={85}>
+    <Fullbleed widthPercent={fullBleedWidth}>
       <Card css={{ width: '100%', minWidth: 0, overflow: 'hidden' }}>
         <Card.Body
           as={Flex}
@@ -403,7 +408,10 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
               borderTop: '1px solid var(--border-color)',
             }}
           >
-            <HighlightedCodeText codeString={fragmentShader} language="glsl" />
+            <HighlightedCodeText
+              codeString={displayedCodeString}
+              language="glsl"
+            />
           </Box>
         ) : null}
       </Card>

@@ -1,0 +1,1080 @@
+---
+title: 'Shading Motion'
+subtitle: A deep dive into detecting, extracting, and stylizing motion with WebGPU and TSL, covering motion masking, blob tracking, optical flow, and velocity-based motion blur.
+date: '2026-08-18T08:00:00.000Z'
+updated: '2026-08-18T08:00:00.000Z'
+categories: []
+slug: shading-motion
+type: 'blogPost'
+featured: false
+---
+
+If you are a long-time reader of this blog, you may have noticed that many of my recent explorations related to graphics programming topics involves some flavor of screen-space shaders. They are incredibly versatile, as we’ve seen through the many effects we’ve studied, ranging from simple pixel manipulation, such as 
+[paint](/posts/on-crafting-painterly-shaders/) or [halftone](/posts/shades-of-halftone/), to more advanced use cases, such as [volumetric lighting](/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/) or [atmospheric scattering](/posts/on-rendering-the-sky-sunsets-and-planets/). Yet, all have one thing in common here. They all treat the underlying image, or frame, as a *spatial medium*: sampling color, luminance, depth, and neighboring pixels, and use it as the main input for the effect.
+
+This made me wonder: **what if, instead, we used motion within the scene as the input to our effects?**
+
+I was eager to find a way to extract motion and explore the many ways we could visually *interpret* it with shaders, even more so after seeing friends experiment with motion-based effects such as blob tracking and optical flow in tools like [TouchDesigner](https://derivative.ca/). The list of things I wanted to try out and build only grew longer as I dug deeper into this topic, finding novel solutions to edge cases I was encountering or stumbling upon new visuals I wanted to recreate. This new *temporal* input kept me tinkering creatively for the better part of two months now.
+
+<VideoPlayer
+  src="https://cdn.maximeheckel.com/videos/blog/shading-motion-compressed.mp4"
+  autoPlay
+  muted
+  loop
+  width={663}
+  height={373}
+/>
+
+
+My goal for this article is to introduce you to motion as a new creative medium and explore several ways of representing it with shaders, or simply put, *“how to shade motion”*, hence the title. Using WebGPU compute shaders, we’ll build a small pipeline to extract motion through frame differencing and encode it into masks and velocity maps. We’ll use those as foundations for a series of effects ranging from simple trails to blob tracking, directional effects, and motion blur with object smearing, each bringing its own set of challenges and new interesting shading techniques that I’m excited to finally share with you.
+
+<SupportCallout />
+
+## Detecting, Extracting, and Stylizing Motion
+
+Unlike luminance or depth, motion is not available straight out of the box for us to sample from a single frame of our scene. Before we can process it or stylize it with a shader, we first need to make it visible.
+
+For this section, our goal is straightforward: we need to establish a pipeline that identifies which parts of the frame change and maps the *magnitude of the motion* to a luminance texture. The brighter the pixel appears at a given location, the more movement is detected at this position. This will give us a simple representation of motion that we can store, process, and eventually use as the backbone of other effects.
+
+<Callout variant="info" label="Compatibility">
+
+Examples throughout this blog post may feature the following:
+
+```glsl
+stateReadTexture: texture_2d<f32>,
+stateWriteTexture: texture_storage_2d<rgba8unorm, write>
+```
+
+instead of a simpler single read/write texture:
+
+```glsl
+stateReadWriteTexture: texture_storage_2d<rgba8unorm, read_write>
+```
+
+This is done on purpose as while preparing this article I noticed that Safari does not support the latter texture type in its current implementation of WebGPU.
+
+</Callout>
+
+### Comparing frames
+
+To produce the luminance map on which our entire pipeline will rest, we’ll first start with the simplest possible approach: **comparing the current frame with the previous one**. We need at least two points in time, or in this case, two frames, to tell us about what is moving in the scene. By converting both frames to grayscale, subtracting one from the other, and taking the absolute value, we can obtain a grayscale image representing the magnitude of the change for each pixel.
+
+<Fullbleed>
+<Image
+  src="blog/motion-mask.png"
+  alt="Diagram showcasing the process behind frame differencing"
+  width={663}
+  height={355}
+/>
+</Fullbleed>
+
+* First, we need access to the current scene and the luma stored during the previous frame.
+```glsl
+let currentColor = textureLoad(videoTexture, videoCoord, 0).rgb;
+let currentLuminance = dot(currentColor, vec3f(0.299, 0.587, 0.114));
+let previousState = textureLoad(stateReadTexture, vec2i(coord), 0);
+```
+
+* We can then calculate the difference between the frames.
+```glsl
+let difference = abs(currentLuminance - previousState.r);
+```
+
+* We apply a threshold to filter out insignificant changes and produce the motion amount.
+```glsl
+let motionAmount = smoothstep(
+  motionThreshold,
+  motionThreshold * 4.0,
+  difference
+);
+```
+
+* We store that value as a grayscale **motion mask** for subsequent passes/effects.
+```glsl
+textureStore(
+  stateWriteTexture,
+  vec2i(coord),
+  vec4f(currentLuminance, motionAmount, 0.0, 1.0)
+);
+```
+
+<Callout variant="info" label="Tip">
+
+You do not need to run this motion detection code at full resolution. Reducing the "detection scale" allows us to compare fewer pixels and thus improves performance.
+
+In most of my examples, you will see that I set the `DETECTION_SCALE` to `0.5` and even sometimes `0.25` while still getting decent results.
+
+</Callout>
+
+This method is called **frame differencing**, and it’s one of the *simplest* ways to estimate motion from a sequence of images. In my experiments, I used it to extract motion over 3D scenes, videos, or even webcam streams. It does a pretty decent job at giving you a result that you can work with. You can even apply a threshold, as featured in the code example above, to remove noise or subtle movements that may pollute the resulting texture. The widget below showcases this method applied over a video.
+
+<MotionMask />
+
+
+While this gives us a luminance map of the motion, which is what we wanted, the output may feel a bit disappointing at first glance. The resulting image is flickering, and the motion is not smooth, which, as you can imagine, may be detrimental to the quality of our effect. Luckily for us, there are a few things we can do about that.
+
+### Smooting out the motion
+
+To compensate for the defects of our very simple motion detection process, we can reuse a technique I’ve mentioned in several blog posts: accumulating the previous state and letting it fade over time through temporal decay <FootnoteRef id="1" />.
+
+Doing so would result in our motion appearing more continuous over time while also leaving a **trail** from the fading accumulated frames, which we’ll also be able to stylize as we see fit in later examples. Instead of returning the raw threshold mask directly, we need to:
+
+1. Retrieve the trail accumulated in the previous frame.
+2. Multiply it by a `decay` value to gradually reduce its intensity.
+3. Combine the decayed mask with the newly detected motion.
+4. Store both the raw motion and its accumulated trail for subsequent passes.
+5. Swap the trail textures so that the previous trail becomes the result on the next frame.
+
+<Fullbleed>
+<Image
+  src="blog/motion-mask-decau.png"
+  alt="Diagram showcasing the process behind frame differencing with decay"
+  width={663}
+  height={355}
+/>
+</Fullbleed>
+
+```glsl {1} title=Introducing a decay to generate a trail from the motion
+let decayedTrail = max(previousState.g * trailDecay - 0.025, 0.0);
+let motionTrail = max(decayedTrail, motionAmount);
+
+textureStore(
+  stateWriteTexture,
+  vec2i(coord),
+  vec4f(currentLuminance, motionTrail, 0.0, 1.0)
+);
+```
+
+This gives us the `decay` as an extra tool in our belt to tweak the motion mask to our liking:
+
+* The smaller the decay, the faster the accumulated texture will fade out.
+* The larger, the longer it will remain on screen, leaving semi-permanent long trails on the canvas.
+
+As for which setting I recommend, it really depends on your input image. For scenes featuring slow movements with a high amplitude, I’d increase the `motionThreshold`, and keep the `decay` rate below `0.75`. For the ones featuring tiny, subtle motion, I’d give more weight to the trail, as otherwise the surface area where our shader will apply its effect will remain too small to be visible. The widget below showcases a version of the previous mask, but this time with decay.
+
+<MotionMask variant="decayedMask" />
+
+As you can see, this version is a lot more pleasing to the eye and gives us more luminance pixels to work with. With this, we finally have a decent **motion mask** that will serve as input to the subsequent post-processing passes we will build to stylize the motion.
+
+### Stylizing the motion
+
+We can now start putting our motion mask to work. First, we need a way to build the motion mask texture on every frame. This is a task we need to perform independently for every pixel, which is something we can handle in a **compute shader**.
+
+
+Each invocation of the compute shader can process one pixel: sample its current and previous luminance values, compute their difference, update the decayed trail, and write the results to a storage texture, as we showcased in the code snippets before this section. Moreover, it will also help us make a clear distinction between:
+
+* The compute stage of our effect, which prepares our data/textures.
+* The render stage, which will focus on using those computed textures for the final render.
+
+<Callout variant="info">
+
+A fullscreen render pass could produce a similar result at this stage, but compute shaders give us a more flexible foundation for later stages which will transform this "per pixel texture" onto something that doesn't map to screen pixels such as array buffers.
+
+</Callout>
+
+For a React Three Fiber scene, I like to organize my compute shader as follows <FootnoteRef id="2" />
+
+```jsx {11,26-29,62,67} title=Compute shader to compute the motion of a scene
+const createComputeNodes = ({
+  detectionHeight,
+  detectionWidth,
+  resources,
+  shaderUniforms,
+}) => {
+  const computeMotionMask = wgslFn(
+    // Motion mask compute shader code goes here.
+  );
+
+  const createComputeNode = (readIndex, writeIndex) =>
+    computeMotionMask({
+      hasPreviousFrame: shaderUniforms.hasPreviousFrame,
+      index: instanceIndex,
+      motionThreshold: shaderUniforms.motionThreshold,
+      stateReadTexture: texture(resources.stateTextures[readIndex]),
+      stateWriteTexture: storageTexture(
+        resources.stateTextures[writeIndex],
+      ).toWriteOnly(),
+      trailDecay: shaderUniforms.trailDecay,
+    }).compute(detectionWidth * detectionHeight, [8]);
+
+  // We use separate read and write textures for broader WebGPU support.
+  // These two nodes let each frame swap which texture holds
+  // the previous state.
+  return [
+    createComputeNode(0, 1), // Read A, write B.
+    createComputeNode(1, 0), // Read B, write A.
+  ];
+};
+
+const hasPreviousFrameRef = useRef(false);
+const currentBufferIndexRef = useRef(0);
+
+const shaderUniforms = useMemo(
+  () => ({
+    hasPreviousFrame: uniform(false),
+    motionThreshold: uniform(0.1),
+    trailDecay: uniform(0.98),
+  }),
+  [],
+);
+
+const computeNodes = useMemo(
+  () =>
+    createComputeNodes({
+      detectionHeight,
+      detectionWidth,
+      resources,
+      shaderUniforms,
+    }),
+  [detectionHeight, detectionWidth, resources, shaderUniforms],
+);
+
+useFrame(() => {
+  const computeIndex = currentBufferIndexRef.current;
+
+  // Skip motion detection until a previous frame has been stored.
+  shaderUniforms.hasPreviousFrame.value = hasPreviousFrameRef.current;
+
+  // Compare both frames and write the new luminance and motion trail.
+  gl.compute(computeNodes[computeIndex]);
+
+  hasPreviousFrameRef.current = true;
+
+  // Use the texture we just wrote as the previous state on the next frame.
+  currentBufferIndexRef.current = 1 - computeIndex;
+});
+```
+
+With that in place, we have a compute shader running on every frame in our browser computing our motion mask. The resulting texture can now be passed to the render pipeline and used, for example, as input for a post-processing effect.
+
+```jsx title=Rendering the detected motion as an effect
+const outputNode = Fn(() => {
+  const motionMask = texture(trailTexture).g;
+  const cool = vec3(0.0, 0.5, 2.0);
+  const hot = vec3(1.0, 0.35, 0.5);
+  const heatColor = mix(cool, hot, motionMask);
+
+  return vec4(heatColor.mul(motionMask), 1.0);
+})();
+
+postProcessing.outputNode = outputNode;
+postProcessing.render();
+```
+
+The code snippet above is a simple example of some sort of *heatmap* effect where we color the `trailtexture` based on its intensity:
+* The brighter the detected motion, the more orange it will appear.
+* The dimmer, the less motion there is, and thus the related pixels will tend towards blue.
+
+We can see this effect at work in the demo below, built on top of the decayed motion mask demo shown earlier:
+
+<MotionMask variant="effect" />
+
+This is the moment where the possibilities become endless, as you have total freedom to interpret the motion mask as you please. Here we did a heatmap, but you might as well render the motion as a pixelated trail, or split the screen in half to render the stylized detected motion on one half while rendering the original input in the other, as I did below.
+
+<DitheredMotionMaskDemo />
+
+The beauty of this simple pipeline is that it compounds elegantly with concepts and techniques we’ve seen in other post-processing-related blog posts, such as [Post-processing as a Creative Medium](/posts/post-processing-as-a-creative-medium/), since, after all, the only thing we really did in this first pass was **transform the motion into luminance**. The playground below features the full compute and render phase with an example of a motion effect, a recreation of my demo titled “[data stream](https://r3f.maximeheckel.com/motion-tracking-2)” applied on top of a 3D scene
+
+<ShadingMotionSandpack scene="asciiMotionMask" showCode={false}/>
+
+## Blob Tracking
+
+<DecorativeMotion variant="blob-tracking" />
+
+While our motion mask tells us where individual pixels changed from one frame to another, it does not highlight the larger moving elements they belong to. Grouping those into coherent regions would unlock a new kind of visual for our render pipeline, allowing us to shade the image based on *clusters of motion* rather than discrete pixels.
+
+This is the main idea behind **Blob Tracking**: an effect that overlays connected motion areas with boxes, crosshairs, connecting segments, or any other shapes we may choose. My definition may sound vague, but I’m sure you’ve encountered this visual language before, especially among creators in the TouchDesigner community. Just in case, here’s an example:
+
+<VideoPlayer
+  src="https://cdn.maximeheckel.com/videos/blog/blob_tracking_omer.mp4"
+  autoPlay
+  muted
+  loop
+  width={663}
+  height={373}
+/>
+
+
+Often, these geometric shapes and data-heavy overlays characteristic of this effect are found over nature/cityscape time-lapses or macro footage of plants growing and blooming. Another great example of [contrasting aesthetic](https://rauno.me/craft/contrasting-aesthetics). I did the same for my own take on this effect:
+
+<StaticTweet id="2063262209367580785" />
+
+In this section, we will walk through the process of reimplementing this effect in WebGPU, on top of the pipeline we built in the first part of this article. The goal would be to approach the visuals from TouchDesigners while remaining relatively performant.
+
+<Callout variant="info">
+
+This specific effect was, in fact, the main motivation for this article. Creations from talented people like my friend [Omer](https://www.instagram.com/ojrgb/) (the video above is from him, give him a follow on Instagram, he will appreciate) are often the catalyst behind most of the work presented on this blog, and as you will see in later examples, often lead to me poking around other techniques and trying new things to see what sticks.
+
+I wanted to take a moment to share my appreciation to everyone sharing and talking about their work online or IRL. It’s the kind of thing that keeps me going.
+
+</Callout>
+
+### Detecting motion blobs
+
+Our motion mask already has all the necessary information we need to find blobs. The only thing we need to do now is to structure that data into a collection of motion clusters. To do so, we will define a data structure composed of:
+
+1. `{x,y}` coordinates for the center of a given blob
+2. a size `s`
+3. a confidence `c`, a value representing whether a given slot is valid/active
+
+<Callout variant="info">
+
+For simplicity, we will only consider blobs of equal width and height.
+
+</Callout>
+
+With this data structure in mind, we should have all the information needed to draw the blobs.  However, we still need to translate our motion mask to extract and store the data, and for that we will use another compute shader to run a blob detection algorithm. The steps of this algorithm are broken down and illustrated below:
+
+<BlobTracking />
+
+This algorithm works on a predefined number of *“blob slots”*, i.e., a maximum number of blob items we will draw on screen. This example features 5, but I went up to 12 in my own demos. For each of these blob slots we:
+
+* **Choose a search center**: we start from seeds distributed across the image. If the blob already has a valid position from a previous frame, we use that position instead.
+
+```glsl
+let previousState = blobStateBuffer[index];
+let wasActive = previousState.w > 0.03;
+let slot = f32(index);
+let seed = vec2f(
+  fract(slot * 0.61803398875 + 0.13),
+  fract(slot * 0.38196601125 + 0.31)
+);
+let probeCenter = select(seed, previousState.xy, wasActive);
+let searchRadius = select(0.45, 0.28, wasActive);
+```
+
+* **Sample a `5 x 5` region**: we place 25 evenly spaced samples across a square centered on the search position, and read the motion strength at each point.
+
+```glsl
+for (var sampleIndex = 0u; sampleIndex < 25u; sampleIndex++) {
+  let sx = f32(sampleIndex % 5u) / 4.0 - 0.5;
+  let sy = f32(sampleIndex / 5u) / 4.0 - 0.5;
+  let sampleUv = clamp(
+    probeCenter + vec2f(sx, sy) * searchRadius,
+    vec2f(0.0),
+    vec2f(1.0)
+  );
+  let sampleCoord = clamp(
+    vec2i(sampleUv * vec2f(dimensions)),
+    vec2i(0),
+    vec2i(dimensions) - vec2i(1)
+  );
+  let motionSample = textureLoad(stateTexture, sampleCoord, 0);
+
+  // Weight and accumulate this sample next.
+}
+```
+
+* **Weight each sample by motion, distance, and exclusion**: we give more influence to samples with stronger motion and samples closer to the center. If blobs are already claimed by an earlier slot, we reduce their weight to prevent slots from converging to the same regions. 
+
+```glsl
+// Running totals across all 25 samples:
+// - weightSum normalizes the final center.
+// - weightedCenter accumulates weighted UVs (X = U, Y = V).
+// - weightedSecondMoment accumulates weighted U² and V² to estimate spread i.e. the variance.
+// Needed because variance = mean(position²) - mean(position)²
+var weightSum = 0.0;
+var weightedCenter = vec2f(0.0);
+var weightedSecondMoment = vec2f(0.0);
+
+// For each point in the 5 x 5 sample:
+// stateTexture stores current luminance in R, raw motion in G,
+// nothing in B, and the accumulated motion trail in A.
+// Favor the current motion while retaining a little of its recent history.
+let trackedMotion = motionSample.g * 0.8 + motionSample.a * 0.2;
+
+// sx and sy are the sample's offset from the probe center.
+// Samples near that center receive more influence.
+let falloff = max(0.0, 1.0 - length(vec2f(sx, sy)) * 1.25);
+
+// Start with no exclusion, i.e. full weight factor
+var exclusion = 1.0;
+
+for (var otherIndex = 0u; otherIndex < index; otherIndex++) {
+  // Each blob stores its center in XY, size in Z, and confidence in W.
+  let otherBlob = blobStateBuffer[otherIndex];
+
+  if (otherBlob.w > 0.04) {
+    // Reduce this sample's influence when it is close to a blob
+    // already claimed by an earlier slot.
+    exclusion *= smoothstep(
+      0.035,
+      0.13,
+      length(sampleUv - otherBlob.xy)
+    );
+  }
+}
+
+// Combine motion strength, distance falloff, and exclusion into one weight.
+let weight = trackedMotion * falloff * exclusion;
+
+// Accumulate the total weight, weighted position, and weighted squared position.
+weightSum += weight;
+weightedCenter += sampleUv * weight;
+weightedSecondMoment += sampleUv * sampleUv * weight;
+```
+
+* Calculate the weighted center.
+
+```glsl
+let center = weightedCenter / max(weightSum, 0.0001);
+```
+
+* Get the size from the weighted variance.
+
+```glsl
+let variance = max(
+  weightedSecondMoment / max(weightSum, 0.0001) - center * center,
+  vec2f(0.0)
+);
+let size = clamp(
+  sqrt(max(variance.x, variance.y)) * 0.85,
+  0.02,
+  0.82
+);
+```
+
+* Store the result in an array buffer. 
+
+```glsl
+blobStateBuffer[index] = vec4f(center, size, confidence);
+```
+
+<Image
+  src="blog/blob-buffer.png"
+  alt="Diagram showcasing the buffer array containing our blob slot data. Blobs with a confidence below 0.3 in this example are considered discarded."
+  width={663}
+  height={227}
+/>
+
+The resulting storage buffer is tiny. Each of the 12 blob slots stores four 32-bit floats for a total of just `12 * 4 floats * 4 bytes (32 bits / 8 bits = 4 bytes) = 192 bytes`.
+
+Through this process, we’ve transformed the motion mask into a compact buffer representing our detected blobs. We can now send that buffer to the rest of the pipeline, finally getting to the fun part: drawing the blobs.
+
+### Drawing blobs
+
+With this buffer at the ready, we can start thinking about how to draw the visuals that will represent our blobs in our final effect. Once again, the sky is the limit here; the only thing that really matters is that the resulting overlay pleases you. For this post, I’m just going to cover the classic types of visuals and, more importantly, the method I used to render them.
+
+To draw shapes such as squares, circles, crosshairs, or segments, we will have to rely on Signed Distance Functions <FootnoteRef id="3" />, SDF, to which we will pass from our buffer:
+
+* The center coordinates `{x, y}` to position the shape on screen.
+* The size `s` to scale it.
+
+Below are a couple of examples of shapes and their corresponding SDFs that can serve as a reminder, or just a light introduction:
+
+<SDFShapes variant="shapes" />
+
+To use them in our effect, we will have to:
+
+* Read and loop through our buffer to retrieve the blob slot data.
+
+```jsx
+const boxMask = float(0.0).toVar();
+
+for (let i = 0; i < maxBlobs; i++) {
+  // XY = center, Z = size, W = confidence.
+  const blob = resources.blobStateBuffer.element(i);
+  const center = vec2(blob.x.mul(targetAspect), blob.y);
+
+  // Draw the current blob...
+}
+```
+
+* Convert our size to `halfSize`, since our SDFs measure the shape from its center to its edges. Thus, we have to divide the size by two.
+
+```jsx
+const halfSize = vec2(blob.z).mul(0.5);
+const distanceToBox = boxSdf(drawUv.sub(center), halfSize);
+```
+
+* Only draw the blob when we’re above a certain threshold of confidence. Plus, we also do not forget to antialias the output.
+
+```jsx 
+const active = blob.w.greaterThan(0.04).toFloat();
+const edgeWidth = fwidth(distanceToBox).mul(2.5);
+const box = smoothstep(0.0, edgeWidth, abs(distanceToBox))
+  .oneMinus()
+  .mul(active);
+
+boxMask.assign(max(boxMask, box));
+```
+
+Rendering this effect on top of our scene, whether it is a simple video or a 3D scene, should result in a series of boxes, circles, or crosshairs, depending on which SDF you picked, moving across the screen over the main motion clusters. The playground below features the full code we just went through for our compute and render pipelines:
+
+<ShadingMotionSandpack scene="blobTracking" />
+
+Now, some blob-tracking examples also feature segments connecting the centers of different blobs on screen. *How should we go about that?* With SDFs once again! 
+
+To draw a segment, we find the point on the line closest to the current pixel and measure the distance between them. Pixels close enough to the line become visible, while those farther away fade out smoothly using `smoothstep`. For more complex curved segments, the principle remains the same, except that we first need to evaluate a Bézier curve <FootnoteRef id="4" /> at that position before measuring the distance. The widget below shows both segment types and their corresponding SDFs.
+
+<SDFShapes variant="segments" />
+
+As to how to include them in our effect, I chose to do something pretty stupidly simple: link one blob to the next in the order we read them in the buffer:
+
+```jsx {7-9,11} title=Linking blob centers
+const nextBlob = resources.blobStateBuffer.element(
+  (i + 1) % maxBlobs,
+);
+const nextActive = nextBlob.w.greaterThan(0.04).toFloat();
+const nextCenter = vec2(nextBlob.x.mul(targetAspect), nextBlob.y);
+
+const straightPoint = straightSegmentPoint(drawUv, center, nextCenter);
+const curvedPoint = curvedSegmentPoint(drawUv, center, nextCenter);
+const segmentPoint = mix(straightPoint, curvedPoint, segmentType);
+
+const distanceToSegment = distance(drawUv, segmentPoint);
+const line = smoothstep(
+  0.0,
+  0.002,
+  distanceToSegment,
+)
+  .oneMinus()
+  .mul(active)
+  .mul(nextActive);
+```
+
+This simple *hack* creates an organic chain of connected shapes that follows the blobs across the screen.
+
+<ShadingMotionSandpack scene="blobTrackingSegments" />
+
+### Using blobs as masks
+
+Blob Tracking, as an effect, is loosely defined; some creators will call it a day once they reach the point where we are now, while others will build on it by adding text, morphing shapes, or other visual elements. One simple addition I personally like a lot is to use the shapes as masks to render a custom shader within them.
+
+<Callout variant="info">
+
+A good mental model here is to think of each blob mask as a sliding filter with the ability to transform the pixels it contains.
+
+</Callout>
+
+Using the SDF we defined earlier, each blob can generate a black-and-white mask:
+
+* `1.0` for pixels inside a blob’s shape
+* `0.0` for pixels outside it
+
+```jsx {8-9,11-17} title=Defining a mask from our blobs
+const fillMask = float(0.0).toVar();
+
+for (let i = 0; i < maxBlobs; i++) {
+  const blob = resources.blobStateBuffer.element(i);
+  const active = blob.w.greaterThan(0.04).toFloat();
+  const center = vec2(blob.x.mul(targetAspect), blob.y);
+  const halfSize = vec2(blob.z).mul(0.75);
+  const distanceToBox = boxSdf(drawUv.sub(center), halfSize);
+  const edgeWidth = fwidth(distanceToBox).mul(2.5);
+
+  // The filled SDF is 1 inside the box and 0 outside.
+  const fill = smoothstep(0.0, edgeWidth, distanceToBox)
+    .oneMinus()
+    .mul(active);
+
+  fillMask.assign(max(fillMask, fill));
+}
+```
+
+With this, we can isolate the pixels inside from the outside ones and choose to apply a shader on either.
+
+```jsx title=Applying an effect inside our blob boxes
+const effectColor = thermalEffect(videoColor);
+
+// Keep the video outside the blobs and reveal the effect inside them.
+color.assign(mix(videoColor, effectColor, fillMask));
+```
+
+The playground below showcases this flavor of blob tracking built on top of the previously implemented blob shapes and segments, with the option for you to apply the shader in or out of the boxes.
+
+<ShadingMotionSandpack scene="blobTrackingEffects" showCode={false} />
+
+We now have a convincing blob-tracking effect implemented in WebGPU. We used compute shaders to locate the blobs in each frame from a motion mask, and overlay a series of shapes and effects on top of them. From here, I encourage you to keep experimenting and use what we built as a starting point for your own ideas.
+
+<Callout variant="info" label="CPU readback">
+
+In my own [Blob Tracking demo](https://r3f.maximeheckel.com/blob-tracking-2), you may have noticed that I also included *sound*. In that scene, blobs play notes based on their position on the screen.
+
+To achieve this, I bended a little bit the rules and did a **CPU readback**, which usually could be quite a performance bottleneck. However, in this case given its small size of 192 bytes, reading back the blob slot buffer is fairly reasonable. Doing so within `useFrame` lets us read the blob slot data on every frame in Javascript, and play sounds using [AudioContext](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext).
+
+```tsx title=Reading back the computed blob slots in JS
+useFrame(() => {
+  void (async () => {
+    try {
+      const arrayBuffer = await gl.getArrayBufferAsync(
+        resources.blobStateBufferAttribute,
+      );
+      const blobState = new Float32Array(arrayBuffer);
+      const blobs: MotionBlob[] = [];
+
+      for (let i = 0; i < MAX_BLOBS; i++) {
+        const offset = i * 4;
+        const centerX = blobState[offset];
+        const centerY = blobState[offset + 1];
+        const halfSize = blobState[offset + 2];
+        const confidence = blobState[offset + 3];
+
+        if (confidence <= 0.04 || halfSize <= 0.001) continue;
+
+        const width = halfSize * 2 * detectionWidth;
+        const height = halfSize * 2 * detectionHeight;
+
+        blobs.push({
+          count: width * height,
+          height,
+          id: i + 1,
+          width,
+          x: (centerX - halfSize) * detectionWidth,
+          y: (centerY - halfSize) * detectionHeight,
+        });
+      }
+
+      playBlobSounds(blobs, detectionWidth, detectionHeight);
+    } finally {
+        isReadingBlobStateRef.current = false;
+    }
+  })();
+})
+```
+
+</Callout>
+
+## Optical Flow
+
+<DecorativeMotion variant="optical-flow" />
+
+The previous section featured a practical example of using detected motion beyond simple masking. As is, the motion masking texture encodes where clusters of motion beyond a certain threshold are located, but it cannot tell us in which direction they are moving. In this part, we’re going to work towards extracting that information from the motion mask and building an **optical flow-inspired effect** where we’ll draw a field of arrows/vectors over the scene representing the direction of the detected movement.
+
+<Anchor discreet favicon href="https://twitter.com/poetengineer__">@poetengineer__</Anchor> has a great example of this effect among her many visual experiments. Hers relies on [OpenCV](https://opencv.org/), which I’d recommend using if you want accuracy. Our goal here, however, is to have an additional shader input for creative purposes rather than production-grade computer vision.
+
+<StaticTweet id="2045956426263064715" />
+
+### Extracting the direction of motion
+
+Our motion mask as of now represents motion intensity in a grayscale texture as luminance. What we need here instead is a way to represent the motion vector field. To do so, we can compare each pixel in the current frame with neighboring pixels in the previous frame to estimate the direction of movement, and represent the direction as distinct colors in the resulting texture:
+
+* Red → the luma at the current frame
+* Green above `0.5` → movement toward the right
+* Green below `0.5` → movement toward the left
+* Blue above `0.5` → movement upward
+* Blue below `0.5` → movement downward
+* Alpha → persistence of the motion trail
+
+<Fullbleed>
+<Image
+  src="blog/optical-flow.png"
+  alt="Diagram showcasing the process behind motion flow extraction"
+  width={663}
+  height={356}
+/>
+</Fullbleed>
+
+The code snippet below shows the updated logic of our first compute shader and the updated resulting texture we write to:
+
+```glsl {23-24,49-53,63} title=Updated compute shader computing the flow of motion
+let leftCoord = clamp(
+  vec2i(coord) - vec2i(1, 0),
+  vec2i(0),
+  vec2i(dimensions) - vec2i(1)
+);
+let rightCoord = clamp(
+  vec2i(coord) + vec2i(1, 0),
+  vec2i(0),
+  vec2i(dimensions) - vec2i(1)
+);
+let upCoord = clamp(
+  vec2i(coord) - vec2i(0, 1),
+  vec2i(0),
+  vec2i(dimensions) - vec2i(1)
+);
+let downCoord = clamp(
+  vec2i(coord) + vec2i(0, 1),
+  vec2i(0),
+  vec2i(dimensions) - vec2i(1)
+);
+
+// Compare the current luminance with neighboring pixels from the previous frame.
+let leftMatch = abs(
+  currentLuminance - textureLoad(stateReadTexture, leftCoord, 0).r
+);
+let rightMatch = abs(
+  currentLuminance - textureLoad(stateReadTexture, rightCoord, 0).r
+);
+let upMatch = abs(
+  currentLuminance - textureLoad(stateReadTexture, upCoord, 0).r
+);
+let downMatch = abs(
+  currentLuminance - textureLoad(stateReadTexture, downCoord, 0).r
+);
+
+let rawFlow = vec2f(
+  rightMatch - leftMatch,
+  downMatch - upMatch
+);
+let flowLength = length(rawFlow);
+var flowDirection = vec2f(0.0);
+
+if (flowLength > 0.001 && motion > 0.0) {
+  flowDirection = rawFlow / flowLength;
+}
+
+// Decay the previous direction, then blend in the newly detected flow.
+let previousFlow = previousState.gb * 2.0 - 1.0;
+let trailFlow = mix(
+  previousFlow * trailDecay,
+  flowDirection,
+  clamp(motion, 0.0, 1.0)
+);
+
+// Encode direction from [-1, 1] to [0, 1] for an rgba8unorm texture.
+let encodedTrailFlow = trailFlow * 0.5 + 0.5;
+let trailAlpha = max(previousState.a * trailDecay, motion);
+
+// R = luminance, GB = flow direction, A = motion persistence.
+textureStore(
+  stateWriteTexture,
+  vec2i(coord),
+  vec4f(currentLuminance, encodedTrailFlow, trailAlpha)
+);
+```
+
+<Callout variant="info">
+
+If you look at it closely, this process is quite similar to what we used in [Moebius-style post-processing and other stylized shaders](/posts/moebius-style-post-processing/) for edge detection <FootnoteRef id="5"/>. The only difference here is that our approximation compares a given pixel of the current frame with neighboring pixels in the previous frame.
+
+</Callout>
+
+The resulting motion vector field has a similar output as the motion mask showcased in the first section, except this time, color-coded as shown below.
+
+<MotionMask variant="flow" />
+
+### Drawing a motion field
+
+No need for any additional compute phase this time; we can directly draw the arrows from the texture we just showcased in the previous section. In this scenario, our render pass:
+
+* Divides the screen into grid cells and samples our flow texture. This is akin to pixelation in a way: every fragment within a cell uses the same snapped UV coordinate. Instead of sampling a color, however, we sample the flow texture once per cell to a shared direction for the underlying pixels.
+* Decode the `G` and `B` channels of the sample to get the direction.
+* Decode the `A` confidence of activity.
+* (Optional) Infere the magnitude with `length(stateTexture.rg * 2.0 - 1.0) `
+* Rotate and scale the arrow based on the decoded direction and magnitude.
+
+```jsx {28,31} title=Decoding the optical flow texture
+let grid = vec2f(arrowColumns, arrowRows);
+let snappedUv = (floor(inputUv * grid) + vec2f(0.5)) / grid;
+let cellUv = ((inputUv - snappedUv) * grid + vec2f(0.5)) * 2.0 - 1.0;
+
+let state = textureLoad(
+  stateTexture,
+  clamp(
+    vec2i(snappedUv * vec2f(textureDimensions(stateTexture))),
+    vec2i(0),
+    vec2i(textureDimensions(stateTexture)) - vec2i(1)
+  ),
+  0
+);
+
+// GB stores direction in [0, 1]; decode it back to [-1, 1].
+let activity = smoothstep(0.04, 0.18, state.a);
+let flow = state.gb * 2.0 - 1.0;
+let magnitude = length(flow);
+
+if (activity <= 0.0 || magnitude <= 0.001) {
+  return 0.0;
+}
+
+let direction = flow / magnitude;
+let normal = vec2f(-direction.y, direction.x);
+
+// Rotate the cell coordinates into the direction's local space.
+let arrowUv = vec2f(
+  dot(cellUv, direction),
+  dot(cellUv, normal)
+);
+
+let directionConfidence = smoothstep(0.08, 0.65, magnitude);
+let scale = mix(
+  0.45,
+  1.0,
+  directionConfidence * activity
+);
+```
+
+With directions now successfully decoded from our texture, we can now finalize our visuals to render the flow of motion using, you guessed it, SDFs once again. In my own [scenes](https://r3f.maximeheckel.com/motion-tracking-3), I ended up rendering arrows to show the direction of motion using the following signed distance function that draws a combination of a box and a triangle together:
+
+<SDFShapes variant="arrows" />
+
+Once added to a scene, this effect should render a minimal vector field composed of a grid of arrows pointing in the direction of movement. The playground below renders the effect over a moving *blob*: a sphere whose vertices are displaced using noise. I like this render a lot because it is visually simple, yet contains many intricate details revealed by the patterns formed by the arrows.
+
+<ShadingMotionSandpack scene="opticalFlow" showCode={false}/>
+
+## Motion Blur
+
+<DecorativeMotion variant="motion-blur" />
+
+Throughout this article, we’ve extracted motion by comparing the color of each pixel across consecutive frames. This was merely guesswork as we're only *inferring* the motion.
+
+This process was one of the only possibilities we had when dealing with video as input; however, when working on top of a 3D renderer, we do have an extra option to extract motion: by building a **velocity map**. 
+This section is more of a fun hack than a serious experiment, unlike above. It is still on theme though, and I wanted to see if I could solve some of the shortcomings of the methods we just went through, even in a crude way.
+
+### Capturing object motion
+
+Our goal is to detect moving objects “as a whole”, not just individual pixels in motion, and encode their velocity and their direction onto a texture we can then pass to a shader for post-processing. Much like what we did in the optical flow scene, we will encode the direction as follows:
+
+* Red for horizontal screen-space velocity.
+* Green for vertical screen-space velocity.
+* The intensity is encoded in the absolute magnitude of these two channels.
+
+I could not find a *good way* to get this data. And by “good”, I mean here non-convoluted (just to set the proper expectations). The pipeline I came up with, albeit accurate, is quite complicated, and I have yet to find a good abstraction for it. Despite its DX shortcomings, it is interesting to look at nonetheless:
+
+* We get the projected coordinates of our mesh’s center through the camera.
+* We calculate its screen-space movement.
+
+```jsx
+const previousNdcRef = useRef(new THREE.Vector2());
+const projectedPositionRef = useRef(new THREE.Vector3());
+const previousFrameInitializedRef = useRef(false);
+const velocity = useMemo(() => uniform(new THREE.Vector2()), []);
+
+useFrame((state) => {
+  projectedPositionRef.current
+    .copy(sphereRef.current.position)
+    .project(state.camera);
+
+  if (!previousFrameInitializedRef.current) {
+    previousNdcRef.current.set(
+      projectedPositionRef.current.x,
+      projectedPositionRef.current.y,
+    );
+    velocity.value.set(0, 0);
+    previousFrameInitializedRef.current = true;
+    return;
+  }
+
+  // Convert the NDC delta to UV space and flip Y for texture coordinates.
+  velocity.value.set(
+    (projectedPositionRef.current.x - previousNdcRef.current.x) * 0.5,
+    (projectedPositionRef.current.y - previousNdcRef.current.y) * -0.5,
+  );
+  previousNdcRef.current.set(
+    projectedPositionRef.current.x,
+    projectedPositionRef.current.y,
+  );
+});
+```
+
+* We can then pass that movement as a normalized “velocity vector” to a simple `velocityMaterial`. That will render the object as red or green based on the intensity of horizontal/vertical movements.
+
+```jsx
+const velocityMaterial = new THREE.MeshBasicNodeMaterial();
+
+// R = horizontal velocity, G = vertical velocity.
+velocityMaterial.outputNode = vec4(velocity, 0.0, 1.0);
+```
+
+* With that done, now start the convoluted part. I chose to render a copy of the moving object in an offscreen scene through React Three Fiber’s `Portal` feature. The positions are synced between the scenes on every frame, and the meshes are rendered with the velocity material.
+
+```jsx {6-7, 14}
+useFrame(() => {
+  if (!sphereRef.current || !velocitySphereRef.current) {
+    return;
+  }
+
+  velocitySphereRef.current.position.copy(sphereRef.current.position);
+  velocitySphereRef.current.updateMatrixWorld(true);
+}, -1);
+
+return createPortal(
+  <mesh ref={velocitySphereRef} material={velocityMaterial}>
+    <sphereGeometry args={[0.5, 32, 32]} />
+  </mesh>,
+  velocityScene,
+);
+```
+
+* We can then create a render target to render that offscreen scene and extract a texture from it.
+* We pass the resulting texture to the compute shader and combine it with the previous velocity map data.
+
+```jsx {31-33}
+const resources = useMemo(
+  () => ({
+    velocityTarget: makeRenderTarget(
+      targetWidth,
+      targetHeight,
+      THREE.NearestFilter,
+    ),
+  }),
+  [targetHeight, targetWidth],
+);
+
+const outputNode = useMemo(
+  () =>
+    createOutputNode({
+      blurAmount,
+      resources,
+      sceneTexture,
+      targetHeight,
+      targetWidth,
+    }),
+  [
+    blurAmount,
+    resources,
+    sceneTexture,
+    targetHeight,
+    targetWidth,
+  ],
+);
+
+useFrame(() => {
+  gl.setRenderTarget(resources.velocityTarget);
+  gl.clear();
+  gl.render(velocityScene, camera);
+
+  gl.setRenderTarget(null);
+
+  if (postProcessingRef.current) {
+    gl.clear();
+    postProcessingRef.current.render();
+  }
+}, 1);
+```
+
+The result is a complete velocity map representing camera and object motion. The motion-blur pass remains unchanged. It will automatically detect the new motion data and apply blur to it. In the playground below, you can see that our sphere gets blurrier the faster you set the speed, this time without having to move the camera.
+
+<Callout variant="info">
+
+**Why screen-space?** 
+
+Since motion blur is applied in screen space, we need the object’s movement across the image rather than across the 3D scene.
+
+</Callout>
+
+<ShadingMotionSandpack scene="velocityMap" />
+
+### Wagon-wheel effect
+
+Our velocity-based motion blur effect works like a charm! However, past a certain speed, the effect breaks down. The underlying data we extract is accurate, but the rendered image only shows parts of the movement, or even the movement going *in reverse* past a certain threshold.
+
+This is called the **wagon-wheel effect**, and it’s simply due to our continuous motion being sampled at discrete intervals, which at a high speed may cause motion to appear discontinuous or going the wrong way.
+
+<Fullbleed>
+<Image
+  src="blog/wagon-wheel.png"
+  alt="Diagram showcasing three sampled frames of a sphere rotating along a circular path, creating the illusion that it moves in the opposite direction"
+  width={663}
+  height={257}
+/>
+</Fullbleed>
+
+I was intrigued by this side-effect, especially after reading Pierre Cusa’s article titled [Motion All the Way Down](https://www.osar.fr/notes/motionblur/), where, among many other things, he introduces a hack to solve for it that I thought would fit well in our example here: rendering copies of our moving objects where we expect them to be.
+
+Of course, this solution only works when the object follows a predictable trajectory that we can evaluate between frames. The code snippet below demonstrates this hack for our sphere’s circular trajectory.
+
+```jsx title=Analytical solution to the wagon-wheel effect
+for (let index = 0; index < activeSmearSamples; index += 1) {
+  const smearSphere = smearSphereRefs.current[index];
+
+  // Sample each interval's center, then center the range on the current frame.
+  const phase = (index + 0.5) / activeSmearSamples;
+  const centeredPhase = phase - 0.5;
+  const smearAngle =
+    angle +
+    centeredPhase * delta * smearSpeed * SMEAR_EXPOSURE_WIDTH;
+
+  // Evaluate the sphere's known circular trajectory at that time.
+  smearSphere.position.set(
+    Math.cos(smearAngle) * ORBIT_RADIUS,
+    0,
+    Math.sin(smearAngle) * ORBIT_RADIUS,
+  );
+
+  // Use a raised-cosine shutter weight so the trail fades at both ends.
+  const shutterWeight = 1 - Math.cos(phase * Math.PI * 2);
+  smearMaterial.opacity =
+    (shutterWeight / 2) *
+    objectSmearStrength *
+    smearVisibility *
+    0.35;
+}
+```
+
+As a result, we get more of the object’s movement between frames, which leaves a smooth trail along its path.
+
+<Fullbleed>
+<Image
+  src="blog/object-smear.png"
+  alt="Diagram showcasing a sphere smeared along its circular path between frames to reveal its true direction of motion"
+  width={663}
+  height={257}
+/>
+</Fullbleed>
+
+The next and final demo features this hack at work. I also included a weight to the opacity of the different copies so that samples close to the center, a.k.a. the real mesh, appear stronger. The effect is very satisfying and features some kind of *recoil* due to the trail expanding and contracting as the speed of the object gets changed. Take some time to play with it to get a good feel for it.
+
+<ShadingMotionSandpack scene="objectSmear" showCode={false} />
+
+
+Again, this is a hack; there may be a more elegant solution to this issue, but this one was so *smart and simple* and produced such a lovely result that I had to share it. As a word of caution, I’d recommend the following 3 improvements before you think of shipping this to production:
+
+1. Only using this in a very limited use case, like here, one or two meshes.
+2. Reducing the number of vertices for the copies to avoid any potential performance impact this may have
+3. Maybe looking into using instances rather than discrete meshes (I was lazy here).
+
+## Afterword
+This article mainly stemmed from a personal challenge: to reproduce the effects I saw some of my friends, and many other creators, playing with on TouchDesigner or similar softwares, but on the web to give us a new outlook on what we can unlock in terms of interactivity and visual language when using motion. 
+
+Building these made me appreciate how, from a *very simple* set of techniques such as frame differencing, we managed to infer fairly complex and fine details such as what is moving in a given scene, how intensely, and in which direction. Once converted to luminance or flow map, we saw that motion can be interpreted the same way as color, light, or depth in many classic post-processing effects, allowing us to combine different aesthetics.
+
+While the output is nice, I have yet to find a concrete application for blob tracking, optical flow, or motion blur beyond the simple detection or visual use case. Not that we necessarily need to focus our time only on algorithms and shading techniques to produce *useful* results, but I generally like to see where and how some of the pieces we looked into can fit in other contexts as part of a solution to a bigger problem. For now, the creative and visual aspect will have to be enough. **It never hurts to dilly-dally a bit while learning without a set goal and see where it leads you**. 
+
+Finally, I also want to shoutout [@creativecodingnyc](https://www.instagram.com/creativecodingnyc/?hl=en), who let me display some of the work featured here during one of their showcase in early June in Brooklyn. 
+
+<FootnotesList
+  notes={[
+    {
+      id: 1,
+      content: (
+        <p>
+          We have also seen an example of decay used for an effect in{" "}
+          <a href="/posts/post-processing-as-a-creative-medium/#pixelating-mouse-trail">
+            Post-Processing Shaders as a Creative Medium
+          </a> to implement a mouse trail.
+        </p>
+      ),
+    },
+    {
+      id: 2,
+      content: (
+        <p>
+          I shared more details about how I organize my WebGPU code in React Three Fiber, including compute shaders at{" "}
+          <a href="/posts/field-guide-to-tsl-and-webgpu/#compute-shaders">
+            Field Guide to TSL and WebGPU
+          </a>. It's also a great resource if you need a refresher on what compute shaders are and how they work.
+        </p>
+      ),
+    },
+    {
+      id: 3,
+      content: (
+        <p>
+          A Signed Distance Function returns the shortest distance from a
+          point to the edges of a shape. The resulting "sign" tells us whether a given point is inside or outside the given shape. We use these as a "drawing tool" when working with shaders.
+        </p>
+      ),
+    },
+    {
+      id: 4,
+      content: (
+        <p>
+         I broke down the process of evaluating cubic bézier curves in{" "}
+         <a href="/posts/cubic-bezier-from-math-to-motion/">
+          Cubic Bézier: from math to motion
+         </a>. The formulas presented are the same as the ones we use in the shader code of our examples in this article.
+        </p>
+      ),
+    },
+    {
+      id: 5,
+      content: (
+        <p>
+          A Sobel filter follows a similar process but uses weighted 3×3 kernels, producing a smoother and more robust estimate than our four-sample approximation.
+        </p>
+      ),
+    },
+  ]}
+/>

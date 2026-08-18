@@ -12,7 +12,7 @@ const BottomBlurGradientMask = () => (
       position: 'fixed',
       bottom: 0,
       right: 0,
-      zIndex: 1,
+      zIndex: 100,
       isolation: 'isolate',
       pointerEvents: 'none',
       backdropFilter: 'blur(4px)',

@@ -27,8 +27,20 @@ interface TextureInfo {
 
 interface VideoTextureInfo {
   texture: WebGLTexture;
+  previousTexture: WebGLTexture;
   video: HTMLVideoElement;
   unit: number;
+  previousUnit: number;
+  lastVideoTime: number;
+}
+
+interface FeedbackTextureInfo {
+  currentTexture: WebGLTexture;
+  previousTexture: WebGLTexture;
+  framebuffer: WebGLFramebuffer;
+  previousUnit: number;
+  width: number;
+  height: number;
 }
 
 interface WebGLRendererState {
@@ -38,6 +50,7 @@ interface WebGLRendererState {
   uniformLocations: Map<string, WebGLUniformLocation | null>;
   textures: Map<string, TextureInfo>;
   videoTextures: Map<string, VideoTextureInfo>;
+  feedbackTextures: FeedbackTextureInfo | null;
   nextTextureUnit: number;
 }
 
@@ -201,14 +214,10 @@ function loadTexture(
   return texture;
 }
 
-function loadVideoTexture(
+function initializeVideoTexture(
   gl: WebGL2RenderingContext,
-  url: string,
-  onLoad?: () => void
-): { texture: WebGLTexture; video: HTMLVideoElement } | null {
-  const texture = gl.createTexture();
-  if (!texture) return null;
-
+  texture: WebGLTexture
+) {
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
   // Put a single pixel as placeholder while loading
@@ -229,6 +238,23 @@ function loadVideoTexture(
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+}
+
+function loadVideoTexture(
+  gl: WebGL2RenderingContext,
+  url: string,
+  onLoad?: () => void
+): {
+  texture: WebGLTexture;
+  previousTexture: WebGLTexture;
+  video: HTMLVideoElement;
+} | null {
+  const texture = gl.createTexture();
+  const previousTexture = gl.createTexture();
+  if (!texture || !previousTexture) return null;
+
+  initializeVideoTexture(gl, texture);
+  initializeVideoTexture(gl, previousTexture);
 
   const video = document.createElement('video');
   video.crossOrigin = 'anonymous';
@@ -245,19 +271,95 @@ function loadVideoTexture(
   video.src = url;
   video.load();
 
-  return { texture, video };
+  return { texture, previousTexture, video };
 }
 
 function updateVideoTexture(
   gl: WebGL2RenderingContext,
-  texture: WebGLTexture,
-  video: HTMLVideoElement
+  videoTextureInfo: VideoTextureInfo
 ): void {
-  if (video.readyState >= video.HAVE_CURRENT_DATA) {
-    gl.bindTexture(gl.TEXTURE_2D, texture);
+  const { video } = videoTextureInfo;
+
+  if (
+    video.readyState >= video.HAVE_CURRENT_DATA &&
+    video.currentTime !== videoTextureInfo.lastVideoTime
+  ) {
+    const previousTexture = videoTextureInfo.previousTexture;
+    videoTextureInfo.previousTexture = videoTextureInfo.texture;
+    videoTextureInfo.texture = previousTexture;
+    videoTextureInfo.lastVideoTime = video.currentTime;
+
+    gl.bindTexture(gl.TEXTURE_2D, videoTextureInfo.texture);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
   }
+}
+
+function initializeFeedbackTexture(
+  gl: WebGL2RenderingContext,
+  texture: WebGLTexture,
+  width: number,
+  height: number
+) {
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,
+    gl.RGBA,
+    width,
+    height,
+    0,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    null
+  );
+}
+
+function createFeedbackTextures(
+  gl: WebGL2RenderingContext
+): FeedbackTextureInfo | null {
+  const currentTexture = gl.createTexture();
+  const previousTexture = gl.createTexture();
+  const framebuffer = gl.createFramebuffer();
+
+  if (!currentTexture || !previousTexture || !framebuffer) return null;
+
+  initializeFeedbackTexture(gl, currentTexture, 1, 1);
+  initializeFeedbackTexture(gl, previousTexture, 1, 1);
+
+  return {
+    currentTexture,
+    previousTexture,
+    framebuffer,
+    previousUnit: 0,
+    width: 1,
+    height: 1,
+  };
+}
+
+function resizeFeedbackTextures(
+  gl: WebGL2RenderingContext,
+  feedbackTextures: FeedbackTextureInfo,
+  width: number,
+  height: number
+) {
+  if (feedbackTextures.width === width && feedbackTextures.height === height) {
+    return;
+  }
+
+  feedbackTextures.width = width;
+  feedbackTextures.height = height;
+  initializeFeedbackTexture(gl, feedbackTextures.currentTexture, width, height);
+  initializeFeedbackTexture(
+    gl,
+    feedbackTextures.previousTexture,
+    width,
+    height
+  );
 }
 
 // ========================================
@@ -331,6 +433,15 @@ export const ShaderCanvas = ({
       gl.getUniformLocation(program, 'uResolution')
     );
     uniformLocations.set('uTime', gl.getUniformLocation(program, 'uTime'));
+    uniformLocations.set(
+      'uFeedbackPass',
+      gl.getUniformLocation(program, 'uFeedbackPass')
+    );
+    const previousFrameLocation = gl.getUniformLocation(
+      program,
+      'uPreviousFrame'
+    );
+    uniformLocations.set('uPreviousFrame', previousFrameLocation);
 
     // Add user-defined uniforms
     Object.keys(uniformsRef.current).forEach((name) => {
@@ -340,11 +451,18 @@ export const ShaderCanvas = ({
         `${name}Size`,
         gl.getUniformLocation(program, `${name}Size`)
       );
+      uniformLocations.set(
+        `${name}PreviousFrame`,
+        gl.getUniformLocation(program, `${name}PreviousFrame`)
+      );
     });
 
     // Initialize texture tracking
     const textures = new Map<string, TextureInfo>();
     const videoTextures = new Map<string, VideoTextureInfo>();
+    const feedbackTextures = previousFrameLocation
+      ? createFeedbackTextures(gl)
+      : null;
 
     return {
       gl,
@@ -353,7 +471,8 @@ export const ShaderCanvas = ({
       uniformLocations,
       textures,
       videoTextures,
-      nextTextureUnit: 0,
+      feedbackTextures,
+      nextTextureUnit: feedbackTextures ? 1 : 0,
     };
   }, [fragmentShader]);
 
@@ -381,7 +500,13 @@ export const ShaderCanvas = ({
             const result = loadVideoTexture(gl, value);
             if (result) {
               const unit = renderer.nextTextureUnit++;
-              videoTextureInfo = { ...result, unit };
+              const previousUnit = renderer.nextTextureUnit++;
+              videoTextureInfo = {
+                ...result,
+                unit,
+                previousUnit,
+                lastVideoTime: -1,
+              };
               renderer.videoTextures.set(uniformName, videoTextureInfo);
             }
           }
@@ -390,6 +515,15 @@ export const ShaderCanvas = ({
             gl.activeTexture(gl.TEXTURE0 + videoTextureInfo.unit);
             gl.bindTexture(gl.TEXTURE_2D, videoTextureInfo.texture);
             gl.uniform1i(location, videoTextureInfo.unit);
+
+            const previousLocation = renderer.uniformLocations.get(
+              `${uniformName}PreviousFrame`
+            );
+            if (previousLocation) {
+              gl.activeTexture(gl.TEXTURE0 + videoTextureInfo.previousUnit);
+              gl.bindTexture(gl.TEXTURE_2D, videoTextureInfo.previousTexture);
+              gl.uniform1i(previousLocation, videoTextureInfo.previousUnit);
+            }
           }
         } else {
           // Handle image textures
@@ -449,13 +583,21 @@ export const ShaderCanvas = ({
     const displayWidth = canvas.clientWidth;
     const displayHeight = canvas.clientHeight;
     const dpr = Math.min(window.devicePixelRatio, 1.5);
+    const targetWidth = Math.max(1, Math.round(displayWidth * dpr));
+    const targetHeight = Math.max(1, Math.round(displayHeight * dpr));
 
-    if (
-      canvas.width !== displayWidth * dpr ||
-      canvas.height !== displayHeight * dpr
-    ) {
-      canvas.width = displayWidth * dpr;
-      canvas.height = displayHeight * dpr;
+    if (canvas.width !== targetWidth || canvas.height !== targetHeight) {
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+    }
+
+    if (renderer.feedbackTextures) {
+      resizeFeedbackTextures(
+        gl,
+        renderer.feedbackTextures,
+        canvas.width,
+        canvas.height
+      );
     }
 
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -466,10 +608,11 @@ export const ShaderCanvas = ({
     gl.bindVertexArray(vao);
 
     // Update all video textures every frame
-    renderer.videoTextures.forEach(({ texture, video }, name) => {
-      updateVideoTexture(gl, texture, video);
+    renderer.videoTextures.forEach((videoTextureInfo, name) => {
+      updateVideoTexture(gl, videoTextureInfo);
       // Set video size uniform if available
       const sizeLocation = uniformLocations.get(`${name}Size`);
+      const { video } = videoTextureInfo;
       if (sizeLocation && video.videoWidth > 0 && video.videoHeight > 0) {
         gl.uniform2f(sizeLocation, video.videoWidth, video.videoHeight);
       }
@@ -495,6 +638,15 @@ export const ShaderCanvas = ({
       const elapsed = (performance.now() - startTimeRef.current) / 1000;
       gl.uniform1f(timeLocation, elapsed);
     }
+    const previousFrameLocation = uniformLocations.get('uPreviousFrame');
+    if (previousFrameLocation && renderer.feedbackTextures) {
+      gl.activeTexture(gl.TEXTURE0 + renderer.feedbackTextures.previousUnit);
+      gl.bindTexture(gl.TEXTURE_2D, renderer.feedbackTextures.previousTexture);
+      gl.uniform1i(
+        previousFrameLocation,
+        renderer.feedbackTextures.previousUnit
+      );
+    }
 
     // Set user-defined uniforms
     Object.entries(uniformsRef.current).forEach(([name, value]) => {
@@ -502,7 +654,44 @@ export const ShaderCanvas = ({
       setUniform(gl, location ?? null, value, renderer, name);
     });
 
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    if (renderer.feedbackTextures) {
+      const feedbackPassLocation = uniformLocations.get('uFeedbackPass');
+
+      if (feedbackPassLocation) {
+        // WebGL boolean uniforms are assigned as integers. `1` tells the
+        // shader that this draw writes data into the feedback texture.
+        gl.uniform1i(feedbackPassLocation, 1);
+      }
+
+      gl.bindFramebuffer(gl.FRAMEBUFFER, renderer.feedbackTextures.framebuffer);
+      gl.framebufferTexture2D(
+        gl.FRAMEBUFFER,
+        gl.COLOR_ATTACHMENT0,
+        gl.TEXTURE_2D,
+        renderer.feedbackTextures.currentTexture,
+        0
+      );
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+      if (feedbackPassLocation) {
+        // `0` switches the same shader back to its visible presentation path.
+        gl.uniform1i(feedbackPassLocation, 0);
+      }
+
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+      const previousTexture = renderer.feedbackTextures.previousTexture;
+      renderer.feedbackTextures.previousTexture =
+        renderer.feedbackTextures.currentTexture;
+      renderer.feedbackTextures.currentTexture = previousTexture;
+    } else {
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    }
 
     animationFrameRef.current = requestAnimationFrame(render);
   }, [setUniform]);
@@ -533,19 +722,25 @@ export const ShaderCanvas = ({
         animationFrameRef.current = 0;
       }
       if (rendererRef.current) {
-        const { gl, program, vao, textures, videoTextures } =
+        const { gl, program, vao, textures, videoTextures, feedbackTextures } =
           rendererRef.current;
         // Delete all image textures
         textures.forEach(({ texture }) => {
           gl.deleteTexture(texture);
         });
         // Delete all video textures and clean up video elements
-        videoTextures.forEach(({ texture, video }) => {
+        videoTextures.forEach(({ texture, previousTexture, video }) => {
           video.pause();
           video.src = '';
           video.load();
           gl.deleteTexture(texture);
+          gl.deleteTexture(previousTexture);
         });
+        if (feedbackTextures) {
+          gl.deleteTexture(feedbackTextures.currentTexture);
+          gl.deleteTexture(feedbackTextures.previousTexture);
+          gl.deleteFramebuffer(feedbackTextures.framebuffer);
+        }
         gl.deleteVertexArray(vao);
         gl.deleteProgram(program);
         rendererRef.current = null;

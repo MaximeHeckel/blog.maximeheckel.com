@@ -71,6 +71,9 @@ const ScrollSpyWidget = dynamic(
   }
 );
 const OpenAIPlayground = dynamic(() => import('./Widgets/OpenAIPlayground'));
+const SDFShapes = dynamic(() =>
+  import('./Widgets/SDFShapes').then((mod) => mod.SDFShapes)
+);
 const CubicBezierVisualizer = dynamic(
   () => import('./Widgets/CubicBezierVisualizer')
 );
@@ -309,6 +312,26 @@ const TransmittanceLUT = dynamic(() =>
   )
 );
 
+const MotionMask = dynamic(() =>
+  import('./Widgets/ShadingMotion/MotionMask').then((mod) => mod.MotionMask)
+);
+
+const DitheredMotionMaskDemo = dynamic(() =>
+  import('./Widgets/ShadingMotion/DitheredMotionMaskDemo').then(
+    (mod) => mod.DitheredMotionMaskDemo
+  )
+);
+
+const BlobTracking = dynamic(() =>
+  import('./Widgets/ShadingMotion/BlobTracking').then((mod) => mod.BlobTracking)
+);
+
+const DecorativeMotion = dynamic(() =>
+  import('./Widgets/ShadingMotion/DecorativeMotion').then(
+    (mod) => mod.DecorativeMotion
+  )
+);
+
 const RefractionDispersionSandpack = dynamic(
   () => import('./Widgets/RefractionDispersionReactThreeFiber/Sandpack')
 );
@@ -377,6 +400,10 @@ const AtmosphericScatteringSandpack = dynamic(
   () => import('./Widgets/AtmosphericScattering/Sandpack')
 );
 
+const ShadingMotionSandpack = dynamic(
+  () => import('./Widgets/ShadingMotion/Sandpack')
+);
+
 const Slideshow = dynamic(() => import('../Slideshow'));
 
 const customComponents = {
@@ -396,6 +423,7 @@ const customComponents = {
   FramerMotionAnimatePresence,
   FramerMotionAnimationLayout,
   OpenAIPlayground,
+  SDFShapes,
   CubicBezierVisualizer,
   BezierCurve,
   VaporwaveThreejsDisclaimer,
@@ -451,6 +479,10 @@ const customComponents = {
   Density,
   LightDensity,
   TransmittanceLUT,
+  MotionMask,
+  DitheredMotionMaskDemo,
+  BlobTracking,
+  DecorativeMotion,
   // Sandpacks
   CSSCompositionSandpack,
   ScrollSpySandpack,
@@ -475,6 +507,7 @@ const customComponents = {
   TSLWebGPUSandpack,
   HalftoneSandpack,
   AtmosphericScatteringSandpack,
+  ShadingMotionSandpack,
 };
 
 const MDXComponents = {

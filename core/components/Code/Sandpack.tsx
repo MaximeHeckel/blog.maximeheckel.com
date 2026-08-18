@@ -228,6 +228,7 @@ interface SandpackProps {
   dependencies?: Record<string, string>;
   autorun?: boolean;
   defaultTab?: Tab;
+  showCode?: boolean;
 }
 
 const defaultFilesByTemplate: Partial<
@@ -252,6 +253,7 @@ const Sandpack = (props: SandpackProps) => {
     template,
     autorun = true,
     defaultTab = 'preview',
+    showCode = true,
   } = props;
 
   const isMobile = useIsMobile();
@@ -259,8 +261,8 @@ const Sandpack = (props: SandpackProps) => {
   const [consoleKey, setConsoleKey] = useState(0);
   const [selectedTab, setSelectedTab] = useState<Tab>(defaultTab);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  // Start with true to match SSR, then update based on isMobile after hydration
-  const [displayCode, setDisplayCode] = useState(true);
+  // Start from the requested default to match SSR, then account for mobile.
+  const [displayCode, setDisplayCode] = useState(showCode);
   const [shouldAutorun, setShouldAutorun] = useState(autorun);
 
   // Sync with isMobile state after hydration to avoid SSR mismatch
@@ -344,6 +346,7 @@ const Sandpack = (props: SandpackProps) => {
                 left: 0,
                 width: '100%',
                 height: '100%',
+                zIndex: 4,
                 pointerEvents: 'none',
                 border: '1px solid var(--border-color)',
                 borderRadius: isFullscreen ? '0px' : 'var(--border-radius-2)',
