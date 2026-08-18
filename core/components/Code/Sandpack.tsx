@@ -301,6 +301,7 @@ const Sandpack = (props: SandpackProps) => {
           dependencies: dependencies || {},
         }}
         options={{
+          bundlerURL: 'https://sandpack-maxime.vercel.app',
           autorun: shouldAutorun,
         }}
       >
