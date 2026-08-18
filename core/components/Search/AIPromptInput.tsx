@@ -34,7 +34,7 @@ const AIPromptInput = (props: { status: Status }) => {
           setValue(event.target.value)
         }
       />
-      <Box css={{ width: 96 }}>
+      <Box css={{ width: 96, marginRight: 'var(--space-2)' }}>
         <AnimatePresence>
           {value !== '' && status !== 'loading' ? (
             <Flex
