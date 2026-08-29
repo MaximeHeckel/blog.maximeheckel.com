@@ -4,9 +4,47 @@
 }
 
 html {
+  --scrollbar-padding: 4px;
+  --scrollbar-size: 14px;
+  --scrollbar-thumb: var(--gray-900);
   font: 100%/1.2888 var(--font-display);
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  scrollbar-width: thin;
+}
+
+html.maximeheckel-light {
+  color-scheme: light;
+}
+
+html.maximeheckel-dark {
+  color-scheme: dark;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+    scrollbar-width: thin;
+  }
+}
+
+*::-webkit-scrollbar {
+  background: transparent;
+  height: var(--scrollbar-size);
+  width: var(--scrollbar-size);
+}
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  background-clip: content-box;
+  border: var(--scrollbar-padding) solid transparent;
+  border-radius: 9999px;
 }
 
 body {
