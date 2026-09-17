@@ -62,6 +62,9 @@ const SandpackWrapper = styled(Box, {
 
   '.cm-scroller': {
     padding: 'var(--space-2) 0px !important',
+    // Match the site theme while preserving native scrollbar visibility.
+    scrollbarColor: 'var(--scrollbar-thumb) transparent',
+    scrollbarWidth: 'thin',
   },
 
   '.cm-gutter': {
