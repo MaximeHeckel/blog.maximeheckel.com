@@ -23,24 +23,25 @@ html.maximeheckel-dark {
 }
 
 @supports not selector(::-webkit-scrollbar) {
-  * {
+  *:not(.cm-scroller) {
     scrollbar-color: var(--scrollbar-thumb) transparent;
     scrollbar-width: thin;
   }
 }
 
-*::-webkit-scrollbar {
+/* Keep CodeMirror scrollbars native so they respect OS visibility settings. */
+*:not(.cm-scroller)::-webkit-scrollbar {
   background: transparent;
   height: var(--scrollbar-size);
   width: var(--scrollbar-size);
 }
 
-*::-webkit-scrollbar-track,
-*::-webkit-scrollbar-corner {
+*:not(.cm-scroller)::-webkit-scrollbar-track,
+*:not(.cm-scroller)::-webkit-scrollbar-corner {
   background: transparent;
 }
 
-*::-webkit-scrollbar-thumb {
+*:not(.cm-scroller)::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
   background-clip: content-box;
   border: var(--scrollbar-padding) solid transparent;
