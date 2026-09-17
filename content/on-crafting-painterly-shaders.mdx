@@ -1,7 +1,7 @@
 ---
 title: 'On Crafting Painterly Shaders'
 subtitle: A detailed essay on my research and process of building a shader to mimic paint, watercolor, and aquarelle by exploring various implementations of the Kuwahara image smoothing filter.
-date: '2024-10-29T08:00:00.000Z'
+date: '2026-09-16T08:00:00.000Z'
 updated: '2024-10-29T08:00:00.000Z'
 categories: []
 slug: on-crafting-painterly-shaders
@@ -36,7 +36,7 @@ into several techniques highlighted in the many papers I read to improve the ori
 
 - [Watercolor-like compositing in Blender](https://www.youtube.com/watch?v=chfGe0aTDjs) a great video by {<Anchor favicon discreet href="https://twitter.com/arpeegee">@arpeegee</Anchor>} who showcases Blender's Kuwahara filter node.
 - [Artistic Edge and Corner Enhancing Smoothing](https://core.ac.uk/download/pdf/148194268.pdf) by Papari, Giuseppe, Petkov Nicolai, and Campisi Patrizio who are behind the extended version of the Kuwahara filter.
-- [Anisotropic Kuwahara Filtering with PolynomialWeighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf) by Jan Eric Kyprianidis, Amir Semmo, Henry Kang, and Jürgen Döllner who wrote a paper on using a polynomial weighting function instead of a Gaussian and also gave a lot of details necessary for my implementation of the anisotropic Kuwahara filter.
+- [Anisotropic Kuwahara Filtering with Polynomial Weighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf) by Jan Eric Kyprianidis, Amir Semmo, Henry Kang, and Jürgen Döllner who wrote a paper on using a polynomial weighting function instead of a Gaussian and also gave a lot of details necessary for my implementation of the anisotropic Kuwahara filter.
 - [Anisotropic image segmentation by a gradient structure tensor](https://docs.opencv.org/4.x/d4/d70/tutorial_anisotropic_image_segmentation_by_a_gst.html) by Karpushin Vladislav who details how to obtain and use the structure tensor of an image to compute its local orientation.
 
 </Callout>
@@ -386,14 +386,14 @@ The result looks already better than previously, even at a low kernel size! Let'
 
 The Gaussian function used to calculate the weights of our pixel is, unfortunately, quite expensive to run, even more so in all those nested loops necessary to sample each pixel of a given Sector. This improvement is costing us a lot of frames, and it would be very tempting to disregard it and revert to the original weighting method.
 
-However, a team of _smart individuals_ found a way to squeeze more performance out of the filter while maintaining the advantages given by the Gaussian. In [Anisotropic Kuwahara Filtering with PolynomialWeighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf), they propose to replace the Gaussian with a polynomial that roughly approximates it.
+However, a team of _smart individuals_ found a way to squeeze more performance out of the filter while maintaining the advantages given by the Gaussian. In [Anisotropic Kuwahara Filtering with polynomial Weighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf), they propose to replace the Gaussian with a polynomial that roughly approximates it.
 
-`[(x + ζ) − ηy^2]^2`
+<InlineMath>{String.raw`\left[(x + \zeta) - \eta y^2\right]^2`}</InlineMath>
 
 ```glsl title=Using Polynomial weighting in our Kuwahara filter implementation
 // ...
 
-float polynomialWeight(float x, float y, float eta, float lambda) {
+float polynomial Weight(float x, float y, float eta, float lambda) {
     float polyValue = (x + eta) - lambda * (y * y);
     return max(0.0, polyValue * polyValue);
 }
@@ -435,7 +435,7 @@ This upcoming part takes the difficulty up a notch to improve the filter by leve
 
 Papari's extension of the Kuwahara filter is already a step towards a lovely painterly shader, however, (I must sound like a broken record at this point) we still can perceive some artifacts left by the filter on the resulting scene. Indeed, the painting effect is applied indiscriminately to the input without any consideration for the overall structure of the current frame. In the case of a true painting, the artist would adapt the _flow of the brush_ based on the direction of the edge. We're not getting this here.
 
-Luckily, [Anisotropic Kuwahara Filtering with PolynomialWeighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf) answers this problem by building upon the concepts of the extended Kuwahara filter we just saw.
+Luckily, [Anisotropic Kuwahara Filtering with polynomial Weighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf) answers this problem by building upon the concepts of the extended Kuwahara filter we just saw.
 
 <Callout variant="info" label="Definitions">
 
@@ -692,9 +692,9 @@ vec4 getDominantOrientation(vec4 structureTensor) {
 
 From the Structure Tensor of our underlying scene, we derived both its eigenvalues and eigenvector. We could have also merely headed over to [Anisotropic image segmentation by a gradient structure tensor](https://docs.opencv.org/4.x/d4/d70/tutorial_anisotropic_image_segmentation_by_a_gst.html) to find those formulas, however, we're grown-ups and it's nice to step out of our comfort zone to learn how to derive/define the tools and formulas we use in our shaders from time to time 🙂.
 
-In [Anisotropic Kuwahara Filtering with PolynomialWeighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf), the authors define the anisotropy `A` using those eigenvalues as follows:
+In [Anisotropic Kuwahara Filtering with polynomial Weighting Functions](https://www.umsl.edu/~kangh/Papers/kang-tpcg2010.pdf), the authors define the anisotropy `A` using those eigenvalues as follows:
 
-<InlineMath>{String.raw`g`}</InlineMath>
+<InlineMath>{String.raw`A = (\lambda_1 - \lambda_2) / (\lambda_1 + \lambda_2 + \text{1e-7})`}</InlineMath>
 
 <Callout variant="info">
 
