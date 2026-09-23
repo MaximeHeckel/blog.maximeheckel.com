@@ -72,7 +72,7 @@ export default async function handler(
       .filter((article) => article.relevance >= RELEVANCE_THRESHOLD)
       .sort((a, b) => b.relevance - a.relevance)
       .slice(0, MAX_RESULTS)
-      .map(({ title, path }) => ({ title, path }));
+      .map(({ title, path, date }) => ({ title, path, date }));
 
     return res.status(200).json(articles);
   } catch {

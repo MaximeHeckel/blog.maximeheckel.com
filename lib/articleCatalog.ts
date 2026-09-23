@@ -44,13 +44,18 @@ export async function buildArticleCatalog() {
       const { data, content } = matter(
         await readFile(path.join(directory, file), 'utf8')
       );
-      if (typeof data.slug !== 'string' || typeof data.title !== 'string') {
+      if (
+        typeof data.slug !== 'string' ||
+        typeof data.title !== 'string' ||
+        typeof data.date !== 'string'
+      ) {
         throw new Error(`Missing article metadata: ${file}`);
       }
 
       return {
         id: data.slug,
         title: data.title,
+        date: data.date,
         subtitle: typeof data.subtitle === 'string' ? data.subtitle : '',
         headings: extractArticleHeadings(content),
         path: `/posts/${data.slug}/`,

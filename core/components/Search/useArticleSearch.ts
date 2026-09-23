@@ -1,10 +1,10 @@
 import { useCallback, useRef, useState } from 'react';
 
-import { Result, SearchError, Status } from './types';
+import { ArticleSearchResult, SearchError, Status } from './types';
 
 interface UseArticleSearchReturn {
   status: Status;
-  results: Result[];
+  results: ArticleSearchResult[];
   error: SearchError | null;
   search: (query: string) => Promise<void>;
   reset: () => void;
@@ -12,7 +12,7 @@ interface UseArticleSearchReturn {
 
 export function useArticleSearch(): UseArticleSearchReturn {
   const [status, setStatus] = useState<Status>('initial');
-  const [results, setResults] = useState<Result[]>([]);
+  const [results, setResults] = useState<ArticleSearchResult[]>([]);
   const [error, setError] = useState<SearchError | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -29,7 +29,6 @@ export function useArticleSearch(): UseArticleSearchReturn {
     abortControllerRef.current = controller;
 
     setStatus('loading');
-    setResults([]);
     setError(null);
 
     try {
@@ -44,10 +43,12 @@ export function useArticleSearch(): UseArticleSearchReturn {
         throw new Error('Search failed');
       }
 
-      const articles: Array<{ title: string; path: string }> =
+      const articles: Array<{ title: string; path: string; date: string }> =
         await response.json();
       if (controller.signal.aborted) return;
-      setResults(articles.map(({ title, path }) => ({ title, url: path })));
+      setResults(
+        articles.map(({ title, path, date }) => ({ title, url: path, date }))
+      );
       setStatus('done');
     } catch (err) {
       if (

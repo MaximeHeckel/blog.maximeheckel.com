@@ -58,7 +58,7 @@ export const Input = styled('input', {
 });
 
 export const List = styled('div', {
-  maxHeight: 'min(460px, 50vh)',
+  maxHeight: 'min(calc(9 * 48px + 16px + 1.5px), 50vh)',
   overflowY: 'auto',
   padding: '8px',
   transition: 'height 0.15s ease',
@@ -88,7 +88,7 @@ export const Empty = styled('div', {
   justifyContent: 'flex-start',
   height: '48px',
   padding: '0 12px',
-  color: 'var(--text-primary)',
+  color: 'var(--text-secondary)',
   opacity: 0.75,
   fontSize: 'var(--font-size-1)',
 });
@@ -99,7 +99,7 @@ export const Loading = styled('div', {
   justifyContent: 'flex-start',
   height: '48px',
   padding: '0 12px',
-  color: 'var(--text-primary)',
+  color: 'var(--text-secondary)',
   opacity: 0.75,
   fontSize: 'var(--font-size-1)',
 });
@@ -110,8 +110,8 @@ export const Group = styled('div', {
   },
 
   '[cmdk-group-heading]': {
-    fontSize: 'var(--font-size-1)',
-    color: 'var(--text-secondary)',
+    fontSize: '13px',
+    color: 'var(--text-tertiary)',
     fontWeight: 500,
     padding: '8px 8px 8px 12px',
     userSelect: 'none',
@@ -119,7 +119,7 @@ export const Group = styled('div', {
 });
 
 export const Item = styled('div', {
-  height: '44px',
+  height: '48px',
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
@@ -127,7 +127,7 @@ export const Item = styled('div', {
   borderRadius: 'var(--border-radius-1)',
   fontSize: 'var(--font-size-1)',
   fontWeight: 500,
-  color: 'var(--text-primary)',
+  color: 'var(--text-secondary)',
   cursor: 'pointer',
   userSelect: 'none',
 
@@ -150,9 +150,21 @@ export const Item = styled('div', {
 
 export const ItemLabel = styled('span', {
   flex: 1,
+  minWidth: 0,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
+});
+
+export const ResultDate = styled('time', {
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  color: 'var(--text-tertiary)',
+  fontFamily: 'var(--font-mono)',
+  fontSize: '13px',
+  fontWeight: 400,
+  letterSpacing: '-1px',
+  textTransform: 'uppercase',
 });
 
 export const ItemDetail = styled('span', {

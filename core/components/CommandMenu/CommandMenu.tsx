@@ -5,6 +5,7 @@ import {
   VisuallyHidden,
 } from '@maximeheckel/design-system';
 import { Command, useCommandState } from 'cmdk';
+import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'motion/react';
 import { useRouter } from 'next/router';
 import {
@@ -149,7 +150,9 @@ const CommandSearchFallback = ({ onSearch }: { onSearch: () => void }) => {
     return () => clearTimeout(timeout);
   }, [query, count, onSearch]);
 
-  return null;
+  return query.trim() && count === 0 ? (
+    <S.Loading as={Command.Loading}>Searching...</S.Loading>
+  ) : null;
 };
 
 const CommandMenu = (props: CommandMenuProps) => {
@@ -328,7 +331,9 @@ const CommandMenu = (props: CommandMenuProps) => {
               <S.List as={Command.List}>
                 {isSearchMode ? (
                   <>
-                    {searchStatus === 'loading' && searchQuery ? (
+                    {searchStatus === 'loading' &&
+                    searchResults.length === 0 &&
+                    searchQuery ? (
                       <S.Loading as={Command.Loading}>Searching...</S.Loading>
                     ) : null}
 
@@ -343,7 +348,15 @@ const CommandMenu = (props: CommandMenuProps) => {
                     {showRecentSearches ? (
                       recentSearches.length > 0 ? (
                         <>
-                          <S.Group as={Command.Group} heading="Recent searches">
+                          <S.Group
+                            as={Command.Group}
+                            heading="Recent searches"
+                            css={{
+                              '[cmdk-group-heading]': {
+                                color: 'var(--text-tertiary)',
+                              },
+                            }}
+                          >
                             {recentSearches.map((query) => (
                               <S.Item
                                 key={query}
@@ -352,7 +365,6 @@ const CommandMenu = (props: CommandMenuProps) => {
                                 onSelect={() => handleRecentSearchSelect(query)}
                                 css={{ color: 'var(--text-secondary)' }}
                               >
-                                <Icon.Arrow variant="tertiary" size={4} />
                                 <S.ItemLabel>{query}</S.ItemLabel>
                               </S.Item>
                             ))}
@@ -374,8 +386,18 @@ const CommandMenu = (props: CommandMenuProps) => {
                       )
                     ) : null}
 
-                    {searchResults.length > 0 && searchStatus !== 'loading' ? (
-                      <S.Group as={Command.Group}>
+                    {searchResults.length > 0 ? (
+                      <S.Group
+                        as={Command.Group}
+                        css={{
+                          '[cmdk-item]:first-child': {
+                            scrollMarginTop: '8px',
+                          },
+                          '[cmdk-item]:last-child': {
+                            scrollMarginBottom: '8px',
+                          },
+                        }}
+                      >
                         {searchResults.map((result) => (
                           <S.Item
                             key={result.url}
@@ -387,8 +409,10 @@ const CommandMenu = (props: CommandMenuProps) => {
                             data-testid="search-result"
                             css={{ color: 'var(--text-secondary)' }}
                           >
-                            <Icon.Arrow variant="tertiary" size={4} />
                             <S.ItemLabel>{result.title}</S.ItemLabel>
+                            <S.ResultDate dateTime={result.date}>
+                              {format(new Date(result.date), 'MMM dd, yyyy')}
+                            </S.ResultDate>
                           </S.Item>
                         ))}
                       </S.Group>
@@ -397,7 +421,6 @@ const CommandMenu = (props: CommandMenuProps) => {
                 ) : (
                   <>
                     <CommandSearchFallback onSearch={handleSearchFallback} />
-                    <S.Empty as={Command.Empty}>No results found.</S.Empty>
                     <S.Group as={Command.Group} heading="Tools">
                       <S.Item
                         as={Command.Item}
