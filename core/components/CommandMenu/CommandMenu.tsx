@@ -4,7 +4,7 @@ import {
   useDebouncedValue,
   VisuallyHidden,
 } from '@maximeheckel/design-system';
-import { Command } from 'cmdk';
+import { Command, useCommandState } from 'cmdk';
 import { AnimatePresence, motion } from 'motion/react';
 import { useRouter } from 'next/router';
 import {
@@ -139,6 +139,19 @@ const clearRecentSearches = (): void => {
   }
 };
 
+const CommandSearchFallback = ({ onSearch }: { onSearch: () => void }) => {
+  const query = useCommandState((state) => state.search);
+  const count = useCommandState((state) => state.filtered.count);
+
+  useEffect(() => {
+    if (!query.trim() || count > 0) return;
+    const timeout = setTimeout(onSearch, 400);
+    return () => clearTimeout(timeout);
+  }, [query, count, onSearch]);
+
+  return null;
+};
+
 const CommandMenu = (props: CommandMenuProps) => {
   const { open, onOpenChange, onAskAI } = props;
   const router = useRouter();
@@ -224,6 +237,10 @@ const CommandMenu = (props: CommandMenuProps) => {
     setSearchQuery(query);
   }, []);
 
+  const handleSearchFallback = useCallback(() => {
+    setPage('search');
+  }, []);
+
   const handleClearRecentSearches = useCallback(() => {
     clearRecentSearches();
     setRecentSearches([]);
@@ -305,8 +322,8 @@ const CommandMenu = (props: CommandMenuProps) => {
                 placeholder={
                   isSearchMode ? 'Search blog posts...' : 'Type a command...'
                 }
-                value={isSearchMode ? searchQuery : undefined}
-                onValueChange={isSearchMode ? setSearchQuery : undefined}
+                value={searchQuery}
+                onValueChange={setSearchQuery}
               />
               <S.List as={Command.List}>
                 {isSearchMode ? (
@@ -349,7 +366,6 @@ const CommandMenu = (props: CommandMenuProps) => {
                               color: 'var(--warning)',
                             }}
                           >
-                            <Icon.Arrow variant="tertiary" size={4} />
                             <S.ItemLabel>Clear recent searches</S.ItemLabel>
                           </S.Item>
                         </>
@@ -380,13 +396,17 @@ const CommandMenu = (props: CommandMenuProps) => {
                   </>
                 ) : (
                   <>
+                    <CommandSearchFallback onSearch={handleSearchFallback} />
                     <S.Empty as={Command.Empty}>No results found.</S.Empty>
                     <S.Group as={Command.Group} heading="Tools">
                       <S.Item
                         as={Command.Item}
                         value="Search blog posts"
                         keywords={['find', 'articles', 'posts']}
-                        onSelect={() => setPage('search')}
+                        onSelect={() => {
+                          setSearchQuery('');
+                          setPage('search');
+                        }}
                         data-testid="search-tool"
                       >
                         <SearchIcon />

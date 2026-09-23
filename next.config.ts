@@ -32,7 +32,15 @@ const output = withBundleAnalyzer({
       },
     ],
   },
-  webpack(config) {
+  webpack(config, { dev, nextRuntime }) {
+    if (dev && nextRuntime === 'nodejs') {
+      // Vendor chunk reordering on first compilation changes _document's hash
+      // and triggers a full reload, even though the document hasn't changed.
+      config.optimization.splitChunks.cacheGroups.vendor.chunks = (chunk: {
+        name?: string;
+      }) => chunk.name !== 'pages/_document';
+    }
+
     const reactPaths = {
       react: path.join(__dirname, 'node_modules/react'),
       'react-dom': path.join(__dirname, 'node_modules/react-dom'),
