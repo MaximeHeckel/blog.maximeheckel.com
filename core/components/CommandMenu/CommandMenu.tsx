@@ -18,7 +18,7 @@ import {
 
 import { ContactIcon, SearchIcon } from '../Icons';
 import { ScreenReaderOnly } from '../ScreenReaderOnly';
-import { useLocalSearch } from '../Search/useLocalSearch';
+import { useArticleSearch } from '../Search/useArticleSearch';
 import * as S from './CommandMenu.styles';
 import { CommandMenuContext } from './CommandMenuContext';
 
@@ -156,7 +156,7 @@ const CommandMenu = (props: CommandMenuProps) => {
     results: searchResults,
     search,
     reset: resetSearch,
-  } = useLocalSearch();
+  } = useArticleSearch();
 
   useEffect(() => {
     if (page === 'search') {
@@ -333,6 +333,7 @@ const CommandMenu = (props: CommandMenuProps) => {
                                 as={Command.Item}
                                 value={query}
                                 onSelect={() => handleRecentSearchSelect(query)}
+                                css={{ color: 'var(--text-secondary)' }}
                               >
                                 <Icon.Arrow variant="tertiary" size={4} />
                                 <S.ItemLabel>{query}</S.ItemLabel>
@@ -368,6 +369,7 @@ const CommandMenu = (props: CommandMenuProps) => {
                               handleSearchResultSelect(result.url)
                             }
                             data-testid="search-result"
+                            css={{ color: 'var(--text-secondary)' }}
                           >
                             <Icon.Arrow variant="tertiary" size={4} />
                             <S.ItemLabel>{result.title}</S.ItemLabel>
