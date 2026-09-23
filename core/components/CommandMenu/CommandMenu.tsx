@@ -387,17 +387,7 @@ const CommandMenu = (props: CommandMenuProps) => {
                     ) : null}
 
                     {searchResults.length > 0 ? (
-                      <S.Group
-                        as={Command.Group}
-                        css={{
-                          '[cmdk-item]:first-child': {
-                            scrollMarginTop: '8px',
-                          },
-                          '[cmdk-item]:last-child': {
-                            scrollMarginBottom: '8px',
-                          },
-                        }}
-                      >
+                      <S.Group as={Command.Group}>
                         {searchResults.map((result) => (
                           <S.Item
                             key={result.url}

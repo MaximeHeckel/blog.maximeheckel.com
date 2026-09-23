@@ -64,6 +64,14 @@ export const List = styled('div', {
   transition: 'height 0.15s ease',
   borderTop: '1.5px solid oklch(from var(--gray-900) l c h / 15%)',
 
+  '[cmdk-item]': {
+    scrollMarginBlock: '8px',
+  },
+
+  '[cmdk-group-heading]': {
+    scrollMarginTop: '8px',
+  },
+
   '&:not(:has([cmdk-group], [cmdk-item], [cmdk-empty], [cmdk-loading]))': {
     display: 'none',
     padding: '0px 8px 8px 8px',
@@ -138,11 +146,16 @@ export const Item = styled('div', {
   '@media (pointer: fine)': {
     '&[aria-selected="true"]': {
       opacity: 1,
-      backgroundColor: 'var(--emphasis)',
-      color: 'var(--accent)',
+      backgroundColor: 'oklch(from var(--text-primary) l c h / 5%)',
+      color: 'var(--text-primary)',
+
+      '& span, & time': {
+        color: 'var(--text-primary)',
+        opacity: 1,
+      },
 
       '& svg': {
-        stroke: 'var(--accent)',
+        stroke: 'var(--text-primary)',
       },
     },
   },
