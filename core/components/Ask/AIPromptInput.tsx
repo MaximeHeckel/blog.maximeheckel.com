@@ -30,10 +30,8 @@ const AIPromptInput = (props: AIPromptInputProps) => {
         setValue('');
       }}
     >
-      <Flex css={{ width: 24, marginLeft: 16 }}>
-        <Icon.AIChat size={4} variant="tertiary" />
-      </Flex>
       <S.AIInput
+        css={{ paddingLeft: 'var(--space-3)' }}
         ref={inputRef}
         autoComplete="off"
         disabled={status === 'loading'}
