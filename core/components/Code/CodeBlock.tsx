@@ -18,6 +18,14 @@ require('prismjs/components/prism-swift');
 require('prismjs/components/prism-glsl');
 
 export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
+  // A streamed code fence can be empty before its first code token arrives.
+  // Mount scroll tracking only when there is a <pre> to attach to.
+  if (!props.codeString) return null;
+
+  return <ScrollableCodeText {...props} />;
+};
+
+const ScrollableCodeText = (props: HighlightedCodeTextProps) => {
   const { codeString, language, highlightLine } = props;
   const preRef = useRef<HTMLPreElement>(null);
 
@@ -55,8 +63,6 @@ export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
 
     preRef.current.style.setProperty('--shadow-opacity-right', '1');
   }, []);
-
-  if (!codeString) return null;
 
   return (
     <Highlight
