@@ -7,11 +7,6 @@ export type ArticleSearchResult = Result & {
   date: string;
 };
 
-export type Source = {
-  title: string;
-  url: string;
-};
-
 export type SearchError = {
   status: number;
   statusText: string;

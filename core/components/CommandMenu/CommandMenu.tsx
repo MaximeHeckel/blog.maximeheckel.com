@@ -17,6 +17,7 @@ import {
   useState,
 } from 'react';
 
+import { CustomGlassMaterial } from '../DialogGlass';
 import { ContactIcon, SearchIcon } from '../Icons';
 import { ScreenReaderOnly } from '../ScreenReaderOnly';
 import { useArticleSearch } from '../Search/useArticleSearch';
@@ -322,7 +323,7 @@ const CommandMenu = (props: CommandMenuProps) => {
                 borderRadius: 'var(--border-radius-2)',
               }}
             >
-              <S.CustomGlassMaterial />
+              <CustomGlassMaterial />
               <ScreenReaderOnly as="h2">Command Menu</ScreenReaderOnly>
               <S.Input
                 ref={inputRef}

@@ -48,7 +48,7 @@ import { MediaPlayer } from '@core/components/VideoPlayer/MediaPlayer';
 const SandpackExample = dynamic(
   () => import('@core/components/MDX/Widgets/WaveAnimation/Sandpack')
 );
-const Search = dynamic(() => import('@core/components/Search'), {
+const Ask = dynamic(() => import('@core/components/Ask'), {
   ssr: false,
 });
 
@@ -101,7 +101,7 @@ const SliderExample = () => {
 };
 
 export default function Design(props: { tweets: Record<string, NewTweet> }) {
-  const [showSearch, setShowSearch] = React.useState(false);
+  const [showAsk, setShowAsk] = React.useState(false);
   const [email, setEmail] = React.useState('');
 
   const colorScaleNumbers = [
@@ -1225,10 +1225,10 @@ function sayHi(name) {
             id="command-center"
           >
             <H2>Command Center / Search </H2>
-            <Button variant="primary" onClick={() => setShowSearch(true)}>
+            <Button variant="primary" onClick={() => setShowAsk(true)}>
               Show Command Center
             </Button>
-            <Search onClose={() => setShowSearch(false)} open={showSearch} />
+            <Ask onClose={() => setShowAsk(false)} open={showAsk} />
           </Flex>
           <Flex
             alignItems="start"

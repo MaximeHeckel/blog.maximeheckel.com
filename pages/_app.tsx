@@ -6,6 +6,7 @@ import 'katex/dist/katex.min.css';
 import 'styles/global.css';
 import Head from 'next/head';
 
+import { AskProvider } from '@core/components/Ask/AskContext';
 import { CommandMenuProvider } from '@core/components/CommandMenu';
 import { Fonts } from '@core/components/Fonts';
 import { DefaultSeo } from '@core/components/Seo';
@@ -34,11 +35,13 @@ const App = ({ Component, pageProps }: AppProps) => {
       <Fonts />
       <Analytics />
       <SpeedInsights />
-      <CommandMenuProvider>
-        <Tooltip.Provider>
-          <Component {...pageProps} />
-        </Tooltip.Provider>
-      </CommandMenuProvider>
+      <AskProvider>
+        <CommandMenuProvider>
+          <Tooltip.Provider>
+            <Component {...pageProps} />
+          </Tooltip.Provider>
+        </CommandMenuProvider>
+      </AskProvider>
     </>
   );
 };

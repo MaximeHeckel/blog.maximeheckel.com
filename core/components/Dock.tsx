@@ -7,6 +7,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import { useIsMobile } from '@core/hooks/useIsMobile';
 import { useViewTransitionNavigation } from '@core/hooks/useViewTransitionNavigation';
 
+import { useAsk } from './Ask/AskContext';
 import { CommandMenuContext } from './CommandMenu/CommandMenuContext';
 import Logo from './Logo';
 
@@ -22,6 +23,7 @@ const Dock = () => {
   const [isKeyboardNav, setIsKeyboardNav] = useState(false);
   const router = useRouter();
   const isHomePage = router.pathname === '/';
+  const openAsk = useAsk();
   const commandMenuContext = useContext(CommandMenuContext);
 
   const shouldReduceMotion = useReducedMotion();
@@ -60,7 +62,7 @@ const Dock = () => {
       commandMenuContext?.openCommandMenu?.();
     },
     [NAV.ASK]: () => {
-      commandMenuContext?.openAIMode?.();
+      openAsk();
     },
   };
 

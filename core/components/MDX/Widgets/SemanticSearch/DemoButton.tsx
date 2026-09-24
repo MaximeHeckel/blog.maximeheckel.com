@@ -4,23 +4,23 @@ import { useState } from 'react';
 
 import Glow from '@core/components/Glow';
 
-const Search = dynamic(() => import('@core/components/Search'));
+const Ask = dynamic(() => import('@core/components/Ask'));
 
 const DemoButton = () => {
-  const [showSearch, setShowSearch] = useState(false);
+  const [showAsk, setShowAsk] = useState(false);
 
   return (
     <>
       <Glow>
         <Button
-          onClick={() => setShowSearch(true)}
+          onClick={() => setShowAsk(true)}
           startIcon={<Icon.AIChat variant="default" />}
           variant="primary"
         >
           Ask me anything!
         </Button>
       </Glow>
-      <Search onClose={() => setShowSearch(false)} open={showSearch} />
+      <Ask onClose={() => setShowAsk(false)} open={showAsk} />
     </>
   );
 };

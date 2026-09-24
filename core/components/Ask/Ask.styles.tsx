@@ -43,7 +43,7 @@ export const Popup = styled(Dialog.Popup, {
   '&:focus': { outline: 'none' },
 });
 
-export const SearchBox = styled(Box, {
+export const PromptBox = styled(Box, {
   width: '100%',
   position: 'relative',
 });
@@ -65,7 +65,7 @@ export const FormWrapper = styled(Box, {
   },
 });
 
-const SearchInput = styled('input', {
+const PromptInput = styled('input', {
   background: 'transparent',
   border: 'none',
   fontSize: '14px',
@@ -115,7 +115,7 @@ const SearchInput = styled('input', {
   },
 });
 
-export const AIInput = styled(SearchInput, {
+export const AIInput = styled(PromptInput, {
   padding: '0px 8px',
   '&:disabled': {
     cursor: 'not-allowed',

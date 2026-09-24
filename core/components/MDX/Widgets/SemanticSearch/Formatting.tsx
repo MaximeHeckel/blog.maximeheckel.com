@@ -8,11 +8,10 @@ import {
   Tooltip,
 } from '@maximeheckel/design-system';
 import deepEqual from 'deep-eql';
+import { DeepPartial, parsePartialJson } from 'lib/partialJson';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { useEffect, useRef, useState } from 'react';
-
-import { DeepPartial, parsePartialJson } from '@core/components/Search/utils';
 
 import MDXComponents from '../../MDXComponents';
 

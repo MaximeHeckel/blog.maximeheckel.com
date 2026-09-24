@@ -1,5 +1,4 @@
 import { useKeyboardShortcut } from '@maximeheckel/design-system';
-import dynamic from 'next/dynamic';
 import React, {
   createContext,
   useCallback,
@@ -9,9 +8,8 @@ import React, {
   useState,
 } from 'react';
 
+import { useAsk } from '../Ask/AskContext';
 import { CommandMenu } from './CommandMenu';
-
-const Search = dynamic(() => import('@core/components/Search'));
 
 export interface Action {
   id: string;
@@ -26,7 +24,6 @@ interface CommandMenuContextValue {
   registerAction: (action: Action) => void;
   unregisterAction: (id: string) => void;
   openCommandMenu: () => void;
-  openAIMode: () => void;
 }
 
 export const CommandMenuContext = createContext<CommandMenuContextValue | null>(
@@ -40,7 +37,7 @@ interface CommandMenuProviderProps {
 export const CommandMenuProvider = ({ children }: CommandMenuProviderProps) => {
   const [actions, setActions] = useState<Action[]>([]);
   const [isCommandMenuOpen, setIsCommandMenuOpen] = useState(false);
-  const [isAIModeOpen, setIsAIModeOpen] = useState(false);
+  const openAsk = useAsk();
   const commandMenuKeyRef = useRef(0);
   const wasOpenRef = useRef(false);
 
@@ -68,15 +65,10 @@ export const CommandMenuProvider = ({ children }: CommandMenuProviderProps) => {
     setIsCommandMenuOpen(true);
   }, []);
 
-  const openAIMode = useCallback(() => {
-    setIsAIModeOpen(true);
-  }, []);
-
   const contextRef = useRef({
     registerAction,
     unregisterAction,
     openCommandMenu,
-    openAIMode,
   });
 
   const value: CommandMenuContextValue = {
@@ -84,7 +76,6 @@ export const CommandMenuProvider = ({ children }: CommandMenuProviderProps) => {
     registerAction: contextRef.current.registerAction,
     unregisterAction: contextRef.current.unregisterAction,
     openCommandMenu: contextRef.current.openCommandMenu,
-    openAIMode: contextRef.current.openAIMode,
   };
 
   return (
@@ -93,9 +84,8 @@ export const CommandMenuProvider = ({ children }: CommandMenuProviderProps) => {
         key={commandMenuKeyRef.current}
         open={isCommandMenuOpen}
         onOpenChange={setIsCommandMenuOpen}
-        onAskAI={() => setIsAIModeOpen(true)}
+        onAskAI={openAsk}
       />
-      <Search open={isAIModeOpen} onClose={() => setIsAIModeOpen(false)} />
       {children}
     </CommandMenuContext.Provider>
   );

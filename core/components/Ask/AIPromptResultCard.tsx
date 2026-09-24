@@ -5,21 +5,18 @@ import {
   Anchor,
   Pill,
   Text,
-  Details,
   List,
 } from '@maximeheckel/design-system';
-import { motion, AnimatePresence } from 'motion/react';
-import { MDXRemoteSerializeResult, MDXRemote } from 'next-mdx-remote';
-import { serialize } from 'next-mdx-remote/serialize';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
-import { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useCallback, useId, useRef } from 'react';
 
-import { CustomGlassMaterial } from '../CommandMenu/CommandMenu.styles';
-import MDXComponents from '../MDX/MDXComponents';
-import { SearchError, Status } from './types';
+import { CustomGlassMaterial } from '../DialogGlass';
+import { Answer } from './Answer';
+import { AskError, Status } from './types';
 
 interface AIPromtResultCardProps {
-  error: SearchError | null;
+  error: AskError | null;
   sources: Array<{ title?: string; url?: string }> | undefined;
   status: Status;
   query: string;
@@ -45,54 +42,18 @@ const AIPromptResultCard = forwardRef(
     const { error, sources, streamData, query, status, onQuestionSelect } =
       props;
 
-    const [mdxData, setMdxData] = useState<MDXRemoteSerializeResult<
-      Record<string, unknown>,
-      Record<string, unknown>
-    > | null>(null);
     const scrollableContentRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-      if (scrollableContentRef.current) {
-        scrollableContentRef.current.scrollTop = 0;
-      }
-    }, []);
-
-    const scrollToBottom = () => {
-      if (scrollableContentRef.current) {
-        scrollableContentRef.current.scrollTo({
-          top: scrollableContentRef.current.scrollHeight,
-          behavior: 'smooth',
-        });
-      }
-    };
-
-    useEffect(() => {
-      const serializeStreamData = async () => {
-        const mdxSource = await serialize(streamData, {
-          mdxOptions: { development: process.env.NODE_ENV === 'development' },
-        });
-
-        setMdxData(mdxSource);
-      };
-
-      if (streamData === '') {
-        setMdxData(null);
-        return;
-      }
-
-      if (streamData) {
-        serializeStreamData();
-      }
-
-      if (scrollableContentRef.current) {
-        if (status === 'loading' || status === 'done') {
-          // Use requestAnimationFrame to ensure DOM has updated
-          requestAnimationFrame(() => {
-            scrollToBottom();
-          });
-        }
-      }
-    }, [streamData, status]);
+    const sourcesTitleId = useId();
+    const shouldReduceMotion = useReducedMotion();
+    const scrollToBottom = useCallback(() => {
+      const container = scrollableContentRef.current;
+      if (!container) return;
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior:
+          status === 'done' && !shouldReduceMotion ? 'smooth' : 'instant',
+      });
+    }, [status, shouldReduceMotion]);
 
     return (
       <Card
@@ -246,42 +207,49 @@ const AIPromptResultCard = forwardRef(
                 later.
               </Text>
             ) : null}
-            {mdxData ? (
-              <MDXRemote
-                compiledSource={mdxData.compiledSource}
-                scope={{}}
-                frontmatter={{}}
-                components={MDXComponents}
-              />
+            <Answer text={streamData} onRender={scrollToBottom} />
+            {status === 'done' && sources?.length ? (
+              <Box
+                as={motion.section}
+                aria-labelledby={sourcesTitleId}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: shouldReduceMotion ? 0 : 0.25,
+                  ease: 'easeOut',
+                }}
+                css={{
+                  marginTop: 'var(--space-4)',
+                  'li:last-child': { marginBottom: 0 },
+                }}
+              >
+                <Text
+                  as="h3"
+                  id={sourcesTitleId}
+                  size="1"
+                  weight="2"
+                  css={{ margin: '0 0 var(--space-3)' }}
+                >
+                  Sources
+                </Text>
+                <List variant="unordered">
+                  {sources.map((source) => (
+                    <List.Item key={source.url}>
+                      <Anchor
+                        href={source.url}
+                        key={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ fontSize: 'inherit', fontWeight: 'inherit' }}
+                        underline
+                      >
+                        {source.title}
+                      </Anchor>
+                    </List.Item>
+                  ))}
+                </List>
+              </Box>
             ) : null}
-            <AnimatePresence initial={false}>
-              {status === 'done' && sources ? (
-                <Details onOpenChange={() => setTimeout(scrollToBottom, 300)}>
-                  <Details.Summary>
-                    <Text>Sources</Text>
-                  </Details.Summary>
-                  <Details.Content>
-                    <List
-                      variant={sources.length > 1 ? 'ordered' : 'unordered'}
-                    >
-                      {sources.map((source) => (
-                        <List.Item key={source.url}>
-                          <Anchor
-                            href={source.url}
-                            key={source.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            underline
-                          >
-                            {source.title}
-                          </Anchor>
-                        </List.Item>
-                      ))}
-                    </List>
-                  </Details.Content>
-                </Details>
-              ) : null}
-            </AnimatePresence>
           </Card.Body>
         </Box>
       </Card>

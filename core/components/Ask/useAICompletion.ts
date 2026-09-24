@@ -1,8 +1,8 @@
 import deepEqual from 'deep-eql';
+import { DeepPartial, parsePartialJson } from 'lib/partialJson';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { SearchError, Source, Status } from './types';
-import { DeepPartial, parsePartialJson } from './utils';
+import { AskError, Source, Status } from './types';
 
 interface UseAICompletionOptions {
   threshold?: number;
@@ -18,7 +18,7 @@ interface UseAICompletionReturn {
   query: string;
   streamData: string;
   sources: Source[] | undefined;
-  error: SearchError | null;
+  error: AskError | null;
   submitQuery: (query: string) => Promise<void>;
   abort: () => void;
   reset: () => void;
@@ -33,7 +33,7 @@ const useAICompletion = (
   const [query, setQuery] = useState('');
   const [streamData, setStreamData] = useState('');
   const [sources, setSources] = useState<Source[] | undefined>(undefined);
-  const [error, setError] = useState<SearchError | null>(null);
+  const [error, setError] = useState<AskError | null>(null);
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -62,7 +62,8 @@ const useAICompletion = (
     async (newQuery: string) => {
       // Abort any existing request before starting a new one
       abort();
-      abortControllerRef.current = new AbortController();
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
 
       // Clear previous data
       setError(null);
@@ -85,8 +86,10 @@ const useAICompletion = (
             mock: window.Cypress ? true : false,
             threshold,
           }),
-          signal: abortControllerRef.current.signal,
+          signal: controller.signal,
         });
+
+        if (controller.signal.aborted) return;
 
         if (!response.ok || !response.body) {
           setStatus('initial');
@@ -98,41 +101,50 @@ const useAICompletion = (
         }
 
         let accumulatedText = '';
-        let latestObject: DeepPartial<ResponseData> | undefined = undefined;
+        let lastPublishedAt = -Infinity;
+        let latestSources: Source[] | undefined;
+
+        const publish = async () => {
+          const { value } = await parsePartialJson(accumulatedText);
+          if (controller.signal.aborted || !value) return;
+
+          const current = value as DeepPartial<ResponseData>;
+          if (typeof current.answer === 'string') {
+            setStreamData(current.answer);
+          }
+          const nextSources = current.sources?.filter(
+            (source): source is Source =>
+              typeof source?.title === 'string' &&
+              typeof source?.url === 'string'
+          );
+          if (!deepEqual(latestSources, nextSources)) {
+            latestSources = nextSources;
+            setSources(nextSources);
+          }
+          lastPublishedAt = performance.now();
+        };
 
         await response.body.pipeThrough(new TextDecoderStream()).pipeTo(
           new WritableStream({
             async write(chunk) {
               accumulatedText += chunk;
-
-              try {
-                const { value } = await parsePartialJson(accumulatedText);
-
-                const currentObject = value as DeepPartial<ResponseData>;
-
-                if (!deepEqual(latestObject, currentObject)) {
-                  setStreamData(currentObject?.answer ?? '');
-                  latestObject = currentObject;
-                  setSources(currentObject?.sources as Source[] | undefined);
-                }
-              } catch (parseError) {
-                // eslint-disable-next-line no-console
-                console.error(
-                  'Error parsing AI answer as JSON:',
-                  parseError as Error,
-                  JSON.stringify(accumulatedText),
-                  '!!! Let Maxime know about it :) !!!'
-                );
-              }
+              // Coalesce fast token bursts; always flush the complete answer below.
+              if (performance.now() - lastPublishedAt >= 50) await publish();
             },
           }),
-          { signal: abortControllerRef.current.signal }
+          { signal: controller.signal }
         );
 
+        await publish();
+        if (controller.signal.aborted) return;
         setStatus('done');
       } catch (err) {
         // Only set error if it's not an abort error
-        if (err instanceof Error && err.name !== 'AbortError') {
+        if (
+          !controller.signal.aborted &&
+          err instanceof Error &&
+          err.name !== 'AbortError'
+        ) {
           setStatus('initial');
           setError({
             status: 0,
