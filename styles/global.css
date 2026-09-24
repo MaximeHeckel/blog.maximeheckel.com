@@ -140,9 +140,18 @@ h4:hover .anchor-link {
   }
 }
 
-canvas#main-canvas {
+#main-canvas canvas {
   opacity: 0;
-  animation: fade-in 1s ease 0.3s forwards;
-  animation-delay: 0.2s;
   user-select: none;
+}
+
+#main-canvas canvas[data-ready='true'] {
+  animation: fade-in 0.6s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #main-canvas canvas[data-ready='true'] {
+    animation: none;
+    opacity: 1;
+  }
 }

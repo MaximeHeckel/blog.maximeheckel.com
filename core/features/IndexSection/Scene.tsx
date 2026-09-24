@@ -91,7 +91,7 @@ export const HalftoneEffect = () => {
   });
 
   return (
-    <EffectComposer>
+    <EffectComposer renderPriority={1}>
       <CustomHalftoneEffect ref={effectRef} pixelSize={pixelSize} />
     </EffectComposer>
   );
@@ -371,6 +371,19 @@ const Background = () => {
   );
 };
 
+const RevealCanvas = () => {
+  const revealed = useRef(false);
+
+  // Run after the EffectComposer has rendered the first complete scene frame.
+  useFrame(({ gl }) => {
+    if (revealed.current) return;
+    gl.domElement.dataset.ready = 'true';
+    revealed.current = true;
+  }, 2);
+
+  return null;
+};
+
 export const Scene = () => {
   const [DPR, setDPR] = useState(1.0);
   const [showDebug, setShowDebug] = useState(false);
@@ -409,6 +422,7 @@ export const Scene = () => {
         <Suspense fallback={null}>
           <ParticleLemniscate shouldStopRenderingLoop={!!shouldReduceMotion} />
           <Background />
+          <RevealCanvas />
         </Suspense>
       </Canvas>
     </Box>
