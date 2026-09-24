@@ -90,7 +90,7 @@ struct ContentView: View {
 
 ### View modifiers
 
-As stated in the previous part, SwiftUI provides a set of primitive views, like a mini UI library. **These views act as the building blocks for any app**. However, you may want to **change the styles**, or **the behavior** of certain views, i.e. "modify" them. That is pretty much what view modifiers are all about. Additionally, they are easy to use, the only thing to do to add a mofifier to a view is to add it after the closing bracket of the view you want to modify. In the diagram above, `.textFieldStyle` and `.onChange` are modifiers
+As stated in the previous part, SwiftUI provides a set of primitive views, like a mini UI library. **These views act as the building blocks for any app**. However, you may want to **change the styles**, or **the behavior** of certain views, i.e. "modify" them. That is pretty much what view modifiers are all about. Additionally, they are easy to use, the only thing to do to add a modifier to a view is to add it after the closing bracket of the view you want to modify. In the diagram above, `.textFieldStyle` and `.onChange` are modifiers
 
 <Callout variant="info">
 
@@ -278,7 +278,7 @@ When declaring a variable with a `@State` property wrapper, **we're telling Swif
 
 This is very similar to using the kind of re-rendering flow we're used to with React, and when comparing a similar feature, the code between SwiftUI and React looks extremely familiar:
 
-```js title=Basic state management in React unsing the useState hook
+```js title=Basic state management in React using the useState hook
 import React from 'react';
 
 const App = () => {
@@ -295,7 +295,7 @@ const App = () => {
 };
 ```
 
-```swift title=Basic state management in SwiftUI unsing the @State property wrapper
+```swift title=Basic state management in SwiftUI using the @State property wrapper
 
 struct ContentView: View {
     @State private var enabled = false
