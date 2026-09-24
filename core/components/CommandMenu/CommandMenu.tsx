@@ -165,6 +165,10 @@ const CommandMenu = (props: CommandMenuProps) => {
   const [page, setPage] = useState<'search' | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebouncedValue(searchQuery, 400);
+  const [selectedRecentQuery, setSelectedRecentQuery] = useState<string | null>(
+    null
+  );
+  const activeSearchQuery = selectedRecentQuery ?? debouncedSearchQuery;
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
   const {
@@ -181,14 +185,14 @@ const CommandMenu = (props: CommandMenuProps) => {
   }, [page]);
 
   useEffect(() => {
-    if (page === 'search') {
-      if (debouncedSearchQuery) {
-        search(debouncedSearchQuery);
+    if (page === 'search' && activeSearchQuery === searchQuery) {
+      if (activeSearchQuery) {
+        search(activeSearchQuery);
       } else {
         resetSearch();
       }
     }
-  }, [page, debouncedSearchQuery, search, resetSearch]);
+  }, [page, activeSearchQuery, searchQuery, search, resetSearch]);
 
   const handleActionSelect = useCallback(
     (onSelect: () => void) => {
@@ -220,15 +224,15 @@ const CommandMenu = (props: CommandMenuProps) => {
 
   const handleSearchResultSelect = useCallback(
     (url: string) => {
-      if (debouncedSearchQuery) {
-        const updated = saveRecentSearch(debouncedSearchQuery);
+      if (activeSearchQuery) {
+        const updated = saveRecentSearch(activeSearchQuery);
         setRecentSearches(updated);
       }
       const href = url.replace('https://blog.maximeheckel.com', '');
       router.push(href).then(() => window.scrollTo(0, 0));
       onOpenChange(false);
     },
-    [router, onOpenChange, debouncedSearchQuery]
+    [router, onOpenChange, activeSearchQuery]
   );
 
   const handleAskAI = useCallback(() => {
@@ -238,6 +242,7 @@ const CommandMenu = (props: CommandMenuProps) => {
 
   const handleRecentSearchSelect = useCallback((query: string) => {
     setSearchQuery(query);
+    setSelectedRecentQuery(query);
   }, []);
 
   const handleSearchFallback = useCallback(() => {
@@ -256,6 +261,7 @@ const CommandMenu = (props: CommandMenuProps) => {
           e.preventDefault();
           setPage(null);
           setSearchQuery('');
+          setSelectedRecentQuery(null);
           resetSearch();
         } else if (e.key === 'Backspace' && !searchQuery) {
           e.preventDefault();
@@ -280,7 +286,7 @@ const CommandMenu = (props: CommandMenuProps) => {
   const showRecentSearches =
     isSearchMode &&
     searchStatus === 'initial' &&
-    !debouncedSearchQuery &&
+    !activeSearchQuery &&
     !searchQuery;
 
   return (
@@ -326,7 +332,10 @@ const CommandMenu = (props: CommandMenuProps) => {
                   isSearchMode ? 'Search blog posts...' : 'Type a command...'
                 }
                 value={searchQuery}
-                onValueChange={setSearchQuery}
+                onValueChange={(query: string) => {
+                  setSelectedRecentQuery(null);
+                  setSearchQuery(query);
+                }}
               />
               <S.List as={Command.List}>
                 {isSearchMode ? (
@@ -339,9 +348,9 @@ const CommandMenu = (props: CommandMenuProps) => {
 
                     {searchStatus === 'done' &&
                     searchResults.length === 0 &&
-                    debouncedSearchQuery ? (
+                    activeSearchQuery ? (
                       <S.Empty as={Command.Empty}>
-                        No posts found for &ldquo;{debouncedSearchQuery}&rdquo;
+                        No posts found for &ldquo;{activeSearchQuery}&rdquo;
                       </S.Empty>
                     ) : null}
 
@@ -418,6 +427,7 @@ const CommandMenu = (props: CommandMenuProps) => {
                         keywords={['find', 'articles', 'posts']}
                         onSelect={() => {
                           setSearchQuery('');
+                          setSelectedRecentQuery(null);
                           setPage('search');
                         }}
                         data-testid="search-tool"

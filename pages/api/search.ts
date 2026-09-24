@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 
 import { buildArticleCatalog } from '../../lib/articleCatalog';
+import { searchResponseSchema } from '../../lib/searchResponse';
 
 const querySchema = z.object({ query: z.string().trim().min(1).max(2000) });
 const RELEVANCE_THRESHOLD = 0.7;
@@ -74,7 +75,12 @@ export default async function handler(
       .slice(0, MAX_RESULTS)
       .map(({ title, path, date }) => ({ title, path, date }));
 
-    return res.status(200).json(articles);
+    const output = searchResponseSchema.safeParse(articles);
+    if (!output.success) {
+      return res.status(500).json({ error: 'Invalid search response' });
+    }
+
+    return res.status(200).json(output.data);
   } catch {
     if (!controller.signal.aborted) {
       return res.status(502).json({ error: 'Article relevance search failed' });

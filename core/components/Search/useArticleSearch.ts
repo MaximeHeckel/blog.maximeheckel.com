@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 
+import { searchResponseSchema } from '../../../lib/searchResponse';
 import { ArticleSearchResult, SearchError, Status } from './types';
 
 interface UseArticleSearchReturn {
@@ -43,8 +44,7 @@ export function useArticleSearch(): UseArticleSearchReturn {
         throw new Error('Search failed');
       }
 
-      const articles: Array<{ title: string; path: string; date: string }> =
-        await response.json();
+      const articles = searchResponseSchema.parse(await response.json());
       if (controller.signal.aborted) return;
       setResults(
         articles.map(({ title, path, date }) => ({ title, url: path, date }))
