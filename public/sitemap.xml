@@ -205,6 +205,10 @@
   <changefreq>daily</changefreq>
   <priority>0.7</priority>
 </url><url>
+  <loc>https://blog.maximeheckel.com/posts/shading-motion/</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.7</priority>
+</url><url>
   <loc>https://blog.maximeheckel.com/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/</loc>
   <changefreq>daily</changefreq>
   <priority>0.7</priority>

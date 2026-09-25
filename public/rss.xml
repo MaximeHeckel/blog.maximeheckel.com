@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Wed, 08 Jul 2026 20:06:36 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 25 Sep 2026 05:08:17 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Shading Motion]]></title>
+            <description><![CDATA[A deep dive into detecting, extracting, and stylizing motion with WebGPU and TSL, covering motion masking, blob tracking, optical flow, and velocity-based motion blur.]]></description>
+            <link>https://blog.maximeheckel.com/posts/shading-motion</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/shading-motion</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 18 Aug 2026 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[On Rendering the Sky, Sunsets, and Planets]]></title>
             <description><![CDATA[This article explores how to render realistic skies and atmospheres in real time in the browser with shaders, from simple sky domes, to entire planets using shaders, raymarching, Rayleigh and Mie scattering, and ozone absorption.]]></description>
