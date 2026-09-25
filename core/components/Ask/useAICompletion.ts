@@ -1,4 +1,3 @@
-import deepEqual from 'deep-eql';
 import { DeepPartial, parsePartialJson } from 'lib/partialJson';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -13,27 +12,34 @@ interface ResponseData {
   sources: Source[];
 }
 
-interface UseAICompletionReturn {
+interface CompletionState {
   status: Status;
   query: string;
   streamData: string;
   sources: Source[] | undefined;
   error: AskError | null;
+}
+
+interface UseAICompletionReturn extends CompletionState {
   submitQuery: (query: string) => Promise<void>;
   abort: () => void;
   reset: () => void;
 }
+
+const initialState: CompletionState = {
+  status: 'initial',
+  query: '',
+  streamData: '',
+  sources: undefined,
+  error: null,
+};
 
 const useAICompletion = (
   options: UseAICompletionOptions = {}
 ): UseAICompletionReturn => {
   const { threshold = 0.25 } = options;
 
-  const [status, setStatus] = useState<Status>('initial');
-  const [query, setQuery] = useState('');
-  const [streamData, setStreamData] = useState('');
-  const [sources, setSources] = useState<Source[] | undefined>(undefined);
-  const [error, setError] = useState<AskError | null>(null);
+  const [state, setState] = useState(initialState);
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -51,11 +57,7 @@ const useAICompletion = (
 
   const reset = useCallback(() => {
     abort();
-    setStatus('initial');
-    setQuery('');
-    setStreamData('');
-    setSources(undefined);
-    setError(null);
+    setState(initialState);
   }, [abort]);
 
   const submitQuery = useCallback(
@@ -65,14 +67,7 @@ const useAICompletion = (
       const controller = new AbortController();
       abortControllerRef.current = controller;
 
-      // Clear previous data
-      setError(null);
-      setStreamData('');
-      setSources(undefined);
-      // Show query of the user at the top of the result card
-      setQuery(newQuery);
-      // Set status to loading to show rotating border
-      setStatus('loading');
+      setState({ ...initialState, query: newQuery, status: 'loading' });
 
       try {
         const response = await fetch('/api/semanticsearch/', {
@@ -92,35 +87,49 @@ const useAICompletion = (
         if (controller.signal.aborted) return;
 
         if (!response.ok || !response.body) {
-          setStatus('initial');
-          setError({
-            status: response.status,
-            statusText: response.statusText,
-          });
+          setState((previous) => ({
+            ...previous,
+            status: 'initial',
+            error: {
+              status: response.status,
+              statusText: response.statusText,
+            },
+          }));
           return;
         }
 
         let accumulatedText = '';
         let lastPublishedAt = -Infinity;
-        let latestSources: Source[] | undefined;
-
-        const publish = async () => {
+        const publish = async (done = false) => {
           const { value } = await parsePartialJson(accumulatedText);
-          if (controller.signal.aborted || !value) return;
+          if (controller.signal.aborted) return;
 
-          const current = value as DeepPartial<ResponseData>;
-          if (typeof current.answer === 'string') {
-            setStreamData(current.answer);
-          }
-          const nextSources = current.sources?.filter(
-            (source): source is Source =>
-              typeof source?.title === 'string' &&
-              typeof source?.url === 'string'
-          );
-          if (!deepEqual(latestSources, nextSources)) {
-            latestSources = nextSources;
-            setSources(nextSources);
-          }
+          const current = value as DeepPartial<ResponseData> | undefined;
+          setState((previous) => {
+            const streamData =
+              typeof current?.answer === 'string'
+                ? current.answer
+                : previous.streamData;
+            // Sources are only displayed once the answer is complete.
+            const sources = done
+              ? current?.sources?.filter(
+                  (source): source is Source =>
+                    typeof source?.title === 'string' &&
+                    typeof source?.url === 'string'
+                )
+              : previous.sources;
+            const status = done ? 'done' : previous.status;
+
+            if (
+              streamData === previous.streamData &&
+              sources === previous.sources &&
+              status === previous.status
+            ) {
+              return previous;
+            }
+
+            return { ...previous, streamData, sources, status };
+          });
           lastPublishedAt = performance.now();
         };
 
@@ -135,9 +144,7 @@ const useAICompletion = (
           { signal: controller.signal }
         );
 
-        await publish();
-        if (controller.signal.aborted) return;
-        setStatus('done');
+        await publish(true);
       } catch (err) {
         // Only set error if it's not an abort error
         if (
@@ -145,11 +152,14 @@ const useAICompletion = (
           err instanceof Error &&
           err.name !== 'AbortError'
         ) {
-          setStatus('initial');
-          setError({
-            status: 0,
-            statusText: err.message || 'Network error',
-          });
+          setState((previous) => ({
+            ...previous,
+            status: 'initial',
+            error: {
+              status: 0,
+              statusText: err.message || 'Network error',
+            },
+          }));
         }
       }
     },
@@ -157,11 +167,7 @@ const useAICompletion = (
   );
 
   return {
-    status,
-    query,
-    streamData,
-    sources,
-    error,
+    ...state,
     submitQuery,
     abort,
     reset,

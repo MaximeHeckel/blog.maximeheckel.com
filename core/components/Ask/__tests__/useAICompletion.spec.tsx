@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import * as partialJson from 'lib/partialJson';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -41,6 +41,82 @@ describe('useAICompletion', () => {
     expect(result.current.sources).toEqual(data.sources);
     expect(result.current.status).toBe('done');
     expect(parse).toHaveBeenCalledTimes(2);
+  });
+
+  it('streams the answer but only publishes valid sources on completion', async () => {
+    const stream = new TransformStream();
+    const writer = stream.writable.getWriter();
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(new Response(stream.readable))
+    );
+    let now = 0;
+    vi.spyOn(performance, 'now').mockImplementation(() => (now += 100));
+    const { result } = renderHook(() => useAICompletion());
+    let request!: Promise<void>;
+    act(() => {
+      request = result.current.submitQuery('Question');
+    });
+    await act(async () => {
+      await writer.write(
+        new TextEncoder().encode(
+          '{"sources":[{"title":"Article","url":"/posts/article/"},{"title":"Missing URL"},{"url":"/missing-title/"}],"answer":"First'
+        )
+      );
+    });
+    await waitFor(() => expect(result.current.streamData).toBe('First'));
+    expect(result.current.sources).toBeUndefined();
+
+    await act(async () => {
+      await writer.write(new TextEncoder().encode(' second"}'));
+    });
+    await waitFor(() => expect(result.current.streamData).toBe('First second'));
+    expect(result.current.sources).toBeUndefined();
+    expect(result.current.status).toBe('loading');
+
+    await act(async () => {
+      await writer.close();
+      await request;
+    });
+    expect(result.current.sources).toEqual([
+      { title: 'Article', url: '/posts/article/' },
+    ]);
+    expect(result.current.status).toBe('done');
+  });
+
+  it('finishes an empty stream', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(streamResponse('')));
+    const { result } = renderHook(() => useAICompletion());
+
+    await act(() => result.current.submitQuery('Question'));
+
+    expect(result.current.status).toBe('done');
+    expect(result.current.streamData).toBe('');
+    expect(result.current.error).toBeNull();
+  });
+
+  it('clears an HTTP error and the previous query on reset', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response('Failed', { status: 500, statusText: 'Server error' })
+        )
+    );
+    const { result } = renderHook(() => useAICompletion());
+
+    await act(() => result.current.submitQuery('Question'));
+
+    expect(result.current.status).toBe('initial');
+    expect(result.current.error).toEqual({
+      status: 500,
+      statusText: 'Server error',
+    });
+    act(() => result.current.reset());
+    expect(result.current.query).toBe('');
+    expect(result.current.error).toBeNull();
+    expect(result.current.sources).toBeUndefined();
   });
 
   it('ignores a response that arrives after reset', async () => {
