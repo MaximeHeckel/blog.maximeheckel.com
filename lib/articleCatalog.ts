@@ -33,7 +33,7 @@ export function extractArticleHeadings(content: string): string[] {
 }
 
 // Intentionally rebuilt per request during the relevance experiment.
-export async function readArticleLibrary() {
+export async function buildArticleCatalog() {
   const directory = path.join(process.cwd(), 'content');
   const files = (await readdir(directory))
     .filter((file) => file.endsWith('.mdx'))
@@ -59,13 +59,7 @@ export async function readArticleLibrary() {
         subtitle: typeof data.subtitle === 'string' ? data.subtitle : '',
         headings: extractArticleHeadings(content),
         path: `/posts/${data.slug}/`,
-        content,
       };
     })
   );
-}
-
-export async function buildArticleCatalog() {
-  const articles = await readArticleLibrary();
-  return articles.map(({ content: _content, ...article }) => article);
 }
