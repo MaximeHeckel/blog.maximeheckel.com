@@ -413,7 +413,8 @@ export const Scene = () => {
       }}
     >
       <Leva hidden={!showDebug} />
-      <Canvas id="main-canvas" shadows dpr={DPR}>
+      {/* Keep the drawing buffer and camera in sync with the panel's width transition. */}
+      <Canvas id="main-canvas" shadows dpr={DPR} resize={{ debounce: 0 }}>
         <color attach="background" args={['#090A0E']} />
         <PerformanceMonitor
           onDecline={() => setDPR(0.7)}
