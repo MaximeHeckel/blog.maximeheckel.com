@@ -15,7 +15,7 @@ export const Backdrop = styled(Dialog.Backdrop, {
   opacity: 0.5,
   position: 'fixed',
   inset: 0,
-  zIndex: '100',
+  zIndex: '103',
   background: 'oklch(from var(--background) l c h / 80%)',
   '@media (prefers-reduced-motion: no-preference)': {
     '&[data-open]': {
@@ -34,7 +34,7 @@ export const Popup = styled(Dialog.Popup, {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '600px',
-  zIndex: '101',
+  zIndex: '104',
 
   '@media (max-width: 700px)': {
     width: '95%',

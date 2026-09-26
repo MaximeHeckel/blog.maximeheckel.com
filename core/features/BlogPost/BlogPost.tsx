@@ -57,7 +57,6 @@ const Header = (props: {
   return (
     <Box
       as="header"
-      data-reading-chrome
       css={{
         position: 'fixed',
         top: 0,
