@@ -160,6 +160,7 @@ const CommandMenu = (props: CommandMenuProps) => {
   const { open, onOpenChange, onAskAI } = props;
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const pendingAskRef = useRef(false);
   const context = useContext(CommandMenuContext);
   const actions = context?.actions ?? [];
 
@@ -237,9 +238,9 @@ const CommandMenu = (props: CommandMenuProps) => {
   );
 
   const handleAskAI = useCallback(() => {
+    pendingAskRef.current = true;
     onOpenChange(false);
-    onAskAI?.();
-  }, [onOpenChange, onAskAI]);
+  }, [onOpenChange]);
 
   const handleRecentSearchSelect = useCallback((query: string) => {
     setSearchQuery(query);
@@ -291,7 +292,14 @@ const CommandMenu = (props: CommandMenuProps) => {
     !searchQuery;
 
   return (
-    <AnimatePresence>
+    <AnimatePresence
+      onExitComplete={() => {
+        if (pendingAskRef.current) {
+          pendingAskRef.current = false;
+          onAskAI?.();
+        }
+      }}
+    >
       {open ? (
         <Command.Dialog
           open={open}

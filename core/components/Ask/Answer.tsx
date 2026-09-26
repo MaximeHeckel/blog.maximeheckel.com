@@ -21,7 +21,9 @@ const components = {
   em: EM,
   li: List.Item,
   ol: (props: ComponentProps<'ol'>) => <List variant="ordered" {...props} />,
-  p: (props: ComponentProps<'p'>) => <Text as="p" {...props} />,
+  p: (props: ComponentProps<'p'>) => (
+    <Text as="p" size="1" variant="secondary" {...props} />
+  ),
   pre: Code,
   strong: Strong,
   ul: (props: ComponentProps<'ul'>) => <List variant="unordered" {...props} />,
@@ -71,5 +73,19 @@ export const Answer = memo(({ text, onRender }: AnswerProps) => {
     [mdx]
   );
 
-  return text ? rendered : null;
+  return text ? (
+    <Text
+      as="div"
+      size="1"
+      variant="secondary"
+      css={{
+        li: {
+          fontSize: 'var(--font-size-1)',
+          color: 'var(--text-secondary)',
+        },
+      }}
+    >
+      {rendered}
+    </Text>
+  ) : null;
 });

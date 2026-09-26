@@ -2,6 +2,7 @@ import { Box } from '@maximeheckel/design-system';
 
 const BottomBlurGradientMask = () => (
   <Box
+    data-reading-chrome
     css={{
       height: 96,
       width: '100%',

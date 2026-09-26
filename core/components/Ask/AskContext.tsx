@@ -7,18 +7,24 @@ import {
   useState,
 } from 'react';
 
-const Ask = dynamic(() => import('./Ask').then((module) => module.Ask));
+import type { ReadingPanelState } from '../ReadingPanel';
+import { Page } from '../ReadingPanel/ReadingPanel.styles';
+
+const AskPanel = dynamic(() =>
+  import('./AskPanel').then((module) => module.AskPanel)
+);
 const AskContext = createContext<(() => void) | null>(null);
 
 export const AskProvider = ({ children }: { children: ReactNode }) => {
-  const [open, setOpen] = useState(false);
-  const openAsk = useCallback(() => setOpen(true), []);
-  const closeAsk = useCallback(() => setOpen(false), []);
+  const [panelState, setPanelState] = useState<ReadingPanelState | null>(null);
+  const openAsk = useCallback(() => setPanelState('open'), []);
 
   return (
     <AskContext.Provider value={openAsk}>
-      {children}
-      {open ? <Ask open onClose={closeAsk} /> : null}
+      <Page data-panel-open={panelState === 'open'}>{children}</Page>
+      {panelState ? (
+        <AskPanel state={panelState} onStateChange={setPanelState} />
+      ) : null}
     </AskContext.Provider>
   );
 };
