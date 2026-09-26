@@ -145,6 +145,11 @@ h4:hover .anchor-link {
   user-select: none;
 }
 
+/* Above the Ask window (101), below modal backdrops (103). */
+[role='presentation']:has(> #ask-tooltip) {
+  z-index: 102;
+}
+
 #main-canvas canvas[data-ready='true'] {
   animation: fade-in 0.6s ease forwards;
 }

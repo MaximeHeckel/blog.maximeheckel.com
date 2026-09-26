@@ -2,7 +2,11 @@ import { IconButton } from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'motion/react';
 import { useEffect, useState } from 'react';
 
-const CopyToClipboardButton = (props: { text: string; title?: string }) => {
+const CopyToClipboardButton = (props: {
+  text: string;
+  title?: string;
+  label?: string;
+}) => {
   const duration = 0.275;
   const svgVariants = {
     hover: (isChecked: boolean) => ({
@@ -57,7 +61,8 @@ const CopyToClipboardButton = (props: { text: string; title?: string }) => {
       }}
       variant="tertiary"
       size="small"
-      aria-label="Copy code to clipboard"
+      aria-label={props.label ?? 'Copy code to clipboard'}
+      title={props.label}
     >
       <motion.svg
         initial="idle"

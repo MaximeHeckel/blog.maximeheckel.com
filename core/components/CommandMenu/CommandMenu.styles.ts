@@ -3,7 +3,8 @@ import { styled } from '@maximeheckel/design-system';
 export const Overlay = styled('div', {
   position: 'fixed',
   inset: 0,
-  zIndex: 100,
+  // Cover floating windows (101) and their tooltips (102).
+  zIndex: 103,
   background: 'oklch(from var(--background) l c h / 80%)',
 });
 
@@ -13,7 +14,7 @@ export const Dialog = styled('div', {
   left: '50%',
   transform: 'translateX(-50%)',
   width: '600px',
-  zIndex: 101,
+  zIndex: 104,
 
   overflow: 'hidden',
 

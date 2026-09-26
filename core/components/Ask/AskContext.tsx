@@ -7,8 +7,7 @@ import {
   useState,
 } from 'react';
 
-import type { ReadingPanelState } from '../ReadingPanel';
-import { Page } from '../ReadingPanel/ReadingPanel.styles';
+import type { FloatingWindowState } from '../FloatingWindow';
 
 const AskPanel = dynamic(() =>
   import('./AskPanel').then((module) => module.AskPanel)
@@ -16,12 +15,14 @@ const AskPanel = dynamic(() =>
 const AskContext = createContext<(() => void) | null>(null);
 
 export const AskProvider = ({ children }: { children: ReactNode }) => {
-  const [panelState, setPanelState] = useState<ReadingPanelState | null>(null);
+  const [panelState, setPanelState] = useState<FloatingWindowState | null>(
+    null
+  );
   const openAsk = useCallback(() => setPanelState('open'), []);
 
   return (
     <AskContext.Provider value={openAsk}>
-      <Page data-panel-open={panelState === 'open'}>{children}</Page>
+      {children}
       {panelState ? (
         <AskPanel state={panelState} onStateChange={setPanelState} />
       ) : null}

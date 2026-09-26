@@ -18,14 +18,14 @@ const components = {
   a: (props: ComponentProps<'a'>) => <Anchor external underline {...props} />,
   blockquote: Blockquote,
   code: InlineCode,
-  em: EM,
+  em: (props: ComponentProps<'em'>) => <EM size="1" {...props} />,
   li: List.Item,
   ol: (props: ComponentProps<'ol'>) => <List variant="ordered" {...props} />,
   p: (props: ComponentProps<'p'>) => (
     <Text as="p" size="1" variant="secondary" {...props} />
   ),
   pre: Code,
-  strong: Strong,
+  strong: (props: ComponentProps<'strong'>) => <Strong size="1" {...props} />,
   ul: (props: ComponentProps<'ul'>) => <List variant="unordered" {...props} />,
 };
 
@@ -79,9 +79,29 @@ export const Answer = memo(({ text, onRender }: AnswerProps) => {
       size="1"
       variant="secondary"
       css={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--space-4)',
+        '> *': { marginBlock: 0 },
         li: {
           fontSize: 'var(--font-size-1)',
+          lineHeight: 'inherit',
+          letterSpacing: 'inherit',
           color: 'var(--text-secondary)',
+        },
+        'li + li': { marginTop: 'var(--space-2)' },
+        'li > div[data-list-item]': {
+          display: 'flex',
+          alignItems: 'center',
+          height: '1lh',
+          flexShrink: 0,
+          transform: 'none',
+        },
+        'li > div:not([data-list-item]) > p, blockquote > p': {
+          marginBlock: 0,
+        },
+        'li > div:not([data-list-item]) > * + *, blockquote > * + *': {
+          marginTop: 'var(--space-2)',
         },
       }}
     >
