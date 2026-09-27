@@ -6,6 +6,61 @@ import Code from '../';
 import { preToCodeBlock, calculateLinesToHighlight, hasTitle } from '../utils';
 
 describe('Code', () => {
+  it('Renders diff changes while preserving headers, context, and prefixes', async () => {
+    const source = [
+      '--- before.js',
+      '+++ after.js',
+      '@@ -1,2 +1,3 @@',
+      ' const unchanged = true;',
+      '-const roughness = 0.8;',
+      '+const roughness = 0.2;',
+      '+',
+      ' const end = true;',
+    ].join('\n');
+    const { container, getAllByTestId } = render(
+      <Code>
+        <code className="language-diff">{source}</code>
+      </Code>
+    );
+
+    await waitFor(() => {
+      expect(getAllByTestId('line')).toHaveLength(8);
+    });
+
+    const lines = getAllByTestId('line');
+    expect(lines[4]).toHaveAttribute('data-diff', 'removed');
+    expect(lines[5]).toHaveAttribute('data-diff', 'added');
+    expect(lines[6]).toHaveAttribute('data-diff', 'added');
+    for (const index of [0, 1, 2, 3, 7]) {
+      expect(lines[index]).not.toHaveAttribute('data-diff');
+    }
+    expect(container.querySelector('.token.prefix.deleted')).toHaveTextContent(
+      '-'
+    );
+    expect(container.querySelector('.token.prefix.inserted')).toHaveTextContent(
+      '+'
+    );
+    expect(
+      getAllByTestId('content-line')
+        .map((token) => token.textContent)
+        .join('')
+    ).toBe(source.replaceAll('\n', ''));
+  });
+
+  it('Does not treat JavaScript operators as diff markers', async () => {
+    const { container, getAllByTestId } = render(
+      <Code>
+        <code className="language-javascript">{'++count;\n--count;'}</code>
+      </Code>
+    );
+
+    await waitFor(() => {
+      expect(getAllByTestId('line')).toHaveLength(2);
+    });
+    expect(container.querySelector('[data-diff]')).not.toBeInTheDocument();
+    expect(container.querySelector('.token.operator')).toBeInTheDocument();
+  });
+
   it('hasTitle returns the title part of a given metastring if present', () => {
     expect(hasTitle('hello,world,title=Test123')).toBe('Test123');
     expect(hasTitle('hello,world')).toBe('');

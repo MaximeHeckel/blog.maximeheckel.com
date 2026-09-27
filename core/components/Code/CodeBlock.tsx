@@ -1,21 +1,20 @@
 import { Card, styled } from '@maximeheckel/design-system';
 import { useScroll, useMotionValueEvent, useTransform } from 'motion/react';
 import { Highlight, Prism } from 'prism-react-renderer';
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useMemo, useRef } from 'react';
 
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
+import { createDiffHighlighter } from './diff';
 import { CodeBlockProps, HighlightedCodeTextProps } from './types';
 import { calculateLinesToHighlight, hasTitle } from './utils';
 
 // @ts-ignore
 (typeof global !== 'undefined' ? global : window).Prism = Prism;
 
-/**
- * This imports the syntax highlighting style for the Swift and GLSLlanguage
- */
-
+// Register additional grammars on the renderer's Prism instance.
 require('prismjs/components/prism-swift');
 require('prismjs/components/prism-glsl');
+require('prismjs/components/prism-diff');
 
 export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
   // A streamed code fence can be empty before its first code token arrives.
@@ -27,6 +26,11 @@ export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
 
 const ScrollableCodeText = (props: HighlightedCodeTextProps) => {
   const { codeString, language, highlightLine } = props;
+  const { prism, syntaxHighlighted } = useMemo(
+    () => createDiffHighlighter(language),
+    [language]
+  );
+  const isDiff = /^diff(?:-|$)/i.test(language);
   const preRef = useRef<HTMLPreElement>(null);
 
   const { scrollX } = useScroll({
@@ -66,6 +70,7 @@ const ScrollableCodeText = (props: HighlightedCodeTextProps) => {
 
   return (
     <Highlight
+      prism={prism}
       theme={{ plain: {}, styles: [] }}
       code={codeString}
       language={language}
@@ -73,6 +78,19 @@ const ScrollableCodeText = (props: HighlightedCodeTextProps) => {
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <Pre ref={preRef} className={className} style={style}>
           {tokens.map((line, index) => {
+            const diffToken = isDiff
+              ? line.find(
+                  (token) =>
+                    token.content &&
+                    (token.types.includes('inserted') ||
+                      token.types.includes('deleted'))
+                )
+              : undefined;
+            const diffKind = diffToken
+              ? diffToken.types.includes('inserted')
+                ? 'added'
+                : 'removed'
+              : undefined;
             const { className: lineClassName } = getLineProps({
               className:
                 highlightLine && highlightLine(index) ? 'highlight-line' : '',
@@ -82,6 +100,8 @@ const ScrollableCodeText = (props: HighlightedCodeTextProps) => {
 
             return (
               <Line
+                data-diff={diffKind}
+                data-diff-syntax={syntaxHighlighted || undefined}
                 data-testid={
                   highlightLine && highlightLine(index)
                     ? 'highlight-line'
@@ -251,6 +271,22 @@ const Line = styled('div', {
 
   '&:hover': {
     backgroundColor: 'var(--emphasis)',
+  },
+
+  '&[data-diff="added"]': {
+    width: '100%',
+    backgroundColor: 'oklch(from var(--green-1100) l c h / 0.12)',
+    '&:not([data-diff-syntax]) .token, .token.prefix': {
+      color: 'var(--green-1100)',
+    },
+  },
+
+  '&[data-diff="removed"]': {
+    width: '100%',
+    backgroundColor: 'oklch(from var(--red-1100) l c h / 0.12)',
+    '&:not([data-diff-syntax]) .token, .token.prefix': {
+      color: 'var(--red-1100)',
+    },
   },
 });
 
