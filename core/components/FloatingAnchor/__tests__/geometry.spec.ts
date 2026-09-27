@@ -6,9 +6,27 @@ import {
   cornerForPoint,
   dragPoint,
   settlePoint,
+  relativePoint,
+  viewportPoint,
 } from '../geometry';
 
 const viewport = { width: 1000, height: 800 };
+
+it.each([
+  { x: 0, y: 0.3 },
+  { x: 1, y: 0.7 },
+  { x: 0.2, y: 0 },
+  { x: 0.8, y: 1 },
+  { x: 0.35, y: 0.65 },
+])('preserves relative placement %o through viewport resizing', (position) => {
+  const original = viewportPoint(position, viewport);
+  const saved = relativePoint(original, viewport);
+  const smaller = { width: 390, height: 600 };
+  const resized = viewportPoint(saved, smaller);
+  expect(relativePoint(resized, smaller).x).toBeCloseTo(position.x);
+  expect(relativePoint(resized, smaller).y).toBeCloseTo(position.y);
+  expect(viewportPoint(saved, viewport)).toEqual(original);
+});
 
 it('gradually dissolves weak contact without a cutoff jump', () => {
   let previous = 1;

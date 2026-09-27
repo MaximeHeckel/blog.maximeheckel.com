@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, afterEach, expect, it, vi } from 'vitest';
 
 import { AskPanel } from '../AskPanel';
@@ -148,4 +148,62 @@ beforeEach(() => {
 });
 afterEach(() => {
   vi.restoreAllMocks();
+});
+
+it('shows a small animated lens while thinking and removes it when writing', () => {
+  const completion = {
+    query: 'Explain shaders',
+    streamData: '',
+    sources: undefined,
+    status: 'loading' as const,
+    error: null,
+    submitQuery: vi.fn(),
+    reset: vi.fn(),
+    abort: vi.fn(),
+  };
+  vi.mocked(useAICompletion).mockReturnValue(completion);
+  const { rerender } = render(
+    <AskPanel state="open" onStateChange={vi.fn()} />
+  );
+  const status = screen.getByRole('status');
+  expect(status).toHaveTextContent('Thinking…');
+  expect(status.querySelector('svg')).toHaveAttribute('width', '20');
+  expect(status.querySelector('filter')).not.toBeNull();
+
+  vi.mocked(useAICompletion).mockReturnValue({
+    ...completion,
+    streamData: 'A shader runs on the GPU.',
+  });
+  rerender(<AskPanel state="open" onStateChange={vi.fn()} />);
+  expect(screen.getByRole('status')).toHaveTextContent('Writing…');
+  expect(screen.getByRole('status').querySelector('svg')).toBeNull();
+});
+
+it('focuses the composer on opening and restoring the window', async () => {
+  vi.mocked(useAICompletion).mockReturnValue({
+    query: '',
+    streamData: '',
+    sources: undefined,
+    status: 'initial',
+    error: null,
+    submitQuery: vi.fn(),
+    reset: vi.fn(),
+    abort: vi.fn(),
+  });
+  const { rerender } = render(
+    <AskPanel state="open" onStateChange={vi.fn()} />
+  );
+  await waitFor(() =>
+    expect(
+      screen.getByRole('textbox', { name: 'Ask a question' })
+    ).toHaveFocus()
+  );
+  rerender(<AskPanel state="minimized" onStateChange={vi.fn()} />);
+  expect(screen.getByRole('button', { name: 'Resume Ask' })).toHaveFocus();
+  rerender(<AskPanel state="open" onStateChange={vi.fn()} />);
+  await waitFor(() =>
+    expect(
+      screen.getByRole('textbox', { name: 'Ask a question' })
+    ).toHaveFocus()
+  );
 });

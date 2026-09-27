@@ -24,14 +24,15 @@ export const Window = styled(Card, {
   transformOrigin: 'top left',
   boxSizing: 'border-box',
   color: 'var(--text-primary)',
-  background: 'transparent',
-  border: 'none',
+  border:
+    'var(--thickness, 1px) solid oklch(from var(--gray-900) l c h / 15%) !important',
   boxShadow: '0 16px 64px oklch(0% 0 0 / 18%), 0 2px 8px oklch(0% 0 0 / 8%)',
   '@media (max-width: 600px)': {
     '--window-width': 'calc(100vw - 24px)',
     '--window-height': 'min(640px, calc(100dvh - 32px))',
     '--window-inset': 'var(--space-3)',
   },
+  backgroundColor: 'oklch(from var(--gray-300) l c h / 0.985)',
 });
 
 // Keep the content at its expanded size as the shell contracts around it.

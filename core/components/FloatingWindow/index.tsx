@@ -1,9 +1,15 @@
 import { Flex, IconButton, Text, Tooltip } from '@maximeheckel/design-system';
 import { motion, useReducedMotion } from 'motion/react';
-import { KeyboardEvent, ReactNode, useEffect, useRef, useState } from 'react';
+import {
+  KeyboardEvent,
+  ReactNode,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { createPortal } from 'react-dom';
 
-import { CustomGlassMaterial } from '../DialogGlass';
 import { FloatingAnchor } from '../FloatingAnchor';
 import type { WindowCorner } from '../FloatingAnchor/geometry';
 import { useAnchorTransition } from '../FloatingAnchor/useAnchorTransition';
@@ -17,6 +23,7 @@ interface FloatingWindowProps {
   title: string;
   children: ReactNode;
   footer?: ReactNode;
+  initialFocusRef?: RefObject<HTMLElement | null>;
 }
 
 export const FloatingWindow = ({
@@ -25,6 +32,7 @@ export const FloatingWindow = ({
   title,
   children,
   footer,
+  initialFocusRef,
 }: FloatingWindowProps) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
@@ -34,11 +42,11 @@ export const FloatingWindow = ({
   useAnchorTransition(state, windowRef, resumeRef);
   const reduceMotion = useReducedMotion();
   const open = state === 'open';
-  const previousStateRef = useRef(state);
+  const previousStateRef = useRef<FloatingWindowState>('closed');
   const animateTransition =
     !reduceMotion &&
     ((state === 'minimized' && previousStateRef.current === 'open') ||
-      (open && previousStateRef.current === 'minimized'));
+      (open && previousStateRef.current !== 'open'));
 
   useEffect(() => {
     previousStateRef.current = state;
@@ -60,10 +68,12 @@ export const FloatingWindow = ({
     }
     // Allow the command menu to finish restoring focus first.
     const timer = window.setTimeout(() => {
-      panelRef.current?.focus({ preventScroll: true });
+      (initialFocusRef?.current ?? panelRef.current)?.focus({
+        preventScroll: true,
+      });
     }, 0);
     return () => window.clearTimeout(timer);
-  }, [state]);
+  }, [state, initialFocusRef]);
 
   if (typeof document === 'undefined') return null;
 
@@ -75,14 +85,14 @@ export const FloatingWindow = ({
         style={{
           pointerEvents: open ? 'auto' : 'none',
           visibility: open ? 'visible' : 'hidden',
+          display: open ? undefined : 'none',
         }}
         aria-hidden={!open}
         inert={!open}
       >
-        <CustomGlassMaterial style={{ '--opacity': 0.925, '--blur': '4px' }} />
         <S.Interior
           as={motion.div}
-          initial={false}
+          initial={reduceMotion ? false : { opacity: 0 }}
           ref={panelRef}
           role="dialog"
           aria-label={title}

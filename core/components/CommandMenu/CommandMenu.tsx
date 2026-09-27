@@ -19,6 +19,7 @@ import {
 
 import { CustomGlassMaterial } from '../DialogGlass';
 import { ContactIcon, SearchIcon } from '../Icons';
+import RGBLensIcon from '../RGBLensIcon';
 import { ScreenReaderOnly } from '../ScreenReaderOnly';
 import { useArticleSearch } from '../Search/useArticleSearch';
 import * as S from './CommandMenu.styles';
@@ -446,13 +447,13 @@ const CommandMenu = (props: CommandMenuProps) => {
                       </S.Item>
                       <S.Item
                         as={Command.Item}
-                        value="Ask AI"
+                        value="Ask"
                         keywords={['ai', 'question', 'chat', 'assistant']}
                         onSelect={handleAskAI}
                         data-testid="aimode"
                       >
-                        <Icon.AIChat size={4} />
-                        <S.ItemLabel>Ask me anything...</S.ItemLabel>
+                        <RGBLensIcon size={22} />
+                        <S.ItemLabel>Ask</S.ItemLabel>
                       </S.Item>
 
                       {actions.map((action) => {

@@ -38,6 +38,7 @@ import { HR } from '@core/components/HR';
 import Logo from '@core/components/Logo';
 import Image from '@core/components/MDX/Image/Image';
 import { Main } from '@core/components/Main';
+import RGBLensIcon from '@core/components/RGBLensIcon';
 import { Select } from '@core/components/Select';
 import Seo from '@core/components/Seo';
 import { Slider } from '@core/components/Slider';
@@ -450,6 +451,29 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
             id="icons"
           >
             <H2>Icons</H2>
+            <Flex
+              id="rgb-lenses"
+              gap="6"
+              alignItems="center"
+              css={{
+                backgroundColor: '#080909',
+
+                borderRadius: 'var(--border-radius-2)',
+              }}
+            >
+              <Flex direction="column" alignItems="center" gap="2">
+                <RGBLensIcon size={48} />
+                <Text size="1">Static</Text>
+              </Flex>
+              <Flex direction="column" alignItems="center" gap="2">
+                <RGBLensIcon size={48} animate="hover" />
+                <Text size="1">Hover</Text>
+              </Flex>
+              <Flex direction="column" alignItems="center" gap="2">
+                <RGBLensIcon size={48} animate={true} />
+                <Text size="1">Loop</Text>
+              </Flex>
+            </Flex>
             <IconSection />
           </Flex>
           <Flex

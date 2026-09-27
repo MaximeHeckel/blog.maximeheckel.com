@@ -1,4 +1,4 @@
-import { Icon, styled } from '@maximeheckel/design-system';
+import { styled } from '@maximeheckel/design-system';
 import {
   animate,
   motion,
@@ -16,6 +16,7 @@ import {
   useState,
 } from 'react';
 
+import RGBLensIcon from '../RGBLensIcon';
 import {
   ATTACH_DISTANCE,
   CAPSULE_PATH,
@@ -24,11 +25,12 @@ import {
   Point,
   Viewport,
   WindowCorner,
-  clampPoint,
   anchorShape,
   cornerForPoint,
   dragPoint,
   settlePoint,
+  relativePoint,
+  viewportPoint,
 } from './geometry';
 
 const Button = styled(motion.button, {
@@ -68,6 +70,7 @@ export const FloatingAnchor = ({
   onCornerChange,
 }: FloatingAnchorProps) => {
   const reduceMotion = useReducedMotion();
+  const [hovered, setHovered] = useState(false);
   const [viewport, setViewport] = useState<Viewport>(() => ({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -78,6 +81,7 @@ export const FloatingAnchor = ({
   );
   const x = useMotionValue(initialPosition.x);
   const y = useMotionValue(initialPosition.y);
+  const position = useRef(relativePoint(initialPosition, viewport));
   const drag = useRef<{
     id: number;
     start: Point;
@@ -105,7 +109,11 @@ export const FloatingAnchor = ({
     const resize = () => {
       animation.current?.();
       const next = { width: window.innerWidth, height: window.innerHeight };
-      const point = clampPoint({ x: x.get(), y: y.get() }, next);
+      const point = viewportPoint(position.current, next);
+      if (drag.current) {
+        drag.current.origin.x += point.x - x.get();
+        drag.current.origin.y += point.y - y.get();
+      }
       x.set(point.x);
       y.set(point.y);
       setViewport(next);
@@ -120,6 +128,7 @@ export const FloatingAnchor = ({
 
   const settle = (point: Point) => {
     const target = settlePoint(point, viewport);
+    position.current = relativePoint(target, viewport);
     onCornerChange(cornerForPoint(target, viewport));
     animation.current?.();
     const options = reduceMotion
@@ -153,6 +162,8 @@ export const FloatingAnchor = ({
           ? { duration: 0 }
           : { type: 'spring', stiffness: 650, damping: 42, mass: 0.7 }
       }
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       onPointerDown={(event: PointerEvent<HTMLButtonElement>) => {
         if (event.button !== 0 || drag.current) return;
         animation.current?.();
@@ -178,6 +189,7 @@ export const FloatingAnchor = ({
         );
         x.set(point.x);
         y.set(point.y);
+        position.current = relativePoint(point, viewport);
       }}
       onPointerUp={(event: PointerEvent<HTMLButtonElement>) => {
         const current = drag.current;
@@ -250,15 +262,11 @@ export const FloatingAnchor = ({
           fill="oklch(from var(--gray-300) calc(l + 0.035) c h)"
         />
       </svg>
-      <motion.span style={{ x: iconX, display: 'flex', pointerEvents: 'none' }}>
-        <Icon.Arrow
-          variant="primary"
-          style={{
-            position: 'relative',
-            transform: 'rotate(-45deg)',
-            pointerEvents: 'none',
-          }}
-        />
+      <motion.span
+        aria-hidden="true"
+        style={{ x: iconX, display: 'flex', pointerEvents: 'none' }}
+      >
+        <RGBLensIcon size={28} animate={active && hovered} />
       </motion.span>
     </Button>
   );

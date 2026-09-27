@@ -25,6 +25,17 @@ export const clampPoint = (point: Point, viewport: Viewport): Point => ({
   y: Math.max(INSET, Math.min(point.y, viewport.height - HEIGHT - INSET)),
 });
 
+// Fractions of the available travel keep 0/1 flush with either viewport edge.
+export const relativePoint = (point: Point, viewport: Viewport): Point => ({
+  x: Math.max(0, Math.min(1, point.x / Math.max(1, viewport.width - WIDTH))),
+  y: Math.max(0, Math.min(1, point.y / Math.max(1, viewport.height - HEIGHT))),
+});
+
+export const viewportPoint = (point: Point, viewport: Viewport): Point => ({
+  x: point.x * Math.max(0, viewport.width - WIDTH),
+  y: point.y * Math.max(0, viewport.height - HEIGHT),
+});
+
 export const nearestEdge = (point: Point, viewport: Viewport) => {
   const edges = [
     { side: 'left', distance: point.x },

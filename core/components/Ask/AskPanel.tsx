@@ -5,10 +5,18 @@ import {
   Tooltip,
   styled,
 } from '@maximeheckel/design-system';
-import { ChangeEvent, FormEvent, KeyboardEvent, useId, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  KeyboardEvent,
+  useId,
+  useRef,
+  useState,
+} from 'react';
 
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import { FloatingWindow, FloatingWindowState } from '../FloatingWindow';
+import RGBLensIcon from '../RGBLensIcon';
 import { Answer } from './Answer';
 import { useAICompletion } from './useAICompletion';
 
@@ -78,7 +86,7 @@ const Content = styled('div', {
     width: 'fit-content',
     maxWidth: '85%',
     margin: '0 0 var(--space-5) auto',
-    padding: 'var(--space-2)',
+    padding: 'var(--space-2) var(--space-3)',
     borderRadius: 'var(--border-radius-2)',
     background: 'oklch(from var(--gray-200) calc(l + 0.035) c h)',
     border: '1px solid var(--border-color)',
@@ -89,11 +97,24 @@ const Content = styled('div', {
   },
   a: { color: 'var(--text-primary)' },
 });
+const EmptyState = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 'var(--space-0)',
+  flex: 1,
+  padding: 'var(--space-4) 0',
+  textAlign: 'center',
+  '> p': { margin: 0, maxWidth: '34ch' },
+});
+
 const onRender = () => {};
 
 export const AskPanel = ({ state, onStateChange }: AskPanelProps) => {
   const [draft, setDraft] = useState('');
   const inputId = useId();
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const { query, streamData, status, error, submitQuery, reset } =
     useAICompletion();
   const send = () => {
@@ -104,6 +125,7 @@ export const AskPanel = ({ state, onStateChange }: AskPanelProps) => {
 
   return (
     <FloatingWindow
+      initialFocusRef={inputRef}
       state={state}
       onStateChange={(nextState) => {
         if (nextState === 'closed') {
@@ -121,6 +143,7 @@ export const AskPanel = ({ state, onStateChange }: AskPanelProps) => {
           }}
         >
           <ComposerInput
+            ref={inputRef}
             id={inputId}
             rows={1}
             aria-label="Ask a question"
@@ -164,12 +187,20 @@ export const AskPanel = ({ state, onStateChange }: AskPanelProps) => {
         </Composer>
       }
     >
-      <Content>
+      <Content
+        css={
+          !query
+            ? { minHeight: '100%', display: 'flex', flexDirection: 'column' }
+            : undefined
+        }
+      >
         {!query ? (
-          <Text as="p" size="1" variant="secondary">
-            What would you like to understand? Ask a question about an article,
-            a technique, or an idea.
-          </Text>
+          <EmptyState>
+            <RGBLensIcon size={96} strokeWidth={0.6} animate />
+            <Text as="p" size="1" variant="primary">
+              Ask questions, find related articles, or simplify a concept.
+            </Text>
+          </EmptyState>
         ) : null}
         {query ? (
           <Text as="blockquote" size="1" variant="secondary">
@@ -188,8 +219,23 @@ export const AskPanel = ({ state, onStateChange }: AskPanelProps) => {
           </div>
         ) : null}
         {status === 'loading' ? (
-          <Text as="p" size="1" variant="tertiary" role="status">
+          <Text
+            as="p"
+            size="1"
+            variant="tertiary"
+            role="status"
+            css={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--space-2)',
+            }}
+          >
             {streamData ? 'Writing…' : 'Thinking…'}
+            {!streamData ? (
+              <span aria-hidden="true" style={{ display: 'inline-flex' }}>
+                <RGBLensIcon size={20} animate />
+              </span>
+            ) : null}
           </Text>
         ) : null}
         {error ? (
