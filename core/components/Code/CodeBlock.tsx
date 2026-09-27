@@ -5,6 +5,7 @@ import { useLayoutEffect, useMemo, useRef } from 'react';
 
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import { createDiffHighlighter } from './diff';
+import { syntaxTheme } from './syntaxTheme';
 import { CodeBlockProps, HighlightedCodeTextProps } from './types';
 import { calculateLinesToHighlight, hasTitle } from './utils';
 
@@ -120,6 +121,11 @@ const ScrollableCodeText = (props: HighlightedCodeTextProps) => {
                     return (
                       <span
                         data-testid="content-line"
+                        data-arrow={
+                          (token.types.includes('operator') &&
+                            token.content === '=>') ||
+                          undefined
+                        }
                         key={tokenIndex}
                         {...tokenProps}
                       />
@@ -150,19 +156,15 @@ const CodeBlock = (props: CodeBlockProps) => {
         width: '100%',
 
         '@media(max-width: 750px)': {
-          width: '100vw',
-          position: 'relative',
-          left: '50%',
-          right: '50%',
-          marginLeft: '-50vw',
-          marginRight: '-50vw',
+          width: 'calc(100% + var(--space-2) * 2)',
+          left: 'calc(-1 * var(--space-2))',
         },
       }}
     >
       {title ? (
         <Card.Header
           css={{
-            zIndex: 3,
+            borderBottom: 'none',
             backgroundColor: 'var(--code-snippet-background)',
             padding: 'var(--space-2) var(--space-3)',
           }}
@@ -185,6 +187,7 @@ const CodeBlock = (props: CodeBlockProps) => {
 export default CodeBlock;
 
 const Pre = styled('pre', {
+  ...syntaxTheme,
   '--shadow-size': '70px',
   '--shadow-color': 'oklch(from var(--gray-000) l c h / 0.75)',
   marginTop: '0',
@@ -194,6 +197,7 @@ const Pre = styled('pre', {
   borderBottomLeftRadius: 'var(--border-radius-2)',
   borderBottomRightRadius: 'var(--border-radius-2)',
   backgroundColor: 'var(--code-snippet-background)',
+  color: 'var(--token-text)',
   fontFamily: 'var(--font-mono-code)',
   fontSize: 'var(--font-size-1)',
   lineHeight: '24px',
@@ -222,39 +226,45 @@ const Pre = styled('pre', {
     background: 'linear-gradient(to left, var(--shadow-color), transparent)',
   },
 
-  '.token.parameter,.token.imports,.token.plain,.token.comment,.token.prolog,.token.doctype,.token.cdata':
+  '.token.parameter,.token.imports,.token.plain,.token.property,.token.variable':
     {
-      color: 'var(--token-comment)',
+      color: 'var(--token-text)',
     },
+
+  '.token.comment,.token.prolog,.token.doctype,.token.cdata': {
+    color: 'var(--token-comment)',
+  },
 
   '.token.punctuation': {
     color: 'var(--token-punctuation)',
   },
 
-  '.token.property,.token.tag,.token.boolean,.token.number,.token.constant,.token.symbol,.token.deleted':
-    {
-      color: 'var(--token-symbol)',
-    },
+  '.token.boolean,.token.number,.token.constant,.token.symbol': {
+    color: 'var(--token-number)',
+  },
 
-  '.token.selector,.token.attr-name,.token.char,.token.builtin,.token.number,.token.string,.token.inserted':
-    {
-      color: 'var(--token-selector)',
-    },
+  '.token.char,.token.string,.token.attr-value,.token.regex,.token.url': {
+    color: 'var(--token-string)',
+  },
 
-  '.token.operator,.token.entity,.token.url,.language-css .style': {
+  '.token.builtin,.token.class-name,.token.maybe-class-name,.token.attr-name': {
+    color: 'var(--token-type)',
+  },
+
+  '.token.operator,.token.entity': {
     color: 'var(--token-operator)',
   },
 
-  '.token.atrule,.token.attr-value,.token.keyword': {
+  '.token.operator[data-arrow]': {
+    color: 'var(--token-string)',
+  },
+
+  '.token.atrule,.token.keyword,.token.tag,.token.important': {
     color: 'var(--token-keyword)',
   },
 
-  '.token.function,.token.maybe-class-name,.token.class-name': {
+  '.token.function,.token.function-variable,.token.selector': {
     color: 'var(--token-function)',
-  },
-
-  '.token.regex,.token.important,.token.variable': {
-    color: 'var(--token-operator)',
   },
 });
 
@@ -305,8 +315,11 @@ const LineContent = styled('span', {
 
 const CodeSnippetTitle = styled('p', {
   marginBlockStart: '0px',
-  fontSize: 'var(--font-size-1)',
+  marginInlineStart: '4px',
+  fontFamily: 'var(--font-mono)',
+  textTransform: 'uppercase',
+  fontSize: '13px',
   marginBottom: '0px',
-  color: 'var(--text-primary)',
+  color: 'var(--text-tertiary)',
   fontWeight: '500',
 });

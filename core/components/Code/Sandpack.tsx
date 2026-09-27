@@ -16,10 +16,12 @@ import { useIsMobile } from '@core/hooks/useIsMobile';
 import setupFiles from './SandpackSetupFiles';
 import { CustomRunButton } from './components/CustomSandpackButtons';
 import PreviewTabs, { Tab } from './components/PreviewTabs';
+import { syntaxTheme } from './syntaxTheme';
 
 // Default Theme
 const theme = {
   colors: {
+    base: 'var(--token-text)',
     hover: 'var(--text-secondary)',
     clickable: 'var(--text-tertiary)',
     accent: 'var(--text-primary)',
@@ -30,17 +32,17 @@ const theme = {
     surface1: 'var(--card-background)',
   },
   syntax: {
-    plain: 'var(--token-comment)',
+    plain: 'var(--token-text)',
     comment: {
       color: 'var(--token-comment)',
     },
     keyword: 'var(--token-keyword)',
-    tag: 'var(--token-symbol)',
+    tag: 'var(--token-keyword)',
     punctuation: 'var(--token-punctuation)',
     definition: 'var(--token-function)',
-    property: 'var(--token-function)',
-    static: 'var(--token-comment)',
-    string: 'var(--token-selector)',
+    property: 'var(--token-text)',
+    static: 'var(--token-number)',
+    string: 'var(--token-string)',
   },
   font: {
     body: 'var(--font-display)',
@@ -52,6 +54,7 @@ const theme = {
 
 // Styles
 const SandpackWrapper = styled(Box, {
+  ...syntaxTheme,
   '.sp-layout': {
     background: 'transparent',
     position: 'relative',
@@ -91,6 +94,8 @@ const SandpackWrapper = styled(Box, {
 
   '.sp-tabs-scrollable-container': {
     padding: '0 4px',
+    scrollbarColor: 'var(--scrollbar-thumb) transparent',
+    scrollbarWidth: 'thin',
   },
 
   '.sp-tabs': {

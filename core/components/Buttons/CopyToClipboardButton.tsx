@@ -51,11 +51,13 @@ const CopyToClipboardButton = (props: { text: string; title?: string }) => {
 
   return (
     <IconButton
+      css={{ position: 'relative', zIndex: 3 }}
       onClick={() => {
         copyToClipboard(props.text);
         setIsChecked(true);
       }}
       variant="tertiary"
+      rounded
       size="small"
       aria-label="Copy code to clipboard"
     >
