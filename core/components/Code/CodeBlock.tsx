@@ -152,6 +152,8 @@ const CodeBlock = (props: CodeBlockProps) => {
       css={{
         // Fix the overflow issue when wrapped in text
         display: 'grid',
+        gridTemplateColumns: 'minmax(0, 1fr)',
+        minWidth: 0,
         background: 'unset',
         width: '100%',
 
