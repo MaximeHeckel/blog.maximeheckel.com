@@ -1,21 +1,20 @@
-import { Card, styled } from '@maximeheckel/design-system';
-import { useScroll, useMotionValueEvent, useTransform } from 'motion/react';
-import { Highlight, Prism } from 'prism-react-renderer';
-import { useLayoutEffect, useMemo, useRef } from 'react';
+import { Card, Flex, styled } from '@maximeheckel/design-system';
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useMotionValueEvent,
+  useTransform,
+} from 'motion/react';
+import { Highlight } from 'prism-react-renderer';
+import { FocusEvent, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
+import { SendToAskButton } from '../Ask/SendToAskButton';
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import { createDiffHighlighter } from './diff';
-import { syntaxTheme } from './syntaxTheme';
+import { syntaxTheme, syntaxTokenStyles } from './syntaxTheme';
 import { CodeBlockProps, HighlightedCodeTextProps } from './types';
 import { calculateLinesToHighlight, hasTitle } from './utils';
-
-// @ts-ignore
-(typeof global !== 'undefined' ? global : window).Prism = Prism;
-
-// Register additional grammars on the renderer's Prism instance.
-require('prismjs/components/prism-swift');
-require('prismjs/components/prism-glsl');
-require('prismjs/components/prism-diff');
 
 export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
   // A streamed code fence can be empty before its first code token arrives.
@@ -143,13 +142,38 @@ const ScrollableCodeText = (props: HighlightedCodeTextProps) => {
 
 const CodeBlock = (props: CodeBlockProps) => {
   const { codeString, language, metastring } = props;
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const reducedMotion = useReducedMotion();
+  const actionsVisible = hovered || focused;
+
+  if (!codeString?.trim()) return null;
 
   const highlightLineFn = calculateLinesToHighlight(metastring);
   const title = hasTitle(metastring);
+  const actions = (
+    <Flex gap="1">
+      <SendToAskButton
+        code={codeString}
+        language={language}
+        title={title || undefined}
+      />
+      <CopyToClipboardButton title={title} text={codeString} />
+    </Flex>
+  );
 
   return (
     <Card
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(event: FocusEvent<HTMLDivElement>) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setFocused(false);
+        }
+      }}
       css={{
+        position: 'relative',
         // Fix the overflow issue when wrapped in text
         display: 'grid',
         gridTemplateColumns: 'minmax(0, 1fr)',
@@ -174,9 +198,24 @@ const CodeBlock = (props: CodeBlockProps) => {
           <CodeSnippetTitle data-testid="codesnippet-title">
             {title}
           </CodeSnippetTitle>
-          <CopyToClipboardButton title={title} text={codeString} />
+          {actions}
         </Card.Header>
-      ) : null}
+      ) : (
+        <FloatingActions
+          role="group"
+          aria-label="Code actions"
+          initial={false}
+          animate={{
+            opacity: actionsVisible ? 1 : 0,
+            y: actionsVisible || reducedMotion ? 0 : -4,
+            scale: actionsVisible || reducedMotion ? 1 : 0.96,
+          }}
+          transition={{ duration: reducedMotion ? 0 : 0.18, ease: 'easeOut' }}
+          style={{ pointerEvents: actionsVisible ? 'auto' : 'none' }}
+        >
+          {actions}
+        </FloatingActions>
+      )}
       <HighlightedCodeText
         codeString={codeString}
         language={language}
@@ -187,6 +226,22 @@ const CodeBlock = (props: CodeBlockProps) => {
 };
 
 export default CodeBlock;
+
+const FloatingActions = styled(motion.div, {
+  position: 'absolute',
+  top: 'var(--space-2)',
+  right: 'var(--space-2)',
+  zIndex: 3,
+  borderRadius: 'var(--border-radius-2)',
+  background: 'var(--code-snippet-background)',
+  boxShadow: '0 2px 8px oklch(0% 0 0 / 12%)',
+  // Touch devices have no hover affordance; keep the actions available.
+  '@media (hover: none)': {
+    opacity: '1 !important',
+    transform: 'none !important',
+    pointerEvents: 'auto !important',
+  },
+});
 
 const Pre = styled('pre', {
   ...syntaxTheme,
@@ -228,46 +283,7 @@ const Pre = styled('pre', {
     background: 'linear-gradient(to left, var(--shadow-color), transparent)',
   },
 
-  '.token.parameter,.token.imports,.token.plain,.token.property,.token.variable':
-    {
-      color: 'var(--token-text)',
-    },
-
-  '.token.comment,.token.prolog,.token.doctype,.token.cdata': {
-    color: 'var(--token-comment)',
-  },
-
-  '.token.punctuation': {
-    color: 'var(--token-punctuation)',
-  },
-
-  '.token.boolean,.token.number,.token.constant,.token.symbol': {
-    color: 'var(--token-number)',
-  },
-
-  '.token.char,.token.string,.token.attr-value,.token.regex,.token.url': {
-    color: 'var(--token-string)',
-  },
-
-  '.token.builtin,.token.class-name,.token.maybe-class-name,.token.attr-name': {
-    color: 'var(--token-type)',
-  },
-
-  '.token.operator,.token.entity': {
-    color: 'var(--token-operator)',
-  },
-
-  '.token.operator[data-arrow]': {
-    color: 'var(--token-string)',
-  },
-
-  '.token.atrule,.token.keyword,.token.tag,.token.important': {
-    color: 'var(--token-keyword)',
-  },
-
-  '.token.function,.token.function-variable,.token.selector': {
-    color: 'var(--token-function)',
-  },
+  ...syntaxTokenStyles,
 });
 
 const Line = styled('div', {

@@ -5,7 +5,9 @@ import {
   Tooltip,
   styled,
 } from '@maximeheckel/design-system';
+import type { AskAttachment } from 'lib/askAttachments';
 import {
+  useEffect,
   ChangeEvent,
   FormEvent,
   KeyboardEvent,
@@ -18,9 +20,13 @@ import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import { FloatingWindow, FloatingWindowState } from '../FloatingWindow';
 import RGBLensIcon from '../RGBLensIcon';
 import { Answer } from './Answer';
+import { AttachmentPills } from './AttachmentPills';
 import { useAICompletion } from './useAICompletion';
 
 interface AskPanelProps {
+  attachments?: AskAttachment[];
+  onAttachmentsChange?: (attachments: AskAttachment[]) => void;
+  focusRequest?: number;
   state: FloatingWindowState;
   onStateChange: (state: FloatingWindowState) => void;
 }
@@ -89,7 +95,7 @@ const Content = styled('div', {
     padding: 'var(--space-2) var(--space-3)',
     borderRadius: 'var(--border-radius-2)',
     background: 'oklch(from var(--gray-200) calc(l + 0.035) c h)',
-    border: '1px solid var(--border-color)',
+    border: '1px solid oklch(from var(--text-primary) l c h / 5%)',
     boxShadow: '0 3px 8px -2px oklch(0% 0 0 / 18%)',
     whiteSpace: 'pre-wrap',
     overflowWrap: 'anywhere',
@@ -111,15 +117,30 @@ const EmptyState = styled('div', {
 
 const onRender = () => {};
 
-export const AskPanel = ({ state, onStateChange }: AskPanelProps) => {
+export const AskPanel = ({
+  state,
+  onStateChange,
+  attachments = [],
+  onAttachmentsChange,
+  focusRequest,
+}: AskPanelProps) => {
+  const [submittedAttachments, setSubmittedAttachments] = useState<
+    AskAttachment[]
+  >([]);
   const [draft, setDraft] = useState('');
   const inputId = useId();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { query, streamData, status, error, submitQuery, reset } =
     useAICompletion();
+  useEffect(() => {
+    if (state === 'open') inputRef.current?.focus({ preventScroll: true });
+  }, [focusRequest, state]);
   const send = () => {
     if (!draft.trim() || status === 'loading') return;
-    void submitQuery(draft.trim());
+    if (attachments.length) void submitQuery(draft.trim(), attachments);
+    else void submitQuery(draft.trim());
+    setSubmittedAttachments(attachments);
+    onAttachmentsChange?.([]);
     setDraft('');
   };
 
@@ -131,6 +152,8 @@ export const AskPanel = ({ state, onStateChange }: AskPanelProps) => {
         if (nextState === 'closed') {
           reset();
           setDraft('');
+          setSubmittedAttachments([]);
+          onAttachmentsChange?.([]);
         }
         onStateChange(nextState);
       }}
@@ -142,6 +165,35 @@ export const AskPanel = ({ state, onStateChange }: AskPanelProps) => {
             send();
           }}
         >
+          {attachments.length ? (
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 'calc(100% + var(--space-2))',
+                left: 'var(--space-1)',
+                right: 'var(--space-1)',
+                zIndex: 1,
+                maxHeight: 120,
+                overflowY: 'auto',
+                borderRadius: 'var(--border-radius-1)',
+                background: 'var(--code-snippet-background)',
+              }}
+            >
+              <AttachmentPills
+                attachments={attachments}
+                onRemoveAll={() => {
+                  onAttachmentsChange?.([]);
+                  inputRef.current?.focus();
+                }}
+                onRemove={(id) => {
+                  onAttachmentsChange?.(
+                    attachments.filter((attachment) => attachment.id !== id)
+                  );
+                  inputRef.current?.focus();
+                }}
+              />
+            </div>
+          ) : null}
           <ComposerInput
             ref={inputRef}
             id={inputId}
@@ -191,7 +243,15 @@ export const AskPanel = ({ state, onStateChange }: AskPanelProps) => {
         css={
           !query
             ? { minHeight: '100%', display: 'flex', flexDirection: 'column' }
-            : undefined
+            : {
+                // Add real scrollable space for the floating pills and their gap.
+                // Three or more attachments collapse back to a single row.
+                paddingBottom: attachments.length
+                  ? attachments.length === 2
+                    ? 'calc(2 * var(--space-6) + var(--space-1) + var(--space-2))'
+                    : 'calc(var(--space-6) + var(--space-2))'
+                  : undefined,
+              }
         }
       >
         {!query ? (
@@ -204,6 +264,7 @@ export const AskPanel = ({ state, onStateChange }: AskPanelProps) => {
         ) : null}
         {query ? (
           <Text as="blockquote" size="1" variant="secondary">
+            <AttachmentPills attachments={submittedAttachments} inMessage />
             {query}
           </Text>
         ) : null}

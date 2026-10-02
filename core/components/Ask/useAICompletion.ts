@@ -1,3 +1,4 @@
+import type { AskAttachment } from 'lib/askAttachments';
 import { DeepPartial, parsePartialJson } from 'lib/partialJson';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -21,7 +22,7 @@ interface CompletionState {
 }
 
 interface UseAICompletionReturn extends CompletionState {
-  submitQuery: (query: string) => Promise<void>;
+  submitQuery: (query: string, attachments?: AskAttachment[]) => Promise<void>;
   abort: () => void;
   reset: () => void;
 }
@@ -61,7 +62,7 @@ const useAICompletion = (
   }, [abort]);
 
   const submitQuery = useCallback(
-    async (newQuery: string) => {
+    async (newQuery: string, attachments: AskAttachment[] = []) => {
       // Abort any existing request before starting a new one
       abort();
       const controller = new AbortController();
@@ -77,6 +78,7 @@ const useAICompletion = (
           },
           body: JSON.stringify({
             query: newQuery,
+            attachments,
             // @ts-ignore - Cypress detection for e2e tests
             mock: window.Cypress ? true : false,
             threshold,

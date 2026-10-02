@@ -20,3 +20,46 @@ export const syntaxTheme = {
   '--token-number':
     'oklch(from var(--orange-1100) l calc(c * var(--token-chroma-scale)) h)',
 };
+
+export const syntaxTokenStyles = {
+  '.token.parameter,.token.imports,.token.plain,.token.property,.token.variable':
+    {
+      color: 'var(--token-text)',
+    },
+
+  '.token.comment,.token.prolog,.token.doctype,.token.cdata': {
+    color: 'var(--token-comment)',
+  },
+
+  '.token.punctuation': {
+    color: 'var(--token-punctuation)',
+  },
+
+  '.token.boolean,.token.number,.token.constant,.token.symbol': {
+    color: 'var(--token-number)',
+  },
+
+  '.token.char,.token.string,.token.attr-value,.token.regex,.token.url': {
+    color: 'var(--token-string)',
+  },
+
+  '.token.builtin,.token.class-name,.token.maybe-class-name,.token.attr-name': {
+    color: 'var(--token-type)',
+  },
+
+  '.token.operator,.token.entity': {
+    color: 'var(--token-operator)',
+  },
+
+  '.token.operator[data-arrow]': {
+    color: 'var(--token-string)',
+  },
+
+  '.token.atrule,.token.keyword,.token.tag,.token.important': {
+    color: 'var(--token-keyword)',
+  },
+
+  '.token.function,.token.function-variable,.token.selector': {
+    color: 'var(--token-function)',
+  },
+};
