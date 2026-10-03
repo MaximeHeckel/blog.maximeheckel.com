@@ -14,11 +14,12 @@ html {
   scrollbar-width: thin;
 }
 
-html.maximeheckel-light {
+/* Theme surfaces must select the matching light-dark() palette too. */
+.maximeheckel-light {
   color-scheme: light;
 }
 
-html.maximeheckel-dark {
+.maximeheckel-dark {
   color-scheme: dark;
 }
 

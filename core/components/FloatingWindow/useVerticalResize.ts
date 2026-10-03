@@ -1,4 +1,5 @@
 import {
+  CSSProperties,
   KeyboardEvent,
   PointerEvent,
   RefObject,
@@ -13,6 +14,7 @@ export const useVerticalResize = (
 ) => {
   const [height, setHeight] = useState<number | null>(null);
   const [viewportHeight, setViewportHeight] = useState(0);
+  const [viewportOffsets, setViewportOffsets] = useState({ top: 0, bottom: 0 });
   const [inset, setInset] = useState(8);
   const drag = useRef<{ pointerId: number; y: number; height: number } | null>(
     null
@@ -28,7 +30,14 @@ export const useVerticalResize = (
 
   useEffect(() => {
     const update = () => {
-      const viewport = window.innerHeight;
+      const visualViewport = window.visualViewport;
+      const viewport = visualViewport?.height ?? window.innerHeight;
+      const top = visualViewport?.offsetTop ?? 0;
+
+      setViewportOffsets({
+        top,
+        bottom: Math.max(0, window.innerHeight - viewport - top),
+      });
       const style = windowRef.current
         ? getComputedStyle(windowRef.current)
         : null;
@@ -37,18 +46,23 @@ export const useVerticalResize = (
         Number.parseFloat(style?.right ?? '') ||
         Number.parseFloat(style?.left ?? '') ||
         8;
-      const maximum = Math.max(0, viewport - 2 * nextInset);
       setInset(nextInset);
       setViewportHeight(viewport);
-      setHeight((previous) =>
-        previous === null
-          ? null
-          : Math.min(maximum, Math.max(Math.min(420, maximum), previous))
-      );
+      // Keep the chosen height so dismissing the keyboard restores the window.
+      // Rendering and drag bounds clamp it to the currently visible viewport.
     };
     update();
+    const visualViewport = window.visualViewport;
+
     window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
+    visualViewport?.addEventListener('resize', update);
+    visualViewport?.addEventListener('scroll', update);
+
+    return () => {
+      window.removeEventListener('resize', update);
+      visualViewport?.removeEventListener('resize', update);
+      visualViewport?.removeEventListener('scroll', update);
+    };
   }, [windowRef]);
 
   const endDrag = (event: PointerEvent<HTMLDivElement>) => {
@@ -60,7 +74,14 @@ export const useVerticalResize = (
   };
 
   return {
-    height,
+    height: height === null ? null : currentHeight,
+    viewportStyle: {
+      '--visible-viewport-height': viewportHeight
+        ? `${viewportHeight}px`
+        : undefined,
+      '--viewport-offset-top': `${viewportOffsets.top}px`,
+      '--viewport-offset-bottom': `${viewportOffsets.bottom}px`,
+    } as CSSProperties,
     handleProps: {
       role: 'separator',
       tabIndex: 0,

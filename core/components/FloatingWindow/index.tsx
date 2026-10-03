@@ -61,7 +61,10 @@ export const FloatingWindow = ({
   const [corner, setCorner] = useState<WindowCorner>('bottom-right');
   const windowId = useId();
   const anchoredAtTop = corner.startsWith('top');
-  const { height, handleProps } = useVerticalResize(windowRef, anchoredAtTop);
+  const { height, viewportStyle, handleProps } = useVerticalResize(
+    windowRef,
+    anchoredAtTop
+  );
   const resumeRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   useAnchorTransition(state, windowRef, resumeRef);
@@ -189,6 +192,7 @@ export const FloatingWindow = ({
         data-corner={corner}
         style={
           {
+            ...viewportStyle,
             '--resized-window-height':
               height === null ? undefined : `${height}px`,
             pointerEvents: open ? 'auto' : 'none',

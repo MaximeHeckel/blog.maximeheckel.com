@@ -303,3 +303,62 @@ it.each([false, true])(
     expect(body.scrollTop).toBe(manual ? 450 : 660);
   }
 );
+
+it('fits above the keyboard, follows viewport panning, and restores the chosen height', () => {
+  vi.stubGlobal('innerHeight', 800);
+  const viewport = Object.assign(new EventTarget(), {
+    height: 800,
+    offsetTop: 0,
+  });
+  vi.stubGlobal('visualViewport', viewport);
+
+  const { unmount } = render(
+    <FloatingWindow title="Ask" state="open" onStateChange={vi.fn()}>
+      <p>Response</p>
+    </FloatingWindow>
+  );
+  const handle = screen.getByRole('separator', { name: 'Resize Ask height' });
+  const windowElement = handle.closest('[data-corner]') as HTMLElement;
+
+  fireEvent.keyDown(handle, { key: 'ArrowUp' });
+  expect(handle).toHaveAttribute('aria-valuenow', '452');
+
+  viewport.height = 350;
+  act(() => {
+    viewport.dispatchEvent(new Event('resize'));
+  });
+  expect(handle).toHaveAttribute('aria-valuemax', '334');
+  expect(handle).toHaveAttribute('aria-valuenow', '334');
+  expect(
+    windowElement.style.getPropertyValue('--visible-viewport-height')
+  ).toBe('350px');
+  expect(windowElement.style.getPropertyValue('--viewport-offset-bottom')).toBe(
+    '450px'
+  );
+
+  viewport.offsetTop = 40;
+  act(() => {
+    viewport.dispatchEvent(new Event('scroll'));
+  });
+  expect(windowElement.style.getPropertyValue('--viewport-offset-top')).toBe(
+    '40px'
+  );
+  expect(windowElement.style.getPropertyValue('--viewport-offset-bottom')).toBe(
+    '410px'
+  );
+
+  viewport.height = 800;
+  viewport.offsetTop = 0;
+  act(() => {
+    viewport.dispatchEvent(new Event('resize'));
+  });
+  expect(handle).toHaveAttribute('aria-valuenow', '452');
+  expect(windowElement.style.getPropertyValue('--viewport-offset-bottom')).toBe(
+    '0px'
+  );
+
+  const removeListener = vi.spyOn(viewport, 'removeEventListener');
+  unmount();
+  expect(removeListener).toHaveBeenCalledWith('resize', expect.any(Function));
+  expect(removeListener).toHaveBeenCalledWith('scroll', expect.any(Function));
+});
