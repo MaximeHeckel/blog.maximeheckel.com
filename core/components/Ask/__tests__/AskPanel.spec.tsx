@@ -50,7 +50,10 @@ it('switches the composer send action to cancellation while streaming', () => {
     target: { value: 'Explain shaders' },
   });
   fireEvent.click(screen.getByRole('button', { name: 'Send question' }));
-  expect(submitQuery).toHaveBeenCalledWith('Explain shaders');
+  expect(submitQuery).toHaveBeenCalledWith('Explain shaders', [], [], {
+    path: '/',
+    kind: 'page',
+  });
 
   vi.mocked(useAICompletion).mockReturnValue({
     ...completion,
@@ -64,7 +67,8 @@ it('switches the composer send action to cancellation while streaming', () => {
     screen.queryByRole('button', { name: 'Send question' })
   ).not.toBeInTheDocument();
   fireEvent.click(cancel);
-  expect(reset).toHaveBeenCalledOnce();
+  expect(completion.abort).toHaveBeenCalledOnce();
+  expect(reset).not.toHaveBeenCalled();
   expect(submitQuery).toHaveBeenCalledTimes(1);
 
   vi.mocked(useAICompletion).mockReturnValue({
@@ -105,7 +109,7 @@ it('copies the original Markdown of a completed answer', () => {
   Reflect.deleteProperty(document, 'execCommand');
 });
 
-it('preserves the draft on minimize and resets the conversation on close', () => {
+it('preserves the draft and conversation on minimize and close', () => {
   const reset = vi.fn();
   const onStateChange = vi.fn();
   vi.mocked(useAICompletion).mockReturnValue({
@@ -135,11 +139,11 @@ it('preserves the draft on minimize and resets the conversation on close', () =>
   );
   fireEvent.click(screen.getByRole('button', { name: 'Close Ask' }));
   expect(onStateChange).toHaveBeenLastCalledWith('closed');
-  expect(reset).toHaveBeenCalledOnce();
+  expect(reset).not.toHaveBeenCalled();
   rerender(<AskPanel state="closed" onStateChange={onStateChange} />);
   rerender(<AskPanel state="open" onStateChange={onStateChange} />);
   expect(screen.getByRole('textbox', { name: 'Ask a question' })).toHaveValue(
-    ''
+    'Follow-up question'
   );
 });
 
@@ -206,4 +210,37 @@ it('focuses the composer on opening and restoring the window', async () => {
       screen.getByRole('textbox', { name: 'Ask a question' })
     ).toHaveFocus()
   );
+});
+
+it('reserves the copy control space while streaming and reveals the same control on completion', async () => {
+  const completion = {
+    query: 'Question',
+    streamData: 'Answer',
+    sources: undefined,
+    error: null,
+    submitQuery: vi.fn(),
+    reset: vi.fn(),
+    abort: vi.fn(),
+  };
+  vi.mocked(useAICompletion).mockReturnValue({
+    ...completion,
+    status: 'loading',
+  });
+  const { rerender, container } = render(
+    <AskPanel state="open" onStateChange={vi.fn()} />
+  );
+  const copy = container.ownerDocument.querySelector(
+    '[aria-label="Copy answer as Markdown"]'
+  );
+  expect(copy).not.toBeVisible();
+  expect(copy).toBeInTheDocument();
+  expect(screen.getByRole('status').compareDocumentPosition(copy!)).toBe(
+    Node.DOCUMENT_POSITION_FOLLOWING
+  );
+  vi.mocked(useAICompletion).mockReturnValue({ ...completion, status: 'done' });
+  rerender(<AskPanel state="open" onStateChange={vi.fn()} />);
+  expect(screen.getByRole('button', { name: 'Copy answer as Markdown' })).toBe(
+    copy
+  );
+  await waitFor(() => expect(copy).toBeVisible());
 });

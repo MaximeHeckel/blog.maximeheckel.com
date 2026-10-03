@@ -7,6 +7,7 @@ import {
 } from '@maximeheckel/design-system';
 import type { AskAttachment } from 'lib/askAttachments';
 import {
+  Fragment,
   useEffect,
   ChangeEvent,
   FormEvent,
@@ -21,7 +22,7 @@ import { FloatingWindow, FloatingWindowState } from '../FloatingWindow';
 import RGBLensIcon from '../RGBLensIcon';
 import { Answer } from './Answer';
 import { AttachmentPills } from './AttachmentPills';
-import { useAICompletion } from './useAICompletion';
+import { useAskConversation } from './useAskConversation';
 
 interface AskPanelProps {
   attachments?: AskAttachment[];
@@ -101,7 +102,11 @@ const Content = styled('div', {
     overflowWrap: 'anywhere',
     textAlign: 'left',
   },
-  a: { color: 'var(--text-primary)' },
+  a: {
+    color: 'var(--text-primary)',
+    borderColor: 'transparent',
+    '&:hover, &:focus-visible': { borderColor: 'var(--text-primary)' },
+  },
 });
 const EmptyState = styled('div', {
   display: 'flex',
@@ -124,27 +129,30 @@ export const AskPanel = ({
   onAttachmentsChange,
   focusRequest,
 }: AskPanelProps) => {
-  const [submittedAttachments, setSubmittedAttachments] = useState<
-    AskAttachment[]
-  >([]);
   const [draft, setDraft] = useState('');
   const attachmentOverlayHeight = attachments.length
     ? attachments.length === 2
       ? 'calc(2 * var(--space-6) + var(--space-1) + var(--space-2))'
       : 'calc(var(--space-6) + var(--space-2))'
     : '0px';
+  const latestQuestionRef = useRef<HTMLQuoteElement>(null);
   const inputId = useId();
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const { query, streamData, status, error, submitQuery, reset } =
-    useAICompletion();
+  const {
+    messages,
+    streamData,
+    status,
+    error,
+    send: sendMessage,
+    reset,
+    abort,
+  } = useAskConversation();
   useEffect(() => {
     if (state === 'open') inputRef.current?.focus({ preventScroll: true });
   }, [focusRequest, state]);
   const send = () => {
     if (!draft.trim() || status === 'loading') return;
-    if (attachments.length) void submitQuery(draft.trim(), attachments);
-    else void submitQuery(draft.trim());
-    setSubmittedAttachments(attachments);
+    void sendMessage(draft.trim(), attachments);
     onAttachmentsChange?.([]);
     setDraft('');
   };
@@ -152,19 +160,50 @@ export const AskPanel = ({
   return (
     <FloatingWindow
       initialFocusRef={inputRef}
+      scrollToBottomRequest={messages.at(-1)?.id}
+      scrollBoundaryRef={latestQuestionRef}
       showScrollToLatest
       bottomOverlayHeight={attachmentOverlayHeight}
       state={state}
-      onStateChange={(nextState) => {
-        if (nextState === 'closed') {
-          reset();
-          setDraft('');
-          setSubmittedAttachments([]);
-          onAttachmentsChange?.([]);
-        }
-        onStateChange(nextState);
-      }}
+      onStateChange={onStateChange}
       title="Ask"
+      headerActions={
+        messages.length ? (
+          <Tooltip
+            id={`${inputId}-new-conversation`}
+            content="New conversation"
+          >
+            <IconButton
+              type="button"
+              aria-label="New conversation"
+              variant="tertiary"
+              size="small"
+              rounded
+              onClick={() => {
+                reset();
+                setDraft('');
+                onAttachmentsChange?.([]);
+                inputRef.current?.focus();
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M8 3v10M3 8h10"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </IconButton>
+          </Tooltip>
+        ) : null
+      }
       footer={
         <Composer
           onSubmit={(event: FormEvent<HTMLFormElement>) => {
@@ -234,7 +273,7 @@ export const AskPanel = ({
                 status === 'loading' ? 'Cancel response' : 'Send question'
               }
               disabled={status !== 'loading' && !draft.trim()}
-              onClick={status === 'loading' ? reset : undefined}
+              onClick={status === 'loading' ? abort : undefined}
             >
               {status === 'loading' ? (
                 <Icon.Pause size="4" />
@@ -248,16 +287,15 @@ export const AskPanel = ({
     >
       <Content
         css={
-          !query
+          !messages.length
             ? { minHeight: '100%', display: 'flex', flexDirection: 'column' }
             : {
-                // Add real scrollable space for the floating pills and their gap.
-                // Three or more attachments collapse back to a single row.
-                paddingBottom: attachmentOverlayHeight,
+                // Keep the final line and activity indicator above the fade and floating pills.
+                paddingBottom: `calc(${attachmentOverlayHeight} + var(--space-4))`,
               }
         }
       >
-        {!query ? (
+        {!messages.length ? (
           <EmptyState>
             <RGBLensIcon size={96} strokeWidth={0.6} animate />
             <Text as="p" size="1" variant="primary">
@@ -265,43 +303,61 @@ export const AskPanel = ({
             </Text>
           </EmptyState>
         ) : null}
-        {query ? (
-          <Text as="blockquote" size="1" variant="secondary">
-            <AttachmentPills attachments={submittedAttachments} inMessage />
-            {query}
-          </Text>
-        ) : null}
-        <Answer text={streamData} onRender={onRender} />
-        {status === 'done' && streamData ? (
-          <div style={{ marginTop: 'var(--space-1)', marginLeft: -6 }}>
-            <Tooltip id="ask-tooltip" content="Copy answer as Markdown">
-              <CopyToClipboardButton
-                text={streamData}
-                label="Copy answer as Markdown"
-              />
-            </Tooltip>
-          </div>
-        ) : null}
-        {status === 'loading' ? (
-          <Text
-            as="p"
-            size="1"
-            variant="tertiary"
-            role="status"
-            css={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 'var(--space-2)',
-            }}
-          >
-            {streamData ? 'Writing…' : 'Thinking…'}
-            {!streamData ? (
-              <span aria-hidden="true" style={{ display: 'inline-flex' }}>
-                <RGBLensIcon size={20} animate />
-              </span>
-            ) : null}
-          </Text>
-        ) : null}
+        {messages.map((message) =>
+          message.role === 'user' ? (
+            <Text
+              key={message.id}
+              ref={message === messages.at(-2) ? latestQuestionRef : undefined}
+              as="blockquote"
+              size="1"
+              variant="secondary"
+            >
+              <AttachmentPills attachments={message.attachments} inMessage />
+              {message.content}
+            </Text>
+          ) : (
+            <Fragment key={message.id}>
+              <Answer text={message.content} onRender={onRender} />
+              {message === messages.at(-1) && status === 'loading' ? (
+                <Text
+                  as="p"
+                  size="1"
+                  variant="tertiary"
+                  role="status"
+                  css={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 'var(--space-2)',
+                  }}
+                >
+                  {streamData ? 'Writing…' : 'Thinking…'}
+                  {!streamData ? (
+                    <span aria-hidden="true" style={{ display: 'inline-flex' }}>
+                      <RGBLensIcon size={20} animate />
+                    </span>
+                  ) : null}
+                </Text>
+              ) : null}
+              <div
+                style={{
+                  marginTop: 'var(--space-1)',
+                  marginLeft: -6,
+                  visibility:
+                    message === messages.at(-1) &&
+                    status === 'done' &&
+                    message.content
+                      ? 'visible'
+                      : 'hidden',
+                }}
+              >
+                <CopyToClipboardButton
+                  text={message.content}
+                  label="Copy answer as Markdown"
+                />
+              </div>
+            </Fragment>
+          )
+        )}
         {error ? (
           <Text as="p" size="1" variant="danger" role="alert">
             {error.statusText}. Please try again.

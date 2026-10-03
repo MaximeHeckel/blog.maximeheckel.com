@@ -1,22 +1,23 @@
 import { Card, styled } from '@maximeheckel/design-system';
 
 export const Window = styled(Card, {
-  '--window-inset': 'var(--space-4)',
-  '--window-width': 'min(440px, calc(100vw - 32px))',
+  '--window-inset':
+    'max(var(--space-2), env(safe-area-inset-top), env(safe-area-inset-right), env(safe-area-inset-bottom), env(safe-area-inset-left))',
+  '--window-width': 'min(400px, calc(100vw - 2 * var(--window-inset)))',
   '--window-height':
-    'min(max(420px, var(--resized-window-height, 50dvh)), calc(100dvh - 48px))',
+    'min(max(420px, var(--resized-window-height, 50dvh)), calc(100dvh - 2 * var(--window-inset)))',
   width: 'var(--window-width)',
   height: 'var(--window-height)',
   borderRadius: 22,
   position: 'fixed',
-  right: 'max(var(--window-inset), env(safe-area-inset-right))',
-  bottom: 'max(var(--window-inset), env(safe-area-inset-bottom))',
+  right: 'var(--window-inset)',
+  bottom: 'var(--window-inset)',
   '&[data-corner$="left"]': {
-    left: 'max(var(--window-inset), env(safe-area-inset-left))',
+    left: 'var(--window-inset)',
     right: 'auto',
   },
   '&[data-corner^="top"]': {
-    top: 'max(var(--window-inset), env(safe-area-inset-top))',
+    top: 'var(--window-inset)',
     bottom: 'auto',
   },
   zIndex: 101,
@@ -29,8 +30,7 @@ export const Window = styled(Card, {
     'var(--thickness, 1px) solid oklch(from var(--gray-900) l c h / 15%) !important',
   boxShadow: '0 16px 64px oklch(0% 0 0 / 18%), 0 2px 8px oklch(0% 0 0 / 8%)',
   '@media (max-width: 600px)': {
-    '--window-width': 'calc(100vw - 24px)',
-    '--window-inset': 'var(--space-3)',
+    '--window-width': 'calc(100vw - 2 * var(--window-inset))',
   },
   backgroundColor: 'oklch(from var(--gray-300) l c h / 0.985)',
 });

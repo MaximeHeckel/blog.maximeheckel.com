@@ -64,9 +64,12 @@ it('attaches titled code without submitting', async () => {
   expect(pill.querySelector('.token.keyword')).toHaveTextContent('const');
   fireEvent.change(input, { target: { value: 'Explain this' } });
   fireEvent.click(screen.getByRole('button', { name: 'Send question' }));
-  expect(submitQuery).toHaveBeenCalledWith('Explain this', [
-    expect.objectContaining({ kind: 'code', code, language: 'javascript' }),
-  ]);
+  expect(submitQuery).toHaveBeenCalledWith(
+    'Explain this',
+    [expect.objectContaining({ kind: 'code', code, language: 'javascript' })],
+    [],
+    { kind: 'page', path: '/' }
+  );
   expect(screen.queryByLabelText('Attached context')).not.toBeInTheDocument();
 });
 
@@ -93,10 +96,13 @@ it('deduplicates repeated sends and preserves the draft and pill across minimizi
   expect(screen.queryByLabelText('Attached context')).not.toBeInTheDocument();
   expect(input).toHaveValue('My draft');
   fireEvent.click(screen.getByRole('button', { name: 'Send question' }));
-  expect(submitQuery).toHaveBeenCalledWith('My draft');
+  expect(submitQuery).toHaveBeenCalledWith('My draft', [], [], {
+    path: '/',
+    kind: 'page',
+  });
 });
 
-it('clears attachments when closing and keeps browser selection independent', async () => {
+it('preserves attachments when closing and keeps browser selection independent', async () => {
   renderCode();
   const send = screen.getByRole('button', { name: 'Send to Ask' });
   fireEvent.click(send);
@@ -107,7 +113,7 @@ it('clears attachments when closing and keeps browser selection independent', as
   fireEvent.click(screen.getByRole('button', { name: 'Close Ask' }));
   fireEvent.click(screen.getByRole('button', { name: 'Open Ask' }));
   await screen.findByRole('textbox', { name: 'Ask a question' });
-  expect(screen.queryByLabelText('Attached context')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Attached context')).toBeInTheDocument();
 });
 
 it('supports selection attachments and unknown code languages', () => {

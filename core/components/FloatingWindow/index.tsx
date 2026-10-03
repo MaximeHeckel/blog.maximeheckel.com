@@ -32,7 +32,10 @@ interface FloatingWindowProps {
   title: string;
   children: ReactNode;
   footer?: ReactNode;
+  headerActions?: ReactNode;
   showScrollToLatest?: boolean;
+  scrollToBottomRequest?: string;
+  scrollBoundaryRef?: RefObject<HTMLElement | null>;
   bottomOverlayHeight?: string;
   initialFocusRef?: RefObject<HTMLElement | null>;
 }
@@ -43,7 +46,10 @@ export const FloatingWindow = ({
   title,
   children,
   footer,
+  headerActions,
   showScrollToLatest = false,
+  scrollToBottomRequest,
+  scrollBoundaryRef,
   bottomOverlayHeight = '0px',
   initialFocusRef,
 }: FloatingWindowProps) => {
@@ -122,6 +128,58 @@ export const FloatingWindow = ({
     };
   }, [open, showScrollToLatest]);
 
+  useEffect(() => {
+    const body = bodyRef.current;
+    const content = bodyContentRef.current;
+    if (!open || !scrollToBottomRequest || !body || !content) return;
+    if (!scrollBoundaryRef) {
+      body.scrollTo?.({
+        top: body.scrollHeight,
+        behavior: reduceMotion ? 'auto' : 'smooth',
+      });
+      return;
+    }
+
+    let following = true;
+    let previousTop = body.scrollTop;
+    const follow = () => {
+      const boundary = scrollBoundaryRef.current;
+      if (!following || !boundary) return;
+      const limit = Math.max(
+        0,
+        body.scrollTop +
+          boundary.getBoundingClientRect().bottom -
+          body.getBoundingClientRect().top
+      );
+      const bottom = Math.max(0, body.scrollHeight - body.clientHeight);
+      // Stop once the latest question leaves the viewport instead of chasing a long answer.
+      body.scrollTop = Math.min(bottom, limit);
+      previousTop = body.scrollTop;
+      if (bottom >= limit) following = false;
+    };
+    const onScroll = () => {
+      if (body.scrollTop < previousTop) following = false;
+      previousTop = body.scrollTop;
+    };
+    const onWheel = (event: WheelEvent) => {
+      if (event.deltaY < 0) following = false;
+    };
+    follow();
+    const observer =
+      typeof ResizeObserver === 'undefined'
+        ? undefined
+        : new ResizeObserver(follow);
+    observer?.observe(body);
+    observer?.observe(content);
+    body.addEventListener('scroll', onScroll, { passive: true });
+    body.addEventListener('wheel', onWheel, { passive: true });
+    return () => {
+      observer?.disconnect();
+      body.removeEventListener('scroll', onScroll);
+      body.removeEventListener('wheel', onWheel);
+    };
+  }, [open, scrollToBottomRequest, scrollBoundaryRef, reduceMotion]);
+
   if (typeof document === 'undefined') return null;
 
   return createPortal(
@@ -173,6 +231,7 @@ export const FloatingWindow = ({
               {title}
             </Text>
             <Flex gap="1">
+              {headerActions}
               <Tooltip id="ask-tooltip" content={`Minimize ${title}`}>
                 <IconButton
                   aria-label={`Minimize ${title}`}

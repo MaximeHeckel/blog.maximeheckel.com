@@ -1,5 +1,4 @@
 import {
-  Anchor,
   Blockquote,
   EM,
   InlineCode,
@@ -12,10 +11,11 @@ import { serialize } from 'next-mdx-remote/serialize';
 import { ComponentProps, memo, useEffect, useMemo, useState } from 'react';
 
 import Code from '../Code';
+import { AnswerLink } from './AnswerLink';
 
 // Answers need Markdown primitives, not the article's interactive widget registry.
 const components = {
-  a: (props: ComponentProps<'a'>) => <Anchor external underline {...props} />,
+  a: AnswerLink,
   blockquote: Blockquote,
   code: InlineCode,
   em: (props: ComponentProps<'em'>) => <EM size="1" {...props} />,

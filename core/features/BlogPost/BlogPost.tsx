@@ -60,6 +60,7 @@ const Header = (props: {
       as="header"
       css={{
         position: 'fixed',
+        pointerEvents: 'none',
         top: 0,
         left: 0,
         right: 0,
@@ -77,6 +78,7 @@ const Header = (props: {
               <Box
                 as={motion.div}
                 key="dynamic-island"
+                css={{ pointerEvents: 'auto' }}
                 variants={{
                   visible: {
                     y: 0,
@@ -113,6 +115,7 @@ const Header = (props: {
               <Box
                 as={motion.div}
                 key="dock"
+                css={{ pointerEvents: 'auto' }}
                 variants={{
                   visible: { y: 0 },
                   hidden: { y: -68 },
@@ -320,6 +323,9 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
             direction="column"
             className={contentClass()}
             ref={articleRef}
+            data-ask-article-path={path}
+            data-ask-article-title={title}
+            data-ask-article-subtitle={subtitle}
             gap="5"
           >
             {children}

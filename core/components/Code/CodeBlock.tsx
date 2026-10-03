@@ -152,7 +152,7 @@ const CodeBlock = (props: CodeBlockProps) => {
   const highlightLineFn = calculateLinesToHighlight(metastring);
   const title = hasTitle(metastring);
   const actions = (
-    <Flex gap="1">
+    <Flex css={{ gap: 0 }}>
       <SendToAskButton
         code={codeString}
         language={language}

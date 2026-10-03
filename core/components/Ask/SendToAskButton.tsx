@@ -1,6 +1,7 @@
-import { Icon, IconButton, Tooltip } from '@maximeheckel/design-system';
+import { IconButton, Tooltip } from '@maximeheckel/design-system';
 import { useId } from 'react';
 
+import RGBLensIcon from '../RGBLensIcon';
 import { useOptionalAsk } from './AskContext';
 
 interface SendToAskButtonProps {
@@ -38,7 +39,7 @@ export const SendToAskButton = ({
           })
         }
       >
-        <Icon.Arrow size="4" style={{ transform: 'rotate(-45deg)' }} />
+        <RGBLensIcon size={20} animate={false} />
       </IconButton>
     </Tooltip>
   );

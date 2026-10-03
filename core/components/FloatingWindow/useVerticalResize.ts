@@ -13,10 +13,11 @@ export const useVerticalResize = (
 ) => {
   const [height, setHeight] = useState<number | null>(null);
   const [viewportHeight, setViewportHeight] = useState(0);
+  const [inset, setInset] = useState(8);
   const drag = useRef<{ pointerId: number; y: number; height: number } | null>(
     null
   );
-  const maxHeight = Math.max(0, viewportHeight - 48);
+  const maxHeight = Math.max(0, viewportHeight - 2 * inset);
   const minHeight = Math.min(420, maxHeight);
   const currentHeight = Math.min(
     maxHeight,
@@ -28,7 +29,16 @@ export const useVerticalResize = (
   useEffect(() => {
     const update = () => {
       const viewport = window.innerHeight;
-      const maximum = Math.max(0, viewport - 48);
+      const style = windowRef.current
+        ? getComputedStyle(windowRef.current)
+        : null;
+      // Read the resolved corner inset, including safe areas, from the same CSS as the window.
+      const nextInset =
+        Number.parseFloat(style?.right ?? '') ||
+        Number.parseFloat(style?.left ?? '') ||
+        8;
+      const maximum = Math.max(0, viewport - 2 * nextInset);
+      setInset(nextInset);
       setViewportHeight(viewport);
       setHeight((previous) =>
         previous === null
@@ -39,7 +49,7 @@ export const useVerticalResize = (
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
-  }, []);
+  }, [windowRef]);
 
   const endDrag = (event: PointerEvent<HTMLDivElement>) => {
     if (drag.current?.pointerId !== event.pointerId) return;

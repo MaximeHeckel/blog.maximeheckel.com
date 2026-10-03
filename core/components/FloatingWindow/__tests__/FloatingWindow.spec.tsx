@@ -150,10 +150,10 @@ it('starts at half the viewport and preserves keyboard resizing across minimize 
   fireEvent.keyDown(handle, { key: 'ArrowDown' });
   expect(handle).toHaveAttribute('aria-valuenow', '500');
   fireEvent.keyDown(handle, { key: 'End' });
-  expect(handle).toHaveAttribute('aria-valuenow', '952');
+  expect(handle).toHaveAttribute('aria-valuenow', '984');
   rerender(panel('minimized'));
   rerender(panel('open'));
-  expect(screen.getByRole('separator')).toHaveAttribute('aria-valuenow', '952');
+  expect(screen.getByRole('separator')).toHaveAttribute('aria-valuenow', '984');
   fireEvent.keyDown(handle, { key: 'Home' });
   expect(handle).toHaveAttribute('aria-valuenow', '420');
 });
@@ -187,7 +187,7 @@ it('resizes by dragging and clamps the chosen height when the viewport shrinks',
   expect(handle).toHaveAttribute('aria-valuenow', '650');
   vi.stubGlobal('innerHeight', 400);
   fireEvent(window, new Event('resize'));
-  expect(handle).toHaveAttribute('aria-valuenow', '352');
+  expect(handle).toHaveAttribute('aria-valuenow', '384');
 });
 
 it('keeps the default height at least 420px when half the viewport is smaller', () => {
@@ -203,3 +203,103 @@ it('keeps the default height at least 420px when half the viewport is smaller', 
   fireEvent.keyDown(handle, { key: 'ArrowDown' });
   expect(handle).toHaveAttribute('aria-valuenow', '420');
 });
+
+it('scrolls for each new response without forcing scroll on streaming updates', () => {
+  const panel = (request?: string, text = 'Thinking…') => (
+    <FloatingWindow
+      title="Ask"
+      state="open"
+      onStateChange={vi.fn()}
+      scrollToBottomRequest={request}
+    >
+      <p>{text}</p>
+    </FloatingWindow>
+  );
+  const { rerender } = render(panel());
+  const body = screen.getByText('Thinking…').parentElement!.parentElement!;
+  Object.defineProperty(body, 'scrollHeight', {
+    configurable: true,
+    value: 1200,
+  });
+  body.scrollTo = vi.fn();
+  rerender(panel('response-1'));
+  expect(body.scrollTo).toHaveBeenCalledWith({ top: 1200, behavior: 'smooth' });
+  rerender(panel('response-1', 'Writing the answer'));
+  expect(body.scrollTo).toHaveBeenCalledTimes(1);
+  rerender(panel(undefined, 'Completed answer'));
+  rerender(panel('response-2'));
+  expect(body.scrollTo).toHaveBeenCalledTimes(2);
+});
+
+it.each([false, true])(
+  'follows short responses and stops at the question or manual scroll (manual: %s)',
+  (manual) => {
+    let resize!: ResizeObserverCallback;
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        constructor(callback: ResizeObserverCallback) {
+          resize = callback;
+        }
+        observe() {}
+        disconnect() {}
+      }
+    );
+    const boundary = { current: null as HTMLElement | null };
+    const panel = (request?: string) => (
+      <FloatingWindow
+        title="Ask"
+        state="open"
+        onStateChange={vi.fn()}
+        scrollToBottomRequest={request}
+        scrollBoundaryRef={boundary}
+      >
+        <p
+          ref={(node) => {
+            boundary.current = node;
+          }}
+        >
+          Latest question
+        </p>
+        <p>Answer</p>
+      </FloatingWindow>
+    );
+    const { rerender } = render(panel());
+    const body = screen.getByText('Answer').parentElement!.parentElement!;
+    Object.defineProperties(body, {
+      scrollHeight: { configurable: true, value: 800 },
+      clientHeight: { configurable: true, value: 400 },
+      scrollTop: { configurable: true, writable: true, value: 0 },
+    });
+    vi.spyOn(body, 'getBoundingClientRect').mockReturnValue(
+      new DOMRect(0, 0, 400, 400)
+    );
+    vi.spyOn(boundary.current!, 'getBoundingClientRect').mockImplementation(
+      () => new DOMRect(0, 600 - body.scrollTop, 400, 60)
+    );
+    rerender(panel('answer-1'));
+    expect(body.scrollTop).toBe(400);
+    Object.defineProperty(body, 'scrollHeight', {
+      configurable: true,
+      value: 900,
+    });
+    act(() => resize([], {} as ResizeObserver));
+    expect(body.scrollTop).toBe(500);
+    if (manual) {
+      body.scrollTop = 450;
+      fireEvent.scroll(body);
+    }
+    Object.defineProperty(body, 'scrollHeight', {
+      configurable: true,
+      value: 1200,
+    });
+    act(() => resize([], {} as ResizeObserver));
+    expect(body.scrollTop).toBe(manual ? 450 : 660);
+    Object.defineProperty(body, 'scrollHeight', {
+      configurable: true,
+      value: 1600,
+    });
+    act(() => resize([], {} as ResizeObserver));
+    expect(body.scrollTop).toBe(manual ? 450 : 660);
+  }
+);
