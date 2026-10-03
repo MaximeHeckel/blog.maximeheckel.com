@@ -72,6 +72,15 @@ const output = withBundleAnalyzer({
         source: '/(.*)',
         headers: securityHeaders,
       },
+      ...['/posts/:slug', '/posts/:slug.md'].map((source) => ({
+        source,
+        headers: [
+          {
+            key: 'Link',
+            value: '</api/posts/:slug/>; rel="alternate"; type="text/markdown"',
+          },
+        ],
+      })),
       {
         source: '/fonts/fira-code.woff2',
         headers: [

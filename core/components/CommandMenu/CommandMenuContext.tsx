@@ -118,10 +118,11 @@ export const useRegisterAction = (action: Action) => {
       return;
     }
 
-    context.registerAction(actionRef.current);
+    const registeredAction = actionRef.current;
+    context.registerAction(registeredAction);
 
     return () => {
-      context.unregisterAction(actionRef.current.id);
+      context.unregisterAction(registeredAction.id);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [action.id]);

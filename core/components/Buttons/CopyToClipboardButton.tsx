@@ -6,6 +6,8 @@ const CopyToClipboardButton = (props: {
   text: string;
   title?: string;
   label?: string;
+  variant?: 'primary' | 'secondary' | 'tertiary';
+  size?: 'small' | 'large';
 }) => {
   const duration = 0.275;
   const svgVariants = {
@@ -35,7 +37,15 @@ const CopyToClipboardButton = (props: {
   const pathLength = useMotionValue(0);
   const opacity = useTransform(pathLength, [0.05, 0.15], [0, 1]);
 
-  const copyToClipboard = (content: string) => {
+  const copyToClipboard = async (content: string) => {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(content);
+        return true;
+      } catch {
+        // Fall back to the selection-based copy on restricted browsers.
+      }
+    }
     const el = document.createElement(`textarea`);
     el.value = content;
     el.setAttribute(`readonly`, ``);
@@ -43,26 +53,31 @@ const CopyToClipboardButton = (props: {
     el.style.left = `-9999px`;
     document.body.appendChild(el);
     el.select();
-    document.execCommand(`copy`);
-    document.body.removeChild(el);
+    try {
+      return document.execCommand(`copy`);
+    } catch {
+      return false;
+    } finally {
+      document.body.removeChild(el);
+    }
   };
 
   useEffect(() => {
     if (isChecked) {
-      setTimeout(() => setIsChecked(false), 2500);
+      const timer = setTimeout(() => setIsChecked(false), 2500);
+      return () => clearTimeout(timer);
     }
   }, [isChecked]);
 
   return (
     <IconButton
       css={{ position: 'relative', zIndex: 3 }}
-      onClick={() => {
-        copyToClipboard(props.text);
-        setIsChecked(true);
+      onClick={async () => {
+        setIsChecked(await copyToClipboard(props.text));
       }}
-      variant="tertiary"
+      variant={props.variant ?? 'tertiary'}
       rounded
-      size="small"
+      size={props.size ?? 'small'}
       aria-label={props.label ?? 'Copy code to clipboard'}
       title={props.label}
     >
