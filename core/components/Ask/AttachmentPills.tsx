@@ -117,12 +117,13 @@ export const AttachmentPills = ({
             key={attachment.id}
             css={onRemove ? { paddingRight: 'var(--space-1)' } : undefined}
           >
-            {attachment.kind === 'code' ? (
-              <Icon.Code size="3" />
-            ) : (
-              <span aria-hidden="true">“</span>
-            )}
+            {attachment.kind === 'code' ? <Icon.Code size="3" /> : null}
             <Preview
+              css={
+                attachment.kind === 'selection'
+                  ? { display: 'flex' }
+                  : undefined
+              }
               title={
                 attachment.title ??
                 (attachment.kind === 'code'
@@ -160,7 +161,19 @@ export const AttachmentPills = ({
                   )}
                 </Highlight>
               ) : (
-                attachment.text.replace(/\s+/g, ' ').trim()
+                <>
+                  <span style={{ flexShrink: 0 }}>“</span>
+                  <span
+                    style={{
+                      minWidth: 0,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {attachment.text.replace(/\s+/g, ' ').trim()}
+                  </span>
+                  <span style={{ flexShrink: 0 }}>”</span>
+                </>
               )}
             </Preview>
             {onRemove ? (

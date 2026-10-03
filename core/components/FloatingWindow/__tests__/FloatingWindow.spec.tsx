@@ -175,7 +175,10 @@ it('resizes by dragging and clamps the chosen height when the viewport shrinks',
   handle.setPointerCapture = vi.fn();
   handle.hasPointerCapture = vi.fn().mockReturnValue(true);
   handle.releasePointerCapture = vi.fn();
+  const previouslyFocused = document.activeElement;
   fireEvent.pointerDown(handle, { button: 0, clientY: 500 });
+  expect(handle).not.toHaveFocus();
+  expect(document.activeElement).toBe(previouslyFocused);
   fireEvent.pointerMove(handle, { clientY: 350 });
   expect(handle).toHaveAttribute('aria-valuenow', '650');
   fireEvent.pointerUp(handle);

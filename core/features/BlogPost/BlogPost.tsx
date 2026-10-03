@@ -9,9 +9,10 @@ import {
   useScroll,
 } from 'motion/react';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Post, ReadingTime } from 'types/post';
 
+import { SelectionToAsk } from '@core/components/Ask/SelectionToAsk';
 import { BottomBlurGradientMask } from '@core/components/BottomBlurGradientMask';
 import { useRegisterAction } from '@core/components/CommandMenu';
 import { Dock } from '@core/components/Dock';
@@ -183,6 +184,7 @@ const contentClass = css({
 });
 
 const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
+  const articleRef = useRef<HTMLDivElement>(null);
   const { date, updated, slug, subtitle, title, seoTitle } = frontMatter;
   const router = useRouter();
   const path = `/posts/${slug}/`;
@@ -317,12 +319,14 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
             alignItems="start"
             direction="column"
             className={contentClass()}
+            ref={articleRef}
             gap="5"
           >
             {children}
           </Flex>
         </Grid.Item>
       </Grid>
+      <SelectionToAsk articleRef={articleRef} title={title} />
       <Footnote title={title} url={postUrl} />
       <BottomBlurGradientMask />
       <Footer lastUpdated={updated} />
