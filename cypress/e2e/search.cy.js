@@ -35,6 +35,26 @@ describe('Command Menu tests', () => {
     cy.get('[data-testid="command-menu"]').should('not.exist');
   });
 
+  it('Reopens with a fresh query and hands off to Ask after closing', () => {
+    cy.visit('/');
+    // Allow hydration to register the keyboard shortcut, as in the other tests.
+    cy.wait(2000);
+    cy.get('body').type('{ctrl}k');
+    cy.get('[data-testid="command-input"]')
+      .should('be.focused')
+      .type('twitter');
+    cy.get('body').type('{esc}');
+    cy.get('[data-testid="command-menu"]').should('not.exist');
+
+    cy.get('body').type('{ctrl}k');
+    cy.get('[data-testid="command-input"]')
+      .should('be.focused')
+      .and('have.value', '');
+    cy.get('[data-testid="aimode"]').click();
+    cy.get('[data-testid="command-menu"]').should('not.exist');
+    cy.get('[aria-label="Ask a question"]').should('be.visible');
+  });
+
   it('Enters search mode, queries the search endpoint and returns clickable results', () => {
     cy.intercept('POST', '/api/search', [
       {

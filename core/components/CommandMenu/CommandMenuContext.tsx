@@ -1,4 +1,5 @@
 import { useKeyboardShortcut } from '@maximeheckel/design-system';
+import dynamic from 'next/dynamic';
 import React, {
   createContext,
   useCallback,
@@ -9,7 +10,10 @@ import React, {
 } from 'react';
 
 import { useAsk } from '../Ask/AskContext';
-import { CommandMenu } from './CommandMenu';
+
+const CommandMenu = dynamic(() =>
+  import('./CommandMenu').then((module) => module.CommandMenu)
+);
 
 export interface Action {
   id: string;
@@ -80,12 +84,15 @@ export const CommandMenuProvider = ({ children }: CommandMenuProviderProps) => {
 
   return (
     <CommandMenuContext.Provider value={value}>
-      <CommandMenu
-        key={commandMenuKeyRef.current}
-        open={isCommandMenuOpen}
-        onOpenChange={setIsCommandMenuOpen}
-        onAskAI={openAsk}
-      />
+      {/* Keep the menu mounted after first use so closing animations and Ask handoff finish. */}
+      {commandMenuKeyRef.current > 0 ? (
+        <CommandMenu
+          key={commandMenuKeyRef.current}
+          open={isCommandMenuOpen}
+          onOpenChange={setIsCommandMenuOpen}
+          onAskAI={openAsk}
+        />
+      ) : null}
       {children}
     </CommandMenuContext.Provider>
   );

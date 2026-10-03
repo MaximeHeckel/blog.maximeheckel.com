@@ -25,7 +25,8 @@ import VideoPlayer from '@core/components/VideoPlayer';
 import SupportCallout from '../Callout/SupportCallout';
 // MDX only components
 import Image from './Image';
-import InlineMath from './InlineMath';
+
+const InlineMath = dynamic(() => import('./InlineMath'));
 
 // Widgets (used in blog post for interactive experiences)
 const ClipboardAnimationDetails = dynamic(
