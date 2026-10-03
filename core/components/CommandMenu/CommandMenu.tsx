@@ -19,6 +19,7 @@ import {
 
 import { CustomGlassMaterial } from '../DialogGlass';
 import { ContactIcon, SearchIcon } from '../Icons';
+import RGBLensIcon from '../RGBLensIcon';
 import { ScreenReaderOnly } from '../ScreenReaderOnly';
 import { useArticleSearch } from '../Search/useArticleSearch';
 import * as S from './CommandMenu.styles';
@@ -160,6 +161,7 @@ const CommandMenu = (props: CommandMenuProps) => {
   const { open, onOpenChange, onAskAI } = props;
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const pendingAskRef = useRef(false);
   const context = useContext(CommandMenuContext);
   const actions = context?.actions ?? [];
 
@@ -237,9 +239,9 @@ const CommandMenu = (props: CommandMenuProps) => {
   );
 
   const handleAskAI = useCallback(() => {
+    pendingAskRef.current = true;
     onOpenChange(false);
-    onAskAI?.();
-  }, [onOpenChange, onAskAI]);
+  }, [onOpenChange]);
 
   const handleRecentSearchSelect = useCallback((query: string) => {
     setSearchQuery(query);
@@ -291,7 +293,14 @@ const CommandMenu = (props: CommandMenuProps) => {
     !searchQuery;
 
   return (
-    <AnimatePresence>
+    <AnimatePresence
+      onExitComplete={() => {
+        if (pendingAskRef.current) {
+          pendingAskRef.current = false;
+          onAskAI?.();
+        }
+      }}
+    >
       {open ? (
         <Command.Dialog
           open={open}
@@ -438,13 +447,13 @@ const CommandMenu = (props: CommandMenuProps) => {
                       </S.Item>
                       <S.Item
                         as={Command.Item}
-                        value="Ask AI"
+                        value="Ask"
                         keywords={['ai', 'question', 'chat', 'assistant']}
                         onSelect={handleAskAI}
                         data-testid="aimode"
                       >
-                        <Icon.AIChat size={4} />
-                        <S.ItemLabel>Ask me anything...</S.ItemLabel>
+                        <RGBLensIcon size={22} />
+                        <S.ItemLabel>Ask</S.ItemLabel>
                       </S.Item>
 
                       {actions.map((action) => {

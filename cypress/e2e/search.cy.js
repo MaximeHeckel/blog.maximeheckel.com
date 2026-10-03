@@ -39,7 +39,8 @@ describe('Command Menu tests', () => {
     cy.intercept('POST', '/api/search', [
       {
         title: 'Migrating to Next.js',
-        url: 'https://blog.maximeheckel.com/posts/migrating-to-nextjs/',
+        path: '/posts/migrating-to-nextjs/',
+        date: '2021-06-29T08:00:00.000Z',
       },
     ]).as('search');
 
@@ -63,25 +64,5 @@ describe('Command Menu tests', () => {
     // Arbitrary wait because other firefox will interrupt page load and cause some exception that Cypress will catch
     // and fail the test for.
     cy.wait(2000);
-  });
-
-  it('Can toggle AI mode and send a query', () => {
-    cy.visit('/');
-    cy.wait(2000);
-    cy.get('body').type('{ctrl}k', { force: true });
-    cy.get('[data-testid="aimode"]').click();
-    cy.get('[data-testid="ai-prompt-input"]')
-      .clear()
-      .type('How to compose CSS variables', { delay: 200 });
-    cy.get('[data-testid="ai-prompt-submit-button"]').click();
-
-    cy.wait(2000);
-
-    cy.get('[data-testid="ai-prompt-serialized-response"]', {
-      timeout: 60000,
-    }).should(
-      'contain.text',
-      'You can compose CSS variables by assigning a partial value to a variable'
-    );
   });
 });

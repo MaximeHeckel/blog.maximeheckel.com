@@ -1,3 +1,6 @@
+import type { AskAttachment } from 'lib/askAttachments';
+import type { AskMessage } from 'lib/askConversation';
+import type { AskPageContext } from 'lib/askPageContext';
 import { DeepPartial, parsePartialJson } from 'lib/partialJson';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -21,7 +24,12 @@ interface CompletionState {
 }
 
 interface UseAICompletionReturn extends CompletionState {
-  submitQuery: (query: string) => Promise<void>;
+  submitQuery: (
+    query: string,
+    attachments?: AskAttachment[],
+    history?: AskMessage[],
+    pageContext?: AskPageContext
+  ) => Promise<void>;
   abort: () => void;
   reset: () => void;
 }
@@ -53,6 +61,9 @@ const useAICompletion = (
   const abort = useCallback(() => {
     abortControllerRef.current?.abort();
     abortControllerRef.current = null;
+    setState((previous) =>
+      previous.status === 'loading' ? { ...previous, status: 'done' } : previous
+    );
   }, []);
 
   const reset = useCallback(() => {
@@ -61,7 +72,12 @@ const useAICompletion = (
   }, [abort]);
 
   const submitQuery = useCallback(
-    async (newQuery: string) => {
+    async (
+      newQuery: string,
+      attachments: AskAttachment[] = [],
+      history: AskMessage[] = [],
+      pageContext?: AskPageContext
+    ) => {
       // Abort any existing request before starting a new one
       abort();
       const controller = new AbortController();
@@ -77,6 +93,9 @@ const useAICompletion = (
           },
           body: JSON.stringify({
             query: newQuery,
+            attachments,
+            history,
+            pageContext,
             // @ts-ignore - Cypress detection for e2e tests
             mock: window.Cypress ? true : false,
             threshold,

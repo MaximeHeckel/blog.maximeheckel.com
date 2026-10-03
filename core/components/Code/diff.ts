@@ -1,9 +1,6 @@
-import {
-  EnvConfig,
-  normalizeTokens,
-  Prism,
-  PrismLib,
-} from 'prism-react-renderer';
+import { EnvConfig, normalizeTokens, PrismLib } from 'prism-react-renderer';
+
+import { Prism } from './prism';
 
 type PrismToken = InstanceType<PrismLib['Token']>;
 

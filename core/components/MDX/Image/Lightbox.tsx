@@ -8,7 +8,7 @@ export const Backdrop = styled(Dialog.Backdrop, {
   bottom: 0,
   left: 0,
   padding: '32px 0px',
-  zIndex: '100',
+  zIndex: '103',
   display: 'grid',
   placeItems: 'center',
   overflowY: 'auto',
@@ -32,7 +32,7 @@ export const ImageFrame = styled('div', {
 
 export const Popup = styled(Dialog.Popup, {
   backgroundColor: 'transparent',
-  zIndex: '101',
+  zIndex: '104',
   '&:focus': { outline: 'none' },
 });
 

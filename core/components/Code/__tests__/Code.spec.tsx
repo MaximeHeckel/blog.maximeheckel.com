@@ -151,3 +151,32 @@ describe('Code', () => {
     });
   });
 });
+
+it.each([undefined, '', '   \n'])(
+  'normalizes empty code fence contents to an empty string: %j',
+  (content) => {
+    expect(
+      preToCodeBlock({ children: <code>{content}</code> })?.codeString
+    ).toBe('');
+  }
+);
+
+it('highlights WGSL code fences used in Ask responses', async () => {
+  const { container } = render(
+    <Code>
+      <code className="language-wgsl">
+        {
+          '// Sample the texture\nfor (var sampleIndex = 0u; sampleIndex < 25u; sampleIndex++) {\n  let sx = f32(sampleIndex % 5u);\n}'
+        }
+      </code>
+    </Code>
+  );
+  await waitFor(() =>
+    expect(container.querySelector('.token.keyword')).toHaveTextContent('for')
+  );
+  expect(container.querySelector('.token.comment')).toHaveTextContent(
+    '// Sample the texture'
+  );
+  expect(container.querySelector('.token.number')).toHaveTextContent('0u');
+  expect(container.querySelector('.token.builtin')).toHaveTextContent('f32');
+});

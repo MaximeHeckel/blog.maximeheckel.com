@@ -178,3 +178,25 @@ describe('useAICompletion', () => {
     expect(result.current.error).toBeNull();
   });
 });
+
+it('keeps the question separate from full attachment contents in the request', async () => {
+  const fetchMock = vi
+    .fn()
+    .mockResolvedValue(streamResponse('{"answer":"Explanation","sources":[]}'));
+  vi.stubGlobal('fetch', fetchMock);
+  const attachments = [
+    {
+      id: 'code',
+      kind: 'code' as const,
+      code: 'const value = 1;\nconsole.info(value);',
+      language: 'javascript',
+    },
+  ];
+  const { result } = renderHook(() => useAICompletion());
+  await act(() => result.current.submitQuery('Explain this', attachments));
+  expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toMatchObject({
+    query: 'Explain this',
+    attachments,
+  });
+  expect(result.current.query).toBe('Explain this');
+});

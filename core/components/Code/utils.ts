@@ -15,7 +15,7 @@ export const preToCodeBlock = (preProps: PrePropsType) => {
 
     return {
       className,
-      codeString: codeString?.trim(),
+      codeString: typeof codeString === 'string' ? codeString.trim() : '',
       language:
         matches && matches.groups && matches.groups.lang
           ? (matches.groups.lang as Language)

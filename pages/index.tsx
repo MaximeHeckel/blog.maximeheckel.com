@@ -20,6 +20,8 @@ const NewHome = (props: Props) => {
     <Main>
       <Header />
       <Grid
+        data-ask-list-path="/"
+        data-ask-article-list
         css={{
           position: 'relative',
           height: 'auto',

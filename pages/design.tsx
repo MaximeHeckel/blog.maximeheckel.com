@@ -34,10 +34,12 @@ import { NewTweet } from 'types/tweet';
 
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
 import CodeBlock from '@core/components/Code/CodeBlock';
+import { CommandMenuContext } from '@core/components/CommandMenu/CommandMenuContext';
 import { HR } from '@core/components/HR';
 import Logo from '@core/components/Logo';
 import Image from '@core/components/MDX/Image/Image';
 import { Main } from '@core/components/Main';
+import RGBLensIcon from '@core/components/RGBLensIcon';
 import { Select } from '@core/components/Select';
 import Seo from '@core/components/Seo';
 import { Slider } from '@core/components/Slider';
@@ -48,9 +50,6 @@ import { MediaPlayer } from '@core/components/VideoPlayer/MediaPlayer';
 const SandpackExample = dynamic(
   () => import('@core/components/MDX/Widgets/WaveAnimation/Sandpack')
 );
-const Ask = dynamic(() => import('@core/components/Ask'), {
-  ssr: false,
-});
 
 const Label = styled('p', {
   marginBottom: '8px',
@@ -101,8 +100,8 @@ const SliderExample = () => {
 };
 
 export default function Design(props: { tweets: Record<string, NewTweet> }) {
-  const [showAsk, setShowAsk] = React.useState(false);
   const [email, setEmail] = React.useState('');
+  const commandMenu = React.useContext(CommandMenuContext);
 
   const colorScaleNumbers = [
     100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200,
@@ -450,6 +449,29 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
             id="icons"
           >
             <H2>Icons</H2>
+            <Flex
+              id="rgb-lenses"
+              gap="6"
+              alignItems="center"
+              css={{
+                backgroundColor: '#080909',
+
+                borderRadius: 'var(--border-radius-2)',
+              }}
+            >
+              <Flex direction="column" alignItems="center" gap="2">
+                <RGBLensIcon size={48} />
+                <Text size="1">Static</Text>
+              </Flex>
+              <Flex direction="column" alignItems="center" gap="2">
+                <RGBLensIcon size={48} animate="hover" />
+                <Text size="1">Hover</Text>
+              </Flex>
+              <Flex direction="column" alignItems="center" gap="2">
+                <RGBLensIcon size={48} animate={true} />
+                <Text size="1">Loop</Text>
+              </Flex>
+            </Flex>
             <IconSection />
           </Flex>
           <Flex
@@ -1225,10 +1247,12 @@ function sayHi(name) {
             id="command-center"
           >
             <H2>Command Center / Search </H2>
-            <Button variant="primary" onClick={() => setShowAsk(true)}>
-              Show Command Center
+            <Button
+              variant="primary"
+              onClick={() => commandMenu?.openCommandMenu()}
+            >
+              Cmd
             </Button>
-            <Ask onClose={() => setShowAsk(false)} open={showAsk} />
           </Flex>
           <Flex
             alignItems="start"

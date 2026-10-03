@@ -1,0 +1,362 @@
+[
+  {
+    "title": "Shading Motion",
+    "url": "/posts/shading-motion/",
+    "publishedAt": "2026-08-18T08:00:00.000Z",
+    "description": "A deep dive into detecting, extracting, and stylizing motion with WebGPU and TSL, covering motion masking, blob tracking, optical flow, and velocity-based motion blur."
+  },
+  {
+    "title": "On Rendering the Sky, Sunsets, and Planets",
+    "url": "/posts/on-rendering-the-sky-sunsets-and-planets/",
+    "publishedAt": "2026-05-12T08:00:00.000Z",
+    "description": "This article explores how to render realistic skies and atmospheres in real time in the browser with shaders, from simple sky domes, to entire planets using shaders, raymarching, Rayleigh and Mie scattering, and ozone absorption."
+  },
+  {
+    "title": "Shades of Halftone",
+    "url": "/posts/shades-of-halftone/",
+    "publishedAt": "2026-02-10T08:00:00.000Z",
+    "description": "An interactive deep dive into building halftone shaders in GLSL, covering everything from classic dot patterns and CMYK color separation to Moiré interference, gooey effects, and animated displacement."
+  },
+  {
+    "title": "Field Guide to TSL and WebGPU",
+    "url": "/posts/field-guide-to-tsl-and-webgpu/",
+    "publishedAt": "2025-10-14T08:00:00.000Z",
+    "description": "A comprehensive guide to building 3D web experiences with TSL and WebGPU, covering shader development, compute shader applications, and practical examples for particle systems and post-processing effects."
+  },
+  {
+    "title": "On Shaping Light",
+    "url": "/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/",
+    "publishedAt": "2025-06-10T08:00:00.000Z",
+    "description": "A deep dive into Volumetric Lighting implemented via Post-Processing leveraging a custom shader with raymarching to create beautiful light and atmospheric effect for your React Three Fiber and Three.js scenes."
+  },
+  {
+    "title": "Speaking at Figma Config 2025",
+    "url": "/posts/config-2025/",
+    "publishedAt": "2025-05-08T08:00:00.000Z",
+    "description": "An overview of the talk I had the chance to give the Figma Config, sharing my passion and learning journey around shaders and real-time 3D on the web."
+  },
+  {
+    "title": "Post-Processing Shaders as a Creative Medium",
+    "url": "/posts/post-processing-as-a-creative-medium/",
+    "publishedAt": "2025-02-04T08:00:00.000Z",
+    "description": "A detailed compilation of my post-processing and custom stylized shader experiments — from pixel patterns and optical illusions to dynamic, animated effects."
+  },
+  {
+    "title": "On Crafting Painterly Shaders",
+    "url": "/posts/on-crafting-painterly-shaders/",
+    "publishedAt": "2024-10-29T08:00:00.000Z",
+    "description": "A detailed essay on my research and process of building a shader to mimic paint, watercolor, and aquarelle by exploring various implementations of the Kuwahara image smoothing filter."
+  },
+  {
+    "title": "The Art of Dithering and Retro Shading for the Web",
+    "url": "/posts/the-art-of-dithering-and-retro-shading-web/",
+    "publishedAt": "2024-08-06T08:00:00.000Z",
+    "description": "A detailed walkthrough of the inner workings of dithering and other shading techniques to give a retro look and feel to your WebGL and React Three Fiber work."
+  },
+  {
+    "title": "Moebius-style post-processing and other stylized shaders",
+    "url": "/posts/moebius-style-post-processing/",
+    "publishedAt": "2024-03-26T08:00:00.000Z",
+    "description": "A detailed essay on the process of building a post-processing stylized shader reproducing the style of legendary artist Jean Giraud a.k.a Moebius for your React Three Fiber projects. In it, I detail the process of drawing outlines with a Sobel Filter as well as custom shadow and lighting patterns to bring a unique style to your WebGL scene."
+  },
+  {
+    "title": "Shining a light on Caustics with Shaders and React Three Fiber",
+    "url": "/posts/caustics-in-webgl/",
+    "publishedAt": "2024-01-23T08:00:00.000Z",
+    "description": "A step-by-step guide on how to build a caustic light effect for your React Three Fiber project using shaders, render targets, normal maps, and custom materials."
+  },
+  {
+    "title": "Real-time dreamy Cloudscapes with Volumetric Raymarching",
+    "url": "/posts/real-time-cloudscapes-with-volumetric-raymarching/",
+    "publishedAt": "2023-10-31T08:00:00.000Z",
+    "description": "This article is a deep dive into my experimentations with Volumetric rendering and how to leverage it to render beautiful raymarched cloudscapes in React Three Fiber and WebGL. In it, I walk you through everything from the basics of Volumetric Raymarching to the techniques used in video games to render physically accurate clouds."
+  },
+  {
+    "title": "Painting with Math: A Gentle Study of Raymarching",
+    "url": "/posts/painting-with-math-a-gentle-study-of-raymarching/",
+    "publishedAt": "2023-09-12T08:00:00.000Z",
+    "description": "A compilation of my Raymarching and Signed Distance Field learnings and work. In it, I teach you how to leverage those techniques along with lighting models, smoothmin, soft shadows, and some math to create beautiful 3D raymarched scenes ranging from abstract shapes to infinite realistic-looking landscapes."
+  },
+  {
+    "title": "Building a magical AI-powered semantic search from scratch",
+    "url": "/posts/building-magical-ai-powered-semantic-search/",
+    "publishedAt": "2023-06-06T08:00:00.000Z",
+    "description": "An end-to-end walkthrough on how to build a semantic search from your own MDX or Markdown based content using Postgres vector similarity search and OpenAI's text embeddings and chat completion APIs."
+  },
+  {
+    "title": "Beautiful and mind-bending effects with WebGL Render Targets",
+    "url": "/posts/beautiful-and-mind-bending-effects-with-webgl-render-targets/",
+    "publishedAt": "2023-03-14T08:00:00.000Z",
+    "description": "A deep dive into WebGL Render Targets and how to leverage their capabilities in combination with the render loop to create scenes with post-processing effects, transition, and many types of optical illusions to trick the viewer's eyes."
+  },
+  {
+    "title": "Refraction, dispersion, and other shader light effects",
+    "url": "/posts/refraction-dispersion-and-other-shader-light-effects/",
+    "publishedAt": "2023-01-24T08:00:00.000Z",
+    "description": "A guide on how to reproduce a chromatic dispersion effect for your React Three Fiber and shader projects with FBO, refraction, chromatic aberration, specular, and other tricks through 9 interactive code playgrounds."
+  },
+  {
+    "title": "The magical world of Particles with React Three Fiber and Shaders",
+    "url": "/posts/the-magical-world-of-particles-with-react-three-fiber-and-shaders/",
+    "publishedAt": "2022-11-08T08:00:00.000Z",
+    "description": "An interactive introduction to Particles with React Three Fiber and Shaders where you'll learn anything going from attributes, buffer geometries, and more advanced techniques like Frame Buffer Object through 8 unique 3D scenes."
+  },
+  {
+    "title": "The Study of Shaders with React Three Fiber",
+    "url": "/posts/the-study-of-shaders-with-react-three-fiber/",
+    "publishedAt": "2022-07-26T08:00:00.000Z",
+    "description": "A complete guide on how to use shaders with React Three Fiber, work with uniforms and varyings, and build dynamic, interactive and composable materials with them through 8 unique 3D scenes."
+  },
+  {
+    "title": "Building a Design System from scratch",
+    "url": "/posts/building-a-design-system-from-scratch/",
+    "publishedAt": "2022-05-10T08:00:00.000Z",
+    "description": "A deep dive into my experience building my own design system that documents my process of defining tokens, creating efficient components, and shipping them as a package."
+  },
+  {
+    "title": "Everything about Framer Motion layout animations",
+    "url": "/posts/framer-motion-layout-animations/",
+    "publishedAt": "2022-03-08T08:00:00.000Z",
+    "description": "A complete guide to Framer Motion layout animations showcasing every concept, from the layout prop, shared layout animations and LayoutGroup, to complex drag-to-reorder interactions."
+  },
+  {
+    "title": "Building a Vaporwave scene with Three.js",
+    "url": "/posts/vaporwave-3d-scene-with-threejs/",
+    "publishedAt": "2022-01-25T08:00:00.000Z",
+    "description": "A step-by-step tutorial documenting my attempt at reverse-engineering the vaporwave WebGL scene from the Linear 2021 release page using solely fundamental concepts of Three.js like textures, lights, animations, and post-processing effects."
+  },
+  {
+    "title": "Cubic Bézier: from math to motion",
+    "url": "/posts/cubic-bezier-from-math-to-motion/",
+    "publishedAt": "2021-11-02T08:00:00.000Z",
+    "description": "A deep dive into the math behind Bézier curves, from simple linear interpolations to Cubic Bézier and how they are used to describe motion. This article introduces the concepts underneath cubic-bezier and easing timing functions that are used in CSS and Framer Motion transitions through easy-to-understand interactive examples."
+  },
+  {
+    "title": "First steps with GPT-3 for frontend developers",
+    "url": "/posts/first-steps-with-gpt-3-and-beyond/",
+    "publishedAt": "2021-09-28T08:00:00.000Z",
+    "description": "A beginners guide to OpenAI's API that eases frontend developers into the world of GPT-3 and gives all the tools needed to start building AI-powered Next.js apps."
+  },
+  {
+    "title": "Building the perfect GitHub CI workflow for your frontend team",
+    "url": "/posts/building-perfect-github-action-frontend-teams/",
+    "publishedAt": "2021-08-03T08:00:00.000Z",
+    "description": "A guide with some of the best Github CI tips I could find to the power best CI pipeline for your frontend team's needs."
+  },
+  {
+    "title": "Migrating to Next.js",
+    "url": "/posts/migrating-to-nextjs/",
+    "publishedAt": "2021-06-29T08:00:00.000Z",
+    "description": "Some thoughts on my experience using Gatsby for my blog and migrating it to Next.js, and why this was the right call for me going forward."
+  },
+  {
+    "title": "Static Tweets with MDX and Next.js",
+    "url": "/posts/static-tweets-with-mdx-nextjs/",
+    "publishedAt": "2021-06-01T08:00:00.000Z",
+    "description": "A solution to remove sluggish Twitter embed iframes and load the tweets in your blog posts at the speed of light."
+  },
+  {
+    "title": "Advanced animation patterns with Framer Motion",
+    "url": "/posts/advanced-animation-patterns-with-framer-motion/",
+    "publishedAt": "2021-04-20T08:00:00.000Z",
+    "description": "A deep dive into Framer Motion's propagation, exit transitions and layout animation patterns through curated examples and interactive playgrounds."
+  },
+  {
+    "title": "Scrollspy demystified",
+    "url": "/posts/scrollspy-demystified/",
+    "publishedAt": "2021-03-09T08:00:00.000Z",
+    "description": "A deep dive into how the inner workings of a Scrollspy, Intersection Observers, and how to integrate it with Markdown-based static sites without the need of third party libraries."
+  },
+  {
+    "title": "The Power of Composition with CSS Variables",
+    "url": "/posts/the-power-of-composition-with-css-variables/",
+    "publishedAt": "2021-02-02T08:00:00.000Z",
+    "description": "How leveraging CSS variable composition and HSLA colors helped me build a more efficient way to theme my apps and rely less on CSS-in-JS."
+  },
+  {
+    "title": "My first failed SwiftUI project",
+    "url": "/posts/first-failed-swiftui-project/",
+    "publishedAt": "2021-01-19T08:00:00.000Z",
+    "description": "A reflection on my experience building my first SwiftUI app, what I learned, the challenges I faced, and the reasons that made me not release it."
+  },
+  {
+    "title": "Guide to creating animations that spark joy with Framer Motion",
+    "url": "/posts/guide-animations-spark-joy-framer-motion/",
+    "publishedAt": "2020-12-15T08:00:00.000Z",
+    "description": "An interactive guide introducing everything I've learned about Framer Motion through fun examples and little case studies of animations I built."
+  },
+  {
+    "title": "Using Shortcuts and serverless to build a personal Apple Health API",
+    "url": "/posts/build-personal-health-api-shortcuts-serverless/",
+    "publishedAt": "2020-11-02T08:00:00.000Z",
+    "description": "Take ownership of your Apple Watch health data with a only few lines of code."
+  },
+  {
+    "title": "SEO mistakes I've made and how I fixed them",
+    "url": "/posts/seo-mistakes-i-have-made-and-how-i-fixed-them/",
+    "publishedAt": "2020-10-13T08:00:00.000Z",
+    "description": "A look back at what I learned fixing my terrible SEO mistakes on my Gatsby websites"
+  },
+  {
+    "title": "Going native: SwiftUI from the perspective of a React developer",
+    "url": "/posts/swiftui-as-react-developer/",
+    "publishedAt": "2020-09-16T08:00:00.000Z",
+    "description": "Approaching native iOS development with a React developer mindset"
+  },
+  {
+    "title": "Build your own preview deployment service",
+    "url": "/posts/build-serverless-preview-deployment/",
+    "publishedAt": "2020-08-25T08:00:00.000Z",
+    "description": "Do you want to increase your team's development velocity and collaboration? Preview Deployments are one of the key pieces for that, and this post details how to implement your own serverless deployment service based on Google Cloud Run."
+  },
+  {
+    "title": "The little guide to CI/CD for frontend developers",
+    "url": "/posts/guide-to-cicd-for-frontend-developers/",
+    "publishedAt": "2020-07-28T08:00:00.000Z",
+    "description": "How to ship your app faster, more reliably and make your team unstoppable with good testing practices and automation."
+  },
+  {
+    "title": "Immigrating to the US",
+    "url": "/posts/immigrating-to-the-us-my-path/",
+    "publishedAt": "2020-06-26T08:00:00.000Z",
+    "description": "US immigration explained for American citizens by an immigrant."
+  },
+  {
+    "title": "The physics behind spring animations",
+    "url": "/posts/the-physics-behind-spring-animations/",
+    "publishedAt": "2020-06-23T08:00:00.000Z",
+    "description": "A deep dive into the inner workings of spring animations in Framer Motion."
+  },
+  {
+    "title": "Generate screenshots of your code with a serverless function",
+    "url": "/posts/creating-beautiful-screenshots-source-code-with-serverless-function/",
+    "publishedAt": "2020-06-09T08:00:00.000Z",
+    "description": "Programmatic Carbon images generation from a simple API"
+  },
+  {
+    "title": "How to use Framer Motion with Emotion styled-components",
+    "url": "/posts/framer-motion-emotion/",
+    "publishedAt": "2020-05-12T08:00:00.000Z",
+    "description": "Framer Motion x Emotion → animated styled-components"
+  },
+  {
+    "title": "Data Fetching with NextJS: What I learned",
+    "url": "/posts/data-fetching-with-next-js/",
+    "publishedAt": "2020-05-05T08:00:00.000Z",
+    "description": "GetServerSideProps vs GetStaticProps vs GetStaticPaths."
+  },
+  {
+    "title": "Learning in public",
+    "url": "/posts/learning-in-public/",
+    "publishedAt": "2020-04-21T08:00:00.000Z",
+    "description": "Here's an up to date list of what I'm currently learning and what I plan to learn."
+  },
+  {
+    "title": "Fixing the dark mode flash issue on server rendered websites",
+    "url": "/posts/switching-off-the-lights-part-2-fixing-dark-mode-flashing-on-servered-rendered-website/",
+    "publishedAt": "2020-04-16T08:00:00.000Z",
+    "description": "Bringing a proper solution to dark mode flashing without an ugly hack."
+  },
+  {
+    "title": "How to fix NPM link duplicate dependencies issues",
+    "url": "/posts/duplicate-dependencies-npm-link/",
+    "publishedAt": "2020-03-31T08:00:00.000Z",
+    "description": "Dealing with dependencies when developing a package and using it through npm link."
+  },
+  {
+    "title": "Running scheduled cross-browser end-to-end tests on Github CI",
+    "url": "/posts/running-cross-browser-cypress-github-ci/",
+    "publishedAt": "2020-03-10T08:00:00.000Z",
+    "description": "Github actions + Cypress + cross-browser testing = 🚀"
+  },
+  {
+    "title": "How I built my first custom ESLint rule",
+    "url": "/posts/how-to-build-first-eslint-rule/",
+    "publishedAt": "2019-11-19T14:01:01.595Z",
+    "description": "A guide to get started with AST (Abstract Syntax Tree) and custom built ESLint plugins"
+  },
+  {
+    "title": "React Lazy: a take on preloading views",
+    "url": "/posts/preloading-views-with-react/",
+    "publishedAt": "2019-09-24T14:01:01.595Z",
+    "description": "How to add preloading to your route based code split apps"
+  },
+  {
+    "title": "Automated UI accessibility testing with Cypress",
+    "url": "/posts/automated-ui-accessibility-testing-with-cypress-cc2e38231241/",
+    "publishedAt": "2019-07-09T14:01:01.595Z",
+    "description": "Make sure your UI projects follow accessibility standards before deploying to production"
+  },
+  {
+    "title": "Building a GraphQL wrapper for the Docker API",
+    "url": "/posts/building-a-graphql-wrapper-for-the-docker-api-2109f2b9c202/",
+    "publishedAt": "2019-05-28T14:17:39.673Z",
+    "description": "From REST calls to powerful queries"
+  },
+  {
+    "title": "Switching off the lights - Adding dark mode to your React app",
+    "url": "/posts/switching-off-the-lights-adding-dark-mode-to-your-react-app-with-context-and-hooks-f41da6e07269/",
+    "publishedAt": "2019-03-05T16:31:00.736Z",
+    "description": "In this post, I’m going to share with you how I built dark mode support for a sample React app with Emotion themes."
+  },
+  {
+    "title": "Getting started with Typescript on Gatsby",
+    "url": "/posts/getting-started-with-typescript-on-gatsby-8544b47c1d27/",
+    "publishedAt": "2019-02-05T15:01:00.698Z",
+    "description": "A step by step guide to get Typescript, tslint and Prettier working on any existing Gatsby project."
+  },
+  {
+    "title": "Rebuilding Redux with Hooks and Context",
+    "url": "/posts/rebuilding-redux-with-hooks-and-context-e16b59faf51c/",
+    "publishedAt": "2018-12-04T16:31:51.793Z",
+    "description": "A simple global state management package based on React constructs"
+  },
+  {
+    "title": "Asynchronous rendering with React",
+    "url": "/posts/asynchronous-rendering-with-react-c323cda68f41/",
+    "publishedAt": "2018-11-06T16:52:30.887Z",
+    "description": "How the new React Suspense API might reshape the way we build components"
+  },
+  {
+    "title": "Using Flow generics to type generic React components",
+    "url": "/posts/using-flow-generics-to-type-generic-react-components-22dd642634d8/",
+    "publishedAt": "2018-10-16T16:07:39.169Z",
+    "description": "How Flow generics help typing complex multi-purpose components"
+  },
+  {
+    "title": "How to efficiently type your styled-components with Flow",
+    "url": "/posts/https-medium-com-maximeheckel-how-to-efficiently-type-your-styled-components-with-flow-f43930a0dd2b/",
+    "publishedAt": "2018-10-09T15:57:18.982Z",
+    "description": "Adding Flow on top of styled components to avoid misusages before they hit production, and make developers’ and designers’ life easier."
+  },
+  {
+    "title": "How I got started with Kubernetes on GKE",
+    "url": "/posts/how-i-got-started-with-kubernetes-on-gke-5f829eca98bc/",
+    "publishedAt": "2018-06-19T17:33:16.682Z",
+    "description": "How I deployed, published, scaled and setup SSL certificates for my personal projects"
+  },
+  {
+    "title": "React sub-components Part 3: Whitelisting sub-components with flow",
+    "url": "/posts/react-sub-components-part-3-whitelisting-sub-components-with-flow-b04f9bcf80c2/",
+    "publishedAt": "2018-05-01T16:17:42.023Z",
+    "description": "Adding more control to the sub-component pattern with Flow types"
+  },
+  {
+    "title": "React sub-components Part 2: Using the new Context API",
+    "url": "/posts/react-sub-components-part-2-using-the-new-context-api-6f1c089acfe4/",
+    "publishedAt": "2018-04-16T17:08:40.154Z",
+    "description": "Further simplifying the sub-component pattern using contexts to make flexible, easily testable and reusable React components"
+  },
+  {
+    "title": "React sub-components",
+    "url": "/posts/react-sub-components-513f6679abed/",
+    "publishedAt": "2018-02-26T21:02:23.156Z",
+    "description": "Making flexible, easily testable and reusable views in React without ending in “markup hell”"
+  },
+  {
+    "title": "Running Golang tests with Jest",
+    "url": "/posts/running-golang-tests-with-jest-b5d8f3d43a7/",
+    "publishedAt": "2018-01-10T17:00:17.216Z",
+    "description": "How to use the Jest platform to run Golang test"
+  }
+]

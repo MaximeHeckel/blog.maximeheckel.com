@@ -9,9 +9,10 @@ import {
   useScroll,
 } from 'motion/react';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Post, ReadingTime } from 'types/post';
 
+import { SelectionToAsk } from '@core/components/Ask/SelectionToAsk';
 import { BottomBlurGradientMask } from '@core/components/BottomBlurGradientMask';
 import { useRegisterAction } from '@core/components/CommandMenu';
 import { Dock } from '@core/components/Dock';
@@ -59,6 +60,7 @@ const Header = (props: {
       as="header"
       css={{
         position: 'fixed',
+        pointerEvents: 'none',
         top: 0,
         left: 0,
         right: 0,
@@ -76,6 +78,7 @@ const Header = (props: {
               <Box
                 as={motion.div}
                 key="dynamic-island"
+                css={{ pointerEvents: 'auto' }}
                 variants={{
                   visible: {
                     y: 0,
@@ -112,6 +115,7 @@ const Header = (props: {
               <Box
                 as={motion.div}
                 key="dock"
+                css={{ pointerEvents: 'auto' }}
                 variants={{
                   visible: { y: 0 },
                   hidden: { y: -68 },
@@ -183,6 +187,7 @@ const contentClass = css({
 });
 
 const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
+  const articleRef = useRef<HTMLDivElement>(null);
   const { date, updated, slug, subtitle, title, seoTitle } = frontMatter;
   const router = useRouter();
   const path = `/posts/${slug}/`;
@@ -317,12 +322,17 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
             alignItems="start"
             direction="column"
             className={contentClass()}
+            ref={articleRef}
+            data-ask-article-path={path}
+            data-ask-article-title={title}
+            data-ask-article-subtitle={subtitle}
             gap="5"
           >
             {children}
           </Flex>
         </Grid.Item>
       </Grid>
+      <SelectionToAsk articleRef={articleRef} title={title} />
       <Footnote title={title} url={postUrl} />
       <BottomBlurGradientMask />
       <Footer lastUpdated={updated} />
