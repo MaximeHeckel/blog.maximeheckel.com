@@ -1,7 +1,15 @@
-import { Flex, IconButton, Text, Tooltip } from '@maximeheckel/design-system';
-import { motion, useReducedMotion } from 'motion/react';
 import {
+  Flex,
+  Icon,
+  IconButton,
+  Text,
+  Tooltip,
+} from '@maximeheckel/design-system';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import {
+  CSSProperties,
   KeyboardEvent,
+  useId,
   ReactNode,
   RefObject,
   useEffect,
@@ -14,6 +22,7 @@ import { FloatingAnchor } from '../FloatingAnchor';
 import type { WindowCorner } from '../FloatingAnchor/geometry';
 import { useAnchorTransition } from '../FloatingAnchor/useAnchorTransition';
 import * as S from './FloatingWindow.styles';
+import { useVerticalResize } from './useVerticalResize';
 
 export type FloatingWindowState = 'closed' | 'open' | 'minimized';
 
@@ -23,6 +32,8 @@ interface FloatingWindowProps {
   title: string;
   children: ReactNode;
   footer?: ReactNode;
+  showScrollToLatest?: boolean;
+  bottomOverlayHeight?: string;
   initialFocusRef?: RefObject<HTMLElement | null>;
 }
 
@@ -32,11 +43,19 @@ export const FloatingWindow = ({
   title,
   children,
   footer,
+  showScrollToLatest = false,
+  bottomOverlayHeight = '0px',
   initialFocusRef,
 }: FloatingWindowProps) => {
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const bodyContentRef = useRef<HTMLDivElement>(null);
+  const [hasContentBelow, setHasContentBelow] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
   const [corner, setCorner] = useState<WindowCorner>('bottom-right');
+  const windowId = useId();
+  const anchoredAtTop = corner.startsWith('top');
+  const { height, handleProps } = useVerticalResize(windowRef, anchoredAtTop);
   const resumeRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   useAnchorTransition(state, windowRef, resumeRef);
@@ -75,6 +94,34 @@ export const FloatingWindow = ({
     return () => window.clearTimeout(timer);
   }, [state, initialFocusRef]);
 
+  useEffect(() => {
+    const body = bodyRef.current;
+    const content = bodyContentRef.current;
+    if (!open || !showScrollToLatest || !body || !content) {
+      setHasContentBelow(false);
+      return;
+    }
+
+    const update = () => {
+      setHasContentBelow(
+        body.scrollHeight - body.clientHeight - body.scrollTop > 8
+      );
+    };
+    update();
+    body.addEventListener('scroll', update, { passive: true });
+    // Streaming Markdown and composer resizing can change overflow without a scroll event.
+    const observer =
+      typeof ResizeObserver === 'undefined'
+        ? undefined
+        : new ResizeObserver(update);
+    observer?.observe(body);
+    observer?.observe(content);
+    return () => {
+      body.removeEventListener('scroll', update);
+      observer?.disconnect();
+    };
+  }, [open, showScrollToLatest]);
+
   if (typeof document === 'undefined') return null;
 
   return createPortal(
@@ -82,11 +129,15 @@ export const FloatingWindow = ({
       <S.Window
         ref={windowRef}
         data-corner={corner}
-        style={{
-          pointerEvents: open ? 'auto' : 'none',
-          visibility: open ? 'visible' : 'hidden',
-          display: open ? undefined : 'none',
-        }}
+        style={
+          {
+            '--resized-window-height':
+              height === null ? undefined : `${height}px`,
+            pointerEvents: open ? 'auto' : 'none',
+            visibility: open ? 'visible' : 'hidden',
+            display: open ? undefined : 'none',
+          } as CSSProperties
+        }
         aria-hidden={!open}
         inert={!open}
       >
@@ -94,6 +145,7 @@ export const FloatingWindow = ({
           as={motion.div}
           initial={reduceMotion ? false : { opacity: 0 }}
           ref={panelRef}
+          id={windowId}
           role="dialog"
           aria-label={title}
           aria-modal={false}
@@ -110,6 +162,12 @@ export const FloatingWindow = ({
             }
           }}
         >
+          <S.ResizeHandle
+            {...handleProps}
+            aria-label={`Resize ${title} height`}
+            aria-controls={windowId}
+            data-edge={anchoredAtTop ? 'bottom' : 'top'}
+          />
           <S.Header>
             <Text size="2" weight="2">
               {title}
@@ -165,7 +223,60 @@ export const FloatingWindow = ({
               </Tooltip>
             </Flex>
           </S.Header>
-          <S.Body>{children}</S.Body>
+          <S.BodyViewport>
+            <S.Body ref={bodyRef}>
+              <div
+                ref={bodyContentRef}
+                style={{
+                  minHeight: '100%',
+                  display: 'grid',
+                  gridTemplateColumns: 'minmax(0, 1fr)',
+                }}
+              >
+                {children}
+              </div>
+            </S.Body>
+            <S.LatestOverlay
+              style={{
+                bottom: `calc(${bottomOverlayHeight} + var(--space-3))`,
+              }}
+            >
+              <AnimatePresence initial={false}>
+                {open && showScrollToLatest && hasContentBelow ? (
+                  <S.LatestButton
+                    as={motion.button}
+                    key="latest"
+                    type="button"
+                    aria-label="Scroll to latest"
+                    initial={{ opacity: 0, y: reduceMotion ? 0 : 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: reduceMotion ? 0 : 4 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.15 }}
+                    onClick={() => {
+                      const body = bodyRef.current;
+                      if (!body) return;
+                      body.scrollTo({
+                        top: body.scrollHeight,
+                        behavior: reduceMotion ? 'auto' : 'smooth',
+                      });
+                      // Keep keyboard focus in the panel when the pill disappears.
+                      (initialFocusRef?.current ?? panelRef.current)?.focus({
+                        preventScroll: true,
+                      });
+                    }}
+                  >
+                    <Icon.Arrow
+                      size="3"
+                      style={{
+                        color: 'var(--text-secondary)',
+                        transform: 'translateY(-1px) rotate(90deg)',
+                      }}
+                    />
+                  </S.LatestButton>
+                ) : null}
+              </AnimatePresence>
+            </S.LatestOverlay>
+          </S.BodyViewport>
           {footer ? <S.Footer>{footer}</S.Footer> : null}
         </S.Interior>
       </S.Window>

@@ -30,18 +30,17 @@ const Preview = styled('span', {
   whiteSpace: 'nowrap',
   userSelect: 'none',
   WebkitUserSelect: 'none',
-  fontSize: 'var(--font-size-1)',
+  fontSize: '13px',
   '& code': { fontFamily: 'var(--font-mono-code)', color: 'var(--token-text)' },
 });
 
 const RemoveButton = styled(IconButton, {
   flexShrink: 0,
-  width: 20,
-  height: 20,
-  maxWidth: 20,
-  maxHeight: 20,
+  width: 22,
+  height: 22,
+  maxWidth: 22,
+  maxHeight: 22,
   padding: 0,
-  fontSize: 'var(--font-size-1)',
   borderRadius: '50%',
 });
 

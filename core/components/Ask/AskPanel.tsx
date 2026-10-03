@@ -128,6 +128,11 @@ export const AskPanel = ({
     AskAttachment[]
   >([]);
   const [draft, setDraft] = useState('');
+  const attachmentOverlayHeight = attachments.length
+    ? attachments.length === 2
+      ? 'calc(2 * var(--space-6) + var(--space-1) + var(--space-2))'
+      : 'calc(var(--space-6) + var(--space-2))'
+    : '0px';
   const inputId = useId();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { query, streamData, status, error, submitQuery, reset } =
@@ -147,6 +152,8 @@ export const AskPanel = ({
   return (
     <FloatingWindow
       initialFocusRef={inputRef}
+      showScrollToLatest
+      bottomOverlayHeight={attachmentOverlayHeight}
       state={state}
       onStateChange={(nextState) => {
         if (nextState === 'closed') {
@@ -246,11 +253,7 @@ export const AskPanel = ({
             : {
                 // Add real scrollable space for the floating pills and their gap.
                 // Three or more attachments collapse back to a single row.
-                paddingBottom: attachments.length
-                  ? attachments.length === 2
-                    ? 'calc(2 * var(--space-6) + var(--space-1) + var(--space-2))'
-                    : 'calc(var(--space-6) + var(--space-2))'
-                  : undefined,
+                paddingBottom: attachmentOverlayHeight,
               }
         }
       >
