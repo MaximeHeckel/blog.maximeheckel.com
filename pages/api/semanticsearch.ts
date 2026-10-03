@@ -62,6 +62,44 @@ export default async function handler(req: Request) {
     }
   }
 
+  if (req.method !== 'POST') {
+    return new Response('Method not allowed', {
+      status: 405,
+      headers: { ...getCorsHeaders(), Allow: 'POST, OPTIONS' },
+    });
+  }
+
+  let body: unknown;
+
+  try {
+    body = await req.json();
+  } catch {
+    return new Response('Invalid JSON', {
+      status: 400,
+      headers: getCorsHeaders(),
+    });
+  }
+
+  const parsedRequest = z
+    .object({
+      query: z.string().trim().min(1),
+      attachments: z.unknown().optional(),
+      history: z.unknown().optional(),
+      pageContext: z.unknown().optional(),
+      mock: z.boolean().optional(),
+      completion: z.boolean().optional(),
+      threshold: z.number().min(0).max(1).optional(),
+      count: z.number().int().min(1).max(100).optional(),
+    })
+    .safeParse(body);
+
+  if (!parsedRequest.success) {
+    return new Response('Invalid request', {
+      status: 400,
+      headers: getCorsHeaders(),
+    });
+  }
+
   const {
     query,
     attachments: rawAttachments = [],
@@ -71,16 +109,7 @@ export default async function handler(req: Request) {
     completion = true,
     threshold = 0.25,
     count = 20,
-  } = (await req.json()) as {
-    query: string;
-    attachments?: unknown;
-    history?: unknown;
-    pageContext?: unknown;
-    mock?: boolean;
-    completion?: boolean;
-    threshold?: number;
-    count?: number;
-  };
+  } = parsedRequest.data;
 
   const parsedAttachments = z
     .array(askAttachmentSchema)
@@ -119,13 +148,6 @@ export default async function handler(req: Request) {
   ]
     .join(' ')
     .replace(/\n/g, ' ');
-
-  if (typeof query !== 'string' || !query.trim()) {
-    return new Response('Empty input', {
-      status: 400,
-      headers: getCorsHeaders(),
-    });
-  }
 
   if (mock) {
     try {

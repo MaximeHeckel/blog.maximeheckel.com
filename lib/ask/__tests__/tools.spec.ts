@@ -1,5 +1,6 @@
 import { expect, it, vi } from 'vitest';
 
+import catalog from '../catalog.json';
 import { createAskTools } from '../tools';
 
 const options = {
@@ -71,4 +72,13 @@ it('bounds combined tool executions per request', async () => {
     tools.recommendArticles.execute!({ query: 'Shaders' }, options)
   ).rejects.toThrow('budget exhausted');
   expect(search).toHaveBeenCalledTimes(4);
+});
+
+it('loads the complete static catalog without semantic search', async () => {
+  const search = vi.fn();
+  const tools = createAskTools(search);
+  const result = await tools.getArticleCatalog.execute!({}, options);
+
+  expect(result).toEqual({ articles: catalog });
+  expect(search).not.toHaveBeenCalled();
 });

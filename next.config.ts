@@ -3,8 +3,13 @@ import { fileURLToPath } from 'url';
 
 import bundleAnalyzer from '@next/bundle-analyzer';
 
+import { generateArticleCatalog } from './scripts/generate-article-catalog.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Refresh static Ask metadata for both development startup and production builds.
+generateArticleCatalog(__dirname);
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',

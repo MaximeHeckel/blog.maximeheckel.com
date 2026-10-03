@@ -53,7 +53,7 @@ export const streamAskAnswer = async ({
   // Intermediate tool-step text must never leak into that stream.
   const evidence = await generateText({
     model,
-    system: `${askPrompt}\nYou are selecting evidence for the answer. Use retrievePassages for blog-specific evidence and recommendArticles for reading suggestions. Skip tools when the supplied page context, attachments, or general knowledge suffice. Use the current article's title and topic when recommending related reading. Do not draft the answer; finish once you have enough evidence.`,
+    system: `${askPrompt}\nYou are selecting evidence for the answer. Use getArticleCatalog for exact article listings, publication dates, years, ordering, and counts. Article-list page context identifies the page only; call the catalog tool when you need its articles. Use retrievePassages for blog-specific evidence and recommendArticles for reading suggestions. Skip tools when the supplied page context, attachments, or general knowledge suffice. Use the current article's title and topic when recommending related reading. Do not draft the answer; finish once you have enough evidence.`,
     messages,
     tools: createAskTools(),
     stopWhen: stepCountIs(2),
@@ -63,13 +63,16 @@ export const streamAskAnswer = async ({
       openai: { reasoningEffort: 'low', parallelToolCalls: false },
     },
   });
+
   signal.throwIfAborted();
+
   const toolResults = evidence.steps.flatMap((step) =>
     step.toolResults.map((result) => ({
       tool: result.toolName,
       result: result.output,
     }))
   );
+
   const result = streamObject({
     model,
     system: askPrompt,
@@ -101,5 +104,6 @@ export const streamAskAnswer = async ({
         ),
     }),
   });
+
   return result.toTextStreamResponse();
 };

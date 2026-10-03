@@ -39,36 +39,13 @@ it('marks bounded article context as incomplete', () => {
   expect(context.article.truncated).toBe(true);
 });
 
-it('captures the complete catalog with dates and descriptions on the article list', () => {
-  const articles = [
-    {
-      title: 'New article',
-      url: '/posts/new/',
-      publishedAt: '2026-03-01',
-      description: 'New description',
-    },
-    {
-      title: 'Older article',
-      url: '/posts/old/',
-      publishedAt: '2025-06-01',
-      description: 'Older description',
-    },
-  ];
-  const list = document.createElement('main');
-  list.dataset.askListPath = '/';
-  list.dataset.askArticleList = JSON.stringify(articles);
-  document.body.append(list);
-  expect(captureAskPageContext()).toEqual({
-    kind: 'article-list',
-    path: '/',
-    articles,
-  });
-  window.history.replaceState({}, '', '/other/');
-  expect(captureAskPageContext()).toEqual({ kind: 'page', path: '/other/' });
-});
-
-it('falls back safely when catalog metadata is invalid', () => {
+it('identifies the article list without including catalog data', () => {
   document.body.innerHTML =
-    '<main data-ask-list-path="/" data-ask-article-list="invalid"></main>';
-  expect(captureAskPageContext()).toEqual({ kind: 'page', path: '/' });
+    '<main data-ask-list-path="/" data-ask-article-list></main>';
+
+  expect(captureAskPageContext()).toEqual({ kind: 'article-list', path: '/' });
+
+  window.history.replaceState({}, '', '/other/');
+
+  expect(captureAskPageContext()).toEqual({ kind: 'page', path: '/other/' });
 });

@@ -25,13 +25,17 @@ export type AskMessage = z.infer<typeof askMessageSchema>;
 export const boundAskHistory = (messages: AskMessage[]): AskMessage[] => {
   const result: AskMessage[] = [];
   let size = 0;
+
   for (let index = messages.length - 2; index >= 0; index -= 2) {
     const turn = messages.slice(index, index + 2);
     if (turn[0].role !== 'user' || turn[1].role !== 'assistant') break;
+
     const turnSize = JSON.stringify(turn).length;
     if (size + turnSize > 24000 || result.length >= 12) break;
+
     result.unshift(...turn);
     size += turnSize;
   }
+
   return result;
 };

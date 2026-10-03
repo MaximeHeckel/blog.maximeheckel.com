@@ -232,7 +232,10 @@ export const FloatingWindow = ({
             </Text>
             <Flex gap="1">
               {headerActions}
-              <Tooltip id="ask-tooltip" content={`Minimize ${title}`}>
+              <Tooltip
+                id={`${windowId}-minimize`}
+                content={`Minimize ${title}`}
+              >
                 <IconButton
                   aria-label={`Minimize ${title}`}
                   variant="tertiary"
@@ -256,7 +259,7 @@ export const FloatingWindow = ({
                   </svg>
                 </IconButton>
               </Tooltip>
-              <Tooltip id="ask-tooltip" content={`Close ${title}`}>
+              <Tooltip id={`${windowId}-close`} content={`Close ${title}`}>
                 <IconButton
                   aria-label={`Close ${title}`}
                   variant="tertiary"
@@ -283,7 +286,7 @@ export const FloatingWindow = ({
             </Flex>
           </S.Header>
           <S.BodyViewport>
-            <S.Body ref={bodyRef}>
+            <S.Body ref={bodyRef} data-testid="floating-window-scroll-area">
               <div
                 ref={bodyContentRef}
                 style={{

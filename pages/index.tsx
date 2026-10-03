@@ -21,14 +21,7 @@ const NewHome = (props: Props) => {
       <Header />
       <Grid
         data-ask-list-path="/"
-        data-ask-article-list={JSON.stringify(
-          posts.map((post) => ({
-            title: post.title,
-            url: `/posts/${post.slug}/`,
-            publishedAt: post.date,
-            description: post.subtitle,
-          }))
-        )}
+        data-ask-article-list
         css={{
           position: 'relative',
           height: 'auto',

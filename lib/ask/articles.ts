@@ -7,12 +7,15 @@ const passageSchema = z.object({
   content: z.string(),
   similarity: z.number().optional(),
 });
+
 export type ArticlePassage = z.infer<typeof passageSchema>;
+
 export interface ArticleSearchOptions {
   threshold?: number;
   count?: number;
   signal?: AbortSignal;
 }
+
 export type ArticleSearch = (
   query: string,
   options?: ArticleSearchOptions
@@ -35,12 +38,15 @@ export const searchArticlePassages: ArticleSearch = async (
     }),
     signal: options.signal,
   });
+
   if (!response.ok) throw new Error('Article search embedding failed');
+
   const { data } = z
     .object({
       data: z.array(z.object({ embedding: z.array(z.number()) })).min(1),
     })
     .parse(await response.json());
+
   const client = createClient(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_API_KEY!
@@ -53,7 +59,9 @@ export const searchArticlePassages: ArticleSearch = async (
   const { data: documents, error } = await (options.signal
     ? request.abortSignal(options.signal)
     : request);
+
   if (error) throw new Error('Article search failed');
+
   return z
     .array(passageSchema)
     .parse(documents ?? [])
@@ -62,10 +70,12 @@ export const searchArticlePassages: ArticleSearch = async (
 
 export const uniqueArticles = (passages: ArticlePassage[]) => {
   const seen = new Set<string>();
+
   return passages
     .filter(({ url }) => {
       const key = url.split('#')[0].replace(/\/$/, '');
       if (seen.has(key)) return false;
+
       seen.add(key);
       return true;
     })

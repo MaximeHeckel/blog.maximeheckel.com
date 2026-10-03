@@ -1,6 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest';
 
 // @vitest-environment node
+import catalog from '../ask/catalog.json';
 import type { AskMessage } from '../askConversation';
 
 const { rpc } = vi.hoisted(() => ({ rpc: vi.fn() }));
@@ -11,6 +12,7 @@ vi.mock('@vercel/kv', () => ({
 }));
 
 afterEach(() => {
+  vi.clearAllMocks();
   vi.unstubAllGlobals();
   vi.unstubAllEnvs();
   vi.resetModules();
@@ -56,24 +58,10 @@ it.each([
   },
   {
     attachments: [],
-    toolName: null,
+    toolName: 'getArticleCatalog',
     pageContext: {
       kind: 'article-list',
       path: '/',
-      articles: [
-        {
-          title: 'Published in 2026',
-          url: '/posts/new/',
-          publishedAt: '2026-02-10',
-          description: 'New article',
-        },
-        {
-          title: 'Published in 2025',
-          url: '/posts/old/',
-          publishedAt: '2025-10-20',
-          description: 'Old article',
-        },
-      ],
     },
   },
   { attachments: [], history },
@@ -154,9 +142,11 @@ it.each([
                         id: 'fc1',
                         call_id: 'call1',
                         name: toolName,
-                        arguments: JSON.stringify({
-                          query: 'Explain CSS variables',
-                        }),
+                        arguments: JSON.stringify(
+                          toolName === 'getArticleCatalog'
+                            ? {}
+                            : { query: 'Explain CSS variables' }
+                        ),
                       },
                     ]
                   : [
@@ -238,7 +228,7 @@ it.each([
         'Custom properties inherit.'
       );
     }
-    if (!toolName) {
+    if (!toolName || toolName === 'getArticleCatalog') {
       expect(
         fetchMock.mock.calls.some(([url]) =>
           String(url).endsWith('/embeddings')
@@ -254,7 +244,7 @@ it.each([
       JSON.parse(planningRequest![1]!.body as string).tools.map(
         (tool: { name: string }) => tool.name
       )
-    ).toEqual(['retrievePassages', 'recommendArticles']);
+    ).toEqual(['getArticleCatalog', 'retrievePassages', 'recommendArticles']);
     expect(JSON.parse(userMessage.content[0].text)).toEqual({
       question: 'How do I compose CSS variables?',
       attachments,
@@ -264,13 +254,17 @@ it.each([
             {
               tool: toolName,
               result:
-                toolName === 'retrievePassages'
-                  ? {
-                      passages: [
-                        { ...excerpt, content: excerpt.content.trim() },
-                      ],
-                    }
-                  : { articles: [{ title: excerpt.title, url: excerpt.url }] },
+                toolName === 'getArticleCatalog'
+                  ? { articles: catalog }
+                  : toolName === 'retrievePassages'
+                    ? {
+                        passages: [
+                          { ...excerpt, content: excerpt.content.trim() },
+                        ],
+                      }
+                    : {
+                        articles: [{ title: excerpt.title, url: excerpt.url }],
+                      },
             },
           ]
         : [],
@@ -352,4 +346,34 @@ it('preserves passage content and similarity for legacy search-only clients', as
     match_count: 50,
     similarity_threshold: 0.3,
   });
+});
+
+it.each([
+  '{',
+  'null',
+  '[]',
+  '{"query": 42}',
+  '{"query": " "}',
+  '{"query":"hi","count":-1}',
+])('rejects invalid request bodies: %s', async (body) => {
+  const { default: handler } = await import('../../pages/api/semanticsearch');
+  const response = await handler(
+    new Request('http://localhost/api/semanticsearch/', {
+      method: 'POST',
+      body,
+    })
+  );
+
+  expect(response.status).toBe(400);
+  expect(rpc).not.toHaveBeenCalled();
+});
+
+it('rejects unsupported methods before reading a body', async () => {
+  const { default: handler } = await import('../../pages/api/semanticsearch');
+  const response = await handler(
+    new Request('http://localhost/api/semanticsearch/')
+  );
+
+  expect(response.status).toBe(405);
+  expect(response.headers.get('Allow')).toBe('POST, OPTIONS');
 });

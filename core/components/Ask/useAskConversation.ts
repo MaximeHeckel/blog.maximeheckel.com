@@ -11,10 +11,12 @@ export const useAskConversation = () => {
   const [history, setHistory] = useState<AskMessage[]>([]);
   const [attachments, setAttachments] = useState<AskAttachment[]>([]);
   const [pageContext, setPageContext] = useState<AskPageContext>();
+
   const prefix = useId();
   const turn = useRef(0);
   const sending = useRef(false);
   const requestId = useRef(0);
+
   const current: AskMessage[] = completion.query
     ? [
         {
@@ -36,14 +38,18 @@ export const useAskConversation = () => {
 
   const send = async (query: string, nextAttachments: AskAttachment[]) => {
     if (sending.current || completion.status === 'loading') return;
+
     sending.current = true;
     const request = ++requestId.current;
     const previous = [...history, ...current];
+
     const nextPageContext = captureAskPageContext();
+
     setPageContext(nextPageContext);
     setHistory(previous);
     setAttachments([...nextAttachments]);
     turn.current += 1;
+
     try {
       const bounded = boundAskHistory(previous);
       await completion.submitQuery(
@@ -71,5 +77,6 @@ export const useAskConversation = () => {
     setAttachments([]);
     setPageContext(undefined);
   };
+
   return { ...completion, messages, send, reset, abort };
 };

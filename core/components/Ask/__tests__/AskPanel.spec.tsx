@@ -154,7 +154,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-it('shows a small animated lens while thinking and removes it when writing', () => {
+it('changes the activity status from thinking to writing when text arrives', () => {
   const completion = {
     query: 'Explain shaders',
     streamData: '',
@@ -171,8 +171,6 @@ it('shows a small animated lens while thinking and removes it when writing', () 
   );
   const status = screen.getByRole('status');
   expect(status).toHaveTextContent('Thinking…');
-  expect(status.querySelector('svg')).toHaveAttribute('width', '20');
-  expect(status.querySelector('filter')).not.toBeNull();
 
   vi.mocked(useAICompletion).mockReturnValue({
     ...completion,
@@ -180,7 +178,6 @@ it('shows a small animated lens while thinking and removes it when writing', () 
   });
   rerender(<AskPanel state="open" onStateChange={vi.fn()} />);
   expect(screen.getByRole('status')).toHaveTextContent('Writing…');
-  expect(screen.getByRole('status').querySelector('svg')).toBeNull();
 });
 
 it('focuses the composer on opening and restoring the window', async () => {

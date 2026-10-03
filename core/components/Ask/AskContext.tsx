@@ -23,6 +23,7 @@ export const AskProvider = ({ children }: { children: ReactNode }) => {
   );
   const [attachments, setAttachments] = useState<AskAttachment[]>([]);
   const [focusRequest, setFocusRequest] = useState(0);
+
   const openAsk = useCallback((attachment?: AskAttachment) => {
     if (attachment) {
       setAttachments((previous) => [
@@ -30,6 +31,7 @@ export const AskProvider = ({ children }: { children: ReactNode }) => {
         attachment,
       ]);
     }
+
     setFocusRequest((previous) => previous + 1);
     setPanelState('open');
   }, []);
@@ -52,7 +54,9 @@ export const AskProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAsk = () => {
   const openAsk = useContext(AskContext);
+
   if (!openAsk) throw new Error('useAsk must be used within an AskProvider');
+
   return openAsk;
 };
 
