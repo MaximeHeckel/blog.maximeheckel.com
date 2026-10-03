@@ -24,7 +24,10 @@ export const getFiles = async () => {
 // Regex to find all the custom static tweets in a MDX file
 const TWEET_RE = /<StaticTweet\sid="[0-9]+"\s\/>/g;
 
-export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
+export const getFileBySlug = async (
+  slug: string,
+  { includeMarkdown = false }: { includeMarkdown?: boolean } = {}
+): Promise<FrontMatterPost> => {
   const source = fs.readFileSync(
     path.join(root, 'content', `${slug}.mdx`),
     'utf8'
@@ -119,6 +122,7 @@ export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
   });
 
   const result = {
+    ...(includeMarkdown ? { markdown: source } : {}),
     mdxSource,
     tweetIDs: tweetIDs || [],
     frontMatter: {

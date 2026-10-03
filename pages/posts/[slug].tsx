@@ -29,7 +29,11 @@ const Blog = ({ post, ogImage, tweets }: BlogProps) => {
   };
 
   return (
-    <BlogPost frontMatter={post.frontMatter} ogImage={ogImage}>
+    <BlogPost
+      frontMatter={post.frontMatter}
+      ogImage={ogImage}
+      markdown={post.markdown}
+    >
       <MDXRemote
         {...post.mdxSource}
         components={{
@@ -47,18 +51,24 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await getFiles();
 
   return {
-    paths: posts.map((p) => ({
-      params: {
-        slug: p.replace(/\.mdx/, ''),
-      },
-    })),
-    fallback: true,
+    paths: posts.flatMap((p) => {
+      const slug = p.replace(/\.mdx$/, '');
+      return [slug, `${slug}.md`].map((slug) => ({ params: { slug } }));
+    }),
+    fallback: 'blocking',
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
-    const post = await getFileBySlug(params!.slug as string);
+    const routeSlug = params!.slug as string;
+    const slug = routeSlug.replace(/\.md$/, '');
+    // Only read articles from the catalog, including for on-demand paths.
+    const files = await getFiles();
+    if (!files.includes(`${slug}.mdx`)) return { notFound: true };
+    const post = await getFileBySlug(slug, {
+      includeMarkdown: routeSlug.endsWith('.md'),
+    });
 
     /**
      * Get tweets from API
@@ -72,9 +82,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       color: post.frontMatter.fontFeatured,
     });
     return { props: { post, ogImage, tweets } };
-  } catch (error) {
-    // eslint-disable-next-line
-    console.log(error);
+  } catch (_error) {
     return { notFound: true };
   }
 };

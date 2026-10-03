@@ -23,4 +23,5 @@ export type FrontMatterPost = {
   };
   tweetIDs: string[];
   mdxSource: MDXRemoteSerializeResult;
+  markdown?: string;
 };
