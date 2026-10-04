@@ -1,4 +1,3 @@
-export { CommandMenu } from './CommandMenu';
 export {
   CommandMenuProvider,
   useCommandMenuActions,

@@ -14,8 +14,8 @@ import {
   useThree,
 } from '@react-three/fiber';
 import { EffectComposer } from '@react-three/postprocessing';
-import { Leva, useControls } from 'leva';
 import { useReducedMotion } from 'motion/react';
+import dynamic from 'next/dynamic';
 import { Effect } from 'postprocessing';
 import {
   Suspense,
@@ -28,12 +28,17 @@ import {
 import * as THREE from 'three';
 import { v4 } from 'uuid';
 
+import type { SceneControls } from './SceneDebugControls';
 import renderFragmentShader from './gpgpu/fragmentShader.glsl';
 import simulationFragmentShader from './gpgpu/simulationFragment.glsl';
 import simulationVertexShader from './gpgpu/simulationVertex.glsl';
 import renderVertexShader from './gpgpu/vertexShader.glsl';
 import HalftoneFragmentShader from './postprocessing/ascii.glsl';
 import { wrapEffect } from './utils';
+
+const SceneDebugControls = dynamic(() => import('./SceneDebugControls'), {
+  ssr: false,
+});
 
 declare module '@react-three/fiber' {
   interface ThreeElements {
@@ -68,17 +73,8 @@ class CustomHalftoneEffectImpl extends Effect {
 
 const CustomHalftoneEffect = wrapEffect(CustomHalftoneEffectImpl);
 
-export const HalftoneEffect = () => {
+export const HalftoneEffect = ({ pixelSize = 4.0 }: { pixelSize?: number }) => {
   const effectRef = useRef<CustomHalftoneEffectImpl | null>(null);
-
-  const { pixelSize } = useControls({
-    pixelSize: {
-      value: 4.0,
-      min: 2.0,
-      max: 64.0,
-      step: 2.0,
-    },
-  });
 
   useFrame((state) => {
     const { camera } = state;
@@ -169,17 +165,17 @@ extend({ SimMaterial: SimulationMaterial, DepthOfFieldMaterial });
 
 const ParticleLemniscate = ({
   shouldStopRenderingLoop = false,
+  frequency,
+  pixelSize,
 }: {
   shouldStopRenderingLoop?: boolean;
+  frequency: number;
+  pixelSize: number;
 }) => {
   const size = 256;
   const depthOfFieldMaterialRef = useRef<DepthOfFieldMaterial>(null);
   const simulationMaterialDOFRef = useRef<SimulationMaterial>(null);
   const orthoRef = useRef<THREE.OrthographicCamera>(null);
-
-  const { frequency } = useControls({
-    frequency: { value: 0.3, min: 0, max: 1, step: 0.01 },
-  });
 
   const [scene] = useState(() => new THREE.Scene());
   const [positions] = useState(
@@ -324,7 +320,7 @@ const ParticleLemniscate = ({
           <depthOfFieldMaterial key={v4()} ref={depthOfFieldMaterialRef} />
         </points>
       </group>
-      <HalftoneEffect />
+      <HalftoneEffect pixelSize={pixelSize} />
     </>
   );
 };
@@ -387,12 +383,14 @@ const RevealCanvas = () => {
 export const Scene = () => {
   const [DPR, setDPR] = useState(1.0);
   const [showDebug, setShowDebug] = useState(false);
+  const [controls, setControls] = useState<SceneControls>({
+    frequency: 0.3,
+    pixelSize: 4.0,
+  });
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    setShowDebug(
-      typeof window !== 'undefined' && window.location.search.includes('?debug')
-    );
+    setShowDebug(new URLSearchParams(window.location.search).has('debug'));
   }, []);
 
   if (typeof window !== 'undefined' && window.Cypress) {
@@ -412,7 +410,7 @@ export const Scene = () => {
         maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
       }}
     >
-      <Leva hidden={!showDebug} />
+      {showDebug ? <SceneDebugControls onChange={setControls} /> : null}
       {/* Keep the drawing buffer and camera in sync with the panel's width transition. */}
       <Canvas id="main-canvas" shadows dpr={DPR} resize={{ debounce: 0 }}>
         <color attach="background" args={['#090A0E']} />
@@ -421,7 +419,10 @@ export const Scene = () => {
           onIncline={() => setDPR(1.0)}
         />
         <Suspense fallback={null}>
-          <ParticleLemniscate shouldStopRenderingLoop={!!shouldReduceMotion} />
+          <ParticleLemniscate
+            shouldStopRenderingLoop={!!shouldReduceMotion}
+            {...controls}
+          />
           <Background />
           <RevealCanvas />
         </Suspense>
