@@ -382,12 +382,7 @@ const Slider = (props: SliderProps) => {
               >
                 <GlassMaterial
                   border={false}
-                  style={
-                    {
-                      zIndex: 'unset !important',
-                      backdropFilter: 'unset !important',
-                    } as React.CSSProperties
-                  }
+                  style={{ zIndex: 0, backdropFilter: 'none' }}
                 />
               </motion.div>
             }
