@@ -12,7 +12,7 @@ export type CalloutVariant = 'info' | 'danger' | 'warning';
 export interface CalloutProps {
   children: ReactNode;
   label?: ReactNode;
-  variant: CalloutVariant;
+  variant?: CalloutVariant;
   css?: CSS;
 }
 
@@ -33,7 +33,7 @@ const variantLabels: Record<CalloutVariant, string> = {
 };
 
 const Callout = (props: CalloutProps) => {
-  const { children, label, variant, ...rest } = props;
+  const { children, label, variant = 'info', ...rest } = props;
 
   return (
     <StyledCallout

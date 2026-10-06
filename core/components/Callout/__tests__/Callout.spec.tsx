@@ -33,6 +33,21 @@ it.each([
   }
 );
 
+it.each([undefined, null, ''])(
+  'defaults to the info icon and Note with an empty label: %j',
+  (label) => {
+    render(
+      <Callout label={label}>
+        <p>Helpful context</p>
+      </Callout>
+    );
+    const callout = screen.getByRole('complementary');
+    expect(callout.firstElementChild?.querySelector('svg')).toBeInTheDocument();
+    expect(callout.firstElementChild?.textContent).toBe('Note');
+    expect(within(callout).getByText('Helpful context')).toBeInTheDocument();
+  }
+);
+
 it.each(variants)('renders a custom %s label beside the icon', (variant) => {
   render(
     <Callout variant={variant} label={<strong>Before you start</strong>}>
