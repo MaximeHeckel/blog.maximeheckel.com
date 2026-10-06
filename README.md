@@ -1,3 +1,5 @@
+Hello world
+
 # blog.maximeheckel.com
 
 This is the main code base for [my blog](https://blog.maximeheckel.com).
