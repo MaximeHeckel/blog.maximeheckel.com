@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Card,
-  Callout,
   EM,
   Flex,
   Grid,
@@ -33,6 +32,7 @@ import React from 'react';
 import { NewTweet } from 'types/tweet';
 
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
+import Callout from '@core/components/Callout';
 import CodeBlock from '@core/components/Code/CodeBlock';
 import { CommandMenuContext } from '@core/components/CommandMenu/CommandMenuContext';
 import { HR } from '@core/components/HR';

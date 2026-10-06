@@ -164,6 +164,7 @@ const CodeBlock = (props: CodeBlockProps) => {
 
   return (
     <Card
+      data-code-block
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)}
@@ -180,10 +181,11 @@ const CodeBlock = (props: CodeBlockProps) => {
         minWidth: 0,
         background: 'unset',
         width: '100%',
+        borderRadius: 'var(--code-block-radius, var(--border-radius-2))',
 
         '@media(max-width: 750px)': {
-          width: 'calc(100% + var(--space-2) * 2)',
-          left: 'calc(-1 * var(--space-2))',
+          width: 'calc(100% + var(--code-block-bleed, var(--space-2)) * 2)',
+          left: 'calc(-1 * var(--code-block-bleed, var(--space-2)))',
         },
       }}
     >
@@ -191,6 +193,10 @@ const CodeBlock = (props: CodeBlockProps) => {
         <Card.Header
           css={{
             borderBottom: 'none',
+            borderTopLeftRadius:
+              'var(--code-block-radius, var(--border-radius-1))',
+            borderTopRightRadius:
+              'var(--code-block-radius, var(--border-radius-1))',
             backgroundColor: 'var(--code-snippet-background)',
             padding: 'var(--space-2) var(--space-3)',
           }}
@@ -229,7 +235,9 @@ export default CodeBlock;
 
 const FloatingActions = styled(motion.div, {
   position: 'absolute',
-  top: 'var(--space-2)',
+  // Center on the first code line (24px tall), regardless of the button height.
+  top: 'calc(var(--space-2) + 12px)',
+  translate: '0 -50%',
   right: 'var(--space-2)',
   zIndex: 3,
   borderRadius: 'var(--border-radius-2)',
@@ -251,8 +259,8 @@ const Pre = styled('pre', {
   marginBottom: '0',
   textAlign: 'left',
   padding: 'var(--space-2) 0px',
-  borderBottomLeftRadius: 'var(--border-radius-2)',
-  borderBottomRightRadius: 'var(--border-radius-2)',
+  borderBottomLeftRadius: 'var(--code-block-radius, var(--border-radius-2))',
+  borderBottomRightRadius: 'var(--code-block-radius, var(--border-radius-2))',
   backgroundColor: 'var(--code-snippet-background)',
   color: 'var(--token-text)',
   fontFamily: 'var(--font-mono-code)',
@@ -295,10 +303,6 @@ const Line = styled('div', {
   '&.highlight-line': {
     background: 'var(--emphasis)',
     borderColor: 'var(--accent)',
-  },
-
-  '&:hover': {
-    backgroundColor: 'var(--emphasis)',
   },
 
   '&[data-diff="added"]': {

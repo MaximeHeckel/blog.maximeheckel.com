@@ -5,6 +5,7 @@ import {
   useMotionValue,
   useReducedMotion,
   useTransform,
+  useVelocity,
 } from 'motion/react';
 import {
   KeyboardEvent,
@@ -81,6 +82,12 @@ export const FloatingAnchor = ({
   );
   const x = useMotionValue(initialPosition.x);
   const y = useMotionValue(initialPosition.y);
+  const velocityX = useVelocity(x);
+  const velocityY = useVelocity(y);
+  const motionBlur = useTransform([velocityX, velocityY], ([vx, vy]) => {
+    const speed = Math.hypot(Number(vx), Number(vy));
+    return `blur(${Math.min(speed / 600, 3)}px)`;
+  });
   const position = useRef(relativePoint(initialPosition, viewport));
   const drag = useRef<{
     id: number;
@@ -264,7 +271,12 @@ export const FloatingAnchor = ({
       </svg>
       <motion.span
         aria-hidden="true"
-        style={{ x: iconX, display: 'flex', pointerEvents: 'none' }}
+        style={{
+          x: iconX,
+          filter: reduceMotion ? 'none' : motionBlur,
+          display: 'flex',
+          pointerEvents: 'none',
+        }}
       >
         <RGBLensIcon size={28} animate={active && hovered} />
       </motion.span>

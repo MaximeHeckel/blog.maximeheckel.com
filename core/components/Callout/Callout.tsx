@@ -1,20 +1,58 @@
-import { Callout as SystemCallout, Flex } from '@maximeheckel/design-system';
-import { CalloutProps as SystemCalloutProps } from '@maximeheckel/design-system/dist/types/components/Callout';
+import { CSS, Flex, Icon } from '@maximeheckel/design-system';
+import { ReactNode } from 'react';
 
-const Callout = (props: SystemCalloutProps) => {
-  const { children, ...rest } = props;
+import {
+  StyledCallout,
+  StyledCalloutHeader,
+  StyledCalloutIconWrapper,
+} from './Callout.styles';
+
+export type CalloutVariant = 'info' | 'danger' | 'warning';
+
+export interface CalloutProps {
+  children: ReactNode;
+  label?: ReactNode;
+  variant: CalloutVariant;
+  css?: CSS;
+}
+
+const getVariantIcon = (variant: CalloutVariant) => {
+  switch (variant) {
+    case 'info':
+      return <Icon.Info size={3} />;
+    case 'danger':
+    case 'warning':
+      return <Icon.Alert size={3} />;
+  }
+};
+
+const variantLabels: Record<CalloutVariant, string> = {
+  info: 'Note',
+  danger: 'Caution',
+  warning: 'Warning',
+};
+
+const Callout = (props: CalloutProps) => {
+  const { children, label, variant, ...rest } = props;
 
   return (
-    <SystemCallout
+    <StyledCallout
+      variant={variant}
       css={{
         marginTop: 'var(--space-3)',
       }}
       {...rest}
     >
+      <StyledCalloutHeader>
+        <StyledCalloutIconWrapper aria-hidden="true">
+          {getVariantIcon(variant)}
+        </StyledCalloutIconWrapper>
+        {label || variantLabels[variant]}
+      </StyledCalloutHeader>
       <Flex alignItems="start" direction="column" gap="6">
         {children}
       </Flex>
-    </SystemCallout>
+    </StyledCallout>
   );
 };
 

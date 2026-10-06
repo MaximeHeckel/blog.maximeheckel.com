@@ -7,7 +7,7 @@ import { DotMatrixTicker } from '../DotMatrixTicker';
 const StyledCallout = styled('aside', {
   position: 'relative',
   padding: '16px 16px',
-  borderRadius: 'var(--border-radius-1)',
+  borderRadius: 'var(--border-radius-2)',
   color: 'var(--text-primary)',
   border: '1px solid var(--emphasis)',
   background: 'var(--callout-background, var(--foreground))',
