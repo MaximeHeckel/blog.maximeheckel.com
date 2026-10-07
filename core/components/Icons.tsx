@@ -8,6 +8,28 @@ const resolveSize = (size?: number | string): number | string => {
   return size;
 };
 
+export const DocumentIcon = ({ size }: IconProps) => {
+  const resolvedSize = resolveSize(size);
+
+  return (
+    <svg
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={resolvedSize}
+      height={resolvedSize}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M20 14.731V7.8199C20 6.12616 20 5.27929 19.732 4.60291C19.3013 3.51555 18.3902 2.65784 17.2352 2.25228C16.5168 2 15.6173 2 13.8182 2C10.6698 2 9.09563 2 7.83836 2.44148C5.81714 3.15122 4.22281 4.6522 3.46894 6.55509C3 7.73875 3 9.22077 3 12.1848V14.731C3 17.8013 3 19.3364 3.8477 20.4025C4.09058 20.708 4.37862 20.9792 4.70307 21.2078C5.8276 22 7.55173 22 11 22H12C15.4483 22 17.1724 22 18.2969 21.2078C18.6214 20.9792 18.9094 20.708 19.1523 20.4025C20 19.3364 20 17.8013 20 14.731Z" />
+      <path d="M3 12C3 10.159 4.49238 8.66667 6.33333 8.66667C6.99912 8.66667 7.78404 8.78333 8.43137 8.60988C9.00652 8.45576 9.45576 8.00652 9.60988 7.43136C9.78333 6.78404 9.66667 5.99912 9.66667 5.33333C9.66667 3.49238 11.1591 2 13 2" />
+    </svg>
+  );
+};
+
 export const SearchIcon = ({ size }: IconProps) => {
   const resolvedSize = resolveSize(size);
 
