@@ -217,6 +217,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
               {yearPosts.map(({ post, index }) => (
                 <Box
                   as={ViewTransitionLink}
+                  navigateOnPress
                   id={post.slug}
                   data-testid="article-link"
                   data-article-item

@@ -16,6 +16,7 @@ import {
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useIsMobile } from '@core/hooks/useIsMobile';
+import { usePressActivation } from '@core/hooks/usePressActivation';
 
 import { MiniProgressCircular } from './MiniProgressCircular';
 import { useIntersectionObserver } from './useIntersectionObserver';
@@ -27,6 +28,7 @@ const ToC = (props: {
   const { ids } = props;
   const shouldReduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
+  const pressActivation = usePressActivation<HTMLAnchorElement>();
 
   const handleLink = (
     event: React.MouseEvent | React.KeyboardEvent<HTMLAnchorElement>,
@@ -123,9 +125,7 @@ const ToC = (props: {
                   color: 'var(--text-primary)',
                 },
               }}
-              onClick={(event: React.MouseEvent<HTMLAnchorElement>) =>
-                handleLink(event, item.id)
-              }
+              {...pressActivation((event) => handleLink(event, item.id))}
               onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
                 if (event.key === 'Enter') {
                   event.preventDefault();

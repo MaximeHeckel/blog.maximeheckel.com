@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import React, { useCallback, useContext, useState } from 'react';
 
 import { useIsMobile } from '@core/hooks/useIsMobile';
+import { usePressActivation } from '@core/hooks/usePressActivation';
 import { useViewTransitionNavigation } from '@core/hooks/useViewTransitionNavigation';
 
 import { useAsk } from './Ask/AskContext';
@@ -29,6 +30,7 @@ const Dock = () => {
   const shouldReduceMotion = useReducedMotion();
   const isMobile = useIsMobile();
   const { navigateWithViewTransition } = useViewTransitionNavigation();
+  const pressActivation = usePressActivation<HTMLButtonElement>();
 
   const navItems = Object.values(NAV);
   const navActions = {
@@ -183,7 +185,7 @@ const Dock = () => {
                 tabIndex={0}
                 data-nav-item={item}
                 onKeyDown={handleKeyDown}
-                onClick={navActions[item]}
+                {...pressActivation(navActions[item])}
                 onMouseEnter={() => !isKeyboardNav && debouncedSetFocused(item)}
                 onFocus={() => debouncedSetFocused(item)}
               >
