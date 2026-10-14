@@ -259,7 +259,6 @@ export const SDFShapes = (props: SDFShapesProps) => {
 
   return (
     <ShaderPlayground
-      fullBleedWidth={50}
       key={fragmentShader}
       fragmentShader={fragmentShader}
       uniforms={{

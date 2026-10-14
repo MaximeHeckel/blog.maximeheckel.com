@@ -211,7 +211,6 @@ export const MotionMask = (props: MotionMaskProps) => {
         uVideo: MOTION_MASK_VIDEO_URL,
       }}
       aspectRatio="4 / 4"
-      fullBleedWidth={50}
       showCode={false}
     >
       <Switch

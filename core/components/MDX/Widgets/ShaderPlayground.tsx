@@ -401,7 +401,7 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
               position: 'relative',
               width: '100%',
               minWidth: 0,
-              maxWidth: '100%',
+              maxWidth: '663px',
               overflow: 'hidden',
               contain: 'inline-size',
             }}
