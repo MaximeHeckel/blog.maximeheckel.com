@@ -1,4 +1,4 @@
-import React, { useId, useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 
 import { ShaderPlayground } from '@core/components/MDX/Widgets/ShaderPlayground';
 import { Select } from '@core/components/Select';

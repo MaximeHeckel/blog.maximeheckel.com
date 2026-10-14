@@ -5,7 +5,6 @@ import {
   InlineCode,
   Text,
 } from '@maximeheckel/design-system';
-import React from 'react';
 
 const ColorChannelSummary = () => {
   return (

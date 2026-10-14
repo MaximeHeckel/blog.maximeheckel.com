@@ -1,5 +1,5 @@
 import { Checkbox } from '@maximeheckel/design-system';
-import React, { useDeferredValue, useEffect, useState } from 'react';
+import { useDeferredValue, useEffect, useState } from 'react';
 
 import { ShaderPlayground } from '@core/components/MDX/Widgets/ShaderPlayground';
 import { Select } from '@core/components/Select';

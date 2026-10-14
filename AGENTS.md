@@ -12,7 +12,7 @@ A personal blog built with Next.js featuring interactive articles about web deve
 
 | Category        | Technology                                                      |
 | --------------- | --------------------------------------------------------------- |
-| Framework       | Next.js 15 (Pages Router)                                       |
+| Framework       | Next.js 16 (Pages Router)                                       |
 | UI              | React 19, @maximeheckel/design-system                           |
 | Headless UI     | @base-ui/react (Select, Dialog, etc.)                           |
 | Styling         | Stitches (via design-system), CSS custom properties             |
@@ -99,3 +99,13 @@ Follow [`docs/agent-guidelines/create-article.md`](docs/agent-guidelines/create-
 - Include required generated outputs in the same commit as their source change; do not commit incidental output from local checks.
 - Pull request titles should describe the user-visible or developer-facing outcome.
 - Pull request bodies should contain `Summary` and `Testing` sections. List exact commands, disclose skipped or environment-limited checks, and include screenshots for visual changes.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

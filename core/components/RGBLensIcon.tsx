@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react';
-import React, { useCallback, useEffect, useId, useState } from 'react';
+import { useCallback, useEffect, useId, useState } from 'react';
 
 export interface RGBLensIconProps {
   size?: number;

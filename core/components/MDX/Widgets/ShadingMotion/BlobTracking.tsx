@@ -7,13 +7,7 @@ import {
   useKeyboardShortcut,
 } from '@maximeheckel/design-system';
 import { motion, useInView } from 'motion/react';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const MOTION_MAP_URL =
   'https://cdn.maximeheckel.com/images/blog/motion-map.png';

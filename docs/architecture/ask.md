@@ -103,7 +103,7 @@ Both phases use the API's configured OpenAI model and [`askPrompt`](../../lib/as
 
 [`createAskTools`](../../lib/ask/tools/index.ts) registers the tools and shares a four-search execution budget between retrieval and recommendation. [`articles.ts`](../../lib/ask/articles.ts) owns embedding requests, Supabase access, passage validation, and article deduplication. The catalog tool does not use this search budget or an embedding request.
 
-[`next.config.ts`](../../next.config.ts) runs [`generateArticleCatalog`](../../scripts/generate-article-catalog.js) on development startup and production builds. The generated [`catalog.json`](../../lib/ask/catalog.json) includes the same MDX article set as the home page, sorted newest first. It contains metadata only and is imported by the server tool, avoiding filesystem reads in the Edge runtime. Restart development after changing article metadata to refresh this snapshot.
+[`next.config.mts`](../../next.config.mts) runs [`generateArticleCatalog`](../../scripts/generate-article-catalog.js) on development startup and production builds. The generated [`catalog.json`](../../lib/ask/catalog.json) includes the same MDX article set as the home page, sorted newest first. It contains metadata only and is imported by the server tool, avoiding filesystem reads in the Edge runtime. Restart development after changing article metadata to refresh this snapshot.
 
 ## Validation boundaries
 

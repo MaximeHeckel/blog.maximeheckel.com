@@ -8,7 +8,7 @@
     "target": "esnext",
     "module": "esnext",
     "lib": ["dom", "es2022"],
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "sourceMap": false,
     "strict": true,
     "noImplicitAny": true,
