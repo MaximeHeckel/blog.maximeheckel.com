@@ -1,6 +1,6 @@
 import { Anchor, Flex, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 import { NewTweet } from 'types/tweet';
 
 import VideoPlayer from '../VideoPlayer';
@@ -56,8 +56,8 @@ const Tweet = (props: Props) => {
           <Avatar href={authorURL} target="_blank" rel="noopener noreferrer">
             <Image
               alt={user.screen_name}
-              height={46}
-              width={46}
+              height={40}
+              width={40}
               src={user.profile_image_url_https}
             />
           </Avatar>
@@ -118,7 +118,7 @@ const Tweet = (props: Props) => {
               >
                 <Image
                   alt={text}
-                  layout="intrinsic"
+                  style={{ maxWidth: '100%', height: 'auto' }}
                   height={m.original_info.height}
                   width={m.original_info.width}
                   src={m.media_url_https}
@@ -167,6 +167,7 @@ const Tweet = (props: Props) => {
                 height={m.original_info.height}
                 width={m.original_info.width}
                 src={m.media_url_https}
+                style={{ maxWidth: '100%', height: 'auto' }}
                 className={singleImage()}
               />
             );

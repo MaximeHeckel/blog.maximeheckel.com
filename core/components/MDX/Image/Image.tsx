@@ -129,6 +129,7 @@ const Image = (props: ImageProps) => {
           gap="0"
         >
           <Trigger
+            nativeButton={false}
             tabIndex={0}
             render={
               <div role="button">

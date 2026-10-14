@@ -1,4 +1,4 @@
-import { ImageLoaderProps } from 'next/legacy/image';
+import type { ImageLoaderProps } from 'next/image';
 
 export const cloudflareLoader = ({ src, width, quality }: ImageLoaderProps) => {
   // @ts-ignore
