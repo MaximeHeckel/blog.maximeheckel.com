@@ -6,7 +6,6 @@ import {
   Text,
   Tooltip,
 } from '@maximeheckel/design-system';
-import React from 'react';
 
 import {
   CustomClearConsoleButton,

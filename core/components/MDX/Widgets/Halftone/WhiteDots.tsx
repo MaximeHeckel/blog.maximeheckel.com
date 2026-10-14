@@ -1,5 +1,5 @@
 import { Box, Flex } from '@maximeheckel/design-system';
-import React, { useDeferredValue, useId, useRef, useState } from 'react';
+import { useDeferredValue, useId, useRef, useState } from 'react';
 
 import { Slider } from '@core/components/Slider';
 

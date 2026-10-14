@@ -6,7 +6,7 @@ import {
   Text,
   Flex,
 } from '@maximeheckel/design-system';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { ShaderPlayground } from '@core/components/MDX/Widgets/ShaderPlayground';
 import { Slider } from '@core/components/Slider';

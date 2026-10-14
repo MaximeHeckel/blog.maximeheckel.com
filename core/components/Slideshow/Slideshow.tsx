@@ -9,7 +9,7 @@ import {
 import { cloudflareLoader } from 'lib/next-image-loader';
 import { AnimatePresence, motion, useInView } from 'motion/react';
 import NextImage from 'next/image';
-import React, { CSSProperties, useRef, useState } from 'react';
+import { CSSProperties, useRef, useState } from 'react';
 
 import * as S from './Slideshow.styles';
 

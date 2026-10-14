@@ -1,6 +1,6 @@
 import { Box, useDebouncedValue } from '@maximeheckel/design-system';
 import { useInView, useReducedMotion } from 'motion/react';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { MediaPlayer } from './MediaPlayer';
 

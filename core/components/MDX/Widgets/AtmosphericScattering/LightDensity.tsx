@@ -1,5 +1,5 @@
 import { Box, Flex } from '@maximeheckel/design-system';
-import React, {
+import {
   useCallback,
   useEffect,
   useLayoutEffect,

@@ -15,7 +15,7 @@ import {
   useScroll,
 } from 'motion/react';
 import Link from 'next/link';
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import Logo from '@core/components/Logo';
 

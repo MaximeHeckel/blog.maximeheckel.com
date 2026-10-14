@@ -1,5 +1,5 @@
 import { Checkbox } from '@maximeheckel/design-system';
-import React, { useId, useState } from 'react';
+import { useId, useState } from 'react';
 
 import { ShaderPlayground } from '@core/components/MDX/Widgets/ShaderPlayground';
 
