@@ -67,7 +67,6 @@ const Seo = ({ title, desc, image, path, date, updated, seoTitle }: Props) => {
           site: twitter,
           cardType: 'summary_large_image',
         }}
-        themeColor="#090A0E"
       />
       <Head>
         <meta property="twitter:image" content={featuredImage.url} />

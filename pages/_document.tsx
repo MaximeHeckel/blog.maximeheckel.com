@@ -6,6 +6,8 @@ class MyDocument extends Document {
     return (
       <Html lang="en" className="maximeheckel-light">
         <Head>
+          {/* Keep browser chrome stable across client-side navigation. */}
+          <meta name="theme-color" content="#090A0E" />
           <link
             href="/static/favicons/apple-touch-icon.png"
             rel="apple-touch-icon"
