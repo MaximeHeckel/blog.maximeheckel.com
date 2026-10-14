@@ -334,14 +334,14 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
 
   return (
     <Fullbleed widthPercent={fullBleedWidth}>
-      <Card css={{ width: '100%', minWidth: 0, overflow: 'hidden' }}>
-        <Card.Body
-          as={Flex}
+      <Flex direction="column" gap="3" css={{ width: '100%', minWidth: 0 }}>
+        <Flex
           direction="row"
           alignItems="stretch"
           css={{
             padding: 0,
-            columnGap: 'var(--space-6)',
+            width: '100%',
+            columnGap: 'var(--space-3)',
             rowGap: 'var(--space-3)',
             '@media (max-width: 900px)': {
               flexDirection: 'column-reverse',
@@ -349,22 +349,25 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
           }}
         >
           {hasControls ? (
-            <Flex
-              direction="column"
-              gap="4"
-              alignItems="start"
-              justifyContent="start"
+            <Card
               css={{
                 flex: 1,
                 minWidth: 0,
                 padding: 'var(--space-3) var(--space-4)',
               }}
             >
-              <Text size="2" weight="4" variant="tertiary">
-                Uniforms
-              </Text>
-              {children}
-            </Flex>
+              <Flex
+                direction="column"
+                gap="4"
+                alignItems="start"
+                justifyContent="start"
+              >
+                <Text size="2" weight="4" variant="tertiary">
+                  Uniforms
+                </Text>
+                {children}
+              </Flex>
+            </Card>
           ) : null}
           <Flex
             alignItems="center"
@@ -374,17 +377,13 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
               minWidth: 0,
             }}
           >
-            <Box
+            <Card
               ref={ref}
               css={{
                 position: 'relative',
                 width: '100%',
                 overflow: 'hidden',
-                borderLeft: '1px solid var(--border-color)',
-
-                '@media (max-width: 900px)': {
-                  borderLeft: 'none',
-                },
+                border: '1px solid oklch(from var(--border-color) l c h / 40%)',
               }}
               style={{ aspectRatio }}
             >
@@ -393,11 +392,11 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
                 uniforms={uniforms}
               />
               {showGrid ? <GridOverlay gridSize={gridSize} /> : null}
-            </Box>
+            </Card>
           </Flex>
-        </Card.Body>
+        </Flex>
         {showCode ? (
-          <Box
+          <Card
             css={{
               position: 'relative',
               width: '100%',
@@ -405,16 +404,15 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
               maxWidth: '100%',
               overflow: 'hidden',
               contain: 'inline-size',
-              borderTop: '1px solid var(--border-color)',
             }}
           >
             <HighlightedCodeText
               codeString={displayedCodeString}
               language="glsl"
             />
-          </Box>
+          </Card>
         ) : null}
-      </Card>
+      </Flex>
     </Fullbleed>
   );
 };
