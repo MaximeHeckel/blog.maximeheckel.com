@@ -41,14 +41,12 @@ const SupportCallout = () => {
   const buildSupporterString = async () => {
     try {
       const response = await fetchSupporters();
-      return (
-        response.supporters
-          .map(
-            (supporter: Supporter) =>
-              `${supporter.supporter_name} ${supporter.support_coffees} ${supporter.support_coffees > 1 ? 'coffees' : 'coffee'}`
-          )
-          .join(', ') + ', '
-      );
+      return response.supporters
+        .map(
+          (supporter: Supporter) =>
+            `${supporter.supporter_name} ${supporter.support_coffees} ${supporter.support_coffees > 1 ? 'coffees' : 'coffee'}`
+        )
+        .join(', ');
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error building supporter string:', error);
@@ -89,11 +87,7 @@ const SupportCallout = () => {
         As a token of gratitude, your name will be featured on this little
         screen below!
       </Text>
-      <DotMatrixTicker
-        text={supporterString}
-        steps={supporterString.length * 2.5}
-        speed={2}
-      />
+      <DotMatrixTicker text={supporterString} speed={2.5} />
       <Text weight="4">Thank you for reading!</Text>
     </StyledCallout>
   );

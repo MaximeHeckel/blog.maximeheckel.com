@@ -1,259 +1,311 @@
-import { Box, Flex, Text } from '@maximeheckel/design-system';
-import { steps, useAnimate } from 'motion/react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-const DotMatrixCanvas = ({
-  dotSize = 1.75,
-  dotSpacing = 1.55,
-  dotOpacity = 0.9,
-}) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const draw = () => {
-      const rect = container.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      canvas.style.width = `${rect.width}px`;
-      canvas.style.height = `${rect.height}px`;
-
-      ctx.scale(dpr, dpr);
-
-      ctx.fillStyle = `rgba(0, 0, 0, ${dotOpacity})`;
-      ctx.fillRect(0, 0, rect.width, rect.height);
-
-      // Draw transparent dots (holes in the black)
-      ctx.globalCompositeOperation = 'destination-out';
-      const spacing = dotSize + dotSpacing;
-      for (let x = 0; x < rect.width; x += spacing) {
-        for (let y = 0; y < rect.height; y += spacing) {
-          ctx.beginPath();
-          ctx.arc(x, y, dotSize / 2, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-          ctx.fill();
-        }
-      }
-
-      ctx.globalCompositeOperation = 'source-over';
-    };
-
-    draw();
-
-    const resizeObserver = new ResizeObserver(draw);
-    resizeObserver.observe(container);
-
-    return () => resizeObserver.disconnect();
-  }, [dotSize, dotSpacing, dotOpacity]);
-
-  return (
-    <div
-      ref={containerRef}
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-      }}
-    >
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          pointerEvents: 'none',
-        }}
-      />
-    </div>
-  );
-};
+import { Box, Text } from '@maximeheckel/design-system';
+import { useReducedMotion } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
 
 const COLORS = [
-  'oklch(from var(--green-1100) 1 calc(c * 1.25) h / 1.0)',
-  'oklch(from var(--orange-1100) l calc(c * 1.25) h / 1.0)',
-  'oklch(from var(--red-1100) calc(l * 1.05) calc(c * 1.25) h / 1.0)',
-  'oklch(from var(--blue-700) l calc(c * 1.25) h / 1.0)',
-  'oklch(from var(--white) 1 c h / 1.0)',
+  'var(--green-1100)',
+  'var(--orange-1100)',
+  'oklch(75% 0.2 25)',
+  'oklch(84% 0.12 220)',
+  'var(--white)',
 ];
+const HEIGHT = 64;
+const PITCH = 3;
+const SCROLL_STEP = PITCH * 3;
+
+interface DotMatrixTickerProps {
+  text: string;
+  speed?: number;
+  color?: string;
+}
 
 export const DotMatrixTicker = ({
   text,
   speed = 2,
-  steps: stepsNumber = 200,
   color,
-}: {
-  text: string;
-  speed?: number;
-  steps?: number;
-  color?: string;
-}) => {
-  const [currentColor, setCurrentColor] = useState(COLORS[0]);
-  const TEXT =
-    (`${text.toLocaleUpperCase()}` || 'MADE IN NYC - @MAXIMEHECKEL - 2025 -') +
-    ' ';
-  const REPEAT = 4;
-
-  const [scope, animate] = useAnimate();
-
-  const startAnimation = useCallback(() => {
-    if (!scope.current) return;
-
-    const contentWidth = scope.current.scrollWidth;
-
-    const scrollDistance = contentWidth / 2;
-
-    const clampedSpeed = Math.min(Math.max(speed, 0), 10);
-    const duration = scrollDistance / (clampedSpeed * 100);
-
-    animate(
-      scope.current,
-      {
-        x: [0, -scrollDistance],
-      },
-      {
-        duration: duration,
-        repeat: Infinity,
-        ease: steps(stepsNumber),
-        repeatType: 'loop',
-      }
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animate, scope, speed, stepsNumber, text]);
+}: DotMatrixTickerProps) => {
+  const [colorIndex, setColorIndex] = useState(3);
+  const [ready, setReady] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
+  const offsetRef = useRef(0);
+  const reducedMotion = useReducedMotion();
+  const displayText = text.trim() || 'THANK YOU FOR YOUR SUPPORT';
+  const activeColor = color ?? COLORS[colorIndex];
 
   useEffect(() => {
-    startAnimation();
-  }, [startAnimation]);
+    const canvas = canvasRef.current;
+    const label = textRef.current;
+    const context = canvas?.getContext('2d');
+    const bloomCanvas = document.createElement('canvas');
+    const bloomContext = bloomCanvas.getContext('2d');
+
+    if (!canvas || !label || !context || !bloomCanvas || !bloomContext) return;
+
+    // Rasterize at full size, then average coverage across each display cell.
+    const mask = document.createElement('canvas');
+    const maskContext = mask.getContext('2d', { willReadFrequently: true });
+    const pixels = document.createElement('canvas');
+    const pixelContext = pixels.getContext('2d');
+
+    if (!maskContext || !pixelContext) return;
+
+    let frame = 0;
+    let disposed = false;
+    let width = 0;
+    let offset = offsetRef.current;
+    let previousTime = 0;
+    let inView = true;
+    let font = '';
+    let repeatWidth = 0;
+    let ink = '';
+    const velocity = Math.min(Math.max(speed, 0), 10) * 30;
+    const message = `${displayText.toLocaleUpperCase()}   •   `;
+
+    const draw = (time: number) => {
+      const delta = previousTime ? Math.min(time - previousTime, 50) : 0;
+      previousTime = time;
+
+      if (!reducedMotion)
+        offset = (offset + (delta * velocity) / 1000) % repeatWidth;
+
+      offsetRef.current = offset;
+
+      // Advance by three display columns while retaining elapsed-time precision.
+      const displayOffset = Math.floor(offset / SCROLL_STEP) * SCROLL_STEP;
+
+      maskContext.clearRect(0, 0, mask.width, mask.height);
+      maskContext.font = font;
+      maskContext.textBaseline = 'alphabetic';
+      maskContext.fillStyle = 'white';
+      const metrics = maskContext.measureText(message);
+      const baseline =
+        (HEIGHT +
+          metrics.actualBoundingBoxAscent -
+          metrics.actualBoundingBoxDescent) /
+        2;
+
+      for (let x = -displayOffset; x < width; x += repeatWidth) {
+        maskContext.fillText(message, x, baseline);
+      }
+
+      const samples = maskContext.getImageData(
+        0,
+        0,
+        mask.width,
+        mask.height
+      ).data;
+      pixelContext.clearRect(0, 0, width, HEIGHT);
+      pixelContext.fillStyle = ink;
+
+      for (let row = 0; row < mask.height / PITCH; row++) {
+        for (let column = 0; column < mask.width / PITCH; column++) {
+          // Area sampling preserves thin strokes as they cross cell boundaries.
+          // Drawing the font at cell resolution makes font hinting snap instead.
+          let alpha = 0;
+
+          for (let y = 0; y < PITCH; y++) {
+            for (let x = 0; x < PITCH; x++) {
+              const index =
+                ((row * PITCH + y) * mask.width + column * PITCH + x) * 4 + 3;
+              alpha += samples[index];
+            }
+          }
+
+          const coverage = alpha / (255 * PITCH * PITCH);
+          if (coverage === 0) continue;
+
+          pixelContext.globalAlpha = Math.pow(coverage, 0.55);
+          pixelContext.beginPath();
+          pixelContext.arc(
+            column * PITCH + PITCH / 2,
+            row * PITCH + PITCH / 2,
+            1.05,
+            0,
+            Math.PI * 2
+          );
+          pixelContext.fill();
+        }
+      }
+
+      // Bloom uses the continuous letter coverage, so light spreads between dots.
+      // This stays offscreen; bloom and emitters are composited in the same frame.
+      bloomContext.clearRect(0, 0, width, HEIGHT);
+      bloomContext.drawImage(mask, 0, 0, mask.width, mask.height);
+      bloomContext.globalCompositeOperation = 'source-in';
+      bloomContext.fillStyle = ink;
+      bloomContext.fillRect(0, 0, width, HEIGHT);
+      bloomContext.globalCompositeOperation = 'source-over';
+
+      context.clearRect(0, 0, width, HEIGHT);
+      // Draw only the tinted shadow of the letter coverage. Moving its source
+      // above the canvas avoids adding a second solid copy of the lettering.
+      const dpr = context.getTransform().a;
+      context.save();
+      context.shadowColor = ink;
+      context.shadowOffsetY = HEIGHT * 2 * dpr;
+      // Layer the same tinted halos to raise intensity without shifting hue.
+      for (let pass = 0; pass < 2; pass++) {
+        context.shadowBlur = 14 * dpr;
+        context.globalAlpha = 0.9;
+        context.drawImage(bloomCanvas, 0, -HEIGHT * 2, width, HEIGHT);
+        context.shadowBlur = 5 * dpr;
+        context.globalAlpha = 0.7;
+        context.drawImage(bloomCanvas, 0, -HEIGHT * 2, width, HEIGHT);
+      }
+
+      context.restore();
+      context.drawImage(pixels, 0, 0, width, HEIGHT);
+
+      if (
+        !disposed &&
+        inView &&
+        !document.hidden &&
+        !reducedMotion &&
+        velocity > 0
+      ) {
+        frame = requestAnimationFrame(draw);
+      }
+    };
+
+    const restart = () => {
+      cancelAnimationFrame(frame);
+      previousTime = 0;
+      if (width > 0 && inView && !document.hidden) draw(0);
+    };
+
+    const resize = () => {
+      width = canvas.getBoundingClientRect().width;
+      if (!width) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const style = getComputedStyle(label);
+      font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+      ink = style.color;
+      bloomCanvas.width = canvas.width = pixels.width = Math.ceil(width * dpr);
+      bloomCanvas.height =
+        canvas.height =
+        pixels.height =
+          Math.ceil(HEIGHT * dpr);
+      bloomContext.setTransform(dpr, 0, 0, dpr, 0, 0);
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      pixelContext.setTransform(dpr, 0, 0, dpr, 0, 0);
+      mask.width = Math.ceil(width / PITCH) * PITCH;
+      mask.height = Math.ceil(HEIGHT / PITCH) * PITCH;
+      maskContext.font = font;
+      repeatWidth = Math.max(
+        PITCH,
+        Math.ceil(maskContext.measureText(message).width / SCROLL_STEP) *
+          SCROLL_STEP
+      );
+      restart();
+      setReady(true);
+    };
+
+    const resizeObserver = new ResizeObserver(resize);
+    const intersectionObserver = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      restart();
+    });
+
+    void document.fonts.ready.then(() => {
+      if (disposed) return;
+      resize();
+      resizeObserver.observe(canvas);
+      intersectionObserver.observe(canvas);
+    });
+    document.addEventListener('visibilitychange', restart);
+
+    return () => {
+      disposed = true;
+      cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+      document.removeEventListener('visibilitychange', restart);
+    };
+  }, [activeColor, displayText, reducedMotion, speed]);
 
   return (
     <Box
-      id="ticker-wrapper"
-      role="img"
-      aria-label={`Ticker displaying the text: ${text}`}
+      as="button"
+      type="button"
+      aria-label={`Supporters: ${displayText}${color ? '' : '. Change display color'}`}
       onClick={() => {
-        if (color) return;
-        setCurrentColor((prev) => {
-          const index = COLORS.indexOf(prev);
-          return COLORS[(index + 1) % COLORS.length];
-        });
+        if (!color) setColorIndex((index) => (index + 1) % COLORS.length);
       }}
+      style={{ color: activeColor }}
       css={{
+        appearance: 'none',
+        position: 'relative',
+        display: 'block',
         width: '100%',
-        maxWidth: '100%',
+        height: HEIGHT,
+        padding: 0,
+        overflow: 'hidden',
         borderRadius: 'var(--border-radius-2)',
         border: '1px solid var(--border-color)',
-        boxShadow:
-          'inset 0 0 10px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 1px rgba(0, 0, 0, 0.5)',
-        cursor: 'pointer',
-        overflowX: 'hidden',
+        backgroundColor: '#080c0c',
+        backgroundImage:
+          'radial-gradient(circle, rgba(180, 210, 200, 0.07) 1px, transparent 1.2px)',
+        backgroundSize: `${PITCH}px ${PITCH}px`,
+        boxShadow: 'inset 0 2px 5px #000, 0 1px 0 rgba(255,255,255,0.06)',
+        cursor: color ? 'default' : 'pointer',
+        '&:focus-visible': {
+          outline: '2px solid var(--blue-700)',
+          outlineOffset: '3px',
+        },
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: '-70%',
+          left: '-10%',
+          width: '100%',
+          height: '200%',
+          background:
+            'linear-gradient(10deg, transparent 30%, rgba(200,200,200,0.18), transparent 70%)',
+          filter: 'blur(10px)',
+          transform: 'skewX(-60deg)',
+          pointerEvents: 'none',
+          zIndex: 1,
+        },
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          borderRadius: 'inherit',
+          boxShadow:
+            'inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.8)',
+          background:
+            'linear-gradient(to bottom, rgba(200,200,200,0.17) 0%, rgba(200,200,200,0.035) 15%, transparent 40%, transparent 60%, rgba(200,200,200,0.05) 85%, rgba(200,200,200,0.07) 100%), linear-gradient(90deg, rgba(0,0,0,0.5), transparent 5%, transparent 95%, rgba(0,0,0,0.5))',
+        },
       }}
     >
-      <Box
+      <Text
+        ref={textRef}
+        as="span"
+        family="mono"
+        aria-hidden="true"
         css={{
-          width: '100%',
-          position: 'relative',
-          overflow: 'hidden',
-          maskImage:
-            'linear-gradient(to left, transparent -50%, black 50%, transparent 150%)',
-          '&:before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            background: `
-               linear-gradient(
-                 to bottom,
-                 rgba(200, 200, 200, 0.25) 0%,
-                 rgba(200, 200, 200, 0.05) 15%,
-                 transparent 40%,
-                 transparent 60%,
-                 rgba(200, 200, 200, 0.07) 85%,
-                 rgba(200, 200, 200, 0.1) 100%
-               )
-             `,
-            zIndex: 10,
-            pointerEvents: 'none',
-          },
-          '&:after': {
-            content: '""',
-            position: 'absolute',
-            top: '-70%',
-            left: '-10%',
-            width: '100%',
-            height: '200%',
-            background:
-              'linear-gradient(10deg, transparent 30%, rgba(200, 200, 200, 0.27), transparent 70%)',
-            filter: 'blur(10px)',
-            transform: 'skewX(-60deg)',
-            zIndex: 11,
-            pointerEvents: 'none',
-          },
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          lineHeight: `${HEIGHT}px`,
+          fontSize: '38px',
+          fontWeight: 400,
+          color: 'inherit',
+          whiteSpace: 'nowrap',
+          opacity: ready ? 0 : 1,
+          pointerEvents: 'none',
         }}
       >
-        <Box
-          css={{
-            position: 'relative',
-            filter: 'brightness(1.25) saturate(2.8)',
-            transition: 'color 0.3s ease-in-out',
-          }}
-          style={{
-            color: currentColor,
-          }}
-        >
-          <Flex
-            ref={scope}
-            css={{
-              whiteSpace: 'nowrap',
-              willChange: 'transform',
-            }}
-            gap="7"
-          >
-            {Array.from({ length: REPEAT }).map((_, index) => (
-              <Text
-                aria-hidden={index !== 0}
-                key={`${TEXT}-${index}`}
-                family="mono"
-                css={{
-                  fontVariantNumeric: 'tabular-nums',
-                  fontWeight: 400,
-                  textShadow: `
-                  0 0 4px currentColor,
-                  0 0 8px currentColor,
-                  0 0 12px currentColor,
-                  0 0 16px currentColor
-                `,
-                  fontSize: '38px',
-                  display: 'inline-block',
-
-                  '& svg': {
-                    // nudge icon down to line up with text
-                    marginBottom: '-4px',
-                    filter: `
-                      drop-shadow(0 0 4px currentColor)
-                      drop-shadow(0 0 8px currentColor)
-                    `,
-                  },
-                }}
-              >
-                {TEXT}
-              </Text>
-            ))}
-          </Flex>
-          <DotMatrixCanvas dotSize={3.0} dotSpacing={1.0} dotOpacity={1.0} />
-        </Box>
-      </Box>
+        {displayText.toLocaleUpperCase()}
+      </Text>
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        style={{ display: 'block', width: '100%', height: HEIGHT }}
+      />
     </Box>
   );
 };
