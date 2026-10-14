@@ -8,31 +8,43 @@ import {
   useReducedMotion,
   useScroll,
 } from 'motion/react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Post, ReadingTime } from 'types/post';
 
 import { SelectionToAsk } from '@core/components/Ask/SelectionToAsk';
 import { BottomBlurGradientMask } from '@core/components/BottomBlurGradientMask';
+import CopyToClipboardButton from '@core/components/Buttons/CopyToClipboardButton';
 import { useRegisterAction } from '@core/components/CommandMenu';
 import { Dock } from '@core/components/Dock';
 import { DynamicTOC } from '@core/components/DynamicTOC';
 import Footer from '@core/components/Footer/Footer';
 import Headline from '@core/components/Headline';
+import { DocumentIcon } from '@core/components/Icons';
 import { Main } from '@core/components/Main';
 import { ScrambledText } from '@core/components/ScrambledText';
 import Seo from '@core/components/Seo';
 import { useSkipArticlesScrambleWhenLeavingPost } from '@core/hooks/useArticlesScrambleNavigation';
 
 import { Footnote } from './Footnote';
+import { MarkdownArticle } from './MarkdownArticle';
 
 import 'katex/dist/katex.min.css';
 
 const Header = (props: {
   title: string;
   ids: Array<{ id: string; title: string }>;
+  machine: boolean;
+  markdown?: string;
 }) => {
-  const { title, ids } = props;
+  const { title, ids, machine, markdown } = props;
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
 
@@ -74,7 +86,7 @@ const Header = (props: {
       <Grid templateColumns="auto 1fr auto" gapY={3}>
         <Grid.Item col={2} justifySelf="center">
           <AnimatePresence initial={false} mode="wait">
-            {hidden ? (
+            {hidden && !machine ? (
               <Box
                 as={motion.div}
                 key="dynamic-island"
@@ -141,6 +153,27 @@ const Header = (props: {
           </AnimatePresence>
         </Grid.Item>
       </Grid>
+      {machine && markdown !== undefined ? (
+        <Box
+          css={{
+            position: 'absolute',
+            right: 'var(--space-5)',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            pointerEvents: 'auto',
+            '@media (hover: none) and (pointer: coarse)': {
+              display: 'none',
+            },
+          }}
+        >
+          <CopyToClipboardButton
+            text={markdown}
+            label="Copy Markdown to clipboard"
+            variant="secondary"
+            size="large"
+          />
+        </Box>
+      ) : null}
     </Box>
   );
 };
@@ -149,6 +182,7 @@ interface Props {
   children: React.ReactNode;
   frontMatter: Post & { readingTime: ReadingTime };
   ogImage: string;
+  markdown?: string;
 }
 
 const contentClass = css({
@@ -186,10 +220,16 @@ const contentClass = css({
   },
 });
 
-const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
+const BlogPost = ({ children, frontMatter, ogImage, markdown }: Props) => {
   const articleRef = useRef<HTMLDivElement>(null);
   const { date, updated, slug, subtitle, title, seoTitle } = frontMatter;
   const router = useRouter();
+  const machine = String(router.query.slug).endsWith('.md');
+  const reducedMotion = useReducedMotion();
+  const [animateMarkdown, setAnimateMarkdown] = useState(false);
+  const loadingMode = useRef(false);
+  const requestedModePath = useRef<string | null>(null);
+  const scrollAfterTransition = useRef(false);
   const path = `/posts/${slug}/`;
   const postUrl = `${siteConfig.url}${path}`;
 
@@ -213,12 +253,64 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
   useRegisterAction(copyLinkAction);
   useSkipArticlesScrambleWhenLeavingPost(router);
 
+  const navigateMode = useCallback(() => {
+    if (loadingMode.current) return;
+    const nextMachine = !machine;
+    const href = `/posts/${slug}${nextMachine ? '.md' : '/'}`;
+    requestedModePath.current = href;
+    scrollAfterTransition.current = true;
+    loadingMode.current = true;
+    void router
+      .push(href, undefined, {
+        scroll: false,
+      })
+      .catch((error: unknown) => {
+        if (
+          error &&
+          typeof error === 'object' &&
+          'cancelled' in error &&
+          error.cancelled
+        )
+          return;
+        window.location.assign(href);
+      })
+      .finally(() => {
+        loadingMode.current = false;
+      });
+  }, [machine, router, slug]);
+
+  const modeAction = useMemo(
+    () => ({
+      id: `article-mode-${slug}-${machine ? 'human' : 'machine'}`,
+      label: machine ? 'Human version' : 'Machine version',
+      icon: machine ? DocumentIcon : Icon.Code,
+      keywords: machine
+        ? ['human', 'read', 'article', 'format']
+        : ['machine', 'markdown', 'mdx', 'source', 'format'],
+      onSelect: navigateMode,
+    }),
+    [machine, navigateMode, slug]
+  );
+  useRegisterAction(modeAction);
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      // Browser history and ordinary article links show the source immediately.
+      setAnimateMarkdown(
+        url === requestedModePath.current && url.endsWith('.md')
+      );
+      requestedModePath.current = null;
+    };
+    router.events.on('routeChangeStart', handleRouteChange);
+    return () => router.events.off('routeChangeStart', handleRouteChange);
+  }, [router.events]);
+
   useEffect(() => {
     /**
      * Working around some race condition quirks :) (don't judge)
      * TODO @MaximeHeckel: see if there's a better way through a remark plugin to do this
      */
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const titles = document.querySelectorAll('h2');
       const idArrays = Array.prototype.slice
         .call(titles)
@@ -228,7 +320,8 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
       }>;
       setIds(idArrays);
     }, 500);
-  }, [slug]);
+    return () => clearTimeout(timer);
+  }, [slug, machine]);
 
   useEffect(() => {
     const handleAnchorClick = (e: MouseEvent) => {
@@ -254,6 +347,15 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
 
   return (
     <Main>
+      <Head>
+        <link
+          key="article-markdown"
+          rel="alternate"
+          type="text/markdown"
+          href={`/api/posts/${slug}/`}
+          title="Markdown"
+        />
+      </Head>
       <Seo
         title={title}
         seoTitle={seoTitle}
@@ -263,79 +365,119 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
         date={date}
         updated={updated}
       />
-      <Header title={title} ids={ids} />
-      <Grid
-        as="article"
-        css={{
-          overflowX: 'hidden',
-          position: 'relative',
-          backgroundColor: 'var(--background)',
-          borderBottomRightRadius: 4,
-          borderBottomLeftRadius: 4,
+      <Header title={title} ids={ids} machine={machine} markdown={markdown} />
+      <AnimatePresence
+        initial={false}
+        mode="wait"
+        onExitComplete={() => {
+          if (scrollAfterTransition.current) {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            scrollAfterTransition.current = false;
+          }
         }}
-        gapX={4}
-        templateColumns="1fr minmax(auto, 663px) 1fr"
       >
-        <Grid.Item
-          col={2}
-          justifySelf="center"
-          css={{
-            minHeight: 300,
-            maxWidth: 500,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'end',
-            alignItems: 'center',
-            gap: 'var(--space-2)',
-            width: '100%',
-            position: 'relative',
-
-            '@sm': {
-              minHeight: 'clamp(250px, 50dvh, 375px)',
-            },
-          }}
+        <motion.div
+          key={`${slug}-${machine ? 'machine' : 'human'}`}
+          initial={
+            reducedMotion ? false : { opacity: 0, y: 8, filter: 'blur(4px)' }
+          }
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={
+            reducedMotion
+              ? { opacity: 1 }
+              : { opacity: 0, y: -8, filter: 'blur(4px)' }
+          }
+          transition={{ duration: reducedMotion ? 0 : 0.22, ease: 'easeInOut' }}
         >
-          <Headline data-testid="post-title" textAlign="center">
-            {title}
-          </Headline>
-          <time itemProp="datepublished" dateTime={date}>
-            <ScrambledText
-              css={{
-                whiteSpace: 'nowrap',
-                transition: 'color 0.3s ease-in-out',
-                letterSpacing: '-1px',
-                textTransform: 'uppercase',
-              }}
-              delay={0.5}
-              speed={0.8}
-              family="mono"
-              size="1"
-              variant="tertiary"
-              windowSize={3}
-            >
-              {format(new Date(Date.parse(date)), 'MMM d, yyyy')}
-            </ScrambledText>
-          </time>
-        </Grid.Item>
-        <Grid.Item col={2}>
-          <Flex
-            alignItems="start"
-            direction="column"
-            className={contentClass()}
-            ref={articleRef}
-            data-ask-article-path={path}
-            data-ask-article-title={title}
-            data-ask-article-subtitle={subtitle}
-            gap="5"
+          <Grid
+            as="article"
+            css={{
+              overflowX: 'hidden',
+              position: 'relative',
+              backgroundColor: 'var(--background)',
+              borderBottomRightRadius: 4,
+              borderBottomLeftRadius: 4,
+            }}
+            gapX={4}
+            templateColumns="1fr minmax(auto, 663px) 1fr"
           >
-            {children}
-          </Flex>
-        </Grid.Item>
-      </Grid>
-      <SelectionToAsk articleRef={articleRef} title={title} />
-      <Footnote title={title} url={postUrl} />
+            {machine && markdown !== undefined ? (
+              <Grid.Item col={2} css={{ minWidth: 0 }}>
+                <MarkdownArticle
+                  markdown={markdown}
+                  animateReveal={animateMarkdown}
+                />
+              </Grid.Item>
+            ) : (
+              <>
+                <Grid.Item
+                  col={2}
+                  justifySelf="center"
+                  css={{
+                    minHeight: 300,
+                    maxWidth: 500,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'end',
+                    alignItems: 'center',
+                    gap: 'var(--space-2)',
+                    width: '100%',
+                    position: 'relative',
+
+                    '@sm': {
+                      minHeight: 'clamp(250px, 50dvh, 375px)',
+                    },
+                  }}
+                >
+                  <Headline data-testid="post-title" textAlign="center">
+                    {title}
+                  </Headline>
+                  <time itemProp="datepublished" dateTime={date}>
+                    <ScrambledText
+                      css={{
+                        whiteSpace: 'nowrap',
+                        transition: 'color 0.3s ease-in-out',
+                        letterSpacing: '-1px',
+                        textTransform: 'uppercase',
+                      }}
+                      delay={0.5}
+                      speed={0.8}
+                      family="mono"
+                      size="1"
+                      variant="tertiary"
+                      windowSize={3}
+                    >
+                      {format(new Date(Date.parse(date)), 'MMM d, yyyy')}
+                    </ScrambledText>
+                  </time>
+                </Grid.Item>
+                <Grid.Item col={2}>
+                  <Flex
+                    alignItems="start"
+                    direction="column"
+                    className={contentClass()}
+                    ref={articleRef}
+                    data-ask-article-path={path}
+                    data-ask-article-title={title}
+                    data-ask-article-subtitle={subtitle}
+                    gap="5"
+                  >
+                    {children}
+                  </Flex>
+                </Grid.Item>
+              </>
+            )}
+          </Grid>
+          {!machine ? (
+            <>
+              <SelectionToAsk articleRef={articleRef} title={title} />
+              <Footnote title={title} url={postUrl} />
+              <Footer lastUpdated={updated} />
+            </>
+          ) : null}
+        </motion.div>
+      </AnimatePresence>
       <BottomBlurGradientMask />
-      <Footer lastUpdated={updated} />
     </Main>
   );
 };

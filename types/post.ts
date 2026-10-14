@@ -24,3 +24,7 @@ export type FrontMatterPost = {
   tweetIDs: string[];
   mdxSource: MDXRemoteSerializeResult;
 };
+
+export type MarkdownPost = Pick<FrontMatterPost, 'frontMatter'> & {
+  markdown: string;
+};

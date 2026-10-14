@@ -1,4 +1,34 @@
 describe('SEO: Verify meta tag integrity', () => {
+  it('links to an alternate that serves the original Markdown source', () => {
+    cy.visit('/posts/learning-in-public/');
+    cy.get('link[rel="alternate"][type="text/markdown"]')
+      .should('have.attr', 'href')
+      .and('equal', '/api/posts/learning-in-public/')
+      .then((href) => {
+        cy.request(href).then((response) => {
+          expect(response.headers['content-type']).to.contain('text/markdown');
+          cy.readFile('content/learning-in-public.mdx').then((source) => {
+            expect(response.body).to.equal(source);
+          });
+        });
+      });
+  });
+
+  it('advertises the same Markdown endpoint in HTTP headers for both article views', () => {
+    ['/posts/learning-in-public/', '/posts/learning-in-public.md'].forEach(
+      (url) => {
+        cy.request({ url, headers: { Accept: 'text/markdown' } }).then(
+          (response) => {
+            expect(response.headers['content-type']).to.contain('text/html');
+            expect(response.headers.link).to.equal(
+              '</api/posts/learning-in-public/>; rel="alternate"; type="text/markdown"'
+            );
+          }
+        );
+      }
+    );
+  });
+
   it('has all the meta tags and the expected canonical url set in the landing page head', () => {
     cy.visit('/');
     cy.get('title').should('contain', 'The Blog of Maxime Heckel');

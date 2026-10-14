@@ -7,7 +7,7 @@ import readingTime from 'reading-time';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeKatex from 'rehype-katex';
 import rehypeSlug from 'rehype-slug';
-import { FrontMatterPost, Post } from 'types/post';
+import { FrontMatterPost, MarkdownPost, Post } from 'types/post';
 
 import { rehypeFigure } from './rehype-figure';
 import { rehypeMeta } from './rehype-meta';
@@ -24,7 +24,7 @@ export const getFiles = async () => {
 // Regex to find all the custom static tweets in a MDX file
 const TWEET_RE = /<StaticTweet\sid="[0-9]+"\s\/>/g;
 
-export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
+const readArticle = (slug: string) => {
   const source = fs.readFileSync(
     path.join(root, 'content', `${slug}.mdx`),
     'utf8'
@@ -32,8 +32,28 @@ export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
 
   const parsedFile = matter(source);
 
-  const data = parsedFile.data;
+  const data = parsedFile.data as Post;
   const content = parsedFile.content;
+
+  return {
+    source,
+    content,
+    frontMatter: {
+      readingTime: readingTime(content),
+      ...data,
+    },
+  };
+};
+
+export const getMarkdownBySlug = async (
+  slug: string
+): Promise<MarkdownPost> => {
+  const { source, frontMatter } = readArticle(slug);
+  return { markdown: source, frontMatter };
+};
+
+export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
+  const { content, frontMatter } = readArticle(slug);
 
   const options = {
     blockJS: false,
@@ -121,10 +141,7 @@ export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
   const result = {
     mdxSource,
     tweetIDs: tweetIDs || [],
-    frontMatter: {
-      readingTime: readingTime(content),
-      ...data,
-    },
+    frontMatter,
   };
 
   return result as unknown as FrontMatterPost;
