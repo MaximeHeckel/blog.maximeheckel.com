@@ -18,6 +18,15 @@ const Pill = styled('div', {
   height: 'var(--space-6)',
   color: 'var(--text-secondary)',
   '> svg': { flexShrink: 0 },
+  variants: {
+    embedded: {
+      true: {
+        borderColor: 'transparent',
+        background: 'transparent',
+        paddingLeft: 'var(--space-1)',
+      },
+    },
+  },
 });
 
 const Preview = styled('span', {
@@ -54,6 +63,7 @@ const listFormatter = new Intl.ListFormat('en', { type: 'conjunction' });
 interface AttachmentPillsProps {
   attachments: AskAttachment[];
   inMessage?: boolean;
+  embedded?: boolean;
   onRemove?: (id: string) => void;
   onRemoveAll?: () => void;
 }
@@ -61,6 +71,7 @@ interface AttachmentPillsProps {
 export const AttachmentPills = ({
   attachments,
   inMessage = false,
+  embedded = false,
   onRemove,
   onRemoveAll,
 }: AttachmentPillsProps) => {
@@ -89,6 +100,7 @@ export const AttachmentPills = ({
     >
       {collapsed ? (
         <Pill
+          embedded={embedded}
           css={onRemoveAll ? { paddingRight: 'var(--space-1)' } : undefined}
         >
           {attachments.some((attachment) => attachment.kind === 'code') ? (
@@ -115,6 +127,7 @@ export const AttachmentPills = ({
         attachments.map((attachment) => (
           <Pill
             key={attachment.id}
+            embedded={embedded}
             css={onRemove ? { paddingRight: 'var(--space-1)' } : undefined}
           >
             {attachment.kind === 'code' ? <Icon.Code size="3" /> : null}

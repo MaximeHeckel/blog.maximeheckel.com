@@ -17,7 +17,9 @@ import RGBLensIcon from '../RGBLensIcon';
 import { Answer } from './Answer';
 import {
   Composer,
+  ComposerAttachments,
   ComposerInput,
+  ComposerSurface,
   Content,
   EmptyState,
   SendButton,
@@ -44,11 +46,6 @@ export const AskPanel = ({
 }: AskPanelProps) => {
   const [draft, setDraft] = useState('');
 
-  const attachmentOverlayHeight = attachments.length
-    ? attachments.length === 2
-      ? 'calc(2 * var(--space-6) + var(--space-1) + var(--space-2))'
-      : 'calc(var(--space-6) + var(--space-2))'
-    : '0px';
   const latestQuestionRef = useRef<HTMLQuoteElement>(null);
   const inputId = useId();
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -80,7 +77,6 @@ export const AskPanel = ({
       scrollToBottomRequest={messages.at(-1)?.id}
       scrollBoundaryRef={latestQuestionRef}
       showScrollToLatest
-      bottomOverlayHeight={attachmentOverlayHeight}
       state={state}
       onStateChange={onStateChange}
       title="Ask"
@@ -122,28 +118,12 @@ export const AskPanel = ({
         ) : null
       }
       footer={
-        <Composer
-          onSubmit={(event: FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            send();
-          }}
-        >
+        <ComposerSurface attached={!!attachments.length}>
           {attachments.length ? (
-            <div
-              style={{
-                position: 'absolute',
-                bottom: 'calc(100% + var(--space-2))',
-                left: 'var(--space-1)',
-                right: 'var(--space-1)',
-                zIndex: 1,
-                maxHeight: 120,
-                overflowY: 'auto',
-                borderRadius: 'var(--border-radius-1)',
-                background: 'var(--code-snippet-background)',
-              }}
-            >
+            <ComposerAttachments>
               <AttachmentPills
                 attachments={attachments}
+                embedded
                 onRemoveAll={() => {
                   onAttachmentsChange?.([]);
                   inputRef.current?.focus();
@@ -155,56 +135,68 @@ export const AskPanel = ({
                   inputRef.current?.focus();
                 }}
               />
-            </div>
+            </ComposerAttachments>
           ) : null}
-          <ComposerInput
-            ref={inputRef}
-            id={inputId}
-            rows={1}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="sentences"
-            spellCheck={false}
-            enterKeyHint="send"
-            aria-label="Ask a question"
-            placeholder="What would you like to understand?"
-            value={draft}
-            onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-              setDraft(event.currentTarget.value)
-            }
-            onKeyDown={(event: KeyboardEvent<HTMLTextAreaElement>) => {
-              if (
-                event.key === 'Enter' &&
-                !event.shiftKey &&
-                !event.nativeEvent.isComposing
-              ) {
-                event.preventDefault();
-                send();
-              }
+          <Composer
+            onSubmit={(event: FormEvent<HTMLFormElement>) => {
+              event.preventDefault();
+              send();
             }}
-          />
-          <Tooltip
-            id={`${inputId}-send`}
-            content={status === 'loading' ? 'Cancel response' : 'Send question'}
           >
-            <SendButton
-              type={status === 'loading' ? 'button' : 'submit'}
-              variant="tertiary"
-              size="small"
-              aria-label={
+            <ComposerInput
+              ref={inputRef}
+              id={inputId}
+              rows={1}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="sentences"
+              spellCheck={false}
+              enterKeyHint="send"
+              aria-label="Ask a question"
+              placeholder="What would you like to understand?"
+              value={draft}
+              onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+                setDraft(event.currentTarget.value)
+              }
+              onKeyDown={(event: KeyboardEvent<HTMLTextAreaElement>) => {
+                if (
+                  event.key === 'Enter' &&
+                  !event.shiftKey &&
+                  !event.nativeEvent.isComposing
+                ) {
+                  event.preventDefault();
+                  send();
+                }
+              }}
+            />
+            <Tooltip
+              id={`${inputId}-send`}
+              content={
                 status === 'loading' ? 'Cancel response' : 'Send question'
               }
-              disabled={status !== 'loading' && !draft.trim()}
-              onClick={status === 'loading' ? abort : undefined}
             >
-              {status === 'loading' ? (
-                <Icon.Pause size="4" />
-              ) : (
-                <Icon.Arrow size="4" style={{ transform: 'rotate(-90deg)' }} />
-              )}
-            </SendButton>
-          </Tooltip>
-        </Composer>
+              <SendButton
+                type={status === 'loading' ? 'button' : 'submit'}
+                variant="tertiary"
+                size="large"
+                aria-label={
+                  status === 'loading' ? 'Cancel response' : 'Send question'
+                }
+                disabled={status !== 'loading' && !draft.trim()}
+                onClick={status === 'loading' ? abort : undefined}
+              >
+                {status === 'loading' ? (
+                  <Icon.Pause size="4" />
+                ) : (
+                  <Icon.Arrow
+                    size="4"
+                    style={{ transform: 'rotate(-90deg)' }}
+                  />
+                )}
+              </SendButton>
+            </Tooltip>
+          </Composer>
+        </ComposerSurface>
       }
     >
       <Content
@@ -212,8 +204,8 @@ export const AskPanel = ({
           !messages.length
             ? { minHeight: '100%', display: 'flex', flexDirection: 'column' }
             : {
-                // Keep the final line and activity indicator above the fade and floating pills.
-                paddingBottom: `calc(${attachmentOverlayHeight} + var(--space-4))`,
+                // Keep the final line and activity indicator above the scroll fade.
+                paddingBottom: 'var(--space-4)',
               }
         }
       >

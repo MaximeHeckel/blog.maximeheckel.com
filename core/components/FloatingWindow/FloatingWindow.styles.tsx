@@ -1,14 +1,16 @@
 import { Card, styled } from '@maximeheckel/design-system';
 
 export const Window = styled(Card, {
+  '--window-radius': 'var(--space-5)',
+  '--window-footer-inset': 'var(--space-3)',
   '--window-inset':
     'max(var(--space-2), env(safe-area-inset-top), env(safe-area-inset-right), env(safe-area-inset-bottom), env(safe-area-inset-left))',
-  '--window-width': 'min(400px, calc(100vw - 2 * var(--window-inset)))',
+  '--window-width': 'min(420px, calc(100vw - 2 * var(--window-inset)))',
   '--window-height':
     'min(max(420px, var(--resized-window-height, 50dvh)), calc(var(--visible-viewport-height, 100dvh) - 2 * var(--window-inset)))',
   width: 'var(--window-width)',
   height: 'var(--window-height)',
-  borderRadius: 22,
+  borderRadius: 'var(--window-radius)',
   position: 'fixed',
   right: 'var(--window-inset)',
   bottom: 'calc(var(--window-inset) + var(--viewport-offset-bottom, 0px))',
@@ -26,13 +28,27 @@ export const Window = styled(Card, {
   transformOrigin: 'top left',
   boxSizing: 'border-box',
   color: 'var(--text-primary)',
-  border:
-    'var(--thickness, 1px) solid oklch(from var(--gray-900) l c h / 15%) !important',
-  boxShadow: '0 16px 64px oklch(0% 0 0 / 18%), 0 2px 8px oklch(0% 0 0 / 8%)',
+  border: '1px solid transparent !important',
+  boxShadow:
+    '0 24px 64px -12px oklch(0% 0 0 / 40%), 0 4px 12px oklch(0% 0 0 / 16%)',
+  // The callout's masked border, with a neutral highlight along the top rim.
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    inset: 0,
+    borderRadius: 'inherit',
+    padding: '1px',
+    background:
+      'radial-gradient(ellipse 90% 80% at 50% 0%, oklch(from var(--text-primary) l c h / 18%), oklch(from var(--text-primary) l c h / 4.5%) 55%, transparent 100%), var(--border-color)',
+    mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+    maskComposite: 'exclude',
+    pointerEvents: 'none',
+    zIndex: 5,
+  },
   '@media (max-width: 600px)': {
     '--window-width': 'calc(100vw - 2 * var(--window-inset))',
   },
-  backgroundColor: 'oklch(from var(--gray-300) l c h / 0.985)',
+  backgroundColor: 'var(--background)',
 });
 
 // Keep the content at its expanded size as the shell contracts around it.
@@ -51,8 +67,7 @@ export const Header = styled('header', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: 'var(--space-3) var(--space-3) var(--space-3) var(--space-4)',
-  // borderBottom: '1px solid var(--border-color)',
+  padding: 'var(--space-4) var(--space-4) var(--space-3) var(--space-5)',
   flexShrink: 0,
 });
 
@@ -98,14 +113,14 @@ export const Body = styled('div', {
   minHeight: 0,
   overflowY: 'auto',
   overscrollBehavior: 'none',
-  padding: 'var(--space-4) var(--space-4)',
+  padding: 'var(--space-4) var(--space-5)',
   overflowWrap: 'anywhere',
   maskImage:
     'linear-gradient(to bottom, transparent, rgb(0 0 0 / 35%) 6px, #000 var(--space-4), #000 calc(100% - var(--space-6)), rgb(0 0 0 / 35%) calc(100% - 12px), transparent)',
 });
 
 export const Footer = styled('div', {
-  padding: '0 var(--space-3) var(--space-3) var(--space-3)',
+  padding: '0 var(--window-footer-inset) var(--window-footer-inset)',
   flexShrink: 0,
 });
 
