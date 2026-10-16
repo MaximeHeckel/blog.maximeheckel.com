@@ -408,6 +408,11 @@ export const Scene = () => {
         height: 'min(110dvh, 950px)',
         zIndex: 0,
         maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
+
+        // Keep the drawing buffer and camera stable while mobile chrome moves.
+        '@media (hover: none) and (pointer: coarse)': {
+          height: 'min(110svh, 950px)',
+        },
       }}
     >
       {showDebug ? <SceneDebugControls onChange={setControls} /> : null}

@@ -12,6 +12,7 @@ html {
   -webkit-text-size-adjust: 100%;
   scrollbar-color: var(--scrollbar-thumb) transparent;
   scrollbar-width: thin;
+  background: var(--browser-top-background, var(--background));
 }
 
 /* Theme surfaces must select the matching light-dark() palette too. */
@@ -58,6 +59,50 @@ body {
   color: var(--text-primary);
   word-wrap: break-word;
   margin: 0;
+}
+
+html[data-browser-theme='hero'] {
+  --browser-top-background: var(--browser-hero-background);
+}
+
+.browser-edge-top {
+  display: none;
+}
+
+@media (display-mode: browser) and (hover: none) and (pointer: coarse) {
+  .browser-edge-top {
+    display: block;
+    position: fixed;
+    top: -7px;
+    left: 0;
+    right: 0;
+    height: 12px;
+    pointer-events: none;
+
+    /* Above the scene (0), below the header (100), in the same isolated main. */
+    z-index: 1;
+  }
+
+  /* Keep the sampled strip solid; mask only the fade below its five visible pixels. */
+  .browser-edge-top::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 48px;
+    pointer-events: none;
+    background: inherit;
+    mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      rgb(0 0 0 / 90%) 20%,
+      rgb(0 0 0 / 65%) 40%,
+      rgb(0 0 0 / 35%) 60%,
+      rgb(0 0 0 / 10%) 80%,
+      transparent 100%
+    );
+  }
 }
 
 button {

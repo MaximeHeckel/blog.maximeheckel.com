@@ -4,7 +4,6 @@ import path from 'path';
 import { Grid } from '@maximeheckel/design-system';
 import type { GetStaticProps } from 'next';
 
-import { BottomBlurGradientMask } from '@core/components/BottomBlurGradientMask';
 import Footer from '@core/components/Footer';
 import { Header } from '@core/components/Header';
 import { Main } from '@core/components/Main';
@@ -53,7 +52,6 @@ const Glossary = (props: GlossaryProps) => {
           <GlossarySection terms={terms} />
         </Grid.Item>
       </Grid>
-      <BottomBlurGradientMask />
       <Footer />
     </Main>
   );

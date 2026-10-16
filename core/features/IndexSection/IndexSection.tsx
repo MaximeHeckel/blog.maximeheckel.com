@@ -19,6 +19,11 @@ const IndexSection = () => {
           alignItems: 'end',
           justifyContent: 'center',
           minHeight: 'clamp(400px, 70dvh, 600px)',
+
+          // Safari's expanding toolbar must not move the headline during scroll.
+          '@media (hover: none) and (pointer: coarse)': {
+            minHeight: 'clamp(400px, 70svh, 600px)',
+          },
         }}
       >
         <Box

@@ -1,13 +1,28 @@
 import { getCssText } from '@maximeheckel/design-system';
+import { HERO_THEME_COLOR, PAGE_THEME_COLOR } from 'lib/browserTheme';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { CSSProperties } from 'react';
 
 class MyDocument extends Document {
   render() {
+    const isHomePage = this.props.__NEXT_DATA__.page === '/';
+
     return (
-      <Html lang="en" className="maximeheckel-light">
+      <Html
+        lang="en"
+        className="maximeheckel-dark"
+        data-browser-theme={isHomePage ? 'hero' : 'page'}
+        style={
+          {
+            '--browser-hero-background': HERO_THEME_COLOR,
+          } as CSSProperties
+        }
+      >
         <Head>
-          {/* Keep browser chrome stable across client-side navigation. */}
-          <meta name="theme-color" content="#090A0E" />
+          <meta
+            name="theme-color"
+            content={isHomePage ? HERO_THEME_COLOR : PAGE_THEME_COLOR}
+          />
           <link
             href="/static/favicons/apple-touch-icon.png"
             rel="apple-touch-icon"
@@ -60,18 +75,6 @@ class MyDocument extends Document {
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         </Head>
         <body className="maximeheckel-dark">
-          <script
-            key="maximeheckel-theme"
-            dangerouslySetInnerHTML={{
-              __html: `(function() { try {
-        var mode = localStorage.getItem('mode');
-        var supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-        if (!mode && supportDarkMode)  document.documentElement.classList.add('maximeheckel-dark');
-        if (!mode) return
-        document.documentElement.classList.add('maximeheckel-' + mode);
-      } catch (e) {} })();`,
-            }}
-          />
           <Main />
           <NextScript />
         </body>

@@ -2,7 +2,6 @@ import { Grid } from '@maximeheckel/design-system';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post } from 'types/post';
 
-import { BottomBlurGradientMask } from '@core/components/BottomBlurGradientMask';
 import Footer from '@core/components/Footer';
 import { Header } from '@core/components/Header';
 import { Main } from '@core/components/Main';
@@ -37,7 +36,6 @@ const NewHome = (props: Props) => {
         <IndexSection />
         <ArticlesSection posts={posts} />
       </Grid>
-      <BottomBlurGradientMask />
       <Footer />
     </Main>
   );
