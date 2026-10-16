@@ -10,6 +10,7 @@ import { useViewTransitionNavigation } from '@core/hooks/useViewTransitionNaviga
 
 import { useAsk } from './Ask/AskContext';
 import { CommandMenuContext } from './CommandMenu/CommandMenuContext';
+import { glassBorderShine } from './GlassBorder.styles';
 import Logo from './Logo';
 
 enum NAV {
@@ -110,6 +111,7 @@ const Dock = () => {
       <Box
         as="nav"
         css={{
+          ...glassBorderShine,
           position: 'relative',
           '--thickness': '1.5px',
           borderRadius: 'var(--border-radius-2)',
@@ -119,7 +121,9 @@ const Dock = () => {
           isolation: 'isolate',
         }}
       >
-        <GlassMaterial />
+        <GlassMaterial
+          css={{ borderColor: 'oklch(from var(--gray-1100) l c h / 8%)' }}
+        />
         <Flex
           as="ul"
           css={{

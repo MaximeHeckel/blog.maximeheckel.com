@@ -18,6 +18,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useIsMobile } from '@core/hooks/useIsMobile';
 import { usePressActivation } from '@core/hooks/usePressActivation';
 
+import { glassBorderShine } from '../GlassBorder.styles';
 import { MiniProgressCircular } from './MiniProgressCircular';
 import { useIntersectionObserver } from './useIntersectionObserver';
 
@@ -229,20 +230,18 @@ const DynamicTOC = (props: {
         role="button"
         aria-expanded={expanded}
         css={{
+          ...glassBorderShine,
+          '--glass-border-base': 'oklch(from var(--gray-1100) l c h / 8%)',
           overflow: 'hidden',
           position: 'relative',
           background: 'oklch(from var(--gray-900) l c h / var(--opacity, 0.3))',
-          borderWidth: '1.5px',
-          borderStyle: 'solid',
-          borderColor:
-            'oklch(from var(--gray-1100) l c h / var(--border-opacity, 0.1))',
+          border: 'none',
           backdropFilter:
             'blur(var(--blur, 12px)) saturate(var(--saturate, 1.15))',
           minWidth: '150px',
           maxWidth: '300px',
           gap: 0,
           userSelect: 'none',
-          transition: 'border-color 0.2s ease-in-out',
           '&:focus-visible': {
             outline: '2px solid var(--gray-1200)',
           },
@@ -260,11 +259,9 @@ const DynamicTOC = (props: {
         }}
         whileTap={{
           scale: expanded ? 1 : 0.9,
-          borderColor: 'transparent',
         }}
         whileHover={{
           scale: expanded ? 1 : 1.1,
-          borderColor: 'transparent',
         }}
         transition={
           shouldReduceMotion
@@ -277,15 +274,12 @@ const DynamicTOC = (props: {
                 duration: 0.5,
               }
         }
-        onAnimationStart={() => {
-          ref.current?.style.setProperty('--border-opacity', '0.0');
-        }}
-        onAnimationComplete={() => {
-          ref.current?.style.setProperty('--border-opacity', '0.1');
-        }}
         style={{
           borderRadius: expanded ? 16 : 12,
-          padding: expanded ? '16px 16px' : '6px 12px',
+          // Preserve the original inset now that the border is an overlay.
+          padding: expanded
+            ? 'calc(var(--space-4) + 1.5px)'
+            : 'calc(6px + 1.5px) calc(var(--space-3) + 1.5px)',
           cursor: expanded ? 'default' : 'pointer',
           width: expanded ? '400px' : 'fit-content',
         }}
