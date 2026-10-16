@@ -15,15 +15,52 @@ export const CustomRunButton = () => {
   }
 
   return (
-    <Box css={{ pointerEvents: 'auto' }}>
-      <Tooltip content="Run" side="top">
+    <Box
+      css={{
+        position: 'absolute',
+        inset: 0,
+        zIndex: 1,
+        display: 'grid',
+        placeItems: 'center',
+        background: 'var(--card-background)',
+
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          backgroundImage:
+            'radial-gradient(circle, oklch(from var(--text-tertiary) l c h / 35%) 1px, transparent 1px)',
+          backgroundSize: '12px 12px',
+          backgroundPosition: 'center',
+          maskImage:
+            'radial-gradient(circle 200px at center, black 20%, transparent 100%)',
+        },
+      }}
+    >
+      <Tooltip content="Run sandbox" side="top">
         <IconButton
-          aria-label="Run"
+          aria-label="Run sandbox"
+          type="button"
           onClick={runSandpack}
-          size="medium"
-          variant="tertiary"
+          size="large"
+          variant="secondary"
+          rounded
+          css={{
+            position: 'relative',
+            transform: 'none',
+
+            '& svg': {
+              transform: 'translateX(1px)',
+            },
+
+            '&:focus-visible': {
+              outline: '2px solid var(--accent)',
+              outlineOffset: 3,
+            },
+          }}
         >
-          <Icon.Play />
+          <Icon.Play aria-hidden="true" />
         </IconButton>
       </Tooltip>
     </Box>

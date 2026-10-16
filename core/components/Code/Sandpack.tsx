@@ -366,18 +366,6 @@ const Sandpack = (props: SandpackProps) => {
                 : defaultEditorOptions.editorHeight,
             }}
           >
-            <Flex
-              css={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                zIndex: 1,
-                pointerEvents: 'none',
-              }}
-            >
-              <CustomRunButton />
-            </Flex>
             <PreviewTabs
               onFullscreen={handleFullscreen}
               onClear={() => setConsoleKey(consoleKey + 1)}
@@ -405,7 +393,9 @@ const Sandpack = (props: SandpackProps) => {
                   : defaultEditorOptions.editorHeight - 48,
                 display: selectedTab === 'preview' ? 'flex' : 'none',
               }}
-            />
+            >
+              <CustomRunButton />
+            </SandpackPreview>
           </Flex>
         </SandpackLayout>
       </SandpackProvider>
