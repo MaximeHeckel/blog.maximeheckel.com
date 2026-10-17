@@ -14,7 +14,6 @@ import {
   useThree,
 } from '@react-three/fiber';
 import { EffectComposer } from '@react-three/postprocessing';
-import { useReducedMotion } from 'motion/react';
 import dynamic from 'next/dynamic';
 import { Effect } from 'postprocessing';
 import {
@@ -26,13 +25,9 @@ import {
   useState,
 } from 'react';
 import * as THREE from 'three';
-import { v4 } from 'uuid';
 
 import type { SceneControls } from './SceneDebugControls';
-import renderFragmentShader from './gpgpu/fragmentShader.glsl';
-import simulationFragmentShader from './gpgpu/simulationFragment.glsl';
-import simulationVertexShader from './gpgpu/simulationVertex.glsl';
-import renderVertexShader from './gpgpu/vertexShader.glsl';
+import { DepthOfFieldMaterial, SimulationMaterial } from './SceneMaterials';
 import HalftoneFragmentShader from './postprocessing/ascii.glsl';
 import { wrapEffect } from './utils';
 
@@ -88,87 +83,21 @@ export const HalftoneEffect = ({ pixelSize = 4.0 }: { pixelSize?: number }) => {
 
   return (
     <EffectComposer renderPriority={1}>
-      <CustomHalftoneEffect ref={effectRef} pixelSize={pixelSize} />
+      <CustomHalftoneEffect ref={effectRef} />
     </EffectComposer>
   );
 };
 
-const getRandomData = (width: number, height: number) => {
-  const len = width * height * 4;
-  const data = new Float32Array(len);
-
-  for (let i = 0; i < len; i += 4) {
-    const t = (Math.PI * 2 * i) / len;
-
-    const x = Math.cos(t) / (1.0 + Math.sin(t) * Math.sin(t));
-    const y = Math.sin(2.0 * t) / 3.0;
-    const z = Math.sin(t) * 0.5;
-
-    const randomness = 1.2;
-    data[i] = x * 2.5 + (Math.random() - 0.5) * randomness;
-    data[i + 1] = y * 2.5 + (Math.random() - 0.5) * randomness;
-    data[i + 2] = z * 2.5 + (Math.random() - 0.5) * randomness;
-    data[i + 3] = 1.0;
-  }
-  return data;
-};
-
-class SimulationMaterial extends THREE.ShaderMaterial {
-  constructor(size: number) {
-    const positionsTexture = new THREE.DataTexture(
-      getRandomData(size, size),
-      size,
-      size,
-      THREE.RGBAFormat,
-      THREE.FloatType
-    );
-    positionsTexture.needsUpdate = true;
-
-    const simulationUniforms = {
-      positions: { value: positionsTexture },
-      uFrequency: { value: 0.25 },
-      uTime: { value: 0 },
-      uSize: { value: size },
-    };
-
-    super({
-      uniforms: simulationUniforms,
-      vertexShader: simulationVertexShader,
-      fragmentShader: simulationFragmentShader,
-    });
-  }
-}
-
-class DepthOfFieldMaterial extends THREE.ShaderMaterial {
-  constructor() {
-    const renderUniforms = {
-      positions: {
-        value: null,
-      },
-      pointSize: {
-        value: 3.5,
-      },
-    };
-
-    super({
-      uniforms: renderUniforms,
-      vertexShader: renderVertexShader,
-      fragmentShader: renderFragmentShader,
-      transparent: true,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-  }
-}
-
 extend({ SimMaterial: SimulationMaterial, DepthOfFieldMaterial });
 
 const ParticleLemniscate = ({
-  shouldStopRenderingLoop = false,
+  isActive,
+  shouldReduceMotion,
   frequency,
   pixelSize,
 }: {
-  shouldStopRenderingLoop?: boolean;
+  isActive: boolean;
+  shouldReduceMotion: boolean;
   frequency: number;
   pixelSize: number;
 }) => {
@@ -211,9 +140,29 @@ const ParticleLemniscate = ({
     return particles;
   }, [size]);
 
-  const frameCount = useRef(0);
+  const simulationTime = useRef(0);
+  const resumeFrame = useRef(true);
 
   const gl = useThree((state) => state.gl);
+  const invalidate = useThree((state) => state.invalidate);
+  const canvasSize = useThree((state) => state.size);
+  const dpr = useThree((state) => state.viewport.dpr);
+
+  useLayoutEffect(() => {
+    resumeFrame.current = true;
+  }, [isActive, shouldReduceMotion]);
+
+  useEffect(() => {
+    if (isActive) invalidate();
+  }, [
+    isActive,
+    shouldReduceMotion,
+    frequency,
+    pixelSize,
+    canvasSize,
+    dpr,
+    invalidate,
+  ]);
 
   useLayoutEffect(() => {
     if (!orthoRef.current) return;
@@ -229,10 +178,12 @@ const ParticleLemniscate = ({
     gl.setRenderTarget(null);
   }, [gl, renderTargetA, renderTargetB, scene]);
 
-  useFrame((state) => {
-    const { gl, clock } = state;
+  useFrame((state, delta) => {
+    const { gl } = state;
 
     if (
+      !isActive ||
+      state.frameloop === 'never' ||
       !simulationMaterialDOFRef.current ||
       !depthOfFieldMaterialRef.current ||
       !orthoRef.current
@@ -243,19 +194,17 @@ const ParticleLemniscate = ({
     const writeTarget = targets[pingPong.current];
     const readTarget = targets[1 - pingPong.current];
 
-    frameCount.current++;
-
-    if (shouldStopRenderingLoop && frameCount.current > 15) {
-      depthOfFieldMaterialRef.current.uniforms.positions.value =
-        writeTarget.texture;
-      return;
+    // Preserve phase across pauses and discard the first delta on resume.
+    if (!shouldReduceMotion && !resumeFrame.current) {
+      simulationTime.current += delta;
     }
+    resumeFrame.current = false;
 
     // Set the simulation to read from the previous frame's output
     simulationMaterialDOFRef.current.uniforms.positions.value =
       readTarget.texture;
     simulationMaterialDOFRef.current.uniforms.uTime.value =
-      clock.getElapsedTime();
+      simulationTime.current;
     simulationMaterialDOFRef.current.uniforms.uFrequency.value = frequency;
 
     gl.setRenderTarget(writeTarget);
@@ -274,11 +223,7 @@ const ParticleLemniscate = ({
       {createPortal(
         <>
           <mesh>
-            <simMaterial
-              key={v4()}
-              ref={simulationMaterialDOFRef}
-              args={[size]}
-            />
+            <simMaterial ref={simulationMaterialDOFRef} args={[size]} />
             <bufferGeometry>
               <bufferAttribute
                 attach="attributes-position"
@@ -317,7 +262,7 @@ const ParticleLemniscate = ({
               args={[particles, 3]}
             />
           </bufferGeometry>
-          <depthOfFieldMaterial key={v4()} ref={depthOfFieldMaterialRef} />
+          <depthOfFieldMaterial ref={depthOfFieldMaterialRef} />
         </points>
       </group>
       <HalftoneEffect pixelSize={pixelSize} />
@@ -381,13 +326,40 @@ const RevealCanvas = () => {
 };
 
 export const Scene = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isActive, setIsActive] = useState(false);
+  const [shouldReduceMotion, setShouldReduceMotion] = useState(false);
   const [DPR, setDPR] = useState(1.0);
   const [showDebug, setShowDebug] = useState(false);
   const [controls, setControls] = useState<SceneControls>({
     frequency: 0.3,
     pixelSize: 4.0,
   });
-  const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let isInView = false;
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updateMotion = () => setShouldReduceMotion(motionQuery.matches);
+    const updateActivity = () => setIsActive(isInView && !document.hidden);
+    const observer = new IntersectionObserver(([entry]) => {
+      isInView = entry.isIntersecting;
+      updateActivity();
+    });
+
+    observer.observe(container);
+    updateMotion();
+    motionQuery.addEventListener('change', updateMotion);
+    document.addEventListener('visibilitychange', updateActivity);
+
+    return () => {
+      observer.disconnect();
+      motionQuery.removeEventListener('change', updateMotion);
+      document.removeEventListener('visibilitychange', updateActivity);
+    };
+  }, []);
 
   useEffect(() => {
     setShowDebug(new URLSearchParams(window.location.search).has('debug'));
@@ -399,6 +371,7 @@ export const Scene = () => {
 
   return (
     <Box
+      ref={containerRef}
       css={{
         position: 'absolute',
         top: 0,
@@ -417,15 +390,26 @@ export const Scene = () => {
     >
       {showDebug ? <SceneDebugControls onChange={setControls} /> : null}
       {/* Keep the drawing buffer and camera in sync with the panel's width transition. */}
-      <Canvas id="main-canvas" shadows dpr={DPR} resize={{ debounce: 0 }}>
+      <Canvas
+        id="main-canvas"
+        shadows
+        dpr={DPR}
+        resize={{ debounce: 0 }}
+        frameloop={
+          isActive ? (shouldReduceMotion ? 'demand' : 'always') : 'never'
+        }
+      >
         <color attach="background" args={['#090A0E']} />
-        <PerformanceMonitor
-          onDecline={() => setDPR(0.7)}
-          onIncline={() => setDPR(1.0)}
-        />
+        {isActive && !shouldReduceMotion ? (
+          <PerformanceMonitor
+            onDecline={() => setDPR(0.7)}
+            onIncline={() => setDPR(1.0)}
+          />
+        ) : null}
         <Suspense fallback={null}>
           <ParticleLemniscate
-            shouldStopRenderingLoop={!!shouldReduceMotion}
+            isActive={isActive}
+            shouldReduceMotion={shouldReduceMotion}
             {...controls}
           />
           <Background />
