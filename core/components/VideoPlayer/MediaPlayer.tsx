@@ -420,11 +420,42 @@ const MediaPlayerVideo = (props: MediaPlayerVideoProps) => {
   const { aspectRatio, children, width, height, fit = 'cover' } = props;
   const { videoRef, videoProps, togglePlay } = useMedia();
   const isReducedMotionEnabled = useReducedMotion();
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleReady = () => setIsReady(true);
+    const handleEmptied = () => setIsReady(false);
+
+    video.addEventListener('loadeddata', handleReady);
+    video.addEventListener('canplay', handleReady);
+    video.addEventListener('emptied', handleEmptied);
+
+    // A cached video may already have its first frame before effects run.
+    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      handleReady();
+    }
+
+    return () => {
+      video.removeEventListener('loadeddata', handleReady);
+      video.removeEventListener('canplay', handleReady);
+      video.removeEventListener('emptied', handleEmptied);
+    };
+  }, [videoRef]);
 
   const autoPlay = videoProps.autoPlay && !isReducedMotionEnabled;
 
   return (
     <Box
+      as={motion.div}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isReady ? 1 : 0 }}
+      transition={{
+        duration: isReady && !isReducedMotionEnabled ? 0.4 : 0,
+        ease: 'easeOut',
+      }}
       css={{
         width: '100%',
         height: '100%',
