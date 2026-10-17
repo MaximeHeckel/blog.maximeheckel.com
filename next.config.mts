@@ -48,6 +48,13 @@ const output = withBundleAnalyzer({
       'react-dom': path.join(__dirname, 'node_modules/react-dom'),
     };
 
+    // n8ao has no import-time side effects, but omits that package metadata.
+    // Let unused imports from @react-three/postprocessing be tree-shaken.
+    config.module.rules.push({
+      test: /[\\/]node_modules[\\/]n8ao[\\/]/,
+      sideEffects: false,
+    });
+
     config.module.rules.push({
       test: /\.(glsl|vs|fs|vert|frag)$/,
       use: ['raw-loader', 'glslify-loader'],
