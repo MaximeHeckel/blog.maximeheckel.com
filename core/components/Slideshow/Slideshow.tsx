@@ -237,7 +237,6 @@ export const Slideshow = ({
           </S.ImageTrack>
           {previewIndex !== null ? (
             <S.DragTrack
-              key={previewIndex}
               aria-hidden="true"
               inert
               data-drag-preview
@@ -259,7 +258,7 @@ export const Slideshow = ({
 
                 return (
                   <S.DragSlide
-                    key={position}
+                    key={index}
                     style={{
                       transform:
                         orientation === 'horizontal'
@@ -276,6 +275,8 @@ export const Slideshow = ({
                         height={height}
                         sizes="(max-width: 750px) 100vw, 700px"
                         draggable={false}
+                        loading="eager"
+                        decoding="sync"
                       />
                     ) : null}
                   </S.DragSlide>

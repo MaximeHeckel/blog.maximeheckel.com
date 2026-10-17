@@ -5,7 +5,7 @@ import {
   render,
   screen,
 } from '@testing-library/react';
-import { MotionValue } from 'motion/react';
+import { animate, MotionValue } from 'motion/react';
 import { ReactElement, useState } from 'react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
@@ -346,6 +346,55 @@ it('accepts another swipe before the previous slide has finished settling', () =
   expect(screen.getByRole('tab', { selected: true })).toHaveAccessibleName(
     'Step 3'
   );
+});
+
+it('keeps decoded preview images mounted when a settling swipe is grabbed again', () => {
+  motion.progress = 0.1;
+  const { down, move, up, preview } = setup();
+
+  down({ pointerType: 'touch' });
+  move(-130);
+
+  const track = preview();
+  const image = track?.querySelector('img[src*="two.jpg"]');
+
+  expect(image).toHaveAttribute('loading', 'eager');
+  expect(image).toHaveAttribute('decoding', 'sync');
+
+  up();
+  down({ pointerType: 'touch' });
+
+  expect(preview()).toBe(track);
+  expect(preview()?.querySelector('img[src*="two.jpg"]')).toBe(image);
+
+  move(130);
+  up();
+  down({ pointerType: 'touch' });
+
+  expect(preview()).toBe(track);
+  expect(preview()?.querySelector('img[src*="two.jpg"]')).toBe(image);
+});
+
+it('holds the settled preview position until removal and starts the next swipe at zero', () => {
+  const { down, move, up, finish, preview } = setup();
+
+  down();
+  move(-130);
+  up();
+
+  const offset = vi
+    .mocked(animate)
+    .mock.calls.at(-1)![0] as MotionValue<number>;
+
+  expect(offset.get()).toBe(-500);
+  finish();
+  expect(preview()).toBeNull();
+  expect(offset.get()).toBe(-500);
+
+  down();
+  expect(offset.get()).toBe(0);
+  move(-25);
+  expect(offset.get()).toBe(-25);
 });
 
 it('can reverse direction while consecutive unfinished transitions overlap', () => {
