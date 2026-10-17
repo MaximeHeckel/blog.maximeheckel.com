@@ -1,28 +1,25 @@
 import { Card, Flex, styled } from '@maximeheckel/design-system';
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useMotionValueEvent,
-  useTransform,
-} from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Highlight } from 'prism-react-renderer';
-import { FocusEvent, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { FocusEvent, memo, useMemo, useRef, useState } from 'react';
 
 import { SendToAskButton } from '../Ask/SendToAskButton';
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import { createDiffHighlighter } from './diff';
 import { syntaxTheme, syntaxTokenStyles } from './syntaxTheme';
 import { CodeBlockProps, HighlightedCodeTextProps } from './types';
+import { useCodeOverflowShadows } from './useCodeOverflowShadows';
 import { calculateLinesToHighlight, hasTitle } from './utils';
 
-export const HighlightedCodeText = (props: HighlightedCodeTextProps) => {
+export const HighlightedCodeText = memo(function HighlightedCodeText(
+  props: HighlightedCodeTextProps
+) {
   // A streamed code fence can be empty before its first code token arrives.
-  // Mount scroll tracking only when there is a <pre> to attach to.
+  // Mount overflow tracking only when there is a <pre> to attach to.
   if (!props.codeString) return null;
 
   return <ScrollableCodeText {...props} />;
-};
+});
 
 const ScrollableCodeText = (props: HighlightedCodeTextProps) => {
   const { codeString, language, highlightLine } = props;
@@ -33,40 +30,7 @@ const ScrollableCodeText = (props: HighlightedCodeTextProps) => {
   const isDiff = /^diff(?:-|$)/i.test(language);
   const preRef = useRef<HTMLPreElement>(null);
 
-  const { scrollX } = useScroll({
-    container: preRef,
-  });
-
-  const adjustedScrollXProgress = useTransform(scrollX, [10, 50], [0, 1]);
-
-  useMotionValueEvent(adjustedScrollXProgress, 'change', (latestValue) => {
-    if (!preRef.current) return;
-    if (preRef.current.scrollWidth <= preRef.current.clientWidth) {
-      preRef.current.style.setProperty('--shadow-opacity-left', '0');
-      preRef.current.style.setProperty('--shadow-opacity-right', '0');
-      return;
-    }
-
-    preRef.current.style.setProperty(
-      '--shadow-opacity-left',
-      latestValue.toString()
-    );
-    preRef.current.style.setProperty(
-      '--shadow-opacity-right',
-      (1 - latestValue).toString()
-    );
-  });
-
-  useLayoutEffect(() => {
-    if (!preRef.current) return;
-    if (preRef.current.scrollWidth <= preRef.current.clientWidth) {
-      preRef.current.style.setProperty('--shadow-opacity-left', '0');
-      preRef.current.style.setProperty('--shadow-opacity-right', '0');
-      return;
-    }
-
-    preRef.current.style.setProperty('--shadow-opacity-right', '1');
-  }, []);
+  useCodeOverflowShadows(preRef, codeString);
 
   return (
     <Highlight
@@ -146,10 +110,13 @@ const CodeBlock = (props: CodeBlockProps) => {
   const [focused, setFocused] = useState(false);
   const reducedMotion = useReducedMotion();
   const actionsVisible = hovered || focused;
+  const highlightLineFn = useMemo(
+    () => calculateLinesToHighlight(metastring),
+    [metastring]
+  );
 
   if (!codeString?.trim()) return null;
 
-  const highlightLineFn = calculateLinesToHighlight(metastring);
   const title = hasTitle(metastring);
   const actions = (
     <Flex css={{ gap: 0 }}>
