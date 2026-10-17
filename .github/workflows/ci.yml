@@ -140,13 +140,16 @@ jobs:
       - name: Run build
         run: |
           pnpm build
+      - name: Package build artifacts
+        run: |
+          # Preserve Turbopack's relative dependency symlinks across jobs.
+          tar --exclude='.next/cache' --exclude='.next/dev' -cf next-build.tar .next
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-output
-          include-hidden-files: true
           if-no-files-found: error
-          path: .next
+          path: next-build.tar
           retention-days: 1
   e2e-tests-chrome:
     runs-on: ubuntu-latest
@@ -178,7 +181,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-output
-          path: .next
+      - name: Extract build artifacts
+        run: |
+          tar -xf next-build.tar
       - name: Run cypress
         uses: cypress-io/github-action@v6.7.6
         with:
@@ -231,7 +236,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-output
-          path: .next
+      - name: Extract build artifacts
+        run: |
+          tar -xf next-build.tar
       - name: Run cypress
         uses: cypress-io/github-action@v6.7.6
         with:
