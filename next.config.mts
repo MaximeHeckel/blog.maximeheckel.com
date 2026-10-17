@@ -19,6 +19,18 @@ const output = withBundleAnalyzer({
   allowedDevOrigins: ['blog.maximeheckel.localhost'],
   productionBrowserSourceMaps: false,
   trailingSlash: true,
+  turbopack: {
+    resolveAlias: {
+      react: './node_modules/react',
+      'react-dom': './node_modules/react-dom',
+    },
+    rules: {
+      '*.{glsl,vs,fs,vert,frag}': {
+        loaders: ['raw-loader', 'glslify-loader'],
+        as: '*.js',
+      },
+    },
+  },
   images: {
     qualities: [25, 50, 75, 100],
     remotePatterns: [
