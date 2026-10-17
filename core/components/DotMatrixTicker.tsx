@@ -59,21 +59,12 @@ export const DotMatrixTicker = ({
     let font = '';
     let repeatWidth = 0;
     let ink = '';
+    let requestedFont = '';
+    let lastDisplayOffset: number | undefined;
     const velocity = Math.min(Math.max(speed, 0), 10) * 30;
     const message = `${displayText.toLocaleUpperCase()}   •   `;
 
-    const draw = (time: number) => {
-      const delta = previousTime ? Math.min(time - previousTime, 50) : 0;
-      previousTime = time;
-
-      if (!reducedMotion)
-        offset = (offset + (delta * velocity) / 1000) % repeatWidth;
-
-      offsetRef.current = offset;
-
-      // Advance by three display columns while retaining elapsed-time precision.
-      const displayOffset = Math.floor(offset / SCROLL_STEP) * SCROLL_STEP;
-
+    const render = (displayOffset: number) => {
       maskContext.clearRect(0, 0, mask.width, mask.height);
       maskContext.font = font;
       maskContext.textBaseline = 'alphabetic';
@@ -156,6 +147,24 @@ export const DotMatrixTicker = ({
 
       context.restore();
       context.drawImage(pixels, 0, 0, width, HEIGHT);
+    };
+
+    const draw = (time: number) => {
+      const delta = previousTime ? Math.min(time - previousTime, 50) : 0;
+      previousTime = time;
+
+      if (!reducedMotion)
+        offset = (offset + (delta * velocity) / 1000) % repeatWidth;
+
+      offsetRef.current = offset;
+
+      // Advance time every frame, but only redraw a changed display step.
+      const displayOffset = Math.floor(offset / SCROLL_STEP) * SCROLL_STEP;
+
+      if (displayOffset !== lastDisplayOffset) {
+        render(displayOffset);
+        lastDisplayOffset = displayOffset;
+      }
 
       if (
         !disposed &&
@@ -198,8 +207,20 @@ export const DotMatrixTicker = ({
         Math.ceil(maskContext.measureText(message).width / SCROLL_STEP) *
           SCROLL_STEP
       );
+      // Resizing clears the canvas and can change its font, metrics, or ink.
+      lastDisplayOffset = undefined;
       restart();
       setReady(true);
+
+      // Layout can discover this face after document.fonts.ready has resolved.
+      if (requestedFont !== font && !document.fonts.check(font, message)) {
+        requestedFont = font;
+        const refresh = () => {
+          if (!disposed) resize();
+        };
+
+        void document.fonts.load(font, message).then(refresh, refresh);
+      }
     };
 
     const resizeObserver = new ResizeObserver(resize);
