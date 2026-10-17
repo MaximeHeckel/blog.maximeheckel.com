@@ -10,25 +10,12 @@ export const useThemeColor = (isHomePage: boolean) => {
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]');
     const previousThemeColor = meta?.getAttribute('content');
-    const previousHtmlBackground =
-      document.documentElement.style.backgroundColor;
-    const previousBodyBackground = document.body.style.backgroundColor;
-    const previousTheme = document.documentElement.dataset.browserTheme;
 
     return () => {
-      document.documentElement.style.backgroundColor = previousHtmlBackground;
-      document.body.style.backgroundColor = previousBodyBackground;
-
       if (previousThemeColor != null) {
         meta?.setAttribute('content', previousThemeColor);
       } else {
         meta?.removeAttribute('content');
-      }
-
-      if (previousTheme != null) {
-        document.documentElement.dataset.browserTheme = previousTheme;
-      } else {
-        delete document.documentElement.dataset.browserTheme;
       }
     };
   }, []);
@@ -84,11 +71,6 @@ export const useThemeColor = (isHomePage: boolean) => {
     document
       .querySelector('meta[name="theme-color"]')
       ?.setAttribute('content', themeColor);
-
-    document.documentElement.style.backgroundColor = themeColor;
-    document.body.style.backgroundColor = themeColor;
-    document.documentElement.dataset.browserTheme =
-      themeColor === HERO_THEME_COLOR ? 'hero' : 'page';
   }, [themeColor]);
 
   return themeColor;

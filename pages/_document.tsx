@@ -1,23 +1,13 @@
 import { getCssText } from '@maximeheckel/design-system';
 import { HERO_THEME_COLOR, PAGE_THEME_COLOR } from 'lib/browserTheme';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import { CSSProperties } from 'react';
 
 class MyDocument extends Document {
   render() {
     const isHomePage = this.props.__NEXT_DATA__.page === '/';
 
     return (
-      <Html
-        lang="en"
-        className="maximeheckel-dark"
-        data-browser-theme={isHomePage ? 'hero' : 'page'}
-        style={
-          {
-            '--browser-hero-background': HERO_THEME_COLOR,
-          } as CSSProperties
-        }
-      >
+      <Html lang="en" className="maximeheckel-dark">
         <Head>
           <meta
             name="theme-color"

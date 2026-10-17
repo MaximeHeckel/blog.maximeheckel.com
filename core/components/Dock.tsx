@@ -224,7 +224,6 @@ const Dock = () => {
                     >
                       <Box
                         css={{
-                          backdropFilter: 'blur(2px)',
                           borderRadius: 8,
                           width: '100%',
                           height: '100%',

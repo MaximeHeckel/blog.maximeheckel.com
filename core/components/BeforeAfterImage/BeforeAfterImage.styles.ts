@@ -26,6 +26,14 @@ export const Image = styled(NextImage, {
   height: 'auto',
 });
 
+export const Surface = styled(Box, {
+  position: 'relative',
+  display: 'flex',
+  width: '100%',
+  // Include both images in the handle's backdrop without clipping the focus ring.
+  clipPath: 'inset(0)',
+});
+
 export const Overlay = styled(Box, {
   position: 'absolute',
   zIndex: 1,

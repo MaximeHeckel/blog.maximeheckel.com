@@ -3,6 +3,7 @@ import { cloudflareLoader } from 'lib/next-image-loader';
 import { useMotionValue } from 'motion/react';
 import { useState, useRef, useEffect } from 'react';
 
+import { glassBorderShine } from '../GlassBorder.styles';
 import * as S from './BeforeAfterImage.styles';
 import { BeforeAfterImageProps } from './types';
 
@@ -33,23 +34,26 @@ const Slider = () => (
   >
     <Flex
       css={{
+        ...glassBorderShine,
+        '--glass-border-base': 'oklch(from var(--gray-1100) l c h / 8%)',
         width: 32,
         height: 32,
         background: 'transparent',
         zIndex: 2,
         borderRadius: 'var(--border-radius-2)',
-        gap: '1px',
         position: 'relative',
+        isolation: 'isolate',
       }}
       justifyContent="center"
     >
-      <GlassMaterial />
-      <Icon.Arrow
-        size="2"
-        style={{ transform: 'rotate(180deg)' }}
+      <GlassMaterial border={false} />
+      <Icon.ChevronUpDown
+        size={4}
+        style={{ transform: 'rotate(90deg)' }}
         variant="primary"
+        aria-hidden="true"
+        focusable="false"
       />
-      <Icon.Arrow size="2" variant="primary" />
     </Flex>
   </Flex>
 );
@@ -140,27 +144,29 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
             '--progress': `${wiggleMotion.get()}%`,
           }}
         >
-          <S.Image
-            alt="Before"
-            loading="eager"
-            loader={cloudflareLoader}
-            src={beforeSrc}
-            quality={100}
-            width={width}
-            height={height}
-          />
-          <S.Overlay>
+          <S.Surface>
             <S.Image
-              alt="After"
+              alt="Before"
               loading="eager"
               loader={cloudflareLoader}
+              src={beforeSrc}
               quality={100}
-              src={afterSrc}
               width={width}
               height={height}
             />
-          </S.Overlay>
-          <Slider />
+            <S.Overlay>
+              <S.Image
+                alt="After"
+                loading="eager"
+                loader={cloudflareLoader}
+                quality={100}
+                src={afterSrc}
+                width={width}
+                height={height}
+              />
+            </S.Overlay>
+            <Slider />
+          </S.Surface>
         </S.Wrapper>
         <figcaption>
           <Text

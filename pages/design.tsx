@@ -10,6 +10,7 @@ import {
   Grid,
   H1,
   H2,
+  H3,
   Heading,
   Icon,
   InlineCode,
@@ -1339,8 +1340,23 @@ function sayHi(name) {
             gap="5"
             id="gallery"
           >
-            <H2>Gallery</H2>
-            <ImageGallery images={images} width={700} height={405} />
+            <H2>Slide Show</H2>
+            <ImageGallery
+              images={images}
+              width={700}
+              height={405}
+              alt="Painterly shader example"
+            />
+            <H3>Autoplay</H3>
+            <ImageGallery
+              images={images}
+              width={700}
+              height={405}
+              alt="Painterly shader example"
+              autoPlay
+              stepDuration={5000}
+              loop
+            />
           </Flex>
         </Flex>
       </Grid>

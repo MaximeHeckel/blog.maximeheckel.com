@@ -20,6 +20,7 @@ import {
   useState,
 } from 'react';
 
+import { glassBorderShine } from '../GlassBorder.styles';
 import { formatTime } from './utils';
 
 type MediaContextType = {
@@ -315,74 +316,88 @@ const MediaPlayerRoot = (props: MediaPlayerRootProps) => {
           <Box
             css={{
               position: 'relative',
-              overflow: 'hidden',
-              borderRadius: 16,
               zIndex: 1,
-            }}
-          >
-            {videoChildren}
-          </Box>
-          <Box
-            css={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: 1,
-              overflow: 'hidden',
-              pointerEvents: 'none',
+              borderRadius: 'inherit',
+              // Keep control backdrops local while the glow remains free to overflow.
+              clipPath: 'inset(0 round 16px)',
             }}
           >
             <Box
-              as={motion.div}
               css={{
-                width: '100%',
-                pointerEvents: 'auto',
+                position: 'relative',
+                overflow: 'hidden',
+                borderRadius: 16,
+                zIndex: 1,
               }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1 },
-              }}
-              transition={{ duration: 0.25 }}
             >
-              {videoOverlayChildren}
+              {videoChildren}
             </Box>
             <Box
-              as={motion.div}
-              variants={{
-                hidden: { y: 52 },
-                visible: { y: 0 },
-              }}
-              transition={{
-                duration: isReducedMotionEnabled ? 0 : 0.3,
-                bounce: 0.17,
-                type: 'spring',
-              }}
               css={{
                 position: 'absolute',
-                bottom: 0,
+                top: 0,
                 left: 0,
-                right: 0,
+                width: '100%',
+                height: '100%',
                 zIndex: 1,
-                padding: 'var(--space-2)',
-                pointerEvents: 'auto',
+                overflow: 'hidden',
+                pointerEvents: 'none',
               }}
             >
-              <Flex
-                alignItems="center"
+              <Box
+                as={motion.div}
                 css={{
-                  position: 'relative',
-                  zIndex: 1,
                   width: '100%',
-                  padding: 'var(--space-1)',
-                  borderRadius: 10,
+                  pointerEvents: 'auto',
                 }}
-                justifyContent="space-between"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1 },
+                }}
+                transition={{ duration: 0.25 }}
               >
-                <GlassMaterial border={false} />
-                {nonVideoChildren}
-              </Flex>
+                {videoOverlayChildren}
+              </Box>
+              <Box
+                as={motion.div}
+                variants={{
+                  hidden: { y: 52 },
+                  visible: { y: 0 },
+                }}
+                transition={{
+                  duration: isReducedMotionEnabled ? 0 : 0.3,
+                  bounce: 0.17,
+                  type: 'spring',
+                }}
+                css={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  zIndex: 1,
+                  padding: 'var(--space-2)',
+                  pointerEvents: 'auto',
+                }}
+              >
+                <Flex
+                  alignItems="center"
+                  css={{
+                    ...glassBorderShine,
+                    '--glass-border-base':
+                      'oklch(from var(--gray-1100) l c h / 8%)',
+                    position: 'relative',
+                    isolation: 'isolate',
+                    zIndex: 1,
+                    width: '100%',
+                    padding: 'var(--space-1)',
+                    borderRadius: 10,
+                  }}
+                  justifyContent="space-between"
+                >
+                  <GlassMaterial border={false} />
+                  {nonVideoChildren}
+                </Flex>
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -609,7 +624,10 @@ const MediaPlayerPlaybackControls = () => {
         >
           <Box
             css={{
+              ...glassBorderShine,
+              '--glass-border-base': 'oklch(from var(--gray-1100) l c h / 8%)',
               position: 'relative',
+              isolation: 'isolate',
               width: '100%',
               height: 102,
               borderRadius: 6,

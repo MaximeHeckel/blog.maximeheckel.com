@@ -12,7 +12,8 @@ html {
   -webkit-text-size-adjust: 100%;
   scrollbar-color: var(--scrollbar-thumb) transparent;
   scrollbar-width: thin;
-  background: var(--browser-top-background, var(--background));
+  /* Keep the canvas beneath page transitions dark, including under the hero. */
+  background: var(--background);
 }
 
 /* Theme surfaces must select the matching light-dark() palette too. */
@@ -59,10 +60,6 @@ body {
   color: var(--text-primary);
   word-wrap: break-word;
   margin: 0;
-}
-
-html[data-browser-theme='hero'] {
-  --browser-top-background: var(--browser-hero-background);
 }
 
 .browser-edge-top {
