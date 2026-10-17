@@ -383,7 +383,12 @@ export const ShaderCanvas = ({
   const animationFrameRef = useRef<number>(0);
   const uniformsRef = useRef<Uniforms>(uniforms);
   const startTimeRef = useRef<number>(performance.now());
-  // Start rendering slightly before canvas is visible for smoother experience
+
+  // Prewarm once near the viewport, then retain resources while offscreen.
+  const shouldInitialize = useInView(ref, {
+    margin: '300px 0px',
+    once: true,
+  });
   const isInView = useInView(ref);
 
   // Keep ref in sync with prop
@@ -696,21 +701,9 @@ export const ShaderCanvas = ({
     animationFrameRef.current = requestAnimationFrame(render);
   }, [setUniform]);
 
-  // Start/stop render loop based on visibility
   useEffect(() => {
-    if (isInView && rendererRef.current) {
-      animationFrameRef.current = requestAnimationFrame(render);
-    }
+    if (!shouldInitialize) return;
 
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = 0;
-      }
-    };
-  }, [isInView, render]);
-
-  useEffect(() => {
     const renderer = initWebGL();
     if (renderer) {
       rendererRef.current = renderer;
@@ -746,7 +739,21 @@ export const ShaderCanvas = ({
         rendererRef.current = null;
       }
     };
-  }, [initWebGL]);
+  }, [initWebGL, shouldInitialize]);
+
+  // Run after initialization so first visibility and shader changes start a loop.
+  useEffect(() => {
+    if (isInView && rendererRef.current) {
+      animationFrameRef.current = requestAnimationFrame(render);
+    }
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = 0;
+      }
+    };
+  }, [initWebGL, isInView, render, shouldInitialize]);
 
   return (
     <Box ref={ref}>
