@@ -65,10 +65,10 @@ export const useSlideshowDrag = ({
 
     if (drag) releaseCapture(drag);
 
-    offset.set(0);
+    // Keep the settled image in place until React removes the preview.
     setPreview(null);
     setGrabbing(false);
-  }, [offset]);
+  }, []);
 
   useEffect(() => {
     const drag = session.current;
@@ -317,12 +317,13 @@ export const useSlideshowDrag = ({
               ? (interrupted.settleOffset ?? 0)
               : 0);
 
-          offset.set(initialOffset);
           setPreview({
             index: active,
             radius: Math.ceil(Math.abs(initialOffset) / size) + 1,
           });
         }
+
+        offset.set(initialOffset);
 
         session.current = {
           pointerId: event.pointerId,
