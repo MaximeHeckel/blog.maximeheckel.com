@@ -6,9 +6,9 @@
   "author": "Maxime Heckel <hello@maximeheckel.com>",
   "type": "module",
   "scripts": {
-    "analyze": "cross-env ANALYZE=true next build --webpack",
-    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build --webpack",
-    "analyze:server": "cross-env BUNDLE_ANALYZE=server next build --webpack",
+    "analyze": "cross-env ANALYZE=true next build",
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
+    "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
     "build:dev": "next build --turbopack",
     "build": "next build --turbopack",
     "cy:open": "cypress open",
