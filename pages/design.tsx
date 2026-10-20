@@ -37,6 +37,7 @@ import Callout from '@core/components/Callout';
 import CodeBlock from '@core/components/Code/CodeBlock';
 import { CommandMenuContext } from '@core/components/CommandMenu/CommandMenuContext';
 import { HR } from '@core/components/HR';
+import ImageAccordion from '@core/components/ImageAccordion';
 import Logo from '@core/components/Logo';
 import Image from '@core/components/MDX/Image/Image';
 import { Main } from '@core/components/Main';
@@ -1356,6 +1357,24 @@ function sayHi(name) {
               autoPlay
               stepDuration={5000}
               loop
+            />
+          </Flex>
+          <Flex
+            alignItems="start"
+            as="section"
+            css={{ alignSelf: 'stretch', marginBottom: 'var(--space-9)' }}
+            direction="column"
+            gap="5"
+            id="image-accordion"
+          >
+            <H2>Image Accordion</H2>
+            <ImageAccordion
+              expandedWidth={50}
+              height={500}
+              images={images.map((src, index) => ({
+                src,
+                alt: `Painterly shader example ${index + 1}`,
+              }))}
             />
           </Flex>
         </Flex>
