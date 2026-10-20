@@ -78,7 +78,7 @@
     "leva": "^0.10.1",
     "lodash.debounce": "^4.0.8",
     "motion": "^12.23.26",
-    "next": "^16.4.0",
+    "next": "^16.4.2",
     "next-mdx-remote": "6.0.0",
     "next-seo": "6.6.0",
     "postprocessing": "^6.38.1",
@@ -100,7 +100,7 @@
     "zod": "^4.2.0"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "16.4.0",
+    "@next/bundle-analyzer": "16.4.2",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "^16.3.1",
     "@types/d3-array": "3.2.1",

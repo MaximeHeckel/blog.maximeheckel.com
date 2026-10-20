@@ -8,4 +8,4 @@ allowBuilds:
   playwright-webkit: true
   sharp: true
 
-minimumReleaseAge: 10080
+minimumReleaseAge: 5760
