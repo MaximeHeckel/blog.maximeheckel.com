@@ -7,31 +7,41 @@ const transitionLogo = css({
   willChange: 'stroke, fill',
 });
 
-const Logo = ({ alt, size, stroke }: LogoProps) => (
+const Logo = ({
+  alt = "Maxime Heckel's logo",
+  size = 44,
+  stroke = 'var(--text-primary)',
+}: LogoProps) => (
   <svg
     aria-label={alt}
+    role="img"
     className={transitionLogo()}
-    width={size || 44}
-    viewBox="0 0 600 500"
+    width={size}
+    height={(size * 28) / 33}
+    viewBox="4 8 33 28"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
-    stroke={stroke || 'var(--text-primary)'}
   >
-    <rect
-      x="379.447"
-      y="43.748"
-      width="172.095"
-      height="418.666"
-      rx="86.0473"
-      strokeWidth={30}
+    <path
+      d="M26.1797 11.1465C27.8664 9.60647 29.9197 9.16647 31.8997 10.1198C34.6864 11.4398 35.5664 14.6665 34.0264 17.3798L27.9837 27.8364"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      stroke={stroke}
     />
     <path
-      d="M231.995 351.6L306.965 221.807L381.934 92.0154C404.822 52.3913 458.092 33.3388 500.917 49.4604C543.742 65.5819 559.905 110.773 537.018 150.397L387.079 409.981C364.191 449.605 310.921 468.657 268.096 452.536C225.271 436.414 209.108 391.224 231.995 351.6Z"
-      strokeWidth={30}
+      d="M23.6169 33.6788C21.8919 34.3912 19.6379 34.0322 17.8926 32.4863"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      stroke={stroke}
     />
     <path
-      d="M278.239 272.481L278.206 272.539L278.173 272.597L201.072 408.622C180.402 445.088 131.538 462.758 92.2557 447.97C53.2008 433.268 38.461 392.055 59.3333 355.92L216.867 83.187C237.575 47.3364 285.772 30.0984 324.519 44.6849C363.283 59.2777 377.899 100.192 357.157 136.049L278.239 272.481Z"
-      strokeWidth={30}
+      d="M21.5816 20.724L14.813 31.8267C13.1996 34.6134 10.1196 35.42 8.06634 33.5134C5.49965 31.9734 4.83965 29.1134 6.453 26.3267L14.153 12.98C15.5463 10.56 17.673 9.38667 19.653 9.97336C22.733 10.8534 24.8596 13.3467 24.8596 16.5V28.9667C24.8596 32.0467 27.2063 34.54 30.1396 34.54C33.073 34.54 35.4196 32.0467 35.4196 28.9667V21.4867"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      stroke={stroke}
     />
   </svg>
 );

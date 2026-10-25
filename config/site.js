@@ -24,9 +24,9 @@ const config = {
   url: 'https://blog.maximeheckel.com', // Site domain without trailing slash
   siteUrl: 'https://blog.maximeheckel.com/', // url + pathPrefix
   siteLanguage: 'en', // Language Tag on <html> element
-  logo: 'src/static/logo/logo.png',
+  logo: '/static/favicons/icon.png',
   image: 'https://blog.maximeheckel.com/static/og/main-og-image.png',
-  favicon: 'static/favicon.png', // Manifest favicon generation
+  favicon: '/static/favicons/favicon.svg', // Manifest favicon generation
   shortName: 'MaximeHeckel', // Shortname for manifest, must be shorter than 12 characters
   author: 'Maxime Heckel', // Author for schemaORGJSONLD
   themeColor: '#000000',
