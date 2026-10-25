@@ -19,6 +19,7 @@
     "check-format": "oxfmt --check",
     "format": "oxfmt --write",
     "download:twitter-videos": "node ./scripts/download-twitter-videos.js",
+    "generate:branding": "node ./scripts/generate-branding.mjs",
     "generate:glossary": "node ./scripts/generate-glossary.js",
     "generate:og": "node ./scripts/generate-opengraph-images",
     "generate:rss": "node ./scripts/generate-rss",

@@ -40,7 +40,7 @@ const Seo = ({ title, desc, image, path, date, updated, seoTitle }: Props) => {
     ? new Date(seo.updated).toISOString()
     : '';
   const featuredImage = {
-    url: `${seo.image}?v1`,
+    url: `${seo.image}?v2`,
     alt: seo.title,
   };
 
@@ -81,7 +81,7 @@ const Seo = ({ title, desc, image, path, date, updated, seoTitle }: Props) => {
         datePublished={formattedDate}
         description={seo.description}
         images={[seo.image]}
-        publisherLogo="/static/favicons/android-chrome-192x192.png"
+        publisherLogo={`${url}/static/favicons/android-chrome-192x192.png?v=2`}
         publisherName={author}
         title={seo.title}
         url={seo.url}

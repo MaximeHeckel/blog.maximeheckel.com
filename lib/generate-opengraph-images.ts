@@ -4,7 +4,7 @@ import fs from 'fs';
 type OgImageParams = Record<string, string | undefined>;
 
 const OGImageDirectory = `./public/static/og`;
-const defaultOGImage = `${OGImageDirectory}/main-og-image.png`;
+const defaultOGImage = '/static/og/main-og-image.png';
 
 const getOgImage = async (params: OgImageParams): Promise<string> => {
   const hash = createHash('md5')

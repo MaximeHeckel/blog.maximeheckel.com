@@ -14,39 +14,27 @@ class MyDocument extends Document {
             content={isHomePage ? HERO_THEME_COLOR : PAGE_THEME_COLOR}
           />
           <link
-            href="/static/favicons/apple-touch-icon.png"
+            href="/static/favicons/apple-touch-icon.png?v=2"
             rel="apple-touch-icon"
             sizes="180x180"
           />
+          {[196, 128, 96, 32, 16].flatMap((size) =>
+            ['light', 'dark'].map((theme) => (
+              <link
+                key={`${size}-${theme}`}
+                href={`/static/favicons/favicon-${size}x${size}${theme === 'light' ? '-light' : ''}.png?v=2`}
+                rel="icon"
+                sizes={`${size}x${size}`}
+                type="image/png"
+                media={`(prefers-color-scheme: ${theme})`}
+              />
+            ))
+          )}
           <link
-            href="/static/favicons/favicon-196x196.png"
+            href="/static/favicons/favicon.svg?v=2"
             rel="icon"
-            sizes="196x196"
-            type="image/png"
-          />
-          <link
-            href="/static/favicons/favicon-128x128.png"
-            rel="icon"
-            sizes="128x128"
-            type="image/png"
-          />
-          <link
-            href="/static/favicons/favicon-96x96.png"
-            rel="icon"
-            sizes="96x96"
-            type="image/png"
-          />
-          <link
-            href="/static/favicons/favicon-32x32.png"
-            rel="icon"
-            sizes="32x32"
-            type="image/png"
-          />
-          <link
-            href="/static/favicons/favicon-16x16.png"
-            rel="icon"
-            sizes="16x16"
-            type="image/png"
+            sizes="any"
+            type="image/svg+xml"
           />
           <link rel="alternate" type="application/rss+xml" href="/rss.xml" />
           <link

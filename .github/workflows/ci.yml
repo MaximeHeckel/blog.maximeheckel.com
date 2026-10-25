@@ -24,8 +24,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Playwright 1.57 WebKit supports Ubuntu 24.04, but not Ubuntu 26.04.
   install-cache:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Commit
         uses: actions/checkout@v4
@@ -38,23 +39,23 @@ jobs:
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-ubuntu-24.04-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            ${{ runner.os }}-ubuntu-24.04-pnpm-
       - name: Cache Cypress binary
         id: cache-cypress-binary
         uses: actions/cache@v4
         with:
           path: ~/.cache/Cypress
-          key: cypress-binary-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: cypress-binary-ubuntu-24.04-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            cypress-binary-
+            cypress-binary-ubuntu-24.04-
       - name: Install Dependencies
         if: steps.cache-dependencies.outputs.cache-hit != 'true' || steps.cache-cypress-binary.outputs.cache-hit != 'true'
         run: |
           pnpm install --frozen-lockfile
   lint-format:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install-cache
     steps:
       - name: Checkout Commit
@@ -68,9 +69,9 @@ jobs:
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-ubuntu-24.04-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            ${{ runner.os }}-ubuntu-24.04-pnpm-
       - name: Run lint
         run: |
           pnpm lint
@@ -78,7 +79,7 @@ jobs:
         run: |
           pnpm check-format
   type-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install-cache
     steps:
       - name: Checkout Commit
@@ -92,14 +93,14 @@ jobs:
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-ubuntu-24.04-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            ${{ runner.os }}-ubuntu-24.04-pnpm-
       - name: Check types
         run: |
           pnpm type-check
   unit-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install-cache
     steps:
       - name: Checkout Commit
@@ -113,14 +114,14 @@ jobs:
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-ubuntu-24.04-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            ${{ runner.os }}-ubuntu-24.04-pnpm-
       - name: Run test
         run: |
           pnpm test
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [lint-format, type-check, unit-test]
     steps:
       - name: Checkout Commit
@@ -134,9 +135,9 @@ jobs:
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-ubuntu-24.04-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            ${{ runner.os }}-ubuntu-24.04-pnpm-
       - name: Run build
         run: |
           pnpm build
@@ -152,7 +153,7 @@ jobs:
           path: next-build.tar
           retention-days: 1
   e2e-tests-chrome:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
       - name: Checkout Commit
@@ -166,17 +167,17 @@ jobs:
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-ubuntu-24.04-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            ${{ runner.os }}-ubuntu-24.04-pnpm-
       - name: Restore Cypress binary
         id: cache-cypress-binary
         uses: actions/cache@v4
         with:
           path: ~/.cache/Cypress
-          key: cypress-binary-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: cypress-binary-ubuntu-24.04-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            cypress-binary-
+            cypress-binary-ubuntu-24.04-
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -185,7 +186,7 @@ jobs:
         run: |
           tar -xf next-build.tar
       - name: Run cypress
-        uses: cypress-io/github-action@v6.7.6
+        uses: cypress-io/github-action@v7.4.7
         with:
           start: pnpm start:ci
           wait-on: http://127.0.0.1:3000
@@ -207,7 +208,7 @@ jobs:
           path: cypress/videos
           if-no-files-found: ignore
   e2e-tests-firefox:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
       - name: Checkout Commit
@@ -221,17 +222,17 @@ jobs:
         id: cache-dependencies
         with:
           path: node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-ubuntu-24.04-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            ${{ runner.os }}-ubuntu-24.04-pnpm-
       - name: Restore Cypress binary
         id: cache-cypress-binary
         uses: actions/cache@v4
         with:
           path: ~/.cache/Cypress
-          key: cypress-binary-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: cypress-binary-ubuntu-24.04-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            cypress-binary-
+            cypress-binary-ubuntu-24.04-
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -240,7 +241,7 @@ jobs:
         run: |
           tar -xf next-build.tar
       - name: Run cypress
-        uses: cypress-io/github-action@v6.7.6
+        uses: cypress-io/github-action@v7.4.7
         with:
           start: pnpm start:ci
           wait-on: http://127.0.0.1:3000
