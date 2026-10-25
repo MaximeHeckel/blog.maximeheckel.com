@@ -186,7 +186,7 @@ jobs:
         run: |
           tar -xf next-build.tar
       - name: Run cypress
-        uses: cypress-io/github-action@v6.7.6
+        uses: cypress-io/github-action@v7.4.7
         with:
           start: pnpm start:ci
           wait-on: http://127.0.0.1:3000
@@ -241,7 +241,7 @@ jobs:
         run: |
           tar -xf next-build.tar
       - name: Run cypress
-        uses: cypress-io/github-action@v6.7.6
+        uses: cypress-io/github-action@v7.4.7
         with:
           start: pnpm start:ci
           wait-on: http://127.0.0.1:3000
