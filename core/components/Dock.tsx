@@ -145,7 +145,7 @@ const Dock = () => {
           <Flex
             as="li"
             css={{
-              paddingLeft: 4,
+              paddingLeft: 6,
               // optical alignment
               marginBottom: 1,
             }}
