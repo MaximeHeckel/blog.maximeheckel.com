@@ -22,7 +22,6 @@ import {
   PROBE_STEPS,
   ProbeState,
   SELECTED_PROBE,
-  probeWeight,
 } from './probeScene';
 import { CAMERA, CUBE, SLAB, SURFACE_POINT } from './raymarchingScene';
 
@@ -158,10 +157,7 @@ function ProbeScene({
 
       {/* Lookup lines carry no arrowheads: probes are caches, not light sources. */}
       {NEIGHBORS.map((probe) => {
-        const weight = probeWeight(probe.id);
-        const opacity = probe.blocked
-          ? state.rejected * 0.6
-          : state.lookup * (0.45 + state.blend * weight);
+        const opacity = probe.blocked ? state.rejected : state.lookup;
         const obstruction = probe.blocked ? probe.hit : null;
         const [cx, cy] = project(obstruction?.point ?? SURFACE_POINT);
         return (
@@ -172,12 +168,13 @@ function ProbeScene({
               stroke={
                 probe.blocked ? 'var(--text-secondary)' : emphasis(state.blend)
               }
-              strokeWidth={1 + state.blend * weight * 2}
+              strokeWidth={1.5}
               strokeDasharray={probe.blocked ? '3 5' : undefined}
             />
             {obstruction ? (
               <path
                 d={`M ${cx - 4} ${cy - 4} l 8 8 M ${cx - 4} ${cy + 4} l 8 -8`}
+                transform={`rotate(45 ${cx} ${cy})`}
                 stroke="var(--text-secondary)"
                 strokeWidth={1.5}
               />

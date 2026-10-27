@@ -205,6 +205,10 @@ const ImageAccumulation = dynamic(
   () => import('./Widgets/GlobalIllumination/ImageAccumulation')
 );
 
+const ImageHysteresis = dynamic(
+  () => import('./Widgets/GlobalIllumination/ImageHysteresis')
+);
+
 const RaymarchingVisualizer = dynamic(
   () => import('./Widgets/Raymarching/RaymarchingVisualizer')
 );
@@ -473,6 +477,7 @@ const customComponents = {
   ProbeDiagram,
   ReflectionDiagram,
   ImageAccumulation,
+  ImageHysteresis,
   RaymarchingVisualizer,
   VolumetricRaymarchingVisualizer,
   BeforeAfterImage,
