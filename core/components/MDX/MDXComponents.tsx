@@ -185,6 +185,30 @@ const DemoSearch = dynamic(() => import('./Widgets/SemanticSearch/DemoSearch'));
 
 const DemoButton = dynamic(() => import('./Widgets/SemanticSearch/DemoButton'));
 
+const RaymarchingDiagram = dynamic(
+  () => import('./Widgets/GlobalIllumination')
+);
+
+const ProbeDiagram = dynamic(
+  () => import('./Widgets/GlobalIllumination/ProbeDiagram')
+);
+
+const HemisphereSamplingDiagram = dynamic(
+  () => import('./Widgets/GlobalIllumination/HemisphereSamplingDiagram')
+);
+
+const ReflectionDiagram = dynamic(
+  () => import('./Widgets/GlobalIllumination/ReflectionDiagram')
+);
+
+const ImageAccumulation = dynamic(
+  () => import('./Widgets/GlobalIllumination/ImageAccumulation')
+);
+
+const ImageHysteresis = dynamic(
+  () => import('./Widgets/GlobalIllumination/ImageHysteresis')
+);
+
 const RaymarchingVisualizer = dynamic(
   () => import('./Widgets/Raymarching/RaymarchingVisualizer')
 );
@@ -448,6 +472,12 @@ const customComponents = {
   Formatting,
   DemoSearch,
   DemoButton,
+  RaymarchingDiagram,
+  HemisphereSamplingDiagram,
+  ProbeDiagram,
+  ReflectionDiagram,
+  ImageAccumulation,
+  ImageHysteresis,
   RaymarchingVisualizer,
   VolumetricRaymarchingVisualizer,
   BeforeAfterImage,
