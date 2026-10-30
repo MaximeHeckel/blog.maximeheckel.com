@@ -10,7 +10,9 @@ import {
 import { cloudflareLoader } from 'lib/next-image-loader';
 import { AnimatePresence, motion, MotionConfig } from 'motion/react';
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
-import { memo, useId, useRef, useState } from 'react';
+import { memo, useContext, useId, useRef, useState } from 'react';
+
+import { ImageSizesContext } from '@core/components/Fullbleed/ImageSizesContext';
 
 import { Backdrop, ImageFrame, Popup, Trigger } from './Lightbox';
 
@@ -29,10 +31,7 @@ const RootImage = memo((props: ImageProps) => {
       }}
       loader={cloudflareLoader}
       {...props}
-      quality={100}
-      sizes="(max-width: 768px) 120vw,
-             75vw"
-      priority={props.priority}
+      quality={props.quality ?? 90}
     />
   );
 });
@@ -42,8 +41,11 @@ RootImage.displayName = 'Image';
 const MotionImageFrame = motion.create(ImageFrame);
 
 const Image = (props: ImageProps) => {
+  const imageSizes = useContext(ImageSizesContext);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogClosing, setIsDialogClosing] = useState(false);
+  const [loadedImageSrc, setLoadedImageSrc] = useState<string>();
+  const [isExpandedImageLoaded, setIsExpandedImageLoaded] = useState(false);
   const dialogActionsRef = useRef<Dialog.Root.Actions>(null!);
 
   const uniqueId = useId();
@@ -70,6 +72,9 @@ const Image = (props: ImageProps) => {
   const expandedFrameWidth = imageAspectRatio
     ? `min(97dvw, calc(90dvh * ${imageAspectRatio}))`
     : '97dvw';
+  const expandedImageSizes = imageAspectRatio
+    ? `min(97dvw, ${90 * imageAspectRatio}dvh)`
+    : '97dvw';
 
   const framedImageCSS: CSS = {
     width: '100%',
@@ -90,6 +95,7 @@ const Image = (props: ImageProps) => {
       setIsDialogClosing(true);
     } else {
       setIsDialogClosing(false);
+      setIsExpandedImageLoaded(false);
     }
 
     setIsDialogOpen(open);
@@ -152,7 +158,15 @@ const Image = (props: ImageProps) => {
                     },
                   }}
                 >
-                  <RootImage {...props} css={framedImageCSS} />
+                  <RootImage
+                    {...props}
+                    css={framedImageCSS}
+                    sizes={props.sizes ?? imageSizes}
+                    onLoad={(event) => {
+                      setLoadedImageSrc(event.currentTarget.currentSrc);
+                      props.onLoad?.(event);
+                    }}
+                  />
                 </MotionImageFrame>
               </div>
             }
@@ -233,6 +247,12 @@ const Image = (props: ImageProps) => {
                           aspectRatio: imageAspectRatio,
                           borderRadius: 'var(--border-radius-3)',
                           outline: 'none',
+                          // Keep the loaded article image visible during the upgrade.
+                          backgroundImage:
+                            loadedImageSrc && !isExpandedImageLoaded
+                              ? `url(${JSON.stringify(loadedImageSrc)})`
+                              : undefined,
+                          backgroundSize: '100% 100%',
                         }}
                         transition={{
                           layout: {
@@ -242,7 +262,18 @@ const Image = (props: ImageProps) => {
                           },
                         }}
                       >
-                        <RootImage {...props} css={framedImageCSS} />
+                        <RootImage
+                          {...props}
+                          css={framedImageCSS}
+                          sizes={expandedImageSizes}
+                          quality={props.quality ?? 100}
+                          loading="eager"
+                          priority={false}
+                          onLoad={(event) => {
+                            setIsExpandedImageLoaded(true);
+                            props.onLoad?.(event);
+                          }}
+                        />
                       </MotionImageFrame>
                     ) : null}
                   </AnimatePresence>
