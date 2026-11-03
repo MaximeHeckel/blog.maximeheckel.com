@@ -1,5 +1,7 @@
 # blog.maximeheckel.com
 
+hello world
+
 This is the main code base for [my blog](https://blog.maximeheckel.com).
 
 Coding assistants should start with [`AGENTS.md`](AGENTS.md). Tool-neutral conventions live in [`docs/agent-guidelines/`](docs/agent-guidelines/).
