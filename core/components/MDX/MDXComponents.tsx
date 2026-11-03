@@ -189,6 +189,14 @@ const RaymarchingDiagram = dynamic(
   () => import('./Widgets/GlobalIllumination')
 );
 
+const LightBounceDiagram = dynamic(
+  () => import('./Widgets/GlobalIllumination/LightBounceDiagram')
+);
+
+const BlinnPhongDiagram = dynamic(
+  () => import('./Widgets/GlobalIllumination/BlinnPhongDiagram')
+);
+
 const ProbeDiagram = dynamic(
   () => import('./Widgets/GlobalIllumination/ProbeDiagram')
 );
@@ -473,6 +481,8 @@ const customComponents = {
   DemoSearch,
   DemoButton,
   RaymarchingDiagram,
+  BlinnPhongDiagram,
+  LightBounceDiagram,
   HemisphereSamplingDiagram,
   ProbeDiagram,
   ReflectionDiagram,
