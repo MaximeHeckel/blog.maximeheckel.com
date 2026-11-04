@@ -1,0 +1,364 @@
+---
+title: 'Lighting That Feels Just Right'
+seoTitle: 'Lighting That Feels Just Right: An Exploration of Real-Time Global Illumination'
+subtitle: TBD
+date: '2026-11-17T08:00:00.000Z'
+updated: '2026-11-17T08:00:00.000Z'
+categories: []
+slug: lighting-that-feels-just-right
+type: 'blogPost'
+featured: false
+---
+
+In [The Gap](https://vimeo.com/85040589), Ira Glass talks about the frustration of your output falling short of what you had in mind when you started practicing a new skill. The vision is there, but the result, or the skill to achieve it, not quite. 
+A feeling a bit too familiar to me in my shader work: getting 90% of the way toward a visual I've pictured for so long, then being unable to pinpoint what makes it odd. Nothing more annoying. Though after comparing my work with many creatives out there, I realized that more often than not, that *gap* was something as “simple” as **lighting**.
+
+Just like in real life, the way light interacts with surfaces and materials is key to making a scene look and feel a certain way. Think about lighting in movies, or even in your own home. In my work, my lighting knowledge was still lacking. My shadows felt harsh and my surfaces disconnected, lacking color bleeding or color contribution from the sky, to name a few. 
+
+This led me to explore more advanced techniques to solve this, all the way to path tracing <FootnoteRef id="1" /> which gave me [results](https://x.com/MaximeHeckel/status/2098782063734161447) beyond what I thought I was capable of visually
+though still too intensive to use in my projects. Path tracing, however, showed me what real **Global Illumination** looked like and what it could bring to my scenes: illuminated white walls reflecting light into shadowed areas, or colored objects tinting their surroundings. It was the lighting I had been missing all along. So I started exploring cheaper ways to approximate that same indirect lighting in real time.
+
+// VIDEO
+
+As you may guess, this sent me on yet *another side quest*, which became the catalyst for this article. I spent several weeks teaching myself GI and building demos each step of the way. I started with Screen-Space Global Illumination, then explored a more practical and flexible probe-based approach, before finally combining the results with reflections, volumetric lighting, and atmospheric scattering contributions, all topics I've dived into earlier in my journey. I’m excited to show you the visuals I achieved, and even more so, to share how I got there.
+
+<Callout variant="info" label="Sources">
+
+// FORMAT SOURCES
+
+* Sphere intersection: Ray Tracing in One Weekend — Ray-Sphere Intersection, deriving the quadratic equation.
+* Box intersection: Ray Tracing: The Next Week — Axis-Aligned Bounding Boxes, explaining the slab method.
+* https://raytracing.github.io/books/RayTracingInOneWeekend.html#diffusematerials/truelambertianreflection
+* https://pema.dev/obsidian/math/light-transport/cosine-weighted-sampling.html
+* https://jcgt.org/published/0008/02/01/
+* https://ciechanow.ski/lights-and-shadows/
+
+</Callout>
+
+<SupportCallout />
+
+## Lighting Intuition
+
+First, let’s revisit the lighting model we’ve used many times throughout my articles: the Blinn-Phong lighting model <FootnoteRef id="2" />. It’s easy to understand and very handy for giving materials simple diffuse shading and highlights with just a few lines of code.
+
+Intuitively, it works as follows:
+
+<BlinnPhongDiagram />
+
+* When the normal of a point on a surface is perfectly aligned with the light direction, that point receives the most light.
+* As the angle between the normal and the light direction increases, the point receives less and less light.
+* Finally, once the normal is perpendicular to, or further from, the light direction, the point receives no light.
+
+That behavior is what’s represented by the diffuse lighting term `max(dot(normal, lightDirection), 0.0)`. However, this only accounts for the direct light, which means:
+
+- Surfaces facing away from the light are completely dark.
+- Objects blocking the light leave shadows and hide surface details.
+- A brightly lit surface contributes no lighting at all to the objects or scene around it.
+
+Adding ambient lighting to brighten up those darker regions is a quick solution, but it doesn’t account for where the light comes from, which surfaces it reaches, or the colors that are picked up along the way.
+
+What I learned through path tracing is that light keeps traveling after it hits a surface; it **bounces**, thus ending up illuminating surfaces it did not reach directly.
+
+<LightBounceDiagram />
+
+A lit white wall can contribute light to the back of objects that the light didn't hit, or an orange sphere can leave an orange tint on the floor it touches <FootnoteRef id="3" /> (//color bleeding).
+These *side effects* can fit under the umbrella of **indirect lighting** and are what we’ll be computing, but I should rather say *approximate*, throughout this article when exploring cheaper ways to achieve Global Illumination.
+
+Below is an example of how much indirect light, in this case implemented through the methods we'll see, can change a given scene:
+
+// BEFORE / AFTER
+
+## Tracing Light from Pixels
+
+Having worked with Screen Space post-processing effects before through Volumetric Lighting or Atmospheric Scattering <FootnoteRef id="4" />, I wanted to approach GI from familiar ground. My goal was to see whether leveraging pixels from surfaces visible on screen at any given frame was enough to compute pleasing yet convincing indirect light.
+
+Like in many other screen-space rendering techniques, our starting point here is a simple rendered frame. **Our first step is to establish the foundations to estimate the indirect light that contributes to any given pixel**. 
+
+Of course, the color of the pixel is not enough for us to deduce where the surfaces are and how they relate to each other in space. In our Volumetric Lighting work, we had to reconstruct a surface’s position to know when to stop marching a ray from the camera <FootnoteRef id="5" />. In this case, however, we’ll start our *raymarching* from a reconstructed position in our scene and trace rays toward other surfaces to estimate the light they contribute to that position.
+
+At a high level, this process works as follows, for any given pixels of the frame:
+
+1. We reconstruct the position of the surface
+2. We use its normal to orient a hemisphere and sample directions with it
+3. We raymarch from the point on the surface along those directions
+4. We **compare each ray’s depth with the scene’s depth to find another surface**
+5. We sample that surface’s color to estimate its lighting contribution
+6. We average the samples and apply the receiving **light/color/albedo** to estimate the indirect lighting for said position. The albedo, in this case, is the receiving surface’s base color.
+
+I detailed the process step-by-step, visually, in the interactive diagram below. It’s a simplified version of what actually happens, but it will give you a good idea of the mechanisms at play here:
+
+<RaymarchingDiagram />
+
+<Callout variant="info">
+
+This diagram illustrates the sampling process using simple geometry. In our screen-space implementation, we detect intersections using the camera’s depth buffer and read lighting from the rendered image.
+
+</Callout>
+
+### Pixels to surfaces
+
+For this, we will leverage **the depth and normal map of our frame**. Together, these 2 textures give us the information we need to know where to start our rays and orient them. To do so, we’ll:
+
+* Create a `scenePass` that renders our scene into textures that we’ll later access from our post-processing effect. Using the `mrt` TSL function, we’re capturing the rendered colors, normals, and albedo, or “base color”.
+
+```tsx
+// sample: 0 disables multisample antialiasing for this pass, simplifying depth sampling.
+const scenePass = pass(scene, camera, { samples: 0 });
+
+scenePass.setMRT(
+  mrt({
+    output,
+    normal: normalWorld,
+    albedo: materialColor,
+  }),
+);
+
+const sceneColor = scenePass.getTextureNode('output');
+const depth = scenePass.getTextureNode('depth');
+const normals = scenePass.getTextureNode('normal');
+const albedo = scenePass.getTextureNode('albedo');
+```
+
+* Recover the position relative to the camera and transform that position into world space. 
+
+```tsx
+const viewPosition = getViewPosition(
+  uv(),
+  depth.r,
+  uniform(camera.projectionMatrixInverse),
+);
+
+const worldPosition = uniform(camera.matrixWorld).mul(
+  vec4(viewPosition, 1),
+).xyz;
+```
+
+<Callout variant="info">
+
+The helpers used here first reconstruct the surface’s position relative to the camera. and then apply the camera’s world matrix to express that position in world space.
+
+Underneath this code, we’re doing the same position reconstruction process I explained in [Shaping Light > Coordinate Systems and Transformations](https://blog.maximeheckel.com/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/#coordinate-systems-and-transformations
+) except expressed in TSL this time around.
+
+</Callout>
+
+With this, we can get the 3D position of the surface visible at each pixel of our rendered frame, and paired with our normal data, we also know which way said surface faces. These coordinates and surface orientation will serve as the starting point for our raymarching process, from which we’ll estimate indirect light contributions.
+
+### Hemisphere and rays
+
+A surface can receive light from many directions, so we can’t just trace a single ray and hope to get a reliable estimate of its indirect lighting. Instead, we’ll trace several rays across a hemisphere, in the examples below, 8 per pixel, to find other surfaces and estimate the light they contribute.
+
+For our opaque surfaces, we’ll sample directions within the hemisphere *above* each surface, oriented along its normal. We’ll use a **cosine-weighted hemisphere** to put more weight on directions closer to the surface’s normal rather than those grazing the surface.
+
+<Callout variant="info">
+
+For more information as to why we use this type of distribution, I’d invite you to read [this note on cosine-Weighted Hemisphere Sampling](https://pema.dev/obsidian/math/light-transport/cosine-weighted-sampling.html) from <Anchor discreet favicon href="https://twitter.com/pemathedev">pemathedev</Anchor>.
+
+In it, they talk about how, given an incoming light, directions near the surface’s normal contribute more to the diffuse lighting than directions grazing the surface. With cosine-weighted sampling, we end up tracing more rays near that normal, giving us a less noisy estimate with the same number of rays.
+
+// ALSO CALLOUT SIMPLIFICATION
+
+</Callout>
+
+The code snippet below establishes this distribution of directions:
+
+```wgsl title=Defining our cosine-weighted hemisphere
+let n = normalize(surfaceWorldNormal);
+
+// Build a local coordinate frame around the surface normal.
+var axis = vec3f(0.0, 0.0, 1.0);
+
+if (abs(n.z) > 0.999) {
+  axis = vec3f(0.0, 1.0, 0.0);
+}
+
+let tangent = normalize(cross(axis, n));
+let bitangent = cross(n, tangent);
+
+let pixel = vec2u(screenUV * samplingResolution);
+
+// Generate eight cosine-weighted hemisphere directions.
+for (var i = 0u; i < 8u; i++) {
+  let random = hash23(
+    vec3f(vec2f(pixel), f32(i + 16u))
+  );
+
+  // Give each ray its own interval to reduce clumping.
+  let u1 = (f32(i) + random.x) / 8.0;
+  let u2 = random.y;
+
+  // Sample a disk, then lift the sample onto a hemisphere.
+  let radius = sqrt(u1);
+  let phi = 6.28318530718 * u2;
+
+  // Express the sampled direction in world space.
+  let direction =
+    tangent * (radius * cos(phi))
+    + bitangent * (radius * sin(phi))
+    + n * sqrt(1.0 - u1);
+
+  // WE WILL TRACE RAYS FROM HERE
+}
+```
+
+It may seem obtuse at first, but it can luckily be broken down into very simple steps:
+
+<HemisphereSamplingDiagram />
+
+From there, we can use those newly defined directions to trace our rays. Each of the 8 rays starts at the surface position we reconstructed earlier:
+
+```wgsl
+let direction = normalize(rayDirection);
+let origin = surfaceWorldPosition + normalize(surfaceWorldNormal) * 0.05;
+```
+
+These will each help us find other visible surfaces and sample the corresponding rendered color, giving us an estimate of the light coming from that direction. For this process we will:
+
+* Advance along the ray in small steps in view space, projecting each step onto the screen
+
+```wgsl
+let originView = viewMatrix * vec4f(origin, 1.0);
+let directionView = viewMatrix * vec4f(direction, 0.0);
+
+let size = vec2i(textureDimensions(depthMap));
+let stepSize = maxDistance / f32(stepCount);
+
+var previousDelta = -1.0;
+
+for (var i = 0u; i < stepCount; i++) {
+  let distance = (f32(i) + marchOffset) * stepSize;
+  let rayViewPosition = originView + directionView * distance;
+
+  // Stop if the ray reaches the camera's near plane.
+  if (rayViewPosition.z >= -nearPlane) {
+    break;
+  }
+
+  // Project the position into clip space, then screen UVs.
+  let clip = projection * rayViewPosition;
+  let ndc = clip.xy / clip.w;
+  let sampleUV = vec2f(
+    ndc.x * 0.5 + 0.5,
+    0.5 - ndc.y * 0.5
+  );
+
+  // Stop when the ray leaves the screen.
+  if (any(sampleUV < vec2f(0.0)) ||
+      any(sampleUV >= vec2f(1.0))) {
+    break;
+  }
+
+  // Insert the depth comparison below here.
+}
+
+// No intersection found.
+return vec3f(0.0);
+```
+
+* Compare the ray’s depth with the sampled surface depth to detect when the ray crosses a surface
+
+```wgsl
+let pixel = vec2i(sampleUV * vec2f(size));
+let sampleDepth = textureLoad(depthMap, pixel, 0);
+
+// Background pixels contain no surface to intersect.
+if (sampleDepth >= 1.0) {
+  previousDelta = -1.0;
+  continue;
+}
+
+// Reconstruct the visible surface's view-space depth.
+let surfaceViewH =
+  inverseProjection * vec4f(ndc, sampleDepth, 1.0);
+
+let surfaceViewZ = surfaceViewH.z / surfaceViewH.w;
+let delta = surfaceViewZ - rayViewPosition.z;
+
+// Detect a front-to-back crossing within a thickness tolerance.
+if (previousDelta < 0.0 && delta >= 0.0 && delta <= 0.2) {
+  let hitUV = (vec2f(pixel) + 0.5) / vec2f(size);
+
+  // XY stores the hit coordinates; Z marks a successful hit.
+  return vec3f(hitUV, 1.0);
+}
+
+previousDelta = delta;
+```
+
+<Callout variant="info" label="Depth test">
+
+`delta` here represents the signed depth difference between the surface and our ray sample:
+
+* `delta < 0` means the ray sample is in front of the surface
+* `delta>= 0` means the ray is at or behind the surface
+* `0 <= delta <= 0.2` is a thickness tolerance; the sample is within a small region behind the surface that we accept as a possible intersection.
+
+We consider a `hit` the moment `delta` changes sign between two steps within that tolerance region. We reject any step beyond that threshold.
+
+</Callout>
+
+Through this, we obtain a **hit** coordinate:
+
+* `x, y`  represent the UV coordinates of the intersection point.
+* `z` is a flag representing success: a hit returns `1.0`, a miss `0.0`.
+
+And we can use these UV hit coordinates to look up the rendered color in the color texture of our scene:
+
+```wgsl title=Sample the rendered color when there's a hit
+if (hit.z > 0.0) {
+  let hitPixel = vec2i(hit.xy * vec2f(size));
+  let hitNormal = normalize(
+    textureLoad(normalMap, hitPixel, 0).xyz
+  );
+
+  // Only gather light from a surface facing the receiving point.
+  if (dot(hitNormal, -direction) > 0.0) {
+    incoming += textureLoad(colorMap, hitPixel, 0).rgb;
+  }
+}
+```
+
+* `hit.xy * size` converts the UV into pixel coordinate
+* `textureLoad(colorMap, hitPixel, 0)` reads the pixel rendered color
+* `dot(hitNormal, -direction) > 0.0` makes sure that the hit surface faces the point receiving the light so that we only gather light from outward-facing sides.
+* `incoming+= accumulates` that color to the contributions from other rays of the same hemisphere, which we then 
+
+Finally, we can average the contributions from all eight rays and multiply the result by the receiving surface albedo to tint the indirect light contribution. This indirect light amount is then added to the original scene color, before setting the combined result as the output of our GI post-processing pass:
+
+```ts title=Combine direct and indirect lighting
+const currentScene = texture(scenePass.getTexture('output'));
+
+const combined = vec4(
+    currentScene.rgb.add(indirect.rgb),
+    currentScene.a,
+);
+```
+
+We have now computed and overlaid the indirect light from all visible surfaces onto the rendered scene, giving us a first implementation of Global Illumination as a Screen-Space effect. The playground below showcases the result of our code so far:
+
+// SANDPACK 1
+
+As you can see:
+
+* The result is *very* noisy. That is expected; for each pixel reconstructed as a point on the surfaces of our scenes, we only cast 8 rays. If you change the amount of rays per point, the result gets better, but we’ll run into performance issues.
+* There is some **color bleeding** showing up in the scene thanks to the indirect light coming from colored surfaces gives a subtle tint.
+
+### Temporal accumulation
+
+<ImageHysteresis />
+
+<br/>
+<br/>
+
+<ProbeDiagram />
+
+<br/>
+<br/>
+
+<ReflectionDiagram />
+
+<br/>
+<br/>
+
+## Test
+Content
