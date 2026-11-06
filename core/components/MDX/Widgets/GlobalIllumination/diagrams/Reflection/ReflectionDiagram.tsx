@@ -3,7 +3,7 @@ import { useId, useState } from 'react';
 
 import { Slider } from '@core/components/Slider';
 
-import { Diagram, DiagramStep } from './Diagram';
+import { Diagram, DiagramStep } from '../shared/Diagram';
 import {
   Point3,
   add,
@@ -14,8 +14,8 @@ import {
   intersectBox,
   multiply,
   visibleBoxFaces,
-} from './geometry';
-import { CAMERA, CUBE, SLAB, SURFACE_POINT } from './raymarchingScene';
+} from '../shared/geometry';
+import { CAMERA, CUBE, SLAB, SURFACE_POINT } from '../shared/scene';
 
 const Root = styled('div', {
   display: 'flex',

@@ -1,6 +1,7 @@
 import { useId } from 'react';
 
-import { Diagram } from './Diagram';
+import { Diagram } from '../shared/Diagram';
+import { Point3, add, arrowPaths, dot, multiply } from '../shared/geometry';
 import {
   LIGHT,
   COMPARISON_POINTS,
@@ -8,7 +9,6 @@ import {
   LIGHT_POSITION,
   lightingProjection,
 } from './blinnPhongScene';
-import { Point3, add, arrowPaths, dot, multiply } from './geometry';
 
 export interface BlinnPhongDiagramProps {
   className?: string;

@@ -1,6 +1,12 @@
-import type { DiagramStep } from './Diagram';
-import { Point3, add, intersectBox, multiply, subtract } from './geometry';
-import { CAMERA, CUBE, SLAB, SURFACE_POINT } from './raymarchingScene';
+import type { DiagramStep } from '../shared/Diagram';
+import {
+  Point3,
+  add,
+  intersectBox,
+  multiply,
+  subtract,
+} from '../shared/geometry';
+import { CAMERA, CUBE, SLAB, SURFACE_POINT } from '../shared/scene';
 
 const spacing = 1.2;
 const spline = (distance: number) => {

@@ -1,6 +1,6 @@
 import { useId } from 'react';
 
-import { Diagram } from './Diagram';
+import { Diagram } from '../shared/Diagram';
 import {
   arrowPaths,
   createProjection,
@@ -9,7 +9,7 @@ import {
   Point3,
   Viewport,
   visibleBoxFaces,
-} from './geometry';
+} from '../shared/geometry';
 import {
   HEMISPHERE_SAMPLES,
   SAMPLING_STEPS,

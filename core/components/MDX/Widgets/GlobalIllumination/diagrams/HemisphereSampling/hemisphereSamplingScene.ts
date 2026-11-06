@@ -1,5 +1,5 @@
-import { DiagramStep } from './Diagram';
-import { add, multiply, Point3 } from './geometry';
+import { DiagramStep } from '../shared/Diagram';
+import { add, multiply, Point3 } from '../shared/geometry';
 
 const cross = (a: Point3, b: Point3): Point3 => [
   a[1] * b[2] - a[2] * b[1],

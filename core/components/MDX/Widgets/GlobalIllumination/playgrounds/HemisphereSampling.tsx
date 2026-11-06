@@ -2,7 +2,7 @@ import { useId, useState } from 'react';
 
 import { Slider } from '@core/components/Slider';
 
-import { ShaderPlayground } from '../ShaderPlayground';
+import { ShaderPlayground } from '../../ShaderPlayground';
 
 const fragment = `#version 300 es
 precision highp float;

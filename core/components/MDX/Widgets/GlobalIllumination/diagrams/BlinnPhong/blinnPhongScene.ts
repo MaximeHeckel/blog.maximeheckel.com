@@ -1,4 +1,4 @@
-import { DiagramStep } from './Diagram';
+import { DiagramStep } from '../shared/Diagram';
 import {
   Point3,
   Viewport,
@@ -6,7 +6,7 @@ import {
   dot,
   mix,
   multiply,
-} from './geometry';
+} from '../shared/geometry';
 
 export const normalize = (v: Point3): Point3 =>
   multiply(v, 1 / Math.hypot(...v));

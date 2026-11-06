@@ -1,6 +1,6 @@
 import { ReactNode, useId } from 'react';
 
-import { Diagram } from './Diagram';
+import { Diagram } from '../shared/Diagram';
 import {
   Point3,
   Viewport,
@@ -11,16 +11,9 @@ import {
   mix,
   multiply,
   visibleBoxFaces,
-} from './geometry';
-import {
-  CAMERA,
-  CUBE,
-  RAYS,
-  RaymarchingState,
-  SLAB,
-  STEPS,
-  SURFACE_POINT,
-} from './raymarchingScene';
+} from '../shared/geometry';
+import { CAMERA, CUBE, SLAB, SURFACE_POINT } from '../shared/scene';
+import { RAYS, RaymarchingState, STEPS } from './raymarchingScene';
 
 export interface RaymarchingDiagramProps {
   className?: string;

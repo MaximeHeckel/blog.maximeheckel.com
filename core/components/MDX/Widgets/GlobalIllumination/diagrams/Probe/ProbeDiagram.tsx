@@ -1,6 +1,6 @@
 import { useId } from 'react';
 
-import { Diagram } from './Diagram';
+import { Diagram } from '../shared/Diagram';
 import {
   Point3,
   Viewport,
@@ -11,7 +11,8 @@ import {
   dot,
   intersectBox,
   visibleBoxFaces,
-} from './geometry';
+} from '../shared/geometry';
+import { CAMERA, CUBE, SLAB, SURFACE_POINT } from '../shared/scene';
 import {
   SAMPLE_AXES,
   orientSample,
@@ -23,7 +24,6 @@ import {
   ProbeState,
   SELECTED_PROBE,
 } from './probeScene';
-import { CAMERA, CUBE, SLAB, SURFACE_POINT } from './raymarchingScene';
 
 export interface ProbeDiagramProps {
   className?: string;

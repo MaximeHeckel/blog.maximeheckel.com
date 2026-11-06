@@ -1,6 +1,13 @@
-import { DiagramStep } from './Diagram';
-import { Point2, Point3, add, dot, multiply, subtract } from './geometry';
-import { SLAB } from './raymarchingScene';
+import { DiagramStep } from '../shared/Diagram';
+import {
+  Point2,
+  Point3,
+  add,
+  dot,
+  multiply,
+  subtract,
+} from '../shared/geometry';
+import { SLAB } from '../shared/scene';
 
 export const BOUNCE_SPHERE = {
   center: [-2.6, SLAB.max[1] + 0.65, 0.2] as Point3,

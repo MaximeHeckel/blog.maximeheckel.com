@@ -10,7 +10,7 @@ import { useEffect, useId, useState } from 'react';
 import { Select } from '@core/components/Select';
 import { Slider } from '@core/components/Slider';
 
-import { ShaderPlayground } from '../ShaderPlayground';
+import { ShaderPlayground } from '../../ShaderPlayground';
 
 const fragment = `#version 300 es
 precision highp float;

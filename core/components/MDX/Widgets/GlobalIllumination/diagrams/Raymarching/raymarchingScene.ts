@@ -1,20 +1,6 @@
-import type { DiagramStep } from './Diagram';
-import { Box3, Camera, Point3, intersectBox } from './geometry';
-
-export const CAMERA: Camera = {
-  azimuth: 225,
-  elevation: 35.264,
-  zoom: 1,
-  target: [0, -0.1, 0.1],
-  span: [9.4, 6.8],
-};
-
-export const SLAB: Box3 = {
-  min: [-3.74, -0.1968, -2.76],
-  max: [3.74, -0.012, 2.96],
-};
-export const CUBE: Box3 = { min: [0, 0, -0.65], max: [1.7, 1.7, 1.05] };
-export const SURFACE_POINT: Point3 = [-1.05, 0.025, 0.3];
+import type { DiagramStep } from '../shared/Diagram';
+import { Point3, intersectBox } from '../shared/geometry';
+import { CAMERA, CUBE, SURFACE_POINT } from '../shared/scene';
 
 // Keep the original sample distribution and both cube hits, displaying only
 // six rays for readability. Intersections are analytic, not depth-buffer tests:

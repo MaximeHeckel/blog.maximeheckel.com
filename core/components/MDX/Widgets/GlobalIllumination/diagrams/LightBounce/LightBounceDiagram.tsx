@@ -1,6 +1,6 @@
 import { useId } from 'react';
 
-import { Diagram } from './Diagram';
+import { Diagram } from '../shared/Diagram';
 import {
   Point3,
   add,
@@ -9,7 +9,8 @@ import {
   dot,
   multiply,
   visibleBoxFaces,
-} from './geometry';
+} from '../shared/geometry';
+import { CAMERA, CUBE, SLAB } from '../shared/scene';
 import {
   BOUNCE_HITS,
   BOUNCE_LIGHT,
@@ -19,7 +20,6 @@ import {
   sphereShadowPath,
   growingRay,
 } from './lightBounceScene';
-import { CAMERA, CUBE, SLAB } from './raymarchingScene';
 
 export interface LightBounceDiagramProps {
   className?: string;
