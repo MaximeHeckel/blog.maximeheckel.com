@@ -436,8 +436,8 @@ try {
 
 readIndex = writeIndex;
 
-// Cap the averaging window without periodically discarding history.
-count = Math.min(count + 1, 1023);
+// Cap the averaging window at 128 frames without discarding history.
+count = Math.min(count + 1, 127);
 sampleIndex = (sampleIndex + 1) >>> 0;
 ```
 
@@ -730,17 +730,19 @@ This function then acts as our *lookup* into the probe atlas to return the overa
 
 The playground below implements this first pass at our probe-based Global Illumination. You’ll find in it the complete code putting together our probe compute stage with our final effect:
 
-// SANDPACK 3
+<GlobalIlluminationSandpack scene="scene3" />
 
 Notice how:
 
 * We do still have colored surfaces contributing light to surrounding surfaces
 * We get a decent output at a lower performance cost. Even with a loose probe grid and fewer rays, the effect is noticeable and adds a lot to the scene’s beautiful lighting and realism.
 * Moving the camera preserves the probe’s lighting and history! This is a big win compared to the screen-space Global Illumination counterpart we saw earlier
-* The lighting is, however, a bit less accurate. Maybe this scene is not the best to surface that, but the indirect light is just softer and less precise.
+* The lighting is, however, a bit less accurate. Maybe this scene is not the best to surface that, but the indirect light is just softer and less precise (ghosting).
 * On top of that, we can now have off-screen light, or emitters, and those will be taken into account from the get-go.
 
-Also, you should try to toggle the night mode to see how emissive surfaces also contribute to the scene's indirect lighting, which we got almost for free with the current implementation. No additional tracing necessary!
+// PROBE DENSITY SETTING!
+
+Despite its flaws, it ended up being more usable for my projects like this. Oh also, you should try to toggle the night mode to see how emissive surfaces also contribute to the scene's indirect lighting, which we got almost for free with the current implementation. No additional tracing necessary!
 
 ```wgsl
 // 0 if day, 1 if night
@@ -788,9 +790,9 @@ Here, we still read previous estimates from the probe atlas, but instead of dete
 
 Below is an updated version of our scene featuring probe-based Global Illumination, this time, with hysteresis.
 
-// SANDPACK 4
+<GlobalIlluminationSandpack scene="scene4" />
 
-// THERE”S STILL GHOSTING AND FLICKERING BUT IT IS MUCH BETTER THAN BEFORE
+// THERE”S STILL GHOSTING AND FLICKERING BUT IT IS MUCH BETTER THAN BEFORE - MY USE CASE -> LIGHT CHANGING SLOWLY OVER TIME
 
 ## Reflections, Sky Light, and Final Touches
 

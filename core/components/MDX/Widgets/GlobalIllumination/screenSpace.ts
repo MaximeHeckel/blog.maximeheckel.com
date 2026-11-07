@@ -313,7 +313,9 @@ fn hash23(seed: vec3f) -> vec2f {
 }
 `;
 
-const scene = `import { useControls } from 'leva';
+export const createScene = (
+  shadowNormalBias = 0
+) => `import { useControls } from 'leva';
 import { useMemo } from 'react';
 import * as THREE from 'three/webgpu';
 
@@ -353,6 +355,7 @@ const SceneLight = () => {
         shadow-camera-far={25}
         // Offset the receiver enough for the wider PCF kernel to avoid self-shadowing.
         shadow-bias={-0.005}
+        shadow-normalBias={${shadowNormalBias}}
       />
     </>
   );
@@ -439,7 +442,7 @@ const screenSpace = {
   '/App.js': { code: app },
   '/GIEffect.js': { code: effect, active: true },
   '/gi.wgsl': { code: gi },
-  '/Scene.js': { code: scene },
+  '/Scene.js': { code: createScene() },
   '/Sky.js': { code: sky },
 } satisfies SandpackFiles;
 

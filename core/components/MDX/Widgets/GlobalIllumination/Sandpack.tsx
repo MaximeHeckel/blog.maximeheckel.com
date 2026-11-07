@@ -5,6 +5,8 @@ import { useRef } from 'react';
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
 
+import hysteresis from './hysteresis';
+import probeBased from './probeBased';
 import screenSpace from './screenSpace';
 import temporalAccumulation from './temporalAccumulation';
 
@@ -30,7 +32,7 @@ canvas {
 }`;
 
 interface GlobalIlluminationSandpackProps {
-  scene: 'scene1' | 'scene2';
+  scene: 'scene1' | 'scene2' | 'scene3' | 'scene4';
 }
 
 const GlobalIlluminationSandpack = (props: GlobalIlluminationSandpackProps) => {
@@ -43,7 +45,12 @@ const GlobalIlluminationSandpack = (props: GlobalIlluminationSandpackProps) => {
 
   const autorun = tier > 2;
 
-  const scenes = { scene1: screenSpace, scene2: temporalAccumulation };
+  const scenes = {
+    scene1: screenSpace,
+    scene2: temporalAccumulation,
+    scene3: probeBased,
+    scene4: hysteresis,
+  };
 
   return (
     <Box ref={ref}>

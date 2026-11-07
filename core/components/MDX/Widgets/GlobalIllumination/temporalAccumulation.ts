@@ -1,6 +1,6 @@
 import type { SandpackFiles } from '@codesandbox/sandpack-react';
 
-import screenSpace from './screenSpace';
+import screenSpace, { createScene } from './screenSpace';
 
 const effect = `import accumulationShader from '!!raw-loader!./accumulation.wgsl';
 import giShader from '!!raw-loader!./gi.wgsl';
@@ -28,6 +28,7 @@ import * as THREE from 'three/webgpu';
 
 const gatherIndirect = wgslFn(giShader);
 const averageIndirect = wgslFn(accumulationShader);
+const HISTORY_LIMIT = 128;
 
 export default function GIEffect() {
   const { gl, scene, camera } = useThree();
@@ -40,7 +41,7 @@ export default function GIEffect() {
     'Temporal accumulation',
     () => ({
       accumulate: { value: true, label: 'Accumulate' },
-      frames: { value: 0, disabled: true, label: 'Frames' },
+      frames: { value: 0, step: 1, disabled: true, label: 'Frames' },
       'Reset history': button(() => {
         resetRequested.current = true;
       }),
@@ -210,10 +211,10 @@ export default function GIEffect() {
       }
       readIndex = writeIndex;
       if (count === 0 || sampleIndex % 8 === 0) {
-        setTemporal({ frames: Math.min(count + 1, 1024) });
+        setTemporal({ frames: Math.min(count + 1, HISTORY_LIMIT) });
       }
       // Cap the averaging window, without periodically throwing away history.
-      count = Math.min(count + 1, 1023);
+      count = Math.min(count + 1, HISTORY_LIMIT - 1);
       sampleIndex = (sampleIndex + 1) >>> 0;
     };
 
@@ -409,6 +410,8 @@ const accumulation = `fn averageIndirect(current: vec3f, previous: vec3f, count:
 
 const temporalAccumulation = {
   ...screenSpace,
+  // Lift shadow lookups off the surface at this grazing light angle.
+  '/Scene.js': { code: createScene(0.03) },
   '/GIEffect.js': { code: effect, active: true },
   '/gi.wgsl': { code: gi },
   '/accumulation.wgsl': { code: accumulation },
