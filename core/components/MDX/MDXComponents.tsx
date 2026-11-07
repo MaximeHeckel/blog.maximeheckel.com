@@ -199,6 +199,14 @@ const BlinnPhongDiagram = dynamic(
     import('./Widgets/GlobalIllumination/diagrams/BlinnPhong/BlinnPhongDiagram')
 );
 
+const LightBounceDiagram = dynamic(
+  () => import('./Widgets/GlobalIllumination/LightBounceDiagram')
+);
+
+const BlinnPhongDiagram = dynamic(
+  () => import('./Widgets/GlobalIllumination/BlinnPhongDiagram')
+);
+
 const ProbeDiagram = dynamic(
   () => import('./Widgets/GlobalIllumination/diagrams/Probe/ProbeDiagram')
 );
