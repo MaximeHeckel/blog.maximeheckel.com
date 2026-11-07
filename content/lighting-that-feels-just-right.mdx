@@ -336,7 +336,7 @@ const combined = vec4(
 
 We have now computed and overlaid the indirect light from all visible surfaces onto the rendered scene, giving us a first implementation of Global Illumination as a Screen-Space effect. The playground below showcases the result of our code so far:
 
-// SANDPACK 1
+<GlobalIlluminationSandpack scene="scene1" />
 
 As you can see:
 
@@ -407,12 +407,13 @@ const post = new THREE.PostProcessing(renderer, combinedOutput);
 // Initialize once, outside the render loop.
 let readIndex = 0;
 let count = 0;
+let sampleIndex = 0;
 
 // ...
 
 // Run the following on each frame.
 historyCount.value = count;
-frameIndex.value = count
+frameIndex.value = sampleIndex
 
 const writeIndex = 1 - readIndex;
 
@@ -436,8 +437,9 @@ try {
 
 readIndex = writeIndex;
 
-// Up to 1024-sample accumulation, and after that we reset
-count = count === 1023 ? 0 : count + 1;
+// Cap the averaging window without periodically discarding history.
+count = Math.min(count + 1, 1023);
+sampleIndex = (sampleIndex + 1) >>> 0;
 ```
 
 In the code snippet above, we’re defining dedicated post-processing passes:
@@ -500,7 +502,7 @@ for (var i = 0u; i < 8u; i++) {
 Accumulating more rays reduces the noise we saw earlier and produces smoother, more stable indirect lighting, all  while keeping eight rays per sampled surface point per frame!
 The playground below implements the same scene we built in the previous section with temporal accumulation added on top:
 
-// SANDPACK2
+<GlobalIlluminationSandpack scene="scene2" />
 
 While the output definitely looks better, there are some pretty annoying drawbacks:
 

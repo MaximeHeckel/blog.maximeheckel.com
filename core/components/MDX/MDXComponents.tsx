@@ -431,6 +431,10 @@ const ParticleCompute = dynamic(
 
 const TSLWebGPUSandpack = dynamic(() => import('./Widgets/TSLWebGPU/Sandpack'));
 
+const GlobalIlluminationSandpack = dynamic(
+  () => import('./Widgets/GlobalIllumination/Sandpack')
+);
+
 const HalftoneSandpack = dynamic(() => import('./Widgets/Halftone/Sandpack'));
 
 const AtmosphericScatteringSandpack = dynamic(
@@ -550,6 +554,7 @@ const customComponents = {
   PostProcessingSandpack,
   VolumetricLightingSandpack,
   TSLWebGPUSandpack,
+  GlobalIlluminationSandpack,
   HalftoneSandpack,
   AtmosphericScatteringSandpack,
   ShadingMotionSandpack,
