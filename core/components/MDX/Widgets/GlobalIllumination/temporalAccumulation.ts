@@ -7,11 +7,12 @@ import giShader from '!!raw-loader!./gi.wgsl';
 import { useTexture } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { button, useControls } from 'leva';
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { fxaa } from 'three/examples/jsm/tsl/display/FXAANode.js';
 import {
   getViewPosition,
   materialColor,
+  mix,
   mrt,
   normalWorld,
   output,
@@ -32,11 +33,14 @@ const HISTORY_LIMIT = 128;
 
 export default function GIEffect() {
   const { gl, scene, camera } = useThree();
+
   const renderRef = useRef(null);
   const resetRequested = useRef(false);
+
   const blueNoise = useTexture(
     'https://cdn.maximeheckel.com/noises/blue-noise.png'
   );
+
   const [{ accumulate }, setTemporal] = useControls(
     'Temporal accumulation',
     () => ({
@@ -48,13 +52,21 @@ export default function GIEffect() {
     }),
     []
   );
-  const { view, rays } = useControls('Global illumination', {
+
+  const { enabled, view, rays } = useControls('Global illumination', {
+    enabled: { value: true, label: 'GI' },
     view: {
       value: 'Combined',
       options: ['Direct lighting', 'Indirect lighting', 'Combined'],
     },
     rays: { value: 8, options: [8, 16, 32], label: 'Rays per pixel' },
   });
+
+  const giEnabled = useMemo(() => uniform(1), []);
+
+  useLayoutEffect(() => {
+    giEnabled.value = enabled ? 1 : 0;
+  }, [enabled, giEnabled]);
 
   useEffect(() => {
     // Noise is data: load exact texels without color conversion or filtering.
@@ -82,15 +94,18 @@ export default function GIEffect() {
     scenePass.setMRT(
       mrt({ output, normal: normalWorld, albedo: materialColor })
     );
+
     const color = scenePass.getTextureNode('output');
     const depth = scenePass.getTextureNode('depth');
     const normals = scenePass.getTextureNode('normal');
     const albedo = scenePass.getTextureNode('albedo');
+
     const viewPosition = getViewPosition(
       uv(),
       depth.r,
       uniform(camera.projectionMatrixInverse)
     );
+
     const worldPosition = uniform(camera.matrixWorld).mul(
       vec4(viewPosition, 1)
     ).xyz;
@@ -116,6 +131,7 @@ export default function GIEffect() {
 
     const samplePass = new THREE.PostProcessing(gl, vec4(indirect, 1));
     samplePass.outputColorTransform = false;
+
     const accumulationPass = new THREE.PostProcessing(
       gl,
       averageIndirect({
@@ -133,12 +149,19 @@ export default function GIEffect() {
       'Indirect lighting': vec4(accumulatedLight.rgb, 1),
       Combined: vec4(sceneColor.rgb.add(accumulatedLight.rgb), sceneColor.a),
     };
+
     // FXAA expects display-space color. Convert once, before antialiasing.
     const displayTexture = rtt(
-      renderOutput(views[view], gl.toneMapping, THREE.SRGBColorSpace)
+      renderOutput(
+        mix(sceneColor, views[view], giEnabled),
+        gl.toneMapping,
+        THREE.SRGBColorSpace
+      )
     );
+
     const post = new THREE.PostProcessing(gl, fxaa(displayTexture));
     post.outputColorTransform = false;
+
     const size = new THREE.Vector2();
     const previousCamera = new THREE.Matrix4();
     const previousProjection = new THREE.Matrix4();
@@ -151,8 +174,10 @@ export default function GIEffect() {
       scene.updateMatrixWorld(true);
       camera.updateMatrixWorld();
       gl.getDrawingBufferSize(size);
+
       const resized =
         histories[0].width !== size.x || histories[0].height !== size.y;
+
       if (resized) {
         for (const target of [...histories, sampleTarget])
           target.setSize(size.x, size.y);
@@ -162,6 +187,7 @@ export default function GIEffect() {
       const lighting = [];
       scene.traverse((object) => {
         if (!object.isLight) return;
+
         object.target?.updateMatrixWorld();
         lighting.push(
           object.matrixWorld.elements,
@@ -170,6 +196,7 @@ export default function GIEffect() {
           object.target?.matrixWorld.elements
         );
       });
+
       const lightingKey = JSON.stringify(lighting);
       const cameraChanged =
         camera.matrixWorld.elements.some(
@@ -189,6 +216,7 @@ export default function GIEffect() {
         sampleIndex = 0;
         resetRequested.current = false;
       }
+
       previousCamera.copy(camera.matrixWorld);
       previousProjection.copy(camera.projectionMatrix);
       previousLighting = lightingKey;
@@ -197,7 +225,9 @@ export default function GIEffect() {
 
       const writeIndex = 1 - readIndex;
       previousHistory.value = histories[readIndex].texture;
+
       const originalTarget = gl.getRenderTarget();
+
       try {
         gl.setRenderTarget(sampleTarget);
         samplePass.render();
@@ -209,10 +239,13 @@ export default function GIEffect() {
       } finally {
         gl.setRenderTarget(originalTarget);
       }
+
       readIndex = writeIndex;
+
       if (count === 0 || sampleIndex % 8 === 0) {
         setTemporal({ frames: Math.min(count + 1, HISTORY_LIMIT) });
       }
+
       // Cap the averaging window, without periodically throwing away history.
       count = Math.min(count + 1, HISTORY_LIMIT - 1);
       sampleIndex = (sampleIndex + 1) >>> 0;
@@ -229,9 +262,20 @@ export default function GIEffect() {
       sampleTarget.dispose();
       histories.forEach((target) => target.dispose());
     };
-  }, [gl, scene, camera, view, rays, accumulate, blueNoise, setTemporal]);
+  }, [
+    gl,
+    scene,
+    camera,
+    view,
+    rays,
+    accumulate,
+    blueNoise,
+    setTemporal,
+    giEnabled,
+  ]);
 
   useFrame(() => renderRef.current?.(), 1);
+
   return null;
 }
 `;
@@ -301,6 +345,7 @@ const gi = `fn gatherIndirect(
       let hitNormal = normalize(textureLoad(normalMap, hitPixel, 0).xyz);
 
       // The visible source surface must face the receiving point.
+
       if (dot(hitNormal, -direction) > 0.0) {
         incoming += textureLoad(colorMap, hitPixel, 0).rgb;
       }
@@ -309,6 +354,7 @@ const gi = `fn gatherIndirect(
 
   // Lambert BRDF (albedo / PI) * cosine / PDF reduces to albedo.
   // Misses contribute zero and still count among the samples.
+
   return receiverAlbedo * incoming / f32(rayCount);
 }
 
@@ -326,6 +372,7 @@ fn traceScreenRay(
   marchOffset: f32
 ) -> vec3f {
   // Result: hit UV in XY, hit flag in Z. Background cannot launch a ray.
+
   if (surfaceDepth >= 1.0) {
     return vec3f(0.0);
   }
@@ -376,6 +423,7 @@ fn traceScreenRay(
     let delta = surfaceViewZ - rayViewPosition.z;
 
     // A front-to-back crossing within our assumed surface thickness.
+
     if (previousDelta < 0.0 && delta >= 0.0 && delta <= 0.2) {
       let hitUV = (vec2f(pixel) + 0.5) / vec2f(size);
 
@@ -394,12 +442,14 @@ fn sampleBlueNoise(noiseMap: texture_2d<f32>, pixel: vec2u, dimension: u32) -> f
   let value = textureLoad(noiseMap, vec2i(coord), 0).r;
 
   // Center the 8-bit bins to avoid sampling exactly zero or one.
+
   return (value * 255.0 + 0.5) / 256.0;
 }
 `;
 
 const accumulation = `fn averageIndirect(current: vec3f, previous: vec3f, count: f32) -> vec4f {
   // Ignore stale history entirely on the first frame after a reset.
+
   if (count == 0.0) {
     return vec4f(current, 1.0);
   }
@@ -410,6 +460,7 @@ const accumulation = `fn averageIndirect(current: vec3f, previous: vec3f, count:
 
 const temporalAccumulation = {
   ...screenSpace,
+
   // Lift shadow lookups off the surface at this grazing light angle.
   '/Scene.js': { code: createScene(0.03) },
   '/GIEffect.js': { code: effect, active: true },

@@ -792,7 +792,7 @@ Below is an updated version of our scene featuring probe-based Global Illuminati
 
 <GlobalIlluminationSandpack scene="scene4" />
 
-// THERE”S STILL GHOSTING AND FLICKERING BUT IT IS MUCH BETTER THAN BEFORE - MY USE CASE -> LIGHT CHANGING SLOWLY OVER TIME
+// THERE”S STILL GHOSTING AND FLICKERING BUT IT IS MUCH BETTER THAN BEFORE - MY USE CASE -> LIGHT CHANGING SLOWLY OVER TIME -> IF YOU MISS NOISE / GRAIN LIKE ME YOU CAN ALWAYS ADD IT BACK AS AN EXTRA PASS
 
 ## Reflections, Sky Light, and Final Touches
 
@@ -910,7 +910,7 @@ const combined = vec4(
 
 I made the small playground below to quickly demonstrate this new addition to our Global Illumination post-processing effect:
 
-// SANDPACK 5
+<GlobalIlluminationSandpack scene="scene5" />
 
 ### Adding sky light
 
@@ -965,6 +965,7 @@ Finally, this function can be called within `probeUpdate` shader whenever a ray 
 +if (hit.id < 0) {
 +  incoming += sampleSky(sky, direction);
 +}
+```
 
 We should also not forget to update our reflection logic from the previous section. Previously, when a reflected ray missed a surface, we’d return a constant color as a pixel, or simply vec3(0.0), i.e., black. Now we can sample the sky in that direction:
 
@@ -981,7 +982,7 @@ Including this, alongside some extra wiring and details that are not very intere
 - a beautiful sky blue backdrop (which I can't get enough of)
 - a very accurate and natural-looking sky light contribution to the scene
 
-// SANDPACK 6
+<GlobalIlluminationSandpack scene="scene6" />
 
 I added arches geometries in this demo as I did for my own scene from mid-October 2026.
 

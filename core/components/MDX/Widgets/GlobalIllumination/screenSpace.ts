@@ -14,17 +14,22 @@ extend({ MeshBasicNodeMaterial: THREE.MeshBasicNodeMaterial });
 
 export default function App() {
   const [supported, setSupported] = useState(null);
+
   useEffect(() => {
     let active = true;
+
     async function checkGPU() {
       try {
         const adapter = await navigator.gpu?.requestAdapter();
+
         if (active) setSupported(Boolean(adapter));
       } catch {
         if (active) setSupported(false);
       }
     }
+
     checkGPU();
+
     return () => {
       active = false;
     };
@@ -44,11 +49,12 @@ export default function App() {
     <Canvas
       shadows={{ type: THREE.PCFShadowMap }}
       dpr={1}
-      camera={{ position: [42, 43.6, 42], fov: 12, near: 0.1, far: 500 }}
+      camera={{ position: [21, 22.6, 21], fov: 12, near: 0.1, far: 500 }}
       gl={async (props) => {
         const renderer = new THREE.WebGPURenderer(props);
         renderer.toneMapping = THREE.NoToneMapping;
         await renderer.init();
+
         return renderer;
       }}
     >
@@ -63,11 +69,12 @@ export default function App() {
 
 const effect = `import { useFrame, useThree } from '@react-three/fiber';
 import { useControls } from 'leva';
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { fxaa } from 'three/examples/jsm/tsl/display/FXAANode.js';
 import {
   getViewPosition,
   materialColor,
+  mix,
   mrt,
   normalWorld,
   output,
@@ -87,8 +94,11 @@ const gatherIndirect = wgslFn(giShader);
 
 export default function GIEffect() {
   const { gl, scene, camera } = useThree();
+
   const postRef = useRef(null);
-  const { view, rays } = useControls('Global illumination', {
+
+  const { enabled, view, rays } = useControls('Global illumination', {
+    enabled: { value: true, label: 'GI' },
     view: {
       value: 'Combined',
       options: ['Direct lighting', 'Indirect lighting', 'Combined'],
@@ -96,20 +106,30 @@ export default function GIEffect() {
     rays: { value: 8, options: [8, 16, 32], label: 'Rays per pixel' },
   });
 
+  const giEnabled = useMemo(() => uniform(1), []);
+
+  useLayoutEffect(() => {
+    giEnabled.value = enabled ? 1 : 0;
+  }, [enabled, giEnabled]);
+
   useEffect(() => {
+
     const scenePass = pass(scene, camera, { samples: 0 });
     scenePass.setMRT(
       mrt({ output, normal: normalWorld, albedo: materialColor })
     );
+
     const color = scenePass.getTextureNode('output');
     const depth = scenePass.getTextureNode('depth');
     const normals = scenePass.getTextureNode('normal');
     const albedo = scenePass.getTextureNode('albedo');
+
     const viewPosition = getViewPosition(
       uv(),
       depth.r,
       uniform(camera.projectionMatrixInverse)
     );
+
     const worldPosition = uniform(camera.matrixWorld).mul(
       vec4(viewPosition, 1)
     ).xyz;
@@ -136,10 +156,16 @@ export default function GIEffect() {
       'Indirect lighting': vec4(indirect, 1),
       Combined: vec4(color.rgb.add(indirect), color.a),
     };
+
     // FXAA expects display-space color. Convert once, before antialiasing.
     const displayTexture = rtt(
-      renderOutput(views[view], gl.toneMapping, THREE.SRGBColorSpace)
+      renderOutput(
+        mix(color, views[view], giEnabled),
+        gl.toneMapping,
+        THREE.SRGBColorSpace
+      )
     );
+
     const post = new THREE.PostProcessing(gl, fxaa(displayTexture));
     post.outputColorTransform = false;
     postRef.current = post;
@@ -151,9 +177,10 @@ export default function GIEffect() {
       displayTexture.dispose();
       scenePass.dispose();
     };
-  }, [gl, scene, camera, view, rays]);
+  }, [gl, scene, camera, view, rays, giEnabled]);
 
   useFrame(() => postRef.current?.render(), 1);
+
   return null;
 }
 `;
@@ -216,6 +243,7 @@ const gi = `fn gatherIndirect(
       let hitNormal = normalize(textureLoad(normalMap, hitPixel, 0).xyz);
 
       // The visible source surface must face the receiving point.
+
       if (dot(hitNormal, -direction) > 0.0) {
         incoming += textureLoad(colorMap, hitPixel, 0).rgb;
       }
@@ -224,6 +252,7 @@ const gi = `fn gatherIndirect(
 
   // Lambert BRDF (albedo / PI) * cosine / PDF reduces to albedo.
   // Misses contribute zero and still count among the samples.
+
   return receiverAlbedo * incoming / f32(rayCount);
 }
 
@@ -241,6 +270,7 @@ fn traceScreenRay(
   marchOffset: f32
 ) -> vec3f {
   // Result: hit UV in XY, hit flag in Z. Background cannot launch a ray.
+
   if (surfaceDepth >= 1.0) {
     return vec3f(0.0);
   }
@@ -291,6 +321,7 @@ fn traceScreenRay(
     let delta = surfaceViewZ - rayViewPosition.z;
 
     // A front-to-back crossing within our assumed surface thickness.
+
     if (previousDelta < 0.0 && delta >= 0.0 && delta <= 0.2) {
       let hitUV = (vec2f(pixel) + 0.5) / vec2f(size);
 
@@ -314,7 +345,7 @@ fn hash23(seed: vec3f) -> vec2f {
 `;
 
 export const createScene = (
-  shadowNormalBias = 0
+  shadowNormalBias = 0.03
 ) => `import { useControls } from 'leva';
 import { useMemo } from 'react';
 import * as THREE from 'three/webgpu';
@@ -323,6 +354,7 @@ export const SCENE_CENTER = [-0.5, 1.1, -0.5];
 
 const SceneLight = () => {
   const light = useMemo(() => new THREE.DirectionalLight(), []);
+
   const target = useMemo(() => {
     const object = new THREE.Object3D();
 
@@ -353,6 +385,7 @@ const SceneLight = () => {
         shadow-camera-bottom={-7}
         shadow-camera-near={0.1}
         shadow-camera-far={25}
+
         // Offset the receiver enough for the wider PCF kernel to avoid self-shadowing.
         shadow-bias={-0.005}
         shadow-normalBias={${shadowNormalBias}}

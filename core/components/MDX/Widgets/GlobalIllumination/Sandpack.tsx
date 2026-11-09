@@ -7,7 +7,9 @@ import useGPUTier from '@core/hooks/useGPUTier';
 
 import hysteresis from './hysteresis';
 import probeBased from './probeBased';
+import reflections from './reflections';
 import screenSpace from './screenSpace';
+import skyLighting from './skyLighting';
 import temporalAccumulation from './temporalAccumulation';
 
 const SceneCSSDark = `
@@ -32,7 +34,7 @@ canvas {
 }`;
 
 interface GlobalIlluminationSandpackProps {
-  scene: 'scene1' | 'scene2' | 'scene3' | 'scene4';
+  scene: 'scene1' | 'scene2' | 'scene3' | 'scene4' | 'scene5' | 'scene6';
 }
 
 const GlobalIlluminationSandpack = (props: GlobalIlluminationSandpackProps) => {
@@ -50,6 +52,8 @@ const GlobalIlluminationSandpack = (props: GlobalIlluminationSandpackProps) => {
     scene2: temporalAccumulation,
     scene3: probeBased,
     scene4: hysteresis,
+    scene5: reflections,
+    scene6: skyLighting,
   };
 
   return (
@@ -57,6 +61,7 @@ const GlobalIlluminationSandpack = (props: GlobalIlluminationSandpackProps) => {
       {inView && !tierLoading ? (
         <Sandpack
           autorun={autorun}
+          showCode={scene === 'scene3'}
           template="react"
           dependencies={{
             '@react-three/drei': '10.7.7',

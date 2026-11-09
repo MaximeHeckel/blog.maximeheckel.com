@@ -15,14 +15,24 @@ import './scene.css';
 
 function Room() {
   const [reset, setReset] = useState(0);
-  const [{ nightTime, enabled, showProbes, rays, density, hysteresis }, setControls] = useControls(
+
+  const [
+    { nightTime, enabled, showProbes, rays, density, hysteresis },
+    setControls,
+  ] = useControls(
     () => ({
       nightTime: { value: false, label: 'Night Time' },
       enabled: { value: true, label: 'GI' },
       showProbes: { value: false, label: 'Show probes' },
       'Probe settings': folder(
         {
-          hysteresis: { value: 0.98, min: 0, max: 0.99, step: 0.01, label: 'Hysteresis' },
+          hysteresis: {
+            value: 0.98,
+            min: 0,
+            max: 0.99,
+            step: 0.01,
+            label: 'Hysteresis',
+          },
           density: {
             value: 20,
             label: 'Density',
@@ -35,7 +45,12 @@ function Room() {
             },
           },
           rays: { value: 16, options: [8, 16, 32], label: 'Rays per lobe' },
-          frames: { value: 0, step: 1, disabled: true, label: 'History frames' },
+          frames: {
+            value: 0,
+            step: 1,
+            disabled: true,
+            label: 'History frames',
+          },
           'Reset probes': button(() => setReset((n) => n + 1)),
         },
         { collapsed: true }
@@ -43,6 +58,7 @@ function Room() {
     }),
     []
   );
+
   const { position, intensity } = useControls(
     'Sun',
     {
@@ -55,6 +71,7 @@ function Room() {
   return (
     <>
       <Scene
+        ambientIntensity={0.15}
         nightTime={nightTime}
         lightPosition={position}
         intensity={intensity}
@@ -84,21 +101,27 @@ function Room() {
 
 export default function App() {
   const [supported, setSupported] = useState(null);
+
   useEffect(() => {
     let active = true;
+
     async function checkGPU() {
       try {
         const adapter = await navigator.gpu?.requestAdapter();
+
         if (active) setSupported(Boolean(adapter));
       } catch {
         if (active) setSupported(false);
       }
     }
+
     checkGPU();
+
     return () => {
       active = false;
     };
   }, []);
+
   if (supported !== true)
     return (
       <p role="status">
@@ -119,6 +142,7 @@ export default function App() {
           const renderer = new THREE.WebGPURenderer(props);
           renderer.toneMapping = THREE.ACESFilmicToneMapping;
           await renderer.init();
+
           return renderer;
         }}
       >
@@ -152,7 +176,12 @@ import {
 import * as THREE from 'three/webgpu';
 
 import { createProbeCompute, createProbeMarkers } from './probes';
-import { createWorld, getProbeGrid, LIGHT_TARGET, HISTORY_LIMIT } from './sceneData';
+import {
+  createWorld,
+  getProbeGrid,
+  LIGHT_TARGET,
+  HISTORY_LIMIT,
+} from './sceneData';
 
 export default function ProbeEffect({
   nightTime,
@@ -167,10 +196,12 @@ export default function ProbeEffect({
   onFrames,
 }) {
   const { gl, scene, camera } = useThree();
+
   const renderRef = useRef(null);
   const revision = useRef(0);
   const resetRevision = useRef(0);
   const markersVisible = useRef(showProbes);
+
   const controls = useMemo(
     () => ({
       frame: uniform(0, 'uint'),
@@ -184,7 +215,9 @@ export default function ProbeEffect({
     }),
     []
   );
+
   const grid = useMemo(() => getProbeGrid(density), [density]);
+
   const [lightX, lightY, lightZ] = lightPosition;
 
   useLayoutEffect(() => {
@@ -196,9 +229,19 @@ export default function ProbeEffect({
     controls.nightTime.value = nightTime ? 1 : 0;
     controls.rays.value = rays;
     controls.hysteresis.value = hysteresis;
+
     // Lighting changes restart adaptation without discarding the atlas.
     revision.current++;
-  }, [controls, lightX, lightY, lightZ, intensity, nightTime, rays, hysteresis]);
+  }, [
+    controls,
+    lightX,
+    lightY,
+    lightZ,
+    intensity,
+    nightTime,
+    rays,
+    hysteresis,
+  ]);
 
   useLayoutEffect(() => {
     resetRevision.current++;
@@ -213,6 +256,7 @@ export default function ProbeEffect({
     const world = wgsl(createWorld(grid));
     const updateProbes = wgslFn(updateShader, [world]);
     const sampleProbes = wgslFn(sampleShader, [world]);
+
     const compute = createProbeCompute(grid, (pixel, previous) =>
       updateProbes({
         pixel,
@@ -227,22 +271,27 @@ export default function ProbeEffect({
       })
     );
     const markers = createProbeMarkers(grid);
+
     const scenePass = pass(scene, camera, { samples: 0 });
     scenePass.setMRT(
       mrt({ output, normal: normalWorld, albedo: materialColor })
     );
+
     const color = scenePass.getTextureNode('output');
     const depth = scenePass.getTextureNode('depth');
     const normals = scenePass.getTextureNode('normal');
     const albedo = scenePass.getTextureNode('albedo');
+
     const viewPosition = getViewPosition(
       uv(),
       depth.r,
       uniform(camera.projectionMatrixInverse)
     );
+
     const worldPosition = uniform(camera.matrixWorld).mul(
       vec4(viewPosition, 1)
     ).xyz;
+
     const indirect = sampleProbes({
       atlas: compute.atlas,
       worldPosition,
@@ -251,12 +300,16 @@ export default function ProbeEffect({
       albedo: albedo.rgb,
       enabled: controls.enabled,
     });
+
     const combined = vec4(color.rgb.add(indirect), 1);
+
     const display = rtt(
       renderOutput(combined, gl.toneMapping, THREE.SRGBColorSpace)
     );
+
     const post = new THREE.PostProcessing(gl, fxaa(display));
     post.outputColorTransform = false;
+
     let frames = 0;
     let stableFrames = 0;
     let previousRevision = -1;
@@ -269,10 +322,12 @@ export default function ProbeEffect({
         stableFrames = 0;
         onFrames({ frames: 0 });
       }
+
       if (revision.current !== previousRevision) {
         previousRevision = revision.current;
         stableFrames = 0;
       }
+
       // Keep measuring after history fills so changed lighting can replace it.
       // Camera movement changes neither counter nor the world-space atlas.
       controls.frame.value = frames;
@@ -280,12 +335,16 @@ export default function ProbeEffect({
       compute.update(gl);
       frames++;
       stableFrames = Math.min(stableFrames + 1, HISTORY_LIMIT);
+
       if (frames === 1 || (frames <= HISTORY_LIMIT && frames % 8 === 0)) {
         onFrames({ frames: Math.min(frames, HISTORY_LIMIT) });
       }
+
       post.render();
+
       if (markersVisible.current) {
         const autoClear = gl.autoClear;
+
         try {
           gl.autoClear = false;
           gl.clearDepth();
@@ -295,6 +354,7 @@ export default function ProbeEffect({
         }
       }
     };
+
     return () => {
       renderRef.current = null;
       compute.dispose();
@@ -307,6 +367,7 @@ export default function ProbeEffect({
   }, [gl, scene, camera, controls, onFrames, grid]);
 
   useFrame(() => renderRef.current?.(), 1);
+
   return null;
 }
 `;
@@ -322,7 +383,10 @@ const updateProbes = `fn updateProbes(
   let origin = probePosition(cell);
 
   // Alpha zero marks an unusable probe so the surface shader can skip it.
-  if (insideSolid(origin)) { return vec4f(0.0); }
+
+  if (insideSolid(origin)) {
+    return vec4f(0.0);
+  }
 
   // Build a local coordinate frame facing this lobe's hemisphere.
   // Tangent/bitangent point sideways; n points forward. Choose a helper axis
@@ -351,6 +415,7 @@ const updateProbes = `fn updateProbes(
     // u controls tilt away from n; phi rotates around it.
     let u = (f32(i) + random.x) / f32(rays);
     let phi = 6.28318530718 * random.y;
+
     // Cosine-weighted hemisphere sampling: more rays point forward, where
     // incoming light matters more to a diffuse surface, fewer skim its edge.
     let direction = tangent * (sqrt(u) * cos(phi))
@@ -358,11 +423,13 @@ const updateProbes = `fn updateProbes(
     let hit = traceWorld(origin, direction);
 
     // The hit must face the probe. -direction points from the hit back to us.
+
     if (hit.id >= 0 && dot(hit.normal, -direction) > 0.0) {
       // Emission is outgoing radiance, independent of sunlight or its shadows.
       incoming += shapes[hit.id].emission * nightTime;
 
       let p = origin + hit.distance * direction;
+
       // A surface facing the sun gets more light than one at a grazing angle.
       let cosine = max(dot(hit.normal, sunDirection), 0.0);
 
@@ -381,6 +448,7 @@ const updateProbes = `fn updateProbes(
         }
       }
     }
+
     // Misses contribute zero; the blue background is not an environment light.
   }
 
@@ -390,18 +458,24 @@ const updateProbes = `fn updateProbes(
   // already follow the cosine weighting, this average estimates irradiance/PI.
   // We can later multiply by the receiving surface's albedo to shade it.
   let fresh = incoming / f32(rays);
+
   // Only a new grid or an explicit reset discards history.
-  if (frame == 0u) { return vec4f(fresh, 1.0); }
+
+  if (frame == 0u) {
+    return vec4f(fresh, 1.0);
+  }
 
   // RGB stores lighting; alpha counts accumulated frame batches (not rays).
   // Read the SAME texel from last frame: this probe never moves with the camera,
   // so no previous-screen-UV calculation or reprojection is needed.
   let history = textureLoad(previous, pixel, 0);
   let count = min(history.a + 1.0, 128.0);
+
   // Start with the selected retention, then favor history as lighting settles.
   // The count limit avoids over-weighting history while the atlas warms up.
   let window = min(1.0 / (1.0 - hysteresis) + f32(stableFrames), 128.0);
   let retention = min(1.0 - 1.0 / window, 1.0 - 1.0 / count);
+
   return vec4f(mix(fresh, history.rgb, retention), count);
 }
 `;
