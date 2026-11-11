@@ -60,12 +60,19 @@ What I learned through path tracing is that light keeps traveling after it hits 
 
 <LightBounceDiagram />
 
-A lit white wall can contribute light to the back of objects that the light didn't hit, or an orange sphere can leave an orange tint on the floor it touches <FootnoteRef id="3" /> (//color bleeding).
+A lit white wall can contribute light to the back of objects that the light didn't hit, or an orange sphere can leave an orange tint on the floor it touches <FootnoteRef id="3" />.
 These *side effects* can fit under the umbrella of **indirect lighting** and are what we’ll be computing, but I should rather say *approximate*, throughout this article when exploring cheaper ways to achieve Global Illumination.
 
 Below is an example of how much indirect light, in this case implemented through the methods we'll see, can change a given scene:
 
-// BEFORE / AFTER
+<BeforeAfterImage
+  alt="Comparison of the same scene without and with global illumination."
+  beforeSrc="https://cdn.maximeheckel.com/images/blog/without_gi.webp"
+  afterSrc="https://cdn.maximeheckel.com/images/blog/with_gi.webp"
+  defaultSliderPosition={50}
+  width={700}
+  height={470}
+/>
 
 ## Tracing Light from Pixels
 
@@ -494,7 +501,14 @@ for (var i = 0u; i < 8u; i++) {
 
 * Once again, use our good ol’ trusty blue noise dithering rendering technique and hide obvious raymarching artifacts
 
-// BEFORE/AFTER RAYMARCHING
+<BeforeAfterImage
+  alt="Comparison of raymarching artifacts without and with blue-noise dithering."
+  beforeSrc="https://cdn.maximeheckel.com/images/blog/without_bluenoise.webp"
+  afterSrc="https://cdn.maximeheckel.com/images/blog/with_bluenoise.webp"
+  defaultSliderPosition={50}
+  width={700}
+  height={470}
+/>
 
 </Callout>
 
@@ -508,11 +522,24 @@ While the output definitely looks better, there are some pretty annoying drawbac
 * Performance is, at most, reasonable; this effect’s cost scales with the number of pixels as we’re computing indirect lighting at full resolution. We can do that at a lower resolution and use upscaling, but it will impact output quality.
 * With frame accumulation, we must reset the accumulated lighting on every camera movement (unless you like datamoshing!). For that, we can leverage **reprojection**, but I personally do not like how it looks:
 
-// VIDEO
+<VideoPlayer
+  src="https://cdn.maximeheckel.com/videos/blog/reprojection_example_compressed.mp4"
+  autoPlay
+  muted
+  loop
+  width={700}
+  height={451}
+/>
 
 Moreover, since we’re in screen-space, we cannot compute indirect lighting for things off camera. That means adding things like reflective walls comes with a lot of caveats:
 
-// SCREENSHOT
+<Image
+  src="https://cdn.maximeheckel.com/images/blog/ssgi_reflection.webp"
+  alt="Screenshot showcasing the missing backside of objects against the reflective wall due to SSGI's limitations"
+  width={700}
+  height={514}
+  unoptimized
+/>
 
 At this point, I more or less cut my losses and decided to investigate an alternative approach: **Probe-Based Global Illumination**
 
@@ -986,10 +1013,63 @@ Including this, alongside some extra wiring and details that are not very intere
 
 I added arches geometries in this demo as I did for my own scene from mid-October 2026.
 
-// TWEET
+<StaticTweet id="2112909030318551231" />
 
 Since this shape was a tiny bit more complex than simple spheres or boxes, I included the proper intersection logic in the `traceWorld` function in the demo above. In the future, I’d like to trace against triangle meshes via a BVH, as mentioned earlier, making it easier to handle more complex geometries.
 
 ### Final Thoughts
 
 // TODO
+
+<FootnotesList
+  notes={[
+    {
+      id: 1,
+      content: (
+        <p>
+          Path tracing is a rendering algorithm in computer graphics that simulates how light interacts with objects and participating media to generate realistic [...] images. <a href="https://en.wikipedia.org/wiki/Path_tracing">Source</a>.
+        </p>
+      ),
+    },
+    {
+      id: 2,
+      content: (
+        <p>
+          One of my earliest use cases of the Blinn-Phong lighting model was for <a href="/posts/refraction-dispersion-and-other-shader-light-effects/#specular--diffuse-light">Refraction, dispersion, and other shader light effects</a>.
+        </p>
+      ),
+    },
+    {
+      id: 3,
+      content: (
+        <p>
+          Color bleeding is a lighting phenomenon where strong saturated colored objects tend to have their colors reflected off a surface. It adds a "tint" to neighboring surfaces.
+        </p>
+      ),
+    },
+    {
+      id: 4,
+      content: (
+        <p>
+          I highly recommend reading these in order if you're curious about some of the implementationn details that I'm overlooking here, see <a href="/posts/on-rendering-the-sky-sunsets-and-planets/">On Rendering the Sky, Sunsets, and Planets</a> and <a href="/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/">On Shaping Light: Real-Time Volumetric Lighting with Post-Processing and Raymarching for the Web</a>.
+        </p>
+      ),
+    },
+    {
+      id: 5,
+      content: (
+        <p>
+          See <a href="/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/#coordinate-systems-and-transformations">Coordinate systems and transformations</a> for a detailed breakdown of the process.
+        </p>
+      ),
+    },
+    {
+      id: 6,
+      content: (
+        <p>
+          I first talked about the method in <a href="/posts/the-magical-world-of-particles-with-react-three-fiber-and-shaders/">The Magical World of Particles with React Three Fiber and Shaders</a>.
+        </p>
+      ),
+    },
+  ]}
+/>

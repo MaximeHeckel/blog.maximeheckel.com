@@ -326,6 +326,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
               loading="eager"
               loader={cloudflareLoader}
               src={beforeSrc}
+              unoptimized={beforeSrc.startsWith('https://')}
               quality={100}
               width={width}
               height={height}
@@ -339,6 +340,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
                 loader={cloudflareLoader}
                 quality={100}
                 src={afterSrc}
+                unoptimized={afterSrc.startsWith('https://')}
                 width={width}
                 height={height}
               />
