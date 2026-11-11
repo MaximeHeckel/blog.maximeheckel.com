@@ -1,7 +1,7 @@
 ---
 title: 'Lighting That Feels Just Right'
 seoTitle: 'Lighting That Feels Just Right: An Exploration of Real-Time Global Illumination'
-subtitle: TBD
+subtitle: This article shares an explainer and my personal experience learning and leveraging screen-space and probe-based Global Illumination rendering methods to add indirect lighting to my browser-based 3D work.
 date: '2026-11-17T08:00:00.000Z'
 updated: '2026-11-17T08:00:00.000Z'
 categories: []
@@ -161,8 +161,7 @@ For our opaque surfaces, we’ll sample directions within the hemisphere *above*
 For more information as to why we use this type of distribution, I’d invite you to read [this note on cosine-Weighted Hemisphere Sampling](https://pema.dev/obsidian/math/light-transport/cosine-weighted-sampling.html) from <Anchor discreet favicon href="https://twitter.com/pemathedev">pemathedev</Anchor>.
 
 In it, they talk about how, given an incoming light, directions near the surface’s normal contribute more to the diffuse lighting than directions grazing the surface. With cosine-weighted sampling, we end up tracing more rays near that normal, giving us a less noisy estimate with the same number of rays.
-
-// ALSO CALLOUT SIMPLIFICATION
+The author also offers a *secret trick* / simplification, that is cheaper. I have yet to compare its output with its more accurate counterpart to know for sure whether or not it would produce results of the same quality.
 
 </Callout>
 
@@ -346,7 +345,8 @@ We have now computed and overlaid the indirect light from all visible surfaces o
 
 As you can see:
 
-* The result is *very* noisy. That is expected; for each pixel reconstructed as a point on the surfaces of our scenes, we only cast 8 rays. If you change the amount of rays per point, the result gets better, but we’ll run into performance issues.
+* We got *something*
+* The result is *very* noisy. That is expected though; for each pixel reconstructed as a point on the surfaces of our scenes, we only cast 8 rays. If you change the amount of rays per point, the result gets better, but we’ll run into performance issues.
 * There is some **color bleeding** showing up in the scene thanks to the indirect light coming from colored surfaces gives a subtle tint.
 
 ### Temporal accumulation
@@ -540,6 +540,8 @@ Moreover, since we’re in screen-space, we cannot compute indirect lighting for
   height={514}
   unoptimized
 />
+
+(Small parenthesis here while I'm writing this, but I really *love* how good the lighting and the blur of the reflection are in that picture)
 
 At this point, I more or less cut my losses and decided to investigate an alternative approach: **Probe-Based Global Illumination**
 
@@ -765,9 +767,8 @@ Notice how:
 * We get a decent output at a lower performance cost. Even with a loose probe grid and fewer rays, the effect is noticeable and adds a lot to the scene’s beautiful lighting and realism.
 * Moving the camera preserves the probe’s lighting and history! This is a big win compared to the screen-space Global Illumination counterpart we saw earlier
 * The lighting is, however, a bit less accurate. Maybe this scene is not the best to surface that, but the indirect light is just softer and less precise (ghosting).
-* On top of that, we can now have off-screen light, or emitters, and those will be taken into account from the get-go.
-
-// PROBE DENSITY SETTING!
+* We can now have off-screen light, or emitters, and those will be taken into account from the get-go.
+* The more dense our probe grid is the more accurate our indirect lighting is: more probes, means more estimations, means more data for our averages, and thus, better results.
 
 Despite its flaws, it ended up being more usable for my projects like this. Oh also, you should try to toggle the night mode to see how emissive surfaces also contribute to the scene's indirect lighting, which we got almost for free with the current implementation. No additional tracing necessary!
 
@@ -819,7 +820,8 @@ Below is an updated version of our scene featuring probe-based Global Illuminati
 
 <GlobalIlluminationSandpack scene="scene4" />
 
-// THERE”S STILL GHOSTING AND FLICKERING BUT IT IS MUCH BETTER THAN BEFORE - MY USE CASE -> LIGHT CHANGING SLOWLY OVER TIME -> IF YOU MISS NOISE / GRAIN LIKE ME YOU CAN ALWAYS ADD IT BACK AS AN EXTRA PASS
+Probe-based Global Illumination does give us a *decent* result overall. We fixed many of the caveats of SSGI that were bothering me. Yes, there is some ghosting when the light changes abruptly, but for my use case, which centers around almost static/slowly changing lights, it does what I need it to do.
+The only "downside" is that I grew quite fond of the noise produced by the raymarching, which here is absent. If like me, you miss it a bit too much, you can always re-introduce it through an additional grain post-processing pass.
 
 ## Reflections, Sky Light, and Final Touches
 

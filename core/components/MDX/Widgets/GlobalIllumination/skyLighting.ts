@@ -415,7 +415,21 @@ export default function ProbeEffect({
       renderOutput(combined, gl.toneMapping, THREE.SRGBColorSpace)
     );
 
-    const post = new THREE.PostProcessing(gl, fxaa(display));
+    // Composite a freshly cleared marker pass instead of drawing into a
+    // retained output framebuffer, which leaves trails when the camera moves.
+    const markerPass = pass(markers.scene, camera, { samples: 0 });
+    const markerColor = markerPass.getTextureNode('output');
+    const markerDepth = markerPass.getTextureNode('depth');
+    const markerOpacity = uniform(0);
+    const markerDisplay = renderOutput(
+      markerColor, gl.toneMapping, THREE.SRGBColorSpace
+    );
+    const finalOutput = mix(
+      fxaa(display),
+      markerDisplay,
+      markerDepth.r.lessThan(1).select(markerOpacity, 0)
+    );
+    const post = new THREE.PostProcessing(gl, finalOutput);
     post.outputColorTransform = false;
 
     let frames = 0;
@@ -451,25 +465,15 @@ export default function ProbeEffect({
         onFrames({ frames: Math.min(frames, HISTORY_LIMIT) });
       }
 
+      markerOpacity.value = markersVisible.current ? 1 : 0;
       post.render();
-
-      if (markersVisible.current) {
-        const autoClear = gl.autoClear;
-
-        try {
-          gl.autoClear = false;
-          gl.clearDepth();
-          gl.render(markers.scene, camera);
-        } finally {
-          gl.autoClear = autoClear;
-        }
-      }
     };
 
     return () => {
       renderRef.current = null;
       compute.dispose();
       atmosphere.dispose();
+      markerPass.dispose();
       markers.dispose();
       post.dispose();
       scenePass.dispose();
@@ -973,11 +977,11 @@ const updateProbes = `fn updateProbes(
   // Read the SAME texel from last frame: this probe never moves with the camera,
   // so no previous-screen-UV calculation or reprojection is needed.
   let history = textureLoad(previous, pixel, 0);
-  let count = min(history.a + 1.0, 128.0);
+  let count = min(history.a + 1.0, 256.0);
 
   // Start with the selected retention, then favor history as lighting settles.
   // The count limit avoids over-weighting history while the atlas warms up.
-  let window = min(1.0 / (1.0 - hysteresis) + f32(stableFrames), 128.0);
+  let window = min(1.0 / (1.0 - hysteresis) + f32(stableFrames), 256.0);
   let retention = min(1.0 - 1.0 / window, 1.0 - 1.0 / count);
 
   return vec4f(mix(fresh, history.rgb, retention), count);

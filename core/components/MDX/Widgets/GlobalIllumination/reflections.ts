@@ -374,7 +374,21 @@ export default function ProbeEffect({
       renderOutput(combined, gl.toneMapping, THREE.SRGBColorSpace)
     );
 
-    const post = new THREE.PostProcessing(gl, fxaa(display));
+    // Composite a freshly cleared marker pass instead of drawing into a
+    // retained output framebuffer, which leaves trails when the camera moves.
+    const markerPass = pass(markers.scene, camera, { samples: 0 });
+    const markerColor = markerPass.getTextureNode('output');
+    const markerDepth = markerPass.getTextureNode('depth');
+    const markerOpacity = uniform(0);
+    const markerDisplay = renderOutput(
+      markerColor, gl.toneMapping, THREE.SRGBColorSpace
+    );
+    const finalOutput = mix(
+      fxaa(display),
+      markerDisplay,
+      markerDepth.r.lessThan(1).select(markerOpacity, 0)
+    );
+    const post = new THREE.PostProcessing(gl, finalOutput);
     post.outputColorTransform = false;
 
     let frames = 0;
@@ -407,24 +421,14 @@ export default function ProbeEffect({
         onFrames({ frames: Math.min(frames, HISTORY_LIMIT) });
       }
 
+      markerOpacity.value = markersVisible.current ? 1 : 0;
       post.render();
-
-      if (markersVisible.current) {
-        const autoClear = gl.autoClear;
-
-        try {
-          gl.autoClear = false;
-          gl.clearDepth();
-          gl.render(markers.scene, camera);
-        } finally {
-          gl.autoClear = autoClear;
-        }
-      }
     };
 
     return () => {
       renderRef.current = null;
       compute.dispose();
+      markerPass.dispose();
       markers.dispose();
       post.dispose();
       scenePass.dispose();
@@ -590,7 +594,7 @@ export const LIGHT_TARGET = [0, 1.8, 0];
 export const CAMERA_POSITION = [3.8, 1.65, -2.6];
 export const CAMERA_TARGET = [0, 1.23, 1.3];
 
-export const HISTORY_LIMIT = 128;
+export const HISTORY_LIMIT = 256;
 export const EMISSION = 18;
 const NIGHT_EMISSIVE_STRENGTH = EMISSION;
 
@@ -1505,11 +1509,11 @@ const updateProbes = `fn updateProbes(
   // Read the SAME texel from last frame: this probe never moves with the camera,
   // so no previous-screen-UV calculation or reprojection is needed.
   let history = textureLoad(previous, pixel, 0);
-  let count = min(history.a + 1.0, 128.0);
+  let count = min(history.a + 1.0, 256.0);
 
   // Start with the selected retention, then favor history as lighting settles.
   // The count limit avoids over-weighting history while the atlas warms up.
-  let window = min(1.0 / (1.0 - hysteresis) + f32(stableFrames), 128.0);
+  let window = min(1.0 / (1.0 - hysteresis) + f32(stableFrames), 256.0);
   let retention = min(1.0 - 1.0 / window, 1.0 - 1.0 / count);
 
   return vec4f(mix(fresh, history.rgb, retention), count);
@@ -1582,17 +1586,6 @@ const traceReflection = `fn traceReflection(
 }
 `;
 
-const sky = `export const SKY = /* wgsl */ \`
-fn staticSky(direction: vec3f) -> vec3f {
-  let d = normalize(direction);
-  let uv = vec2f(atan2(d.z, d.x) / 6.28318530718 + 0.5,
-    asin(clamp(d.y, -1.0, 1.0)) / 3.14159265359 + 0.5);
-  let t = clamp(length(abs(uv - 0.5)), 0.0, 0.8);
-  return mix(vec3f(0.01, 0.22, 0.98), vec3f(0.36, 0.68, 1.0), t);
-}
-\`;
-`;
-
 const reflections = {
   ...hysteresis,
   '/App.js': { code: app },
@@ -1603,7 +1596,6 @@ const reflections = {
   '/sampleProbes.wgsl': { code: sampleProbes },
   '/updateProbes.wgsl': { code: updateProbes },
   '/traceReflection.wgsl': { code: traceReflection },
-  '/Sky.js': { code: sky },
 } satisfies SandpackFiles;
 
 export default reflections;

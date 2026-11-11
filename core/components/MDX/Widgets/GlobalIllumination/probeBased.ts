@@ -136,14 +136,18 @@ export default function App() {
 }
 `;
 
-const effect = `import sampleShader from '!!raw-loader!./sampleProbes.wgsl';
+const effect = `import { SKY } from './Sky';
+import sampleShader from '!!raw-loader!./sampleProbes.wgsl';
 import updateShader from '!!raw-loader!./updateProbes.wgsl';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { bloom } from 'three/examples/jsm/tsl/display/BloomNode.js';
 import { fxaa } from 'three/examples/jsm/tsl/display/FXAANode.js';
 import {
+  cameraPosition,
   getViewPosition,
   materialColor,
+  mix,
   mrt,
   normalWorld,
   output,
@@ -264,13 +268,42 @@ export default function ProbeEffect({
       enabled: controls.enabled,
     });
 
-    const combined = vec4(color.rgb.add(indirect), 1);
+    const sky = wgsl(SKY);
+    const background = wgslFn(
+      /* wgsl */ \`
+      fn background(direction: vec3f) -> vec3f { return staticSky(direction); }
+    \`,
+      [sky]
+    )({ direction: worldPosition.sub(cameraPosition) });
 
-    const display = rtt(
-      renderOutput(combined, gl.toneMapping, THREE.SRGBColorSpace)
+    const combined = vec4(
+      mix(color.rgb.add(indirect), background, depth.r.greaterThanEqual(1)),
+      1
     );
 
-    const post = new THREE.PostProcessing(gl, fxaa(display));
+    // Bloom the HDR night lighting before tone mapping.
+    const glow = bloom(combined.mul(controls.nightTime), 0.5, 0.3, 1);
+    const bloomed = vec4(combined.rgb.add(glow.rgb), 1);
+
+    const display = rtt(
+      renderOutput(bloomed, gl.toneMapping, THREE.SRGBColorSpace)
+    );
+
+    // Composite a freshly cleared marker pass instead of drawing into a
+    // retained output framebuffer, which leaves trails when the camera moves.
+    const markerPass = pass(markers.scene, camera, { samples: 0 });
+    const markerColor = markerPass.getTextureNode('output');
+    const markerDepth = markerPass.getTextureNode('depth');
+    const markerOpacity = uniform(0);
+    const markerDisplay = renderOutput(
+      markerColor, gl.toneMapping, THREE.SRGBColorSpace
+    );
+    const finalOutput = mix(
+      fxaa(display),
+      markerDisplay,
+      markerDepth.r.lessThan(1).select(markerOpacity, 0)
+    );
+    const post = new THREE.PostProcessing(gl, finalOutput);
     post.outputColorTransform = false;
 
     let frames = 0;
@@ -283,7 +316,7 @@ export default function ProbeEffect({
         onFrames({ frames: 0 });
       }
 
-      // Cache 128 frame batches per lobe. Moving the camera reuses this atlas.
+      // Cache 256 frame batches per lobe. Moving the camera reuses this atlas.
       if (frames < HISTORY_LIMIT) {
         controls.frame.value = frames;
         compute.update(gl);
@@ -292,26 +325,17 @@ export default function ProbeEffect({
         if (frames === 1 || frames % 8 === 0) onFrames({ frames });
       }
 
+      markerOpacity.value = markersVisible.current ? 1 : 0;
       post.render();
-
-      if (markersVisible.current) {
-        const autoClear = gl.autoClear;
-
-        try {
-          gl.autoClear = false;
-          gl.clearDepth();
-          gl.render(markers.scene, camera);
-        } finally {
-          gl.autoClear = autoClear;
-        }
-      }
     };
 
     return () => {
       renderRef.current = null;
       compute.dispose();
+      markerPass.dispose();
       markers.dispose();
       post.dispose();
+      glow.dispose();
       scenePass.dispose();
       display.renderTarget?.dispose();
       display.dispose();
@@ -420,7 +444,7 @@ const updateProbes = `fn updateProbes(
   // Read the SAME texel from last frame: this probe never moves with the camera,
   // so no previous-screen-UV calculation or reprojection is needed.
   let history = textureLoad(previous, pixel, 0);
-  let count = min(history.a + 1.0, 128.0);
+  let count = min(history.a + 1.0, 256.0);
 
   return vec4f(mix(history.rgb, fresh, 1.0 / count), count);
 }
@@ -793,7 +817,7 @@ export const PROBE_MAX = [4.75, 5.85, 7.25];
 export const LIGHT_TARGET = [1, 1, -3];
 export const CAMERA_TARGET = [-1.6, 1.45, -2.0];
 
-export const HISTORY_LIMIT = 128;
+export const HISTORY_LIMIT = 256;
 export const EMISSION = 10;
 
 const box = (position, size, color = '#E8E3D9', rotation = 0) => ({
@@ -967,6 +991,17 @@ export function createProbeMarkers(grid) {
 }
 `;
 
+const sky = `export const SKY = /* wgsl */ \`
+fn staticSky(direction: vec3f) -> vec3f {
+  let d = normalize(direction);
+  let uv = vec2f(atan2(d.z, d.x) / 6.28318530718 + 0.5,
+    asin(clamp(d.y, -1.0, 1.0)) / 3.14159265359 + 0.5);
+  let t = clamp(length(abs(uv - 0.5)), 0.0, 0.8);
+  return mix(vec3f(0.01, 0.22, 0.98), vec3f(0.36, 0.68, 1.0), t);
+}
+\`;
+`;
+
 const probeBased = {
   '/App.js': { code: app },
   '/ProbeEffect.js': { code: effect, active: true },
@@ -976,6 +1011,7 @@ const probeBased = {
   '/Scene.js': { code: scene },
   '/sceneData.js': { code: sceneData },
   '/probes.js': { code: probes },
+  '/Sky.js': { code: sky },
 } satisfies SandpackFiles;
 
 export default probeBased;
