@@ -372,7 +372,7 @@ export default function ProbeEffect({
     );
 
     // Add a subtle glow to bright daylight highlights before tone mapping.
-    const glow = bloom(combined, 0.15, 0.3, 1);
+    const glow = bloom(combined, 0.035, 0.3, 1);
     const bloomed = vec4(combined.rgb.add(glow.rgb), 1);
 
     const display = rtt(
