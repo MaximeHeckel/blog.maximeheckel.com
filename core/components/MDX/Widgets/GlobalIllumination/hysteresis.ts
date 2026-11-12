@@ -318,9 +318,10 @@ export default function ProbeEffect({
       1
     );
 
-    // Bloom the HDR night lighting before tone mapping.
-    const glow = bloom(combined.mul(controls.nightTime), 0.5, 0.3, 1);
-    const bloomed = vec4(combined.rgb.add(glow.rgb), 1);
+    // Keep daylight bloom subtle and give night emitters a stronger glow.
+    const glow = bloom(combined, 1, 0.3, 1);
+    const bloomStrength = mix(0.15, 0.5, controls.nightTime);
+    const bloomed = vec4(combined.rgb.add(glow.rgb.mul(bloomStrength)), 1);
 
     const display = rtt(
       renderOutput(bloomed, gl.toneMapping, THREE.SRGBColorSpace)

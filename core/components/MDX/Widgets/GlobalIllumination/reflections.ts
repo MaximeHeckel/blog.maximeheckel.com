@@ -175,6 +175,7 @@ import sampleShader from '!!raw-loader!./sampleProbes.wgsl';
 import updateShader from '!!raw-loader!./updateProbes.wgsl';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { bloom } from 'three/examples/jsm/tsl/display/BloomNode.js';
 import { fxaa } from 'three/examples/jsm/tsl/display/FXAANode.js';
 import {
   getViewPosition,
@@ -370,8 +371,12 @@ export default function ProbeEffect({
       1
     );
 
+    // Add a subtle glow to bright daylight highlights before tone mapping.
+    const glow = bloom(combined, 0.15, 0.3, 1);
+    const bloomed = vec4(combined.rgb.add(glow.rgb), 1);
+
     const display = rtt(
-      renderOutput(combined, gl.toneMapping, THREE.SRGBColorSpace)
+      renderOutput(bloomed, gl.toneMapping, THREE.SRGBColorSpace)
     );
 
     // Composite a freshly cleared marker pass instead of drawing into a
@@ -431,6 +436,7 @@ export default function ProbeEffect({
       markerPass.dispose();
       markers.dispose();
       post.dispose();
+      glow.dispose();
       scenePass.dispose();
       display.renderTarget?.dispose();
       display.dispose();

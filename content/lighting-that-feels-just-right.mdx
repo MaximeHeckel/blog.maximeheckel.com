@@ -751,11 +751,7 @@ We define the influence of probes as:
 
 </Callout>
 
-// MAYBE DIAGRAM PROBE WEIGHT? // EXPLORE 27 neighbors?
-
 This function then acts as our *lookup* into the probe atlas to return the overall indirect lighting contribution for each pixel of our rendered frame. Finally, much like in the first part, all we need to do now is to add this contribution to the scene's existing lighting.
-
-
 
 The playground below implements this first pass at our probe-based Global Illumination. You’ll find in it the complete code putting together our probe compute stage with our final effect:
 
@@ -1021,7 +1017,15 @@ Since this shape was a tiny bit more complex than simple spheres or boxes, I inc
 
 ### Final Thoughts
 
-// TODO
+I’m still looking for some of the pitfalls of this implementation; it’s definitely not production-grade in any way (you should use [the probe-based GI included in Three.js](https://threejs.org/examples/webgl_lightprobes)!), but it was nonetheless interesting to get a better grasp of what’s happening behind the scenes with those more advanced lighting techniques. If you want to follow what the pros are working on at the edge, you should also check out the work of <Anchor favicon discrete href="https://twitter.com/CodyBennett">@CodyBennett</Anchor> on **Radiance Cascade**, another GI technique I still haven't looked much into. I’m always very excited to see his progress:
+
+<StaticTweet id="2101979551500816730" />
+
+Teaching myself the basics of Global Illumination was a great way to appreciate the impact indirect lighting has on a lot of media I consume and also in real life. I’m also very excited to use it on my upcoming projects and mix-and-match it with some of my past work that, despite putting a lot of work into it, was always a bit disappointing in the end. The cool thing with lighting effects is that they can stack quite well, so some of the obvious next step is to stack GI with things like caustics, glass effects, or even Volumetric Lighting like I did earlier this fall
+
+<StaticTweet id="2107836682561372506" />
+
+I’ll now get back to building and trying new things around shaders, lighting, effects, and materials, and hope that while waiting for the next write-up, this article will be helpful to you.
 
 <FootnotesList
   notes={[
