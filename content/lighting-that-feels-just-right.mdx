@@ -18,7 +18,15 @@ Just like in real life, the way light interacts with surfaces and materials is k
 This led me to explore more advanced techniques to solve this, all the way to path tracing <FootnoteRef id="1" /> which gave me [results](https://x.com/MaximeHeckel/status/2098782063734161447) beyond what I thought I was capable of visually
 though still too intensive to use in my projects. Path tracing, however, showed me what real **Global Illumination** looked like and what it could bring to my scenes: illuminated white walls reflecting light into shadowed areas, or colored objects tinting their surroundings. It was the lighting I had been missing all along. So I started exploring cheaper ways to approximate that same indirect lighting in real time.
 
-// VIDEO
+<VideoPlayer
+  src="https://cdn.maximeheckel.com/videos/blog/GI_compilation_compressed.mp4"
+  poster="https://cdn.maximeheckel.com/images/blog/GI_compilation_poster.webp"
+  autoPlay
+  muted
+  loop
+  width={700}
+  height={476}
+/>
 
 As you may guess, this sent me on yet *another side quest*, which became the catalyst for this article. I spent several weeks teaching myself GI and building demos each step of the way. I started with Screen-Space Global Illumination, then explored a more practical and flexible probe-based approach, before finally combining the results with reflections, volumetric lighting, and atmospheric scattering contributions, all topics I've dived into earlier in my journey. I’m excited to show you the visuals I achieved, and even more so, to share how I got there.
 
@@ -29,7 +37,7 @@ I recommend the following articles / papers to complement this article. They'll 
 * [Dynamic Diffuse Global Illumination with Ray-Traced Irradiance Fields](https://jcgt.org/published/0008/02/01/)
 * [Lights and Shadows](https://ciechanow.ski/lights-and-shadows/) by Bartosz Ciechanowski
 * [Ray-Sphere Intersection](https://kylehalladay.com/blog/tutorial/math/2013/12/24/Ray-Sphere-Intersection.html) by Kyle Halladay
-* [Ray-Box Intersection](https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes//ray-box-intersection.html)
+* [Ray-Box Intersection](https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection.html)
 * [Cosine weighted sampling](https://pema.dev/obsidian/math/light-transport/cosine-weighted-sampling.html)
 
 </Callout>
@@ -143,8 +151,7 @@ const worldPosition = uniform(camera.matrixWorld).mul(
 
 The helpers used here first reconstruct the surface’s position relative to the camera. and then apply the camera’s world matrix to express that position in world space.
 
-Underneath this code, we’re doing the same position reconstruction process I explained in [Shaping Light > Coordinate Systems and Transformations](https://blog.maximeheckel.com/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/#coordinate-systems-and-transformations
-) except expressed in TSL this time around.
+Underneath this code, we’re doing the same position reconstruction process I explained in [Shaping Light > Coordinate Systems and Transformations](/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/#coordinate-systems-and-transformations) except expressed in TSL this time around.
 
 </Callout>
 
@@ -619,7 +626,7 @@ const updates = histories.map((previous, index) =>
 
 `traceWorld` finds the nearest sphere or box intersection. It's a function that will perform both:
 - [Ray-Sphere Intersection](https://kylehalladay.com/blog/tutorial/math/2013/12/24/Ray-Sphere-Intersection.html)
-- [Ray-Box Intersection](https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes//ray-box-intersection.html)
+- [Ray-Box Intersection](https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection.html)
 
 To support more complex geometries we would have to look into [Bounding Volume Hierarchy](https://en.wikipedia.org/wiki/Bounding_volume_hierarchy), that may be something for another time, when we'll eventually look into how to build a raytracer from scratch.
 </Callout>
