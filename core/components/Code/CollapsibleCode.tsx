@@ -20,8 +20,8 @@ const CollapsibleCode = (props: CollapsibleCodeProps) => {
     ? Math.min(lineCount, focusLines * 1.5)
     : focusLines;
   const transition = {
-    duration: reducedMotion ? 0 : 0.35,
-    ease: 'easeInOut' as const,
+    duration: reducedMotion ? 0 : 0.15,
+    ease: 'easeOut' as const,
   };
 
   // Keep the focus area in view on expansion, while allowing readers to scroll
@@ -57,7 +57,11 @@ const CollapsibleCode = (props: CollapsibleCodeProps) => {
           size="small"
           variant="tertiary"
           rounded
-          css={{ border: '1px solid var(--border-color)' }}
+          css={{
+            border: '1px solid var(--border-color)',
+            background: 'var(--code-snippet-background)',
+            pointerEvents: 'auto',
+          }}
           aria-controls={id}
           aria-expanded={expanded}
           onClick={() => {
@@ -74,6 +78,7 @@ const CollapsibleCode = (props: CollapsibleCodeProps) => {
 export default CollapsibleCode;
 
 const Container = styled('div', {
+  position: 'relative',
   minWidth: 0,
   overflow: 'hidden',
   borderBottomLeftRadius: 'var(--code-block-radius, var(--border-radius-2))',
@@ -100,8 +105,13 @@ const Viewport = styled(motion.div, {
 });
 
 const ToggleBar = styled('div', {
-  position: 'relative',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  zIndex: 3,
   display: 'flex',
   justifyContent: 'center',
   padding: 'var(--space-2)',
+  pointerEvents: 'none',
 });
