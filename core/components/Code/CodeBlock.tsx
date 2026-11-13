@@ -8,11 +8,12 @@ import Flex from '@core/components/Flex';
 
 import { SendToAskButton } from '../Ask/SendToAskButton';
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
+import CollapsibleCode from './CollapsibleCode';
 import { createDiffHighlighter } from './diff';
 import { syntaxTheme, syntaxTokenStyles } from './syntaxTheme';
 import { CodeBlockProps, HighlightedCodeTextProps } from './types';
 import { useCodeOverflowShadows } from './useCodeOverflowShadows';
-import { calculateLinesToHighlight, hasTitle } from './utils';
+import { calculateLinesToHighlight, getCodeFocus, hasTitle } from './utils';
 
 export const HighlightedCodeText = memo(function HighlightedCodeText(
   props: HighlightedCodeTextProps
@@ -121,6 +122,16 @@ const CodeBlock = (props: CodeBlockProps) => {
   if (!codeString?.trim()) return null;
 
   const title = hasTitle(metastring);
+  const source = codeString.trimEnd();
+  const lineCount = source.split('\n').length;
+  const focus = getCodeFocus(metastring, lineCount);
+  const code = (
+    <HighlightedCodeText
+      codeString={focus ? source : codeString}
+      language={language}
+      highlightLine={highlightLineFn}
+    />
+  );
   const actions = (
     <Flex css={{ gap: 0 }}>
       <SendToAskButton
@@ -192,11 +203,18 @@ const CodeBlock = (props: CodeBlockProps) => {
           {actions}
         </FloatingActions>
       )}
-      <HighlightedCodeText
-        codeString={codeString}
-        language={language}
-        highlightLine={highlightLineFn}
-      />
+      {focus && focus.end - focus.start + 1 < lineCount ? (
+        <CollapsibleCode
+          key={`${metastring}:${source}`}
+          start={focus.start}
+          end={focus.end}
+          lineCount={lineCount}
+        >
+          {code}
+        </CollapsibleCode>
+      ) : (
+        code
+      )}
     </Card>
   );
 };
