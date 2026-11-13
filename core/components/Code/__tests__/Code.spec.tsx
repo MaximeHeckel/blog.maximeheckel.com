@@ -3,7 +3,37 @@ import React from 'react';
 import { it, describe, expect } from 'vitest';
 
 import Code from '../';
-import { preToCodeBlock, calculateLinesToHighlight, hasTitle } from '../utils';
+import {
+  preToCodeBlock,
+  calculateLinesToHighlight,
+  getCodeFocus,
+  hasTitle,
+} from '../utils';
+
+it.each([
+  [null, null],
+  ['focus={5-8}', null],
+  ['collapsible', { start: 1, end: 3 }],
+  ['collapsible focus={5-8}', { start: 5, end: 8 }],
+  ['collapsible focus={5}', { start: 5, end: 5 }],
+  ['collapsible focus={8-99}', { start: 8, end: 12 }],
+  ['collapsible focus={99-100}', { start: 1, end: 3 }],
+  ['collapsible focus={8-5}', { start: 1, end: 3 }],
+  ['collapsible focus={0-5}', { start: 1, end: 3 }],
+  ['collapsible focus={invalid}', { start: 1, end: 3 }],
+])('parses collapse metadata %s', (meta, focus) => {
+  expect(getCodeFocus(meta, 12)).toEqual(focus);
+});
+
+it('keeps focus metadata separate from highlighting and titles in any order', () => {
+  expect(calculateLinesToHighlight('collapsible focus={5-8}')(5)).toBe(false);
+  expect(calculateLinesToHighlight('collapsible focus={5-8} {6}')(5)).toBe(
+    true
+  );
+  expect(hasTitle('title=My example collapsible focus={5-8}')).toBe(
+    'My example'
+  );
+});
 
 describe('Code', () => {
   it('Renders diff changes while preserving headers, context, and prefixes', async () => {

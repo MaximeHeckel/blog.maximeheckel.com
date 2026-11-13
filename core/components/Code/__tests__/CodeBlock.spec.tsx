@@ -199,3 +199,99 @@ it('copies updated source after the highlighted subtree has been memoized', () =
     else Reflect.deleteProperty(document, 'execCommand');
   }
 });
+
+const multilineCode = Array.from(
+  { length: 12 },
+  (_, index) => `const line${index + 1} = ${index + 1};`
+).join('\n');
+
+it('opts in to collapse with a line count and an accessible expand/collapse control', () => {
+  const { getByRole, queryByRole, rerender, container } = render(
+    <CodeBlock
+      codeString={multilineCode}
+      language="javascript"
+      metastring={null}
+    />
+  );
+  expect(queryByRole('button', { name: /Show all/ })).not.toBeInTheDocument();
+
+  rerender(
+    <CodeBlock
+      codeString={`${multilineCode}\n`}
+      language="javascript"
+      metastring="collapsible title=example.js"
+    />
+  );
+
+  const toggle = getByRole('button', { name: 'Show all 12 lines' });
+  const region = getByRole('region', { name: 'Code snippet' });
+  expect(toggle).toHaveAttribute('aria-controls', region.id);
+  expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  expect(region).toHaveStyle({ height: 'calc(72px + var(--space-2) * 2)' });
+  expect(
+    container.querySelectorAll('[data-testid="number-line"]')
+  ).toHaveLength(12);
+
+  vi.mocked(Highlight).mockClear();
+  fireEvent.click(toggle);
+  expect(getByRole('button', { name: 'Show less' })).toHaveAttribute(
+    'aria-expanded',
+    'true'
+  );
+  expect(region).toHaveStyle({ overflowY: 'auto' });
+  expect(region).toHaveAttribute('tabindex', '0');
+  expect(Highlight).not.toHaveBeenCalled();
+
+  region.scrollTop = 100;
+  fireEvent.click(toggle);
+  expect(toggle).toHaveTextContent('Show all 12 lines');
+  expect(region.scrollTop).toBe(0);
+  expect(region).toHaveStyle({ overflowY: 'hidden' });
+});
+
+it('preserves line numbers and independent highlights for a focus range and resets new snippets', () => {
+  const { container, getByRole, getAllByTestId, rerender } = render(
+    <CodeBlock
+      codeString={multilineCode}
+      language="javascript"
+      metastring="collapsible focus={6-9} {7-8} title=example.js"
+    />
+  );
+  const region = getByRole('region', { name: 'Code snippet' });
+  expect(region).toHaveStyle({ height: 'calc(96px + var(--space-2) * 2)' });
+  expect(region.scrollTop).toBe(120);
+  expect(
+    getAllByTestId('highlight-line').map((line) => line.textContent)
+  ).toEqual(['7const line7 = 7;', '8const line8 = 8;']);
+  expect(
+    container.querySelector('[data-testid="codesnippet-title"]')
+  ).toHaveTextContent('example.js');
+
+  fireEvent.click(getByRole('button', { name: 'Show all 12 lines' }));
+  region.scrollTop = 200;
+  fireEvent.click(getByRole('button', { name: 'Show less' }));
+  expect(region.scrollTop).toBe(120);
+  fireEvent.click(getByRole('button', { name: 'Show all 12 lines' }));
+  rerender(
+    <CodeBlock
+      codeString={'one\ntwo\nthree\nfour\nfive'}
+      language="javascript"
+      metastring="collapsible"
+    />
+  );
+  expect(getByRole('button', { name: 'Show all 5 lines' })).toHaveAttribute(
+    'aria-expanded',
+    'false'
+  );
+});
+
+it('does not offer a collapse control when the focus already includes the whole snippet', () => {
+  const { queryByRole } = render(
+    <CodeBlock
+      codeString={'one\ntwo\nthree'}
+      language="javascript"
+      metastring="collapsible"
+    />
+  );
+  expect(queryByRole('button', { name: /Show all/ })).not.toBeInTheDocument();
+});
