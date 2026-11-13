@@ -1236,6 +1236,63 @@ function sayHi(name) {
               />
             </Box>
             <Box css={{ width: '100%' }}>
+              <Label>Collapsible · first three lines</Label>
+              <CodeBlock
+                metastring="collapsible title=layout.tsx"
+                language="tsx"
+                codeString={`import { Header } from './header';
+import { Footer } from './footer';
+
+export default function Layout({ children }) {
+  return (
+    <main>
+      <Header />
+      {children}
+      <Footer />
+    </main>
+  );
+}`}
+              />
+            </Box>
+            <Box css={{ width: '100%' }}>
+              <Label>Collapsible · focus on lines 6–14</Label>
+              <CodeBlock
+                metastring="collapsible focus={6-14} {7-9} title=favourite.ts"
+                language="typescript"
+                codeString={`type Sample = { width: number; weight: number };
+type Favourite = { width: number; support: number };
+
+const minimumWeight = 0.5;
+
+export function favourite(samples: Sample[]): Favourite | null {
+  const weighted = samples.filter(({ weight }) => weight >= minimumWeight);
+  const support = weighted.reduce((sum, { weight }) => sum + weight, 0);
+  if (support === 0) return null;
+
+  const width = weighted.reduce(
+    (sum, sample) => sum + sample.width * sample.weight,
+    0
+  ) / support;
+
+  return { width, support };
+}
+
+export function peak(samples: Sample[]) {
+  return samples.reduce<Sample | null>((best, sample) => {
+    if (!best || sample.weight > best.weight) return sample;
+    return best;
+  }, null);
+}`}
+              />
+              <Text as="p" size="1" css={{ marginTop: 'var(--space-3)' }}>
+                Add <InlineCode>collapsible</InlineCode> to the code fence meta.
+                Set <InlineCode>{'focus={6-14}'}</InlineCode> to preview a line
+                range, or omit it to show the first three lines. Line
+                highlighting and titles still work. Expanded blocks scroll
+                beyond 1.5 times the focus range.
+              </Text>
+            </Box>
+            <Box css={{ width: '100%' }}>
               <Label>Sandpack Code Block</Label>
               <SandpackExample />
             </Box>
