@@ -10,13 +10,16 @@ type: 'blogPost'
 featured: false
 ---
 
-In [The Gap](https://vimeo.com/85040589), Ira Glass talks about the frustration of your output falling short of what you had in mind when you started practicing a new skill. The vision is there, but the result, or the skill to achieve it, not quite. 
-A feeling a bit too familiar to me in my shader work: getting 90% of the way toward a visual I've pictured for so long, then being unable to pinpoint what makes it odd. Nothing more annoying. Though after comparing my work with many creatives out there, I realized that more often than not, that *gap* was something as “simple” as **lighting**.
+In [The Gap](https://vimeo.com/85040589), Ira Glass talks about the frustration of your output falling short of what you originally envisioned when learning a new skill. 
+You have a clear picture in your mind about what you want, but you can't quite pull it off just yet. 
+That feeling, I'm a bit too familiar with it, spending countless hours staring at my own shader work without being able to pinpoint why it feels off.
+So I started comparing my work with that of other creative devs out there and realized that more often than not, that *gap* was something as "simple" as **lighting**. 
 
-Just like in real life, the way light interacts with surfaces and materials is key to making a scene look and feel a certain way. Think about lighting in movies, or even in your own home. In my work, my lighting knowledge was still lacking. My shadows felt harsh and my surfaces disconnected, lacking color bleeding or color contribution from the sky, to name a few. 
+Just like in real life, the way light interacts with surfaces and materials is key to making a scene look and feel a certain way. In my work, however, it was missing something: my shadows felt harsh and my surfaces disconnected, lacking color bleeding or color contribution from the sky, to name a few. 
 
-This led me to explore more advanced techniques to solve this, all the way to path tracing <FootnoteRef id="1" /> which gave me [results](https://x.com/MaximeHeckel/status/2098782063734161447) beyond what I thought I was capable of visually
-though still too intensive to use in my projects. Path tracing, however, showed me what real **Global Illumination** looked like and what it could bring to my scenes: illuminated white walls reflecting light into shadowed areas, or colored objects tinting their surroundings. It was the lighting I had been missing all along. So I started exploring cheaper ways to approximate that same indirect lighting in real time.
+This led me to explore more advanced techniques to solve this, all the way to [path tracing](https://x.com/MaximeHeckel/status/2098782063734161447) <FootnoteRef id="1" /> which, despite being too intensive to use in my projects, showed me what real **Global Illumination** looked like and what 
+it could bring to my scenes: illuminated white walls reflecting light into shadowed areas, or colored objects tinting their surroundings. 
+It was the lighting I had been missing all along. So I started exploring cheaper ways to approximate that same indirect lighting in real time.
 
 <VideoPlayer
   src="https://cdn.maximeheckel.com/videos/blog/GI_compilation_compressed.mp4"
@@ -28,7 +31,7 @@ though still too intensive to use in my projects. Path tracing, however, showed 
   height={476}
 />
 
-As you may guess, this sent me on yet *another side quest*, which became the catalyst for this article. I spent several weeks teaching myself GI and building demos each step of the way. I started with Screen-Space Global Illumination, then explored a more practical and flexible probe-based approach, before finally combining the results with reflections, volumetric lighting, and atmospheric scattering contributions, all topics I've dived into earlier in my journey. I’m excited to show you the visuals I achieved, and even more so, to share how I got there.
+As you may guess, this sent me on yet *another side quest*, which became the catalyst for this article. I spent several weeks teaching myself the inner workings of GI and building demos each step of the way. I started with Screen-Space Global Illumination, then explored a more practical and flexible probe-based approach, before finally combining the results with reflections, volumetric lighting, and atmospheric scattering contributions, all topics I've dived into earlier in my journey. I’m excited to show you the visuals I achieved, and even more so, to share how I got there.
 
 <Callout variant="info" label="Sources">
 
@@ -50,19 +53,18 @@ First, let’s revisit the lighting model we’ve used many times throughout my 
 
 Intuitively, it works as follows:
 
-<BlinnPhongDiagram />
-
 * When the normal of a point on a surface is perfectly aligned with the light direction, that point receives the most light.
 * As the angle between the normal and the light direction increases, the point receives less and less light.
 * Finally, once the normal is perpendicular to, or further from, the light direction, the point receives no light.
 
+<BlinnPhongDiagram />
+
 That behavior is what’s represented by the diffuse lighting term `max(dot(normal, lightDirection), 0.0)`. However, this only accounts for the direct light, which means:
 
-- Surfaces facing away from the light are completely dark.
-- Objects blocking the light leave shadows and hide surface details.
-- A brightly lit surface contributes no lighting at all to the objects or scene around it.
+- Surfaces facing away from the light are completely dark, and vice versa, the more toward the light your surface is facing, the brighter it will be.
+- Only the direct light matters. A brightly lit surface contributes no lighting at all to the objects or scene around it.
 
-Adding ambient lighting to brighten up those darker regions is a quick solution, but it doesn’t account for where the light comes from, which surfaces it reaches, or the colors that are picked up along the way.
+Adding ambient lighting to *fake* some indirect lighting and brighten up those darker regions is a quick solution, but it doesn’t account for where the light comes from, which surfaces it reaches, or the colors that are picked up along the way. That's just not how light works.
 
 What I learned through path tracing is that light keeps traveling after it hits a surface; it **bounces**, thus ending up illuminating surfaces it did not reach directly.
 
@@ -84,11 +86,10 @@ Below is an example of how much indirect light, in this case implemented through
 
 ## Tracing Light from Pixels
 
-Having worked with Screen Space post-processing effects before through Volumetric Lighting or Atmospheric Scattering <FootnoteRef id="4" />, I wanted to approach GI from familiar ground. My goal was to see whether leveraging pixels from surfaces visible on screen at any given frame was enough to compute pleasing yet convincing indirect light.
+Having worked with Screen Space post-processing effects before through Volumetric Lighting or Atmospheric Scattering <FootnoteRef id="4" />, I wanted to approach GI from familiar grounds. My goal was to see whether leveraging pixels from surfaces visible on screen at any given frame was enough to compute pleasing yet convincing indirect light.
 
-Like in many other screen-space rendering techniques, our starting point here is a simple rendered frame. **Our first step is to establish the foundations to estimate the indirect light that contributes to any given pixel**. 
-
-Of course, the color of the pixel is not enough for us to deduce where the surfaces are and how they relate to each other in space. In our Volumetric Lighting work, we had to reconstruct a surface’s position to know when to stop marching a ray from the camera <FootnoteRef id="5" />. In this case, however, we’ll start our *raymarching* from a reconstructed position in our scene and trace rays toward other surfaces to estimate the light they contribute to that position.
+Of course, the color of the pixel is not enough for us to deduce where the surfaces are and how they relate to each other in space, we first have to reconstruct their position in 3D space and from there march rays through the scene to look for those surfaces and estimate the light they contribute back. In our Volumetric Lighting work, we had to reconstruct a surface’s position to know when to stop marching a ray from the camera <FootnoteRef id="5" />. 
+In this case, however, they give us a starting point for our **raymarching** on the surface itself.
 
 At a high level, this process works as follows, for any given pixels of the frame:
 
@@ -133,7 +134,7 @@ const normals = scenePass.getTextureNode('normal');
 const albedo = scenePass.getTextureNode('albedo');
 ```
 
-* Recover the position relative to the camera and transform that position into world space. 
+* Using the depth of the scene, recover the position relative to the camera and transform that position into world space. 
 
 ```tsx
 const viewPosition = getViewPosition(
@@ -226,7 +227,7 @@ let origin = surfaceWorldPosition + normalize(surfaceWorldNormal) * 0.05;
 
 These will each help us find other visible surfaces and sample the corresponding rendered color, giving us an estimate of the light coming from that direction. For this process we will:
 
-* Advance along the ray in small steps in view space, projecting each step onto the screen
+* Advance along the ray in small step increments in view space, projecting each step onto the screen
 
 ```wgsl
 let originView = viewMatrix * vec4f(origin, 1.0);
@@ -679,9 +680,9 @@ At the end of this compute stage, we should have our probe atlas completely fill
 
 ### Rendering light from our probe atlas
 
-The remaining step for our probe-based Global Illumination is to use those light measurements we got from our compute pipeline. As we did in the first part, we will reconstruct each visible surface’s world-space position to then find nearby probes and get the corresponding lighting estimate from the atlas
+As we did in the first part, we will reconstruct each visible surface’s world-space position to then find nearby probes and get the corresponding lighting estimate from the atlas
 
-The code snippet below shows how we’re going from worldPosition for a given point to find the nearest probe and explore its neighbors in a 3 x 3 x 3 neighborhood around it:
+The code snippet below shows how we’re going from worldPosition for a given point to find the nearest probe and explore its neighbors in a `3 x 3 x 3` neighborhood around it:
 
 ```wgsl title=Sampling the probe atlas
 fn sampleProbes(
@@ -773,7 +774,7 @@ Notice how:
 * We can now have off-screen light, or emitters, and those will be taken into account from the get-go.
 * The more dense our probe grid is the more accurate our indirect lighting is: more probes, means more estimations, means more data for our averages, and thus, better results.
 
-Despite its flaws, it ended up being more usable for my projects like this. Oh also, you should try to toggle the night mode to see how emissive surfaces also contribute to the scene's indirect lighting, which we got almost for free with the current implementation. No additional tracing necessary!
+Despite its flaws, it ended up being more usable for my projects. Oh also, you should try to toggle the night mode to see how emissive surfaces also contribute to the scene's indirect lighting, which we got almost for free with the current implementation. No additional tracing necessary!
 
 ```wgsl
 // 0 if day, 1 if night
@@ -823,7 +824,7 @@ Below is an updated version of our scene featuring probe-based Global Illuminati
 
 <GlobalIlluminationSandpack scene="scene4" />
 
-Probe-based Global Illumination does give us a *decent* result overall. We fixed many of the caveats of SSGI that were bothering me. Yes, there is some ghosting when the light changes abruptly, but for my use case, which centers around almost static/slowly changing lights, it does what I need it to do.
+Probe-based Global Illumination does give us a *decent* result overall. We fixed many of the caveats of SSGI that were bothering me. Yes, there still is some ghosting when the light changes abruptly, but for my use case, which centers around almost static/slowly changing lights, it does what I need it to do.
 The only "downside" is that I grew quite fond of the noise produced by the raymarching, which here is absent. If like me, you miss it a bit too much, you can always re-introduce it through an additional grain post-processing pass.
 
 ## Reflections, Sky Light, and Final Touches
@@ -832,7 +833,7 @@ The work we’ve done in the previous part provides indirect lighting that gradu
 
 There are still a few things we can add to bring this effect together:
 
-* We’ll start with reflections. With world-space tracing already in place, we can now find surfaces hidden from the camera and reuse our probes to light their reflections, something that would have only yielded black pixels in screen space.
+* We’ll start with reflections. With world-space tracing already in place, we can now find surfaces hidden from the camera and reuse our probes to light their reflections, something that, like we saw in an example earlier, would have only yielded black pixels in screen space.
 * Then, we should let the sky contribute to our indirect lighting. Using atmospheric scattering, this would bring a natural tint to the scene and let us have dynamic lighting as the sun moves across the sky, including sunset/sunrise colors.
 
 ### Tracing reflections
@@ -849,7 +850,7 @@ We start from a visible surface point; we reflect the viewing direction around i
 
 Once we’ve found that surface, we can compute its lighting by combining emissions, direct lighting, and indirect lighting by sampling our probe atlas as we did in the previous part.
 
-However, before all that, we need to take into account the properties of the materials receiving reflections. The code snippet below adds an extra render target to store the **roughness and metalness* of each material present in the scene..
+However, before all that, we need to take into account the properties of the materials receiving reflections. The code snippet below adds an extra render target to store the **roughness and metalness** of each material present in the scene..
 
 ```ts title=Add render target to track material properties
 const scenePass = pass(scene, camera, { samples: 0 });
@@ -863,7 +864,7 @@ scenePass.setMRT(
 )
 ```
 
-Reflection can be handled through a dedicated `traceReflection` function that we can then be added to our post-processing shader"
+Reflections can be handled through a dedicated `traceReflection` function that we can then be added to our post-processing shader
 
 ```wgsl title=Trace the reflection from a given camera world position
 fn traceReflection(
@@ -946,9 +947,10 @@ I made the small playground below to quickly demonstrate this new addition to ou
 
 ### Adding sky light
 
-During my learning journey, I could not stop thinking about ways I could include some of my earlier work around lighting, and specifically trying to fit in the sky from my atmospheric scattering shader work. However, it was deceptively complex: I had to have the sky as a backdrop and also it's color / light to contribute to the scene as the sun moves and thus be taken into account when we're gathering indirect lighting.
+During my learning journey, I could not stop thinking about ways I could include some of my earlier work around lighting,
+and my [atmospheric scattering shader work](/posts/on-rendering-the-sky-sunsets-and-planets/) to have that beautiful blue sky in my scene. However, it was deceptively complex: I had to have the sky as a backdrop and also have its color / light contribute to the scene as the sun moves and thus be taken into account when we're gathering indirect lighting.
 
-I was tempted to include the atmospheric scattering math into my probe ray logic, but instead, I decided to put it in its own compute shader, to only run it when necessary, as in my use cases, the sky won't change that much.
+I was tempted to include the atmospheric scattering math into my probe ray logic, but instead, I decided to put it in its own compute shader, to only run it when necessary, as in my use case, the sky *won't change that much* (unless I change the position of the sun, but that's an acceptable dependency).
 
 For each pixel in the texture, we take a direction it points to in the sky, then call `atmosphere` (abstracted atmospheric scattering logic) to calculate the color and intensity of the light coming from that direction.
 
@@ -963,7 +965,7 @@ fn skyTexel(pixel: vec2i, sunDirection: vec3f, intensity: f32, haze: f32) -> vec
 }
 ```
 
-After that, we can sample the resulting texture when tracing probes:
+After that, we can sample the resulting sky texture when tracing probes:
 
 ```wgsl title=Sampling the sky color and light intensity
 fn sampleSky(sky: texture_2d<f32>, direction: vec3f) -> vec3f {
@@ -1021,19 +1023,19 @@ I added arches geometries in this demo as I did for my own scene from mid-Octobe
 
 <StaticTweet id="2112909030318551231" />
 
-Since this shape was a tiny bit more complex than simple spheres or boxes, I included the proper intersection logic in the `traceWorld` function in the demo above. In the future, I’d like to trace against triangle meshes via a BVH, as mentioned earlier, making it easier to handle more complex geometries.
+I included the proper intersection logic in the `traceWorld` function in the demo above, it's a bit gnarly though. In the future, I’d like, and recommend, tracing against triangle meshes via a BVH, as mentioned earlier, making it easier to handle more complex geometries.
 
 ### Final Thoughts
 
-I’m still looking for some of the pitfalls of this implementation; it’s definitely not production-grade in any way (you should use [the probe-based GI included in Three.js](https://threejs.org/examples/webgl_lightprobes)!), but it was nonetheless interesting to get a better grasp of what’s happening behind the scenes with those more advanced lighting techniques. If you want to follow what the pros are working on at the edge, you should also check out the work of <Anchor favicon discrete href="https://twitter.com/CodyBennett">@CodyBennett</Anchor> on **Radiance Cascade**, another GI technique I still haven't looked much into. I’m always very excited to see his progress:
+I’m still solving for some of the pitfalls of this implementation as of writting this; it’s definitely not production-grade in any way (you should use [the probe-based GI included in Three.js](https://threejs.org/examples/webgl_lightprobes)!), but I'm nonetheless very happy with the result especially given how interesting it was to get a better grasp of what’s happening behind the scenes with those more advanced lighting techniques. If you want to follow what the pros are working on at the edge, you should also check out the work of <Anchor favicon discrete href="https://twitter.com/CodyBennett">@CodyBennett</Anchor> on **Radiance Cascade**, another GI technique I still haven't looked much into (it's on my list). I’m always very excited to see his progress:
 
 <StaticTweet id="2101979551500816730" />
 
-Teaching myself the basics of Global Illumination was a great way to appreciate the impact indirect lighting has on a lot of media I consume and also in real life. I’m also very excited to use it on my upcoming projects and mix-and-match it with some of my past work that, despite putting a lot of work into it, was always a bit disappointing in the end. The cool thing with lighting effects is that they can stack quite well, so some of the obvious next step is to stack GI with things like caustics, glass effects, or even Volumetric Lighting like I did earlier this fall
+Teaching myself the basics of Global Illumination was a great way to appreciate the outsized impact indirect lighting. I’m also very much looking forward to using it on my upcoming projects and mix-and-match it with some of my past work that, despite putting a lot of work into it, was always a bit disappointing in the end. The cool thing with lighting effects overall is that they can stack quite well, so some of the obvious next step is to combine GI with things like caustics, glass effects, or even Volumetric Lighting like I did earlier this fall:
 
 <StaticTweet id="2107836682561372506" />
 
-I’ll now get back to building and trying new things around shaders, lighting, effects, and materials, and hope that while waiting for the next write-up, this article will be helpful to you.
+I’ll now get back to building and trying new things around shaders, lighting, effects, and materials, and hope that while waiting for the next write-up, this walkthrough on Global Illumination will be helpful to you and give you a renewed appreciation for the tiny details that make all the difference.
 
 <FootnotesList
   notes={[
