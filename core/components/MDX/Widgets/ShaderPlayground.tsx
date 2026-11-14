@@ -305,6 +305,7 @@ const GridOverlay = ({ gridSize }: GridOverlayProps) => {
 
 export interface ShaderPlaygroundProps {
   fragmentShader: string;
+  floatingPointFeedback?: boolean;
   uniforms?: Uniforms;
   children?: React.ReactNode;
   codeString?: string;
@@ -318,6 +319,7 @@ export interface ShaderPlaygroundProps {
 export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
   const {
     fragmentShader,
+    floatingPointFeedback = false,
     uniforms = {},
     children,
     codeString,
@@ -361,6 +363,7 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
                 gap="4"
                 alignItems="start"
                 justifyContent="start"
+                css={{ height: '100%' }}
               >
                 <Text size="2" weight="4" variant="tertiary">
                   Uniforms
@@ -389,6 +392,7 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
             >
               <ShaderCanvas
                 fragmentShader={fragmentShader}
+                floatingPointFeedback={floatingPointFeedback}
                 uniforms={uniforms}
               />
               {showGrid ? <GridOverlay gridSize={gridSize} /> : null}

@@ -44,6 +44,22 @@
     "term": "aerial perspective LUT"
   },
   {
+    "kind": "other",
+    "term": "albedo",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "The base color of a surface without any lighting or shading applied."
+  },
+  {
+    "kind": "other",
+    "term": "ambient lighting",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "Indirect light that uniformly brightens all surfaces regardless of direction."
+  },
+  {
     "definition": "A Framer Motion component enabling exit animations for components leaving the React tree.",
     "kind": "other",
     "origin": [
@@ -588,6 +604,14 @@
     "term": "cosine similarity"
   },
   {
+    "kind": "other",
+    "term": "cosine-weighted hemisphere",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "A sampling distribution favoring directions near the surface normal for diffuse lighting."
+  },
+  {
     "definition": "A Bézier curve defined by four control points creating smooth, complex curves.",
     "kind": "other",
     "origin": [
@@ -1116,6 +1140,14 @@
     "term": "geometry"
   },
   {
+    "kind": "other",
+    "term": "Global Illumination",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "Lighting technique simulating both direct and indirect light bouncing in a scene."
+  },
+  {
     "definition": "A C-like language used to write shaders that run on the GPU.",
     "kind": "other",
     "origin": [
@@ -1209,6 +1241,14 @@
     "term": "Henyey-Greenstein function"
   },
   {
+    "kind": "other",
+    "term": "hysteresis",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "Blending factor controlling how much past lighting influences current lighting estimates."
+  },
+  {
     "definition": "A number describing how much light bends when entering a material.",
     "kind": "other",
     "origin": [
@@ -1220,6 +1260,14 @@
       "the-study-of-shaders-with-react-three-fiber"
     ],
     "term": "index of refraction"
+  },
+  {
+    "kind": "other",
+    "term": "indirect lighting",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "Light that reaches surfaces after bouncing off other surfaces in the scene."
   },
   {
     "definition": "A mesh that renders multiple copies efficiently using GPU instancing.",
@@ -2177,6 +2225,14 @@
     "term": "post-processing pass"
   },
   {
+    "kind": "other",
+    "term": "probe atlas",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "A 2D texture storing lighting estimates from multiple probes across a 3D scene."
+  },
+  {
     "definition": "Mapping 3D points onto a plane or screen using mathematical transformations.",
     "kind": "other",
     "origin": [
@@ -2907,6 +2963,14 @@
       "shading-motion"
     ],
     "term": "SVG paths"
+  },
+  {
+    "kind": "other",
+    "term": "temporal accumulation",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "Combining lighting results over multiple frames to reduce noise and improve quality."
   },
   {
     "kind": "other",
