@@ -3,6 +3,7 @@ import { animate, useInView, useReducedMotion } from 'motion/react';
 import {
   KeyboardEvent,
   ReactNode,
+  TouchEvent as ReactTouchEvent,
   useEffect,
   useId,
   useRef,
@@ -36,6 +37,7 @@ const Root = styled(Card, {
 
 const Stage = styled('div', {
   width: '100%',
+  touchAction: 'pan-y pinch-zoom',
   height: 490,
   overflow: 'visible',
   '& > svg': {
@@ -87,6 +89,7 @@ export function Diagram<State extends Record<string, number>>({
 }: DiagramProps<State>) {
   const id = useId();
   const stageRef = useRef<HTMLDivElement>(null);
+  const swipeRef = useRef<{ id: number; x: number; y: number } | null>(null);
   const previousRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   const focusAfterNavigation = useRef<'previous' | 'next' | null>(null);
@@ -108,6 +111,33 @@ export function Diagram<State extends Record<string, number>>({
     if (destination) button.current?.focus({ preventScroll: true });
     focusAfterNavigation.current = null;
   }, [step]);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const onTouchMove = (event: TouchEvent) => {
+      const start = swipeRef.current;
+      if (!start) return;
+      const touch = event.touches[0];
+      if (event.touches.length !== 1 || touch.identifier !== start.id) {
+        swipeRef.current = null;
+        return;
+      }
+      const dx = Math.abs(touch.clientX - start.x);
+      const dy = Math.abs(touch.clientY - start.y);
+      if (dy > 10 && dy > dx) {
+        swipeRef.current = null;
+      } else if (dx > dy && event.cancelable) {
+        // React's touch listeners are passive. A native non-passive listener
+        // lets horizontal swipes cancel browser history navigation.
+        event.preventDefault();
+      }
+    };
+
+    stage.addEventListener('touchmove', onTouchMove, { passive: false });
+    return () => stage.removeEventListener('touchmove', onTouchMove);
+  }, []);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -174,6 +204,29 @@ export function Diagram<State extends Record<string, number>>({
     setStep(next);
   };
 
+  const onTouchStart = (event: ReactTouchEvent<HTMLDivElement>) => {
+    const touch = event.touches[0];
+    swipeRef.current =
+      event.touches.length === 1
+        ? { id: touch.identifier, x: touch.clientX, y: touch.clientY }
+        : null;
+  };
+
+  const onTouchEnd = (event: ReactTouchEvent<HTMLDivElement>) => {
+    const start = swipeRef.current;
+    swipeRef.current = null;
+    if (!start || event.touches.length > 0) return;
+    const touch = Array.from(event.changedTouches).find(
+      (touch) => touch.identifier === start.id
+    );
+    if (!touch) return;
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      navigate(step + (dx < 0 ? 1 : -1));
+    }
+  };
+
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
     const destinations: Record<string, number> = {
@@ -191,7 +244,14 @@ export function Diagram<State extends Record<string, number>>({
 
   return (
     <Root className={className} depth={1} onKeyDown={onKeyDown}>
-      <Stage ref={stageRef}>
+      <Stage
+        ref={stageRef}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        onTouchCancel={() => {
+          swipeRef.current = null;
+        }}
+      >
         <svg
           role="img"
           aria-label={label}
