@@ -91,7 +91,7 @@ Having worked with Screen Space post-processing effects before through Volumetri
 Of course, the color of the pixel is not enough for us to deduce where the surfaces are and how they relate to each other in space, we first have to reconstruct their position in 3D space and from there march rays through the scene to look for those surfaces and estimate the light they contribute back. In our Volumetric Lighting work, we had to reconstruct a surface’s position to know when to stop marching a ray from the camera <FootnoteRef id="5" />. 
 In this case, however, they give us a starting point for our **raymarching** on the surface itself.
 
-At a high level, this process works as follows, for any given pixels of the frame:
+At a high level, this process works as follows, for any given pixel of the frame:
 
 1. We reconstruct the position of the surface
 2. We use its normal to orient a hemisphere and sample directions with it
@@ -150,7 +150,7 @@ const worldPosition = uniform(camera.matrixWorld).mul(
 
 <Callout variant="info">
 
-The helpers used here first reconstruct the surface’s position relative to the camera. and then apply the camera’s world matrix to express that position in world space.
+The helpers used here first reconstruct the surface’s position relative to the camera, and then apply the camera’s world matrix to express that position in world space.
 
 Underneath this code, we’re doing the same position reconstruction process I explained in [Shaping Light > Coordinate Systems and Transformations](/posts/shaping-light-volumetric-lighting-with-post-processing-and-raymarching/#coordinate-systems-and-transformations) except expressed in TSL this time around.
 
@@ -169,7 +169,7 @@ For our opaque surfaces, we’ll sample directions within the hemisphere *above*
 For more information as to why we use this type of distribution, I’d invite you to read [this note on cosine-Weighted Hemisphere Sampling](https://pema.dev/obsidian/math/light-transport/cosine-weighted-sampling.html) from <Anchor discreet favicon href="https://twitter.com/pemathedev">pemathedev</Anchor>.
 
 In it, they talk about how, given an incoming light, directions near the surface’s normal contribute more to the diffuse lighting than directions grazing the surface. With cosine-weighted sampling, we end up tracing more rays near that normal, giving us a less noisy estimate with the same number of rays.
-The author also offers a *secret trick* / simplification, that is cheaper. I have yet to compare its output with its more accurate counterpart to know for sure whether or not it would produce results of the same quality.
+The author also offers a *secret trick* / simplification, that is cheaper. I have yet to compare its output with the method shown above to know for sure whether or not it would produce results of the same quality.
 
 </Callout>
 
@@ -334,7 +334,7 @@ if (hit.z > 0.0) {
 * `hit.xy * size` converts the UV into pixel coordinate
 * `textureLoad(colorMap, hitPixel, 0)` reads the pixel rendered color
 * `dot(hitNormal, -direction) > 0.0` makes sure that the hit surface faces the point receiving the light so that we only gather light from outward-facing sides.
-* `incoming+= accumulates` that color to the contributions from other rays of the same hemisphere, which we then 
+* `incoming+= textureLoad(colorMap, hitPixel, 0).rgb;` accumulates that color to the contributions from other rays of the same hemisphere, which we then return.
 
 Finally, we can average the contributions from all eight rays and multiply the result by the receiving surface albedo to tint the indirect light contribution. This indirect light amount is then added to the original scene color, before setting the combined result as the output of our GI post-processing pass:
 
@@ -539,11 +539,14 @@ While the output definitely looks better, there are some pretty annoying drawbac
   height={451}
 />
 
-Moreover, since we’re in screen-space, we cannot compute indirect lighting for things off camera. That means adding things like reflective walls comes with a lot of caveats:
+Moreover, since we’re in screen-space, we cannot compute indirect lighting for things off camera. 
+
+While working on this, this limitation became more and more annoying, and reduced the range of possibilities for composition in my work. On top of that, I also wanted
+to add reflections, piggybacking on top of the same mechanism. Unfortunately, reflections also run into the same visibility limitations:
 
 <Image
   src="https://cdn.maximeheckel.com/images/blog/ssgi_reflection.webp"
-  alt="Screenshot showcasing the missing backside of objects against the reflective wall due to SSGI's limitations"
+  alt="Screenshot showcasing the missing backside of objects against the reflective wall due to screen-space technique limitations"
   width={700}
   height={514}
   unoptimized
@@ -564,7 +567,7 @@ At a high level, it works as follows:
 
 1. We place probes throughout the scene. These probes act as sampling locations in world space. We will estimate indirect lighting at these positions.
 2. We trace rays from each probe to find intersections with the scene’s geometry.
-3. We compute the light arriving from those surfaces, gathering not only the indirect light but also potential light they emit.
+3. We compute the light arriving from those surfaces, gathering the light they reflect but also potential light they emit.
 4. We average the rays' contributions for each probe and store the lighting estimates.
 5. We read and blend the stored lighting estimate in our post-processing effect to shade visible surfaces. Occluded probes are also discarded.
 6. As in the previous method, we blend the indirect light with the scene’s original lighting.
@@ -575,7 +578,7 @@ The interactive diagram below illustrates each step of the probe-based approach 
 
 ### World space probes
 
-A probe is a position we define in space where we measure something, and in our case, that something is lighting. These do not need to be defined as proper geometries, although, for learning's sake and remain as visual as possible, we will provide an option to show them on screen.
+A probe is a position we define in space where we measure something, and in our case, that something is lighting. These do not need to be defined as proper geometries, although, for learning's sake and to remain as visual as possible, we will provide an option to show them on screen.
 
 These probes have to be defined within a set space, with boundaries (we can’t sample too loosely), which we usually set to the size of our scene where we want to observe our Global Illumination effect at play:
 
@@ -621,7 +624,7 @@ const updates = histories.map((previous, index) =>
 
 - Determine the probe’s coordinate and world-space position.
 -  Skip the probe if it lies inside solid geometry.
-- Do the same thing we did earlier: generate cosign-weighted ray directions against which we will run a `traceWorld` function.
+- Do the same thing we did earlier: generate cosine-weighted ray directions against which we will run a `traceWorld` function.
 
 <Callout variant="info">
 
@@ -770,9 +773,9 @@ Notice how:
 * We do still have colored surfaces contributing light to surrounding surfaces
 * We get a decent output at a lower performance cost. Even with a loose probe grid and fewer rays, the effect is noticeable and adds a lot to the scene’s beautiful lighting and realism.
 * Moving the camera preserves the probe’s lighting and history! This is a big win compared to the screen-space Global Illumination counterpart we saw earlier
-* The lighting is, however, a bit less accurate. Maybe this scene is not the best to surface that, but the indirect light is just softer and less precise (ghosting).
+* The lighting is, however, a bit less accurate. Maybe this scene is not the best to surface that, but the indirect light is just softer and less precise.
 * We can now have off-screen light, or emitters, and those will be taken into account from the get-go.
-* The more dense our probe grid is the more accurate our indirect lighting is: more probes, means more estimations, means more data for our averages, and thus, better results.
+* A denser grid can capture smaller changes in lighting, but costs more in probe updatyes and storage.
 
 Despite its flaws, it ended up being more usable for my projects. Oh also, you should try to toggle the night mode to see how emissive surfaces also contribute to the scene's indirect lighting, which we got almost for free with the current implementation. No additional tracing necessary!
 
@@ -816,7 +819,7 @@ let history = textureLoad(previous, pixel, 0);
 
 Here, we still read previous estimates from the probe atlas, but instead of determining its influence only from the accumulated count, we also calculate a new retention weight for our history.
 
-* With hysteresis set to 0.95, the blend consists of 95% history and 5% updated measurements. While the lighting remains unchanged, we give history progressively more influence.
+* With hysteresis set to 0.95, once enough history has accumulated, the blend consists of 95% history and 5% updated measurements. While the lighting remains unchanged, we give history progressively more influence.
 * While lighting remains unchanged, `stableFrames` increases, giving history more weight.
 * When lighting changes, `stableFrames` is reset without clearing the atlas, allowing probes to make new measurements that gradually replace the old lighting instead of starting from scratch.
 
@@ -850,7 +853,7 @@ We start from a visible surface point; we reflect the viewing direction around i
 
 Once we’ve found that surface, we can compute its lighting by combining emissions, direct lighting, and indirect lighting by sampling our probe atlas as we did in the previous part.
 
-However, before all that, we need to take into account the properties of the materials receiving reflections. The code snippet below adds an extra render target to store the **roughness and metalness** of each material present in the scene..
+However, before all that, we need to take into account the properties of the materials receiving reflections. The code snippet below adds an extra render target to store the **roughness and metalness** of each material present in the 
 
 ```ts title=Add render target to track material properties
 const scenePass = pass(scene, camera, { samples: 0 });
@@ -864,7 +867,7 @@ scenePass.setMRT(
 )
 ```
 
-Reflections can be handled through a dedicated `traceReflection` function that we can then be added to our post-processing shader
+Reflections can be handled through a dedicated `traceReflection` function that we can then add to our post-processing shader
 
 ```wgsl title=Trace the reflection from a given camera world position
 fn traceReflection(
@@ -1019,7 +1022,7 @@ Including this, alongside some extra wiring and details that are not very intere
 
 <GlobalIlluminationSandpack scene="scene6" />
 
-I added arches geometries in this demo as I did for my own scene from mid-October 2026.
+I added arch geometries in this demo as I did for my own scene from mid-October 2026.
 
 <StaticTweet id="2112909030318551231" />
 
@@ -1027,7 +1030,7 @@ I included the proper intersection logic in the `traceWorld` function in the dem
 
 ### Final Thoughts
 
-I’m still solving for some of the pitfalls of this implementation as of writting this; it’s definitely not production-grade in any way (you should use [the probe-based GI included in Three.js](https://threejs.org/examples/webgl_lightprobes)!), but I'm nonetheless very happy with the result especially given how interesting it was to get a better grasp of what’s happening behind the scenes with those more advanced lighting techniques. If you want to follow what the pros are working on at the edge, you should also check out the work of <Anchor favicon discrete href="https://twitter.com/CodyBennett">@CodyBennett</Anchor> on **Radiance Cascade**, another GI technique I still haven't looked much into (it's on my list). I’m always very excited to see his progress:
+I’m still solving for some of the pitfalls of this implementation as of writting this; it’s definitely not production-grade in any way (check out [the probe-based GI included in Three.js](https://threejs.org/examples/webgl_lightprobes) for a more usable implementation!), but I'm nonetheless very happy with the result especially given how interesting it was to get a better grasp of what’s happening behind the scenes with those more advanced lighting techniques. If you want to follow what the pros are working on at the edge, you should also check out the work of <Anchor favicon discrete href="https://twitter.com/CodyBennett">@CodyBennett</Anchor> on **Radiance Cascade**, another GI technique I still haven't looked much into (it's on my list). I’m always very excited to see his progress:
 
 <StaticTweet id="2101979551500816730" />
 
