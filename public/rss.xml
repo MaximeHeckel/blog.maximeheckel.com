@@ -9,9 +9,17 @@
             <link>https://blog.maximeheckel.com</link>
         </image>
         <generator>RSS for Node</generator>
-        <lastBuildDate>Tue, 20 Oct 2026 01:45:19 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 21 Oct 2026 02:24:54 GMT</lastBuildDate>
         <atom:link href="https://blog.maximeheckel.com/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Lighting That Feels Just Right]]></title>
+            <description><![CDATA[TBD]]></description>
+            <link>https://blog.maximeheckel.com/posts/lighting-that-feels-just-right</link>
+            <guid isPermaLink="false">https://blog.maximeheckel.com/posts/lighting-that-feels-just-right</guid>
+            <dc:creator><![CDATA[Maxime heckel]]></dc:creator>
+            <pubDate>Tue, 17 Nov 2026 08:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Shading Motion]]></title>
             <description><![CDATA[A deep dive into detecting, extracting, and stylizing motion with WebGPU and TSL, covering motion masking, blob tracking, optical flow, and velocity-based motion blur.]]></description>

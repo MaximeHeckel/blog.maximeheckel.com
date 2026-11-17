@@ -44,6 +44,23 @@
     "term": "aerial perspective LUT"
   },
   {
+    "definition": "The base color of a surface without any lighting or shading applied.",
+    "kind": "other",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "term": "albedo"
+  },
+  {
+    "definition": "Indirect light that uniformly brightens all surfaces regardless of direction.",
+    "kind": "other",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "term": "ambient lighting",
+    "aliases": []
+  },
+  {
     "definition": "A Framer Motion component enabling exit animations for components leaving the React tree.",
     "kind": "other",
     "origin": [
@@ -137,6 +154,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "on-rendering-the-sky-sunsets-and-planets",
@@ -170,6 +188,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "painting-with-math-a-gentle-study-of-raymarching",
@@ -259,6 +278,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "painting-with-math-a-gentle-study-of-raymarching",
@@ -269,15 +289,16 @@
       "the-art-of-dithering-and-retro-shading-web",
       "the-study-of-shaders-with-react-three-fiber"
     ],
-    "term": "Blinn-Phong lighting model"
+    "term": "Blinn-Phong lighting model",
+    "aliases": []
   },
   {
+    "definition": "Detecting and grouping connected moving regions into clusters for visual analysis.",
     "kind": "other",
-    "term": "blob tracking",
     "origin": [
       "shading-motion"
     ],
-    "definition": "Detecting and grouping connected moving regions into clusters for visual analysis."
+    "term": "blob tracking"
   },
   {
     "definition": "A technique adding subtle random offsets to reduce visual artifacts in rendering.",
@@ -493,12 +514,14 @@
     "term": "compute pipeline"
   },
   {
+    "definition": "A GPU program that performs general-purpose parallel computations on data.",
     "kind": "function",
-    "term": "compute shader",
     "origin": [
+      "lighting-that-feels-just-right",
       "shading-motion"
     ],
-    "definition": "A GPU program that performs general-purpose parallel computations on data."
+    "term": "compute shader",
+    "aliases": []
   },
   {
     "definition": "GPU programs designed for general-purpose parallel computation beyond graphics rendering.",
@@ -508,6 +531,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "painting-with-math-a-gentle-study-of-raymarching",
@@ -566,6 +590,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "painting-with-math-a-gentle-study-of-raymarching",
       "real-time-cloudscapes-with-volumetric-raymarching",
@@ -586,6 +611,15 @@
       "the-study-of-shaders-with-react-three-fiber"
     ],
     "term": "cosine similarity"
+  },
+  {
+    "definition": "A sampling distribution favoring directions near the surface normal for diffuse lighting.",
+    "kind": "other",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "term": "cosine-weighted hemisphere",
+    "aliases": []
   },
   {
     "definition": "A Bézier curve defined by four control points creating smooth, complex curves.",
@@ -646,6 +680,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "painting-with-math-a-gentle-study-of-raymarching",
@@ -676,6 +711,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "painting-with-math-a-gentle-study-of-raymarching",
@@ -686,7 +722,8 @@
       "the-art-of-dithering-and-retro-shading-web",
       "the-study-of-shaders-with-react-three-fiber"
     ],
-    "term": "diffuse lighting"
+    "term": "diffuse lighting",
+    "aliases": []
   },
   {
     "definition": "The number of workgroups launched to execute a compute shader.",
@@ -923,6 +960,7 @@
       "cubic-bezier-from-math-to-motion",
       "field-guide-to-tsl-and-webgpu",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "on-rendering-the-sky-sunsets-and-planets",
@@ -950,6 +988,7 @@
       "cubic-bezier-from-math-to-motion",
       "field-guide-to-tsl-and-webgpu",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "on-rendering-the-sky-sunsets-and-planets",
@@ -1013,12 +1052,12 @@
     "term": "Frame Buffer Object"
   },
   {
+    "definition": "Comparing consecutive frames to detect pixel changes indicating motion.",
     "kind": "other",
-    "term": "frame differencing",
     "origin": [
       "shading-motion"
     ],
-    "definition": "Comparing consecutive frames to detect pixel changes indicating motion."
+    "term": "frame differencing"
   },
   {
     "definition": "A React library for creating animations and gestures with declarative APIs.",
@@ -1110,10 +1149,19 @@
     "origin": [
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "shading-motion",
       "the-study-of-shaders-with-react-three-fiber"
     ],
     "term": "geometry"
+  },
+  {
+    "definition": "Lighting technique simulating both direct and indirect light bouncing in a scene.",
+    "kind": "other",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "term": "Global Illumination"
   },
   {
     "definition": "A C-like language used to write shaders that run on the GPU.",
@@ -1209,6 +1257,15 @@
     "term": "Henyey-Greenstein function"
   },
   {
+    "definition": "Blending factor controlling how much past lighting influences current lighting estimates.",
+    "kind": "other",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "term": "hysteresis",
+    "aliases": []
+  },
+  {
     "definition": "A number describing how much light bends when entering a material.",
     "kind": "other",
     "origin": [
@@ -1220,6 +1277,15 @@
       "the-study-of-shaders-with-react-three-fiber"
     ],
     "term": "index of refraction"
+  },
+  {
+    "definition": "Light that reaches surfaces after bouncing off other surfaces in the scene.",
+    "kind": "other",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "term": "indirect lighting",
+    "aliases": []
   },
   {
     "definition": "A mesh that renders multiple copies efficiently using GPU instancing.",
@@ -1472,8 +1538,7 @@
       "shading-motion",
       "the-study-of-shaders-with-react-three-fiber"
     ],
-    "term": "luminance",
-    "aliases": []
+    "term": "luminance"
   },
   {
     "definition": "Dithering that uses pixel brightness to determine black or white output pixels.",
@@ -1499,6 +1564,7 @@
     "origin": [
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "shading-motion",
       "the-study-of-shaders-with-react-three-fiber"
     ],
@@ -1511,6 +1577,7 @@
       "building-magical-ai-powered-semantic-search",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "painting-with-math-a-gentle-study-of-raymarching",
       "refraction-dispersion-and-other-shader-light-effects",
       "shading-motion",
@@ -1603,6 +1670,7 @@
       "building-magical-ai-powered-semantic-search",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "painting-with-math-a-gentle-study-of-raymarching",
       "refraction-dispersion-and-other-shader-light-effects",
       "shading-motion",
@@ -1616,6 +1684,7 @@
     "origin": [
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "shading-motion",
       "the-study-of-shaders-with-react-three-fiber"
     ],
@@ -1628,6 +1697,7 @@
       "building-magical-ai-powered-semantic-search",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "painting-with-math-a-gentle-study-of-raymarching",
       "real-time-cloudscapes-with-volumetric-raymarching",
       "refraction-dispersion-and-other-shader-light-effects",
@@ -1661,20 +1731,20 @@
     "term": "Moiré pattern"
   },
   {
+    "definition": "A connected region of pixels representing a coherent moving object.",
     "kind": "other",
-    "term": "motion blob",
     "origin": [
       "shading-motion"
     ],
-    "definition": "A connected region of pixels representing a coherent moving object."
+    "term": "motion blob"
   },
   {
+    "definition": "A visual effect simulating streaks caused by object movement during exposure.",
     "kind": "other",
-    "term": "motion blur",
     "origin": [
       "shading-motion"
     ],
-    "definition": "A visual effect simulating streaks caused by object movement during exposure."
+    "term": "motion blur"
   },
   {
     "definition": "A Framer Motion-enhanced component that supports animations and layout transitions.",
@@ -1687,12 +1757,12 @@
     "term": "motion component"
   },
   {
+    "definition": "A grayscale texture highlighting areas of detected motion in a frame.",
     "kind": "other",
-    "term": "motion mask",
     "origin": [
       "shading-motion"
     ],
-    "definition": "A grayscale texture highlighting areas of detected motion in a frame."
+    "term": "motion mask"
   },
   {
     "definition": "Halftone technique applying separate dot grids for each color channel.",
@@ -1748,6 +1818,7 @@
       "building-magical-ai-powered-semantic-search",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "painting-with-math-a-gentle-study-of-raymarching",
       "real-time-cloudscapes-with-volumetric-raymarching",
       "refraction-dispersion-and-other-shader-light-effects",
@@ -1781,6 +1852,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "painting-with-math-a-gentle-study-of-raymarching",
       "real-time-cloudscapes-with-volumetric-raymarching",
       "refraction-dispersion-and-other-shader-light-effects",
@@ -1900,12 +1972,12 @@
     "term": "optical depth"
   },
   {
+    "definition": "Estimating pixel-wise motion direction and speed between frames.",
     "kind": "other",
-    "term": "optical flow",
     "origin": [
       "shading-motion"
     ],
-    "definition": "Estimating pixel-wise motion direction and speed between frames."
+    "term": "optical flow"
   },
   {
     "definition": "A visual effect where the brain perceives something different from the actual image or pattern.",
@@ -2000,6 +2072,14 @@
     "term": "partial derivatives"
   },
   {
+    "kind": "other",
+    "term": "path tracing",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "A rendering technique simulating light bouncing to produce realistic global illumination."
+  },
+  {
     "definition": "A gradient noise function used to create natural-looking textures and animations.",
     "kind": "other",
     "origin": [
@@ -2058,6 +2138,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "painting-with-math-a-gentle-study-of-raymarching",
@@ -2149,6 +2230,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "painting-with-math-a-gentle-study-of-raymarching",
       "real-time-cloudscapes-with-volumetric-raymarching",
@@ -2167,6 +2249,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "painting-with-math-a-gentle-study-of-raymarching",
       "real-time-cloudscapes-with-volumetric-raymarching",
@@ -2177,6 +2260,22 @@
     "term": "post-processing pass"
   },
   {
+    "definition": "A 2D texture storing lighting estimates from multiple probes across a 3D scene.",
+    "kind": "other",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "term": "probe atlas"
+  },
+  {
+    "kind": "other",
+    "term": "probe-based global illumination",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "A method using spatial probes to estimate indirect lighting across a 3D scene."
+  },
+  {
     "definition": "Mapping 3D points onto a plane or screen using mathematical transformations.",
     "kind": "other",
     "origin": [
@@ -2184,6 +2283,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "painting-with-math-a-gentle-study-of-raymarching",
       "real-time-cloudscapes-with-volumetric-raymarching",
       "refraction-dispersion-and-other-shader-light-effects",
@@ -2266,6 +2366,7 @@
       "building-magical-ai-powered-semantic-search",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "painting-with-math-a-gentle-study-of-raymarching",
       "refraction-dispersion-and-other-shader-light-effects",
       "shading-motion",
@@ -2351,8 +2452,7 @@
       "the-art-of-dithering-and-retro-shading-web",
       "the-study-of-shaders-with-react-three-fiber"
     ],
-    "term": "render pipeline",
-    "aliases": []
+    "term": "render pipeline"
   },
   {
     "definition": "A texture or buffer where a scene or image is rendered offscreen.",
@@ -2362,13 +2462,15 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "painting-with-math-a-gentle-study-of-raymarching",
       "real-time-cloudscapes-with-volumetric-raymarching",
       "refraction-dispersion-and-other-shader-light-effects",
       "shading-motion",
       "the-study-of-shaders-with-react-three-fiber"
     ],
-    "term": "render target"
+    "term": "render target",
+    "aliases": []
   },
   {
     "definition": "A component that manages a list of reorderable items with drag-and-drop support.",
@@ -2397,12 +2499,21 @@
       "building-magical-ai-powered-semantic-search",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "painting-with-math-a-gentle-study-of-raymarching",
       "refraction-dispersion-and-other-shader-light-effects",
       "shading-motion",
       "the-study-of-shaders-with-react-three-fiber"
     ],
     "term": "repeat"
+  },
+  {
+    "kind": "other",
+    "term": "reprojection",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "A technique mapping previous frame data to the current frame to reduce temporal noise."
   },
   {
     "definition": "Subpixel groups in CRTs representing red, green, and blue color channels.",
@@ -2546,6 +2657,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "painting-with-math-a-gentle-study-of-raymarching",
@@ -2565,6 +2677,7 @@
     "origin": [
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "shading-motion",
       "the-study-of-shaders-with-react-three-fiber"
     ],
@@ -2659,6 +2772,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "painting-with-math-a-gentle-study-of-raymarching",
       "real-time-cloudscapes-with-volumetric-raymarching",
@@ -2837,6 +2951,14 @@
     "term": "storage buffer"
   },
   {
+    "kind": "other",
+    "term": "storage texture",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "definition": "A GPU texture allowing read-write access for compute shaders to store arbitrary data."
+  },
+  {
     "definition": "A matrix summarizing local gradient directions and magnitudes in an image.",
     "kind": "other",
     "origin": [
@@ -2909,12 +3031,21 @@
     "term": "SVG paths"
   },
   {
+    "definition": "Combining lighting results over multiple frames to reduce noise and improve quality.",
     "kind": "other",
-    "term": "temporal decay",
+    "origin": [
+      "lighting-that-feels-just-right"
+    ],
+    "term": "temporal accumulation",
+    "aliases": []
+  },
+  {
+    "definition": "Gradually fading accumulated motion data over time to smooth effects.",
+    "kind": "other",
     "origin": [
       "shading-motion"
     ],
-    "definition": "Gradually fading accumulated motion data over time to smooth effects."
+    "term": "temporal decay"
   },
   {
     "definition": "A web API that converts binary data into readable text strings.",
@@ -3091,6 +3222,7 @@
       "cubic-bezier-from-math-to-motion",
       "field-guide-to-tsl-and-webgpu",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "on-rendering-the-sky-sunsets-and-planets",
@@ -3228,12 +3360,12 @@
     "term": "vector space"
   },
   {
+    "definition": "A texture encoding screen-space object movement direction and speed.",
     "kind": "other",
-    "term": "velocity map",
     "origin": [
       "shading-motion"
     ],
-    "definition": "A texture encoding screen-space object movement direction and speed."
+    "term": "velocity map"
   },
   {
     "definition": "A GPU program that processes each vertex's position and attributes before rasterization.",
@@ -3260,6 +3392,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "painting-with-math-a-gentle-study-of-raymarching",
@@ -3281,6 +3414,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "painting-with-math-a-gentle-study-of-raymarching",
@@ -3329,12 +3463,12 @@
     "term": "Voronoi noise"
   },
   {
+    "definition": "An illusion where fast motion appears reversed due to discrete sampling.",
     "kind": "other",
-    "term": "wagon-wheel effect",
     "origin": [
       "shading-motion"
     ],
-    "definition": "An illusion where fast motion appears reversed due to discrete sampling."
+    "term": "wagon-wheel effect"
   },
   {
     "definition": "A modern web API for high-performance GPU graphics and computation.",
@@ -3408,6 +3542,7 @@
       "caustics-in-webgl",
       "cubic-bezier-from-math-to-motion",
       "framer-motion-layout-animations",
+      "lighting-that-feels-just-right",
       "moebius-style-post-processing",
       "on-crafting-painterly-shaders",
       "painting-with-math-a-gentle-study-of-raymarching",

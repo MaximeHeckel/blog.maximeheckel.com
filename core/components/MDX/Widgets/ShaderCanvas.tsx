@@ -1,6 +1,6 @@
 import { Box } from '@maximeheckel/design-system';
 import { useInView } from 'motion/react';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // ========================================
 // Types
@@ -35,6 +35,7 @@ interface VideoTextureInfo {
 }
 
 interface FeedbackTextureInfo {
+  floatingPoint: boolean;
   currentTexture: WebGLTexture;
   previousTexture: WebGLTexture;
   framebuffer: WebGLFramebuffer;
@@ -299,28 +300,38 @@ function initializeFeedbackTexture(
   gl: WebGL2RenderingContext,
   texture: WebGLTexture,
   width: number,
-  height: number
+  height: number,
+  floatingPoint = false
 ) {
   gl.bindTexture(gl.TEXTURE_2D, texture);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(
+    gl.TEXTURE_2D,
+    gl.TEXTURE_MIN_FILTER,
+    floatingPoint ? gl.NEAREST : gl.LINEAR
+  );
+  gl.texParameteri(
+    gl.TEXTURE_2D,
+    gl.TEXTURE_MAG_FILTER,
+    floatingPoint ? gl.NEAREST : gl.LINEAR
+  );
   gl.texImage2D(
     gl.TEXTURE_2D,
     0,
-    gl.RGBA,
+    floatingPoint ? gl.RGBA32F : gl.RGBA,
     width,
     height,
     0,
     gl.RGBA,
-    gl.UNSIGNED_BYTE,
+    floatingPoint ? gl.FLOAT : gl.UNSIGNED_BYTE,
     null
   );
 }
 
 function createFeedbackTextures(
-  gl: WebGL2RenderingContext
+  gl: WebGL2RenderingContext,
+  floatingPoint = false
 ): FeedbackTextureInfo | null {
   const currentTexture = gl.createTexture();
   const previousTexture = gl.createTexture();
@@ -328,10 +339,11 @@ function createFeedbackTextures(
 
   if (!currentTexture || !previousTexture || !framebuffer) return null;
 
-  initializeFeedbackTexture(gl, currentTexture, 1, 1);
-  initializeFeedbackTexture(gl, previousTexture, 1, 1);
+  initializeFeedbackTexture(gl, currentTexture, 1, 1, floatingPoint);
+  initializeFeedbackTexture(gl, previousTexture, 1, 1, floatingPoint);
 
   return {
+    floatingPoint,
     currentTexture,
     previousTexture,
     framebuffer,
@@ -353,12 +365,19 @@ function resizeFeedbackTextures(
 
   feedbackTextures.width = width;
   feedbackTextures.height = height;
-  initializeFeedbackTexture(gl, feedbackTextures.currentTexture, width, height);
+  initializeFeedbackTexture(
+    gl,
+    feedbackTextures.currentTexture,
+    width,
+    height,
+    feedbackTextures.floatingPoint
+  );
   initializeFeedbackTexture(
     gl,
     feedbackTextures.previousTexture,
     width,
-    height
+    height,
+    feedbackTextures.floatingPoint
   );
 }
 
@@ -370,13 +389,16 @@ export interface ShaderCanvasProps {
   fragmentShader: string;
   uniforms?: Uniforms;
   aspectRatio?: string;
+  floatingPointFeedback?: boolean;
 }
 
 export const ShaderCanvas = ({
   fragmentShader,
   uniforms = {},
   aspectRatio = '1 / 1',
+  floatingPointFeedback = false,
 }: ShaderCanvasProps) => {
+  const [unsupportedHistory, setUnsupportedHistory] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<WebGLRendererState | null>(null);
@@ -423,6 +445,12 @@ export const ShaderCanvas = ({
       return null;
     }
 
+    if (floatingPointFeedback && !gl.getExtension('EXT_color_buffer_float')) {
+      setUnsupportedHistory(true);
+      return null;
+    }
+    setUnsupportedHistory(false);
+
     const program = createProgram(gl, VERTEX_SHADER, fragmentShader);
     if (!program) return null;
 
@@ -466,7 +494,7 @@ export const ShaderCanvas = ({
     const textures = new Map<string, TextureInfo>();
     const videoTextures = new Map<string, VideoTextureInfo>();
     const feedbackTextures = previousFrameLocation
-      ? createFeedbackTextures(gl)
+      ? createFeedbackTextures(gl, floatingPointFeedback)
       : null;
 
     return {
@@ -479,7 +507,7 @@ export const ShaderCanvas = ({
       feedbackTextures,
       nextTextureUnit: feedbackTextures ? 1 : 0,
     };
-  }, [fragmentShader]);
+  }, [fragmentShader, floatingPointFeedback]);
 
   const setUniform = useCallback(
     (
@@ -757,6 +785,11 @@ export const ShaderCanvas = ({
 
   return (
     <Box ref={ref}>
+      {unsupportedHistory ? (
+        <p role="status">
+          This demo requires floating-point WebGL history buffers.
+        </p>
+      ) : null}
       <canvas
         ref={canvasRef}
         style={{
