@@ -412,12 +412,9 @@ function assignOrigins(terms, posts) {
         return searchTerms.some((term) => postText.includes(term));
       })
       .map((post) => post.slug);
-    const nextOrigin =
-      origin.length === 0 && posts.length === 1 ? [posts[0].slug] : origin;
-
     return {
       ...item,
-      origin: sortOrigin([...(item.origin || []), ...nextOrigin]),
+      origin: sortOrigin([...(item.origin || []), ...origin]),
     };
   });
 }
