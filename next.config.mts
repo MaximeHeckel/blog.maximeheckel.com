@@ -47,6 +47,16 @@ const output = withBundleAnalyzer({
     ],
   },
   webpack(config, { dev, nextRuntime }) {
+    if (
+      !dev &&
+      process.env.NEXT_DEPLOYMENT_ID &&
+      config.cache?.type === 'filesystem'
+    ) {
+      // Next embeds deployment IDs in CSS asset URLs, but not its cache key.
+      // Reusing that CSS across deployments makes font preloads miss the cache.
+      config.cache.version = `${config.cache.version ?? ''}|deployment:${process.env.NEXT_DEPLOYMENT_ID}`;
+    }
+
     if (dev && nextRuntime === 'nodejs') {
       // Vendor chunk reordering on first compilation changes _document's hash
       // and triggers a full reload, even though the document hasn't changed.
