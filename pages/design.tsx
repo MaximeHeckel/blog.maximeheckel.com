@@ -32,6 +32,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import { NewTweet } from 'types/tweet';
 
+import AspectRatio from '@core/components/AspectRatio';
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
 import Callout from '@core/components/Callout';
 import CodeBlock from '@core/components/Code/CodeBlock';
@@ -1282,6 +1283,23 @@ function sayHi(name) {
               width={700}
               height={298}
             />
+          </Flex>
+          <Flex
+            alignItems="start"
+            as="section"
+            css={{ alignSelf: 'stretch' }}
+            direction="column"
+            gap="5"
+            id="aspect-ratio"
+          >
+            <H2>Aspect Ratio</H2>
+            <AspectRatio>
+              <img
+                src="https://assets.maximeheckel.com/images/blog/clouds-painting-min_bqf2ia.png?w=1200&q=90"
+                alt="Painterly clouds above a landscape"
+                loading="lazy"
+              />
+            </AspectRatio>
           </Flex>
           <Flex
             alignItems="start"
