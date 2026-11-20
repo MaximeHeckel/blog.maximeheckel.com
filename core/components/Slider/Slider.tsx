@@ -45,6 +45,7 @@ const Slider = (props: SliderProps) => {
   const shouldReduceMotion = useReducedMotion();
   const generatedId = useId();
   const sliderId = id || generatedId;
+  const labelId = `${sliderId}-label`;
 
   const MAX_VALUE = max;
   const MIN_VALUE = min;
@@ -327,7 +328,7 @@ const Slider = (props: SliderProps) => {
   return (
     <SliderRoot
       id={sliderId}
-      aria-label={label}
+      aria-labelledby={label ? labelId : undefined}
       aria-valuemin={MIN_VALUE}
       aria-valuemax={MAX_VALUE}
       aria-valuenow={value}
@@ -430,9 +431,8 @@ const Slider = (props: SliderProps) => {
       <SliderLabel>
         {label ? (
           <Text
-            id={`${sliderId}-label`}
-            as="label"
-            htmlFor={sliderId}
+            id={labelId}
+            as="span"
             size="2"
             weight="4"
             variant="secondary"
