@@ -156,10 +156,16 @@ const VolumetricRaymarchingVisualizer = () => {
         </Flex>
         <Flex alignItems="center" css={{ width: '100%' }} gap="3">
           <Tooltip content="Reset">
-            <Button icon={<Icon.Repeat />} onClick={restart} variant="icon" />
+            <Button
+              aria-label="Reset"
+              icon={<Icon.Repeat />}
+              onClick={restart}
+              variant="icon"
+            />
           </Tooltip>
           <Tooltip content="Next Step">
             <Button
+              aria-label="Next Step"
               disabled={step === MAX_STEP}
               icon={<Icon.Arrow />}
               onClick={nextStep}

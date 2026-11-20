@@ -19,7 +19,7 @@ export interface SelectProps {
   minWidth?: number;
   disabled?: boolean;
   size?: 'sm' | 'md';
-  label?: string;
+  label: string;
 }
 
 const Select = (props: SelectProps) => {
@@ -43,6 +43,7 @@ const Select = (props: SelectProps) => {
     <BaseSelect.Root items={items} value={value} onValueChange={onChange}>
       <SelectTrigger
         id={selectId}
+        aria-label={label}
         ref={triggerRef}
         disabled={disabled}
         size={size}
@@ -50,7 +51,7 @@ const Select = (props: SelectProps) => {
           '--min-width': `${minWidth ?? 124}px`,
         }}
       >
-        {label && size === 'md' ? (
+        {size === 'md' ? (
           <Text size="2" weight="4" variant="secondary">
             {label}
           </Text>

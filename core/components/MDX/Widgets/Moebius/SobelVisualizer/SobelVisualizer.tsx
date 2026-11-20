@@ -300,6 +300,7 @@ const SobelVisualizer = () => {
             <Label htmlFor="shader-function">Fragment shader:</Label>
             <Select
               id="shader-function"
+              label="Shader function"
               items={shaderOptions}
               value={shader}
               minWidth={154}

@@ -233,6 +233,7 @@ const FragmentShaderVisualizer = () => {
             <Label htmlFor="shader-function">Shader Function</Label>
             <Select
               id="shader-function"
+              label="Shader function"
               items={shaderOptions}
               value={shader}
               onChange={(value) =>

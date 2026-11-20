@@ -164,8 +164,8 @@ const AnimationTypes = () => {
           <AnimationCardContent>
             <Form>
               <Select
-                aria-label="Easing type"
                 id="tween-type"
+                label="Easing type"
                 items={animationOptions}
                 value={tweenAnimation}
                 onChange={(value) => setTweenAnimation(value as string)}

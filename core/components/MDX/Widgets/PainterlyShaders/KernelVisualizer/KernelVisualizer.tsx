@@ -311,6 +311,7 @@ const KuwaharaVisualizer = () => {
           <Flex gap="2">
             <Select
               id="shader-function"
+              label="Shader function"
               items={shaderOptions}
               value={shader}
               onChange={(value) =>

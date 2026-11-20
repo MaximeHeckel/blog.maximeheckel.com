@@ -226,6 +226,7 @@ const PixelizationVisualizer = (props: { showPatterns?: boolean }) => {
             />
             <Select
               id="pattern-function"
+              label="Pattern"
               items={patternOptions}
               value={pattern}
               onChange={(value) => setPattern(value as keyof typeof patterns)}

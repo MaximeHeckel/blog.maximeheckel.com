@@ -29,34 +29,49 @@ const TabsSharedLayoutAnimation = () => {
           css={{
             position: 'relative',
             listStyle: 'none',
-            cursor: 'pointer',
             width: '50px',
             height: '30px',
-            outline: 'none',
           }}
           key={item}
-          onClick={() => setSelected(item)}
-          onKeyDown={(event: { key: string }) =>
-            event.key === 'Enter' ? setSelected(item) : null
-          }
-          onFocus={() => setFocused(item)}
           onMouseEnter={() => setFocused(item)}
-          tabIndex={0}
         >
-          <Text
-            size="1"
+          <Box
+            as="button"
+            type="button"
+            aria-pressed={selected === item}
+            onClick={() => setSelected(item)}
+            onFocus={() => setFocused(item)}
             css={{
               position: 'absolute',
-              left: 4,
-              right: 0,
-              top: 2,
-              bottom: 0,
+              inset: 0,
               zIndex: 1,
-              userSelect: 'none',
+              padding: 0,
+              border: 0,
+              background: 'none',
+              color: 'inherit',
+              font: 'inherit',
+              textAlign: 'left',
+              cursor: 'pointer',
+              '&:focus-visible': {
+                outline: '1px solid var(--accent)',
+              },
             }}
           >
-            {item}
-          </Text>
+            <Text
+              as="span"
+              size="1"
+              css={{
+                position: 'absolute',
+                left: 4,
+                right: 0,
+                top: 2,
+                bottom: 0,
+                userSelect: 'none',
+              }}
+            >
+              {item}
+            </Text>
+          </Box>
 
           {focused === item ? (
             <Box
