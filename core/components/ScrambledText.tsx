@@ -84,7 +84,7 @@ const ScrambledTextAnimation = ({
 
   if (!dimensions) {
     return (
-      <Box ref={measureRef} {...rest} css={{ ...css, opacity: 0 }}>
+      <Box ref={measureRef} {...rest} aria-hidden css={{ ...css, opacity: 0 }}>
         <Text ref={measureRef} {...rest}>
           {children}
         </Text>
@@ -154,6 +154,7 @@ export const ScrambledText = ({
       {disabled ? (
         <Text
           {...props}
+          aria-hidden
           css={css}
           suppressHydrationWarning
           style={{ opacity: 0 }}
@@ -172,7 +173,7 @@ export const ScrambledText = ({
             }
           >
             {shouldReduceMotion ? (
-              <Text {...props} css={css}>
+              <Text {...props} aria-hidden css={css}>
                 {children}
               </Text>
             ) : (
