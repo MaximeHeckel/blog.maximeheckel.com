@@ -18,10 +18,18 @@ const SharedLayoutAnimationDetails = () => {
           <Flex css={{ marginTop: '24px' }} gap="5" alignItems="start">
             {ITEMS.map((item, index) => (
               <Flex
+                as="button"
+                type="button"
+                aria-pressed={selected === item}
                 key={item}
                 direction="column"
                 justifyContent="space-between"
                 css={{
+                  padding: 0,
+                  border: 0,
+                  background: 'none',
+                  color: 'inherit',
+                  font: 'inherit',
                   cursor: 'pointer',
                   '&:focus': { outline: 'none' },
                   '&:focus-visible': {
@@ -29,15 +37,14 @@ const SharedLayoutAnimationDetails = () => {
                   },
                 }}
                 onClick={() => setSelected(item)}
-                onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) =>
-                  event.key === 'Enter' && setSelected(item)
-                }
-                tabIndex={0}
               >
-                <Box css={{ height: '24px' }}>Item {item}</Box>
+                <Box as="span" css={{ height: '24px' }}>
+                  Item {item}
+                </Box>
                 {item === selected ? (
                   <Box
-                    as={motion.div}
+                    as={motion.span}
+                    aria-hidden="true"
                     css={{ height: '24px' }}
                     layoutId="arrow"
                     transition={{

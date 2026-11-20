@@ -376,6 +376,7 @@ const Chart = (props: ChartProps) => {
       {!editable ? (
         <Select
           id="ease-type"
+          label="Easing type"
           items={options}
           value={type}
           onChange={(value) => {

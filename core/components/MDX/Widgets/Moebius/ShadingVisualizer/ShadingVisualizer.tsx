@@ -163,7 +163,7 @@ const ShadingVisualizer = () => {
           <Box>
             <Select
               id="shading-function"
-              aria-label="Shadow type"
+              label="Shadow type"
               items={shadowOptions}
               value={shadowType}
               minWidth={190}

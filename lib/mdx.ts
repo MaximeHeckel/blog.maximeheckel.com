@@ -4,7 +4,9 @@ import path from 'path';
 import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
 import readingTime from 'reading-time';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeAutolinkHeadings, {
+  type BuildProperties,
+} from 'rehype-autolink-headings';
 import rehypeKatex from 'rehype-katex';
 import rehypeSlug from 'rehype-slug';
 import { FrontMatterPost, Post } from 'types/post';
@@ -23,6 +25,15 @@ export const getFiles = async () => {
 
 // Regex to find all the custom static tweets in a MDX file
 const TWEET_RE = /<StaticTweet\sid="[0-9]+"\s\/>/g;
+
+type Heading = Parameters<BuildProperties>[0];
+
+const getHeadingText = (node: Heading | Heading['children'][number]): string =>
+  node.type === 'text'
+    ? node.value
+    : node.type === 'element'
+      ? node.children.map(getHeadingText).join('')
+      : '';
 
 export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
   const source = fs.readFileSync(
@@ -47,7 +58,17 @@ export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
           rehypeAutolinkHeadings,
           {
             behavior: 'append',
-            properties: { className: ['anchor-link', 'space-window-top'] },
+            headingProperties: ((heading) => {
+              const text = getHeadingText(heading).trim();
+              return text ? { ariaLabel: text } : {};
+            }) satisfies BuildProperties,
+            properties: ((heading) => {
+              const text = getHeadingText(heading).trim();
+              return {
+                className: ['anchor-link', 'space-window-top'],
+                ariaLabel: text ? `Copy link to ${text}` : 'Copy section link',
+              };
+            }) satisfies BuildProperties,
             content: {
               type: 'element',
               tagName: 'svg',
@@ -58,6 +79,7 @@ export const getFileBySlug = async (slug: string): Promise<FrontMatterPost> => {
                 width: '16',
                 height: '16',
                 className: ['anchor-icon'],
+                ariaHidden: true,
               },
               children: [
                 {

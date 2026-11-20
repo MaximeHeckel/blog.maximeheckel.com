@@ -346,6 +346,7 @@ const KuwaharaVisualizer = (props: { method: 'basic' | 'papari' }) => {
           />
           <Select
             id="shader-function"
+            label="Shape"
             items={shapeOptions}
             value={shader}
             onChange={(value) =>

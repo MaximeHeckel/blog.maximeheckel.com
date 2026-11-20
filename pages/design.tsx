@@ -1005,7 +1005,7 @@ they can change the world, are the ones who do.`}
             >
               <Select
                 id="select-1"
-                aria-label="Select"
+                label="Select example"
                 items={[
                   { label: 'Option 1', value: 'option1' },
                   { label: 'Option 2', value: 'option2' },
@@ -1015,7 +1015,7 @@ they can change the world, are the ones who do.`}
               />
               <Select
                 id="select-2"
-                aria-label="Select"
+                label="Disabled select example"
                 disabled
                 items={[
                   { label: 'Option 1', value: 'option1' },

@@ -274,6 +274,7 @@ const CosineSimilarity = () => {
             <Flex alignItems="center">
               <Select
                 id="bucket-1"
+                label="First bucket"
                 items={bucketOptions}
                 value={bucket1}
                 onChange={(value) => setBucket1(value as Bucket)}
@@ -294,6 +295,7 @@ const CosineSimilarity = () => {
             <Flex alignItems="center">
               <Select
                 id="bucket-2"
+                label="Second bucket"
                 items={bucketOptions}
                 value={bucket2}
                 onChange={(value) => setBucket2(value as Bucket)}
