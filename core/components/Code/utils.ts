@@ -25,7 +25,23 @@ export const preToCodeBlock = (preProps: PrePropsType) => {
   }
 };
 
-const RE = /{([\d,-]+)}/;
+const RE = /(?<!=){([\d,-]+)}/;
+
+export const getCodeFocus = (metastring: string | null, lineCount: number) => {
+  if (!/(?:^|\s)collapsible(?=\s|$)/.test(metastring ?? '')) return null;
+
+  const match = /(?:^|\s)focus=\{(\d+)(?:-(\d+))?\}(?=\s|$)/.exec(
+    metastring ?? ''
+  );
+  const start = Number(match?.[1] ?? 1);
+  const end = Number(match?.[2] ?? match?.[1] ?? 3);
+
+  if (start < 1 || start > lineCount || end < start) {
+    return { start: 1, end: Math.min(3, lineCount) };
+  }
+
+  return { start, end: Math.min(end, lineCount) };
+};
 
 export const calculateLinesToHighlight = (metastring: string | null) => {
   if (!metastring || !RE.test(metastring)) {
@@ -47,6 +63,10 @@ export const calculateLinesToHighlight = (metastring: string | null) => {
 const RETitle = /title=[A-Za-z](.+)/;
 
 export const hasTitle = (metastring: string | null) => {
+  metastring =
+    metastring
+      ?.replace(/(?:^|\s)(?:collapsible|focus=\{[^}]*\})(?=\s|$)/g, '')
+      .trim() ?? null;
   if (!metastring || !RETitle.test(metastring)) {
     return '';
   } else {
