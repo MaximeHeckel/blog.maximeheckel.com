@@ -102,8 +102,10 @@ body {
   }
 }
 
-button {
-  font: inherit;
+@layer reset {
+  button {
+    font: inherit;
+  }
 }
 
 .hidden-layout {

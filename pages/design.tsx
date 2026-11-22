@@ -9,12 +9,15 @@ import AspectRatio from '@core/components/AspectRatio';
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
 import Blockquote from '@core/components/Blockquote';
 import Box from '@core/components/Box';
-import Button, { IconButton } from '@core/components/Button';
+import { IconButton } from '@core/components/Button';
 import Callout from '@core/components/Callout';
 import Card from '@core/components/Card';
 import Checkbox from '@core/components/Checkbox';
 import CodeBlock from '@core/components/Code/CodeBlock';
 import { CommandMenuContext } from '@core/components/CommandMenu/CommandMenuContext';
+import { PilotButton } from '@core/components/DesignPilot/Button';
+import { PilotGrid } from '@core/components/DesignPilot/Grid';
+import { PilotSliderRoot } from '@core/components/DesignPilot/SliderRoot';
 import Details from '@core/components/Details';
 import Flex from '@core/components/Flex';
 import Grid from '@core/components/Grid';
@@ -61,7 +64,8 @@ const SliderExample = () => {
   return (
     <>
       <Slider
-        id="slider-1"
+        root={PilotSliderRoot}
+        id="slider-medium"
         label="Slider"
         value={value}
         min={0}
@@ -69,7 +73,8 @@ const SliderExample = () => {
         onChange={(value) => setValue(value)}
       />
       <Slider
-        id="slider-2"
+        root={PilotSliderRoot}
+        id="slider-medium-disabled"
         label="Slider"
         disabled
         value={250}
@@ -78,7 +83,8 @@ const SliderExample = () => {
         onChange={() => {}}
       />
       <Slider
-        id="slider-1"
+        root={PilotSliderRoot}
+        id="slider-small"
         label="Slider"
         value={value}
         min={0}
@@ -87,7 +93,8 @@ const SliderExample = () => {
         size="sm"
       />
       <Slider
-        id="slider-2"
+        root={PilotSliderRoot}
+        id="slider-small-disabled"
         label="Slider"
         disabled
         value={250}
@@ -632,19 +639,22 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
           >
             <H2>Buttons</H2>
             <Grid gap={5}>
-              <Button variant="primary">Button</Button>
-              <Button variant="primary" inverted>
+              <PilotButton variant="primary">Button</PilotButton>
+              <PilotButton variant="primary" inverted>
                 Button
-              </Button>
-              <Button variant="primary" endIcon={<Icon.Arrow size="4" />}>
+              </PilotButton>
+              <PilotButton variant="primary" endIcon={<Icon.Arrow size="4" />}>
                 Portfolio
-              </Button>
-              <Button variant="primary" startIcon={<Icon.Twitter size="4" />}>
+              </PilotButton>
+              <PilotButton
+                variant="primary"
+                startIcon={<Icon.Twitter size="4" />}
+              >
                 Follow me!
-              </Button>
+              </PilotButton>
 
-              <Button variant="secondary">Button</Button>
-              <Button variant="tertiary">Button</Button>
+              <PilotButton variant="secondary">Button</PilotButton>
+              <PilotButton variant="tertiary">Button</PilotButton>
 
               <IconButton aria-label="Follow me on Twitter!" variant="primary">
                 <Icon.Twitter />
@@ -747,7 +757,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                 onChange={(event) => setEmail(event.currentTarget.value)}
                 value={email}
               />
-              <Button variant="primary">Subscribe</Button>
+              <PilotButton variant="primary">Subscribe</PilotButton>
             </Flex>
             <br />
             <Grid
@@ -985,15 +995,9 @@ they can change the world, are the ones who do.`}
               </Radio.Group>
             </Grid>
             <br />
-            <Grid
-              gap={3}
-              css={{
-                width: '100%',
-              }}
-              templateColumns="repeat(2, minmax(2rem, 1fr))"
-            >
+            <PilotGrid templateColumns="repeat(2, minmax(2rem, 1fr))">
               <SliderExample />
-            </Grid>
+            </PilotGrid>
             <Grid
               gap={3}
               css={{
@@ -1248,12 +1252,12 @@ function sayHi(name) {
             id="command-center"
           >
             <H2>Command Center / Search </H2>
-            <Button
+            <PilotButton
               variant="primary"
               onClick={() => commandMenu?.openCommandMenu()}
             >
               Cmd
-            </Button>
+            </PilotButton>
           </Flex>
           <Flex
             alignItems="start"

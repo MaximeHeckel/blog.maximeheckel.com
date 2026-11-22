@@ -1,3 +1,4 @@
+import type { Slider as BaseSlider } from '@base-ui/react/slider';
 import {
   motion,
   useMotionValue,
@@ -6,6 +7,8 @@ import {
   useTransform,
 } from 'motion/react';
 import {
+  type ComponentType,
+  type RefAttributes,
   useCallback,
   useEffect,
   useId,
@@ -29,7 +32,15 @@ import {
 } from './Slider.styles';
 import { SliderProps } from './types';
 
-const Slider = (props: SliderProps) => {
+interface SliderRenderProps extends SliderProps {
+  root?: ComponentType<
+    BaseSlider.Root.Props<number> &
+      RefAttributes<HTMLDivElement> &
+      Pick<SliderProps, 'size'>
+  >;
+}
+
+const Slider = (props: SliderRenderProps) => {
   const {
     id,
     min,
@@ -43,6 +54,7 @@ const Slider = (props: SliderProps) => {
     labelValue,
     hideDots,
     size = 'md',
+    root: Root = SliderRoot,
   } = props;
 
   const shouldReduceMotion = useReducedMotion();
@@ -329,7 +341,7 @@ const Slider = (props: SliderProps) => {
   }, [MAX_VALUE, MIN_VALUE, value, boundsReady]);
 
   return (
-    <SliderRoot
+    <Root
       id={sliderId}
       aria-labelledby={label ? labelId : undefined}
       aria-valuemin={MIN_VALUE}
@@ -454,7 +466,7 @@ const Slider = (props: SliderProps) => {
           {labelValue ? labelValue : value.toFixed(2)}
         </Text>
       </SliderLabel>
-    </SliderRoot>
+    </Root>
   );
 };
 

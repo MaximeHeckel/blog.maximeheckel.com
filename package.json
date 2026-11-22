@@ -26,7 +26,9 @@
     "generate:sitemap": "node ./scripts/generate-sitemap",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "prebuild": "pnpm generate:rss && pnpm generate:sitemap",
+    "prebuild": "panda codegen && pnpm generate:rss && pnpm generate:sitemap",
+    "prepare": "panda codegen",
+    "pretype-check": "panda codegen",
     "start": "portless blog.maximeheckel next start",
     "start:ci": "next start -H 127.0.0.1 -p 3000",
     "test": "is-ci \"test:run\" \"test:watch\"",
@@ -99,6 +101,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "16.4.2",
+    "@pandacss/dev": "2.5.0",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "^16.3.1",
     "@types/d3-array": "3.2.1",

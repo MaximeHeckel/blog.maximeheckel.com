@@ -4,6 +4,7 @@ import { globalStyles } from 'lib/globalStyles';
 import { AppProps } from 'next/app';
 import 'katex/dist/katex.min.css';
 import 'styles/global.css';
+import 'styles/panda.css';
 import Head from 'next/head';
 
 import { AskProvider } from '@core/components/Ask/AskContext';
