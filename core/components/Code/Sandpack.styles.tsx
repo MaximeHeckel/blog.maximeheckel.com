@@ -45,7 +45,7 @@ export const SandpackWrapper = styled(Box, {
     },
 
     '& .sp-tabs-scrollable-container': {
-      padding: '0 4px',
+      padding: '0 4px !important',
       scrollbarColor: 'var(--scrollbar-thumb) transparent',
       scrollbarWidth: 'thin',
     },

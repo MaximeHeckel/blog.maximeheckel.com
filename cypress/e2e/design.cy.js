@@ -1,4 +1,19 @@
 describe('Design page styling', () => {
+  it('keeps the Sandpack file tabs aligned with the editor', () => {
+    cy.viewport(1440, 900);
+    cy.visit('/design/');
+
+    cy.get('#code-block .sp-tabs-scrollable-container').should(($tabBar) => {
+      const tabBar = $tabBar[0];
+      const firstTab = tabBar.querySelector('.sp-tab-container');
+      expect(firstTab.textContent).to.include('App.js');
+      expect(
+        firstTab.getBoundingClientRect().left -
+          tabBar.getBoundingClientRect().left
+      ).to.equal(4);
+    });
+  });
+
   it('preserves button typography, grid layout, and slider interactions', () => {
     cy.visit('/design/');
 
