@@ -1,4 +1,4 @@
-import { Card, Icon, IconButton, styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import { animate, useInView, useReducedMotion } from 'motion/react';
 import {
   KeyboardEvent,
@@ -9,6 +9,10 @@ import {
   useRef,
   useState,
 } from 'react';
+
+import { IconButton } from '@core/components/Button';
+import Card from '@core/components/Card';
+import Icon from '@core/components/Icon';
 
 import { Viewport } from './geometry';
 

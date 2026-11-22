@@ -1,4 +1,6 @@
-import { Box, Flex, Text } from '@maximeheckel/design-system';
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
+import Text from '@core/components/Typography';
 
 const H2 = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
   const { children, id, ...rest } = props;

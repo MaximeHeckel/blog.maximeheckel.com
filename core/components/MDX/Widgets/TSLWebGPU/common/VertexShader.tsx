@@ -1,6 +1,8 @@
-import { Flex, Text } from '@maximeheckel/design-system';
 import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
+
+import Flex from '@core/components/Flex';
+import Text from '@core/components/Typography';
 
 const vertices = [
   { id: 'vertex-1', cx: 100, cy: 5, targetX: 100, targetY: 5 },

@@ -1,15 +1,14 @@
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Grid,
-  Icon,
-  Text,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
+
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 const titles = [
   'Pick base colors',

@@ -1,8 +1,11 @@
-import { Box, Card, Flex, Switch } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Switch from '@core/components/Switch';
 
 const Distortions = () => {
   const [expanded, setExpanded] = React.useState(false);

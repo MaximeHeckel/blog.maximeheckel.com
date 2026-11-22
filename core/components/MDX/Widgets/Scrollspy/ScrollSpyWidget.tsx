@@ -1,12 +1,9 @@
-import {
-  Shadows,
-  styled,
-  Card,
-  Flex,
-  InlineCode,
-} from '@maximeheckel/design-system';
+import { Shadows, styled } from 'lib/stitches.config';
 import React from 'react';
 
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import InlineCode from '@core/components/InlineCode';
 import { Slider } from '@core/components/Slider';
 
 import { AnimationCardContent, Form } from '../Components';

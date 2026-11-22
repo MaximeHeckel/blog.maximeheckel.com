@@ -1,8 +1,12 @@
-import { Card, Flex, Grid, Label, Text } from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'motion/react';
 import React from 'react';
 
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Label from '@core/components/Label';
 import { Slider } from '@core/components/Slider';
+import Text from '@core/components/Typography';
 
 import { AnimationCardContent, Form } from '../Components';
 

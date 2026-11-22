@@ -1,6 +1,8 @@
-import { Flex, Text } from '@maximeheckel/design-system';
 import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
+
+import Flex from '@core/components/Flex';
+import Text from '@core/components/Typography';
 
 export const ComputeShaderGrid = ({
   enabled = true,

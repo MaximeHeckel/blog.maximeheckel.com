@@ -1,14 +1,11 @@
-import {
-  Blockquote,
-  EM,
-  InlineCode,
-  List,
-  Strong,
-  Text,
-} from '@maximeheckel/design-system';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { ComponentProps, memo, useEffect, useMemo, useState } from 'react';
+
+import Blockquote from '@core/components/Blockquote';
+import InlineCode from '@core/components/InlineCode';
+import List from '@core/components/List';
+import Text, { EM, Strong } from '@core/components/Typography';
 
 import Code from '../Code';
 import { AnswerLink } from './AnswerLink';

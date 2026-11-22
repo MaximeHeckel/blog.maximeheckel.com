@@ -1,4 +1,6 @@
-import { Box, css, keyframes, styled } from '@maximeheckel/design-system';
+import { css, keyframes, styled } from 'lib/stitches.config';
+
+import Box from '@core/components/Box';
 
 import { GlowProps } from './types';
 

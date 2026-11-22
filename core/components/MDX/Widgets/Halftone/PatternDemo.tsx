@@ -1,6 +1,6 @@
-import { Checkbox } from '@maximeheckel/design-system';
 import { useDeferredValue, useId, useState } from 'react';
 
+import Checkbox from '@core/components/Checkbox';
 import { ShaderPlayground } from '@core/components/MDX/Widgets/ShaderPlayground';
 import { Select } from '@core/components/Select';
 import { Slider } from '@core/components/Slider';

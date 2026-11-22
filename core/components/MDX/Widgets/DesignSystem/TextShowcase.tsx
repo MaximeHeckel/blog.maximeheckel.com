@@ -1,6 +1,7 @@
-import { Card, Flex, Text } from '@maximeheckel/design-system';
-
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Text from '@core/components/Typography';
 
 const TextShowcase = () => {
   const codeString = `const App = () => {

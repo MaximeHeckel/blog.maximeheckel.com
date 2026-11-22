@@ -1,12 +1,11 @@
-import {
-  Flex,
-  IconButton,
-  Icon,
-  Box,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import { useInView, useReducedMotion, motion } from 'motion/react';
 import { useRef, useState } from 'react';
+
+import Box from '@core/components/Box';
+import { IconButton } from '@core/components/Button';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
 
 import { ComputeShaderGrid } from './common/ComputeShaderGrid';
 import { DataLink0, DataLink11 } from './common/DataLinks';

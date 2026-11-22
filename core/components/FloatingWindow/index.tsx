@@ -1,10 +1,3 @@
-import {
-  Flex,
-  Icon,
-  IconButton,
-  Text,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import {
   CSSProperties,
@@ -17,6 +10,12 @@ import {
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
+
+import { IconButton } from '@core/components/Button';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 import { FloatingAnchor } from '../FloatingAnchor';
 import type { WindowCorner } from '../FloatingAnchor/geometry';

@@ -1,6 +1,8 @@
-import { Box, Card, Flex, Grid } from '@maximeheckel/design-system';
-
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 
 const StyledBox = () => (
   <Box

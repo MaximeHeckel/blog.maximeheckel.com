@@ -1,7 +1,10 @@
-import { Box, Card, Flex, Grid } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import Select from '@core/components/Select/Select';
 import { Slider } from '@core/components/Slider';
 

@@ -1,4 +1,4 @@
-import type { CSS } from '@maximeheckel/design-system';
+import { type CSS } from 'lib/stitches.config';
 import type { HTMLAttributes } from 'react';
 
 export type AspectRatioValue = '9:16' | '4:5' | '1:1' | '4:3' | '16:9';

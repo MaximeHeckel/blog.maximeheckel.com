@@ -1,17 +1,15 @@
-import {
-  Box,
-  Card,
-  Flex,
-  GlassMaterial,
-  Shadows,
-  Text,
-} from '@maximeheckel/design-system';
+import { Shadows } from 'lib/stitches.config';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import useSound from 'use-sound';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
 import Fullbleed from '@core/components/Fullbleed';
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Text from '@core/components/Typography';
 
 import { ShaderCanvas, Uniforms } from './ShaderCanvas';
 

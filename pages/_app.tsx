@@ -1,6 +1,6 @@
-import { globalStyles, Tooltip } from '@maximeheckel/design-system';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { globalStyles } from 'lib/globalStyles';
 import { AppProps } from 'next/app';
 import 'katex/dist/katex.min.css';
 import 'styles/global.css';
@@ -10,6 +10,7 @@ import { AskProvider } from '@core/components/Ask/AskContext';
 import { CommandMenuProvider } from '@core/components/CommandMenu';
 import { Fonts } from '@core/components/Fonts';
 import { DefaultSeo } from '@core/components/Seo';
+import Tooltip from '@core/components/Tooltip';
 
 const Meta = () => {
   return (

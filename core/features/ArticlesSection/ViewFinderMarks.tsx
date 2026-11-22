@@ -1,5 +1,6 @@
-import { Text } from '@maximeheckel/design-system';
 import { motion, useReducedMotion } from 'motion/react';
+
+import Text from '@core/components/Typography';
 
 type ViewFinderMarksProps = {
   text: string;

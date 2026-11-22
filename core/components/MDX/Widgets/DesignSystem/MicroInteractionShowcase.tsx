@@ -1,15 +1,13 @@
-import {
-  Card,
-  Checkbox,
-  Flex,
-  Grid,
-  Switch,
-  Text,
-  TextInput,
-} from '@maximeheckel/design-system';
 import React from 'react';
 
 import CommandCenterButton from '@core/components/Buttons/CommandCenterButton';
+import Card from '@core/components/Card';
+import Checkbox from '@core/components/Checkbox';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Switch from '@core/components/Switch';
+import TextInput from '@core/components/TextInput';
+import Text from '@core/components/Typography';
 
 const MicroInteractionShowcase = () => {
   const [dummyEmail, setDummyEmail] = React.useState('');

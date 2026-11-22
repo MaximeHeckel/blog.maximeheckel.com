@@ -1,25 +1,21 @@
-// Components
-import {
-  Anchor,
-  Blockquote,
-  Button,
-  Card,
-  Details,
-  InlineCode,
-  List,
-  Pill,
-  Text,
-  EM,
-  Strong,
-} from '@maximeheckel/design-system';
 import dynamic from 'next/dynamic';
 
+// Components
+import Anchor from '@core/components/Anchor';
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
+import Blockquote from '@core/components/Blockquote';
+import Button from '@core/components/Button';
 import Callout from '@core/components/Callout';
+import Card from '@core/components/Card';
 import Code from '@core/components/Code';
+import Details from '@core/components/Details';
 import { FootnoteRef, FootnotesList } from '@core/components/Footnotes';
 import Fullbleed from '@core/components/Fullbleed';
 import H2 from '@core/components/H2';
+import InlineCode from '@core/components/InlineCode';
+import List from '@core/components/List';
+import Pill from '@core/components/Pill';
+import Text, { EM, Strong } from '@core/components/Typography';
 import VideoPlayer from '@core/components/VideoPlayer';
 
 import SupportCallout from '../Callout/SupportCallout';

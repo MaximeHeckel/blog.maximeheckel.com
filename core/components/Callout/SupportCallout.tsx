@@ -1,6 +1,9 @@
-import { Anchor, EM, Text, styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import { useCallback, useEffect, useState } from 'react';
 import { Supporter } from 'types/supporter';
+
+import Anchor from '@core/components/Anchor';
+import Text, { EM } from '@core/components/Typography';
 
 import { DotMatrixTicker } from '../DotMatrixTicker';
 

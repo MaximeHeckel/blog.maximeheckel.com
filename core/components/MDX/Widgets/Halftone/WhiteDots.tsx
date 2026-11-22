@@ -1,6 +1,7 @@
-import { Box, Flex } from '@maximeheckel/design-system';
 import { useDeferredValue, useId, useRef, useState } from 'react';
 
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
 import { Slider } from '@core/components/Slider';
 
 import { ShaderCanvas } from '../ShaderCanvas';

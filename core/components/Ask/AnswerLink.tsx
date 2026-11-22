@@ -1,6 +1,7 @@
-import { Anchor } from '@maximeheckel/design-system';
 import Link from 'next/link';
 import type { ComponentProps } from 'react';
+
+import Anchor from '@core/components/Anchor';
 
 import siteConfig from '../../../config/site';
 

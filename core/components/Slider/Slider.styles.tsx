@@ -1,7 +1,9 @@
 import { Slider } from '@base-ui/react/slider';
-import { Box, styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 
-export const SliderRoot = styled(Slider.Root, {
+import Box from '@core/components/Box';
+
+export const SliderRoot = styled(Slider.Root<number>, {
   position: 'relative',
   display: 'flex',
   alignItems: 'center',

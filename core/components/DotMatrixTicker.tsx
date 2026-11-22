@@ -1,6 +1,8 @@
-import { Box, Text } from '@maximeheckel/design-system';
 import { useReducedMotion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
+
+import Box from '@core/components/Box';
+import Text from '@core/components/Typography';
 
 const COLORS = [
   'var(--green-1100)',

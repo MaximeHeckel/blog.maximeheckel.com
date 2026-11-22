@@ -1,8 +1,11 @@
-import { Card, Flex, Grid, Switch } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
 
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import { Select } from '@core/components/Select';
 import { Slider } from '@core/components/Slider';
+import Switch from '@core/components/Switch';
 
 const WIDTH = 36;
 const HEIGHT = 36;

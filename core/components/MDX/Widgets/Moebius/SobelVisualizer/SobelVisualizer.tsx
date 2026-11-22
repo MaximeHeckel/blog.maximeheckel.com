@@ -1,15 +1,13 @@
-import {
-  Card,
-  Flex,
-  GlassMaterial,
-  Grid,
-  Label,
-  Radio,
-  Text,
-} from '@maximeheckel/design-system';
 import React, { useMemo, useState, useCallback } from 'react';
 
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Grid from '@core/components/Grid';
+import Label from '@core/components/Label';
+import Radio from '@core/components/Radio';
 import { Select } from '@core/components/Select';
+import Text from '@core/components/Typography';
 
 interface CellProps {
   value: number;

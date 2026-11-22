@@ -1,18 +1,16 @@
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Icon,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import { Group } from '@visx/group';
 import { ParentSize } from '@visx/responsive';
 import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
 import React from 'react';
 
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
 import { Slider } from '@core/components/Slider';
+import Tooltip from '@core/components/Tooltip';
 import useInterval from '@core/hooks/useInterval';
 
 type ChartType = 'linear' | 'quadratic' | 'cubic';

@@ -1,4 +1,4 @@
-import { Box } from '@maximeheckel/design-system';
+import Box from '@core/components/Box';
 
 const BottomBlurGradientMask = () => (
   <Box

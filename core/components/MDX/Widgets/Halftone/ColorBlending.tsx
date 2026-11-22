@@ -1,5 +1,8 @@
-import { Box, Card, Flex } from '@maximeheckel/design-system';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
 
 interface ColorBlendingProps {
   mode: 'RGB' | 'CMY';

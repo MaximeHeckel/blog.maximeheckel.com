@@ -1,8 +1,12 @@
-import { styled, Anchor, Text, Box, Flex } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 
+import Anchor from '@core/components/Anchor';
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
 import { HR } from '@core/components/HR';
+import Text from '@core/components/Typography';
 
 const StyledSection = styled('section', {
   background: 'var(--background)',

@@ -1,10 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 
-import { Grid } from '@maximeheckel/design-system';
 import type { GetStaticProps } from 'next';
 
 import Footer from '@core/components/Footer';
+import Grid from '@core/components/Grid';
 import { Header } from '@core/components/Header';
 import { Main } from '@core/components/Main';
 import Seo from '@core/components/Seo';

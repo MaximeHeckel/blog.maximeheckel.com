@@ -1,6 +1,9 @@
-import { Icon, IconButton, styled } from '@maximeheckel/design-system';
 import type { AskAttachment } from 'lib/askAttachments';
+import { styled } from 'lib/stitches.config';
 import { Highlight } from 'prism-react-renderer';
+
+import { IconButton } from '@core/components/Button';
+import Icon from '@core/components/Icon';
 
 import { createDiffHighlighter } from '../Code/diff';
 import { syntaxTheme, syntaxTokenStyles } from '../Code/syntaxTheme';

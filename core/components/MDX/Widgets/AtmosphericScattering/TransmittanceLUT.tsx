@@ -1,6 +1,6 @@
-import { Checkbox } from '@maximeheckel/design-system';
 import { useId, useState } from 'react';
 
+import Checkbox from '@core/components/Checkbox';
 import { ShaderPlayground } from '@core/components/MDX/Widgets/ShaderPlayground';
 
 const TRANSMITTANCE_LUT_FRAGMENT = `#version 300 es

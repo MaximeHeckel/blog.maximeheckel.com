@@ -1,13 +1,16 @@
-import { Box, Text } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import { useEffect, useRef } from 'react';
 import type { ComponentProps } from 'react';
+
+import Box from '@core/components/Box';
+import Text from '@core/components/Typography';
 
 type AnimatedNumberTickerProps = Omit<
   ComponentProps<typeof Text>,
   'aria-label' | 'children'
 > & {
   ariaLabel: string;
+  as?: 'p' | 'span';
   digitCount: number;
   suffix?: string;
   value: number;

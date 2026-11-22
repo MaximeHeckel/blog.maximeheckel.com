@@ -1,6 +1,9 @@
-import { Box, Card, Flex, css } from '@maximeheckel/design-system';
+import { css } from 'lib/stitches.config';
 import React from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
 import { Slider } from '@core/components/Slider';
 
 const channelSplit = css({

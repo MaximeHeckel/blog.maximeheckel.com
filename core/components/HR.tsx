@@ -1,4 +1,6 @@
-import { Box, styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
+
+import Box from '@core/components/Box';
 
 export const HR = styled(Box, {
   width: '100%',

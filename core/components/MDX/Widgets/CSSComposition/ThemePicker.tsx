@@ -1,5 +1,9 @@
-import { styled, Card, Grid, Text } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import { motion } from 'motion/react';
+
+import Card from '@core/components/Card';
+import Grid from '@core/components/Grid';
+import Text from '@core/components/Typography';
 
 import { AnimationCardContent } from '../Components';
 

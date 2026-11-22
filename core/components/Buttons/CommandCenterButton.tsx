@@ -1,5 +1,7 @@
-import { Button, Tooltip } from '@maximeheckel/design-system';
 import { motion, useMotionValue } from 'motion/react';
+
+import Button from '@core/components/Button';
+import Tooltip from '@core/components/Tooltip';
 
 interface Props {
   onClick: () => void;

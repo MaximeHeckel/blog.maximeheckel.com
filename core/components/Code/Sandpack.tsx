@@ -7,10 +7,12 @@ import {
   SandpackConsole,
   SandpackFiles,
 } from '@codesandbox/sandpack-react';
-import { Box, Flex, Shadows, styled } from '@maximeheckel/design-system';
+import { Shadows, styled } from 'lib/stitches.config';
 import { AnimatePresence } from 'motion/react';
 import { useEffect, useState } from 'react';
 
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
 import { useIsMobile } from '@core/hooks/useIsMobile';
 
 import setupFiles from './SandpackSetupFiles';

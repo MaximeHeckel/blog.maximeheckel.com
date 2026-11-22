@@ -1,6 +1,9 @@
-import { Box, Card, Flex, Grid } from '@maximeheckel/design-system';
 import React, { useMemo, useState } from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import { Slider } from '@core/components/Slider';
 
 const WIDTH = 4;

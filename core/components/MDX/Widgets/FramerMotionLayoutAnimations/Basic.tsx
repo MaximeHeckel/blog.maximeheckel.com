@@ -1,8 +1,12 @@
-import { Box, Card, Flex, Radio, Switch } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Radio from '@core/components/Radio';
+import Switch from '@core/components/Switch';
 
 const Basic = () => {
   const [position, setPosition] = React.useState('start');

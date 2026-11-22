@@ -1,17 +1,15 @@
-import {
-  Card,
-  Flex,
-  Grid,
-  Switch,
-  Text,
-  Box,
-  Tooltip,
-  Icon,
-  Button,
-} from '@maximeheckel/design-system';
 import React, { useMemo, useState, useEffect } from 'react';
 
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Icon from '@core/components/Icon';
 import { Select } from '@core/components/Select';
+import Switch from '@core/components/Switch';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 const WIDTH = 9;
 const HEIGHT = 9;

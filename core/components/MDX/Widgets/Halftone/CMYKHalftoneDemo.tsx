@@ -1,15 +1,13 @@
-import {
-  Box,
-  Icon,
-  IconButton,
-  Tooltip,
-  Text,
-  Flex,
-} from '@maximeheckel/design-system';
 import { useState } from 'react';
 
+import Box from '@core/components/Box';
+import { IconButton } from '@core/components/Button';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
 import { ShaderPlayground } from '@core/components/MDX/Widgets/ShaderPlayground';
 import { Slider } from '@core/components/Slider';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 const CMYK_HALFTONE_FRAGMENT_SHADER = `#version 300 es
 precision highp float;

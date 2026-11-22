@@ -1,4 +1,4 @@
-import { styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 
 export const StyledCalloutIconWrapper = styled('span', {
   display: 'inline-flex',

@@ -1,6 +1,7 @@
-import { InlineCode } from '@maximeheckel/design-system';
 import katex from 'katex';
 import { ReactNode } from 'react';
+
+import InlineCode from '@core/components/InlineCode';
 
 import { InlineMathRoot } from './InlineMath.styles';
 

@@ -1,4 +1,4 @@
-import { css } from '@maximeheckel/design-system';
+import { css } from 'lib/stitches.config';
 
 import { LogoProps } from './types';
 

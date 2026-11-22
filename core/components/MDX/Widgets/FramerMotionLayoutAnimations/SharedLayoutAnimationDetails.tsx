@@ -1,7 +1,10 @@
-import { Box, Card, Flex, Icon } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
 import { Slider } from '@core/components/Slider';
 
 const ITEMS = [1, 2, 3];

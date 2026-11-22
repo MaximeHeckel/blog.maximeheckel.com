@@ -1,14 +1,5 @@
-import {
-  Flex,
-  Box,
-  IconButton,
-  Icon,
-  isElementOfType,
-  Text,
-  GlassMaterial,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import { isIOS, isMobileDevice } from 'lib/device';
+import { isElementOfType } from 'lib/utils/isElementOfType';
 import { motion, useReducedMotion } from 'motion/react';
 import {
   Children,
@@ -19,6 +10,14 @@ import {
   useRef,
   useState,
 } from 'react';
+
+import Box from '@core/components/Box';
+import { IconButton } from '@core/components/Button';
+import Flex from '@core/components/Flex';
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 import { glassBorderShine } from '../GlassBorder.styles';
 import { formatTime } from './utils';

@@ -1,4 +1,3 @@
-import { Flex, GlassMaterial, Icon, Text } from '@maximeheckel/design-system';
 import { cloudflareLoader } from 'lib/next-image-loader';
 import {
   motion,
@@ -9,6 +8,11 @@ import {
   useTransform,
 } from 'motion/react';
 import { useState, useRef, useEffect, useId } from 'react';
+
+import Flex from '@core/components/Flex';
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Icon from '@core/components/Icon';
+import Text from '@core/components/Typography';
 
 import { glassBorderShine } from '../GlassBorder.styles';
 import * as S from './BeforeAfterImage.styles';

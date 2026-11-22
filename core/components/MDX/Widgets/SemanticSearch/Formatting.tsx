@@ -1,17 +1,16 @@
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Icon,
-  Text,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import deepEqual from 'deep-eql';
 import { DeepPartial, parsePartialJson } from 'lib/partialJson';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { useEffect, useRef, useState } from 'react';
+
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 import MDXComponents from '../../MDXComponents';
 

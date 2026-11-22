@@ -1,13 +1,3 @@
-import {
-  Button,
-  Card,
-  Flex,
-  Grid,
-  Icon,
-  Switch,
-  Tooltip,
-  Text,
-} from '@maximeheckel/design-system';
 import { Drag } from '@visx/drag';
 import { Group } from '@visx/group';
 import { ParentSize } from '@visx/responsive';
@@ -16,7 +6,15 @@ import { LinePath } from '@visx/shape';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
 
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Icon from '@core/components/Icon';
 import { Select } from '@core/components/Select';
+import Switch from '@core/components/Switch';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 import useInterval from '@core/hooks/useInterval';
 
 type Point = {
