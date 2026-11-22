@@ -1,5 +1,7 @@
-import { IconButton, Tooltip } from '@maximeheckel/design-system';
 import { useId } from 'react';
+
+import { IconButton } from '@core/components/Button';
+import Tooltip from '@core/components/Tooltip';
 
 import RGBLensIcon from '../RGBLensIcon';
 import { useOptionalAsk } from './AskContext';

@@ -1,13 +1,12 @@
-import {
-  Button,
-  Card as DesignSystemCard,
-  Flex,
-  Icon,
-  InlineCode,
-  styled,
-} from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
+
+import Button from '@core/components/Button';
+import DesignSystemCard from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import InlineCode from '@core/components/InlineCode';
 
 import { AnimationCardContent, TransitionGridWrapper } from '../Components';
 

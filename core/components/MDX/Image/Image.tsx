@@ -1,16 +1,15 @@
 import { Dialog } from '@base-ui/react/dialog';
-import {
-  Box,
-  CSS,
-  Flex,
-  Icon,
-  IconButton,
-  Text,
-} from '@maximeheckel/design-system';
 import { cloudflareLoader } from 'lib/next-image-loader';
+import { type CSS } from 'lib/stitches.config';
 import { AnimatePresence, motion, MotionConfig } from 'motion/react';
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
 import { memo, useId, useRef, useState } from 'react';
+
+import Box from '@core/components/Box';
+import { IconButton } from '@core/components/Button';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Text from '@core/components/Typography';
 
 import { Backdrop, ImageFrame, Popup, Trigger } from './Lightbox';
 
@@ -126,7 +125,6 @@ const Image = (props: ImageProps) => {
           direction="column"
           css={{ margin: '0', width: '100%' }}
           alignItems="start"
-          gap="0"
         >
           <Trigger
             nativeButton={false}

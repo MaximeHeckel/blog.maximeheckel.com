@@ -1,5 +1,7 @@
-import { Box, CSS, keyframes } from '@maximeheckel/design-system';
+import { type CSS, keyframes } from 'lib/stitches.config';
 import React, { ReactNode, forwardRef, Ref } from 'react';
+
+import Box from '@core/components/Box';
 
 type GlitchTextProps = {
   children: ReactNode;

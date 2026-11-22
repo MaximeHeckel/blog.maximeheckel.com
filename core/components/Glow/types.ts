@@ -1,4 +1,4 @@
-import { CSS } from '@maximeheckel/design-system';
+import { type CSS } from 'lib/stitches.config';
 
 export interface GlowProps {
   css?: CSS;

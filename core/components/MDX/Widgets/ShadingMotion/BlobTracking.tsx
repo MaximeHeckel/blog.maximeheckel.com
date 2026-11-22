@@ -1,13 +1,12 @@
-import {
-  Box,
-  Flex,
-  Icon,
-  IconButton,
-  Text,
-  useKeyboardShortcut,
-} from '@maximeheckel/design-system';
 import { motion, useInView } from 'motion/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import Box from '@core/components/Box';
+import { IconButton } from '@core/components/Button';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Text from '@core/components/Typography';
+import useKeyboardShortcut from '@core/hooks/useKeyboardShortcut';
 
 const MOTION_MAP_URL =
   'https://cdn.maximeheckel.com/images/blog/motion-map.png';

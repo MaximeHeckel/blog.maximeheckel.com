@@ -1,16 +1,14 @@
-import {
-  Card,
-  Flex,
-  Grid,
-  Label,
-  Radio,
-  Text,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import React from 'react';
 
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Label from '@core/components/Label';
+import Radio from '@core/components/Radio';
 import { Select } from '@core/components/Select';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 interface CellProps {
   value: number;

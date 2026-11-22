@@ -1,4 +1,3 @@
-import { Box } from '@maximeheckel/design-system';
 import {
   useFBO,
   PerspectiveCamera,
@@ -25,6 +24,8 @@ import {
   useState,
 } from 'react';
 import * as THREE from 'three';
+
+import Box from '@core/components/Box';
 
 import type { SceneControls } from './SceneDebugControls';
 import { DepthOfFieldMaterial, SimulationMaterial } from './SceneMaterials';

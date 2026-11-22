@@ -1,15 +1,13 @@
-import {
-  Box,
-  Flex,
-  Icon,
-  IconButton,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import { useReducedMotion } from 'motion/react';
 import { useEffect, useId, useState } from 'react';
 
+import Box from '@core/components/Box';
+import { IconButton } from '@core/components/Button';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
 import { Select } from '@core/components/Select';
 import { Slider } from '@core/components/Slider';
+import Tooltip from '@core/components/Tooltip';
 
 import { ShaderPlayground } from '../../ShaderPlayground';
 

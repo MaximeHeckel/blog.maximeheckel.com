@@ -1,4 +1,3 @@
-import { Box, GlassMaterial, Text } from '@maximeheckel/design-system';
 import {
   motion,
   useMotionValue,
@@ -14,6 +13,10 @@ import {
   useRef,
   useState,
 } from 'react';
+
+import Box from '@core/components/Box';
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Text from '@core/components/Typography';
 
 import {
   Control,

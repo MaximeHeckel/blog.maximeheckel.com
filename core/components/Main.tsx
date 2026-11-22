@@ -1,4 +1,4 @@
-import { styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import { ComponentProps } from 'react';
 
 import { BrowserEdges } from './BrowserEdges';

@@ -1,13 +1,5 @@
-import {
-  styled,
-  Anchor,
-  Grid,
-  Text,
-  EM,
-  Flex,
-  Box,
-} from '@maximeheckel/design-system';
 import { format } from 'date-fns';
+import { styled } from 'lib/stitches.config';
 import {
   motion,
   useAnimation,
@@ -17,7 +9,12 @@ import {
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 
+import Anchor from '@core/components/Anchor';
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import Logo from '@core/components/Logo';
+import Text, { EM } from '@core/components/Typography';
 
 import { HR } from '../HR';
 import { ScrambledText } from '../ScrambledText';

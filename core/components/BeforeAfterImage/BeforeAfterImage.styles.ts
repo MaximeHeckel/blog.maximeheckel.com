@@ -1,5 +1,7 @@
-import { Box, styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import NextImage from 'next/image';
+
+import Box from '@core/components/Box';
 
 export const Wrapper = styled(Box, {
   position: 'relative',

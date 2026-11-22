@@ -1,10 +1,12 @@
-import { Card, Flex, useDebouncedValue } from '@maximeheckel/design-system';
 import { Easing, motion, useInView } from 'motion/react';
 import React, { useRef } from 'react';
 
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
 import { Select } from '@core/components/Select';
 import { Slider } from '@core/components/Slider';
+import useDebouncedValue from '@core/hooks/useDebouncedValue';
 
 import {
   AnimationCardContent,

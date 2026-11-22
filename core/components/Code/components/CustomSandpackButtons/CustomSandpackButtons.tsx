@@ -4,7 +4,11 @@ import {
   UnstyledOpenInCodeSandboxButton,
   useSandpackConsole,
 } from '@codesandbox/sandpack-react';
-import { Box, Tooltip, IconButton, Icon } from '@maximeheckel/design-system';
+
+import Box from '@core/components/Box';
+import { IconButton } from '@core/components/Button';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
 
 export const CustomRunButton = () => {
   const { sandpack } = useSandpack();

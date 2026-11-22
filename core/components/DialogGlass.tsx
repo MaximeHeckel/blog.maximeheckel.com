@@ -1,4 +1,6 @@
-import { GlassMaterial, styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
+
+import { GlassMaterial } from '@core/components/GlassMaterial';
 
 export const CustomGlassMaterial = styled(GlassMaterial, {
   'background-color':

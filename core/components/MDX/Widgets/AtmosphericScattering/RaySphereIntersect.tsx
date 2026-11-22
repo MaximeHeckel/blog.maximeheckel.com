@@ -1,4 +1,3 @@
-import { Box } from '@maximeheckel/design-system';
 import {
   useCallback,
   useEffect,
@@ -8,6 +7,7 @@ import {
   useState,
 } from 'react';
 
+import Box from '@core/components/Box';
 import { Slider } from '@core/components/Slider';
 
 import { drawLeaderLabel, type CanvasPoint } from './canvasUtils';

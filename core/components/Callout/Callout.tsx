@@ -1,5 +1,8 @@
-import { CSS, Flex, Icon } from '@maximeheckel/design-system';
+import { type CSS } from 'lib/stitches.config';
 import { ReactNode } from 'react';
+
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
 
 import {
   StyledCallout,

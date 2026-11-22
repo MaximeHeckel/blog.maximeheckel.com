@@ -1,15 +1,14 @@
-import {
-  css,
-  Button,
-  Card,
-  Checkbox,
-  Flex,
-  Icon,
-  Text,
-  Tooltip,
-} from '@maximeheckel/design-system';
+import { css } from 'lib/stitches.config';
 import { AnimatePresence, LayoutGroup, motion, Reorder } from 'motion/react';
 import React from 'react';
+
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Checkbox from '@core/components/Checkbox';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 const ITEMS = [
   {

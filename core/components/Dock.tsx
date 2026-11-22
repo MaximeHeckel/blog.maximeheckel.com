@@ -1,9 +1,12 @@
-import { Box, Flex, GlassMaterial, Text } from '@maximeheckel/design-system';
 import debounce from 'lodash.debounce';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useContext, useState } from 'react';
 
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Text from '@core/components/Typography';
 import { useIsMobile } from '@core/hooks/useIsMobile';
 import { usePressActivation } from '@core/hooks/usePressActivation';
 import { useViewTransitionNavigation } from '@core/hooks/useViewTransitionNavigation';

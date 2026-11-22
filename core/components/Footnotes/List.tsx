@@ -1,5 +1,8 @@
-import { Box, Text, styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import React from 'react';
+
+import Box from '@core/components/Box';
+import Text from '@core/components/Typography';
 
 import { HR } from '../HR';
 import * as S from './Footnotes.styles';

@@ -1,4 +1,6 @@
-import { IconButton, styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
+
+import { IconButton } from '@core/components/Button';
 
 // Keep the inset surfaces in the same family as the callout's gradient border.
 const insetSurfaceBorder = {

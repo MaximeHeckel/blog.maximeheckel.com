@@ -1,6 +1,7 @@
-import { Flex } from '@maximeheckel/design-system';
 import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
+
+import Flex from '@core/components/Flex';
 
 export const DataLink0 = (props: { enabled?: boolean }) => {
   const { enabled = true } = props;

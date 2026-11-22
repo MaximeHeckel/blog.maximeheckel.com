@@ -1,4 +1,3 @@
-import { useKeyboardShortcut } from '@maximeheckel/design-system';
 import dynamic from 'next/dynamic';
 import React, {
   createContext,
@@ -9,6 +8,9 @@ import React, {
   useState,
 } from 'react';
 
+import type { IconProps } from '@core/components/Icon/Icon.types';
+import useKeyboardShortcut from '@core/hooks/useKeyboardShortcut';
+
 import { useAsk } from '../Ask/AskContext';
 
 const CommandMenu = dynamic(() =>
@@ -18,7 +20,9 @@ const CommandMenu = dynamic(() =>
 export interface Action {
   id: string;
   label: string;
-  icon: React.ComponentType<{ size?: number | string }>;
+  icon: React.ComponentType<{
+    size?: Extract<IconProps['size'], number | string>;
+  }>;
   onSelect: () => void;
   keywords?: string[];
 }

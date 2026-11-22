@@ -1,4 +1,4 @@
-import { css, Shadows, styled } from '@maximeheckel/design-system';
+import { css, Shadows, styled } from 'lib/stitches.config';
 
 export const TweetWrapper = styled('div', {
   display: 'flex',

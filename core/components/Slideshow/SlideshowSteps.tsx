@@ -1,5 +1,6 @@
-import { GlassMaterial } from '@maximeheckel/design-system';
 import { KeyboardEvent, useEffect, useId, useRef } from 'react';
+
+import { GlassMaterial } from '@core/components/GlassMaterial';
 
 import * as S from './Slideshow.styles';
 

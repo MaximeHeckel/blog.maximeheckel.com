@@ -1,7 +1,10 @@
-import { Card, Flex, styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import { motion, useReducedMotion } from 'motion/react';
 import { Highlight } from 'prism-react-renderer';
 import { FocusEvent, memo, useMemo, useRef, useState } from 'react';
+
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
 
 import { SendToAskButton } from '../Ask/SendToAskButton';
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';

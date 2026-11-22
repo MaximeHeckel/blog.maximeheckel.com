@@ -1,11 +1,13 @@
-import { Box, Grid, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import debounce from 'lodash.debounce';
 import { useInView } from 'motion/react';
 import { useCallback, useRef, useState } from 'react';
 import { Post } from 'types/post';
 
+import Box from '@core/components/Box';
+import Grid from '@core/components/Grid';
 import { ScrambledText } from '@core/components/ScrambledText';
+import Text from '@core/components/Typography';
 import ViewTransitionLink from '@core/components/ViewTransitionLink';
 import { useShouldSkipArticlesScramble } from '@core/hooks/useArticlesScrambleNavigation';
 

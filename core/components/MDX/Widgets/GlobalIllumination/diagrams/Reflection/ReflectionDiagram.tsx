@@ -1,4 +1,4 @@
-import { styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import { useId, useState } from 'react';
 
 import { Slider } from '@core/components/Slider';

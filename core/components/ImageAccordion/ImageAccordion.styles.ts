@@ -1,4 +1,4 @@
-import { styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import NextImage from 'next/image';
 
 export const Strip = styled('div', {

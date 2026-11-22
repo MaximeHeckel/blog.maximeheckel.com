@@ -1,10 +1,8 @@
-import {
-  Box,
-  Details,
-  Flex,
-  InlineCode,
-  Text,
-} from '@maximeheckel/design-system';
+import Box from '@core/components/Box';
+import Details from '@core/components/Details';
+import Flex from '@core/components/Flex';
+import InlineCode from '@core/components/InlineCode';
+import Text from '@core/components/Typography';
 
 const ColorChannelSummary = () => {
   return (

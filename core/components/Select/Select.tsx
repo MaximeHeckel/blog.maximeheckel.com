@@ -1,6 +1,9 @@
 import { Select as BaseSelect } from '@base-ui/react/select';
-import { Flex, Icon, Text } from '@maximeheckel/design-system';
 import { useId } from 'react';
+
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Text from '@core/components/Typography';
 
 import {
   SelectIcon,
@@ -47,9 +50,7 @@ const Select = (props: SelectProps) => {
         ref={triggerRef}
         disabled={disabled}
         size={size}
-        style={{
-          '--min-width': `${minWidth ?? 124}px`,
-        }}
+        style={{ '--min-width': `${minWidth ?? 124}px` } as React.CSSProperties}
       >
         {size === 'md' ? (
           <Text size="2" weight="4" variant="secondary">

@@ -1,53 +1,51 @@
-import {
-  styled,
-  Anchor,
-  Blockquote,
-  Box,
-  Button,
-  Card,
-  EM,
-  Flex,
-  Grid,
-  H1,
-  H2,
-  H3,
-  Heading,
-  Icon,
-  InlineCode,
-  List,
-  Pill,
-  Strong,
-  Text,
-  TextInput,
-  TextArea,
-  Tooltip,
-  Checkbox,
-  Switch,
-  Radio,
-  Details,
-  IconButton,
-} from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { NewTweet } from 'types/tweet';
 
+import Anchor from '@core/components/Anchor';
 import AspectRatio from '@core/components/AspectRatio';
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
+import Blockquote from '@core/components/Blockquote';
+import Box from '@core/components/Box';
+import Button, { IconButton } from '@core/components/Button';
 import Callout from '@core/components/Callout';
+import Card from '@core/components/Card';
+import Checkbox from '@core/components/Checkbox';
 import CodeBlock from '@core/components/Code/CodeBlock';
 import { CommandMenuContext } from '@core/components/CommandMenu/CommandMenuContext';
+import Details from '@core/components/Details';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import { HR } from '@core/components/HR';
+import Icon from '@core/components/Icon';
 import ImageAccordion from '@core/components/ImageAccordion';
+import InlineCode from '@core/components/InlineCode';
+import List from '@core/components/List';
 import Logo from '@core/components/Logo';
 import Image from '@core/components/MDX/Image/Image';
 import { Main } from '@core/components/Main';
+import Pill from '@core/components/Pill';
 import RGBLensIcon from '@core/components/RGBLensIcon';
+import Radio from '@core/components/Radio';
 import { Select } from '@core/components/Select';
 import Seo from '@core/components/Seo';
 import { Slider } from '@core/components/Slider';
 import ImageGallery from '@core/components/Slideshow';
+import Switch from '@core/components/Switch';
+import TextArea from '@core/components/TextArea';
+import TextInput from '@core/components/TextInput';
+import Tooltip from '@core/components/Tooltip';
 import Tweet from '@core/components/Tweet';
+import Text, {
+  EM,
+  H1,
+  H2,
+  H3,
+  Heading,
+  Strong,
+} from '@core/components/Typography';
 import { MediaPlayer } from '@core/components/VideoPlayer/MediaPlayer';
 
 const SandpackExample = dynamic(

@@ -1,5 +1,5 @@
 import { Select as BaseSelect } from '@base-ui/react/select';
-import { styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 
 export const SelectTrigger = styled(BaseSelect.Trigger, {
   display: 'flex',

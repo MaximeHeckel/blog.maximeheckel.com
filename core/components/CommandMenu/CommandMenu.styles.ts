@@ -1,4 +1,4 @@
-import { styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 
 export const Overlay = styled('div', {
   position: 'fixed',

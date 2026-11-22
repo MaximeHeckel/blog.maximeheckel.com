@@ -1,5 +1,6 @@
-import { Text } from '@maximeheckel/design-system';
 import type { ReactNode } from 'react';
+
+import Text from '@core/components/Typography';
 
 export interface HeadlineProps {
   children: ReactNode;

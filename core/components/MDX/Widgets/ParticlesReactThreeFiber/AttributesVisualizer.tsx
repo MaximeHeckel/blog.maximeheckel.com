@@ -1,13 +1,12 @@
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Icon,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React, { useEffect, useState } from 'react';
+
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
 
 const START_PX = 280;
 const DIMENSION_ARRAY_ITEM = 40;

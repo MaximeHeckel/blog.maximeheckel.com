@@ -1,5 +1,5 @@
 import { Popover } from '@base-ui/react/popover';
-import { styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import { motion, useReducedMotion } from 'motion/react';
 import { PointerEvent, RefObject, useEffect, useState } from 'react';
 

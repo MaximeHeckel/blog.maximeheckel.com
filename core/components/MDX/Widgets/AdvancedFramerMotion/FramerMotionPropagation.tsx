@@ -1,14 +1,12 @@
-import {
-  Button,
-  Card as DesignSystemCard,
-  Flex,
-  H3,
-  Icon,
-  Shadows,
-  styled,
-} from '@maximeheckel/design-system';
+import { Shadows, styled } from 'lib/stitches.config';
 import { motion } from 'motion/react';
 import React from 'react';
+
+import Button from '@core/components/Button';
+import DesignSystemCard from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import { H3 } from '@core/components/Typography';
 
 import { AnimationCardContent } from '../Components';
 
@@ -121,7 +119,7 @@ const CardWithGlow = () => {
       translateY: -10,
       transition: {
         duration: 0.5,
-        ease: 'easeInOut',
+        ease: 'easeInOut' as const,
       },
     },
     initial: {
@@ -137,7 +135,7 @@ const CardWithGlow = () => {
       rotateZ: inPerspective ? 43 : 0,
       transition: {
         duration: 0.5,
-        ease: 'easeInOut',
+        ease: 'easeInOut' as const,
       },
     }),
     initial: {
@@ -146,7 +144,7 @@ const CardWithGlow = () => {
       rotateZ: 0,
       transition: {
         duration: 0.5,
-        ease: 'easeInOut',
+        ease: 'easeInOut' as const,
       },
     },
   };

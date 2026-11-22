@@ -1,4 +1,4 @@
-import { keyframes, styled } from '@maximeheckel/design-system';
+import { keyframes, styled } from 'lib/stitches.config';
 import { motion } from 'motion/react';
 
 import { glassBorderShine } from '../GlassBorder.styles';

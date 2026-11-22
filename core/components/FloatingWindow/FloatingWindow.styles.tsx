@@ -1,4 +1,6 @@
-import { Card, styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
+
+import Card from '@core/components/Card';
 
 export const Window = styled(Card, {
   '--window-radius': 'var(--space-5)',

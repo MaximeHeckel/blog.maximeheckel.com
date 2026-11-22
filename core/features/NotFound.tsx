@@ -1,8 +1,11 @@
-import { Box, Button, styled, Text } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
 import GlitchText from '@core/components/Glitchtext';
+import Text from '@core/components/Typography';
 
 const OverlayWrapper = styled(Box, {
   display: 'flex',
@@ -25,7 +28,7 @@ const NotFound = () => {
       filter: 'blur(0px)',
       transition: {
         duraction: 0.3,
-        ease: 'easeOut',
+        ease: 'easeOut' as const,
       },
     },
   };

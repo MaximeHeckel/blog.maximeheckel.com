@@ -1,6 +1,10 @@
-import { Box, Flex, GlassMaterial, Text } from '@maximeheckel/design-system';
 import { ResponsiveLine } from '@nivo/line';
 import React, { useMemo, useState } from 'react';
+
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Text from '@core/components/Typography';
 
 interface ColorToggleProps {
   label: string;

@@ -1,5 +1,5 @@
 import { Dialog } from '@base-ui/react/dialog';
-import { styled } from '@maximeheckel/design-system';
+import { styled } from 'lib/stitches.config';
 
 export const Backdrop = styled(Dialog.Backdrop, {
   position: 'fixed',

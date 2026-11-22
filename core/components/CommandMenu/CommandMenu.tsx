@@ -1,9 +1,3 @@
-import {
-  Box,
-  Icon,
-  useDebouncedValue,
-  VisuallyHidden,
-} from '@maximeheckel/design-system';
 import { Command, useCommandState } from 'cmdk';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'motion/react';
@@ -16,6 +10,12 @@ import {
   useRef,
   useState,
 } from 'react';
+
+import Box from '@core/components/Box';
+import Icon from '@core/components/Icon';
+import type { IconProps } from '@core/components/Icon/Icon.types';
+import VisuallyHidden from '@core/components/VisuallyHidden';
+import useDebouncedValue from '@core/hooks/useDebouncedValue';
 
 import { CustomGlassMaterial } from '../DialogGlass';
 import { ContactIcon, SearchIcon } from '../Icons';
@@ -93,7 +93,7 @@ const LINK_ITEMS: LinkItem[] = [
 
 const IconMap: Record<
   LinkItem['icon'],
-  React.ComponentType<{ size?: number | string }>
+  React.ComponentType<{ size?: Extract<IconProps['size'], number | string> }>
 > = {
   Twitter: Icon.Twitter,
   Bluesky: Icon.Bluesky,

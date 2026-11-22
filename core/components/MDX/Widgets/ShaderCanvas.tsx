@@ -1,6 +1,7 @@
-import { Box } from '@maximeheckel/design-system';
 import { useInView } from 'motion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
+import Box from '@core/components/Box';
 
 // ========================================
 // Types

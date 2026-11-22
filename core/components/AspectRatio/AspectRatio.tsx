@@ -1,6 +1,7 @@
-import { Tooltip } from '@maximeheckel/design-system';
 import { motion, useReducedMotion } from 'motion/react';
 import { useId, useState } from 'react';
+
+import Tooltip from '@core/components/Tooltip';
 
 import { Controls, Frame, Option, Root, Stage } from './AspectRatio.styles';
 import type { AspectRatioProps, AspectRatioValue } from './AspectRatio.types';

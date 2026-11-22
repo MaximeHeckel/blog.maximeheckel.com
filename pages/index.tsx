@@ -1,8 +1,8 @@
-import { Grid } from '@maximeheckel/design-system';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post } from 'types/post';
 
 import Footer from '@core/components/Footer';
+import Grid from '@core/components/Grid';
 import { Header } from '@core/components/Header';
 import { Main } from '@core/components/Main';
 import { ArticlesSection } from '@core/features/ArticlesSection';

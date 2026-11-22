@@ -1,5 +1,5 @@
-import { getCssText } from '@maximeheckel/design-system';
 import { HERO_THEME_COLOR, PAGE_THEME_COLOR } from 'lib/browserTheme';
+import { getCssText } from 'lib/stitches.config';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {

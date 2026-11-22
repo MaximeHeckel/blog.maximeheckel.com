@@ -1,6 +1,6 @@
-import { css, Box, Flex, Grid, Icon } from '@maximeheckel/design-system';
 import siteConfig from 'config/site';
 import { format } from 'date-fns';
+import { css } from 'lib/stitches.config';
 import {
   AnimatePresence,
   motion,
@@ -13,11 +13,15 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Post, ReadingTime } from 'types/post';
 
 import { SelectionToAsk } from '@core/components/Ask/SelectionToAsk';
+import Box from '@core/components/Box';
 import { useRegisterAction } from '@core/components/CommandMenu';
 import { Dock } from '@core/components/Dock';
 import { DynamicTOC } from '@core/components/DynamicTOC';
+import Flex from '@core/components/Flex';
 import Footer from '@core/components/Footer/Footer';
+import Grid from '@core/components/Grid';
 import Headline from '@core/components/Headline';
+import Icon from '@core/components/Icon';
 import { Main } from '@core/components/Main';
 import { ScrambledText } from '@core/components/ScrambledText';
 import Seo from '@core/components/Seo';

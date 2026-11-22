@@ -1,7 +1,8 @@
-import { styled, Flex } from '@maximeheckel/design-system';
 import { ParentSize } from '@visx/responsive';
+import { styled } from 'lib/stitches.config';
 
 import LineChart from '@core/components/Charts/LineChart';
+import Flex from '@core/components/Flex';
 
 const Wrapper = styled(Flex, {
   padding: '20px',

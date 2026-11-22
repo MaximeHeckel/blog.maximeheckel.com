@@ -1,4 +1,3 @@
-import { GlassMaterial, Icon } from '@maximeheckel/design-system';
 import { cloudflareLoader } from 'lib/next-image-loader';
 import { useInView, useReducedMotion } from 'motion/react';
 import NextImage from 'next/image';
@@ -13,6 +12,9 @@ import {
   useRef,
   useState,
 } from 'react';
+
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Icon from '@core/components/Icon';
 
 import * as S from './Slideshow.styles';
 import { SlideshowSteps } from './SlideshowSteps';

@@ -1,14 +1,12 @@
-import {
-  Box,
-  Icon,
-  IconButton,
-  Tooltip,
-  useDebouncedValue,
-} from '@maximeheckel/design-system';
 import { useEffect, useId, useState } from 'react';
 
+import Box from '@core/components/Box';
+import { IconButton } from '@core/components/Button';
+import Icon from '@core/components/Icon';
 import { Select } from '@core/components/Select';
 import { Slider } from '@core/components/Slider';
+import Tooltip from '@core/components/Tooltip';
+import useDebouncedValue from '@core/hooks/useDebouncedValue';
 
 import { ShaderPlayground } from '../../ShaderPlayground';
 

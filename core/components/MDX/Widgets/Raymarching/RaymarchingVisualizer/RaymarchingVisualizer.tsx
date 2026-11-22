@@ -1,16 +1,14 @@
-import {
-  Button,
-  Card,
-  Flex,
-  Grid,
-  Icon,
-  Text,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React, { useMemo, useState } from 'react';
 
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Icon from '@core/components/Icon';
 import { Slider } from '@core/components/Slider';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 interface CellProps {
   value: number;

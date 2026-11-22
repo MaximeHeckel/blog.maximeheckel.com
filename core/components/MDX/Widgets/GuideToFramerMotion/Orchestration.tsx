@@ -1,8 +1,10 @@
-import { Card, Flex, useDebouncedValue } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React from 'react';
 
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
 import { Slider } from '@core/components/Slider';
+import useDebouncedValue from '@core/hooks/useDebouncedValue';
 
 import { AnimationCardContent, Form } from '../Components';
 

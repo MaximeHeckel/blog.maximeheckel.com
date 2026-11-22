@@ -1,16 +1,14 @@
-import {
-  css,
-  Card,
-  Flex,
-  Icon,
-  Pill,
-  Text,
-  Switch,
-} from '@maximeheckel/design-system';
+import { css } from 'lib/stitches.config';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import React from 'react';
 
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Pill from '@core/components/Pill';
+import Switch from '@core/components/Switch';
+import Text from '@core/components/Typography';
 
 const ITEMS = [
   {

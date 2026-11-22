@@ -1,13 +1,4 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  InlineCode,
-  Text,
-  TextInput,
-  keyframes,
-  useDebouncedValue,
-} from '@maximeheckel/design-system';
+import { keyframes } from 'lib/stitches.config';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import type {
@@ -17,7 +8,14 @@ import type {
 } from 'react';
 
 import { AnimatedNumberTicker } from '@core/components/AnimatedNumberTicker';
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import { SearchIcon } from '@core/components/Icons';
+import InlineCode from '@core/components/InlineCode';
+import TextInput from '@core/components/TextInput';
+import Text from '@core/components/Typography';
+import useDebouncedValue from '@core/hooks/useDebouncedValue';
 
 export interface GlossaryTerm {
   aliases: string[];
