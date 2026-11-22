@@ -95,34 +95,6 @@ export const ExternalIcon = (props: IconProps) => (
   </StyledSVG>
 );
 
-export const ExternalLinkIcon = (props: IconProps) => (
-  <StyledSVG
-    width="24"
-    height="24"
-    viewBox="0 0 16 16"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    stroke="currentColor"
-    role="img"
-    {...props}
-  >
-    <path
-      d="M8 5H5C3.89543 5 3 5.89543 3 7V12C3 13.1046 3.89543 14 5 14H10C11.1046 14 12 13.1046 12 12V8.5"
-      stroke="currentColor"
-      strokeWidth="1.25"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    ></path>
-    <path
-      d="M7.5 9.5L14 3M14 3V7M14 3H10"
-      stroke="currentColor"
-      strokeWidth="1.25"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    ></path>
-  </StyledSVG>
-);
-
 export const EnterIcon = (props: IconProps) => (
   <StyledSVG
     width="24"
@@ -158,26 +130,6 @@ export const MapIcon = (props: IconProps) => (
     <path d="M5.25345 4.19584L4.02558 4.90813C3.03739 5.48137 2.54329 5.768 2.27164 6.24483C2 6.72165 2 7.30233 2 8.46368V16.6283C2 18.1542 2 18.9172 2.34226 19.3418C2.57001 19.6244 2.88916 19.8143 3.242 19.8773C3.77226 19.9719 4.42148 19.5953 5.71987 18.8421C6.60156 18.3306 7.45011 17.7994 8.50487 17.9435C8.98466 18.009 9.44231 18.2366 10.3576 18.6917L14.1715 20.588C14.9964 20.9982 15.004 21 15.9214 21H18C19.8856 21 20.8284 21 21.4142 20.4013C22 19.8026 22 18.8389 22 16.9117V10.1715C22 8.24423 22 7.2806 21.4142 6.68188C20.8284 6.08316 19.8856 6.08316 18 6.08316H15.9214C15.004 6.08316 14.9964 6.08139 14.1715 5.6712L10.8399 4.01463C9.44884 3.32297 8.75332 2.97714 8.01238 3.00117C7.27143 3.02521 6.59877 3.41542 5.25345 4.19584Z" />
     <path d="M8 3L8 17.5" />
     <path d="M15 6.5L15 20.5" />
-  </StyledSVG>
-);
-
-export const RSSIcon = (props: IconProps) => (
-  <StyledSVG
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    stroke="currentColor"
-    role="img"
-    {...props}
-  >
-    <path d="M12.9915 20.5C13.7121 20.5 13.9925 20.4956 13.9925 20.4956C17.4088 20.471 19.2922 20.3099 20.5342 19.2552C22 18.0104 22 16.0069 22 12C22 7.99306 22 5.98959 20.5342 4.7448C19.0683 3.5 16.7091 3.5 11.9906 3.5C7.27213 3.5 4.91289 3.5 3.44705 4.7448C2.32426 5.69827 2.0615 7.09687 2 9.5" />
-    <path d="M2.98242 19.5H2.9914" />
-    <path d="M2 15.7349C4.49328 15.7349 6.77053 18 6.77053 20.4996M10 20.4996C10 16 5.99511 12.5 2.04522 12.5" />
   </StyledSVG>
 );
 
@@ -260,26 +212,6 @@ export const PauseIcon = (props: IconProps) => (
     <path d="M14 7C14 5.58579 14 4.87868 14.4393 4.43934C14.8787 4 15.5858 4 17 4C18.4142 4 19.1213 4 19.5607 4.43934C20 4.87868 20 5.58579 20 7V17C20 18.4142 20 19.1213 19.5607 19.5607C19.1213 20 18.4142 20 17 20C15.5858 20 14.8787 20 14.4393 19.5607C14 19.1213 14 18.4142 14 17V7Z" />
   </StyledSVG>
 );
-
-export const FullscreenIcon = (props: IconProps) => {
-  return (
-    <StyledSVG
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      role="img"
-      {...props}
-    >
-      <path d="M15.5 21C16.8956 21 17.5933 21 18.1611 20.8278C19.4395 20.44 20.44 19.4395 20.8278 18.1611C21 17.5933 21 16.8956 21 15.5M21 8.5C21 7.10444 21 6.40666 20.8278 5.83886C20.44 4.56046 19.4395 3.56004 18.1611 3.17224C17.5933 3 16.8956 3 15.5 3M8.5 21C7.10444 21 6.40666 21 5.83886 20.8278C4.56046 20.44 3.56004 19.4395 3.17224 18.1611C3 17.5933 3 16.8956 3 15.5M3 8.5C3 7.10444 3 6.40666 3.17224 5.83886C3.56004 4.56046 4.56046 3.56004 5.83886 3.17224C6.40666 3 7.10444 3 8.5 3"></path>
-    </StyledSVG>
-  );
-};
 
 export const ClearIcon = (props: IconProps) => {
   return (

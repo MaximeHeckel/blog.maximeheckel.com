@@ -4,7 +4,6 @@ import {
   EnterIcon,
   ExternalIcon,
   PortfolioIcon,
-  RSSIcon,
   TwitterIcon,
   ArrowIcon,
   PlayIcon,
@@ -17,7 +16,6 @@ import {
   StackIcon,
   ChevronIcon,
   FullScreenIcon,
-  ExternalLinkIcon,
   ClearIcon,
   PiPIcon,
   PiPExitIcon,
@@ -40,7 +38,6 @@ Icon.Contact = ContactIcon;
 Icon.Enter = EnterIcon;
 Icon.External = ExternalIcon;
 Icon.Portfolio = PortfolioIcon;
-Icon.RSS = RSSIcon;
 Icon.Twitter = TwitterIcon;
 Icon.Arrow = ArrowIcon;
 Icon.Play = PlayIcon;
@@ -54,7 +51,6 @@ Icon.Stack = StackIcon;
 Icon.X = ClearIcon;
 Icon.Chevron = ChevronIcon;
 Icon.FullScreen = FullScreenIcon;
-Icon.ExternalLink = ExternalLinkIcon;
 Icon.Clear = ClearIcon;
 Icon.PiP = PiPIcon;
 Icon.PiPExit = PiPExitIcon;
