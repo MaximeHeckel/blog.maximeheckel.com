@@ -125,6 +125,7 @@ const Image = (props: ImageProps) => {
           direction="column"
           css={{ margin: '0', width: '100%' }}
           alignItems="start"
+          gap="0"
         >
           <Trigger
             nativeButton={false}

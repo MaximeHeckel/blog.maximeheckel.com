@@ -621,7 +621,7 @@ const MediaPlayerPlaybackControls = () => {
   };
 
   return (
-    <Flex alignItems="center">
+    <Flex alignItems="center" gap="0">
       <Tooltip content={isPlaying ? 'Pause' : 'Play'}>
         <IconButton
           aria-label={isPlaying ? 'Pause' : 'Play'}
@@ -1029,7 +1029,7 @@ const MediaPlayerScreenControls = () => {
   const { togglePiP, toggleFullscreen, isPiP } = useMedia();
 
   return (
-    <Flex alignItems="center">
+    <Flex alignItems="center" gap="0">
       {isIOS() ? null : (
         <Tooltip content="Fullscreen">
           <IconButton
