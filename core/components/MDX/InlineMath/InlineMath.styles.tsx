@@ -17,12 +17,6 @@ export const InlineMathRoot = styled(Box, {
       fontSize: '1rem',
     },
 
-    '& .katex': {
-      fontSize: 'inherit',
-      lineHeight: 'inherit',
-      whiteSpace: 'normal',
-    },
-
     '& .katex-html > .base': {
       margin: 0,
       padding: 0,

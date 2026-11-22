@@ -29,8 +29,6 @@ import { useSkipArticlesScrambleWhenLeavingPost } from '@core/hooks/useArticlesS
 
 import { Footnote } from './Footnote';
 
-import 'katex/dist/katex.min.css';
-
 const Header = (props: {
   title: string;
   ids: Array<{ id: string; title: string }>;
@@ -182,11 +180,6 @@ const contentClass = css({
   '& .katex-display>.katex>.katex-html>.tag': {
     display: 'none',
   },
-
-  '& .katex-display>.katex': {
-    textAlign: 'left',
-    whiteSpace: 'normal',
-  },
 });
 
 const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
@@ -324,7 +317,7 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
           <Flex
             alignItems="start"
             direction="column"
-            className={contentClass}
+            className={`blog-post-content ${contentClass}`}
             ref={articleRef}
             data-ask-article-path={path}
             data-ask-article-title={title}

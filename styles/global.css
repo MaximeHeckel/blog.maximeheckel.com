@@ -3,6 +3,18 @@
   color: var(--accent);
 }
 
+/* KaTeX ships unlayered styles, so its overrides share that cascade level. */
+.inline-math .katex {
+  font-size: inherit;
+  line-height: inherit;
+  white-space: normal;
+}
+
+.blog-post-content .katex-display > .katex {
+  text-align: left;
+  white-space: normal;
+}
+
 html {
   --scrollbar-padding: 4px;
   --scrollbar-size: 14px;

@@ -19,7 +19,7 @@ const InlineMath = (props: InlineMathProps) => {
   });
 
   return (
-    <InlineMathRoot as="span" block={block}>
+    <InlineMathRoot as="span" block={block} className="inline-math">
       <InlineCode>
         <span dangerouslySetInnerHTML={{ __html: html }} />
       </InlineCode>
