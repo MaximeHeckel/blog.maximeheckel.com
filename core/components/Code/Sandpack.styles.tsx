@@ -36,7 +36,7 @@ export const SandpackWrapper = styled(Box, {
     },
 
     '& .cm-content': {
-      padding: '0px',
+      padding: '0px !important',
     },
 
     // Sandpack injects unlayered CSS for its layout and tabs.
