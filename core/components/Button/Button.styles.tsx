@@ -43,7 +43,7 @@ export const StyledButton = styled('button', {
     },
     '&:disabled': {
       cursor: 'not-allowed',
-      '--button-scale': '1.0 !important',
+      '--button-scale': '1 !important',
       '--shadow': 'none !important',
       '--opacity': '0.4',
       filter: 'grayscale(0.25)',
