@@ -74,7 +74,6 @@
     "glslify-loader": "^2.0.0",
     "gray-matter": "4.0.3",
     "katex": "^0.17.0",
-    "leva": "^0.10.1",
     "lodash.debounce": "^4.0.8",
     "motion": "^12.23.26",
     "next": "^16.4.6",
