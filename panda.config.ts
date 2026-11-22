@@ -9,6 +9,7 @@ export default defineConfig({
   ],
   jsxFramework: 'react',
   jsxStyleProps: 'minimal',
+  hash: { className: true, cssVar: false },
   preflight: false,
   outdir: 'styled-system',
 });
