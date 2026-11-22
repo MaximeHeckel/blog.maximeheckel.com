@@ -22,12 +22,15 @@ const Cell = (props: CellProps) => {
     <Tooltip content={value < 0 ? '0.000' : value.toFixed(3)}>
       <Flex
         alignItems="center"
+        style={{
+          backgroundColor: `rgb(${value * 255},${value * 255},${value * 255})`,
+        }}
         css={{
           aspectRatio: '1 / 1',
           cursor: 'pointer',
           borderBottom: '0.5px solid var(--gray-700)',
           borderLeft: '0.5px solid var(--gray-700)',
-          backgroundColor: `rgb(${value * 255},${value * 255},${value * 255})`,
+
           overflow: 'hidden',
         }}
         justifyContent="center"

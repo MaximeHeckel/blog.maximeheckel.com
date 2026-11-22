@@ -1,4 +1,3 @@
-import { styled } from 'lib/stitches.config';
 import {
   animate,
   motion,
@@ -16,6 +15,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { styled } from 'styled-system/jsx';
 
 import RGBLensIcon from '../RGBLensIcon';
 import {
@@ -35,24 +35,26 @@ import {
 } from './geometry';
 
 const Button = styled(motion.button, {
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  zIndex: 101,
-  width: WIDTH,
-  height: HEIGHT,
-  padding: 0,
-  display: 'grid',
-  placeItems: 'center',
-  border: 'none',
-  borderRadius: HEIGHT / 2,
-  background: 'transparent',
-  color: 'var(--text-primary)',
-  cursor: 'grab',
-  touchAction: 'none',
-  userSelect: 'none',
-  '&:active': { cursor: 'grabbing' },
-  '&:focus-visible': { outline: 'none' },
+  base: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    zIndex: 101,
+    width: WIDTH,
+    height: HEIGHT,
+    padding: 0,
+    display: 'grid',
+    placeItems: 'center',
+    border: 'none',
+    borderRadius: HEIGHT / 2,
+    background: 'transparent',
+    color: 'var(--text-primary)',
+    cursor: 'grab',
+    touchAction: 'none',
+    userSelect: 'none',
+    '&:active': { cursor: 'grabbing' },
+    '&:focus-visible': { outline: 'none' },
+  },
 });
 
 interface FloatingAnchorProps {

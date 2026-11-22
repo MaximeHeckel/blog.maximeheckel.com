@@ -354,7 +354,7 @@ export const Density = () => {
           width: '100%',
           flexDirection: 'column',
           gap: 'var(--space-3)',
-          '@md': {
+          '@media (min-width: 768px)': {
             flexDirection: 'row',
             alignItems: 'flex-start',
           },

@@ -29,11 +29,12 @@ const Cell = (props: CellProps) => {
   return (
     <Flex
       alignItems="center"
+      style={{ backgroundColor: color }}
       css={{
         aspectRatio: '1 / 1',
         borderBottom: '0.5px solid var(--gray-700)',
         borderLeft: '0.5px solid var(--gray-700)',
-        backgroundColor: color,
+
         overflow: 'hidden',
       }}
       justifyContent="center"
@@ -43,7 +44,7 @@ const Cell = (props: CellProps) => {
       (x === 0 && y === 1) ||
       (x === 1 && y === 0) ||
       (x === 0.5 && y === 0.5) ? (
-        <Text role="presentation" css={{ fontSize: 10 }}>
+        <Text role="presentation" css={{ fontSize: '10px' }}>
           {x - 0.5},{y - 0.5}
         </Text>
       ) : null}

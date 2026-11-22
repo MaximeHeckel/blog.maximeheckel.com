@@ -1,7 +1,7 @@
-import { styled } from 'lib/stitches.config';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
+import { styled } from 'styled-system/jsx';
 import { NewTweet } from 'types/tweet';
 
 import Anchor from '@core/components/Anchor';
@@ -9,15 +9,12 @@ import AspectRatio from '@core/components/AspectRatio';
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
 import Blockquote from '@core/components/Blockquote';
 import Box from '@core/components/Box';
-import { IconButton } from '@core/components/Button';
+import Button, { IconButton } from '@core/components/Button';
 import Callout from '@core/components/Callout';
 import Card from '@core/components/Card';
 import Checkbox from '@core/components/Checkbox';
 import CodeBlock from '@core/components/Code/CodeBlock';
 import { CommandMenuContext } from '@core/components/CommandMenu/CommandMenuContext';
-import { PilotButton } from '@core/components/DesignPilot/Button';
-import { PilotGrid } from '@core/components/DesignPilot/Grid';
-import { PilotSliderRoot } from '@core/components/DesignPilot/SliderRoot';
 import Details from '@core/components/Details';
 import Flex from '@core/components/Flex';
 import Grid from '@core/components/Grid';
@@ -56,7 +53,9 @@ const SandpackExample = dynamic(
 );
 
 const Label = styled('p', {
-  marginBottom: '8px',
+  base: {
+    marginBottom: '8px',
+  },
 });
 
 const SliderExample = () => {
@@ -64,7 +63,6 @@ const SliderExample = () => {
   return (
     <>
       <Slider
-        root={PilotSliderRoot}
         id="slider-medium"
         label="Slider"
         value={value}
@@ -73,7 +71,6 @@ const SliderExample = () => {
         onChange={(value) => setValue(value)}
       />
       <Slider
-        root={PilotSliderRoot}
         id="slider-medium-disabled"
         label="Slider"
         disabled
@@ -83,7 +80,6 @@ const SliderExample = () => {
         onChange={() => {}}
       />
       <Slider
-        root={PilotSliderRoot}
         id="slider-small"
         label="Slider"
         value={value}
@@ -93,7 +89,6 @@ const SliderExample = () => {
         size="sm"
       />
       <Slider
-        root={PilotSliderRoot}
         id="slider-small-disabled"
         label="Slider"
         disabled
@@ -135,8 +130,8 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
           width: '100%',
           backgroundColor: 'var(--background)',
           paddingTop: 'var(--space-10)',
-          borderBottomRightRadius: 4,
-          borderBottomLeftRadius: 4,
+          borderBottomRightRadius: '4px',
+          borderBottomLeftRadius: '4px',
           overflow: 'hidden',
         }}
         gapX={2}
@@ -283,7 +278,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                 <Grid
                   key={paletteItem}
                   css={{
-                    marginRight: '$3',
+                    marginRight: 'var(--space-3)',
                   }}
                   templateColumns="repeat(auto-fill, minmax(2rem, 1fr))"
                 >
@@ -295,11 +290,12 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                     >
                       <Box
                         as="section"
+                        style={{ background: `var(--${paletteItem}-${shade})` }}
                         css={{
                           width: '44px',
                           height: '44px',
                           borderRadius: '50%',
-                          background: `var(--${paletteItem}-${shade})`,
+
                           border: '2px solid var(--border-color)',
                         }}
                       />
@@ -639,22 +635,19 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
           >
             <H2>Buttons</H2>
             <Grid gap={5}>
-              <PilotButton variant="primary">Button</PilotButton>
-              <PilotButton variant="primary" inverted>
+              <Button variant="primary">Button</Button>
+              <Button variant="primary" inverted>
                 Button
-              </PilotButton>
-              <PilotButton variant="primary" endIcon={<Icon.Arrow size="4" />}>
+              </Button>
+              <Button variant="primary" endIcon={<Icon.Arrow size="4" />}>
                 Portfolio
-              </PilotButton>
-              <PilotButton
-                variant="primary"
-                startIcon={<Icon.Twitter size="4" />}
-              >
+              </Button>
+              <Button variant="primary" startIcon={<Icon.Twitter size="4" />}>
                 Follow me!
-              </PilotButton>
+              </Button>
 
-              <PilotButton variant="secondary">Button</PilotButton>
-              <PilotButton variant="tertiary">Button</PilotButton>
+              <Button variant="secondary">Button</Button>
+              <Button variant="tertiary">Button</Button>
 
               <IconButton aria-label="Follow me on Twitter!" variant="primary">
                 <Icon.Twitter />
@@ -757,7 +750,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                 onChange={(event) => setEmail(event.currentTarget.value)}
                 value={email}
               />
-              <PilotButton variant="primary">Subscribe</PilotButton>
+              <Button variant="primary">Subscribe</Button>
             </Flex>
             <br />
             <Grid
@@ -995,9 +988,13 @@ they can change the world, are the ones who do.`}
               </Radio.Group>
             </Grid>
             <br />
-            <PilotGrid templateColumns="repeat(2, minmax(2rem, 1fr))">
+            <Grid
+              css={{ width: '100%' }}
+              gap={3}
+              templateColumns="repeat(2, minmax(2rem, 1fr))"
+            >
               <SliderExample />
-            </PilotGrid>
+            </Grid>
             <Grid
               gap={3}
               css={{
@@ -1252,12 +1249,12 @@ function sayHi(name) {
             id="command-center"
           >
             <H2>Command Center / Search </H2>
-            <PilotButton
+            <Button
               variant="primary"
               onClick={() => commandMenu?.openCommandMenu()}
             >
               Cmd
-            </PilotButton>
+            </Button>
           </Flex>
           <Flex
             alignItems="start"

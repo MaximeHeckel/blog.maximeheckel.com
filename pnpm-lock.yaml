@@ -35,9 +35,6 @@ importers:
       '@react-three/postprocessing':
         specifier: ^3.0.4
         version: 3.0.4(@react-three/fiber@9.4.2(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(three@0.182.0))(@types/three@0.182.0)(react@19.2.1)(three@0.182.0)
-      '@stitches/react':
-        specifier: 1.2.8
-        version: 1.2.8(react@19.2.1)
       '@supabase/supabase-js':
         specifier: ^2.47.10
         version: 2.47.10
@@ -1804,11 +1801,6 @@ packages:
 
   '@stitches/core@1.2.8':
     resolution: {integrity: sha512-Gfkvwk9o9kE9r9XNBmJRfV8zONvXThnm1tcuojL04Uy5uRyqg93DC83lDebl0rocZCfKSjUv+fWYtMQmEDJldg==}
-
-  '@stitches/react@1.2.8':
-    resolution: {integrity: sha512-9g9dWI4gsSVe8bNLlb+lMkBYsnIKCZTmvqvDG+Avnn69XfmHZKiaMrx7cgTaddq7aTPPmXiTsbFcUy0xgI4+wA==}
-    peerDependencies:
-      react: '>= 16.3.0'
 
   '@supabase/auth-js@2.67.3':
     resolution: {integrity: sha512-NJDaW8yXs49xMvWVOkSIr8j46jf+tYHV0wHhrwOaLLMZSFO4g6kKAf+MfzQ2RaD06OCUkUHIzctLAxjTgEVpzw==}
@@ -6405,10 +6397,6 @@ snapshots:
   '@standard-schema/spec@1.0.0': {}
 
   '@stitches/core@1.2.8': {}
-
-  '@stitches/react@1.2.8(react@19.2.1)':
-    dependencies:
-      react: 19.2.1
 
   '@supabase/auth-js@2.67.3':
     dependencies:

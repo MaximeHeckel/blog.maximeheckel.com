@@ -1,4 +1,3 @@
-import type { Slider as BaseSlider } from '@base-ui/react/slider';
 import {
   motion,
   useMotionValue,
@@ -7,8 +6,6 @@ import {
   useTransform,
 } from 'motion/react';
 import {
-  type ComponentType,
-  type RefAttributes,
   useCallback,
   useEffect,
   useId,
@@ -32,15 +29,7 @@ import {
 } from './Slider.styles';
 import { SliderProps } from './types';
 
-interface SliderRenderProps extends SliderProps {
-  root?: ComponentType<
-    BaseSlider.Root.Props<number> &
-      RefAttributes<HTMLDivElement> &
-      Pick<SliderProps, 'size'>
-  >;
-}
-
-const Slider = (props: SliderRenderProps) => {
+const Slider = (props: SliderProps) => {
   const {
     id,
     min,
@@ -54,7 +43,6 @@ const Slider = (props: SliderRenderProps) => {
     labelValue,
     hideDots,
     size = 'md',
-    root: Root = SliderRoot,
   } = props;
 
   const shouldReduceMotion = useReducedMotion();
@@ -341,7 +329,7 @@ const Slider = (props: SliderRenderProps) => {
   }, [MAX_VALUE, MIN_VALUE, value, boundsReady]);
 
   return (
-    <Root
+    <SliderRoot
       id={sliderId}
       aria-labelledby={label ? labelId : undefined}
       aria-valuemin={MIN_VALUE}
@@ -421,7 +409,7 @@ const Slider = (props: SliderRenderProps) => {
                 key={index}
                 css={{
                   position: 'absolute',
-                  left: `calc(${position}% - 10px)`,
+
                   transform: 'translateX(-50%)',
                   width: '4px',
                   height: '4px',
@@ -431,6 +419,7 @@ const Slider = (props: SliderRenderProps) => {
                   willChange: 'opacity',
                 }}
                 style={{
+                  left: `calc(${position}% - 10px)`,
                   opacity:
                     stepValue === value ||
                     stepValue < MIN_VALUE + 0.3 * (MAX_VALUE - MIN_VALUE) ||
@@ -466,7 +455,7 @@ const Slider = (props: SliderRenderProps) => {
           {labelValue ? labelValue : value.toFixed(2)}
         </Text>
       </SliderLabel>
-    </Root>
+    </SliderRoot>
   );
 };
 

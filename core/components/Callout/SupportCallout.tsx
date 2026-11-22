@@ -1,5 +1,5 @@
-import { styled } from 'lib/stitches.config';
 import { useCallback, useEffect, useState } from 'react';
+import { styled } from 'styled-system/jsx';
 import { Supporter } from 'types/supporter';
 
 import Anchor from '@core/components/Anchor';
@@ -8,16 +8,18 @@ import Text, { EM } from '@core/components/Typography';
 import { DotMatrixTicker } from '../DotMatrixTicker';
 
 const StyledCallout = styled('aside', {
-  position: 'relative',
-  padding: '16px 16px',
-  borderRadius: 'var(--border-radius-2)',
-  color: 'var(--text-primary)',
-  border: '1px solid var(--emphasis)',
-  background: 'var(--callout-background, var(--foreground))',
-  overflow: 'hidden',
-  width: '100%',
-  display: 'inline-grid',
-  gap: 'var(--space-5)',
+  base: {
+    position: 'relative',
+    padding: '16px 16px',
+    borderRadius: 'var(--border-radius-2)',
+    color: 'var(--text-primary)',
+    border: '1px solid var(--emphasis)',
+    background: 'var(--callout-background, var(--foreground))',
+    overflow: 'hidden',
+    width: '100%',
+    display: 'inline-grid',
+    gap: 'var(--space-5)',
+  },
 });
 
 const fetchSupporters = async (): Promise<{

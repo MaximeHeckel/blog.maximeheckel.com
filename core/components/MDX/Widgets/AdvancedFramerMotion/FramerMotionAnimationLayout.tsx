@@ -1,6 +1,6 @@
-import { styled } from 'lib/stitches.config';
 import { motion } from 'motion/react';
 import React from 'react';
+import { styled } from 'styled-system/jsx';
 
 import Card from '@core/components/Card';
 import Checkbox from '@core/components/Checkbox';
@@ -60,16 +60,18 @@ const PETS = [
 ];
 
 const Circle = styled('div', {
-  background: 'linear-gradient(104.01deg, #9bebeb 5.51%, #0fa6e9 98.93%)',
-  width: '48px',
-  height: '48px',
-  userSelect: 'none',
-  borderRadius: '50%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: '32px',
-  margin: '0 auto',
+  base: {
+    background: 'linear-gradient(104.01deg, #9bebeb 5.51%, #0fa6e9 98.93%)',
+    width: '48px',
+    height: '48px',
+    userSelect: 'none',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '32px',
+    margin: '0 auto',
+  },
 });
 
 const FramerMotionAnimationLayout = () => {

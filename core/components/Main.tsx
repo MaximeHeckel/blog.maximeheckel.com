@@ -1,12 +1,14 @@
-import { styled } from 'lib/stitches.config';
 import { ComponentProps } from 'react';
+import { styled } from 'styled-system/jsx';
 
 import { BrowserEdges } from './BrowserEdges';
 
 const MainContainer = styled('main', {
-  isolation: 'isolate',
-  backgroundColor: 'var(--gray-000)',
-  boxShadow: '0 0 128px 24px rgba(0, 0, 0, 0.8)',
+  base: {
+    isolation: 'isolate',
+    backgroundColor: 'var(--gray-000)',
+    boxShadow: '0 0 128px 24px rgba(0, 0, 0, 0.8)',
+  },
 });
 
 export const Main = ({

@@ -1,5 +1,5 @@
-import { type CSS } from 'lib/stitches.config';
 import type { HTMLAttributes } from 'react';
+import type { SystemStyleObject as CSS } from 'styled-system/types';
 
 export type AspectRatioValue = '9:16' | '4:5' | '1:1' | '4:3' | '16:9';
 

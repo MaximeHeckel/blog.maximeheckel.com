@@ -3,7 +3,7 @@ import Box from '@core/components/Box';
 const BottomBlurGradientMask = () => (
   <Box
     css={{
-      height: 96,
+      height: '96px',
       width: '100%',
       transition: 'background 0.3s ease-in-out',
       background: 'oklch(from var(--background) l c h / 90%)',

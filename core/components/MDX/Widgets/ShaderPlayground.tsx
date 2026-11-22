@@ -1,4 +1,4 @@
-import { Shadows } from 'lib/stitches.config';
+import { Shadows } from 'lib/tokens/shadows';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import useSound from 'use-sound';

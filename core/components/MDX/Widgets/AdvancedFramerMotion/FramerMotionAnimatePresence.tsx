@@ -1,6 +1,6 @@
-import { styled } from 'lib/stitches.config';
 import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
+import { styled } from 'styled-system/jsx';
 
 import Button from '@core/components/Button';
 import DesignSystemCard from '@core/components/Card';
@@ -11,28 +11,32 @@ import InlineCode from '@core/components/InlineCode';
 import { AnimationCardContent, TransitionGridWrapper } from '../Components';
 
 const CardWrapper = styled('div', {
-  height: '300px',
-  position: 'relative',
+  base: {
+    height: '300px',
+    position: 'relative',
+  },
 });
 
 const Card = styled('div', {
-  position: 'absolute',
-  borderRadius: '32px',
-  marginBottom: '0px',
-  overflow: 'hidden',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  background: 'linear-gradient(104.01deg, #9bebeb 5.51%, #0fa6e9 98.93%)',
-  transform: 'perspective(1000px) rotateY(15deg)',
-  width: '250px',
-  height: '300px',
-  fontSize: '64px',
-  transition: 'transform 0.8s ease 0s',
+  base: {
+    position: 'absolute',
+    borderRadius: '32px',
+    marginBottom: '0px',
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'linear-gradient(104.01deg, #9bebeb 5.51%, #0fa6e9 98.93%)',
+    transform: 'perspective(1000px) rotateY(15deg)',
+    width: '250px',
+    height: '300px',
+    fontSize: '64px',
+    transition: 'transform 0.8s ease 0s',
 
-  '&:hover': {
-    transform: 'perspective(2000px) rotateY(2deg)',
+    '&:hover': {
+      transform: 'perspective(2000px) rotateY(2deg)',
+    },
   },
 });
 

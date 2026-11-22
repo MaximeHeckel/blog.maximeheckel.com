@@ -125,7 +125,7 @@ export const StorageBuffer = ({ enabled = true }: { enabled?: boolean }) => {
                     >
                       <Text
                         family="mono"
-                        css={{ fontSize: 12 }}
+                        css={{ fontSize: '12px' }}
                         variant="primary"
                         weight="3"
                       >

@@ -1,5 +1,4 @@
 import { HERO_THEME_COLOR, PAGE_THEME_COLOR } from 'lib/browserTheme';
-import { getCssText } from 'lib/stitches.config';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {
@@ -44,10 +43,6 @@ class MyDocument extends Document {
           <link
             rel="pingback"
             href="https://webmention.io/blog.maximeheckel.com/xmlrpc"
-          />
-          <style
-            id="stitches"
-            dangerouslySetInnerHTML={{ __html: getCssText() }}
           />
           <meta charSet="utf-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />

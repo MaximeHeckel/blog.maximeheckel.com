@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
 
+import Box from '@core/components/Box';
 import Card from '@core/components/Card';
 import Flex from '@core/components/Flex';
 import { GlassMaterial } from '@core/components/GlassMaterial';
@@ -30,9 +31,8 @@ const Cell = (props: CellProps) => {
 
   return (
     <>
-      <Flex
+      <Box
         as="button"
-        alignItems="center"
         css={{
           all: 'unset',
           aspectRatio: '1 / 1',
@@ -47,7 +47,6 @@ const Cell = (props: CellProps) => {
           },
         }}
         disabled={disabled}
-        justifyContent="center"
         onClick={onClick}
         style={{
           backgroundColor: color,
@@ -101,7 +100,7 @@ const Cell = (props: CellProps) => {
             </Text>
           </Flex>
         ) : null}
-      </Flex>
+      </Box>
     </>
   );
 };

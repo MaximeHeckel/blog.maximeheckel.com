@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, useReducedMotion } from 'motion/react';
 import {
   CSSProperties,
   KeyboardEvent,
@@ -203,7 +203,6 @@ export const FloatingWindow = ({
         inert={!open}
       >
         <S.Interior
-          as={motion.div}
           initial={reduceMotion ? false : { opacity: 0 }}
           ref={panelRef}
           id={windowId}
@@ -309,7 +308,6 @@ export const FloatingWindow = ({
               <AnimatePresence initial={false}>
                 {open && showScrollToLatest && hasContentBelow ? (
                   <S.LatestButton
-                    as={motion.button}
                     key="latest"
                     type="button"
                     aria-label="Scroll to latest"

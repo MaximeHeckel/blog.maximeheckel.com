@@ -1,6 +1,6 @@
-import { styled } from 'lib/stitches.config';
 import { motion } from 'motion/react';
 import React from 'react';
+import { styled } from 'styled-system/jsx';
 
 import Box from '@core/components/Box';
 import Button from '@core/components/Button';
@@ -13,15 +13,16 @@ import Switch from '@core/components/Switch';
 import Tooltip from '@core/components/Tooltip';
 
 const IconButton = styled(motion.button, {
-  MozAppearance: 'none',
-  WebkitAppearance: 'none',
-  background: 'transparent',
-  color: 'inherit',
-  border: 'none',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  padding: '0',
+  base: {
+    WebkitAppearance: 'none',
+    background: 'transparent',
+    color: 'inherit',
+    border: 'none',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0',
+  },
 });
 
 const ITEMS = [1, 2, 3];

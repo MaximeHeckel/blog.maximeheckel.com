@@ -1,5 +1,5 @@
-import { styled } from 'lib/stitches.config';
 import React from 'react';
+import { styled } from 'styled-system/jsx';
 
 import Box from '@core/components/Box';
 import Text from '@core/components/Typography';
@@ -15,18 +15,20 @@ interface FootnotesProps {
 }
 
 const List = styled('ol', {
-  counterReset: 'footnotes',
-  listStyle: 'none',
-  padding: 0,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 'var(--space-2)',
-  marginBottom: 0,
-
-  '& li': {
+  base: {
+    counterReset: 'footnotes',
+    listStyle: 'none',
+    padding: 0,
     display: 'flex',
-    alignItems: 'start',
+    flexDirection: 'column',
     gap: 'var(--space-2)',
+    marginBottom: 0,
+
+    '& li': {
+      display: 'flex',
+      alignItems: 'start',
+      gap: 'var(--space-2)',
+    },
   },
 });
 
@@ -41,7 +43,7 @@ const FootnotesList = ({ notes }: FootnotesProps) => {
           <li key={note.id} id={`fn-${note.id}`}>
             <S.FootnoteRef
               css={{
-                marginTop: 4,
+                marginTop: '4px',
               }}
               id={note.id}
             >

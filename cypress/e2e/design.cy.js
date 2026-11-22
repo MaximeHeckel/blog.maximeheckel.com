@@ -1,6 +1,9 @@
-describe('Design page Panda CSS pilot', () => {
+describe('Design page styling', () => {
   it('preserves button typography, grid layout, and slider interactions', () => {
     cy.visit('/design/');
+
+    cy.get('#button').parent().should('have.css', 'grid-column', '2');
+    cy.get('main h1').first().should('have.css', 'letter-spacing', '-0.3px');
 
     cy.get('#button button')
       .first()
@@ -15,7 +18,10 @@ describe('Design page Panda CSS pilot', () => {
     cy.get('#slider-medium')
       .should('have.css', 'height', '48px')
       .parent()
-      .should('have.css', 'display', 'grid');
+      .should('have.css', 'display', 'grid')
+      .then((grid) => {
+        expect(grid[0].getBoundingClientRect().width).to.be.greaterThan(100);
+      });
     cy.get('#slider-small').should('have.css', 'height', '34px');
     cy.get('#slider-medium-disabled input[type="range"]').should('be.disabled');
 

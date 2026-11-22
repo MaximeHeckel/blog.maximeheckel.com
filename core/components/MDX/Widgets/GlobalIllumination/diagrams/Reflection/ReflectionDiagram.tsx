@@ -1,5 +1,5 @@
-import { styled } from 'lib/stitches.config';
 import { useId, useState } from 'react';
+import { styled } from 'styled-system/jsx';
 
 import { Slider } from '@core/components/Slider';
 
@@ -18,9 +18,11 @@ import {
 import { CAMERA, CUBE, SLAB, SURFACE_POINT } from '../shared/scene';
 
 const Root = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 'var(--space-5)',
+  base: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--space-5)',
+  },
 });
 
 const initial = {

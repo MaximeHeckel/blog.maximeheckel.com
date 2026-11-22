@@ -24,8 +24,7 @@ const Cell = (props: CellProps) => {
 
   return (
     <>
-      <Flex
-        alignItems="center"
+      <Box
         css={{
           all: 'unset',
           aspectRatio: '1 / 1',
@@ -38,7 +37,6 @@ const Cell = (props: CellProps) => {
             cursor: 'not-allowed',
           },
         }}
-        justifyContent="center"
         style={{
           backgroundColor: color,
         }}

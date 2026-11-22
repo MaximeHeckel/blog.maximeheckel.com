@@ -141,8 +141,8 @@ const CosineSimilarity = () => {
         <Box
           css={{
             width: '100%',
-            height: 500,
-            '@media(max-width: 750px)': { height: 350 },
+            height: '500px',
+            '@media(max-width: 750px)': { height: '350px' },
           }}
         >
           <ParentSize

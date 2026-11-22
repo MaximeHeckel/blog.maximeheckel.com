@@ -1,43 +1,44 @@
-import { styled } from 'lib/stitches.config';
+import { styled } from 'styled-system/jsx';
 
 export const StyledInput = styled('input', {
-  WebkitAppearance: 'none',
-  MozAppearance: 'none',
+  base: {
+    WebkitAppearance: 'none',
 
-  width: '100%',
-  outline: 'none',
-  position: 'relative',
-  display: 'block',
-  margin: 0,
-  padding: 'var(--input-inner-padding, 4px 40px 4px 12px)',
+    width: '100%',
+    outline: 'none',
+    position: 'relative',
+    display: 'block',
+    margin: 0,
+    padding: 'var(--input-inner-padding, 4px 40px 4px 12px)',
 
-  fontSize: 'var(--font-size-1)',
-  fontFamily: 'inherit',
-  lineHeight: '26px',
-  color: 'var(--text-primary)',
+    fontSize: 'var(--font-size-1)',
+    fontFamily: 'inherit',
+    lineHeight: '26px',
+    color: 'var(--text-primary)',
 
-  borderRadius: 'var(--border-radius-1)',
-  border: '1px solid var(--border-color, var(--input-border))',
-  background: 'var(--background, var(--input-background))',
+    borderRadius: 'var(--border-radius-1)',
+    border: '1px solid var(--border-color, var(--input-border))',
+    background: 'var(--background, var(--input-background))',
 
-  transition: 'border-color 0.3s, box-shadow 0.3s',
+    transition: 'border-color 0.3s, box-shadow 0.3s',
 
-  '&::placeholder': {
-    color: 'var(--text-tertiary)',
-    opacity: 0.5,
-  },
+    '&::placeholder': {
+      color: 'var(--text-tertiary)',
+      opacity: 0.5,
+    },
 
-  '&::-webkit-autofill': {
-    background: 'transparent',
-  },
+    '&::-webkit-autofill': {
+      background: 'transparent',
+    },
 
-  '&:disabled': {
-    '--background': 'var(--input-disabled)',
-    cursor: 'not-allowed',
-    opacity: 0.4,
-    filter: 'grayscale(0.25)',
-    '& + label': {
+    '&:disabled': {
+      '--background': 'var(--input-disabled)',
       cursor: 'not-allowed',
+      opacity: 0.4,
+      filter: 'grayscale(0.25)',
+      '& + label': {
+        cursor: 'not-allowed',
+      },
     },
   },
 
@@ -55,70 +56,72 @@ export const StyledInput = styled('input', {
 });
 
 export const StyledInputWrapper = styled('div', {
-  display: 'inline-block',
-  position: 'relative',
-  width: '100%',
+  base: {
+    display: 'inline-block',
+    position: 'relative',
+    width: '100%',
 
-  '--shadow-hover-primary': '0 2px 20px -2px var(--input-focus)',
+    '--shadow-hover-primary': '0 2px 20px -2px var(--input-focus)',
 
-  svg: {
-    display: 'block',
-    position: 'absolute',
-    fill: 'none',
-    stroke: 'var(--icon-color, var(--input-border))',
-    strokeLinecap: 'round',
-    strokeLinejoin: 'round',
-    strokeWidth: 1.6,
-    transition: 'stroke 0.3s',
-  },
+    '& svg': {
+      display: 'block',
+      position: 'absolute',
+      fill: 'none',
+      stroke: 'var(--icon-color, var(--input-border))',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round',
+      strokeWidth: 1.6,
+      transition: 'stroke 0.3s',
+    },
 
-  input: {
-    boxShadow: 'var(--shadow, none)',
+    '& input': {
+      boxShadow: 'var(--shadow, none)',
 
-    '&:not(:placeholder-shown)': {
-      '&:not(:disabled)': {
-        '&:not(:focus)': {
+      '&:not(:placeholder-shown)': {
+        '&:not(:disabled)': {
+          '&:not(:focus)': {
+            '& + svg': {
+              '--icon-color': 'var(--input-active)',
+            },
+
+            '& + button': {
+              '& svg': {
+                '--icon-color': 'var(--input-active)',
+              },
+            },
+          },
+        },
+      },
+    },
+
+    '&:hover': {
+      '& input': {
+        '&:not(:disabled)': {
+          '--shadow': 'var(--shadow-hover-primary)',
+          '--border-color': 'var(--input-active)',
           '& + svg': {
             '--icon-color': 'var(--input-active)',
           },
-
           '& + button': {
-            svg: {
+            '& svg': {
               '--icon-color': 'var(--input-active)',
             },
           },
         },
       },
     },
-  },
 
-  '&:hover': {
-    input: {
-      '&:not(:disabled)': {
-        '--shadow': 'var(--shadow-hover-primary)',
-        '--border-color': 'var(--input-active)',
-        '& + svg': {
-          '--icon-color': 'var(--input-active)',
-        },
-        '& + button': {
-          svg: {
-            '--icon-color': 'var(--input-active)',
-          },
-        },
-      },
+    '&:focus-within': {
+      '--border-color': 'var(--input-active)',
+      '--icon-color': 'var(--input-active)',
+      '--shadow': 'var(--shadow-hover-primary)',
     },
-  },
-
-  '&:focus-within': {
-    '--border-color': 'var(--input-active)',
-    '--icon-color': 'var(--input-active)',
-    '--shadow': 'var(--shadow-hover-primary)',
   },
 
   variants: {
     variant: {
       email: {
-        svg: {
+        '& svg': {
           top: '9px',
           left: '12px',
         },
@@ -132,10 +135,10 @@ export const StyledInputWrapper = styled('div', {
         },
       },
       password: {
-        button: {
+        '& button': {
           position: 'absolute',
           WebkitAppearance: 'none',
-          MozAppearance: 'none',
+
           height: '22px',
           width: '22px',
           top: '9px',
@@ -156,7 +159,7 @@ export const StyledInputWrapper = styled('div', {
             cursor: 'not-allowed',
           },
 
-          svg: {
+          '& svg': {
             position: 'initial',
           },
 

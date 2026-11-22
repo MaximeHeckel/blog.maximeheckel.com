@@ -106,29 +106,25 @@ body {
   button {
     font: inherit;
   }
+
+  /* Reset figures around images, including GIFs in MDX. */
+  figure {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
 }
 
 .hidden-layout {
   display: none;
-}
-
-/* TODO Find a way to remove the following */
-/* Patch gif wrapped in figure tag */
-
-figure {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-img {
-  max-width: 100%;
-}
-
-/* END Patch gif wrapped in figure tag */
-
-a {
-  color: var(--accent);
-  text-decoration: none;
 }
 
 /* Anchor links for headings */

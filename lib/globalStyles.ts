@@ -1,4 +1,3 @@
-import { globalCss } from './stitches.config';
 import darkTheme from './themes/dark';
 import lightTheme from './themes/light';
 import { radii } from './tokens/radii';
@@ -17,7 +16,7 @@ const global = {
   },
 };
 
-export const globalStyles = globalCss({
+export const globalStyles = {
   ':root': {
     ...radii,
     ...spaces,
@@ -28,4 +27,4 @@ export const globalStyles = globalCss({
   ...global,
   ...lightTheme,
   ...darkTheme,
-});
+};

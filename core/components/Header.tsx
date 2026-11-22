@@ -13,7 +13,7 @@ const Header = () => {
         right: 0,
         zIndex: 100,
         width: '100%',
-        marginTop: 24,
+        marginTop: '24px',
         marginLeft: 'auto',
         marginRight: 'auto',
       }}

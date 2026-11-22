@@ -9,6 +9,7 @@ const GridItem = forwardRef(
     const {
       area,
       css,
+      style,
       children,
       row,
       col,
@@ -22,15 +23,18 @@ const GridItem = forwardRef(
     } = props;
     return (
       <S.GridItem
-        css={{
-          gridArea: area,
-          gridColumn: col || spanToCSSValue(colSpan),
-          gridRow: row || spanToCSSValue(rowSpan),
-          gridColumnStart: colStart,
-          gridColumnEnd: colEnd,
-          gridRowStart: rowStart,
-          gridRowEnd: rowEnd,
-          ...css,
+        css={css}
+        style={{
+          ...(area && { gridArea: area }),
+          ...((col || colSpan) && {
+            gridColumn: col || spanToCSSValue(colSpan),
+          }),
+          ...((row || rowSpan) && { gridRow: row || spanToCSSValue(rowSpan) }),
+          ...(colStart && { gridColumnStart: colStart }),
+          ...(colEnd && { gridColumnEnd: colEnd }),
+          ...(rowStart && { gridRowStart: rowStart }),
+          ...(rowEnd && { gridRowEnd: rowEnd }),
+          ...style,
         }}
         ref={ref}
         {...rest}

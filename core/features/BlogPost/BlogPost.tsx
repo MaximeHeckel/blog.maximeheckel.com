@@ -1,6 +1,5 @@
 import siteConfig from 'config/site';
 import { format } from 'date-fns';
-import { css } from 'lib/stitches.config';
 import {
   AnimatePresence,
   motion,
@@ -10,6 +9,7 @@ import {
 } from 'motion/react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { css } from 'styled-system/css';
 import { Post, ReadingTime } from 'types/post';
 
 import { SelectionToAsk } from '@core/components/Ask/SelectionToAsk';
@@ -67,7 +67,7 @@ const Header = (props: {
         top: 0,
         left: 0,
         right: 0,
-        marginTop: 24,
+        marginTop: '24px',
         zIndex: 100,
         width: '100%',
         marginLeft: 'auto',
@@ -158,32 +158,32 @@ const contentClass = css({
   padding: 'var(--space-8) 0px',
   color: 'var(--text-secondary)',
 
-  h3: {
+  '& h3': {
     paddingTop: '2.5rem',
   },
 
-  p: {
+  '& p': {
     fontWeight: 'var(--font-weight-400)',
     letterSpacing: '0.15px',
   },
 
-  li: {
+  '& li': {
     fontWeight: 'var(--font-weight-400)',
   },
 
-  section: {
+  '& section': {
     display: 'flex',
     flexDirection: 'column',
     gap: 'var(--space-5)',
-    maxWidth: 700,
+    maxWidth: '700px',
     width: '100%',
   },
 
-  '.katex-display>.katex>.katex-html>.tag': {
+  '& .katex-display>.katex>.katex-html>.tag': {
     display: 'none',
   },
 
-  '.katex-display>.katex': {
+  '& .katex-display>.katex': {
     textAlign: 'left',
     whiteSpace: 'normal',
   },
@@ -273,8 +273,8 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
           overflowX: 'hidden',
           position: 'relative',
           backgroundColor: 'var(--background)',
-          borderBottomRightRadius: 4,
-          borderBottomLeftRadius: 4,
+          borderBottomRightRadius: '4px',
+          borderBottomLeftRadius: '4px',
         }}
         gapX={4}
         templateColumns="1fr minmax(auto, 663px) 1fr"
@@ -283,8 +283,8 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
           col={2}
           justifySelf="center"
           css={{
-            minHeight: 300,
-            maxWidth: 500,
+            minHeight: '300px',
+            maxWidth: '500px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'end',
@@ -293,7 +293,7 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
             width: '100%',
             position: 'relative',
 
-            '@sm': {
+            '@media (min-width: 640px)': {
               minHeight: 'clamp(250px, 50dvh, 375px)',
             },
           }}
@@ -324,7 +324,7 @@ const BlogPost = ({ children, frontMatter, ogImage }: Props) => {
           <Flex
             alignItems="start"
             direction="column"
-            className={contentClass()}
+            className={contentClass}
             ref={articleRef}
             data-ask-article-path={path}
             data-ask-article-title={title}

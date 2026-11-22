@@ -66,7 +66,7 @@ export const RingDemo = () => {
       direction="column"
       gap="4"
       css={{
-        maxWidth: 662,
+        maxWidth: '662px',
         width: '100%',
       }}
     >
@@ -97,7 +97,10 @@ export const RingDemo = () => {
       <Flex
         direction="column"
         gap="4"
-        css={{ width: '100%', '@md': { width: '50%', minWidth: 135 } }}
+        css={{
+          width: '100%',
+          '@media (min-width: 768px)': { width: '50%', minWidth: '135px' },
+        }}
       >
         <Slider
           id={`${id}-split`}

@@ -1,5 +1,6 @@
-import { type CSS, keyframes } from 'lib/stitches.config';
 import React, { ReactNode, forwardRef, Ref } from 'react';
+import { keyframes } from 'styled-system/css';
+import type { SystemStyleObject as CSS } from 'styled-system/types';
 
 import Box from '@core/components/Box';
 
@@ -112,27 +113,27 @@ const GlitchText = forwardRef(
     const move = keyframes({
       '0%': {
         top: 0,
-        left: -20,
+        left: '-20px',
       },
 
       '15%': {
-        top: 10,
-        left: 10,
+        top: '10px',
+        left: '10px',
       },
 
       '60%': {
-        top: 5,
-        left: -10,
+        top: '5px',
+        left: '-10px',
       },
 
       '75%': {
-        top: -5,
-        left: 20,
+        top: '-5px',
+        left: '20px',
       },
 
       to: {
-        top: 10,
-        left: 5,
+        top: '10px',
+        left: '5px',
       },
     });
 
@@ -154,8 +155,8 @@ const GlitchText = forwardRef(
             position: 'absolute',
             width: '110%',
             zIndex: -1,
-            top: 10,
-            left: 15,
+            top: '10px',
+            left: '15px',
             color: 'inherit',
             animation: `${glitch} 10s step-end infinite, ${opacity} 10s step-end infinite, ${blur} 13s step-end infinite, ${move} 15s step-end infinite`,
           },
@@ -164,8 +165,8 @@ const GlitchText = forwardRef(
             position: 'absolute',
             width: '110%',
             zIndex: -1,
-            top: 5,
-            left: -10,
+            top: '5px',
+            left: '-10px',
             color: 'inherit',
             animation: `${glitch} 10s step-end infinite, ${opacity} 10s step-end infinite, ${blur} 13s step-end infinite, ${move} 15s step-end infinite`,
           },

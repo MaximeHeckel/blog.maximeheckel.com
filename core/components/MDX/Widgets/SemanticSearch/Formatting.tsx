@@ -152,7 +152,7 @@ const Formatting = () => {
           css={{
             borderRadius: 'var(--border-radius-2)',
             overflowY: 'auto',
-            height: 275,
+            height: '275px',
             width: '100%',
             padding: 'var(--space-3)',
             background: 'hsl(from var(--gray-400) h s l / 30%)',
@@ -164,16 +164,16 @@ const Formatting = () => {
           ref={formattedResponseRef}
           css={{
             borderRadius: 'var(--border-radius-2)',
-            height: 275,
+            height: '275px',
             width: '100%',
             padding: 'var(--space-3)',
             overflowY: 'auto',
             background: 'hsl(from var(--gray-400) h s l / 30%)',
-            'p, li, strong, em': {
+            '& p, & li, & strong, & em': {
               margin: '0px 0px 1rem',
               fontSize: 'var(--font-size-1)!important',
             },
-            code: {
+            '& code': {
               fontSize: 'var(--font-size-1)',
             },
           }}

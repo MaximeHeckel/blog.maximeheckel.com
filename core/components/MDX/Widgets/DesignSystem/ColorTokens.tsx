@@ -151,12 +151,13 @@ const ColorGrid = (props) => {
               <Flex alignItems="start" direction="column" gap="2">
                 <Tooltip id={shade.color} content={shade.color}>
                   <Box
+                    style={{ background: `var(${shade.color})` }}
                     css={{
                       flexShrink: 0,
                       width: '32px',
                       height: '32px',
                       borderRadius: '50%',
-                      background: `var(${shade.color})`,
+
                       border: '2px solid var(--border-color)',
                     }}
                   />
@@ -197,14 +198,17 @@ const ColorTokens = () => {
 
   return (
     <Card title={`Step ${step + 1}: ${titles[step]}`}>
-      <Card.Body css={{ height: 600 }}>
+      <Card.Body css={{ height: '600px' }}>
         <Flex
           css={{ height: '100%' }}
           direction="column"
           gap="6"
           justifyContent="space-between"
         >
-          <Box as="div" css={{ width: '100%', height: 460, overflowY: 'auto' }}>
+          <Box
+            as="div"
+            css={{ width: '100%', height: '460px', overflowY: 'auto' }}
+          >
             <Flex alignItems="start" justifyContent="space-between" gap="6">
               <ColorGrid
                 // @ts-ignore

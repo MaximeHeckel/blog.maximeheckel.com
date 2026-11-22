@@ -83,8 +83,8 @@ const Slider = ({ progress, pull, clipId, width, height }: SliderProps) => {
           css={{
             ...glassBorderShine,
             '--glass-border-base': 'oklch(from var(--gray-1100) l c h / 8%)',
-            width: 32,
-            height: 32,
+            width: '32px',
+            height: '32px',
             background: 'transparent',
             zIndex: 2,
             borderRadius: 'var(--border-radius-2)',

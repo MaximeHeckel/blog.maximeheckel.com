@@ -27,8 +27,8 @@ const NewHome = (props: Props) => {
           width: '100%',
           overflow: 'hidden',
           backgroundColor: 'var(--background)',
-          borderBottomRightRadius: 4,
-          borderBottomLeftRadius: 4,
+          borderBottomRightRadius: '4px',
+          borderBottomLeftRadius: '4px',
         }}
         gapX={2}
         templateColumns="1fr minmax(auto, 663px) 1fr"

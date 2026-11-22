@@ -1,5 +1,5 @@
-import { type CSS } from 'lib/stitches.config';
 import { ReactNode } from 'react';
+import type { SystemStyleObject as CSS } from 'styled-system/types';
 
 import Flex from '@core/components/Flex';
 import Icon from '@core/components/Icon';

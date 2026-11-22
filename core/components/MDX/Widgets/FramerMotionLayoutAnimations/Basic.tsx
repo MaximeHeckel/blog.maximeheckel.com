@@ -47,13 +47,13 @@ const Basic = () => {
               // @ts-ignore
               key={layout}
               layout={layout}
+              style={{ justifySelf: position }}
               css={{
                 width: '100px',
                 height: '100px',
                 background:
                   'linear-gradient(-60deg,#2E83FF -10%,#EB7D9F 50%, #FFCBBE 100%)',
                 borderRadius: 'var(--border-radius-2)',
-                justifySelf: position,
               }}
             />
           </Box>
