@@ -88,12 +88,6 @@ export const StyledButton = styled('button', {
       secondary: {
         '--button-background': 'transparent',
         '--color': 'var(--accent)',
-
-        '&:hover': {
-          '&:not(:disabled)': {},
-        },
-
-        '&:focus-visible': {},
       },
 
       tertiary: {
@@ -134,11 +128,6 @@ export const StyledButton = styled('button', {
         '--button-background': 'var(--text-primary)',
         '--color': 'var(--background)',
       },
-    },
-    {
-      variant: 'secondary',
-      inverted: true,
-      css: {},
     },
   ],
 });

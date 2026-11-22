@@ -40,7 +40,6 @@ export const CollapsiblePanel = styled(Collapsible.Panel, {
   },
 });
 
-export const CollapsibleTrigger = Collapsible.Trigger;
 export const CollapsibleRoot = styled(Collapsible.Root, {
   base: {
     position: 'relative',
