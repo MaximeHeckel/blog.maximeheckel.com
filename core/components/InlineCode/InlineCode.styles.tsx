@@ -14,6 +14,7 @@ export const StyledInlineCode = styled('code', {
     fontWeight: 'var(--font-weight-400) !important',
     wordBreak: 'break-word',
     border: '1px solid var(--border-color)',
+    boxDecorationBreak: 'clone',
     boxShadow: Shadows[1],
   },
 });
