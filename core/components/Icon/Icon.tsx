@@ -1,8 +1,5 @@
 import {
   BlueskyIcon,
-  ContactIcon,
-  EnterIcon,
-  ExternalIcon,
   PortfolioIcon,
   TwitterIcon,
   ArrowIcon,
@@ -11,7 +8,6 @@ import {
   RepeatIcon,
   InfoIcon,
   AlertIcon,
-  GithubIcon,
   MapIcon,
   StackIcon,
   ChevronIcon,
@@ -24,9 +20,6 @@ import {
   VolumeMuteIcon,
   CodeIcon,
   CopyIcon,
-  CoffeeIcon,
-  AIChatIcon,
-  CommandIcon,
   ChevronUpDownIcon,
   CheckIcon,
 } from './IconList';
@@ -34,9 +27,6 @@ import {
 const Icon = () => {};
 
 Icon.Bluesky = BlueskyIcon;
-Icon.Contact = ContactIcon;
-Icon.Enter = EnterIcon;
-Icon.External = ExternalIcon;
 Icon.Portfolio = PortfolioIcon;
 Icon.Twitter = TwitterIcon;
 Icon.Arrow = ArrowIcon;
@@ -45,7 +35,6 @@ Icon.Pause = PauseIcon;
 Icon.Repeat = RepeatIcon;
 Icon.Info = InfoIcon;
 Icon.Alert = AlertIcon;
-Icon.Github = GithubIcon;
 Icon.Map = MapIcon;
 Icon.Stack = StackIcon;
 Icon.X = ClearIcon;
@@ -59,9 +48,6 @@ Icon.VolumeDown = VolumeDownIcon;
 Icon.VolumeMute = VolumeMuteIcon;
 Icon.Code = CodeIcon;
 Icon.Copy = CopyIcon;
-Icon.Coffee = CoffeeIcon;
-Icon.Command = CommandIcon;
-Icon.AIChat = AIChatIcon;
 Icon.ChevronUpDown = ChevronUpDownIcon;
 Icon.Check = CheckIcon;
 Icon.displayName = 'Icon';

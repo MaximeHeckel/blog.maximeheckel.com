@@ -636,7 +636,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
               <Button variant="primary" inverted>
                 Button
               </Button>
-              <Button variant="primary" endIcon={<Icon.External size="4" />}>
+              <Button variant="primary" endIcon={<Icon.Arrow size="4" />}>
                 Portfolio
               </Button>
               <Button variant="primary" startIcon={<Icon.Twitter size="4" />}>
@@ -1412,41 +1412,11 @@ const IconSection = () => (
       <Icon.Bluesky variant="default" size={5} />
       <Icon.Bluesky variant="default" size={4} />
       <Icon.Bluesky variant="default" size={3} />
-      <Icon.Github variant="default" size={7} />
-      <Icon.Github variant="default" size={6} />
-      <Icon.Github variant="default" size={5} />
-      <Icon.Github variant="default" size={4} />
-      <Icon.Github variant="default" size={3} />
-      <Icon.Coffee variant="default" size={7} />
-      <Icon.Coffee variant="default" size={6} />
-      <Icon.Coffee variant="default" size={5} />
-      <Icon.Coffee variant="default" size={4} />
-      <Icon.Coffee variant="default" size={3} />
-      <Icon.AIChat variant="default" size={7} />
-      <Icon.AIChat variant="default" size={6} />
-      <Icon.AIChat variant="default" size={5} />
-      <Icon.AIChat variant="default" size={4} />
-      <Icon.AIChat variant="default" size={3} />
-      <Icon.Command variant="default" size={7} />
-      <Icon.Command variant="default" size={6} />
-      <Icon.Command variant="default" size={5} />
-      <Icon.Command variant="default" size={4} />
-      <Icon.Command variant="default" size={3} />
       <Icon.Map variant="default" size={7} />
       <Icon.Map variant="default" size={6} />
       <Icon.Map variant="default" size={5} />
       <Icon.Map variant="default" size={4} />
       <Icon.Map variant="default" size={3} />
-      <Icon.External variant="default" size={7} />
-      <Icon.External variant="default" size={6} />
-      <Icon.External variant="default" size={5} />
-      <Icon.External variant="default" size={4} />
-      <Icon.External variant="default" size={3} />
-      <Icon.Enter variant="default" size={7} />
-      <Icon.Enter variant="default" size={6} />
-      <Icon.Enter variant="default" size={5} />
-      <Icon.Enter variant="default" size={4} />
-      <Icon.Enter variant="default" size={3} />
       <Icon.Arrow variant="default" size={7} />
       <Icon.Arrow variant="default" size={6} />
       <Icon.Arrow variant="default" size={5} />
@@ -1532,12 +1502,6 @@ const IconSection = () => (
       <Icon.Clear variant="default" size={5} />
       <Icon.Clear variant="default" size={4} />
       <Icon.Clear variant="default" size={3} />
-
-      <Icon.Contact variant="default" size={7} />
-      <Icon.Contact variant="default" size={6} />
-      <Icon.Contact variant="default" size={5} />
-      <Icon.Contact variant="default" size={4} />
-      <Icon.Contact variant="default" size={3} />
     </Grid>
   </Flex>
 );
