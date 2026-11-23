@@ -1,228 +1,214 @@
-import { styled } from '@maximeheckel/design-system';
+import { Command } from 'cmdk';
+import { motion } from 'motion/react';
+import { styled } from 'styled-system/jsx';
 
-export const Overlay = styled('div', {
-  position: 'fixed',
-  inset: 0,
-  // Cover floating windows (101) and their tooltips (102).
-  zIndex: 103,
-  background: 'oklch(from var(--background) l c h / 80%)',
-});
-
-export const Dialog = styled('div', {
-  position: 'fixed',
-  top: '20%',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  width: '600px',
-  zIndex: 104,
-
-  overflow: 'hidden',
-
-  '@media (max-width: 700px)': {
-    width: '95%',
-  },
-
-  '&:focus': { outline: 'none' },
-});
-
-export const Input = styled('input', {
-  background: 'transparent',
-  border: 'none',
-
-  fontSize: 'var(--font-size-1)',
-  fontFamily: 'inherit',
-  fontWeight: 400,
-  height: '55px',
-  padding: '0px 18px',
-  width: '100%',
-  outline: 'none',
-  color: 'var(--text-primary)',
-
-  '&::placeholder': {
-    color: 'var(--text-primary)',
-    opacity: 0.54,
-  },
-
-  WebkitAppearance: 'none',
-  MozAppearance: 'none',
-
-  '&::-webkit-search-cancel-button': {
-    WebkitAppearance: 'none',
-  },
-  '&::-webkit-search-decoration': {
-    WebkitAppearance: 'none',
-  },
-
-  '@media (max-width: 500px)': {
-    fontSize: '16px',
+export const Overlay = styled(motion.div, {
+  base: {
+    position: 'fixed',
+    inset: 0,
+    // Cover floating windows (101) and their tooltips (102).
+    zIndex: 103,
+    background: 'oklch(from var(--background) l c h / 80%)',
   },
 });
 
-export const List = styled('div', {
-  maxHeight: 'min(calc(9 * 48px + 16px + 1.5px), 50vh)',
-  overflowY: 'auto',
-  padding: '8px',
-  transition: 'height 0.15s ease',
-  borderTop: '1.5px solid oklch(from var(--gray-900) l c h / 15%)',
+export const Dialog = styled(motion.div, {
+  base: {
+    position: 'fixed',
+    top: '20%',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: '600px',
+    zIndex: 104,
 
-  '[cmdk-item]': {
-    scrollMarginBlock: '8px',
-  },
+    overflow: 'hidden',
 
-  '[cmdk-group-heading]': {
-    scrollMarginTop: '8px',
-  },
+    '@media (max-width: 700px)': {
+      width: '95%',
+    },
 
-  '&:not(:has([cmdk-group], [cmdk-item], [cmdk-empty], [cmdk-loading]))': {
-    display: 'none',
-    padding: '0px 8px 8px 8px',
+    '&:focus': { outline: 'none' },
   },
+});
 
-  '&::-webkit-scrollbar': {
-    width: '8px',
-  },
-  '&::-webkit-scrollbar-track': {
+export const Input = styled(Command.Input, {
+  base: {
     background: 'transparent',
-  },
-  '&::-webkit-scrollbar-thumb': {
-    background: 'oklch(from var(--gray-700) l c h / 0.4)',
-    borderRadius: '4px',
-  },
-  scrollbarColor: 'oklch(from var(--gray-700) l c h / 0.4) transparent',
-});
+    border: 'none',
 
-export const Empty = styled('div', {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  height: '48px',
-  padding: '0 12px',
-  color: 'var(--text-secondary)',
-  opacity: 0.75,
-  fontSize: 'var(--font-size-1)',
-});
+    fontSize: 'var(--font-size-1)',
+    fontFamily: 'inherit',
+    fontWeight: 400,
+    height: '55px',
+    padding: '0px 18px',
+    width: '100%',
+    outline: 'none',
+    color: 'var(--text-primary)',
 
-export const Loading = styled('div', {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  height: '48px',
-  padding: '0 12px',
-  color: 'var(--text-secondary)',
-  opacity: 0.75,
-  fontSize: 'var(--font-size-1)',
-});
-
-export const Group = styled('div', {
-  '& + &': {
-    marginTop: '8px',
-  },
-
-  '[cmdk-group-heading]': {
-    fontSize: '13px',
-    color: 'var(--text-tertiary)',
-    fontWeight: 500,
-    padding: '8px 8px 8px 12px',
-    userSelect: 'none',
-  },
-});
-
-export const Item = styled('div', {
-  height: '48px',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-  padding: '0 12px',
-  borderRadius: 'var(--border-radius-1)',
-  fontSize: 'var(--font-size-1)',
-  fontWeight: 500,
-  color: 'var(--text-secondary)',
-  cursor: 'pointer',
-  userSelect: 'none',
-
-  svg: {
-    flexShrink: 0,
-  },
-
-  '@media (pointer: fine)': {
-    '&[aria-selected="true"]': {
-      opacity: 1,
-      backgroundColor: 'oklch(from var(--text-primary) l c h / 5%)',
+    '&::placeholder': {
       color: 'var(--text-primary)',
+      opacity: 0.54,
+    },
 
-      '& span, & time': {
-        color: 'var(--text-primary)',
+    WebkitAppearance: 'none',
+
+    '&::-webkit-search-cancel-button': {
+      WebkitAppearance: 'none',
+    },
+    '&::-webkit-search-decoration': {
+      WebkitAppearance: 'none',
+    },
+
+    '@media (max-width: 500px)': {
+      fontSize: '16px',
+    },
+  },
+});
+
+export const List = styled(Command.List, {
+  base: {
+    maxHeight: 'min(calc(9 * 48px + 16px + 1.5px), 50vh)',
+    overflowY: 'auto',
+    padding: '8px',
+    transition: 'height 0.15s ease',
+    borderTop: '1.5px solid oklch(from var(--gray-900) l c h / 15%)',
+
+    '& [cmdk-item]': {
+      scrollMarginBlock: '8px',
+    },
+
+    '& [cmdk-group-heading]': {
+      scrollMarginTop: '8px',
+    },
+
+    '&:not(:has([cmdk-group], [cmdk-item], [cmdk-empty], [cmdk-loading]))': {
+      display: 'none',
+      padding: '0px 8px 8px 8px',
+    },
+
+    '&::-webkit-scrollbar': {
+      width: '8px',
+    },
+    '&::-webkit-scrollbar-track': {
+      background: 'transparent',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: 'oklch(from var(--gray-700) l c h / 0.4)',
+      borderRadius: '4px',
+    },
+    scrollbarColor: 'oklch(from var(--gray-700) l c h / 0.4) transparent',
+  },
+});
+
+export const Empty = styled(Command.Empty, {
+  base: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    height: '48px',
+    padding: '0 12px',
+    color: 'var(--text-secondary)',
+    opacity: 0.75,
+    fontSize: 'var(--font-size-1)',
+  },
+});
+
+export const Loading = styled(Command.Loading, {
+  base: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    height: '48px',
+    padding: '0 12px',
+    color: 'var(--text-secondary)',
+    opacity: 0.75,
+    fontSize: 'var(--font-size-1)',
+  },
+});
+
+export const Group = styled(Command.Group, {
+  base: {
+    '& + &': {
+      marginTop: '8px',
+    },
+
+    '& [cmdk-group-heading]': {
+      fontSize: '13px',
+      color: 'var(--text-tertiary)',
+      fontWeight: 500,
+      padding: '8px 8px 8px 12px',
+      userSelect: 'none',
+    },
+  },
+});
+
+export const Item = styled(Command.Item, {
+  base: {
+    height: '48px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '0 12px',
+    borderRadius: 'var(--border-radius-1)',
+    fontSize: 'var(--font-size-1)',
+    fontWeight: 500,
+    color: 'var(--text-secondary)',
+    cursor: 'pointer',
+    userSelect: 'none',
+
+    '& svg': {
+      flexShrink: 0,
+    },
+
+    '@media (pointer: fine)': {
+      '&[aria-selected="true"]': {
         opacity: 1,
-      },
+        backgroundColor: 'oklch(from var(--text-primary) l c h / 5%)',
+        color: 'var(--text-primary)',
 
-      '& svg': {
-        stroke: 'var(--text-primary)',
+        '& span, & time': {
+          color: 'var(--text-primary)',
+          opacity: 1,
+        },
+
+        '& svg': {
+          stroke: 'var(--text-primary)',
+        },
       },
     },
   },
 });
 
 export const ItemLabel = styled('span', {
-  flex: 1,
-  minWidth: 0,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
+  base: {
+    flex: 1,
+    minWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
 });
 
 export const ResultDate = styled('time', {
-  flexShrink: 0,
-  whiteSpace: 'nowrap',
-  color: 'var(--text-tertiary)',
-  fontFamily: 'var(--font-mono)',
-  fontSize: '13px',
-  fontWeight: 400,
-  letterSpacing: '-1px',
-  textTransform: 'uppercase',
+  base: {
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    color: 'var(--text-tertiary)',
+    fontFamily: 'var(--font-mono)',
+    fontSize: '13px',
+    fontWeight: 400,
+    letterSpacing: '-1px',
+    textTransform: 'uppercase',
+  },
 });
 
 export const ItemDetail = styled('span', {
-  fontSize: 'var(--font-size-1)',
-  color: 'var(--text-secondary)',
-  fontWeight: 400,
-  flexShrink: 0,
-  marginLeft: 'auto',
-  opacity: 0.5,
-});
-
-export const Divider = styled('div', {
-  height: '1px',
-  background: 'var(--border-color)',
-  margin: '8px 0px',
-});
-
-export const SecondaryItem = styled('div', {
-  height: '40px',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-  padding: '0 12px',
-  borderRadius: 'var(--border-radius-2)',
-  fontSize: 'var(--font-size-1)',
-  fontWeight: 400,
-  color: 'var(--text-primary)',
-  cursor: 'pointer',
-  userSelect: 'none',
-  transition: 'background 0.15s ease, color 0.15s ease',
-
-  svg: {
+  base: {
+    fontSize: 'var(--font-size-1)',
+    color: 'var(--text-secondary)',
+    fontWeight: 400,
     flexShrink: 0,
-  },
-
-  '@media (pointer: fine)': {
-    '&[aria-selected="true"]': {
-      opacity: 1,
-      backgroundColor: 'var(--emphasis)',
-      color: 'var(--accent)',
-
-      '& svg': {
-        stroke: 'var(--accent)',
-      },
-    },
+    marginLeft: 'auto',
+    opacity: 0.5,
   },
 });

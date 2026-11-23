@@ -1,8 +1,8 @@
-import { Switch } from '@maximeheckel/design-system';
 import { useDeferredValue, useId, useState } from 'react';
 
 import { ShaderPlayground } from '@core/components/MDX/Widgets/ShaderPlayground';
 import { Slider } from '@core/components/Slider';
+import Switch from '@core/components/Switch';
 
 const MOTION_MASK_VIDEO_URL =
   'https://cdn.maximeheckel.com/videos/footages/bloom-60fps.mp4';

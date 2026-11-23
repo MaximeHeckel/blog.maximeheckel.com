@@ -1,29 +1,28 @@
-import {
-  styled,
-  Box,
-  Card,
-  Flex,
-  Button,
-  Icon,
-  Pill,
-  Switch,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React from 'react';
+import { styled } from 'styled-system/jsx';
 
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Pill from '@core/components/Pill';
+import Switch from '@core/components/Switch';
+import Tooltip from '@core/components/Tooltip';
 
 const IconButton = styled(motion.button, {
-  MozAppearance: 'none',
-  WebkitAppearance: 'none',
-  background: 'transparent',
-  color: 'inherit',
-  border: 'none',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  padding: '0',
+  base: {
+    WebkitAppearance: 'none',
+    background: 'transparent',
+    color: 'inherit',
+    border: 'none',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0',
+  },
 });
 
 const ITEMS = [1, 2, 3];

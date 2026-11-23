@@ -1,12 +1,14 @@
-import { Box, Card, Flex, Grid } from '@maximeheckel/design-system';
-
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 
 const StyledBox = () => (
   <Box
     css={{
-      height: 100,
-      width: 100,
+      height: '100px',
+      width: '100px',
       borderRadius: 'var(--border-radius-2)',
       background: 'white',
       backgroundImage:

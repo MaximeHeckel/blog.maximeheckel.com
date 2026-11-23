@@ -1,5 +1,8 @@
-import { Card, InlineCode, Switch } from '@maximeheckel/design-system';
 import React from 'react';
+
+import Card from '@core/components/Card';
+import InlineCode from '@core/components/InlineCode';
+import Switch from '@core/components/Switch';
 
 const HighlightSection = () => {
   const [highlight, setHighlight] = React.useState(false);

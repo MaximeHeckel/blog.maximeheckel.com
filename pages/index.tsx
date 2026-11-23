@@ -1,8 +1,8 @@
-import { Grid } from '@maximeheckel/design-system';
 import { getAllFilesFrontMatter } from 'lib/mdx';
 import { Post } from 'types/post';
 
 import Footer from '@core/components/Footer';
+import Grid from '@core/components/Grid';
 import { Header } from '@core/components/Header';
 import { Main } from '@core/components/Main';
 import { ArticlesSection } from '@core/features/ArticlesSection';
@@ -27,8 +27,8 @@ const NewHome = (props: Props) => {
           width: '100%',
           overflow: 'hidden',
           backgroundColor: 'var(--background)',
-          borderBottomRightRadius: 4,
-          borderBottomLeftRadius: 4,
+          borderBottomRightRadius: '4px',
+          borderBottomLeftRadius: '4px',
         }}
         gapX={2}
         templateColumns="1fr minmax(auto, 663px) 1fr"

@@ -1,7 +1,10 @@
-import { Box, Card, Flex, Grid } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import Select from '@core/components/Select/Select';
 import { Slider } from '@core/components/Slider';
 
@@ -21,8 +24,7 @@ const Cell = (props: CellProps) => {
 
   return (
     <>
-      <Flex
-        alignItems="center"
+      <Box
         css={{
           all: 'unset',
           aspectRatio: '1 / 1',
@@ -35,7 +37,6 @@ const Cell = (props: CellProps) => {
             cursor: 'not-allowed',
           },
         }}
-        justifyContent="center"
         style={{
           backgroundColor: color,
         }}
@@ -163,7 +164,7 @@ const ShadingVisualizer = () => {
           <Box>
             <Select
               id="shading-function"
-              aria-label="Shadow type"
+              label="Shadow type"
               items={shadowOptions}
               value={shadowType}
               minWidth={190}

@@ -1,6 +1,11 @@
-import { Box, Card, Flex, Grid, Switch } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React from 'react';
+
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Switch from '@core/components/Switch';
 
 const LayoutProp = () => {
   const [expanded, setExpanded] = React.useState(true);

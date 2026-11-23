@@ -1,5 +1,8 @@
-import { useTheme, Button, Tooltip } from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'motion/react';
+
+import Button from '@core/components/Button';
+import Tooltip from '@core/components/Tooltip';
+import useTheme from '@core/hooks/useTheme';
 
 const LightDarkSwitcher = () => {
   const theme = useTheme();

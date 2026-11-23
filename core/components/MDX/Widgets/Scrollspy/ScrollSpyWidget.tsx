@@ -1,21 +1,21 @@
-import {
-  Shadows,
-  styled,
-  Card,
-  Flex,
-  InlineCode,
-} from '@maximeheckel/design-system';
+import { Shadows } from 'lib/tokens/shadows';
 import React from 'react';
+import { styled } from 'styled-system/jsx';
 
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import InlineCode from '@core/components/InlineCode';
 import { Slider } from '@core/components/Slider';
 
 import { AnimationCardContent, Form } from '../Components';
 import useScrollSpy from './useScrollSpy';
 
 const BrowserWindow = styled('div', {
-  borderRadius: 'var(--border-radius-1)',
-  width: '100%',
-  boxShadow: Shadows[2],
+  base: {
+    borderRadius: 'var(--border-radius-1)',
+    width: '100%',
+    boxShadow: Shadows[2],
+  },
 
   variants: {
     dark: {
@@ -30,15 +30,17 @@ const BrowserWindow = styled('div', {
 });
 
 const BrowserHeader = styled('div', {
-  height: '53px',
-  padding: '0px 20px',
-  display: 'flex',
-  alignItems: 'center',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  boxShadow: `0px 0.5px 0px rgba(0, 0, 0, 0.15),
+  base: {
+    height: '53px',
+    padding: '0px 20px',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    boxShadow: `0px 0.5px 0px rgba(0, 0, 0, 0.15),
     inset 0px -0.5px 0px rgba(0, 0, 0, 0.05)`,
-  borderRadius: 'var(--border-radius-1) var(--border-radius-1) 0px 0px',
+    borderRadius: 'var(--border-radius-1) var(--border-radius-1) 0px 0px',
+  },
 
   variants: {
     dark: {
@@ -53,10 +55,12 @@ const BrowserHeader = styled('div', {
 });
 
 const SearchBar = styled('div', {
-  borderRadius: '6px',
-  height: '28px',
-  minWidth: '150px',
-  width: '50%',
+  base: {
+    borderRadius: '6px',
+    height: '28px',
+    minWidth: '150px',
+    width: '50%',
+  },
 
   variants: {
     dark: {
@@ -71,15 +75,19 @@ const SearchBar = styled('div', {
 });
 
 const TrafficLightWrapper = styled(Flex, {
-  width: '60px',
-  height: '15px',
+  base: {
+    width: '60px',
+    height: '15px',
+  },
 });
 
 const TrafficLight = styled('div', {
-  height: '12px',
-  width: '12px',
-  borderRadius: '50px',
-  boxSizing: 'border-box',
+  base: {
+    height: '12px',
+    width: '12px',
+    borderRadius: '50px',
+    boxSizing: 'border-box',
+  },
 
   variants: {
     variant: {
@@ -100,15 +108,17 @@ const TrafficLight = styled('div', {
 });
 
 const Section = styled('section', {
-  marginBottom: '20px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '20px',
-  justifyContent: 'center',
-  alignItems: 'center',
-  color: 'var(--text-primary)',
-  borderRadius: 'var(--border-radius-2)',
-  border: '1px solid var(--emphasis)',
+  base: {
+    marginBottom: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'var(--text-primary)',
+    borderRadius: 'var(--border-radius-2)',
+    border: '1px solid var(--emphasis)',
+  },
 
   variants: {
     intersecting: {
@@ -124,39 +134,43 @@ const Section = styled('section', {
 });
 
 const Offset = styled('div', {
-  position: 'absolute',
+  base: {
+    position: 'absolute',
 
-  width: '98%',
-  zIndex: '2',
-  background: `repeating-linear-gradient(
+    width: '98%',
+    zIndex: '2',
+    background: `repeating-linear-gradient(
     -45deg,
     var(--foreground),
     var(--foreground) 5px,
     var(--emphasis) 5px,
     var(--emphasis) 10px
   )`,
+  },
 });
 
 const WidgetRoot = styled('div', {
-  position: 'relative',
-  boxSizing: 'border-box',
-  overflowY: 'scroll',
-  height: '400px',
-  padding: '0px 20px',
+  base: {
+    position: 'relative',
+    boxSizing: 'border-box',
+    overflowY: 'scroll',
+    height: '400px',
+    padding: '0px 20px',
 
-  '&::-webkit-scrollbar': {
-    WebkitAppearance: 'none',
-    width: '8px',
-  },
+    '&::-webkit-scrollbar': {
+      WebkitAppearance: 'none',
+      width: '8px',
+    },
 
-  '&::-webkit-scrollbar-track': {
-    backgroundColor: 'var(--foreground)',
-    borderRadius: '8px',
-  },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: 'var(--foreground)',
+      borderRadius: '8px',
+    },
 
-  '&::-webkit-scrollbar-thumb': {
-    borderRadius: '8px',
-    backgroundColor: 'var(--text-tertiary)',
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: '8px',
+      backgroundColor: 'var(--text-tertiary)',
+    },
   },
 });
 
@@ -205,11 +219,7 @@ const ScrollSpyWidget = () => {
             width: '100%',
           }}
         >
-          <Offset
-            css={{
-              height: `${offset}px`,
-            }}
-          />
+          <Offset style={{ height: `${offset}px` }} />
           <WidgetRoot id="widgetRoot">
             {ids.map((id, idIndex) => (
               <div key={id}>
@@ -222,9 +232,7 @@ const ScrollSpyWidget = () => {
                   Section {idIndex + 1}
                 </p>
                 <Section
-                  css={{
-                    height: `${height}px`,
-                  }}
+                  style={{ height: `${height}px` }}
                   key={id}
                   id={id}
                   intersecting={index === idIndex}

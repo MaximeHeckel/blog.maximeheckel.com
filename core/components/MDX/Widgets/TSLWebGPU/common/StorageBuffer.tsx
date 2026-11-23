@@ -1,6 +1,8 @@
-import { Flex, Text } from '@maximeheckel/design-system';
 import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
+
+import Flex from '@core/components/Flex';
+import Text from '@core/components/Typography';
 
 import { seededRandom } from './util';
 
@@ -123,7 +125,7 @@ export const StorageBuffer = ({ enabled = true }: { enabled?: boolean }) => {
                     >
                       <Text
                         family="mono"
-                        css={{ fontSize: 12 }}
+                        css={{ fontSize: '12px' }}
                         variant="primary"
                         weight="3"
                       >

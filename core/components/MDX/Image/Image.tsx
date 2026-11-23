@@ -1,16 +1,15 @@
 import { Dialog } from '@base-ui/react/dialog';
-import {
-  Box,
-  CSS,
-  Flex,
-  Icon,
-  IconButton,
-  Text,
-} from '@maximeheckel/design-system';
 import { cloudflareLoader } from 'lib/next-image-loader';
 import { AnimatePresence, motion, MotionConfig } from 'motion/react';
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
 import { memo, useId, useRef, useState } from 'react';
+import type { SystemStyleObject as CSS } from 'styled-system/types';
+
+import Box from '@core/components/Box';
+import { IconButton } from '@core/components/Button';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Text from '@core/components/Typography';
 
 import { Backdrop, ImageFrame, Popup, Trigger } from './Lightbox';
 
@@ -223,13 +222,11 @@ const Image = (props: ImageProps) => {
                       <MotionImageFrame
                         key="expanded-image"
                         autoFocus
-                        css={{
-                          width: expandedFrameWidth,
-                        }}
                         layoutId={layoutId}
                         onClick={handleDialogClose}
                         role="button"
                         style={{
+                          width: expandedFrameWidth,
                           aspectRatio: imageAspectRatio,
                           borderRadius: 'var(--border-radius-3)',
                           outline: 'none',

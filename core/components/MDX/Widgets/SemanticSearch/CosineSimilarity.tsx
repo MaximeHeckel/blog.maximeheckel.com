@@ -1,11 +1,14 @@
-import { Box, Card, Flex, EM, Text } from '@maximeheckel/design-system';
 import { Group } from '@visx/group';
 import { HeatmapRect } from '@visx/heatmap';
 import { ParentSize } from '@visx/responsive';
 import { scaleLinear, scaleBand } from '@visx/scale';
 import { useMemo, useState } from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
 import { Select } from '@core/components/Select';
+import Text, { EM } from '@core/components/Typography';
 
 import vectors from './vectors.json';
 
@@ -138,8 +141,8 @@ const CosineSimilarity = () => {
         <Box
           css={{
             width: '100%',
-            height: 500,
-            '@media(max-width: 750px)': { height: 350 },
+            height: '500px',
+            '@media(max-width: 750px)': { height: '350px' },
           }}
         >
           <ParentSize
@@ -274,6 +277,7 @@ const CosineSimilarity = () => {
             <Flex alignItems="center">
               <Select
                 id="bucket-1"
+                label="First bucket"
                 items={bucketOptions}
                 value={bucket1}
                 onChange={(value) => setBucket1(value as Bucket)}
@@ -294,6 +298,7 @@ const CosineSimilarity = () => {
             <Flex alignItems="center">
               <Select
                 id="bucket-2"
+                label="Second bucket"
                 items={bucketOptions}
                 value={bucket2}
                 onChange={(value) => setBucket2(value as Bucket)}

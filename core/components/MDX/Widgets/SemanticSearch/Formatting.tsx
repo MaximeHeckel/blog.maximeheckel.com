@@ -1,17 +1,16 @@
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Icon,
-  Text,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import deepEqual from 'deep-eql';
 import { DeepPartial, parsePartialJson } from 'lib/partialJson';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { useEffect, useRef, useState } from 'react';
+
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 import MDXComponents from '../../MDXComponents';
 
@@ -153,7 +152,7 @@ const Formatting = () => {
           css={{
             borderRadius: 'var(--border-radius-2)',
             overflowY: 'auto',
-            height: 275,
+            height: '275px',
             width: '100%',
             padding: 'var(--space-3)',
             background: 'hsl(from var(--gray-400) h s l / 30%)',
@@ -165,16 +164,16 @@ const Formatting = () => {
           ref={formattedResponseRef}
           css={{
             borderRadius: 'var(--border-radius-2)',
-            height: 275,
+            height: '275px',
             width: '100%',
             padding: 'var(--space-3)',
             overflowY: 'auto',
             background: 'hsl(from var(--gray-400) h s l / 30%)',
-            'p, li, strong, em': {
+            '& p, & li, & strong, & em': {
               margin: '0px 0px 1rem',
               fontSize: 'var(--font-size-1)!important',
             },
-            code: {
+            '& code': {
               fontSize: 'var(--font-size-1)',
             },
           }}

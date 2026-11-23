@@ -1,11 +1,13 @@
-import { Box, Grid, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import debounce from 'lodash.debounce';
 import { useInView } from 'motion/react';
 import { useCallback, useRef, useState } from 'react';
 import { Post } from 'types/post';
 
+import Box from '@core/components/Box';
+import Grid from '@core/components/Grid';
 import { ScrambledText } from '@core/components/ScrambledText';
+import Text from '@core/components/Typography';
 import ViewTransitionLink from '@core/components/ViewTransitionLink';
 import { useShouldSkipArticlesScramble } from '@core/hooks/useArticlesScrambleNavigation';
 
@@ -150,19 +152,19 @@ const ArticlesSection = (props: ArticleSectionProps) => {
               },
 
             // Opacity: year labels and article columns fade with section dimming.
-            '[data-article-year-section] [data-article-year-label], [data-article-item] > *':
+            '& [data-article-year-section] [data-article-year-label], & [data-article-item] > *':
               {
                 transition: 'opacity 0.25s ease-in-out',
               },
 
             // Color: text inside article columns (not the columns themselves,
             // otherwise the transition shorthand overrides opacity on > *).
-            '[data-article-item] > * *': {
+            '& [data-article-item] > * *': {
               transition: 'color 0.15s ease-in-out',
             },
 
             // Snap text color when moving between articles in the same year.
-            '[data-article-year-section][data-instant] [data-article-item] > * *':
+            '& [data-article-year-section][data-instant] [data-article-item] > * *':
               {
                 transition: 'color 0s',
               },
@@ -184,7 +186,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
               css={{
                 '&:last-child [data-article-item]:last-child': {
                   borderBottom: 'none',
-                  paddingBottom: 96,
+                  paddingBottom: '96px',
                 },
               }}
               key={year}
@@ -227,7 +229,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
                   css={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(6, 1fr)',
-                    columnGap: 24,
+                    columnGap: '24px',
                     position: 'relative',
                     textDecoration: 'none',
                     fontWeight: 500,
@@ -294,7 +296,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
                           fontFamily: 'var(--font-mono)',
                           letterSpacing: '-1px',
                           textTransform: 'uppercase',
-                          fontSize: 13,
+                          fontSize: '13px',
                         }}
                         size="2"
                         variant="tertiary"
@@ -308,7 +310,7 @@ const ArticlesSection = (props: ArticleSectionProps) => {
                           fontFamily: 'var(--font-mono)',
                           letterSpacing: '-1px',
                           textTransform: 'uppercase',
-                          fontSize: 13,
+                          fontSize: '13px',
                         }}
                         disabled={!shouldAnimateScramble}
                         delay={0.5 + index * 0.05}

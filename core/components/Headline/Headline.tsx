@@ -1,5 +1,6 @@
-import { Text } from '@maximeheckel/design-system';
 import type { ReactNode } from 'react';
+
+import Text from '@core/components/Typography';
 
 export interface HeadlineProps {
   children: ReactNode;
@@ -19,12 +20,11 @@ const Headline = (props: HeadlineProps) => {
   return (
     <Text
       as="h1"
+      style={{ letterSpacing, textAlign }}
       css={{
         fontWeight: 510,
-        letterSpacing,
         lineHeight: 1.2,
         textWrap: 'balance',
-        textAlign,
         fontVariationSettings: '"opsz" 28',
         fontOpticalSizing: 'none',
       }}

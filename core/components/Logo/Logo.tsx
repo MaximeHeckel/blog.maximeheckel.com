@@ -1,4 +1,4 @@
-import { css } from '@maximeheckel/design-system';
+import { css } from 'styled-system/css';
 
 import { LogoProps } from './types';
 
@@ -15,7 +15,7 @@ const Logo = ({
   <svg
     aria-label={alt}
     role="img"
-    className={transitionLogo()}
+    className={transitionLogo}
     width={size}
     height={(size * 28) / 33}
     viewBox="4 8 33 28"

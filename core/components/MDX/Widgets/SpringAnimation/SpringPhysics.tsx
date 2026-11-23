@@ -1,10 +1,10 @@
-import { Card } from '@maximeheckel/design-system';
 import { curveBasisOpen } from '@visx/curve';
 import { scaleLinear } from '@visx/scale';
 import { LinePath } from '@visx/shape';
 import { motion } from 'motion/react';
 import React from 'react';
 
+import Card from '@core/components/Card';
 import { Slider } from '@core/components/Slider';
 
 import { AnimationCardContent, Form } from '../Components';
@@ -112,7 +112,7 @@ const SpringPhysics = (props: { withDamping?: boolean }) => {
     <Card depth={1}>
       <AnimationCardContent
         css={{
-          height: 700,
+          height: '700px',
         }}
       >
         <Form

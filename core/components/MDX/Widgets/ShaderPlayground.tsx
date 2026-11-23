@@ -1,17 +1,15 @@
-import {
-  Box,
-  Card,
-  Flex,
-  GlassMaterial,
-  Shadows,
-  Text,
-} from '@maximeheckel/design-system';
+import { Shadows } from 'lib/tokens/shadows';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import useSound from 'use-sound';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
 import Fullbleed from '@core/components/Fullbleed';
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Text from '@core/components/Typography';
 
 import { ShaderCanvas, Uniforms } from './ShaderCanvas';
 
@@ -305,6 +303,7 @@ const GridOverlay = ({ gridSize }: GridOverlayProps) => {
 
 export interface ShaderPlaygroundProps {
   fragmentShader: string;
+  floatingPointFeedback?: boolean;
   uniforms?: Uniforms;
   children?: React.ReactNode;
   codeString?: string;
@@ -318,6 +317,7 @@ export interface ShaderPlaygroundProps {
 export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
   const {
     fragmentShader,
+    floatingPointFeedback = false,
     uniforms = {},
     children,
     codeString,
@@ -361,6 +361,7 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
                 gap="4"
                 alignItems="start"
                 justifyContent="start"
+                css={{ height: '100%' }}
               >
                 <Text size="2" weight="4" variant="tertiary">
                   Uniforms
@@ -389,6 +390,7 @@ export const ShaderPlayground = (props: ShaderPlaygroundProps) => {
             >
               <ShaderCanvas
                 fragmentShader={fragmentShader}
+                floatingPointFeedback={floatingPointFeedback}
                 uniforms={uniforms}
               />
               {showGrid ? <GridOverlay gridSize={gridSize} /> : null}

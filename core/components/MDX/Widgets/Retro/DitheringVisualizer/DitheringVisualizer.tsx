@@ -1,13 +1,13 @@
-import {
-  Card,
-  Flex,
-  Grid,
-  Label,
-  Radio,
-  Switch,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import React, { useMemo, useState } from 'react';
+
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Label from '@core/components/Label';
+import Radio from '@core/components/Radio';
+import Switch from '@core/components/Switch';
+import Tooltip from '@core/components/Tooltip';
 
 const SIZE = 31;
 
@@ -122,8 +122,7 @@ const Cell = (props: CellProps) => {
 
   return (
     <Tooltip content={content}>
-      <Flex
-        alignItems="center"
+      <Box
         css={{
           all: 'unset',
           aspectRatio: '1 / 1',
@@ -132,13 +131,12 @@ const Cell = (props: CellProps) => {
           textAlign: 'center',
           overflow: 'hidden',
           position: 'relative',
-          maxWidth: 20,
+          maxWidth: '20px',
         }}
-        justifyContent="center"
         style={{
           backgroundColor: color,
         }}
-      ></Flex>
+      />
     </Tooltip>
   );
 };

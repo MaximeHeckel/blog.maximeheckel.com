@@ -1,8 +1,12 @@
-import { Box, Card, Flex, Radio, Switch } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Radio from '@core/components/Radio';
+import Switch from '@core/components/Switch';
 
 const Basic = () => {
   const [position, setPosition] = React.useState('start');
@@ -43,13 +47,13 @@ const Basic = () => {
               // @ts-ignore
               key={layout}
               layout={layout}
+              style={{ justifySelf: position }}
               css={{
                 width: '100px',
                 height: '100px',
                 background:
                   'linear-gradient(-60deg,#2E83FF -10%,#EB7D9F 50%, #FFCBBE 100%)',
                 borderRadius: 'var(--border-radius-2)',
-                justifySelf: position,
               }}
             />
           </Box>

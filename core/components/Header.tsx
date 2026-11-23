@@ -1,6 +1,6 @@
-import { Box, Grid } from '@maximeheckel/design-system';
-
+import Box from '@core/components/Box';
 import { Dock } from '@core/components/Dock';
+import Grid from '@core/components/Grid';
 
 const Header = () => {
   return (
@@ -13,7 +13,7 @@ const Header = () => {
         right: 0,
         zIndex: 100,
         width: '100%',
-        marginTop: 24,
+        marginTop: '24px',
         marginLeft: 'auto',
         marginRight: 'auto',
       }}

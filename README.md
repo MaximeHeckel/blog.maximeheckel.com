@@ -10,7 +10,7 @@ Coding assistants should start with [`AGENTS.md`](AGENTS.md). Tool-neutral conve
 - Stitches / CSS
 - MDX
 
-Design is handmade and packaged separately at [@maximeheckel/design-system](https://github.com/MaximeHeckel/design-system).
+The blog’s UI primitives live in [`core/components`](./core/components). The Stitches configuration and theme tokens live in [`lib`](./lib).
 
 ## License
 

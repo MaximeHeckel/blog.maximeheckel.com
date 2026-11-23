@@ -1,8 +1,12 @@
-import { Card, Flex, Grid, Switch } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import { Select } from '@core/components/Select';
 import { Slider } from '@core/components/Slider';
+import Switch from '@core/components/Switch';
 
 const WIDTH = 36;
 const HEIGHT = 36;
@@ -255,8 +259,7 @@ const Cell = (props: CellProps) => {
   })`;
 
   return (
-    <Flex
-      alignItems="center"
+    <Box
       css={{
         all: 'unset',
         aspectRatio: '1 / 1',
@@ -266,11 +269,10 @@ const Cell = (props: CellProps) => {
         overflow: 'hidden',
         position: 'relative',
       }}
-      justifyContent="center"
       style={{
         backgroundColor: color,
       }}
-    ></Flex>
+    ></Box>
   );
 };
 
@@ -346,6 +348,7 @@ const KuwaharaVisualizer = (props: { method: 'basic' | 'papari' }) => {
           />
           <Select
             id="shader-function"
+            label="Shape"
             items={shapeOptions}
             value={shader}
             onChange={(value) =>

@@ -1,4 +1,3 @@
-import { Icon, IconButton, Text, Tooltip } from '@maximeheckel/design-system';
 import type { AskAttachment } from 'lib/askAttachments';
 import {
   Fragment,
@@ -10,6 +9,11 @@ import {
   useRef,
   useState,
 } from 'react';
+
+import { IconButton } from '@core/components/Button';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 import CopyToClipboardButton from '../Buttons/CopyToClipboardButton';
 import { FloatingWindow, FloatingWindowState } from '../FloatingWindow';

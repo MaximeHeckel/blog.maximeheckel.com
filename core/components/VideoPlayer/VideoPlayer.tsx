@@ -1,6 +1,8 @@
-import { Box, useDebouncedValue } from '@maximeheckel/design-system';
 import { useInView, useReducedMotion } from 'motion/react';
 import { useRef } from 'react';
+
+import Box from '@core/components/Box';
+import useDebouncedValue from '@core/hooks/useDebouncedValue';
 
 import { MediaPlayer } from './MediaPlayer';
 
@@ -41,8 +43,10 @@ const VideoPlayer = (props: VideoPlayerProps) => {
   return (
     <Box
       ref={ref}
+      style={{
+        aspectRatio: width && height ? `${width} / ${height}` : undefined,
+      }}
       css={{
-        aspectRatio: `${width} / ${height}`,
         position: 'relative',
         margin: '0 auto',
         background: 'var(--foreground)',

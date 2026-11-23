@@ -1,52 +1,51 @@
-import {
-  styled,
-  Anchor,
-  Blockquote,
-  Box,
-  Button,
-  Card,
-  EM,
-  Flex,
-  Grid,
-  H1,
-  H2,
-  H3,
-  Heading,
-  Icon,
-  InlineCode,
-  List,
-  Pill,
-  Strong,
-  Text,
-  TextInput,
-  TextArea,
-  Tooltip,
-  Checkbox,
-  Switch,
-  Radio,
-  Details,
-  IconButton,
-} from '@maximeheckel/design-system';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
+import { styled } from 'styled-system/jsx';
 import { NewTweet } from 'types/tweet';
 
+import Anchor from '@core/components/Anchor';
+import AspectRatio from '@core/components/AspectRatio';
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
+import Blockquote from '@core/components/Blockquote';
+import Box from '@core/components/Box';
+import Button, { IconButton } from '@core/components/Button';
 import Callout from '@core/components/Callout';
+import Card from '@core/components/Card';
+import Checkbox from '@core/components/Checkbox';
 import CodeBlock from '@core/components/Code/CodeBlock';
 import { CommandMenuContext } from '@core/components/CommandMenu/CommandMenuContext';
+import Details from '@core/components/Details';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import { HR } from '@core/components/HR';
+import Icon from '@core/components/Icon';
 import ImageAccordion from '@core/components/ImageAccordion';
+import InlineCode from '@core/components/InlineCode';
+import List from '@core/components/List';
 import Logo from '@core/components/Logo';
 import Image from '@core/components/MDX/Image/Image';
 import { Main } from '@core/components/Main';
+import Pill from '@core/components/Pill';
 import RGBLensIcon from '@core/components/RGBLensIcon';
+import Radio from '@core/components/Radio';
 import { Select } from '@core/components/Select';
 import Seo from '@core/components/Seo';
 import { Slider } from '@core/components/Slider';
 import ImageGallery from '@core/components/Slideshow';
+import Switch from '@core/components/Switch';
+import TextArea from '@core/components/TextArea';
+import TextInput from '@core/components/TextInput';
+import Tooltip from '@core/components/Tooltip';
 import Tweet from '@core/components/Tweet';
+import Text, {
+  EM,
+  H1,
+  H2,
+  H3,
+  Heading,
+  Strong,
+} from '@core/components/Typography';
 import { MediaPlayer } from '@core/components/VideoPlayer/MediaPlayer';
 
 const SandpackExample = dynamic(
@@ -54,7 +53,9 @@ const SandpackExample = dynamic(
 );
 
 const Label = styled('p', {
-  marginBottom: '8px',
+  base: {
+    marginBottom: '8px',
+  },
 });
 
 const SliderExample = () => {
@@ -62,7 +63,7 @@ const SliderExample = () => {
   return (
     <>
       <Slider
-        id="slider-1"
+        id="slider-medium"
         label="Slider"
         value={value}
         min={0}
@@ -70,7 +71,7 @@ const SliderExample = () => {
         onChange={(value) => setValue(value)}
       />
       <Slider
-        id="slider-2"
+        id="slider-medium-disabled"
         label="Slider"
         disabled
         value={250}
@@ -79,7 +80,7 @@ const SliderExample = () => {
         onChange={() => {}}
       />
       <Slider
-        id="slider-1"
+        id="slider-small"
         label="Slider"
         value={value}
         min={0}
@@ -88,7 +89,7 @@ const SliderExample = () => {
         size="sm"
       />
       <Slider
-        id="slider-2"
+        id="slider-small-disabled"
         label="Slider"
         disabled
         value={250}
@@ -129,8 +130,8 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
           width: '100%',
           backgroundColor: 'var(--background)',
           paddingTop: 'var(--space-10)',
-          borderBottomRightRadius: 4,
-          borderBottomLeftRadius: 4,
+          borderBottomRightRadius: '4px',
+          borderBottomLeftRadius: '4px',
           overflow: 'hidden',
         }}
         gapX={2}
@@ -277,7 +278,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                 <Grid
                   key={paletteItem}
                   css={{
-                    marginRight: '$3',
+                    marginRight: 'var(--space-3)',
                   }}
                   templateColumns="repeat(auto-fill, minmax(2rem, 1fr))"
                 >
@@ -289,11 +290,12 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                     >
                       <Box
                         as="section"
+                        style={{ background: `var(--${paletteItem}-${shade})` }}
                         css={{
                           width: '44px',
                           height: '44px',
                           borderRadius: '50%',
-                          background: `var(--${paletteItem}-${shade})`,
+
                           border: '2px solid var(--border-color)',
                         }}
                       />
@@ -637,7 +639,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
               <Button variant="primary" inverted>
                 Button
               </Button>
-              <Button variant="primary" endIcon={<Icon.External size="4" />}>
+              <Button variant="primary" endIcon={<Icon.Arrow size="4" />}>
                 Portfolio
               </Button>
               <Button variant="primary" startIcon={<Icon.Twitter size="4" />}>
@@ -987,10 +989,8 @@ they can change the world, are the ones who do.`}
             </Grid>
             <br />
             <Grid
+              css={{ width: '100%' }}
               gap={3}
-              css={{
-                width: '100%',
-              }}
               templateColumns="repeat(2, minmax(2rem, 1fr))"
             >
               <SliderExample />
@@ -1004,7 +1004,7 @@ they can change the world, are the ones who do.`}
             >
               <Select
                 id="select-1"
-                aria-label="Select"
+                label="Select example"
                 items={[
                   { label: 'Option 1', value: 'option1' },
                   { label: 'Option 2', value: 'option2' },
@@ -1014,7 +1014,7 @@ they can change the world, are the ones who do.`}
               />
               <Select
                 id="select-2"
-                aria-label="Select"
+                label="Disabled select example"
                 disabled
                 items={[
                   { label: 'Option 1', value: 'option1' },
@@ -1286,6 +1286,23 @@ function sayHi(name) {
           <Flex
             alignItems="start"
             as="section"
+            css={{ alignSelf: 'stretch' }}
+            direction="column"
+            gap="5"
+            id="aspect-ratio"
+          >
+            <H2>Aspect Ratio</H2>
+            <AspectRatio>
+              <img
+                src="https://assets.maximeheckel.com/images/blog/clouds-painting-min_bqf2ia.png?w=1200&q=90"
+                alt="Painterly clouds above a landscape"
+                loading="lazy"
+              />
+            </AspectRatio>
+          </Flex>
+          <Flex
+            alignItems="start"
+            as="section"
             css={{ alignSelf: 'stretch', marginBottom: 'var(--space-9)' }}
             direction="column"
             gap="5"
@@ -1396,41 +1413,11 @@ const IconSection = () => (
       <Icon.Bluesky variant="default" size={5} />
       <Icon.Bluesky variant="default" size={4} />
       <Icon.Bluesky variant="default" size={3} />
-      <Icon.Github variant="default" size={7} />
-      <Icon.Github variant="default" size={6} />
-      <Icon.Github variant="default" size={5} />
-      <Icon.Github variant="default" size={4} />
-      <Icon.Github variant="default" size={3} />
-      <Icon.Coffee variant="default" size={7} />
-      <Icon.Coffee variant="default" size={6} />
-      <Icon.Coffee variant="default" size={5} />
-      <Icon.Coffee variant="default" size={4} />
-      <Icon.Coffee variant="default" size={3} />
-      <Icon.AIChat variant="default" size={7} />
-      <Icon.AIChat variant="default" size={6} />
-      <Icon.AIChat variant="default" size={5} />
-      <Icon.AIChat variant="default" size={4} />
-      <Icon.AIChat variant="default" size={3} />
-      <Icon.Command variant="default" size={7} />
-      <Icon.Command variant="default" size={6} />
-      <Icon.Command variant="default" size={5} />
-      <Icon.Command variant="default" size={4} />
-      <Icon.Command variant="default" size={3} />
       <Icon.Map variant="default" size={7} />
       <Icon.Map variant="default" size={6} />
       <Icon.Map variant="default" size={5} />
       <Icon.Map variant="default" size={4} />
       <Icon.Map variant="default" size={3} />
-      <Icon.External variant="default" size={7} />
-      <Icon.External variant="default" size={6} />
-      <Icon.External variant="default" size={5} />
-      <Icon.External variant="default" size={4} />
-      <Icon.External variant="default" size={3} />
-      <Icon.Enter variant="default" size={7} />
-      <Icon.Enter variant="default" size={6} />
-      <Icon.Enter variant="default" size={5} />
-      <Icon.Enter variant="default" size={4} />
-      <Icon.Enter variant="default" size={3} />
       <Icon.Arrow variant="default" size={7} />
       <Icon.Arrow variant="default" size={6} />
       <Icon.Arrow variant="default" size={5} />
@@ -1516,12 +1503,6 @@ const IconSection = () => (
       <Icon.Clear variant="default" size={5} />
       <Icon.Clear variant="default" size={4} />
       <Icon.Clear variant="default" size={3} />
-
-      <Icon.Contact variant="default" size={7} />
-      <Icon.Contact variant="default" size={6} />
-      <Icon.Contact variant="default" size={5} />
-      <Icon.Contact variant="default" size={4} />
-      <Icon.Contact variant="default" size={3} />
     </Grid>
   </Flex>
 );

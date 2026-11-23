@@ -1,7 +1,7 @@
 import { Popover } from '@base-ui/react/popover';
-import { styled } from '@maximeheckel/design-system';
 import { motion, useReducedMotion } from 'motion/react';
 import { PointerEvent, RefObject, useEffect, useState } from 'react';
+import { styled } from 'styled-system/jsx';
 
 import { useOptionalAsk } from './AskContext';
 
@@ -14,17 +14,22 @@ const excluded =
   'pre, button, input, textarea, select, [contenteditable], [role="dialog"], [role="textbox"], .sp-wrapper, .cm-editor, .monaco-editor, [data-ask-selection-ignore]';
 
 const Action = styled('button', {
-  appearance: 'none',
-  cursor: 'pointer',
-  background: 'var(--background)',
-  color: 'var(--text-primary)',
-  border: '1px solid oklch(from var(--text-primary) l c h / 0.12)',
-  borderRadius: 'var(--border-radius-2)',
-  padding: 'var(--space-2) var(--space-3)',
-  fontFamily: 'inherit',
-  fontSize: 'var(--font-size-1)',
-  '&:hover': { background: 'var(--code-snippet-background)' },
-  '&:focus-visible': { outline: '2px solid var(--accent)', outlineOffset: 2 },
+  base: {
+    appearance: 'none',
+    cursor: 'pointer',
+    background: 'var(--background)',
+    color: 'var(--text-primary)',
+    border: '1px solid oklch(from var(--text-primary) l c h / 0.12)',
+    borderRadius: 'var(--border-radius-2)',
+    padding: 'var(--space-2) var(--space-3)',
+    fontFamily: 'inherit',
+    fontSize: 'var(--font-size-1)',
+    '&:hover': { background: 'var(--code-snippet-background)' },
+    '&:focus-visible': {
+      outline: '2px solid var(--accent)',
+      outlineOffset: '2px',
+    },
+  },
 });
 
 export const SelectionToAsk = ({ articleRef, title }: SelectionToAskProps) => {

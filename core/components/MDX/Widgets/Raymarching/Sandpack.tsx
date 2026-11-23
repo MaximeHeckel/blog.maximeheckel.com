@@ -1,7 +1,7 @@
-import { Box } from '@maximeheckel/design-system';
 import { useInView } from 'motion/react';
 import { useRef } from 'react';
 
+import Box from '@core/components/Box';
 import Sandpack from '@core/components/Code/Sandpack';
 import useGPUTier from '@core/hooks/useGPUTier';
 

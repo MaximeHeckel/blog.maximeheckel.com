@@ -1,7 +1,12 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["react", "typescript"],
-  "ignorePatterns": [".next/**", "node_modules/**", "next-env.d.ts"],
+  "ignorePatterns": [
+    ".next/**",
+    "node_modules/**",
+    "styled-system/**",
+    "next-env.d.ts"
+  ],
   "rules": {
     "no-console": "error",
     "react-hooks/rules-of-hooks": "error",

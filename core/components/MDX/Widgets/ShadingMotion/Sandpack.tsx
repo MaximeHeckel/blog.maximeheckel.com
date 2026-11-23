@@ -1,5 +1,4 @@
 import type { SandpackFiles } from '@codesandbox/sandpack-react';
-import { Box, Button, Text } from '@maximeheckel/design-system';
 import { useInView } from 'motion/react';
 import {
   ComponentProps,
@@ -9,7 +8,10 @@ import {
   useState,
 } from 'react';
 
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
 import type Sandpack from '@core/components/Code/Sandpack';
+import Text from '@core/components/Typography';
 import useGPUTier from '@core/hooks/useGPUTier';
 
 const SCENE_CSS = `

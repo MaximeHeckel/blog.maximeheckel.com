@@ -1,14 +1,11 @@
-import {
-  Blockquote,
-  EM,
-  InlineCode,
-  List,
-  Strong,
-  Text,
-} from '@maximeheckel/design-system';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { ComponentProps, memo, useEffect, useMemo, useState } from 'react';
+
+import Blockquote from '@core/components/Blockquote';
+import InlineCode from '@core/components/InlineCode';
+import List from '@core/components/List';
+import Text, { EM, Strong } from '@core/components/Typography';
 
 import Code from '../Code';
 import { AnswerLink } from './AnswerLink';
@@ -82,25 +79,25 @@ export const Answer = memo(({ text, onRender }: AnswerProps) => {
         display: 'flex',
         flexDirection: 'column',
         gap: 'var(--space-4)',
-        '> *': { marginBlock: 0 },
-        li: {
+        '& > *': { marginBlock: 0 },
+        '& li': {
           fontSize: 'var(--font-size-1)',
           lineHeight: 'inherit',
           letterSpacing: 'inherit',
           color: 'var(--text-secondary)',
         },
-        'li + li': { marginTop: 'var(--space-2)' },
-        'li > div[data-list-item]': {
+        '& li + li': { marginTop: 'var(--space-2)' },
+        '& li > div[data-list-item]': {
           display: 'flex',
           alignItems: 'center',
           height: '1lh',
           flexShrink: 0,
           transform: 'none',
         },
-        'li > div:not([data-list-item]) > p, blockquote > p': {
+        '& li > div:not([data-list-item]) > p, & blockquote > p': {
           marginBlock: 0,
         },
-        'li > div:not([data-list-item]) > * + *, blockquote > * + *': {
+        '& li > div:not([data-list-item]) > * + *, & blockquote > * + *': {
           marginTop: 'var(--space-2)',
         },
       }}

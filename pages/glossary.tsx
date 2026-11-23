@@ -1,10 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 
-import { Grid } from '@maximeheckel/design-system';
 import type { GetStaticProps } from 'next';
 
 import Footer from '@core/components/Footer';
+import Grid from '@core/components/Grid';
 import { Header } from '@core/components/Header';
 import { Main } from '@core/components/Main';
 import Seo from '@core/components/Seo';
@@ -35,10 +35,10 @@ const Glossary = (props: GlossaryProps) => {
           overflowX: 'clip',
           overflowY: 'visible',
           backgroundColor: 'var(--background)',
-          borderBottomRightRadius: 4,
-          borderBottomLeftRadius: 4,
-          paddingTop: 236,
-          paddingBottom: 96,
+          borderBottomRightRadius: '4px',
+          borderBottomLeftRadius: '4px',
+          paddingTop: '236px',
+          paddingBottom: '96px',
         }}
         gapX={2}
         templateColumns="1fr minmax(auto, 712px) 1fr"

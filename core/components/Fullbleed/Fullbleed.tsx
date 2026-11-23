@@ -1,4 +1,6 @@
-import { Box } from '@maximeheckel/design-system';
+import type { CSSProperties } from 'react';
+
+import Box from '@core/components/Box';
 
 const Fullbleed = (props: {
   children: React.ReactNode;
@@ -27,14 +29,20 @@ const Fullbleed = (props: {
       data-fullbleed
     >
       <Box
+        style={
+          {
+            '--fullbleed-max-width': `${maxWidth}px`,
+            '--fullbleed-width': `${widthPercent}%`,
+          } as CSSProperties
+        }
         css={{
           margin: '0 auto',
-          maxWidth: `${maxWidth}px`,
-          width: `${widthPercent}%`,
-          minWidth: 700,
+          maxWidth: 'var(--fullbleed-max-width)',
+          width: 'var(--fullbleed-width)',
+          minWidth: '700px',
           '@media(max-width: 850px)': {
             width: '100%',
-            maxWidth: 700,
+            maxWidth: '700px',
             minWidth: 0,
           },
         }}

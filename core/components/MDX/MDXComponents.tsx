@@ -1,25 +1,21 @@
-// Components
-import {
-  Anchor,
-  Blockquote,
-  Button,
-  Card,
-  Details,
-  InlineCode,
-  List,
-  Pill,
-  Text,
-  EM,
-  Strong,
-} from '@maximeheckel/design-system';
 import dynamic from 'next/dynamic';
 
+// Components
+import Anchor from '@core/components/Anchor';
 import BeforeAfterImage from '@core/components/BeforeAfterImage';
+import Blockquote from '@core/components/Blockquote';
+import Button from '@core/components/Button';
 import Callout from '@core/components/Callout';
+import Card from '@core/components/Card';
 import Code from '@core/components/Code';
+import Details from '@core/components/Details';
 import { FootnoteRef, FootnotesList } from '@core/components/Footnotes';
 import Fullbleed from '@core/components/Fullbleed';
 import H2 from '@core/components/H2';
+import InlineCode from '@core/components/InlineCode';
+import List from '@core/components/List';
+import Pill from '@core/components/Pill';
+import Text, { EM, Strong } from '@core/components/Typography';
 import VideoPlayer from '@core/components/VideoPlayer';
 
 import SupportCallout from '../Callout/SupportCallout';
@@ -184,6 +180,42 @@ const Formatting = dynamic(() => import('./Widgets/SemanticSearch/Formatting'));
 const DemoSearch = dynamic(() => import('./Widgets/SemanticSearch/DemoSearch'));
 
 const DemoButton = dynamic(() => import('./Widgets/SemanticSearch/DemoButton'));
+
+const RaymarchingDiagram = dynamic(
+  () => import('./Widgets/GlobalIllumination/diagrams/Raymarching')
+);
+
+const LightBounceDiagram = dynamic(
+  () =>
+    import('./Widgets/GlobalIllumination/diagrams/LightBounce/LightBounceDiagram')
+);
+
+const BlinnPhongDiagram = dynamic(
+  () =>
+    import('./Widgets/GlobalIllumination/diagrams/BlinnPhong/BlinnPhongDiagram')
+);
+
+const ProbeDiagram = dynamic(
+  () => import('./Widgets/GlobalIllumination/diagrams/Probe/ProbeDiagram')
+);
+
+const HemisphereSamplingDiagram = dynamic(
+  () =>
+    import('./Widgets/GlobalIllumination/diagrams/HemisphereSampling/HemisphereSamplingDiagram')
+);
+
+const ReflectionDiagram = dynamic(
+  () =>
+    import('./Widgets/GlobalIllumination/diagrams/Reflection/ReflectionDiagram')
+);
+
+const ImageAccumulation = dynamic(
+  () => import('./Widgets/GlobalIllumination/playgrounds/ImageAccumulation')
+);
+
+const ImageHysteresis = dynamic(
+  () => import('./Widgets/GlobalIllumination/playgrounds/ImageHysteresis')
+);
 
 const RaymarchingVisualizer = dynamic(
   () => import('./Widgets/Raymarching/RaymarchingVisualizer')
@@ -395,6 +427,10 @@ const ParticleCompute = dynamic(
 
 const TSLWebGPUSandpack = dynamic(() => import('./Widgets/TSLWebGPU/Sandpack'));
 
+const GlobalIlluminationSandpack = dynamic(
+  () => import('./Widgets/GlobalIllumination/Sandpack')
+);
+
 const HalftoneSandpack = dynamic(() => import('./Widgets/Halftone/Sandpack'));
 
 const AtmosphericScatteringSandpack = dynamic(
@@ -448,6 +484,14 @@ const customComponents = {
   Formatting,
   DemoSearch,
   DemoButton,
+  RaymarchingDiagram,
+  BlinnPhongDiagram,
+  LightBounceDiagram,
+  HemisphereSamplingDiagram,
+  ProbeDiagram,
+  ReflectionDiagram,
+  ImageAccumulation,
+  ImageHysteresis,
   RaymarchingVisualizer,
   VolumetricRaymarchingVisualizer,
   BeforeAfterImage,
@@ -506,6 +550,7 @@ const customComponents = {
   PostProcessingSandpack,
   VolumetricLightingSandpack,
   TSLWebGPUSandpack,
+  GlobalIlluminationSandpack,
   HalftoneSandpack,
   AtmosphericScatteringSandpack,
   ShadingMotionSandpack,

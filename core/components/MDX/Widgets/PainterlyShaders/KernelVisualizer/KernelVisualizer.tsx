@@ -1,17 +1,15 @@
-import {
-  Card,
-  Flex,
-  Grid,
-  Switch,
-  Text,
-  Box,
-  Tooltip,
-  Icon,
-  Button,
-} from '@maximeheckel/design-system';
 import React, { useMemo, useState, useEffect } from 'react';
 
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Icon from '@core/components/Icon';
 import { Select } from '@core/components/Select';
+import Switch from '@core/components/Switch';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 const WIDTH = 9;
 const HEIGHT = 9;
@@ -55,18 +53,21 @@ const Cell = (props: CellProps) => {
       alignItems="center"
       css={{
         aspectRatio: '1 / 1',
-        borderBottom: '1px solid var(--gray-700)',
-        borderLeft: '1px solid var(--gray-700)',
         textAlign: 'center',
         overflow: 'hidden',
         position: 'relative',
         color: 'white',
-        ...(isCenter && {
-          boxShadow: '0 0 15px var(--accent)',
-          border: '2px solid var(--accent)',
-          borderRadius: 'var(--border-radius-2)',
-          zIndex: 2,
-        }),
+        ...(isCenter
+          ? {
+              boxShadow: '0 0 15px var(--accent)',
+              border: '2px solid var(--accent)',
+              borderRadius: 'var(--border-radius-2)',
+              zIndex: 2,
+            }
+          : {
+              borderBottom: '1px solid var(--gray-700)',
+              borderLeft: '1px solid var(--gray-700)',
+            }),
       }}
       justifyContent="center"
       suppressHydrationWarning
@@ -311,6 +312,7 @@ const KuwaharaVisualizer = () => {
           <Flex gap="2">
             <Select
               id="shader-function"
+              label="Shader function"
               items={shaderOptions}
               value={shader}
               onChange={(value) =>

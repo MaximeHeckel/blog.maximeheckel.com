@@ -1,7 +1,8 @@
-import { Box, Flex } from '@maximeheckel/design-system';
 import { useInView } from 'motion/react';
 import { useDeferredValue, useId, useRef, useState } from 'react';
 
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
 import { ShaderCanvas } from '@core/components/MDX/Widgets/ShaderCanvas';
 import { Slider } from '@core/components/Slider';
 
@@ -123,7 +124,7 @@ export const DitheredMotionMaskDemo = () => {
       direction="column"
       gap="4"
       css={{
-        maxWidth: 662,
+        maxWidth: '662px',
         width: '100%',
       }}
     >
@@ -154,7 +155,10 @@ export const DitheredMotionMaskDemo = () => {
       <Flex
         direction="column"
         gap="4"
-        css={{ width: '100%', '@md': { width: '50%', minWidth: 135 } }}
+        css={{
+          width: '100%',
+          '@media (min-width: 768px)': { width: '50%', minWidth: '135px' },
+        }}
       >
         <Slider
           id={`${id}-split`}

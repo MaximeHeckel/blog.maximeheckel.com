@@ -1,13 +1,16 @@
-import { Box, Text } from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import { useEffect, useRef } from 'react';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, CSSProperties } from 'react';
+
+import Box from '@core/components/Box';
+import Text from '@core/components/Typography';
 
 type AnimatedNumberTickerProps = Omit<
   ComponentProps<typeof Text>,
   'aria-label' | 'children'
 > & {
   ariaLabel: string;
+  as?: 'p' | 'span';
   digitCount: number;
   suffix?: string;
   value: number;
@@ -42,7 +45,8 @@ const getTickerDigitSequence = (
 };
 
 const AnimatedNumberTicker = (props: AnimatedNumberTickerProps) => {
-  const { ariaLabel, css, digitCount, suffix, value, ...textProps } = props;
+  const { ariaLabel, css, style, digitCount, suffix, value, ...textProps } =
+    props;
   const previousValue = useRef(value);
   const direction = value >= previousValue.current ? 1 : -1;
   const previousVisibleValue = String(previousValue.current).padStart(
@@ -59,13 +63,19 @@ const AnimatedNumberTicker = (props: AnimatedNumberTickerProps) => {
   return (
     <Text
       aria-label={ariaLabel}
+      style={
+        {
+          '--ticker-min-width': `${minWidth}ch`,
+          ...style,
+        } as CSSProperties
+      }
       css={{
         alignItems: 'center',
         display: 'flex',
         fontVariantNumeric: 'tabular-nums',
         gap: '0.35ch',
         lineHeight: 1,
-        minWidth: `${minWidth}ch`,
+        minWidth: 'var(--ticker-min-width)',
         whiteSpace: 'nowrap',
         ...css,
       }}

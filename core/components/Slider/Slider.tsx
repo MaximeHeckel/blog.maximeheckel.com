@@ -1,4 +1,3 @@
-import { Box, GlassMaterial, Text } from '@maximeheckel/design-system';
 import {
   motion,
   useMotionValue,
@@ -14,6 +13,10 @@ import {
   useRef,
   useState,
 } from 'react';
+
+import Box from '@core/components/Box';
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Text from '@core/components/Typography';
 
 import {
   Control,
@@ -45,6 +48,7 @@ const Slider = (props: SliderProps) => {
   const shouldReduceMotion = useReducedMotion();
   const generatedId = useId();
   const sliderId = id || generatedId;
+  const labelId = `${sliderId}-label`;
 
   const MAX_VALUE = max;
   const MIN_VALUE = min;
@@ -327,7 +331,7 @@ const Slider = (props: SliderProps) => {
   return (
     <SliderRoot
       id={sliderId}
-      aria-label={label}
+      aria-labelledby={label ? labelId : undefined}
       aria-valuemin={MIN_VALUE}
       aria-valuemax={MAX_VALUE}
       aria-valuenow={value}
@@ -405,7 +409,7 @@ const Slider = (props: SliderProps) => {
                 key={index}
                 css={{
                   position: 'absolute',
-                  left: `calc(${position}% - 10px)`,
+
                   transform: 'translateX(-50%)',
                   width: '4px',
                   height: '4px',
@@ -415,6 +419,7 @@ const Slider = (props: SliderProps) => {
                   willChange: 'opacity',
                 }}
                 style={{
+                  left: `calc(${position}% - 10px)`,
                   opacity:
                     stepValue === value ||
                     stepValue < MIN_VALUE + 0.3 * (MAX_VALUE - MIN_VALUE) ||
@@ -430,9 +435,8 @@ const Slider = (props: SliderProps) => {
       <SliderLabel>
         {label ? (
           <Text
-            id={`${sliderId}-label`}
-            as="label"
-            htmlFor={sliderId}
+            id={labelId}
+            as="span"
             size="2"
             weight="4"
             variant="secondary"

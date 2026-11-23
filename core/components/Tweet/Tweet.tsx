@@ -1,7 +1,10 @@
-import { Anchor, Flex, Text } from '@maximeheckel/design-system';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { NewTweet } from 'types/tweet';
+
+import Anchor from '@core/components/Anchor';
+import Flex from '@core/components/Flex';
+import Text from '@core/components/Typography';
 
 import VideoPlayer from '../VideoPlayer';
 import { LikeIcon, ReplyIcon, TwitterLogo } from './Icons';
@@ -168,7 +171,7 @@ const Tweet = (props: Props) => {
                 width={m.original_info.width}
                 src={m.media_url_https}
                 style={{ maxWidth: '100%', height: 'auto' }}
-                className={singleImage()}
+                className={singleImage}
               />
             );
           })}

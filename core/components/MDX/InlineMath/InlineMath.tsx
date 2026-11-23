@@ -1,6 +1,7 @@
-import { InlineCode } from '@maximeheckel/design-system';
 import katex from 'katex';
 import { ReactNode } from 'react';
+
+import InlineCode from '@core/components/InlineCode';
 
 import { InlineMathRoot } from './InlineMath.styles';
 
@@ -18,7 +19,7 @@ const InlineMath = (props: InlineMathProps) => {
   });
 
   return (
-    <InlineMathRoot as="span" block={block}>
+    <InlineMathRoot as="span" block={block} className="inline-math">
       <InlineCode>
         <span dangerouslySetInnerHTML={{ __html: html }} />
       </InlineCode>

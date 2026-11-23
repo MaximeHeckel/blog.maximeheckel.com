@@ -1,6 +1,9 @@
-import { Box, Card, Flex, Grid } from '@maximeheckel/design-system';
 import React, { useMemo, useState } from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import { Slider } from '@core/components/Slider';
 
 const WIDTH = 4;
@@ -23,12 +26,13 @@ const Cell = (props: CellProps) => {
 
   return (
     <Grid.Item
+      style={{ backgroundColor: color }}
       css={{
         aspectRatio: '1 / 1',
         textAlign: 'center',
         overflow: 'hidden',
         position: 'relative',
-        backgroundColor: color,
+
         alignContent: 'center',
       }}
     >
@@ -47,11 +51,11 @@ const Cell = (props: CellProps) => {
           fontFamily: 'var(--font-mono)',
           letterSpacing: '-1px',
           '&::-webkit-inner-spin-button, &::-webkit-outer-spin-button': {
-            '-webkit-appearance': 'none',
+            WebkitAppearance: 'none',
             margin: 0,
           },
           '&[type=number]': {
-            '-moz-appearance': 'textfield',
+            appearance: 'textfield',
           },
         }}
         value={cellValue}

@@ -1,4 +1,3 @@
-import { Box, Flex, Text } from '@maximeheckel/design-system';
 import {
   motion,
   useAnimate,
@@ -6,6 +5,10 @@ import {
   useMotionValue,
 } from 'motion/react';
 import { useEffect, useCallback } from 'react';
+
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
+import Text from '@core/components/Typography';
 
 export const EffectFragment = ({ enabled = true }: { enabled?: boolean }) => {
   const INIT_CLIP_PATH_VALUE = '90%';
@@ -95,7 +98,7 @@ export const EffectFragment = ({ enabled = true }: { enabled?: boolean }) => {
           as={motion.div}
           css={{
             position: 'absolute',
-            top: 1.5,
+            top: '1.5px',
             left: 0,
             width: '100%',
             height: '100%',

@@ -1,6 +1,7 @@
-import { IconButton } from '@maximeheckel/design-system';
 import { motion, useMotionValue, useTransform } from 'motion/react';
 import { useEffect, useState } from 'react';
+
+import { IconButton } from '@core/components/Button';
 
 const CopyToClipboardButton = (props: {
   text: string;

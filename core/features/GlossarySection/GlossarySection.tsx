@@ -1,13 +1,3 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  InlineCode,
-  Text,
-  TextInput,
-  keyframes,
-  useDebouncedValue,
-} from '@maximeheckel/design-system';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import type {
@@ -15,9 +5,17 @@ import type {
   FocusEvent,
   KeyboardEvent as ReactKeyboardEvent,
 } from 'react';
+import { keyframes } from 'styled-system/css';
 
 import { AnimatedNumberTicker } from '@core/components/AnimatedNumberTicker';
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import { SearchIcon } from '@core/components/Icons';
+import InlineCode from '@core/components/InlineCode';
+import TextInput from '@core/components/TextInput';
+import Text from '@core/components/Typography';
+import useDebouncedValue from '@core/hooks/useDebouncedValue';
 
 export interface GlossaryTerm {
   aliases: string[];
@@ -127,7 +125,7 @@ const renderGlossaryGroup = (group: {
                 ? 'calc(var(--space-2) + 1.125em)'
                 : 0,
           position: 'sticky',
-          top: 192,
+          top: '192px',
         }}
       >
         <Text
@@ -166,7 +164,7 @@ const renderGlossaryGroup = (group: {
               css={{
                 scrollMarginTop: '40vh',
                 minWidth: 0,
-                marginTop: 2,
+                marginTop: '2px',
               }}
             >
               <Flex alignItems="start" direction="column" gap="2">
@@ -182,7 +180,7 @@ const renderGlossaryGroup = (group: {
                   weight="3"
                 >
                   {item.kind === 'function' ? (
-                    <Flex css={{ marginLeft: '-8px', marginTop: -4 }}>
+                    <Flex css={{ marginLeft: '-8px', marginTop: '-4px' }}>
                       <InlineCode>{item.term}</InlineCode>
                     </Flex>
                   ) : (
@@ -323,7 +321,7 @@ const GlossarySection = (props: GlossarySectionProps) => {
               digitCount={maxTermCountDigits}
               css={{
                 color: 'var(--text-tertiary)',
-                fontSize: 13,
+                fontSize: '13px',
                 letterSpacing: 0,
                 margin: 0,
                 textAlign: 'left',
@@ -340,12 +338,12 @@ const GlossarySection = (props: GlossarySectionProps) => {
                 alignItems: 'center',
                 display: 'flex',
                 flex: '0 1 280px',
-                minHeight: 48,
+                minHeight: '48px',
                 minWidth: 0,
                 position: 'relative',
                 width: '100%',
                 '& input': {
-                  paddingLeft: 38,
+                  paddingLeft: '38px',
                 },
                 '& input::-webkit-search-cancel-button': {
                   WebkitAppearance: 'none',
@@ -404,7 +402,7 @@ const GlossarySection = (props: GlossarySectionProps) => {
                       css={{
                         color: 'var(--text-tertiary)',
                         display: 'flex',
-                        left: 14,
+                        left: '14px',
                         pointerEvents: 'none',
                         position: 'absolute',
                         top: '50%',

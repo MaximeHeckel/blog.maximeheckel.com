@@ -1,16 +1,14 @@
-import {
-  Card,
-  Flex,
-  Grid,
-  Label,
-  Radio,
-  Text,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import React from 'react';
 
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Label from '@core/components/Label';
+import Radio from '@core/components/Radio';
 import { Select } from '@core/components/Select';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 interface CellProps {
   value: number;
@@ -24,12 +22,15 @@ const Cell = (props: CellProps) => {
     <Tooltip content={value < 0 ? '0.000' : value.toFixed(3)}>
       <Flex
         alignItems="center"
+        style={{
+          backgroundColor: `rgb(${value * 255},${value * 255},${value * 255})`,
+        }}
         css={{
           aspectRatio: '1 / 1',
           cursor: 'pointer',
           borderBottom: '0.5px solid var(--gray-700)',
           borderLeft: '0.5px solid var(--gray-700)',
-          backgroundColor: `rgb(${value * 255},${value * 255},${value * 255})`,
+
           overflow: 'hidden',
         }}
         justifyContent="center"
@@ -233,6 +234,7 @@ const FragmentShaderVisualizer = () => {
             <Label htmlFor="shader-function">Shader Function</Label>
             <Select
               id="shader-function"
+              label="Shader function"
               items={shaderOptions}
               value={shader}
               onChange={(value) =>

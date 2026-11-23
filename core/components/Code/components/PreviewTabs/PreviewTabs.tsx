@@ -1,11 +1,9 @@
-import {
-  Box,
-  Flex,
-  Icon,
-  IconButton,
-  Text,
-  Tooltip,
-} from '@maximeheckel/design-system';
+import Box from '@core/components/Box';
+import { IconButton } from '@core/components/Button';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 import {
   CustomClearConsoleButton,
@@ -24,7 +22,7 @@ const PreviewTabs = (props: PreviewTabsProps) => {
       css={{
         padding: '0 var(--space-2)',
         background: 'var(--background)',
-        minHeight: 48,
+        minHeight: '48px',
         width: '100%',
         borderBottom: '1px solid var(--border-color)',
       }}

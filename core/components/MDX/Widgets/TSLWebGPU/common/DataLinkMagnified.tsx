@@ -1,6 +1,8 @@
-import { Box, Text } from '@maximeheckel/design-system';
 import { AnimationPlaybackControls, useAnimate } from 'motion/react';
 import { useRef, useEffect, useCallback } from 'react';
+
+import Box from '@core/components/Box';
+import Text from '@core/components/Typography';
 
 import { seededRandom } from './util';
 
@@ -134,7 +136,11 @@ export const DataLinkMagnified = (props: {
                   rotate: `${baseAngleDegrees}deg`,
                 }}
               >
-                <Text css={{ fontSize: 10 }} variant="primary" family="mono">
+                <Text
+                  css={{ fontSize: '10px' }}
+                  variant="primary"
+                  family="mono"
+                >
                   {item}
                 </Text>
               </div>

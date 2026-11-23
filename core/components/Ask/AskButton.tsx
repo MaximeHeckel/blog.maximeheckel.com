@@ -1,4 +1,4 @@
-import { Button } from '@maximeheckel/design-system';
+import Button from '@core/components/Button';
 
 import { useAsk } from './AskContext';
 

@@ -1,8 +1,11 @@
-import { Card, Flex, Grid, Switch } from '@maximeheckel/design-system';
 import React, { useDeferredValue, useMemo, useState } from 'react';
 
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import { Select } from '@core/components/Select';
 import { Slider } from '@core/components/Slider';
+import Switch from '@core/components/Switch';
 
 const WIDTH = 16;
 const HEIGHT = 16;
@@ -119,13 +122,14 @@ const Cell = (props: CellProps) => {
   return (
     <Grid.Item
       data-cell-id={`${originalUV[0]}-${originalUV[1]}`}
+      style={{ backgroundColor: color }}
       css={{
         all: 'unset',
         aspectRatio: '1 / 1',
         textAlign: 'center',
         overflow: 'hidden',
         position: 'relative',
-        backgroundColor: color,
+
         alignContent: 'center',
         borderRight: isRightBorder
           ? '1px solid var(--blue-700)'
@@ -226,6 +230,7 @@ const PixelizationVisualizer = (props: { showPatterns?: boolean }) => {
             />
             <Select
               id="pattern-function"
+              label="Pattern"
               items={patternOptions}
               value={pattern}
               onChange={(value) => setPattern(value as keyof typeof patterns)}

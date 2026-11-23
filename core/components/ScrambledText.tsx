@@ -1,8 +1,11 @@
-import { Text, VariantProps, CSS, Box } from '@maximeheckel/design-system';
 import { motion, useReducedMotion } from 'motion/react';
 import { useReducer, useEffect, useRef, useLayoutEffect } from 'react';
 import { useState } from 'react';
+import type { StyledVariantProps as VariantProps } from 'styled-system/jsx';
+import type { SystemStyleObject as CSS } from 'styled-system/types';
 
+import Box from '@core/components/Box';
+import Text from '@core/components/Typography';
 import useInterval from '@core/hooks/useInterval';
 
 import { ClientOnly } from './ClientOnly';
@@ -84,7 +87,7 @@ const ScrambledTextAnimation = ({
 
   if (!dimensions) {
     return (
-      <Box ref={measureRef} {...rest} css={{ ...css, opacity: 0 }}>
+      <Box ref={measureRef} {...rest} aria-hidden css={{ ...css, opacity: 0 }}>
         <Text ref={measureRef} {...rest}>
           {children}
         </Text>
@@ -154,6 +157,7 @@ export const ScrambledText = ({
       {disabled ? (
         <Text
           {...props}
+          aria-hidden
           css={css}
           suppressHydrationWarning
           style={{ opacity: 0 }}
@@ -172,7 +176,7 @@ export const ScrambledText = ({
             }
           >
             {shouldReduceMotion ? (
-              <Text {...props} css={css}>
+              <Text {...props} aria-hidden css={css}>
                 {children}
               </Text>
             ) : (

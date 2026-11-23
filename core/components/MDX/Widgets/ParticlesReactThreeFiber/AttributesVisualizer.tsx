@@ -1,13 +1,12 @@
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Icon,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React, { useEffect, useState } from 'react';
+
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Tooltip from '@core/components/Tooltip';
 
 const START_PX = 280;
 const DIMENSION_ARRAY_ITEM = 40;
@@ -38,7 +37,7 @@ const AttributesVisualizer = () => {
       <Card.Body>
         <Box
           css={{
-            height: 50,
+            height: '50px',
           }}
         >
           <Flex
@@ -109,7 +108,7 @@ const AttributesVisualizer = () => {
             ))}
           </Flex>
         </Box>
-        <Box css={{ height: 120 }}>
+        <Box css={{ height: '120px' }}>
           <Flex
             as={motion.div}
             initial={{ x: START_PX - ITEM_SIZE * DIMENSION_ARRAY_ITEM }}
@@ -146,7 +145,7 @@ const AttributesVisualizer = () => {
                     color: 'var(--accent)',
                     border: '2px solid var(--accent)',
                     borderRadius: 'var(--border-radius-1)',
-                    height: 40,
+                    height: '40px',
                     width: ITEM_SIZE * DIMENSION_ARRAY_ITEM,
                   }}
                   initial={{ opacity: 0, y: 0 }}
@@ -177,8 +176,8 @@ const AttributesVisualizer = () => {
                           fontSize: 'var(--font-size-1)',
                           fontWeight: 'var(--font-weight-500)',
                           userSelect: 'none',
-                          top: -24,
-                          left: -20,
+                          top: '-24px',
+                          left: '-20px',
                         }}
                       >
                         {LABEL} {index + 1}

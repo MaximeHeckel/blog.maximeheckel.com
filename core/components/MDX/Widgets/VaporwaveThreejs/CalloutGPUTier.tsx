@@ -1,6 +1,5 @@
-import { Text } from '@maximeheckel/design-system';
-
 import Callout from '@core/components/Callout';
+import Text from '@core/components/Typography';
 import useGPUTier from '@core/hooks/useGPUTier';
 
 const CalloutGPUTier = () => {

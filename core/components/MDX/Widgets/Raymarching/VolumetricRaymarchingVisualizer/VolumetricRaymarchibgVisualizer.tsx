@@ -1,16 +1,14 @@
-import {
-  Button,
-  Card,
-  Flex,
-  Grid,
-  Icon,
-  Text,
-  Tooltip,
-} from '@maximeheckel/design-system';
 import { motion } from 'motion/react';
 import React, { useMemo, useState } from 'react';
 
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
+import Icon from '@core/components/Icon';
 import { Slider } from '@core/components/Slider';
+import Tooltip from '@core/components/Tooltip';
+import Text from '@core/components/Typography';
 
 interface CellProps {
   value: number;
@@ -31,11 +29,12 @@ const Cell = (props: CellProps) => {
   return (
     <Flex
       alignItems="center"
+      style={{ backgroundColor: color }}
       css={{
         aspectRatio: '1 / 1',
         borderBottom: '0.5px solid var(--gray-700)',
         borderLeft: '0.5px solid var(--gray-700)',
-        backgroundColor: color,
+
         overflow: 'hidden',
       }}
       justifyContent="center"
@@ -45,7 +44,7 @@ const Cell = (props: CellProps) => {
       (x === 0 && y === 1) ||
       (x === 1 && y === 0) ||
       (x === 0.5 && y === 0.5) ? (
-        <Text role="presentation" css={{ fontSize: 10 }}>
+        <Text role="presentation" css={{ fontSize: '10px' }}>
           {x - 0.5},{y - 0.5}
         </Text>
       ) : null}
@@ -156,10 +155,16 @@ const VolumetricRaymarchingVisualizer = () => {
         </Flex>
         <Flex alignItems="center" css={{ width: '100%' }} gap="3">
           <Tooltip content="Reset">
-            <Button icon={<Icon.Repeat />} onClick={restart} variant="icon" />
+            <Button
+              aria-label="Reset"
+              icon={<Icon.Repeat />}
+              onClick={restart}
+              variant="icon"
+            />
           </Tooltip>
           <Tooltip content="Next Step">
             <Button
+              aria-label="Next Step"
               disabled={step === MAX_STEP}
               icon={<Icon.Arrow />}
               onClick={nextStep}

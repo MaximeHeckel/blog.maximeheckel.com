@@ -1,17 +1,20 @@
-import { Box, Card, Flex, css } from '@maximeheckel/design-system';
 import React from 'react';
+import { css } from 'styled-system/css';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
 import { Slider } from '@core/components/Slider';
 
 const channelSplit = css({
   position: 'absolute',
   top: 0,
   left: 0,
-  width: 100,
-  height: 100,
+  width: '100px',
+  height: '100px',
   borderRadius: '50%',
   mixBlendMode: 'color-dodge',
-})();
+});
 
 const RGBShiftVisualizer = (props: { enableSampling?: boolean }) => {
   const { enableSampling } = props;
@@ -38,7 +41,7 @@ const RGBShiftVisualizer = (props: { enableSampling?: boolean }) => {
           key="foo"
         >
           <Box
-            css={{ margin: 0, opacity: 0, width: 100, height: 100 }}
+            css={{ margin: 0, opacity: 0, width: '100px', height: '100px' }}
             id="static"
           />
 
@@ -47,11 +50,14 @@ const RGBShiftVisualizer = (props: { enableSampling?: boolean }) => {
               <React.Fragment key={index}>
                 <Box
                   className={channelSplit}
-                  css={{
-                    background: '#f00',
+                  style={{
                     transform: `translate(${
                       -1 * (split * 5 + index * split)
                     }px, 0)`,
+                  }}
+                  css={{
+                    background: '#f00',
+
                     willChange: 'transform',
                   }}
                   id="red"
@@ -59,11 +65,14 @@ const RGBShiftVisualizer = (props: { enableSampling?: boolean }) => {
                 />
                 <Box
                   className={channelSplit}
-                  css={{
-                    background: '#0f0',
+                  style={{
                     transform: `translate(${
                       index % 2 ? index * split : -1 * index * split
                     }px, 0)`,
+                  }}
+                  css={{
+                    background: '#0f0',
+
                     willChange: 'transform',
                   }}
                   id="green"
@@ -71,9 +80,12 @@ const RGBShiftVisualizer = (props: { enableSampling?: boolean }) => {
                 />
                 <Box
                   className={channelSplit}
+                  style={{
+                    transform: `translate(${split * 5 + index * split}px, 0)`,
+                  }}
                   css={{
                     background: '#00f',
-                    transform: `translate(${split * 5 + index * split}px, 0)`,
+
                     willChange: 'transform',
                   }}
                   id="green"

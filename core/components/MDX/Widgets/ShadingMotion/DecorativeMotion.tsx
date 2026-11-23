@@ -1,5 +1,6 @@
-import { Box } from '@maximeheckel/design-system';
 import { useMemo } from 'react';
+
+import Box from '@core/components/Box';
 
 export const DecorativeMotion = (props: {
   variant: 'blob-tracking' | 'optical-flow' | 'motion-blur';

@@ -1,16 +1,14 @@
-import {
-  Box,
-  Button,
-  Card,
-  EM,
-  Flex,
-  Label,
-  Pill,
-  Text,
-  TextInput,
-} from '@maximeheckel/design-system';
 import { AnimatePresence, motion } from 'motion/react';
 import { FormEvent, startTransition, useState } from 'react';
+
+import Box from '@core/components/Box';
+import Button from '@core/components/Button';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Label from '@core/components/Label';
+import Pill from '@core/components/Pill';
+import TextInput from '@core/components/TextInput';
+import Text, { EM } from '@core/components/Typography';
 
 type Result = {
   title: string;
@@ -102,7 +100,7 @@ const DemoSearch = () => {
               as="button"
               css={{
                 padding: 0,
-                MozAppearance: 'none',
+
                 WebkitAppearance: 'none',
                 background: 'transparent',
                 color: 'inherit',
@@ -122,7 +120,7 @@ const DemoSearch = () => {
           css={{
             borderRadius: 'var(--border-radius-2)',
             overflowY: 'auto',
-            height: 275,
+            height: '275px',
             width: '100%',
             padding: 'var(--space-3)',
             background: 'hsl(from var(--gray-400) h s l / 30%)',

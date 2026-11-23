@@ -1,4 +1,3 @@
-import { Box } from '@maximeheckel/design-system';
 import {
   useFBO,
   PerspectiveCamera,
@@ -14,7 +13,6 @@ import {
   useThree,
 } from '@react-three/fiber';
 import { EffectComposer } from '@react-three/postprocessing';
-import dynamic from 'next/dynamic';
 import { Effect } from 'postprocessing';
 import {
   Suspense,
@@ -26,14 +24,11 @@ import {
 } from 'react';
 import * as THREE from 'three';
 
-import type { SceneControls } from './SceneDebugControls';
+import Box from '@core/components/Box';
+
 import { DepthOfFieldMaterial, SimulationMaterial } from './SceneMaterials';
 import HalftoneFragmentShader from './postprocessing/ascii.glsl';
 import { wrapEffect } from './utils';
-
-const SceneDebugControls = dynamic(() => import('./SceneDebugControls'), {
-  ssr: false,
-});
 
 declare module '@react-three/fiber' {
   interface ThreeElements {
@@ -330,11 +325,6 @@ export const Scene = () => {
   const [isActive, setIsActive] = useState(false);
   const [shouldReduceMotion, setShouldReduceMotion] = useState(false);
   const [DPR, setDPR] = useState(1.0);
-  const [showDebug, setShowDebug] = useState(false);
-  const [controls, setControls] = useState<SceneControls>({
-    frequency: 0.3,
-    pixelSize: 4.0,
-  });
 
   useEffect(() => {
     const container = containerRef.current;
@@ -361,10 +351,6 @@ export const Scene = () => {
     };
   }, []);
 
-  useEffect(() => {
-    setShowDebug(new URLSearchParams(window.location.search).has('debug'));
-  }, []);
-
   if (typeof window !== 'undefined' && window.Cypress) {
     return null;
   }
@@ -388,8 +374,6 @@ export const Scene = () => {
         },
       }}
     >
-      {showDebug ? <SceneDebugControls onChange={setControls} /> : null}
-      {/* Keep the drawing buffer and camera in sync with the panel's width transition. */}
       <Canvas
         id="main-canvas"
         shadows
@@ -410,7 +394,8 @@ export const Scene = () => {
           <ParticleLemniscate
             isActive={isActive}
             shouldReduceMotion={shouldReduceMotion}
-            {...controls}
+            frequency={0.3}
+            pixelSize={4}
           />
           <Background />
           <RevealCanvas />

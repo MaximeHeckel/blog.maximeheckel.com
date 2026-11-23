@@ -1,7 +1,11 @@
-import { Card, Flex, Grid, Switch } from '@maximeheckel/design-system';
 import React, { useMemo, useState } from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import { Slider } from '@core/components/Slider';
+import Switch from '@core/components/Switch';
 
 const WIDTH = 63;
 const HEIGHT = 31;
@@ -62,8 +66,7 @@ const Cell = (props: CellProps) => {
   const color = `rgb(${r * 48}, ${g * 184}, ${b * 255})`;
 
   return (
-    <Flex
-      alignItems="center"
+    <Box
       css={{
         all: 'unset',
         aspectRatio: '1 / 1',
@@ -72,13 +75,12 @@ const Cell = (props: CellProps) => {
         textAlign: 'center',
         overflow: 'hidden',
         position: 'relative',
-        maxWidth: 20,
+        maxWidth: '20px',
       }}
-      justifyContent="center"
       style={{
         backgroundColor: color,
       }}
-    ></Flex>
+    ></Box>
   );
 };
 

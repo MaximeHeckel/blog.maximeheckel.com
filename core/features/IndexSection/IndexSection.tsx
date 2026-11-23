@@ -1,7 +1,10 @@
-import { Box, Flex, Grid, Text } from '@maximeheckel/design-system';
 import dynamic from 'next/dynamic';
 
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
+import Grid from '@core/components/Grid';
 import Headline from '@core/components/Headline';
+import Text from '@core/components/Typography';
 
 const Scene = dynamic(() => import('./Scene').then((mod) => mod.Scene), {
   ssr: false,

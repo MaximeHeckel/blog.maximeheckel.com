@@ -1,16 +1,14 @@
-import {
-  css,
-  Card,
-  Flex,
-  Icon,
-  Pill,
-  Text,
-  Switch,
-} from '@maximeheckel/design-system';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import React from 'react';
+import { css } from 'styled-system/css';
 
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
+import Pill from '@core/components/Pill';
+import Switch from '@core/components/Switch';
+import Text from '@core/components/Typography';
 
 const ITEMS = [
   {
@@ -83,7 +81,7 @@ const List = (props: {
                     border: 'none',
                     color: 'var(--text-secondary)',
                     cursor: 'pointer',
-                  })()}
+                  })}
                   onClick={() =>
                     setListItems((prev) =>
                       prev.filter((task) => task.id !== item.id)

@@ -1,6 +1,7 @@
-import { Card, Flex, Text } from '@maximeheckel/design-system';
-
+import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
+import Flex from '@core/components/Flex';
+import Text from '@core/components/Typography';
 
 const TextShowcase = () => {
   const codeString = `const App = () => {
@@ -42,7 +43,7 @@ const TextShowcase = () => {
         <Text family="mono" outline size="7">
           Almost before we knew it, we had left the ground.
         </Text>
-        <Flex css={{ maxWidth: 250 }}>
+        <Flex css={{ maxWidth: '250px' }}>
           <Text truncate>
             Almost before we knew it, we had left the ground.
           </Text>

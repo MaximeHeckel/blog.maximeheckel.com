@@ -1,4 +1,3 @@
-import { Flex, GlassMaterial, Icon, Text } from '@maximeheckel/design-system';
 import { cloudflareLoader } from 'lib/next-image-loader';
 import {
   motion,
@@ -9,6 +8,11 @@ import {
   useTransform,
 } from 'motion/react';
 import { useState, useRef, useEffect, useId } from 'react';
+
+import Flex from '@core/components/Flex';
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Icon from '@core/components/Icon';
+import Text from '@core/components/Typography';
 
 import { glassBorderShine } from '../GlassBorder.styles';
 import * as S from './BeforeAfterImage.styles';
@@ -79,8 +83,8 @@ const Slider = ({ progress, pull, clipId, width, height }: SliderProps) => {
           css={{
             ...glassBorderShine,
             '--glass-border-base': 'oklch(from var(--gray-1100) l c h / 8%)',
-            width: 32,
-            height: 32,
+            width: '32px',
+            height: '32px',
             background: 'transparent',
             zIndex: 2,
             borderRadius: 'var(--border-radius-2)',
@@ -326,6 +330,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
               loading="eager"
               loader={cloudflareLoader}
               src={beforeSrc}
+              unoptimized={beforeSrc.startsWith('https://')}
               quality={100}
               width={width}
               height={height}
@@ -339,6 +344,7 @@ const BeforeAfterImage = (props: BeforeAfterImageProps) => {
                 loader={cloudflareLoader}
                 quality={100}
                 src={afterSrc}
+                unoptimized={afterSrc.startsWith('https://')}
                 width={width}
                 height={height}
               />

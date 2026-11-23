@@ -13,9 +13,9 @@ A personal blog built with Next.js featuring interactive articles about web deve
 | Category        | Technology                                                      |
 | --------------- | --------------------------------------------------------------- |
 | Framework       | Next.js 16 (Pages Router)                                       |
-| UI              | React 19, @maximeheckel/design-system                           |
+| UI              | React 19, local design system                                   |
 | Headless UI     | @base-ui/react (Select, Dialog, etc.)                           |
-| Styling         | Stitches (via design-system), CSS custom properties             |
+| Styling         | Panda CSS, CSS custom properties                                |
 | Animation       | Motion library (framer-motion successor)                        |
 | 3D/WebGL        | Three.js, @react-three/fiber, @react-three/drei, postprocessing |
 | Content         | MDX with next-mdx-remote                                        |
@@ -79,10 +79,9 @@ Follow [`docs/agent-guidelines/create-article.md`](docs/agent-guidelines/create-
 
 - **Pages Router**: This project uses Next.js Pages Router, NOT App Router
 - **SSG**: Blog posts are statically generated at build time
-- **Design System**: Most base components come from `@maximeheckel/design-system`
+- **Design System**: Base components live in `core/components/`
 - **Headless UI**: Use `@base-ui/react` for accessible primitives (Select, Dialog, etc.)
 - **No console.log**: Use proper error handling or remove debug statements
-- `@maximeheckel/design-system` codebase can be found at https://github.com/maximeheckel/design-system. The repository is public.
 
 ## Definition of Done
 

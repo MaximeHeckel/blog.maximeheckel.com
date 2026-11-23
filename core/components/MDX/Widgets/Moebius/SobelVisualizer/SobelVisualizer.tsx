@@ -1,15 +1,14 @@
-import {
-  Card,
-  Flex,
-  GlassMaterial,
-  Grid,
-  Label,
-  Radio,
-  Text,
-} from '@maximeheckel/design-system';
 import React, { useMemo, useState, useCallback } from 'react';
 
+import Box from '@core/components/Box';
+import Card from '@core/components/Card';
+import Flex from '@core/components/Flex';
+import { GlassMaterial } from '@core/components/GlassMaterial';
+import Grid from '@core/components/Grid';
+import Label from '@core/components/Label';
+import Radio from '@core/components/Radio';
 import { Select } from '@core/components/Select';
+import Text from '@core/components/Typography';
 
 interface CellProps {
   value: number;
@@ -32,9 +31,8 @@ const Cell = (props: CellProps) => {
 
   return (
     <>
-      <Flex
+      <Box
         as="button"
-        alignItems="center"
         css={{
           all: 'unset',
           aspectRatio: '1 / 1',
@@ -49,7 +47,6 @@ const Cell = (props: CellProps) => {
           },
         }}
         disabled={disabled}
-        justifyContent="center"
         onClick={onClick}
         style={{
           backgroundColor: color,
@@ -103,7 +100,7 @@ const Cell = (props: CellProps) => {
             </Text>
           </Flex>
         ) : null}
-      </Flex>
+      </Box>
     </>
   );
 };
@@ -300,6 +297,7 @@ const SobelVisualizer = () => {
             <Label htmlFor="shader-function">Fragment shader:</Label>
             <Select
               id="shader-function"
+              label="Shader function"
               items={shaderOptions}
               value={shader}
               minWidth={154}

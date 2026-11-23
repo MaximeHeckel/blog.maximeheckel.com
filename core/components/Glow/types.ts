@@ -1,4 +1,4 @@
-import { CSS } from '@maximeheckel/design-system';
+import type { SystemStyleObject as CSS } from 'styled-system/types';
 
 export interface GlowProps {
   css?: CSS;

@@ -1,4 +1,3 @@
-import { Box, Flex } from '@maximeheckel/design-system';
 import {
   useCallback,
   useEffect,
@@ -8,6 +7,8 @@ import {
   useState,
 } from 'react';
 
+import Box from '@core/components/Box';
+import Flex from '@core/components/Flex';
 import { Slider } from '@core/components/Slider';
 
 import {
@@ -299,7 +300,7 @@ export const Density = () => {
           width: '100%',
           flexDirection: 'column',
           gap: 'var(--space-3)',
-          '@md': {
+          '@media (min-width: 768px)': {
             flexDirection: 'row',
             alignItems: 'flex-start',
           },

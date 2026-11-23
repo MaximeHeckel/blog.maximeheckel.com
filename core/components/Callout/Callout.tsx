@@ -1,5 +1,8 @@
-import { CSS, Flex, Icon } from '@maximeheckel/design-system';
 import { ReactNode } from 'react';
+import type { SystemStyleObject as CSS } from 'styled-system/types';
+
+import Flex from '@core/components/Flex';
+import Icon from '@core/components/Icon';
 
 import {
   StyledCallout,
