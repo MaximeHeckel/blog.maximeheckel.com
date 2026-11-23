@@ -1,4 +1,6 @@
-import { keyframes, Shadows, styled } from 'lib/stitches.config';
+import { Shadows } from 'lib/tokens/shadows';
+import { keyframes } from 'styled-system/css';
+import { styled } from 'styled-system/jsx';
 
 const slideUpAndFadeIn = keyframes({
   '0%': { opacity: 0, transform: 'translateY(var(--space-1)) scale(0.98)' },
@@ -53,4 +55,4 @@ export const TooltipPopupStyles = {
   },
 } as const;
 
-export const StyledTooltipPopup = styled('div', TooltipPopupStyles);
+export const StyledTooltipPopup = styled('div', { base: TooltipPopupStyles });

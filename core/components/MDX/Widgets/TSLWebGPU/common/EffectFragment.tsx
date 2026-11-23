@@ -98,7 +98,7 @@ export const EffectFragment = ({ enabled = true }: { enabled?: boolean }) => {
           as={motion.div}
           css={{
             position: 'absolute',
-            top: 1.5,
+            top: '1.5px',
             left: 0,
             width: '100%',
             height: '100%',

@@ -1,4 +1,3 @@
-import { CSS } from 'lib/stitches.config';
 import React from 'react';
 
 import { DEFAULT_TAG } from './Typography.constants';
@@ -14,33 +13,10 @@ const Heading = (props: HeadingProps) => {
   const { size = '1', ...rest } = props;
 
   const headingSize: Record<HeadingSizeVariants, TextSizeVariants['size']> = {
-    1: { '@initial': '4' },
-    2: { '@initial': '5' },
-    3: { '@initial': '6' },
-    4: { '@initial': '7' },
-  };
-
-  const headingCSS: Record<HeadingSizeVariants, CSS> = {
-    1: {
-      fontWeight: 'var(--font-weight-600)',
-      lineHeight: '1.5',
-      letterSpacing: '-0.3px',
-    },
-    2: {
-      fontWeight: 'var(--font-weight-600)',
-      lineHeight: '1.5',
-      letterSpacing: '-0.3px',
-    },
-    3: {
-      fontWeight: 'var(--font-weight-600)',
-      lineHeight: '1.5',
-      letterSpacing: '-0.3px',
-    },
-    4: {
-      fontWeight: 'var(--font-weight-600)',
-      lineHeight: '1.5',
-      letterSpacing: '-0.3px',
-    },
+    1: '4',
+    2: '5',
+    3: '6',
+    4: '7',
   };
 
   return (
@@ -49,7 +25,9 @@ const Heading = (props: HeadingProps) => {
       {...rest}
       size={headingSize[size]}
       css={{
-        ...headingCSS[size],
+        fontWeight: 'var(--font-weight-600)',
+        lineHeight: '1.5',
+        letterSpacing: '-0.3px',
         ...props.css,
       }}
     />

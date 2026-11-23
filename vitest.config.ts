@@ -15,6 +15,7 @@ export default defineConfig({
       '@core': resolve(__dirname, 'core'),
       lib: resolve(__dirname, './lib'),
       styles: resolve(__dirname, './styles'),
+      'styled-system': resolve(__dirname, './styled-system'),
     },
   },
   test: {

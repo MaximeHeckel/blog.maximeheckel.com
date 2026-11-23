@@ -43,8 +43,10 @@ const VideoPlayer = (props: VideoPlayerProps) => {
   return (
     <Box
       ref={ref}
+      style={{
+        aspectRatio: width && height ? `${width} / ${height}` : undefined,
+      }}
       css={{
-        aspectRatio: `${width} / ${height}`,
         position: 'relative',
         margin: '0 auto',
         background: 'var(--foreground)',

@@ -77,3 +77,4 @@ certificates/
 twitter_video_out/
 
 .pnpm-store/
+/styled-system/

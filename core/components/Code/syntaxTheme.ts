@@ -22,44 +22,48 @@ export const syntaxTheme = {
 };
 
 export const syntaxTokenStyles = {
-  '.token.parameter,.token.imports,.token.plain,.token.property,.token.variable':
-    {
-      color: 'var(--token-text)',
-    },
+  // Prism can assign several token classes to one span. Keep the plain-text
+  // fallback below syntax colors and retain tag precedence for nested tokens.
+  '& .token:where(.parameter, .imports, .plain, .property, .variable)': {
+    color: 'var(--token-text)',
+  },
 
-  '.token.comment,.token.prolog,.token.doctype,.token.cdata': {
+  '& .token.comment, & .token.prolog, & .token.doctype, & .token.cdata': {
     color: 'var(--token-comment)',
   },
 
-  '.token.punctuation': {
+  '& .token.punctuation': {
     color: 'var(--token-punctuation)',
   },
 
-  '.token.boolean,.token.number,.token.constant,.token.symbol': {
+  '& .token.boolean, & .token.number, & .token.constant, & .token.symbol': {
     color: 'var(--token-number)',
   },
 
-  '.token.char,.token.string,.token.attr-value,.token.regex,.token.url': {
-    color: 'var(--token-string)',
-  },
+  '& .token.char, & .token.string, & .token.attr-value, & .token.regex, & .token.url':
+    {
+      color: 'var(--token-string)',
+    },
 
-  '.token.builtin,.token.class-name,.token.maybe-class-name,.token.attr-name': {
-    color: 'var(--token-type)',
-  },
+  '& .token.builtin, & .token.class-name, & .token.maybe-class-name, & .token.attr-name':
+    {
+      color: 'var(--token-type)',
+    },
 
-  '.token.operator,.token.entity': {
+  '& .token.operator, & .token.entity': {
     color: 'var(--token-operator)',
   },
 
-  '.token.operator[data-arrow]': {
+  '& .token.operator[data-arrow]': {
     color: 'var(--token-string)',
   },
 
-  '.token.atrule,.token.keyword,.token.tag,.token.important': {
-    color: 'var(--token-keyword)',
-  },
+  '& .token:is(.atrule, .keyword, .tag, .important):not(.operator[data-arrow])':
+    {
+      color: 'var(--token-keyword)',
+    },
 
-  '.token.function,.token.function-variable,.token.selector': {
+  '& .token.function, & .token.function-variable, & .token.selector': {
     color: 'var(--token-function)',
   },
 };

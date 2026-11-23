@@ -1,4 +1,5 @@
-import { CSS, VariantProps } from 'lib/stitches.config';
+import type { StyledVariantProps as VariantProps } from 'styled-system/jsx';
+import type { SystemStyleObject as CSS } from 'styled-system/types';
 
 import * as S from './Grid.styles';
 
@@ -24,6 +25,8 @@ export interface GridItemProps {
   colSpan?: number;
   colStart?: number;
   css?: CSS;
+  style?: React.CSSProperties;
+  className?: string;
   row?: number;
   rowEnd?: number;
   rowSpan?: number;
@@ -48,4 +51,6 @@ export interface GridProps {
   templateColumns?: string;
   children?: React.ReactNode;
   css?: CSS;
+  style?: React.CSSProperties;
+  className?: string;
 }

@@ -1,7 +1,7 @@
-import { styled } from 'lib/stitches.config';
 import { motion, useReducedMotion } from 'motion/react';
 import { Highlight } from 'prism-react-renderer';
 import { FocusEvent, memo, useMemo, useRef, useState } from 'react';
+import { styled } from 'styled-system/jsx';
 
 import Card from '@core/components/Card';
 import Flex from '@core/components/Flex';
@@ -204,114 +204,126 @@ const CodeBlock = (props: CodeBlockProps) => {
 export default CodeBlock;
 
 const FloatingActions = styled(motion.div, {
-  position: 'absolute',
-  // Center on the first code line (24px tall), regardless of the button height.
-  top: 'calc(var(--space-2) + 12px)',
-  translate: '0 -50%',
-  right: 'var(--space-2)',
-  zIndex: 3,
-  borderRadius: 'var(--border-radius-2)',
-  background: 'var(--code-snippet-background)',
-  boxShadow: '0 2px 8px oklch(0% 0 0 / 12%)',
-  // Touch devices have no hover affordance; keep the actions available.
-  '@media (hover: none)': {
-    opacity: '1 !important',
-    transform: 'none !important',
-    pointerEvents: 'auto !important',
+  base: {
+    position: 'absolute',
+    // Center on the first code line (24px tall), regardless of the button height.
+    top: 'calc(var(--space-2) + 12px)',
+    translate: '0 -50%',
+    right: 'var(--space-2)',
+    zIndex: 3,
+    borderRadius: 'var(--border-radius-2)',
+    background: 'var(--code-snippet-background)',
+    boxShadow: '0 2px 8px oklch(0% 0 0 / 12%)',
+    // Touch devices have no hover affordance; keep the actions available.
+    '@media (hover: none)': {
+      opacity: '1 !important',
+      transform: 'none !important',
+      pointerEvents: 'auto !important',
+    },
   },
 });
 
 const Pre = styled('pre', {
-  ...syntaxTheme,
-  '--shadow-size': '70px',
-  '--shadow-color': 'oklch(from var(--gray-000) l c h / 0.75)',
-  marginTop: '0',
-  marginBottom: '0',
-  textAlign: 'left',
-  padding: 'var(--space-2) 0px',
-  borderBottomLeftRadius: 'var(--code-block-radius, var(--border-radius-2))',
-  borderBottomRightRadius: 'var(--code-block-radius, var(--border-radius-2))',
-  backgroundColor: 'var(--code-snippet-background)',
-  color: 'var(--token-text)',
-  fontFamily: 'var(--font-mono-code)',
-  fontSize: 'var(--font-size-1)',
-  lineHeight: '24px',
-  overflowX: 'auto',
+  base: {
+    ...syntaxTheme,
+    '--shadow-size': '70px',
+    '--shadow-color': 'oklch(from var(--gray-000) l c h / 0.75)',
+    marginTop: '0',
+    marginBottom: '0',
+    textAlign: 'left',
+    padding: 'var(--space-2) 0px',
+    borderBottomLeftRadius: 'var(--code-block-radius, var(--border-radius-2))',
+    borderBottomRightRadius: 'var(--code-block-radius, var(--border-radius-2))',
+    backgroundColor: 'var(--code-snippet-background)',
+    color: 'var(--token-text)',
+    fontFamily: 'var(--font-mono-code)',
+    fontSize: 'var(--font-size-1)',
+    lineHeight: '24px',
+    overflowX: 'auto',
 
-  '&::before, &::after': {
-    content: '""',
-    position: 'absolute',
-    top: '0',
-    width: 'var(--shadow-size, 40px)',
-    height: '100%',
-    pointerEvents: 'none',
-    zIndex: '2',
+    '&::before, &::after': {
+      content: '""',
+      position: 'absolute',
+      top: '0',
+      width: 'var(--shadow-size, 40px)',
+      height: '100%',
+      pointerEvents: 'none',
+      zIndex: '2',
+    },
+
+    '&::before': {
+      left: '0',
+      opacity: 'var(--shadow-opacity-left, 0)',
+      background: 'linear-gradient(to right, var(--shadow-color), transparent)',
+    },
+
+    '&::after': {
+      right: '0',
+
+      opacity: 'var(--shadow-opacity-right, 0)',
+      background: 'linear-gradient(to left, var(--shadow-color), transparent)',
+    },
+
+    ...syntaxTokenStyles,
   },
-
-  '&::before': {
-    left: '0',
-    opacity: 'var(--shadow-opacity-left, 0)',
-    background: 'linear-gradient(to right, var(--shadow-color), transparent)',
-  },
-
-  '&::after': {
-    right: '0',
-
-    opacity: 'var(--shadow-opacity-right, 0)',
-    background: 'linear-gradient(to left, var(--shadow-color), transparent)',
-  },
-
-  ...syntaxTokenStyles,
 });
 
 const Line = styled('div', {
-  display: 'table',
-  borderCollapse: 'collapse',
-  padding: '0px 14px',
-  borderLeft: '3px solid transparent',
+  base: {
+    display: 'table',
+    borderCollapse: 'collapse',
+    padding: '0px 14px',
+    borderLeft: '3px solid transparent',
 
-  '&.highlight-line': {
-    background: 'var(--emphasis)',
-    borderColor: 'var(--accent)',
-  },
-
-  '&[data-diff="added"]': {
-    width: '100%',
-    backgroundColor: 'oklch(from var(--green-1100) l c h / 0.12)',
-    '&:not([data-diff-syntax]) .token, .token.prefix': {
-      color: 'var(--green-1100)',
+    '&.highlight-line': {
+      background: 'var(--emphasis)',
+      borderColor: 'var(--accent)',
     },
-  },
 
-  '&[data-diff="removed"]': {
-    width: '100%',
-    backgroundColor: 'oklch(from var(--red-1100) l c h / 0.12)',
-    '&:not([data-diff-syntax]) .token, .token.prefix': {
-      color: 'var(--red-1100)',
+    '&[data-diff="added"]': {
+      width: '100%',
+      backgroundColor: 'oklch(from var(--green-1100) l c h / 0.12)',
+      '&:not([data-diff-syntax]) .token, .token.prefix': {
+        color: 'var(--green-1100)',
+      },
+    },
+
+    '&[data-diff="removed"]': {
+      width: '100%',
+      backgroundColor: 'oklch(from var(--red-1100) l c h / 0.12)',
+      '&:not([data-diff-syntax]) .token, .token.prefix': {
+        color: 'var(--red-1100)',
+      },
     },
   },
 });
 
 const LineNo = styled('div', {
-  width: '45px',
-  padding: '0 12px',
-  userSelect: 'none',
-  opacity: '1',
-  color: 'var(--text-tertiary)',
+  base: {
+    width: '45px',
+    padding: '0 12px',
+    userSelect: 'none',
+    opacity: '1',
+    color: 'var(--text-tertiary)',
+  },
 });
 
 const LineContent = styled('span', {
-  display: 'table-cell',
-  width: '100%',
+  base: {
+    display: 'table-cell',
+    width: '100%',
+  },
 });
 
 const CodeSnippetTitle = styled('p', {
-  marginBlockStart: '0px',
-  marginInlineStart: '4px',
-  fontFamily: 'var(--font-mono)',
-  textTransform: 'uppercase',
-  fontSize: '13px',
-  marginBottom: '0px',
-  color: 'var(--text-tertiary)',
-  fontWeight: '500',
+  base: {
+    marginBlockStart: '0px',
+    marginInlineStart: '4px',
+    fontFamily: 'var(--font-mono)',
+    textTransform: 'uppercase',
+    fontSize: '13px',
+    marginBottom: '0px',
+    color: 'var(--text-tertiary)',
+    fontWeight: '500',
+  },
 });

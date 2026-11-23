@@ -1,6 +1,6 @@
 import type { AskAttachment } from 'lib/askAttachments';
-import { styled } from 'lib/stitches.config';
 import { Highlight } from 'prism-react-renderer';
+import { styled } from 'styled-system/jsx';
 
 import { IconButton } from '@core/components/Button';
 import Icon from '@core/components/Icon';
@@ -9,18 +9,20 @@ import { createDiffHighlighter } from '../Code/diff';
 import { syntaxTheme, syntaxTokenStyles } from '../Code/syntaxTheme';
 
 const Pill = styled('div', {
-  display: 'flex',
-  alignItems: 'center',
-  gap: 'var(--space-2)',
-  minWidth: 0,
-  boxSizing: 'border-box',
-  border: '1px solid oklch(from var(--text-primary) l c h / 5%)',
-  borderRadius: 'var(--border-radius-1)',
-  background: 'var(--code-snippet-background)',
-  padding: '0 var(--space-2)',
-  height: 'var(--space-6)',
-  color: 'var(--text-secondary)',
-  '> svg': { flexShrink: 0 },
+  base: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--space-2)',
+    minWidth: 0,
+    boxSizing: 'border-box',
+    border: '1px solid oklch(from var(--text-primary) l c h / 5%)',
+    borderRadius: 'var(--border-radius-1)',
+    background: 'var(--code-snippet-background)',
+    padding: '0 var(--space-2)',
+    height: 'var(--space-6)',
+    color: 'var(--text-secondary)',
+    '& > svg': { flexShrink: 0 },
+  },
   variants: {
     embedded: {
       true: {
@@ -33,27 +35,34 @@ const Pill = styled('div', {
 });
 
 const Preview = styled('span', {
-  ...syntaxTheme,
-  ...syntaxTokenStyles,
-  minWidth: 0,
-  flex: 1,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  userSelect: 'none',
-  WebkitUserSelect: 'none',
-  fontSize: '13px',
-  '& code': { fontFamily: 'var(--font-mono-code)', color: 'var(--token-text)' },
+  base: {
+    ...syntaxTheme,
+    ...syntaxTokenStyles,
+    minWidth: 0,
+    flex: 1,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    userSelect: 'none',
+    WebkitUserSelect: 'none',
+    fontSize: '13px',
+    '& code': {
+      fontFamily: 'var(--font-mono-code)',
+      color: 'var(--token-text)',
+    },
+  },
 });
 
 const RemoveButton = styled(IconButton, {
-  flexShrink: 0,
-  width: 22,
-  height: 22,
-  maxWidth: 22,
-  maxHeight: 22,
-  padding: 0,
-  borderRadius: '50%',
+  base: {
+    flexShrink: 0,
+    width: '22px',
+    height: '22px',
+    maxWidth: '22px',
+    maxHeight: '22px',
+    padding: 0,
+    borderRadius: '50%',
+  },
 });
 
 const attachmentLabels: Record<AskAttachment['kind'], [string, string]> = {

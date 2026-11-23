@@ -1,6 +1,6 @@
 import { Command, useCommandState } from 'cmdk';
 import { format } from 'date-fns';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence } from 'motion/react';
 import { useRouter } from 'next/router';
 import {
   KeyboardEvent,
@@ -153,7 +153,7 @@ const CommandSearchFallback = ({ onSearch }: { onSearch: () => void }) => {
   }, [query, count, onSearch]);
 
   return query.trim() && count === 0 ? (
-    <S.Loading as={Command.Loading}>Searching...</S.Loading>
+    <S.Loading>Searching...</S.Loading>
   ) : null;
 };
 
@@ -311,7 +311,6 @@ const CommandMenu = (props: CommandMenuProps) => {
           onKeyDown={handleKeyDown}
         >
           <S.Overlay
-            as={motion.div}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1.0 }}
             exit={{ opacity: 0 }}
@@ -319,7 +318,6 @@ const CommandMenu = (props: CommandMenuProps) => {
             onClick={() => onOpenChange(false)}
           />
           <S.Dialog
-            as={motion.div}
             data-testid="command-menu"
             initial={{ opacity: 0, scale: 0.95, x: '-50%' }}
             animate={{ opacity: 1, scale: 1, x: '-50%' }}
@@ -336,7 +334,6 @@ const CommandMenu = (props: CommandMenuProps) => {
               <ScreenReaderOnly as="h2">Command Menu</ScreenReaderOnly>
               <S.Input
                 ref={inputRef}
-                as={Command.Input}
                 data-testid="command-input"
                 placeholder={
                   isSearchMode ? 'Search blog posts...' : 'Type a command...'
@@ -347,19 +344,19 @@ const CommandMenu = (props: CommandMenuProps) => {
                   setSearchQuery(query);
                 }}
               />
-              <S.List as={Command.List}>
+              <S.List>
                 {isSearchMode ? (
                   <>
                     {searchStatus === 'loading' &&
                     searchResults.length === 0 &&
                     searchQuery ? (
-                      <S.Loading as={Command.Loading}>Searching...</S.Loading>
+                      <S.Loading>Searching...</S.Loading>
                     ) : null}
 
                     {searchStatus === 'done' &&
                     searchResults.length === 0 &&
                     activeSearchQuery ? (
-                      <S.Empty as={Command.Empty}>
+                      <S.Empty>
                         No posts found for &ldquo;{activeSearchQuery}&rdquo;
                       </S.Empty>
                     ) : null}
@@ -368,10 +365,9 @@ const CommandMenu = (props: CommandMenuProps) => {
                       recentSearches.length > 0 ? (
                         <>
                           <S.Group
-                            as={Command.Group}
                             heading="Recent searches"
                             css={{
-                              '[cmdk-group-heading]': {
+                              '& [cmdk-group-heading]': {
                                 color: 'var(--text-tertiary)',
                               },
                             }}
@@ -379,7 +375,6 @@ const CommandMenu = (props: CommandMenuProps) => {
                             {recentSearches.map((query) => (
                               <S.Item
                                 key={query}
-                                as={Command.Item}
                                 value={query}
                                 onSelect={() => handleRecentSearchSelect(query)}
                                 css={{ color: 'var(--text-secondary)' }}
@@ -389,7 +384,6 @@ const CommandMenu = (props: CommandMenuProps) => {
                             ))}
                           </S.Group>
                           <S.Item
-                            as={Command.Item}
                             value="Clear recent searches"
                             onSelect={handleClearRecentSearches}
                             keywords={['clear', 'recent', 'searches']}
@@ -406,11 +400,10 @@ const CommandMenu = (props: CommandMenuProps) => {
                     ) : null}
 
                     {searchResults.length > 0 ? (
-                      <S.Group as={Command.Group}>
+                      <S.Group>
                         {searchResults.map((result) => (
                           <S.Item
                             key={result.url}
-                            as={Command.Item}
                             value={result.title}
                             onSelect={() =>
                               handleSearchResultSelect(result.url)
@@ -430,9 +423,8 @@ const CommandMenu = (props: CommandMenuProps) => {
                 ) : (
                   <>
                     <CommandSearchFallback onSearch={handleSearchFallback} />
-                    <S.Group as={Command.Group} heading="Tools">
+                    <S.Group heading="Tools">
                       <S.Item
-                        as={Command.Item}
                         value="Search blog posts"
                         keywords={['find', 'articles', 'posts']}
                         onSelect={() => {
@@ -446,7 +438,6 @@ const CommandMenu = (props: CommandMenuProps) => {
                         <S.ItemLabel>Search blog posts...</S.ItemLabel>
                       </S.Item>
                       <S.Item
-                        as={Command.Item}
                         value="Ask"
                         keywords={['ai', 'question', 'chat', 'assistant']}
                         onSelect={handleAskAI}
@@ -461,7 +452,6 @@ const CommandMenu = (props: CommandMenuProps) => {
                         return (
                           <S.Item
                             key={action.id}
-                            as={Command.Item}
                             value={action.label}
                             keywords={action.keywords}
                             onSelect={() => handleActionSelect(action.onSelect)}
@@ -473,15 +463,10 @@ const CommandMenu = (props: CommandMenuProps) => {
                       })}
                     </S.Group>
 
-                    <S.Group
-                      as={Command.Group}
-                      heading="Navigation"
-                      data-testid="navigation"
-                    >
+                    <S.Group heading="Navigation" data-testid="navigation">
                       {NAVIGATION_ITEMS.map((item) => (
                         <S.Item
                           key={item.id}
-                          as={Command.Item}
                           value={item.label}
                           onSelect={() => handleNavigationSelect(item.href)}
                           data-testid={`nav-${item.id}`}
@@ -492,17 +477,12 @@ const CommandMenu = (props: CommandMenuProps) => {
                       ))}
                     </S.Group>
 
-                    <S.Group
-                      as={Command.Group}
-                      heading="Links"
-                      data-testid="links"
-                    >
+                    <S.Group heading="Links" data-testid="links">
                       {LINK_ITEMS.map((item) => {
                         const ItemIcon = IconMap[item.icon];
                         return (
                           <S.Item
                             key={item.id}
-                            as={Command.Item}
                             value={item.label}
                             onSelect={() =>
                               handleLinkSelect(item.href, item.internal)

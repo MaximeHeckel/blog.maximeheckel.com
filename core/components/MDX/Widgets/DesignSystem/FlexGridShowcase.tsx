@@ -7,8 +7,8 @@ import Grid from '@core/components/Grid';
 const StyledBox = () => (
   <Box
     css={{
-      height: 100,
-      width: 100,
+      height: '100px',
+      width: '100px',
       borderRadius: 'var(--border-radius-2)',
       background: 'white',
       backgroundImage:

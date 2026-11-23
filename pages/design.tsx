@@ -1,7 +1,7 @@
-import { styled } from 'lib/stitches.config';
 import { getTweets } from 'lib/tweets';
 import dynamic from 'next/dynamic';
 import React from 'react';
+import { styled } from 'styled-system/jsx';
 import { NewTweet } from 'types/tweet';
 
 import Anchor from '@core/components/Anchor';
@@ -53,7 +53,9 @@ const SandpackExample = dynamic(
 );
 
 const Label = styled('p', {
-  marginBottom: '8px',
+  base: {
+    marginBottom: '8px',
+  },
 });
 
 const SliderExample = () => {
@@ -61,7 +63,7 @@ const SliderExample = () => {
   return (
     <>
       <Slider
-        id="slider-1"
+        id="slider-medium"
         label="Slider"
         value={value}
         min={0}
@@ -69,7 +71,7 @@ const SliderExample = () => {
         onChange={(value) => setValue(value)}
       />
       <Slider
-        id="slider-2"
+        id="slider-medium-disabled"
         label="Slider"
         disabled
         value={250}
@@ -78,7 +80,7 @@ const SliderExample = () => {
         onChange={() => {}}
       />
       <Slider
-        id="slider-1"
+        id="slider-small"
         label="Slider"
         value={value}
         min={0}
@@ -87,7 +89,7 @@ const SliderExample = () => {
         size="sm"
       />
       <Slider
-        id="slider-2"
+        id="slider-small-disabled"
         label="Slider"
         disabled
         value={250}
@@ -128,8 +130,8 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
           width: '100%',
           backgroundColor: 'var(--background)',
           paddingTop: 'var(--space-10)',
-          borderBottomRightRadius: 4,
-          borderBottomLeftRadius: 4,
+          borderBottomRightRadius: '4px',
+          borderBottomLeftRadius: '4px',
           overflow: 'hidden',
         }}
         gapX={2}
@@ -276,7 +278,7 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                 <Grid
                   key={paletteItem}
                   css={{
-                    marginRight: '$3',
+                    marginRight: 'var(--space-3)',
                   }}
                   templateColumns="repeat(auto-fill, minmax(2rem, 1fr))"
                 >
@@ -288,11 +290,12 @@ export default function Design(props: { tweets: Record<string, NewTweet> }) {
                     >
                       <Box
                         as="section"
+                        style={{ background: `var(--${paletteItem}-${shade})` }}
                         css={{
                           width: '44px',
                           height: '44px',
                           borderRadius: '50%',
-                          background: `var(--${paletteItem}-${shade})`,
+
                           border: '2px solid var(--border-color)',
                         }}
                       />
@@ -986,10 +989,8 @@ they can change the world, are the ones who do.`}
             </Grid>
             <br />
             <Grid
+              css={{ width: '100%' }}
               gap={3}
-              css={{
-                width: '100%',
-              }}
               templateColumns="repeat(2, minmax(2rem, 1fr))"
             >
               <SliderExample />

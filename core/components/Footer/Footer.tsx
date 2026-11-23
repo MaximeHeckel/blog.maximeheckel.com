@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { styled } from 'lib/stitches.config';
+import { withAs } from 'lib/panda';
 import {
   motion,
   useAnimation,
@@ -8,6 +8,7 @@ import {
 } from 'motion/react';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
+import { styled } from 'styled-system/jsx';
 
 import Anchor from '@core/components/Anchor';
 import Box from '@core/components/Box';
@@ -48,26 +49,30 @@ const getBrowser = () => {
   }
 };
 
-const FooterBlock = styled('footer', {
-  transition: '0.5s',
-  width: '100%',
-  paddingTop: '32px',
-  height: 'fit-content',
-  zIndex: -1,
-  background: 'var(--gray-000)',
-  backgroundImage: `
+const FooterBlock = withAs(
+  styled('footer', {
+    base: {
+      transition: '0.5s',
+      width: '100%',
+      paddingTop: '32px',
+      height: 'fit-content',
+      zIndex: -1,
+      background: 'var(--gray-000)',
+      backgroundImage: `
     linear-gradient(oklch(from var(--border-color) l c h / 50%) 1px, transparent 1px),
     linear-gradient(90deg, oklch(from var(--border-color) l c h / 50%) 1px, transparent 1px)
   `,
-  backgroundSize: '17px 15px',
-  backgroundPosition: '1px 1px',
-  pointerEvents: 'auto',
+      backgroundSize: '17px 15px',
+      backgroundPosition: '1px 1px',
+      pointerEvents: 'auto',
 
-  '@md': {
-    position: 'sticky',
-    bottom: 0,
-  },
-});
+      '@media (min-width: 768px)': {
+        position: 'sticky',
+        bottom: 0,
+      },
+    },
+  })
+);
 
 const commitSha = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;
 
@@ -187,7 +192,7 @@ const Footer = (props: { lastUpdated?: string }) => {
               background: 'var(--gray-000)',
               border: '1px solid oklch(from var(--border-color) l c h / 33%)',
               borderRadius: 'var(--border-radius-2)',
-              '@sm': {
+              '@media (min-width: 640px)': {
                 padding: 'var(--space-5)',
               },
             }}
@@ -372,7 +377,7 @@ const Footer = (props: { lastUpdated?: string }) => {
             marginTop: '32px',
             height: '88px',
 
-            '@sm': {
+            '@media (min-width: 640px)': {
               padding: '8px 32px',
             },
           }}
@@ -390,7 +395,7 @@ const Footer = (props: { lastUpdated?: string }) => {
                 css={{
                   margin: 0,
                   lineHeight: 1.4,
-                  width: 200,
+                  width: '200px',
                 }}
                 size="1"
                 variant="primary"

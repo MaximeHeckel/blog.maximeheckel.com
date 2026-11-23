@@ -43,7 +43,7 @@ const TextShowcase = () => {
         <Text family="mono" outline size="7">
           Almost before we knew it, we had left the ground.
         </Text>
-        <Flex css={{ maxWidth: 250 }}>
+        <Flex css={{ maxWidth: '250px' }}>
           <Text truncate>
             Almost before we knew it, we had left the ground.
           </Text>

@@ -1,7 +1,8 @@
-import { type VariantProps, type CSS } from 'lib/stitches.config';
 import { motion, useReducedMotion } from 'motion/react';
 import { useReducer, useEffect, useRef, useLayoutEffect } from 'react';
 import { useState } from 'react';
+import type { StyledVariantProps as VariantProps } from 'styled-system/jsx';
+import type { SystemStyleObject as CSS } from 'styled-system/types';
 
 import Box from '@core/components/Box';
 import Text from '@core/components/Typography';

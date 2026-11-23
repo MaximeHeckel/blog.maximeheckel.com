@@ -1,4 +1,4 @@
-import { forwardRef, ForwardedRef } from 'react';
+import { forwardRef, type CSSProperties, type ForwardedRef } from 'react';
 
 import * as S from './Grid.styles';
 import { GridProps } from './Grid.types';
@@ -15,6 +15,7 @@ const Grid = forwardRef(
     const {
       children,
       css,
+      style,
       autoColumns,
       autoRows,
       templateAreas,
@@ -25,14 +26,17 @@ const Grid = forwardRef(
 
     return (
       <S.Grid
-        css={{
-          gridAutoColumns: autoColumns,
-          gridAutoRows: autoRows,
-          gridTemplateAreas: templateAreas,
-          gridTemplateRows: templateRows,
-          gridTemplateColumns: templateColumns,
-          ...css,
-        }}
+        css={css}
+        style={
+          {
+            '--grid-auto-columns': autoColumns ?? 'initial',
+            '--grid-auto-rows': autoRows ?? 'initial',
+            '--grid-template-areas': templateAreas ?? 'initial',
+            '--grid-template-rows': templateRows ?? 'initial',
+            '--grid-template-columns': templateColumns ?? 'initial',
+            ...style,
+          } as CSSProperties
+        }
         {...rest}
         ref={ref}
       >

@@ -243,7 +243,7 @@ const DynamicTOC = (props: {
           '&:focus-visible': {
             outline: '2px solid var(--gray-1200)',
           },
-          '@sm': {
+          '@media (min-width: 640px)': {
             maxWidth: '400px',
           },
         }}
@@ -396,7 +396,7 @@ const DynamicTOC = (props: {
           top: 0,
           left: '50%',
           transform: 'translateX(-50%)',
-          marginTop: 32,
+          marginTop: '32px',
           width: '400px',
           height: '200px',
           padding: '10px 18px',

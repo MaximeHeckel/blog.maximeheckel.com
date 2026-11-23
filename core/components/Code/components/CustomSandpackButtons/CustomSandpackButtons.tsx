@@ -60,7 +60,7 @@ export const CustomRunButton = () => {
 
             '&:focus-visible': {
               outline: '2px solid var(--accent)',
-              outlineOffset: 3,
+              outlineOffset: '3px',
             },
           }}
         >

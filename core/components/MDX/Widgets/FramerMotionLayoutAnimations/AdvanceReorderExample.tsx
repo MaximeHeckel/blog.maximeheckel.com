@@ -1,6 +1,6 @@
-import { css } from 'lib/stitches.config';
 import { AnimatePresence, LayoutGroup, motion, Reorder } from 'motion/react';
 import React from 'react';
+import { css } from 'styled-system/css';
 
 import Button from '@core/components/Button';
 import Card from '@core/components/Card';
@@ -106,7 +106,7 @@ const AdvanceReorderExample = () => {
                 margin: '0',
                 padding: '0',
                 width: '100%',
-              })()}
+              })}
             >
               <AnimatePresence>
                 {items.map((item) => (

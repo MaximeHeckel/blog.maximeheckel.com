@@ -19,7 +19,7 @@ const MicroInteractionShowcase = () => {
         <Card.Body
           as={Flex}
           alignItems="center"
-          css={{ height: '275px', margin: '0 auto', maxWidth: 500 }}
+          css={{ height: '275px', margin: '0 auto', maxWidth: '500px' }}
           direction="column"
           justifyContent="space-evenly"
         >

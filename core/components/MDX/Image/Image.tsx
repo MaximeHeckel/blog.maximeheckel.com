@@ -1,9 +1,9 @@
 import { Dialog } from '@base-ui/react/dialog';
 import { cloudflareLoader } from 'lib/next-image-loader';
-import { type CSS } from 'lib/stitches.config';
 import { AnimatePresence, motion, MotionConfig } from 'motion/react';
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
 import { memo, useId, useRef, useState } from 'react';
+import type { SystemStyleObject as CSS } from 'styled-system/types';
 
 import Box from '@core/components/Box';
 import { IconButton } from '@core/components/Button';
@@ -222,13 +222,11 @@ const Image = (props: ImageProps) => {
                       <MotionImageFrame
                         key="expanded-image"
                         autoFocus
-                        css={{
-                          width: expandedFrameWidth,
-                        }}
                         layoutId={layoutId}
                         onClick={handleDialogClose}
                         role="button"
                         style={{
+                          width: expandedFrameWidth,
                           aspectRatio: imageAspectRatio,
                           borderRadius: 'var(--border-radius-3)',
                           outline: 'none',

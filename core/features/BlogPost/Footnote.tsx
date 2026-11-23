@@ -1,6 +1,6 @@
-import { styled } from 'lib/stitches.config';
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
+import { styled } from 'styled-system/jsx';
 
 import Anchor from '@core/components/Anchor';
 import Box from '@core/components/Box';
@@ -9,14 +9,16 @@ import { HR } from '@core/components/HR';
 import Text from '@core/components/Typography';
 
 const StyledSection = styled('section', {
-  background: 'var(--background)',
-  color: 'var(--text-primary)',
-  paddingBottom: 48,
-  width: '100%',
+  base: {
+    background: 'var(--background)',
+    color: 'var(--text-primary)',
+    paddingBottom: '48px',
+    width: '100%',
 
-  '@media (max-width: 700px)': {
-    paddingLeft: '20px',
-    paddingRight: '20px',
+    '@media (max-width: 700px)': {
+      paddingLeft: '20px',
+      paddingRight: '20px',
+    },
   },
 });
 
@@ -145,7 +147,7 @@ const Footnote = ({ title, url }: { title: string; url: string }) => {
         alignItems="start"
         direction="column"
         css={{
-          maxWidth: 700,
+          maxWidth: '700px',
           margin: '0 auto',
         }}
         gap="5"

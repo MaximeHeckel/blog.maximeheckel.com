@@ -1,4 +1,3 @@
-import { styled } from 'lib/stitches.config';
 import { animate, useInView, useReducedMotion } from 'motion/react';
 import {
   KeyboardEvent,
@@ -9,9 +8,10 @@ import {
   useRef,
   useState,
 } from 'react';
+import { styled } from 'styled-system/jsx';
 
 import { IconButton } from '@core/components/Button';
-import Card from '@core/components/Card';
+import { CardWrapper } from '@core/components/Card/Card.styles';
 import Icon from '@core/components/Icon';
 
 import { Viewport } from './geometry';
@@ -29,59 +29,67 @@ interface DiagramProps<State extends Record<string, number>> {
   children: (state: State, viewport: Viewport) => ReactNode;
 }
 
-const Root = styled(Card, {
-  width: '100%',
-  minWidth: 0,
-  borderRadius: 24,
-  '--card-bg': 'oklch(from var(--card-background) 0.17 c h / 100%)',
-  '--border': '1px solid oklch(from var(--border-color) l c h / 40%)',
-  '--gi-edge':
-    'color-mix(in oklch, var(--text-primary) 60%, var(--background))',
+const Root = styled(CardWrapper, {
+  base: {
+    width: '100%',
+    minWidth: 0,
+    borderRadius: '24px',
+    '--card-bg': 'oklch(from var(--card-background) 0.17 c h / 100%)',
+    '--border': '1px solid oklch(from var(--border-color) l c h / 40%)',
+    '--gi-edge':
+      'color-mix(in oklch, var(--text-primary) 60%, var(--background))',
+  },
 });
 
 const Stage = styled('div', {
-  width: '100%',
-  touchAction: 'pan-y pinch-zoom',
-  height: 490,
-  overflow: 'visible',
-  '& > svg': {
-    display: 'block',
+  base: {
     width: '100%',
-    height: '100%',
+    touchAction: 'pan-y pinch-zoom',
+    height: '490px',
     overflow: 'visible',
+    '& > svg': {
+      display: 'block',
+      width: '100%',
+      height: '100%',
+      overflow: 'visible',
+    },
+    '& text': {
+      fontFamily: 'var(--font-mono)',
+      fontSize: '12px',
+      fontWeight: 400,
+      textTransform: 'uppercase',
+    },
+    '@media (max-width: 540px)': { height: '410px' },
   },
-  '& text': {
-    fontFamily: 'var(--font-mono)',
-    fontSize: 12,
-    fontWeight: 400,
-    textTransform: 'uppercase',
-  },
-  '@media (max-width: 540px)': { height: 410 },
 });
 
 const Controls = styled('div', {
-  position: 'relative',
-  display: 'flex',
-  justifyContent: 'flex-end',
-  alignItems: 'center',
-  gap: 'var(--space-3)',
-  padding: 'var(--space-3) var(--space-4)',
-  '& span': {
-    fontFamily: 'var(--font-mono)',
-    fontSize: 'var(--font-size-1)',
-    fontVariantNumeric: 'tabular-nums',
-    letterSpacing: '-1px',
-    color: 'var(--text-tertiary)',
+  base: {
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    gap: 'var(--space-3)',
+    padding: 'var(--space-3) var(--space-4)',
+    '& span': {
+      fontFamily: 'var(--font-mono)',
+      fontSize: 'var(--font-size-1)',
+      fontVariantNumeric: 'tabular-nums',
+      letterSpacing: '-1px',
+      color: 'var(--text-tertiary)',
+    },
   },
 });
 
 const Status = styled('span', {
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  overflow: 'hidden',
-  clipPath: 'inset(50%)',
-  whiteSpace: 'nowrap',
+  base: {
+    position: 'absolute',
+    width: '1px',
+    height: '1px',
+    overflow: 'hidden',
+    clipPath: 'inset(50%)',
+    whiteSpace: 'nowrap',
+  },
 });
 
 /** Shared step controls and animation; scene geometry remains in the caller. */

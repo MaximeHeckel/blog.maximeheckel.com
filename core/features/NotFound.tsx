@@ -1,20 +1,22 @@
-import { styled } from 'lib/stitches.config';
 import { motion } from 'motion/react';
 import Link from 'next/link';
+import { styled } from 'styled-system/jsx';
 
 import Box from '@core/components/Box';
 import Button from '@core/components/Button';
 import GlitchText from '@core/components/Glitchtext';
 import Text from '@core/components/Typography';
 
-const OverlayWrapper = styled(Box, {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100dvh',
-  width: '100dvw',
-  gap: 12,
+const OverlayWrapper = styled(motion.div, {
+  base: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100dvh',
+    width: '100dvw',
+    gap: '12px',
+  },
 });
 
 const NotFound = () => {
@@ -35,7 +37,6 @@ const NotFound = () => {
 
   return (
     <OverlayWrapper
-      as={motion.div}
       initial="hidden"
       animate="show"
       transition={{
@@ -48,7 +49,7 @@ const NotFound = () => {
         css={{
           letterSpacing: '-0.028em',
           lineHeight: 1,
-          maxWidth: 400,
+          maxWidth: '400px',
           textWrap: 'balance',
           textAlign: 'center',
         }}
@@ -72,7 +73,7 @@ const NotFound = () => {
       <Box
         as={motion.div}
         variants={textVariants}
-        css={{ pointerEvents: 'auto', marginTop: 8 }}
+        css={{ pointerEvents: 'auto', marginTop: '8px' }}
       >
         <Link href="/">
           <Button variant="primary">Head back home</Button>

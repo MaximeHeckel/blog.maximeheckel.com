@@ -35,10 +35,10 @@ const Glossary = (props: GlossaryProps) => {
           overflowX: 'clip',
           overflowY: 'visible',
           backgroundColor: 'var(--background)',
-          borderBottomRightRadius: 4,
-          borderBottomLeftRadius: 4,
-          paddingTop: 236,
-          paddingBottom: 96,
+          borderBottomRightRadius: '4px',
+          borderBottomLeftRadius: '4px',
+          paddingTop: '236px',
+          paddingBottom: '96px',
         }}
         gapX={2}
         templateColumns="1fr minmax(auto, 712px) 1fr"

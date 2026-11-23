@@ -409,7 +409,7 @@ const Slider = (props: SliderProps) => {
                 key={index}
                 css={{
                   position: 'absolute',
-                  left: `calc(${position}% - 10px)`,
+
                   transform: 'translateX(-50%)',
                   width: '4px',
                   height: '4px',
@@ -419,6 +419,7 @@ const Slider = (props: SliderProps) => {
                   willChange: 'opacity',
                 }}
                 style={{
+                  left: `calc(${position}% - 10px)`,
                   opacity:
                     stepValue === value ||
                     stepValue < MIN_VALUE + 0.3 * (MAX_VALUE - MIN_VALUE) ||

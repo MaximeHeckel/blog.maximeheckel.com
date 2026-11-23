@@ -45,11 +45,12 @@ const ColorToggle: React.FC<ColorToggleProps> = ({
       }}
     >
       <Box
+        style={{ background: color }}
         css={{
           width: '14px',
           height: '14px',
           borderRadius: '50%',
-          background: color,
+
           filter: active ? 'none' : 'grayscale(100%)',
           transition: 'filter 0.2s ease',
         }}
@@ -554,7 +555,7 @@ export const Reflectance: React.FC<ReflectanceProps> = ({
           </Flex>
         </Box>
       </Flex>
-      <Box css={{ height: `${height}px`, width: '100%' }}>
+      <Box style={{ height: `${height}px` }} css={{ width: '100%' }}>
         <ResponsiveLine
           data={chartData}
           margin={{ top: 20, right: 20, bottom: 50, left: 60 }}
@@ -689,13 +690,13 @@ export const Reflectance: React.FC<ReflectanceProps> = ({
                   {slice.points.map((point) => (
                     <Flex key={point.id} alignItems="center" gap="2">
                       <Box
+                        style={{ background: point.seriesColor }}
                         css={{
                           width: '12px',
                           height: '12px',
                           borderRadius: '50%',
                           border: '1px solid var(--gray-600)',
                           flexShrink: 0,
-                          background: point.seriesColor,
                         }}
                       />
                       <Text size="1" variant="primary" weight="3">
