@@ -1,6 +1,8 @@
-import { Button, styled } from '@maximeheckel/design-system';
 import { motion, useReducedMotion } from 'motion/react';
 import { ReactNode, useId, useLayoutEffect, useRef, useState } from 'react';
+import { styled } from 'styled-system/jsx';
+
+import Button from '@core/components/Button';
 
 interface CollapsibleCodeProps {
   children: ReactNode;
@@ -54,7 +56,6 @@ const CollapsibleCode = (props: CollapsibleCodeProps) => {
       <ToggleBar>
         <Button
           type="button"
-          size="small"
           variant="tertiary"
           rounded
           css={{
@@ -78,40 +79,46 @@ const CollapsibleCode = (props: CollapsibleCodeProps) => {
 export default CollapsibleCode;
 
 const Container = styled('div', {
-  position: 'relative',
-  minWidth: 0,
-  overflow: 'hidden',
-  borderBottomLeftRadius: 'var(--code-block-radius, var(--border-radius-2))',
-  borderBottomRightRadius: 'var(--code-block-radius, var(--border-radius-2))',
-  background: 'var(--code-snippet-background)',
+  base: {
+    position: 'relative',
+    minWidth: 0,
+    overflow: 'hidden',
+    borderBottomLeftRadius: 'var(--code-block-radius, var(--border-radius-2))',
+    borderBottomRightRadius: 'var(--code-block-radius, var(--border-radius-2))',
+    background: 'var(--code-snippet-background)',
+  },
 });
 
 const Viewport = styled(motion.div, {
-  position: 'relative',
-  overflowX: 'hidden',
-  overscrollBehavior: 'contain',
-  scrollbarGutter: 'stable',
-  '&[data-expanded="false"]': {
-    maskImage: 'linear-gradient(to bottom, black 65%, transparent)',
-    '&[data-offset="true"]': {
-      maskImage:
-        'linear-gradient(to bottom, transparent, black 10%, black 65%, transparent)',
+  base: {
+    position: 'relative',
+    overflowX: 'hidden',
+    overscrollBehavior: 'contain',
+    scrollbarGutter: 'stable',
+    '&[data-expanded="false"]': {
+      maskImage: 'linear-gradient(to bottom, black 65%, transparent)',
+      '&[data-offset="true"]': {
+        maskImage:
+          'linear-gradient(to bottom, transparent, black 10%, black 65%, transparent)',
+      },
     },
-  },
-  '&:focus-visible': {
-    outline: '2px solid var(--accent)',
-    outlineOffset: '-2px',
+    '&:focus-visible': {
+      outline: '2px solid var(--accent)',
+      outlineOffset: '-2px',
+    },
   },
 });
 
 const ToggleBar = styled('div', {
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  right: 0,
-  zIndex: 3,
-  display: 'flex',
-  justifyContent: 'center',
-  padding: 'var(--space-2)',
-  pointerEvents: 'none',
+  base: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 3,
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 'var(--space-2)',
+    pointerEvents: 'none',
+  },
 });
