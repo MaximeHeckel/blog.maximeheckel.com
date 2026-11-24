@@ -25,7 +25,6 @@ export const StyledCallout = styled('aside', {
     '--callout-accent': 'var(--accent)',
     '--callout-gradient-shape': 'ellipse 85% 150% at 0% 0%',
     '--callout-padding': 'var(--space-4)',
-    '--code-block-bleed': '0px',
     // Keep nested code corners rounded even when the inset exceeds our radius.
     '--code-block-radius':
       'max(6px, calc(var(--border-radius-2) - var(--callout-padding) - 1px))',

@@ -152,11 +152,6 @@ const CodeBlock = (props: CodeBlockProps) => {
         background: 'unset',
         width: '100%',
         borderRadius: 'var(--code-block-radius, var(--border-radius-2))',
-
-        '@media(max-width: 750px)': {
-          width: 'calc(100% + var(--code-block-bleed, var(--space-2)) * 2)',
-          left: 'calc(-1 * var(--code-block-bleed, var(--space-2)))',
-        },
       }}
     >
       {title ? (
