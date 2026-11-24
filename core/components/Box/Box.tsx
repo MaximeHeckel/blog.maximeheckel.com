@@ -1,5 +1,6 @@
-import { styled } from 'lib/stitches.config';
+import { withAs } from 'lib/panda';
+import { styled } from 'styled-system/jsx';
 
-const Box = styled('div', {});
+const Box = withAs(styled('div', {}));
 
 export default Box;

@@ -15,6 +15,7 @@ const Anchor = React.forwardRef(
       favicon,
       discreet,
       external,
+      style,
       ...rest
     } = props;
 
@@ -24,9 +25,7 @@ const Anchor = React.forwardRef(
       <StyledAnchor
         as={Component}
         arrow={arrow}
-        css={{
-          '--icon': `url(${icon})`,
-        }}
+        style={{ '--icon': `url(${icon})`, ...style } as React.CSSProperties}
         discreet={discreet}
         favicon={favicon}
         href={href}

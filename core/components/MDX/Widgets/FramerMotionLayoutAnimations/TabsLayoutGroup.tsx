@@ -65,9 +65,9 @@ const TabsSharedLayoutAnimation = () => {
               size="1"
               css={{
                 position: 'absolute',
-                left: 4,
+                left: '4px',
                 right: 0,
-                top: 2,
+                top: '2px',
                 bottom: 0,
                 userSelect: 'none',
               }}

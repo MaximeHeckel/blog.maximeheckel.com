@@ -22,7 +22,7 @@ const PreviewTabs = (props: PreviewTabsProps) => {
       css={{
         padding: '0 var(--space-2)',
         background: 'var(--background)',
-        minHeight: 48,
+        minHeight: '48px',
         width: '100%',
         borderBottom: '1px solid var(--border-color)',
       }}

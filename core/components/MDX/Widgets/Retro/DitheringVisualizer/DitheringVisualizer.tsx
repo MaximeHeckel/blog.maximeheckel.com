@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
+import Box from '@core/components/Box';
 import Card from '@core/components/Card';
 import Flex from '@core/components/Flex';
 import Grid from '@core/components/Grid';
@@ -121,8 +122,7 @@ const Cell = (props: CellProps) => {
 
   return (
     <Tooltip content={content}>
-      <Flex
-        alignItems="center"
+      <Box
         css={{
           all: 'unset',
           aspectRatio: '1 / 1',
@@ -131,13 +131,12 @@ const Cell = (props: CellProps) => {
           textAlign: 'center',
           overflow: 'hidden',
           position: 'relative',
-          maxWidth: 20,
+          maxWidth: '20px',
         }}
-        justifyContent="center"
         style={{
           backgroundColor: color,
         }}
-      ></Flex>
+      />
     </Tooltip>
   );
 };

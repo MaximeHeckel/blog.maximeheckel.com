@@ -100,7 +100,7 @@ const DemoSearch = () => {
               as="button"
               css={{
                 padding: 0,
-                MozAppearance: 'none',
+
                 WebkitAppearance: 'none',
                 background: 'transparent',
                 color: 'inherit',
@@ -120,7 +120,7 @@ const DemoSearch = () => {
           css={{
             borderRadius: 'var(--border-radius-2)',
             overflowY: 'auto',
-            height: 275,
+            height: '275px',
             width: '100%',
             padding: 'var(--space-3)',
             background: 'hsl(from var(--gray-400) h s l / 30%)',

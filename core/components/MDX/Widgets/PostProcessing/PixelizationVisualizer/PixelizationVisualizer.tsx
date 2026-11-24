@@ -122,13 +122,14 @@ const Cell = (props: CellProps) => {
   return (
     <Grid.Item
       data-cell-id={`${originalUV[0]}-${originalUV[1]}`}
+      style={{ backgroundColor: color }}
       css={{
         all: 'unset',
         aspectRatio: '1 / 1',
         textAlign: 'center',
         overflow: 'hidden',
         position: 'relative',
-        backgroundColor: color,
+
         alignContent: 'center',
         borderRight: isRightBorder
           ? '1px solid var(--blue-700)'

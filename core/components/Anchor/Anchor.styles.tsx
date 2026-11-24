@@ -1,26 +1,28 @@
-import { styled } from 'lib/stitches.config';
+import { styled } from 'styled-system/jsx';
 
 export const StyledAnchor = styled('a', {
-  fontSize: 'inherit',
-  lineHeight: 'inherit',
-  color: 'var(--color, var(--hyperlink))',
-  fontWeight: 'inherit',
-  wordBreak: 'break-word',
-  textDecoration: 'none',
-  outline: 'none',
-  transition: 'border-color 0.3s ease, color 0.3s ease',
+  base: {
+    fontSize: 'inherit',
+    lineHeight: 'inherit',
+    color: 'var(--color, var(--hyperlink))',
+    fontWeight: 'inherit',
+    wordBreak: 'break-word',
+    textDecoration: 'none',
+    outline: 'none',
+    transition: 'border-color 0.3s ease, color 0.3s ease',
 
-  '--hover-color': 'var(--text-primary)',
+    '--hover-color': 'var(--text-primary)',
 
-  '&:focus': {
-    '--color': 'var(--hover-color, var(--accent))',
-    '--hover-translation-distance': 'var(--arrow-translation, 0)',
-  },
-
-  '@media (hover: hover) and (pointer: fine)': {
-    '&:hover': {
+    '&:focus': {
       '--color': 'var(--hover-color, var(--accent))',
-      ' --hover-translation-distance': 'var(--arrow-translation, 0)',
+      '--hover-translation-distance': 'var(--arrow-translation, 0)',
+    },
+
+    '@media (hover: hover) and (pointer: fine)': {
+      '&:hover': {
+        '--color': 'var(--hover-color, var(--accent))',
+        '--hover-translation-distance': 'var(--arrow-translation, 0)',
+      },
     },
   },
 
@@ -35,7 +37,7 @@ export const StyledAnchor = styled('a', {
         '--size': '1.4em',
 
         '&:after': {
-          content: '',
+          content: '""',
           display: 'inline-block',
           verticalAlign: 'middle',
           width: 'var(--size, 1.05em)',
@@ -58,7 +60,7 @@ export const StyledAnchor = styled('a', {
         '--hover-color': 'unset',
 
         '&:before': {
-          content: '',
+          content: '""',
           display: 'inline-block',
           verticalAlign: 'middle',
           width: 'var(--size, 1.05em)',
@@ -79,7 +81,7 @@ export const StyledAnchor = styled('a', {
         '--hover-color': 'unset',
 
         '&:after': {
-          content: '',
+          content: '""',
           display: 'inline-block',
           verticalAlign: 'middle',
           width: 'var(--size, 1.05em)',
@@ -99,7 +101,7 @@ export const StyledAnchor = styled('a', {
         '--size': '1em',
 
         '&:before': {
-          content: '',
+          content: '""',
           display: 'inline-block',
           verticalAlign: 'middle',
           width: 'var(--size, 1.05em)',

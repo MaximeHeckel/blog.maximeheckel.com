@@ -15,7 +15,7 @@ A personal blog built with Next.js featuring interactive articles about web deve
 | Framework       | Next.js 16 (Pages Router)                                       |
 | UI              | React 19, local design system                                   |
 | Headless UI     | @base-ui/react (Select, Dialog, etc.)                           |
-| Styling         | Stitches, CSS custom properties                                 |
+| Styling         | Panda CSS, CSS custom properties                                |
 | Animation       | Motion library (framer-motion successor)                        |
 | 3D/WebGL        | Three.js, @react-three/fiber, @react-three/drei, postprocessing |
 | Content         | MDX with next-mdx-remote                                        |

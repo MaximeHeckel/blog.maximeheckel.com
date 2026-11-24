@@ -306,7 +306,7 @@ const MediaPlayerRoot = (props: MediaPlayerRootProps) => {
           css={{
             position: 'relative',
             width: '100%',
-            borderRadius: 16,
+            borderRadius: '16px',
             display: 'block',
             isolation: 'isolate',
           }}
@@ -325,7 +325,7 @@ const MediaPlayerRoot = (props: MediaPlayerRootProps) => {
               css={{
                 position: 'relative',
                 overflow: 'hidden',
-                borderRadius: 16,
+                borderRadius: '16px',
                 zIndex: 1,
               }}
             >
@@ -389,7 +389,7 @@ const MediaPlayerRoot = (props: MediaPlayerRootProps) => {
                     zIndex: 1,
                     width: '100%',
                     padding: 'var(--space-1)',
-                    borderRadius: 10,
+                    borderRadius: '10px',
                   }}
                   justifyContent="space-between"
                 >
@@ -513,8 +513,8 @@ const MediaPlayerVideoOverlay = (props: MediaPlayerVideoOverlayProps) => {
         width: '100%',
         height: '100%',
         padding: 'var(--space-5) var(--space-5)',
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
+        borderTopLeftRadius: '16px',
+        borderTopRightRadius: '16px',
         overflow: 'hidden',
         backdropFilter: 'blur(0.5px)',
         background:
@@ -645,8 +645,8 @@ const MediaPlayerPlaybackControls = () => {
             left: '50%',
             bottom: 0,
             transform: 'translateX(-50%)',
-            width: 32,
-            paddingBottom: 44,
+            width: '32px',
+            paddingBottom: '44px',
           }}
           style={{
             opacity: isVolumeBlockHovering ? 1 : 0,
@@ -659,8 +659,8 @@ const MediaPlayerPlaybackControls = () => {
               position: 'relative',
               isolation: 'isolate',
               width: '100%',
-              height: 102,
-              borderRadius: 6,
+              height: '102px',
+              borderRadius: '6px',
               overflow: 'hidden',
             }}
           >
@@ -678,8 +678,8 @@ const MediaPlayerPlaybackControls = () => {
               }}
               css={{
                 position: 'absolute',
-                width: 80,
-                height: 24,
+                width: '80px',
+                height: '24px',
                 left: '50%',
                 top: '50%',
 
@@ -691,37 +691,37 @@ const MediaPlayerPlaybackControls = () => {
                 cursor: 'pointer',
 
                 '&::-webkit-slider-runnable-track': {
-                  height: 4,
-                  borderRadius: 9999,
+                  height: '4px',
+                  borderRadius: '9999px',
                   background: 'var(--track-gradient)',
                 },
 
                 '&::-moz-range-track': {
-                  height: 4,
-                  borderRadius: 9999,
+                  height: '4px',
+                  borderRadius: '9999px',
                   background: 'rgba(255, 255, 255, 0.3)',
                 },
 
                 '&::-moz-range-progress': {
-                  height: 4,
-                  borderRadius: 9999,
+                  height: '4px',
+                  borderRadius: '9999px',
                   background: 'white',
                 },
 
                 '&::-webkit-slider-thumb': {
                   appearance: 'none',
-                  width: 12,
-                  height: 12,
+                  width: '12px',
+                  height: '12px',
                   borderRadius: '50%',
                   background: 'white',
-                  marginTop: -4,
+                  marginTop: '-4px',
                   boxShadow: '0 1px 3px rgba(0, 0, 0, 0.3)',
                 },
 
                 '&::-moz-range-thumb': {
                   border: 'none',
-                  width: 12,
-                  height: 12,
+                  width: '12px',
+                  height: '12px',
                   borderRadius: '50%',
                   background: 'white',
                   boxShadow: '0 1px 3px rgba(0, 0, 0, 0.3)',
@@ -941,7 +941,7 @@ const MediaPlayerTrack = ({ children }: { children: React.ReactNode }) => {
           aria-valuetext={formatTime(currentTime)}
           css={{
             position: 'relative',
-            height: 4,
+            height: '4px',
             backgroundColor: 'rgba(255,255,255,0.16)',
             alignSelf: 'center',
             borderRadius: '9999px',
@@ -949,8 +949,8 @@ const MediaPlayerTrack = ({ children }: { children: React.ReactNode }) => {
             overflow: 'hidden',
             '&:focus-visible': {
               outline: '2px solid oklch(from var(--gray-1200) l c h / 0.25)',
-              outlineOffset: 4,
-              borderRadius: 4,
+              outlineOffset: '4px',
+              borderRadius: '4px',
             },
           }}
           onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -975,8 +975,8 @@ const MediaPlayerTrack = ({ children }: { children: React.ReactNode }) => {
           userSelect: 'none',
           '&:focus-visible': {
             outline: '2px solid oklch(from var(--gray-1200) l c h / 0.25)',
-            outlineOffset: 4,
-            borderRadius: 4,
+            outlineOffset: '4px',
+            borderRadius: '4px',
           },
         }}
         onClick={toggleVariant}

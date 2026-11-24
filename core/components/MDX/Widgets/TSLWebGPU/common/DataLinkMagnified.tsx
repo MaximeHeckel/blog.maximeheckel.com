@@ -136,7 +136,11 @@ export const DataLinkMagnified = (props: {
                   rotate: `${baseAngleDegrees}deg`,
                 }}
               >
-                <Text css={{ fontSize: 10 }} variant="primary" family="mono">
+                <Text
+                  css={{ fontSize: '10px' }}
+                  variant="primary"
+                  family="mono"
+                >
                   {item}
                 </Text>
               </div>

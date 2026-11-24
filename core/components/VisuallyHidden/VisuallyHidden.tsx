@@ -1,5 +1,5 @@
-import { css } from 'lib/stitches.config';
 import { createElement } from 'react';
+import { css } from 'styled-system/css';
 
 import { VisuallyHiddenProps } from './VisuallyHidden.types';
 
@@ -20,6 +20,6 @@ const VisuallyHidden = ({
   as: Component = 'p',
   ...props
 }: VisuallyHiddenProps) =>
-  createElement(Component, { ...props, className: visuallyHiddenClass() });
+  createElement(Component, { ...props, className: visuallyHiddenClass });
 
 export default VisuallyHidden;

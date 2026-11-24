@@ -1,5 +1,5 @@
-import { styled } from 'lib/stitches.config';
 import { motion } from 'motion/react';
+import { styled } from 'styled-system/jsx';
 
 import Card from '@core/components/Card';
 import Grid from '@core/components/Grid';
@@ -11,23 +11,27 @@ const setVariableToGlobalStyles = (variable: string, value: string) =>
   document.body.style.setProperty(variable, value);
 
 const ThemeColor = styled(motion.button, {
-  width: '50px',
-  height: '50px',
-  background: 'hsl(var(--hue), 89%, 50%)',
-  borderRadius: '50px',
-  boxShadow: 'none',
-  border: 'none',
-  cursor: 'pointer',
-  outline: 'none',
-  marginBottom: `var(--space-3)`,
+  base: {
+    width: '50px',
+    height: '50px',
+    background: 'hsl(var(--hue), 89%, 50%)',
+    borderRadius: '50px',
+    boxShadow: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    outline: 'none',
+    marginBottom: `var(--space-3)`,
+  },
 });
 
 const ButtonWrapper = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  fontSize: '25px',
-  marginBottom: '2.25rem',
+  base: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    fontSize: '25px',
+    marginBottom: '2.25rem',
+  },
 });
 
 const ThemePicker = () => {

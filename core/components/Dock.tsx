@@ -132,7 +132,7 @@ const Dock = () => {
           css={{
             width: 'fit-content',
             margin: 0,
-            padding: 8,
+            padding: '8px',
             gap: 0,
           }}
           onMouseLeave={() => {
@@ -148,19 +148,19 @@ const Dock = () => {
           <Flex
             as="li"
             css={{
-              paddingLeft: 6,
+              paddingLeft: '6px',
               // optical alignment
-              marginBottom: 1,
+              marginBottom: '1px',
             }}
           >
             <Logo alt="Logo" size={24} />
             <Box
               css={{
-                width: 1,
-                height: 24,
+                width: '1px',
+                height: '24px',
                 backgroundColor: 'oklch(from var(--blue-500) l c h / 25%)',
-                marginLeft: 12,
-                marginRight: 4,
+                marginLeft: '12px',
+                marginRight: '4px',
               }}
             />
           </Flex>
@@ -227,7 +227,7 @@ const Dock = () => {
                     >
                       <Box
                         css={{
-                          borderRadius: 8,
+                          borderRadius: '8px',
                           width: '100%',
                           height: '100%',
 

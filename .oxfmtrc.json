@@ -24,6 +24,7 @@
     "node_modules",
     "next-env.d.ts",
     ".next",
+    "styled-system",
     "coverage/**",
     "yarn.lock",
     "pnpm-lock.yaml",

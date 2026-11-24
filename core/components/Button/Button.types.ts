@@ -1,4 +1,4 @@
-import type { VariantProps } from 'lib/stitches.config';
+import type { StyledVariantProps as VariantProps } from 'styled-system/jsx';
 
 import type { StyledIconButton } from './Button.styles';
 

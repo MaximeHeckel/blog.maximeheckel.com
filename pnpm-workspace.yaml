@@ -2,6 +2,7 @@ packages:
   - '.'
 
 allowBuilds:
+  '@parcel/watcher': false
   cypress: true
   es5-ext: true
   esbuild: true

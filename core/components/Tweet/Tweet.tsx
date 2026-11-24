@@ -171,7 +171,7 @@ const Tweet = (props: Props) => {
                 width={m.original_info.width}
                 src={m.media_url_https}
                 style={{ maxWidth: '100%', height: 'auto' }}
-                className={singleImage()}
+                className={singleImage}
               />
             );
           })}

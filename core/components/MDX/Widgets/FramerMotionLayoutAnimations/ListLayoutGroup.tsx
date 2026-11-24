@@ -1,6 +1,6 @@
-import { css } from 'lib/stitches.config';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import React from 'react';
+import { css } from 'styled-system/css';
 
 import Card from '@core/components/Card';
 import { HighlightedCodeText } from '@core/components/Code/CodeBlock';
@@ -81,7 +81,7 @@ const List = (props: {
                     border: 'none',
                     color: 'var(--text-secondary)',
                     cursor: 'pointer',
-                  })()}
+                  })}
                   onClick={() =>
                     setListItems((prev) =>
                       prev.filter((task) => task.id !== item.id)

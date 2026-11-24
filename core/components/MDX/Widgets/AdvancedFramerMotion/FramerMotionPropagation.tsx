@@ -1,6 +1,7 @@
-import { Shadows, styled } from 'lib/stitches.config';
+import { Shadows } from 'lib/tokens/shadows';
 import { motion } from 'motion/react';
 import React from 'react';
+import { styled } from 'styled-system/jsx';
 
 import Button from '@core/components/Button';
 import DesignSystemCard from '@core/components/Card';
@@ -11,40 +12,46 @@ import { H3 } from '@core/components/Typography';
 import { AnimationCardContent } from '../Components';
 
 const CardWrapper = styled('div', {
-  position: 'relative',
-  width: '300px',
-  height: '200px',
+  base: {
+    position: 'relative',
+    width: '300px',
+    height: '200px',
+  },
 });
 
 const Wrapper = styled(motion.div, {
-  position: 'relative',
-  cursor: 'default',
+  base: {
+    position: 'relative',
+    cursor: 'default',
+  },
 });
 
 const CaptureLayer = styled(motion.div, {
-  position: 'absolute',
-  width: '300px',
-  height: '300px',
-  borderRadius: '32px',
-  background: `repeating-linear-gradient(
+  base: {
+    position: 'absolute',
+    width: '300px',
+    height: '300px',
+    borderRadius: '32px',
+    background: `repeating-linear-gradient(
     -45deg,
     var(--foreground),
     var(--foreground) 5px,
     var(--emphasis) 5px,
     var(--emphasis) 10px
   )`,
-  opacity: 0.8,
+    opacity: 0.8,
 
-  zIndex: '3',
-  transformStyle: 'preserve-3d',
-  boxShadow: `1px 1px 0 1px var(--emphasis),
-    -1px 0 28px 0 rgb(34 33 81 / 1%), 28px 28px 28px 0 rgb(34 33 81 / 25%)`,
-  transition: '0.4s ease-in-out box-shadow, 0.4s ease-in-out opacity',
-
-  '&:hover': {
+    zIndex: '3',
+    transformStyle: 'preserve-3d',
     boxShadow: `1px 1px 0 1px var(--emphasis),
+    -1px 0 28px 0 rgb(34 33 81 / 1%), 28px 28px 28px 0 rgb(34 33 81 / 25%)`,
+    transition: '0.4s ease-in-out box-shadow, 0.4s ease-in-out opacity',
+
+    '&:hover': {
+      boxShadow: `1px 1px 0 1px var(--emphasis),
       -1px 0 28px 0 rgba(34, 33, 81, 0.01),
       54px 54px 28px -10px rgba(34, 33, 81, 0.15)`,
+    },
   },
 
   variants: {
@@ -60,35 +67,39 @@ const CaptureLayer = styled(motion.div, {
 });
 
 const Glow = styled(motion.div, {
-  background: 'linear-gradient(104.01deg, #9bebeb 5.51%, #0fa6e9 98.93%)',
-  position: 'absolute',
-  top: '0',
-  left: '0',
-  width: '100%',
-  height: '100%',
-  webkitFilter: 'blur(15px)',
-  filter: 'blur(15px)',
-  borderRadius: '32px',
+  base: {
+    background: 'linear-gradient(104.01deg, #9bebeb 5.51%, #0fa6e9 98.93%)',
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+
+    filter: 'blur(15px)',
+    borderRadius: '32px',
+  },
 });
 
 const Card = styled('div', {
-  borderRadius: '32px',
-  border: '1px solid var(--emphasis)',
-  marginBottom: '0px',
-  overflow: 'hidden',
-  position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  background: 'hsl(from var(--gray-400) h s l / 50%)',
-  boxShadow: Shadows[2],
-  height: '100%',
-  div: {
-    color: 'var(--text-tertiary)',
+  base: {
+    borderRadius: '32px',
+    border: '1px solid var(--emphasis)',
+    marginBottom: '0px',
+    overflow: 'hidden',
+    position: 'relative',
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-    height: '50px',
+    background: 'hsl(from var(--gray-400) h s l / 50%)',
+    boxShadow: Shadows[2],
+    height: '100%',
+    '& div': {
+      color: 'var(--text-tertiary)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '50px',
+    },
   },
 });
 

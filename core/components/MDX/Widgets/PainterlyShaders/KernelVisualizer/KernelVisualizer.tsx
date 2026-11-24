@@ -53,18 +53,21 @@ const Cell = (props: CellProps) => {
       alignItems="center"
       css={{
         aspectRatio: '1 / 1',
-        borderBottom: '1px solid var(--gray-700)',
-        borderLeft: '1px solid var(--gray-700)',
         textAlign: 'center',
         overflow: 'hidden',
         position: 'relative',
         color: 'white',
-        ...(isCenter && {
-          boxShadow: '0 0 15px var(--accent)',
-          border: '2px solid var(--accent)',
-          borderRadius: 'var(--border-radius-2)',
-          zIndex: 2,
-        }),
+        ...(isCenter
+          ? {
+              boxShadow: '0 0 15px var(--accent)',
+              border: '2px solid var(--accent)',
+              borderRadius: 'var(--border-radius-2)',
+              zIndex: 2,
+            }
+          : {
+              borderBottom: '1px solid var(--gray-700)',
+              borderLeft: '1px solid var(--gray-700)',
+            }),
       }}
       justifyContent="center"
       suppressHydrationWarning
