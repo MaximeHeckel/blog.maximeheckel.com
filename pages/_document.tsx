@@ -1,6 +1,23 @@
 import { HERO_THEME_COLOR, PAGE_THEME_COLOR } from 'lib/browserTheme';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
+const faviconSizes = [196, 128, 96, 32, 16];
+
+// Give each scheme its own cache key without relying on SVG media queries
+// being evaluated when a browser saves a favicon for its UI.
+const syncFavicon = `(() => {
+  const scheme = window.matchMedia('(prefers-color-scheme: dark)');
+  const icons = document.querySelectorAll('link[data-favicon-light]');
+  const sync = () => {
+    for (const icon of icons) {
+      const href = scheme.matches ? icon.dataset.faviconDark : icon.dataset.faviconLight;
+      if (icon.getAttribute('href') !== href) icon.setAttribute('href', href);
+    }
+  };
+  sync();
+  scheme.addEventListener('change', sync);
+})();`;
+
 class MyDocument extends Document {
   render() {
     const isHomePage = this.props.__NEXT_DATA__.page === '/';
@@ -17,24 +34,31 @@ class MyDocument extends Document {
             rel="apple-touch-icon"
             sizes="180x180"
           />
-          {[196, 128, 96, 32, 16].flatMap((size) =>
-            ['light', 'dark'].map((theme) => (
+          {faviconSizes.map((size) => {
+            const path = `/static/favicons/favicon-${size}x${size}`;
+            const light = `${path}-light.png?v=3`;
+
+            return (
               <link
-                key={`${size}-${theme}`}
-                href={`/static/favicons/favicon-${size}x${size}${theme === 'light' ? '-light' : ''}.png?v=2`}
+                key={size}
+                href={light}
                 rel="icon"
                 sizes={`${size}x${size}`}
                 type="image/png"
-                media={`(prefers-color-scheme: ${theme})`}
+                data-favicon-light={light}
+                data-favicon-dark={`${path}.png?v=3`}
               />
-            ))
-          )}
+            );
+          })}
           <link
-            href="/static/favicons/favicon.svg?v=2"
+            href="/static/favicons/favicon.svg?v=3"
             rel="icon"
             sizes="any"
             type="image/svg+xml"
+            data-favicon-light="/static/favicons/favicon-light.svg"
+            data-favicon-dark="/static/favicons/favicon-dark.svg"
           />
+          <script dangerouslySetInnerHTML={{ __html: syncFavicon }} />
           <link rel="alternate" type="application/rss+xml" href="/rss.xml" />
           <link
             rel="webmention"
