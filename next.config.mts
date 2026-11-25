@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 
 import bundleAnalyzer from '@next/bundle-analyzer';
 
+import { inlinePandaPath } from './config/inline-panda.mjs';
 import { generateArticleCatalog } from './scripts/generate-article-catalog.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,6 +19,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 const output = withBundleAnalyzer({
   allowedDevOrigins: ['blog.maximeheckel.localhost'],
   productionBrowserSourceMaps: false,
+  outputFileTracingIncludes: { '/posts/*': [`./${inlinePandaPath}`] },
   trailingSlash: true,
   turbopack: {
     resolveAlias: {
