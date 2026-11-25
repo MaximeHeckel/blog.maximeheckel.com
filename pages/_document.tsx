@@ -29,14 +29,9 @@ class MyDocument extends Document {
             name="theme-color"
             content={isHomePage ? HERO_THEME_COLOR : PAGE_THEME_COLOR}
           />
-          <link
-            href="/static/favicons/apple-touch-icon.png?v=2"
-            rel="apple-touch-icon"
-            sizes="180x180"
-          />
           {faviconSizes.map((size) => {
             const path = `/static/favicons/favicon-${size}x${size}`;
-            const light = `${path}-light.png?v=3`;
+            const light = `${path}-light.png?v=4`;
 
             return (
               <link
@@ -46,17 +41,17 @@ class MyDocument extends Document {
                 sizes={`${size}x${size}`}
                 type="image/png"
                 data-favicon-light={light}
-                data-favicon-dark={`${path}.png?v=3`}
+                data-favicon-dark={`${path}.png?v=4`}
               />
             );
           })}
           <link
-            href="/static/favicons/favicon.svg?v=3"
+            href="/static/favicons/favicon.svg?v=4"
             rel="icon"
             sizes="any"
             type="image/svg+xml"
-            data-favicon-light="/static/favicons/favicon-light.svg"
-            data-favicon-dark="/static/favicons/favicon-dark.svg"
+            data-favicon-light="/static/favicons/favicon-light.svg?v=4"
+            data-favicon-dark="/static/favicons/favicon-dark.svg?v=4"
           />
           <script dangerouslySetInnerHTML={{ __html: syncFavicon }} />
           <link rel="alternate" type="application/rss+xml" href="/rss.xml" />
