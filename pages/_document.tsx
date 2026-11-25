@@ -1,13 +1,39 @@
-import { HERO_THEME_COLOR, PAGE_THEME_COLOR } from 'lib/browserTheme';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
-class MyDocument extends Document {
+import { inlinePandaPath, shouldInlinePanda } from 'config/inline-panda.mjs';
+import { HERO_THEME_COLOR, PAGE_THEME_COLOR } from 'lib/browserTheme';
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  type DocumentContext,
+} from 'next/document';
+
+class MyDocument extends Document<{ inlinePandaCss: string }> {
+  static async getInitialProps(ctx: DocumentContext) {
+    const props = await Document.getInitialProps(ctx);
+
+    return {
+      ...props,
+      inlinePandaCss: shouldInlinePanda()
+        ? readFileSync(join(process.cwd(), inlinePandaPath), 'utf8')
+        : '',
+    };
+  }
   render() {
     const isHomePage = this.props.__NEXT_DATA__.page === '/';
 
     return (
       <Html lang="en" className="maximeheckel-dark">
         <Head>
+          {this.props.inlinePandaCss && (
+            <style
+              id="panda-inline-css"
+              dangerouslySetInnerHTML={{ __html: this.props.inlinePandaCss }}
+            />
+          )}
           <meta
             name="theme-color"
             content={isHomePage ? HERO_THEME_COLOR : PAGE_THEME_COLOR}

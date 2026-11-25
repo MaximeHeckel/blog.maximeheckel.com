@@ -1,5 +1,5 @@
+import { shouldInlinePanda } from './config/inline-panda.mjs';
+
 export default {
-  plugins: {
-    '@pandacss/dev/postcss': {},
-  },
+  plugins: shouldInlinePanda() ? {} : { '@pandacss/dev/postcss': {} },
 };
