@@ -1,5 +1,6 @@
 import { readdir, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 import { createJiti } from 'jiti';
 import { createElement } from 'react';
@@ -8,11 +9,21 @@ import { renderToStaticMarkup } from 'react-dom/server';
 // Use the image processor already installed by Next.js.
 const require = createRequire(import.meta.url);
 const sharp = createRequire(require.resolve('next/package.json'))('sharp');
-const jiti = createJiti(import.meta.url, { jsx: { runtime: 'automatic' } });
+const jiti = createJiti(import.meta.url, {
+  jsx: { runtime: 'automatic' },
+  alias: {
+    'styled-system': fileURLToPath(
+      new URL('../styled-system', import.meta.url)
+    ),
+  },
+});
 const { default: Logo } = await jiti.import('../core/components/Logo/Logo.tsx');
 const output = new URL('../public/static/', import.meta.url);
 const renderLogo = (size, stroke) =>
-  renderToStaticMarkup(createElement(Logo, { size, stroke }));
+  renderToStaticMarkup(createElement(Logo, { size, stroke })).replace(
+    / class="[^"]*"/,
+    ''
+  );
 
 for (const size of [16, 32, 96, 128, 196]) {
   for (const [suffix, stroke] of [
@@ -51,6 +62,17 @@ for (const name of icons) {
     .composite([{ input: logo, gravity: 'centre' }])
     .png({ compressionLevel: 9 })
     .toFile(new URL(`favicons/${name}`, output).pathname);
+}
+
+// Fixed colors for browsers that cache a rasterized favicon by URL.
+for (const [scheme, stroke] of [
+  ['light', '#111111'],
+  ['dark', '#ffffff'],
+]) {
+  await writeFile(
+    new URL(`favicons/favicon-${scheme}.svg`, output),
+    renderLogo(44, stroke)
+  );
 }
 
 const favicon = renderLogo(44, '#111111').replace(
