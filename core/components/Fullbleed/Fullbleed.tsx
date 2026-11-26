@@ -2,12 +2,15 @@ import type { CSSProperties } from 'react';
 
 import Box from '@core/components/Box';
 
+import { ImageSizesContext } from './ImageSizesContext';
+
 const Fullbleed = (props: {
   children: React.ReactNode;
   maxWidth?: number;
   widthPercent?: number;
 }) => {
   const { children, widthPercent = 80, maxWidth = 1000 } = props;
+  const imageSizes = `(max-width: 850px) min(663px, calc(100vw - 32px)), max(700px, min(${widthPercent}vw, ${maxWidth}px))`;
 
   return (
     <Box
@@ -47,7 +50,9 @@ const Fullbleed = (props: {
           },
         }}
       >
-        {children}
+        <ImageSizesContext.Provider value={imageSizes}>
+          {children}
+        </ImageSizesContext.Provider>
       </Box>
     </Box>
   );
