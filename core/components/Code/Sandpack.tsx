@@ -8,7 +8,7 @@ import {
   SandpackFiles,
 } from '@codesandbox/sandpack-react';
 import { AnimatePresence } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Flex from '@core/components/Flex';
 import { useIsMobile } from '@core/hooks/useIsMobile';
@@ -66,6 +66,7 @@ interface SandpackProps {
   autorun?: boolean;
   defaultTab?: Tab;
   showCode?: boolean;
+  previewActive?: boolean;
 }
 
 const defaultFilesByTemplate: Partial<
@@ -91,9 +92,19 @@ const Sandpack = (props: SandpackProps) => {
     autorun = true,
     defaultTab = 'preview',
     showCode = true,
+    previewActive = true,
   } = props;
 
   const isMobile = useIsMobile();
+  // Sandpack resets its file state when either of these object identities changes.
+  const providerFiles = useMemo(
+    () => ({ ...files, ...defaultFilesByTemplate[template] }),
+    [files, template]
+  );
+  const customSetup = useMemo(
+    () => ({ dependencies: dependencies || {} }),
+    [dependencies]
+  );
 
   const [consoleKey, setConsoleKey] = useState(0);
   const [selectedTab, setSelectedTab] = useState<Tab>(defaultTab);
@@ -130,13 +141,8 @@ const Sandpack = (props: SandpackProps) => {
       <SandpackProvider
         template={template}
         theme={theme}
-        files={{
-          ...files,
-          ...defaultFilesByTemplate[template],
-        }}
-        customSetup={{
-          dependencies: dependencies || {},
-        }}
+        files={providerFiles}
+        customSetup={customSetup}
         options={{
           autorun: shouldAutorun,
         }}
@@ -213,18 +219,22 @@ const Sandpack = (props: SandpackProps) => {
                 display: selectedTab === 'console' ? 'flex' : 'none',
               }}
             />
-            <SandpackPreview
-              showRefreshButton={false}
-              showOpenInCodeSandbox={false}
-              style={{
-                height: isFullscreen
-                  ? '100dvh'
-                  : defaultEditorOptions.editorHeight - 48,
-                display: selectedTab === 'preview' ? 'flex' : 'none',
-              }}
-            >
-              <CustomRunButton />
-            </SandpackPreview>
+            {/* Keep the provider/editor alive while offscreen, but release the
+                preview client and its animation work until it is visible again. */}
+            {previewActive || isFullscreen ? (
+              <SandpackPreview
+                showRefreshButton={false}
+                showOpenInCodeSandbox={false}
+                style={{
+                  height: isFullscreen
+                    ? '100dvh'
+                    : defaultEditorOptions.editorHeight - 48,
+                  display: selectedTab === 'preview' ? 'flex' : 'none',
+                }}
+              >
+                <CustomRunButton />
+              </SandpackPreview>
+            ) : null}
           </Flex>
         </SandpackLayout>
       </SandpackProvider>
